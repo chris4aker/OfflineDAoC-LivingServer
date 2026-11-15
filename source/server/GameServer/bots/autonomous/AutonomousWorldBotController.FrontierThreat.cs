@@ -63,6 +63,15 @@ public sealed partial class AutonomousWorldBotController
     // A fleeing relic carrier takes no new aggro (relic audit 2026-10-31, L4: hits used to pull it back into the fight).
     internal bool IgnoresTarget(GameLiving target) => target != null && (_relicCarrierFleeing || IsIgnoredPvpTarget(target));
 
+    /// <summary>
+    /// Aggro this bot does not take (BotBrain.ForceAddToAggroList): a target it ignores (<see cref="IgnoresTarget"/>), and
+    /// for a battleground stormer on its way up an enemy it may not fight (AutonomousBattlegroundKeepRally.StormerMayEngage):
+    /// a hit from a wall wizard or a passing enemy's arrow no longer turns the storm round (owner's PC, build ef76db3).
+    /// </summary>
+    internal bool IgnoresAggro(GameLiving target, GameBot bot) => IgnoresTarget(target) ||
+        target != null && bot != null && target.Realm != bot.Realm && target is not DOL.GS.Keeps.GameKeepDoor &&
+        BattlegroundStormHold(bot) && !StormerMayEngage(bot, target);
+
     // Owner 2026-10-07: a melee bot shot at from a keep wall (an archer guard, or an enemy bot up on the wall) must
     // not run around below it for ever. A target with no walkable route (closed enemy doors block the way) is dropped
     // for two minutes after two failed checks four seconds apart, and left to the ranged bots, who shoot back at

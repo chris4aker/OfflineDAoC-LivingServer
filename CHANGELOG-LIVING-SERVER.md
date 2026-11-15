@@ -280,6 +280,43 @@ that minute were to Hibernian bots at and around the shared point, one to a guar
   navmesh and clear of its guards (the Thidranki navmesh and guard posts aren't in the build container; the unit test
   models one guard post that reproduces `d64d005`'s `guardClear=1459`).
 
+**Battleground stormers run for the lord like a zerg** (tests only; owner's PC, build `ef76db3`, Thidranki 2026-11-15
+16:00-16:24, with the separate rallies and the launcher's starter gear: all six doors of Thidranki Faste down, Albion
+holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm inside. Eight attempts, every one over in
+0.8-2.6 minutes with "half the stormers fell", lord 100%, `onLordFloor=0`; builds `0026378` (41 attempts) and `d64d005`
+(11) ended the same way).
+
+- **Why they never got there.** The stormers did not fail at the lord or on his stairs: they never left their rally. Of
+  the attacking realm's 110 deaths during the eight attempts, 106 were "Fighting ..." and 4 "Storming the keep"; 53 within
+  1,300 of the realm's own rally, 37 elsewhere in the field, 17 at the gate (most of them to the Wizards) and 3 inside; to
+  Albion's bots 43, the keep's guards 37 and the other attacking realm 26, mostly with one or two attackers on them. At
+  16:07:26, with both realms storming, `BG_KEEP_STATUS` read "Fighting:43" and the nearest bot "Storming" stood 3,562 from
+  the lord. A stormer took any enemy within 700 of it and any within 1,500 firing on a realm-mate within 1,000, and helped
+  against any guard hitting a neighbour; and while its ten-second combat timer ran it stood where it was, even with nothing
+  it would fight. Albion's bots (a third hold the walls, the rest roam the field around the keep) and the other realm's
+  passing bots kept every stormer in a skirmish at its rally until half of them were dead. Two Hibernians did reach the
+  lord's tower at 16:11 (78 and 154 from him, killed by a Scout and the lord), so the way up exists.
+- **On the way up a stormer fights only what is on it.** Once its realm goes up, a stormer fights an enemy (guard, bot,
+  player or pet) that has it targeted from within 500 on its own floor, and runs past everything else: the Wizards and
+  archers on the walls, enemies fighting someone else, a realm-mate's fight. Hits from what it leaves alone no longer
+  turn it round (it takes no aggro from them), and a stormer with nothing it may fight goes on up at once instead of
+  waiting out its combat timer; a cast in progress is finished first. Beside the lord, on his floor, it fights the lord and
+  everything with him, and helps against the guard hitting one of its own there, as before. Battleground lord rushes on
+  live servers ran past the courtyard and fought at the lord.
+- **Logs.** `BG_STORM_TRACE` now samples the committed stormers too, every 10 s per realm (`step=storm`, with `phase=`:
+  gate, lord, target, strike, fight or march-under-fire, and the attempt as engaged/standing/seconds/passedGate, the
+  height to the lord, whether it is in his fight, its target, the target's kind (lord, guard and its type, holder- or
+  attacker- bot, player or pet, monster), distance and height, whether the target has it targeted and whether it may fight
+  it, its aggro, attack, cast and health). The rally samples keep their 20 s. `BG_RALLY_REGROUP` says where the attempt's
+  stormers fell (`fell=outside,gate,inside,lordFloor`), to what (`killers=guard,lord,holder,otherAttacker,other`), the
+  fallen's median distance to the gate and the lord, how many got nearer the lord than the gate is (`passedGate=`) and how
+  near any came (`bestToLord=`); `BG_RALLY_STATUS` adds `passedGate=` and `bestToLord=`.
+- Unchanged: the keep, its level, guards, lord, doors and respawns; the rallies and their holders' fight rule; when a rally
+  goes up (the strength model, patience, the other realm's cue) and when an attempt ends; reinforcements and leases;
+  rally holders, gatherers, defenders, companion bots and real players. No truce, nobody made unhittable, nobody moved.
+  Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
+  navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 

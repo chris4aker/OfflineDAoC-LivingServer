@@ -122,7 +122,10 @@ namespace DOL.UnitTests
                 Assert.That(Rally.DisciplinedKeepFight(false, Rally.Step.Rally), Is.True);
                 Assert.That(Rally.DisciplinedKeepFight(false, Rally.Step.Storm), Is.True);
                 Assert.That(Rally.DisciplinedKeepFight(false, Rally.Step.None), Is.False, "no rally could be placed: as before");
-                Assert.That(Rally.AssistsAgainstGuards(false, Rally.Step.Storm), Is.True, "stormers fight the guard on one of their own");
+                Assert.That(Rally.AssistsAgainstGuards(false, Rally.Step.Storm, inLordFight: true), Is.True,
+                    "beside the lord, stormers fight the guard on one of their own");
+                Assert.That(Rally.AssistsAgainstGuards(false, Rally.Step.Storm), Is.False,
+                    "on the way up they don't turn to help (ef76db3: 106 of 110 deaths 'Fighting ...')");
                 Assert.That(Rally.AssistsAgainstGuards(false, Rally.Step.Rally), Is.False, "holders don't walk into the keep to help");
                 Assert.That(Rally.AssistsAgainstGuards(true, Rally.Step.None), Is.True);
                 bool disciplined = Rally.DisciplinedKeepFight(false, Rally.Step.Storm);
@@ -134,12 +137,72 @@ namespace DOL.UnitTests
             });
         }
 
-        [TestCase(false, 600, true)]   // upon the stormer
-        [TestCase(false, 800, false)]  // an enemy in the field: walk on up
-        [TestCase(true, 1_400, true)]  // firing on the realm near it
-        [TestCase(true, 1_600, false)]
-        public void AStormerFightsOnlyWhatAttacksTheGroup(bool firing, float distance, bool engages) =>
-            Assert.That(Rally.StormerMayEngage(firing, distance), Is.EqualTo(engages));
+        // Owner's PC, build ef76db3 (Thidranki 2026-11-15, 16:02-16:24): eight attempts, all "half the stormers fell" after
+        // 0.8-2.6 minutes, lord 100%; 106 of the attacking realms' 110 deaths during them "Fighting ...", 53 at their own rally.
+        [TestCase(false, false, true, 200, 0, true)]     // a melee swinging at this stormer: hit back
+        [TestCase(false, false, true, 500, 100, true)]   // a caster in its face, on its floor
+        [TestCase(false, false, true, 600, 0, false)]    // on it but 600 off: run on
+        [TestCase(false, false, true, 300, 400, false)]  // a wizard on the wall above the gate: run past
+        [TestCase(false, false, false, 150, 0, false)]   // an enemy beside it fighting someone else: run on
+        [TestCase(false, false, false, 1_400, 0, false)] // firing on a realm-mate near it (the old rule took this): run on
+        [TestCase(true, false, false, 3_000, 900, true)] // the lord, always
+        [TestCase(false, true, false, 700, 0, true)]     // beside the lord: everything in his fight
+        public void AStormerFightsOnlyWhatIsOnIt(bool isLord, bool inLordFight, bool onThisBot, float distance, float height, bool engages) =>
+            Assert.That(Rally.StormerMayEngage(isLord, inLordFight, onThisBot, distance, height), Is.EqualTo(engages));
+
+        [Test]
+        public void TheLordsFightIsHisFloorBesideHim()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.InLordFight(300, 50), Is.True);
+                Assert.That(Rally.InLordFight(Rally.InTheFightRadius, Rally.LordFloorHeight), Is.True);
+                Assert.That(Rally.InLordFight(300, 872), Is.False, "in the courtyard under his tower (z 3,720 vs 4,592)");
+                Assert.That(Rally.InLordFight(1_000, 0), Is.False);
+            });
+        }
+
+        [Test]
+        public void WhereAStormerFell()
+        {
+            float gateToLord = Vector2.Distance(new(OuterGate.X, OuterGate.Y), new(Lord.X, Lord.Y)); // 2,037
+            Assert.Multiple(() =>
+            {
+                // ef76db3 deaths, Thidranki Faste.
+                Assert.That(Rally.DeathPlace(1_800, 3_705, gateToLord, 1_181), Is.EqualTo("outside"), "Speedyfirbolg at Hibernia's rally");
+                Assert.That(Rally.DeathPlace(91, 1_946, gateToLord, 870), Is.EqualTo("gate"), "Eogaedan, to a Wizard");
+                Assert.That(Rally.DeathPlace(718, 1_319, gateToLord, 870), Is.EqualTo("inside"), "Maez, 'Storming the keep'");
+                Assert.That(Rally.DeathPlace(2_058, 78, gateToLord, 308), Is.EqualTo("inside"), "Stormarrow on the stairs, 308 below him");
+                Assert.That(Rally.DeathPlace(2_189, 154, gateToLord, 120), Is.EqualTo("lordFloor"));
+            });
+        }
+
+        [TestCase(true, false, eRealm.Albion, Rally.KillerKind.Guard)]
+        [TestCase(true, true, eRealm.Albion, Rally.KillerKind.Lord)]
+        [TestCase(false, false, eRealm.Albion, Rally.KillerKind.Holder)]
+        [TestCase(false, false, eRealm.Midgard, Rally.KillerKind.OtherAttacker)]
+        [TestCase(false, false, eRealm.None, Rally.KillerKind.Other)]
+        [TestCase(false, false, eRealm.Hibernia, Rally.KillerKind.Other)]
+        public void WhatKilledAHibernianStormerAtAnAlbionKeep(bool guard, bool lord, eRealm killer, Rally.KillerKind kind) =>
+            Assert.That(Rally.KillerOf(guard, lord, killer, eRealm.Albion, eRealm.Hibernia), Is.EqualTo(kind));
+
+        [Test]
+        public void TheRegroupSaysWhereTheFallenDied()
+        {
+            var fallen = new[]
+            {
+                new Rally.FallenStormer("outside", Rally.KillerKind.Holder, 1_800, 3_700),
+                new Rally.FallenStormer("outside", Rally.KillerKind.OtherAttacker, 1_790, 3_720),
+                new Rally.FallenStormer("gate", Rally.KillerKind.Guard, 90, 1_950),
+            };
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.SummariseFallen(fallen), Is.EqualTo(
+                    "fell=outside:2,gate:1,inside:0,lordFloor:0 killers=guard:1,lord:0,holder:1,otherAttacker:1,other:0 " +
+                    "fellMedianToGate=1790 fellMedianToLord=3700"));
+                Assert.That(Rally.SummariseFallen(System.Array.Empty<Rally.FallenStormer>()), Does.EndWith("fellMedianToGate=-1 fellMedianToLord=-1"));
+            });
+        }
 
         [Test]
         public void ARallyHolderKeepsTheGatherersRule()

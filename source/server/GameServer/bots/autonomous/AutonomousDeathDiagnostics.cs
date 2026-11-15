@@ -75,7 +75,7 @@ namespace DOL.GS
             if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
             {
                 AutonomousBattlegroundWave.NoteDeath(bot.CurrentRegionID, bot.Realm, killer is DOL.GS.Keeps.GameKeepGuard);
-                AutonomousBattlegroundKeepRally.NoteDeath(bot.CurrentRegionID, bot.Realm, killer is DOL.GS.Keeps.GameKeepGuard);
+                AutonomousBattlegroundKeepRally.NoteDeath(bot, killer);
             }
             if (!Log.IsInfoEnabled)
                 return;
