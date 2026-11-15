@@ -28,8 +28,9 @@ Fixtures in both:
       Their password is their name; the server stores them hashed at the first login.
     * account creation without the waiting time between new accounts.
     * with --class-off: classes / enable_sluaghbinder False, the switch of the 0.37 edition (no Sluaghbinder), so the
-      class-switch scenario checks the class-off rules. Without it the switch is left as it was (no row in a minimal
-      world: on, the server's default; a release world keeps its own edition's value).
+      class-switch scenario checks the class-off rules. Without it a minimal world has no row (on, the server's
+      default) and a from-release world keeps the source's edition: the release builder's clean_world() sets the
+      0.37b switch (on), so a source with it off (a 0.37 world) gets it set off again.
 
 It never opens the source for writing, never writes over an existing file, and refuses an --out that is the source.
 """
@@ -306,12 +307,14 @@ def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level
         before = sqlite3.connect(out)
         saves = {t: before.execute(f'SELECT COUNT(*) FROM "{t}"').fetchone()[0] for t in ("Account", "DOLCharacters", "offline_world_bots")
                  if before.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=?", (t,)).fetchone()[0]}
+        source_edition = class_switch(before)
         before.close()
+        # clean_world sets the 0.37b package's switch (on); a 0.37 world (off) keeps its own edition here.
         cleaned = release.clean_world(out, policy, defaults)   # empty saves, default world (asserts as a release does)
         con = sqlite3.connect(out)
         try:
             marker = add_fixtures(con, "from-release", str(world))
-            if class_off:
+            if class_off or source_edition == "off":
                 set_class_off(con)
                 marker["classes"] = "off"
             bots = add_test_bots(con, bots_per_realm, helper_level) if bots_per_realm else []
@@ -326,7 +329,8 @@ def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level
         for suffix in ("", "-wal", "-shm", "-journal"):
             Path(str(out) + suffix).unlink(missing_ok=True)   # never leave a half-made world behind
         raise
-    report.update({"marker": marker, "saves_in_source": saves, "release_clean": cleaned, "bots": bots})
+    report.update({"marker": marker, "saves_in_source": saves, "release_clean": cleaned, "bots": bots,
+                   "source_edition": source_edition})
     return report
 
 
