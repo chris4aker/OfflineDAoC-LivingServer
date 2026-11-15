@@ -380,7 +380,7 @@ All four read the same files and treat the three realms alike. The code is in `s
     "what is atlantis?" is [Atlantis], "is there anything beneath camelot?" is [under Camelot].
   - The era rumours (owner, 2026-11-15): each capital's file has an `Atlantis` topic (the harbour's talk, in the
     loremaster's own voice, nobody has sailed there) and an `under <capital>` topic (the shut door: Camelot's crypts and
-    the Inconnu, the kobolds' picks below Jordheim, the Dream Trees' roots and the Queen of the Shar's question), reached
+    the Inconnu, the kobolds' picks below Jordheim, the Dream Trees' roots and the one question a woman of the Shar asked), reached
     from an existing topic ([under-streets], [longboat], [Dream Trees]). The capitals' books have a page each on it.
 - **Players only.** The loremasters are not merchants, so gamebots never sell to them, and they ignore bots.
 

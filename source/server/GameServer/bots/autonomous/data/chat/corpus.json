@@ -371930,10 +371930,10 @@
    "answers": [
     "ask_atlantis"
    ],
-   "text": "harbour talk from caer gothwaite. a land past the isles that sank in one day and one night. nobody has been",
+   "text": "gothwaite harbour talk. a land past the isles that sank in a day and a night, and nobody has been",
    "about": true,
-   "family": "ec0ef28d44",
-   "id": "e0e1e71be8cc"
+   "family": "fd28d1263f",
+   "id": "8c06d9e37d69"
   },
   {
    "kind": "reply",
@@ -371952,10 +371952,10 @@
    "answers": [
     "ask_atlantis"
    ],
-   "text": "sailor talk from caer gothwaite. a land past the isles that sank in one day and one night. nobody has been",
+   "text": "sailor talk from caer gothwaite. a land past the isles that sank in a day and a night, and nobody has been",
    "about": true,
-   "family": "ec0ef28d44",
-   "id": "5a6562b79c0d"
+   "family": "fd28d1263f",
+   "id": "49f3f643848b"
   },
   {
    "kind": "reply",
@@ -371974,9 +371974,9 @@
    "answers": [
     "ask_atlantis"
    ],
-   "text": "aegirhamn sailor talk. a drowned land past the isles. buy one an ale and you get it twice",
+   "text": "aegirhamn sailor talk, a drowned land out past the isles. buy one an ale and you hear it twice",
    "about": true,
-   "id": "bf3149f4d03f"
+   "id": "18807b7af69b"
   },
   {
    "kind": "reply",
@@ -371995,10 +371995,10 @@
    "answers": [
     "ask_atlantis"
    ],
-   "text": "the boatmen at the domnann dock talk about it. a sunk land out west. none of them has rowed out to look",
+   "text": "the boatmen at the domnann dock talk about it, a sunken land out west. none of them has rowed out to look",
    "about": true,
-   "family": "78b28466f0",
-   "id": "a7f8a9000432"
+   "family": "96d9eda687",
+   "id": "8ebc7390fd54"
   },
   {
    "kind": "reply",
@@ -372017,10 +372017,10 @@
    "answers": [
     "ask_atlantis"
    ],
-   "text": "the boatmen at the domnann dock swear by it. a sunk land out west. none of them has rowed out to look",
+   "text": "the boatmen at the domnann dock swear by it, a sunken land out west. none of them has rowed out to look",
    "about": true,
-   "family": "78b28466f0",
-   "id": "3fac85356cd3"
+   "family": "96d9eda687",
+   "id": "3b4a6224afa4"
   },
   {
    "kind": "reply",
@@ -372060,10 +372060,10 @@
    "answers": [
     "ask_below"
    ],
-   "text": "kobold miners swear theres a city under jordheim. they hear picks below their own picks",
+   "text": "kobold miners swear theres a city under jordheim. they hear picks below their own",
    "about": true,
-   "family": "5bd769cacc",
-   "id": "1a72e0b0b3f9"
+   "family": "4aa2931e60",
+   "id": "04ca328d24fe"
   },
   {
    "kind": "reply",
@@ -372082,10 +372082,10 @@
    "answers": [
     "ask_below"
    ],
-   "text": "kobold miners swear theres a city under jordheim. they hear picks under their own picks",
+   "text": "kobold miners swear theres a city under jordheim. they hear picks under their own",
    "about": true,
-   "family": "5bd769cacc",
-   "id": "631ffb7229d9"
+   "family": "4aa2931e60",
+   "id": "9879e130c603"
   },
   {
    "kind": "reply",
@@ -372104,9 +372104,9 @@
    "answers": [
     "ask_below"
    ],
-   "text": "the dream tree roots under tnn go down further than roots should. the druids stopped following them",
+   "text": "the dream tree roots under tnn go down further than roots should, and the druids stopped following them",
    "about": true,
-   "id": "f9a86ba1eaea"
+   "id": "efcd4ed5237e"
   },
   {
    "kind": "ambient",
@@ -372125,9 +372125,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "lights in the water off gothwaite again. in it, not on it",
+   "text": "the lights are back off gothwaite. under the water this time, not on it",
    "about": true,
-   "id": "765c6f6b7769"
+   "id": "beabc8e5651c"
   },
   {
    "kind": "ambient",
@@ -372146,9 +372146,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "fisherman in aegirhamn pulled up a carved stone. coral all over it. it has a face",
+   "text": "fisherman in aegirhamn pulled up a carved stone with coral all over it. theres a face on it",
    "about": true,
-   "id": "4ce371c914c5"
+   "id": "65f5692761fa"
   },
   {
    "kind": "ambient",
@@ -372167,8 +372167,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "the boatmen rowed in early. said the lights under the sea were back",
-   "id": "e17eedb74819"
+   "text": "domnann boatmen came in early again, said the lights under the water are back",
+   "about": true,
+   "id": "b78ee239603e"
   },
   {
    "kind": "ambient",
@@ -372187,8 +372188,8 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "something knocked under the bank floor in camelot. three times. i left",
-   "id": "c579923f2852"
+   "text": "something knocked under the bank floor in camelot, three times. i left",
+   "id": "720253de3632"
   },
   {
    "kind": "ambient",
@@ -372227,8 +372228,8 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "put my ear to a dream tree in tnn. it was humming. from underneath",
-   "id": "98677d9e992c"
+   "text": "put my ear to a dream tree in tnn and its humming, from somewhere underneath",
+   "id": "cdd8ddc61dc4"
   },
   {
    "kind": "ambient",
@@ -689647,19 +689648,19 @@
    "beats": [
     {
      "role": "A",
-     "text": "{name_b} you on? tell the glass ball one",
+     "text": "{name_b} you on? tell the one about the glass that spoke",
      "variants": [
-      "{name_b} you on? tell the glass ball one",
-      "{name_b}, do your gran's story. the orb"
+      "{name_b} you on? tell the one about the glass that spoke",
+      "{name_b}, do your gran's story, the glass ball one"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "oh this one. hush all",
+     "text": "oh, this one. hush everyone",
      "variants": [
-      "oh this one. hush all",
-      "quiet everyone, {name_b} is doing the orb"
+      "oh, this one. hush everyone",
+      "quiet in faction for a bit, {name_b} is telling the orb"
      ],
      "optional": false
     },
@@ -689674,50 +689675,50 @@
     },
     {
      "role": "D",
-     "text": "please {name_b}, i never heard it",
+     "text": "go on {name_b}, the new ones have never heard it",
      "variants": [
-      "please {name_b}, i never heard it",
-      "go on {name_b}, the new ones dont know it"
+      "go on {name_b}, the new ones have never heard it",
+      "please {name_b}, i never heard it all the way through"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "its my family's story, so no correcting me",
+     "text": "This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall.",
      "variants": [
-      "its my family's story, so no correcting me"
+      "This one is my family's. My grandmother's grandmother saw it, when she was a girl in service at the council hall."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "my gran's gran poured the cups at the council hall",
+     "text": "One hard winter a fisherman came up from the coast with a sack over his shoulder, and the sack was still dripping.",
      "variants": [
-      "my gran's gran poured the cups at the council hall"
+      "One hard winter a fisherman came up from the coast with a sack over his shoulder, and the sack was still dripping."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "one winter a fisherman came up from the coast with a wet sack. his net had come up heavy",
+     "text": "His nets had come up heavy off the point, and in them was a ball of green glass the size of a child's head.",
      "variants": [
-      "one winter a fisherman came up from the coast with a wet sack. his net had come up heavy"
+      "His nets had come up heavy off the point, and in them was a ball of green glass the size of a child's head."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "in it was a ball of glass the size of a baby's head. warm. coral grown over one side",
+     "text": "Coral had grown over one side of it, and it was warm to the touch, though it had lain all night in the bilge.",
      "variants": [
-      "in it was a ball of glass the size of a baby's head. warm. coral grown over one side"
+      "Coral had grown over one side of it, and it was warm to the touch, though it had lain all night in the bilge."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "the council paid him two coins to go away and set it on the high table like a pudding",
+     "text": "The council paid him two silver and set it on the high table between the candlesticks, and for seven nights it was a curiosity.",
      "variants": [
-      "the council paid him two coins to go away and set it on the high table like a pudding"
+      "The council paid him two silver and set it on the high table between the candlesticks, and for seven nights it was a curiosity."
      ],
      "optional": false
     },
@@ -689736,33 +689737,33 @@
     },
     {
      "role": "B",
-     "text": "the eighth night, candles low. a light came up inside it, like a lamp seen through water",
+     "text": "On the eighth night, late, with the hall dark but for the high table, a light came up in the heart of the glass.",
      "variants": [
-      "the eighth night, candles low. a light came up inside it, like a lamp seen through water"
+      "On the eighth night, late, with the hall dark but for the high table, a light came up in the heart of the glass."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "in the light stood a man no bigger than her thumb, in robes nobody here ever wore",
+     "text": "In the light stood a man no taller than her thumb, robed in a fashion no tailor in the realm had ever seen.",
      "variants": [
-      "in the light stood a man no bigger than her thumb, in robes nobody here ever wore"
+      "In the light stood a man no taller than her thumb, robed in a fashion no tailor in the realm had ever seen."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "he said past the edge of the sea is a land where peoples are tried. ten trials, one for each thing worth being",
+     "text": "He spoke in a stranger's voice, and he said that past the edge of the sea there lay a land where whole peoples were tried.",
      "variants": [
-      "he said past the edge of the sea is a land where peoples are tried. ten trials, one for each thing worth being"
+      "He spoke in a stranger's voice, and he said that past the edge of the sea there lay a land where whole peoples were tried."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "send your champions, he said. the ones who pass come home more than they were",
+     "text": "He asked the council to send its champions over the water, and he named the ten trials one after another.",
      "variants": [
-      "send your champions, he said. the ones who pass come home more than they were"
+      "He asked the council to send its champions over the water, and he named the ten trials one after another."
      ],
      "optional": false
     },
@@ -689777,49 +689778,57 @@
     },
     {
      "role": "B",
-     "text": "they argued till dawn. then he said it all again. same words, same pause in the same place",
+     "text": "Nobody went. They argued until the candles guttered, and then the light came up again and he said it all over, word for word.",
      "variants": [
-      "they argued till dawn. then he said it all again. same words, same pause in the same place"
+      "Nobody went. They argued until the candles guttered, and then the light came up again and he said it all over, word for word."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "he never once looked at them. thats when she went cold",
+     "text": "She was the one who saw that he never looked at the councillors. He looked down the hall, to where nobody sat.",
      "variants": [
-      "he never once looked at them. thats when she went cold"
+      "She was the one who saw that he never looked at the councillors. He looked down the hall, to where nobody sat."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "she dreamed for years after. sand to the end of the world. a mountain on fire. a city sat on a cloud",
+     "text": "He said it every night that winter. The council stopped coming, and in the end only she heard it, because the candles still wanted trimming.",
      "variants": [
-      "she dreamed for years after. sand to the end of the world. a mountain on fire. a city sat on a cloud"
+      "He said it every night that winter. The council stopped coming, and in the end only she heard it, because the candles still wanted trimming."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "and the sky cracking like pond ice, and the sea standing up, and all of it gone in a day and a night",
+     "text": "For years after, she dreamed of it: sand to the end of the world, a mountain on fire, a city standing on cloud.",
      "variants": [
-      "and the sky cracking like pond ice, and the sea standing up, and all of it gone in a day and a night"
+      "For years after, she dreamed of it: sand to the end of the world, a mountain on fire, a city standing on cloud."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "in spring they sewed it back in the sack and rowed it out past the point",
+     "text": "And at the last the sky opened and the sea stood up, and all of it was gone in a day and a night.",
      "variants": [
-      "in spring they sewed it back in the sack and rowed it out past the point"
+      "And at the last the sky opened and the sea stood up, and all of it was gone in a day and a night."
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "she was in the boat. she said it was still talking when it went under",
+     "text": "In spring they sewed it back into the fisherman's sack and rowed it out past the point on the ebb.",
      "variants": [
-      "she was in the boat. she said it was still talking when it went under"
+      "In spring they sewed it back into the fisherman's sack and rowed it out past the point on the ebb."
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "She was in the boat, because someone had to hold the sack. She said it was still talking when it went under.",
+     "variants": [
+      "She was in the boat, because someone had to hold the sack. She said it was still talking when it went under."
      ],
      "optional": false
     },
@@ -689832,7 +689841,7 @@
      "text": "...still talking",
      "variants": [
       "...still talking",
-      "wait. still talking?"
+      "wait. it was still talking?"
      ],
      "optional": false
     },
@@ -689841,7 +689850,7 @@
      "text": "ty {name_b}. not going near the docks tonight",
      "variants": [
       "ty {name_b}. not going near the docks tonight",
-      "thanks {name_b}. i will never fish again"
+      "thanks {name_b}, nobody tells that one like you"
      ],
      "optional": false
     }
@@ -689883,34 +689892,34 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} my uncle says theres a whole city under the sea lol",
+     "text": "{q} my uncle says theres a whole city at the bottom of the sea lol",
      "variants": [
-      "{q} my uncle says theres a whole city under the sea lol"
+      "{q} my uncle says theres a whole city at the bottom of the sea lol"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "your uncle also said he soloed the dragon",
+     "text": "your uncle also says he soloed the dragon",
      "variants": [
-      "your uncle also said he soloed the dragon"
+      "your uncle also says he soloed the dragon"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "he said that once. but the fishermen really do drag up carved stone, crusted in coral",
+     "text": "ok he said that once. but the fishermen really do pull up carved stone with coral all over it",
      "variants": [
-      "he said that once. but the fishermen really do drag up carved stone, crusted in coral"
+      "ok he said that once. but the fishermen really do pull up carved stone with coral all over it"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "the sailors even have a name for it. atlantis",
+     "text": "the sailors have a name for it, atlantis",
      "variants": [
-      "the sailors even have a name for it. atlantis",
-      "harbour folk call it atlantis. they get quiet about it"
+      "the sailors have a name for it, atlantis",
+      "harbour folk call it atlantis and then go quiet"
      ],
      "optional": false
     },
@@ -689933,17 +689942,17 @@
     },
     {
      "role": "A",
-     "text": "laugh all you like. somebody will row out there one day and come back with proof",
+     "text": "laugh all you like. ask any fisherman if he will cast a net past the point after dark",
      "variants": [
-      "laugh all you like. somebody will row out there one day and come back with proof"
+      "laugh all you like. ask any fisherman if he will cast a net past the point after dark"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "and your uncle will say he was there first",
+     "text": "your uncle would. right after the dragon",
      "variants": [
-      "and your uncle will say he was there first"
+      "your uncle would. right after the dragon"
      ],
      "optional": false
     }
