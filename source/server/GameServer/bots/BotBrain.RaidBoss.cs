@@ -60,7 +60,8 @@ namespace DOL.AI.Brain
             GameLiving best = null;
             foreach (GameLiving living in AggroList.Keys)
             {
-                if (living == boss || living is not GameNPC npc || PetsDoNoDamageTo(npc) || !IsValidPetCombatTarget(petBrain.Body, npc))
+                if (living == boss || living is not GameNPC npc || PetsDoNoDamageTo(npc) || !IsValidPetCombatTarget(petBrain.Body, npc) ||
+                    EpicEncounterTactics.PetMustNotHit(petBrain.Body, npc))
                     continue;
                 if (npc.TargetObject == Body || npc.TargetObject == petBrain.Body)
                 {

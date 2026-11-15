@@ -10,7 +10,8 @@ namespace DOL.GS
     /// and the Shade of Aelfgar are catalog tactics (hand-notes "aiTactics"): casters and archers kill the walkers before
     /// they reach his altar, and if both get there the whole raid kills the Shade (it sends raiders up to the gallery).
     /// Code rule here: Summoner Lossren's infected ghoul crawls toward one raider and bursts (Plague, 1,000 in 500), so the
-    /// raider it crawls toward walks away from it while the casters kill it (a catalog ranged add).
+    /// raider it crawls toward walks away from it while the casters kill it (a catalog ranged add), and one of her tortured
+    /// souls is left alive so that she calls no new wave (and so no new ghoul).
     /// </summary>
     public static partial class EpicEncounterTactics
     {
@@ -31,6 +32,13 @@ namespace DOL.GS
                 Summary = $"Every summoner takes no damage past her tether (1,300 from her spawn) and resets there: the raid " +
                           $"fights within {SummonerInnerRadius} of her spawn (a raider further out walks in), so whoever she " +
                           "chases keeps her inside it; the one she chases out leads her home (catalog fight at home, 1,000).",
+            },
+            new("SummonerLossrenKeptSoul", [nameof(SummonerLossren), nameof(TorturedSouls), nameof(ExplodeUndead)], LossrenKeptSoulAdvice)
+            {
+                Summary = "One of her tortured souls is left alive (she calls her next 18-25 only when none of hers lives, and " +
+                          "every 20 that die bring an infected ghoul): no bot, pet or area spell hits it, the ranged-add and " +
+                          "clump lists skip it, and a raider on it goes back to Lossren.",
+                LeaveAlive = IsLossrensKeptSoul,
             },
             new("SummonerLossrenGhoul", [nameof(SummonerLossren), nameof(TorturedSouls)], LossrenGhoulFirst)
             {
@@ -197,6 +205,95 @@ namespace DOL.GS
                 if (ghoul.TargetObject == c.Raider && AwayFrom(c.At, PosOf(ghoul), GhoulKiteRadius) is Vector3 away)
                     return new(BotAction.Reposition, c.Target, away, $"the ghoul crawls at me: away from it ({GhoulKiteRadius})", "epic_ghoul_kite");
             return default;
+        }
+
+        // ---- Lossren's kept soul (1.2, owner's PC log, build 1dc66b6, 2026-11-15) -----------------------------------------
+
+        /// <summary>Each Lossren's kept soul: the one tortured soul of hers the raid leaves alive.</summary>
+        private static readonly Dictionary<GameNPC, GameNPC> KeptSouls = new();
+
+        /// <summary>
+        /// Lossren's script calls her next wave (18-25 tortured souls) every 5-8 s only while none of hers lives, and every 20
+        /// of hers that die bring an infected ghoul (1,000 in 500 where it reaches). Owner's PC, build 1dc66b6, 2026-11-15, the
+        /// Hibernia sweep raid: the raid cleared each wave, so she called 14 waves in five minutes (attempt 1) and 18 in ten
+        /// (attempt 2); the souls killed 45 of the 73 fallen and 53 of the 97 (up to 21 souls on one raider), she 27 and 38,
+        /// and one minute's ghoul bursts hit 80 raiders and pets for 66,748; the melee fell first, the healers trying to
+        /// resurrect had 2-6% power from the third minute on, and both attempts ended with nobody left on her ("left combat",
+        /// lowest 63% and 20%). Now one soul of hers is left alive: no bot, pet or area spell hits it and a raider on it goes
+        /// back to her (a caster or archer to a living ghoul), so after the first wave no new one comes, and at most one ghoul.
+        /// The script is unchanged; a soul that dies anyway (a real player's hit) is replaced by one of the next wave.
+        /// </summary>
+        private static Advice? LossrenKeptSoulAdvice(RuleContext c)
+        {
+            GameNPC lossren = c.Target is SummonerLossren ? c.Target : LossrenOf(c.Target, c.Live);
+            if (lossren == null || !Present(lossren)) return null;
+            GameNPC kept = KeepSoul(lossren, c.Live);
+            if (kept == null || c.Target != kept) return null;
+            // A caster or archer takes the living ghoul (the next rule's choice), everyone else Lossren.
+            GameNPC to = LossrenGhoulFirst(c with { Target = lossren })?.Target ?? lossren;
+            return new(BotAction.Retarget, to, null,
+                $"lossren-kept-soul: \"{kept.Name}\" is left alive (her next wave comes only when none of hers lives); on \"{to.Name}\"");
+        }
+
+        /// <summary>The Lossren whose soul or ghoul <paramref name="add"/> is: its spawner, else the nearest within
+        /// <see cref="SummonerAddReach"/>.</summary>
+        private static GameNPC LossrenOf(GameNPC add, IReadOnlyList<GameNPC> live)
+        {
+            if (add is TorturedSouls { OwnerBrain.Body: SummonerLossren owner }) return owner;
+            return (live ?? []).Where(n => n is SummonerLossren && Present(n) && n.CurrentRegionID == add.CurrentRegionID &&
+                                           add.IsWithinRadius(n, SummonerAddReach))
+                .OrderBy(n => n.GetDistanceTo(add)).FirstOrDefault();
+        }
+
+        /// <summary>Which soul is kept (pure): the healthiest, ties the lowest object id (every soul of a new wave is whole).</summary>
+        public static GameNPC ChooseKeptSoul(IEnumerable<GameNPC> souls) =>
+            (souls ?? []).Where(s => s != null).OrderByDescending(s => s.HealthPercent).ThenBy(s => s.ObjectID).FirstOrDefault();
+
+        /// <summary>
+        /// <paramref name="lossren"/>'s kept soul: the one chosen before while it lives, else one of her living souls in
+        /// <paramref name="live"/> (<see cref="ChooseKeptSoul"/>), else null. Logs EPIC_LOSSREN_KEPT_SOUL when it chooses.
+        /// </summary>
+        public static GameNPC KeepSoul(GameNPC lossren, IEnumerable<GameNPC> live)
+        {
+            if (lossren == null) return null;
+            lock (KeptSouls)
+                if (KeptSouls.TryGetValue(lossren, out GameNPC kept) && Present(kept)) return kept;
+            GameNPC[] hers = (live ?? []).Where(n => n is TorturedSouls soul && Present(n) && n.CurrentRegionID == lossren.CurrentRegionID &&
+                                                    lossren.IsWithinRadius(n, SummonerAddReach) &&
+                                                    (soul.OwnerBrain?.Body is not GameNPC owner || owner == lossren)).ToArray();
+            GameNPC chosen = ChooseKeptSoul(hers);
+            lock (KeptSouls)
+            {
+                if (KeptSouls.TryGetValue(lossren, out GameNPC raced) && Present(raced)) return raced;
+                if (chosen == null)
+                {
+                    KeptSouls.Remove(lossren);
+                    return null;
+                }
+                if (KeptSouls.Count > 16)
+                    foreach (GameNPC stale in KeptSouls.Where(p => !Present(p.Key) || !Present(p.Value)).Select(p => p.Key).ToArray())
+                        KeptSouls.Remove(stale);
+                KeptSouls[lossren] = chosen;
+            }
+            if (Log.IsInfoEnabled)
+                Log.Info($"EPIC_LOSSREN_KEPT_SOUL boss=\"{lossren.Name}\" region={lossren.CurrentRegionID} health={lossren.HealthPercent} " +
+                         $"soul=\"{chosen.Name}\" id={chosen.ObjectID} hers={hers.Length} at={chosen.X},{chosen.Y},{chosen.Z}");
+            return chosen;
+        }
+
+        /// <summary>The rule's <see cref="DungeonRule.LeaveAlive"/>: <paramref name="npc"/> is a living Lossren's kept soul.</summary>
+        private static bool IsLossrensKeptSoul(GameNPC npc)
+        {
+            if (npc is not TorturedSouls || !Present(npc)) return false;
+            lock (KeptSouls)
+                foreach (var (lossren, kept) in KeptSouls)
+                    if (kept == npc && Present(lossren)) return true;
+            return false;
+        }
+
+        public static void ResetKeptSoulsForTests()
+        {
+            lock (KeptSouls) KeptSouls.Clear();
         }
     }
 }

@@ -88,6 +88,11 @@ namespace DOL.GS
             /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
             /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
             public Func<GameNPC, bool> NoPets { get; init; }
+            /// <summary>While true the raid leaves this monster alive (Summoner Lossren's kept soul: her next wave of tortured
+            /// souls comes only once none of hers lives). No bot hits it, area spells included (as <see cref="MustNotHit"/>),
+            /// no bot's pet takes it (as <see cref="NoPets"/>), the catalog's ranged-add and clump lists skip it, and a bot
+            /// told to leave it drops it from its aggro list. Asked for the rule's targets; null: never (<see cref="LeftAlive"/>).</summary>
+            public Func<GameNPC, bool> LeaveAlive { get; init; }
             /// <summary>The <see cref="Route"/> also redirects a monster that is in combat (the horsemen's barred room). By
             /// default a route rule leaves a fighting monster alone: a monster fighting the raid is answered, never mapped onto
             /// the raid's current target (PC log e3b8238: "Crypt Lord -&gt; Crypt Lord" 22 times and "Easmarach -&gt;
@@ -315,6 +320,22 @@ namespace DOL.GS
             foreach (DungeonRule rule in DungeonRulesFor(npc))
                 if (rule.MustNotHit != null && rule.MustNotHit(bot, npc))
                     return true;
+            return LeftAlive(npc);
+        }
+
+        /// <summary>A dungeon rule of <paramref name="npc"/> says the raid leaves it alive now (<see cref="DungeonRule.LeaveAlive"/>).</summary>
+        public static bool LeftAlive(GameNPC npc)
+        {
+            if (npc == null) return false;
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+            {
+                if (rule.LeaveAlive == null) continue;
+                try
+                {
+                    if (rule.LeaveAlive(npc)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon leave-alive rule {rule.Encounter} failed: {ex.Message}"); }
+            }
             return false;
         }
 
@@ -344,6 +365,7 @@ namespace DOL.GS
         {
             if (pet == null || pet is GameBot || living is not GameNPC npc) return false;
             if ((pet.Brain as IControlledBrain)?.GetLivingOwner() is not GameBot) return false;
+            if (LeftAlive(npc)) return true;
             foreach (DungeonRule rule in DungeonRulesFor(npc))
             {
                 if (rule.NoPets == null) continue;

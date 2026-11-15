@@ -407,13 +407,15 @@ namespace DOL.GS
                                    Array.IndexOf(t.Hazards, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius)).ToArray();
         }
 
-        /// <summary>The living ranged adds of <paramref name="boss"/>'s tactic near it, in the catalog's order.</summary>
+        /// <summary>The living ranged adds of <paramref name="boss"/>'s tactic near it, in the catalog's order (an add a dungeon
+        /// rule leaves alive is not one: Lossren's kept soul).</summary>
         public static GameNPC[] LiveRangedAdds(GameNPC boss, IEnumerable<GameNPC> live)
         {
             Tactic t = For(boss);
             if (t?.RangedAdds is not { Length: > 0 } || !Present(boss)) return [];
             return live.Where(n => Present(n) && n != boss && n.CurrentRegionID == boss.CurrentRegionID &&
-                                   Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius))
+                                   Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius) &&
+                                   !LeftAlive(n))
                 .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
         }
 
@@ -1573,8 +1575,9 @@ namespace DOL.GS
             switch (advice.Action)
             {
                 case BotAction.Retarget:
-                    // A ground hazard is left for good, not only this turn (it would come back as the bot's highest aggro).
-                    if (HazardOf(target) != null) (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
+                    // A ground hazard is left for good, not only this turn (it would come back as the bot's highest aggro), and
+                    // so is a monster the raid leaves alive (Lossren's kept soul).
+                    if (HazardOf(target) != null || LeftAlive(target)) (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = advice.Target;
                     (bot.Brain as BotBrain)?.AddToAggroList(advice.Target, 1_000);
                     LogDecision(bot, target, advice);

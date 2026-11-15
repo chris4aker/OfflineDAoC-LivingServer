@@ -87,6 +87,20 @@ namespace DOL.UnitTests
             public override bool IsAlive => true;
             public override bool InCombat => true;
         }
+        /// <summary>Lossren and her soul under their own class names (the catalog matches class names).</summary>
+        public static class Named
+        {
+            public sealed class SummonerLossren : DOL.GS.SummonerLossren
+            {
+                public override bool IsAlive => true;
+                public override bool InCombat => true;
+            }
+            public sealed class TorturedSouls : DOL.GS.TorturedSouls
+            {
+                public override bool IsAlive => true;
+                public override bool InCombat => true;
+            }
+        }
         public sealed class TestGhoul : ExplodeUndead
         {
             public override bool IsAlive => true;
@@ -148,6 +162,7 @@ namespace DOL.UnitTests
             T.SilencerResisting = _resisting;
             T.AlbionFloorSnap = _snap;
             T.ResetAttackerSlotsForTests();
+            T.ResetKeptSoulsForTests();
             EpicEncounterMechanics.ResetPerEncounter();
             _server.Dispose();
         }
@@ -496,6 +511,77 @@ namespace DOL.UnitTests
             Assert.That(Rule(wizard, lossren, live, true, Wizard)?.Target, Is.SameAs(ghoul));
             Assert.That(Rule(wizard, soul, live, true, Wizard)?.Target, Is.SameAs(ghoul), "from a soul too");
             Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null, "melee stay on her");
+        }
+
+        [Test]
+        public void OneOfLossrensSoulsIsLeftAliveSoNoNewWaveComes()
+        {
+            // Owner's PC, build 1dc66b6, 2026-11-15: she calls a new wave only when none of hers lives; the raid cleared 14 and
+            // 18 waves, and the souls killed 98 of the 170 who fell. One soul of hers is left alive.
+            UseRegion(248);
+            var lossren = Npc<Named.SummonerLossren>(39276, 41166, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var wizard = Npc<Raider>(39000, 41166, 16001);
+            var first = Npc<Named.TorturedSouls>(39189, 41500, 16000);
+            var second = Npc<Named.TorturedSouls>(38900, 41211, 16001);
+            var live = new List<GameNPC> { lossren, warrior, wizard, first, second };
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null, "on her: the melee fight her");
+            Assert.That(T.LeftAlive(first), Is.True, "her first soul (whole, lowest id) is kept");
+            Assert.That(T.LeftAlive(second), Is.False, "the rest are killed");
+            var a = Rule(warrior, first, live, false, Warrior);
+            Assert.That((a?.Action, a?.Target), Is.EqualTo((T.BotAction.Retarget, (GameNPC)lossren)), "a raider on it goes back to her");
+            Assert.That(a.Value.Reason, Does.StartWith("lossren-kept-soul"));
+            Assert.That(Rule(warrior, second, live, false, Warrior), Is.Null, "any other soul is fought");
+            Assert.That(T.LiveRangedAdds(lossren, live), Is.EqualTo(new GameNPC[] { second }), "the casters' list skips it");
+            var bot = (GameBot)RuntimeHelpers.GetUninitializedObject(typeof(GameBot));
+            Assert.That(T.MustNotHit(bot, first), Is.True, "no bot hits it, area spells included");
+            Assert.That(T.MustNotHit(bot, second), Is.False);
+            Assert.That(T.MustNotHit(bot, lossren), Is.False);
+
+            // While the ghoul lives a caster on the kept soul takes the ghoul.
+            var ghoul = Npc<TestGhoul>(39745, 41176, 16001);
+            live.Add(ghoul);
+            Assert.That(Rule(wizard, first, live, true, Wizard)?.Target, Is.SameAs(ghoul));
+            Assert.That(Rule(warrior, first, live, false, Warrior)?.Target, Is.SameAs(lossren));
+
+            // The kept soul died anyway (a real player's hit): one of the souls still alive is kept instead.
+            first.ObjectState = GameObject.eObjectState.Inactive;
+            Assert.That(T.LeftAlive(second), Is.False, "chosen on a raider's turn, not by the check");
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null);
+            Assert.That(T.LeftAlive(second), Is.True);
+            // Her reset or death ends it.
+            lossren.ObjectState = GameObject.eObjectState.Inactive;
+            Assert.That(T.LeftAlive(second), Is.False);
+        }
+
+        [Test]
+        public void TheKeptSoulIsTheHealthiestThenTheLowestId()
+        {
+            UseRegion(248);
+            var hurt = Npc<Mob>(0, 0, 0); hurt.Hurt = 40;
+            var whole = Npc<Mob>(0, 0, 0);
+            var wholeLater = Npc<Mob>(0, 0, 0);
+            Assert.That(T.ChooseKeptSoul(new GameNPC[] { wholeLater, hurt, whole }), Is.SameAs(whole));
+            Assert.That(T.ChooseKeptSoul(new GameNPC[] { hurt }), Is.SameAs(hurt));
+            Assert.That(T.ChooseKeptSoul(new GameNPC[0]), Is.Null);
+            Assert.That(T.ChooseKeptSoul(null), Is.Null);
+        }
+
+        [Test]
+        public void OnlyLossrensSoulsAreLeftAlive()
+        {
+            var rules = T.AllDungeonRules.Where(r => r.LeaveAlive != null).ToArray();
+            Assert.That(rules.Select(r => r.Encounter), Is.EqualTo(new[] { "SummonerLossrenKeptSoul" }));
+            Assert.That(rules[0].Targets, Does.Contain(nameof(TorturedSouls)));
+            // Her ghoul and every other monster are fought as before.
+            UseRegion(248);
+            var lossren = Npc<TestLossren>(39276, 41166, 16001);
+            var ghoul = Npc<TestGhoul>(39745, 41176, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var live = new List<GameNPC> { lossren, ghoul, warrior };
+            Assert.That(Rule(warrior, ghoul, live, false, Warrior), Is.Null, "no soul: nothing kept");
+            Assert.That(T.LeftAlive(ghoul), Is.False);
+            Assert.That(T.LeftAlive(lossren), Is.False);
         }
 
         // ---- Krondon -------------------------------------------------------------------------------------------------------
