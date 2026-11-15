@@ -11,7 +11,8 @@ is ticked here as it is done. The older plans ([RELEASE-PLAN.md](RELEASE-PLAN.md
 **superseded** with the date, not deleted.
 
 A few documents named here are still on their own branches until those merge: `BOT-BUILDS-AND-RVR.md`
-(`plan/rvr-builds`), `NORTH-STAR-AUDIT.md` and `audits/2026-11-03/` (`audit/north-star-2026-11-03`, PR #58).
+(`plan/rvr-builds`), `NORTH-STAR-AUDIT.md` and `audits/2026-11-03/` (`audit/north-star-2026-11-03`, PR #58). PR #58
+was closed without being merged; its branch still holds the files.
 
 ## The split (owner, 2026-11-06)
 
@@ -71,6 +72,10 @@ Changed 2026-11-14 (owner, later that night): **the True 1.65 edition gets 1.2 o
   (AGENTS.md). Automated tests and the rehearsal transcripts are reported as what they are.
 - One major system at a time in the overnight soak runs, so a lag or a regression can be attributed.
 - Release notes show the work and the research and never spoil the Easter eggs or the internal vocabulary.
+  - Teased features (owner, 2026-11-15): the storytellers, fireside tales, loremasters and the Epic Special Forces.
+    The notes hint at them without explaining them or naming the eggs.
+  - The era (owner, 2026-11-15): Trials of Atlantis and Catacombs appear only as rumours, from a lore perspective,
+    never as played content ([bot-voices/WRITING-GUIDE.md](bot-voices/WRITING-GUIDE.md)). Post-2003 jokes are cut.
 - Every base release from shadowofze is merged first (the checklist is [UPSTREAM-RELEASES.md](UPSTREAM-RELEASES.md));
   Living Server never undoes a base change. Since 2026-10-31 there is one last base state and no more releases
   (see "The base" below).
@@ -201,12 +206,46 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 Back in 1.2 (owner, 2026-11-14, evening: "Put Darkness Falls raid AI and Legion back in", then "No ALL big bosses are
 in"): the Darkness Falls raid AI, Legion, Behemoth and every other big boss, the open-world ones included.
 
-Left, in order:
+Changed 2026-11-15 (owner, answers to the roadmap review; all 23 are recorded in
+[PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md), "Owner decisions 2026-11-15"):
+- **Raid code is frozen** since #240 (`35d52b6f8`): only fixes for bugs seen on the owner's PC, each re-arming a
+  re-run of the raids it touches, listed in the gate.
+- **Signed off:** Behemoth is never fought; Fomor City and Morgana have no raid.
+- **Sweep raids count toward the raid bar.** The Beta 1.0 items never seen become *must* rows. A class-off smoke
+  session on a 0.37 world comes before tagging. The overnight row has a stall threshold (no stall of 2.0 s or more, at
+  most 5 of 1.0 s or more an hour, over 8 hours), and it stands in for the L600 baseline, which moves to after 1.2.
+- **The new client (0.37c) is maintenance-only:** fixes only, no new features, and no rows on the gate.
+- Nothing of the economy ledger is in 1.2 (it is 2.0's first milestone).
+
+Left, in order (2026-11-15):
+1. Merge Beta 1.1.4 (`main`) into `integration/1.2` (owner decision 1).
+2. The battleground test on `3d67b6f` with the Lv.20 button (#242), and RvR perception as a non-GM character.
+3. The re-runs the gate lists (Caer Sidi, Tuscaran Glacier, Galladoria, both Summoner's Halls, Trollheim), and the
+   missing wins for Midgard's and Hibernia's bars, on a candidate with the fixes.
+4. The Beta 1.0 items and the hands-on rows the gate still lists.
+5. Install checks: Setup over 1.1.4, a new install, the class-off smoke session, the overnight row.
+6. Release notes finished from what was seen; merge to `main`; publish (the owner's step).
+
+Left, in order (2026-11-14; superseded 2026-11-15 by the list above):
 1. The sweep on test build `16b3054` (installed on the test copy 2026-11-14, server running): `/epictest sweep start all`.
 2. Fix what the sweep shows; repeat for the raids that still lose.
 3. The short hands-on checks with the owner (bot-led group, raid invite, a tale starting by itself).
 4. Install checks: Setup over 1.1.4, and a new install.
 5. Release notes finished from what was seen; merge to `main`; publish (the owner's step).
+
+### 1.2.x — after 1.2 ships (owner, 2026-11-15)
+
+Patch stops after 1.2, before 2.0. Nothing here starts before the raid freeze ends and the 1.2 gate is met.
+
+- [ ] **A player-called realm raid:** a player command calls their own realm's next raid, with the existing cooldowns.
+      Today only the four-hour schedule, the launcher and GM commands start one, and at five hours of play a week the
+      schedule often misses the session.
+- [ ] **The small chat-only Easter eggs** from the review of 2026-11-15, each a chat line built on data the server already
+      keeps (names and details in [the idea backlog](#the-idea-backlog-owner-2026-11-15)). A new `bot_living_*` switch
+      ships on unless its default is False.
+- [ ] **The L300 and L600 baselines** (moved here from 1.2: "after 1.2"). For 1.2 the gate's overnight row with its stall
+      threshold stands in for them.
+- [ ] Not placed yet: Linux (PR #206) stays "after 1.2".
 
 ### 1.2 — bots that play with you (owner 2026-11-06; checklist as of 2026-11-07, superseded 2026-11-14 by the section above)
 
@@ -295,8 +334,9 @@ Must-haves ship 1.2; anything from a phase that doesn't fit ships as a 1.2.x pat
       big named kill
 - [ ] Live events M1 (the engine on a scripted dragon fight) with the timeline report; `LastSuccessful` and raid
       cooldowns persisted
-- [ ] The economy ledger (instrumentation only)
-- [ ] Five Easter eggs from a sealed file (fishing, off by default, is a candidate)
+- [ ] The economy ledger (instrumentation only). Moved 2026-11-15 (owner): 2.0's first milestone
+- [ ] Five Easter eggs from a sealed file (fishing, off by default, is a candidate). Dropped 2026-11-15 (owner): good
+      ideas go into [the idea backlog](#the-idea-backlog-owner-2026-11-15)
 - [ ] Questing: the quest harness over the classic quests; the epic chains linked by Setup
 
 **Before it ships**
@@ -353,6 +393,20 @@ crafting M0-M2, role playbooks and warband lanes, personas, co-op made first-cla
 Headline: the realm moves, has a past, and its bots read as the people behind them. One release, built in parts that
 are each soaked and played on their own first (the rules above).
 
+**First (owner, 2026-11-15): the economy ledger.** Instrumentation only (as planned on 2026-11-01): the money supply
+per realm and where coin comes from and goes, logged and soaked before anything uses it
+([CRAFTING-AND-ECONOMY.md](CRAFTING-AND-ECONOMY.md)). 2.0's Exchange tax and crafting rules depend on it ("no Exchange
+tax or new sink until the ledger shows a need", below). It was dropped after the 1.2 plan of 2026-11-01 and is restored
+here.
+
+**Easter eggs that change behaviour (owner, 2026-11-15: allowed).** Planned for 2.0 unless noted:
+- [ ] Visible loot rolls: the raiders' real `/random 100` rolls decide the bots' share. The roll is the real decision,
+      and the player's guaranteed quarter stays outside it (real loot, AGENTS.md).
+- [ ] The debt repaid (named in the review of 2026-11-15; no design yet).
+- [ ] The nemesis hunts you (named in the review; no design yet).
+- These are the first eggs where a bot's memory changes what it does, not only what it says (until now memory is chat
+  only).
+
 **A living realm (what 1.3 held).** Design: [LIVE-EVENTS-1.2.md](LIVE-EVENTS-1.2.md),
 [LIVE-EVENTS-ENGINE.md](LIVE-EVENTS-ENGINE.md), the guild tiers entry in the [backlog](LIVING-SERVER-BACKLOG.md).
 - [ ] Live events: the engine on a scripted dragon fight first (M1), with the timeline report
@@ -398,7 +452,41 @@ friends) and go with the guild social package.
 Cut: the per-bot JSON rule list. Kept out on purpose: Camlann full-PvP, roguelite modes, modern classes, free
 level-50 gear, teleports that skip stablemaster routes, grey monsters that drop nothing.
 
+## The idea backlog (owner, 2026-11-15)
+
+Ideas worth keeping that no stop has taken yet (it replaces the five-egg sealed file). An idea leaves this list when a
+stop takes it. Nothing here is built or tested. Source: the roadmap and Easter egg review of 2026-11-15.
+
+- **Small, chat only (for 1.2.x, owner 2026-11-15):** your first friend remembers (tells at levels 20, 40, 50 and a realm
+  rank); Camelot's birthday and this server's birthday; the cross-realm echo (your other realm's bots complain about your
+  race and class, never your name); "pulled a {player}"; enemies gloat on your corpse; your old sword lives on (the
+  Exchange buyer thanks you while wearing it); fell through Camelot again (`/stuck`); the first dragon kill dropped
+  nothing (a veteran's tale).
+- **Behaviour (for 2.0, above):** visible loot rolls, the debt repaid, the nemesis hunts you.
+- **Not placed:** hidden feats with quiet titles; `/monty` answers; the show-off nuker; old bugs the veterans remember;
+  the keep held forever; Grab Bag Friday (next to the "no fake patch day" rule); launcher eggs (they change the
+  launcher's look); "New alt?"; a Hall of Firsts crier; bot celebrities; guild founding day; level-20 alts; weekend relic
+  raids; tips from your world (new client only, which is maintenance-only); the realm's legend; pay it forward; you
+  become a tale; the midnight fortune teller; the beggar who made it; the rival of your class; the third realm shows up;
+  the truce against the runaway realm; locked in Darkness Falls; the duelist at the bridge; the riddle trail to Avalon;
+  the poetry contest; the bomb from the hill; the stealther on the road.
+- **Need 2.0's organic retirement first:** farewells (a quitting bot gives its things away) and the ghost in Darkness
+  Falls; both meet "gamebots start without armor and earn it".
+- **Cut:** Leeroy veterans and any other idea built on a post-2003 joke (owner, 2026-11-15: post-2003 jokes are cut).
+
 ## Decisions taken and open
+
+Taken (2026-11-15), the owner's answers to the roadmap review (all 23 in [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md),
+"Owner decisions 2026-11-15"). For this plan:
+- The L600 baseline comes after 1.2 (1.2.x above); 1.2's overnight row has a stall threshold instead.
+- The economy ledger is 2.0's first milestone; nothing of it is in 1.2.
+- A player-called realm raid is 1.2.x.
+- The new client (0.37c) is maintenance-only.
+- The small chat-only eggs are 1.2.x, after the raid freeze and the gate.
+- Eggs that change behaviour are allowed and planned for 2.0 unless noted.
+- The five-egg sealed file is dropped; ideas go into the idea backlog above.
+- Rage quits keep ignoring the schedule's `off`.
+- The purity rules R0-R10 stay open: the owner asked for a recommendation per rule first.
 
 Taken (2026-10-30):
 1. The train over the bundle.
@@ -431,6 +519,7 @@ server, and nothing formal about taking over from shadowofze.
 Taken (2026-11-03): **follow the base on the Sluaghbinder** (it follows the edition switch again, `12992146`), and
 **no EA client files in the repo** (the 54 inherited from upstream removed; history kept). The North Star order above
 and the purity rules in [NORTH-STAR-AUDIT.md](NORTH-STAR-AUDIT.md) §4 are proposed for the owner's confirmation.
+Still open on 2026-11-15: the owner asked for a recommendation per rule before confirming any.
 
 Taken (2026-11-01), decision 3: **the base's final code is merged whole** as 1.2's phase A, starting at once. The
 reasoning that led there, kept for the record: The case for the merge: the overlap only grows (41 shared server files today; crafting, events and
@@ -451,6 +540,18 @@ Open, each listed with its options in the design document named:
   button; the classic rules; bots' gear wearing.
 
 ## Status
+
+On 2026-11-15:
+
+| Stop | State |
+|---|---|
+| 1.1.4 | Released 2026-11-12 (the latest release); being merged into `integration/1.2` |
+| 1.2 | All of it merged on `integration/1.2`; raid code frozen since #240; `1dc66b6` played overnight 2026-11-14/15, `3d67b6f` for the battleground test; held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
+| 1.2.x | Planned: a player-called realm raid, the small chat-only eggs, the L300/L600 baselines |
+| New client (0.37c) | Maintenance-only (owner, 2026-11-15) |
+| Linux | After 1.2 (PR #206) |
+| 2.0 | Planned: the economy ledger first, then a living realm (was 1.3), bots as people, the complete realm |
+| True 1.65 edition | Separate track, unchanged from 2026-11-14 |
 
 On 2026-11-14:
 
