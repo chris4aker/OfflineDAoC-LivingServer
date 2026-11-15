@@ -884,12 +884,14 @@ Area spells: Essense of Souls (DamageOverTime, damage 150, radius 600).
 
 #### Host (`Host`)
 
-`source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs` lines 217-371. level 79; 30,000 health; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HostInitializator.
+`source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs` lines 219-368. level 79; 30,000 health; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HostInitializator.
+
+1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Host.cs:4034` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: every NPC with PackageID "HostBaf" (21 in the world database: 4 archlich, 5 black revenant, 4 cursed lacula, 3 forerunner, 2 herald of trucidation) | `Host.cs:4047` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Host.cs:4031` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: every NPC with PackageID "HostBaf" (21 in the world database: 4 archlich, 5 black revenant, 4 cursed lacula, 3 forerunner, 2 herald of trucidation) | `Host.cs:4044` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Lich Lord Ilron (`LichLordIlron`)
 

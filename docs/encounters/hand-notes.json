@@ -588,12 +588,13 @@
   "caer-sidi/host": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "286be32e65db40412d08665c6aee1ce7f5c1f83d05cf70dba015a9b28d5fba7c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "ca0f6c2871e2f8a5e26d2721e65f4f9a618315edd66297ca652e4aad8fc560a3"
    },
    "aiTactics": {
     "summary": "Only the copy with PackageID HostReal matters: its death kills the rest. The route first clears his 21 linked monsters (the archliches among them) while every Host is predicted to stay 900 away for 45 s, holds the Hosts while any of those live, then musters in ambush at a fixed point of his patrol and goes in when he is due to pass; every raider fights HostReal (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed."
   },
   "caer-sidi/lichlordilron": {
    "verified": true,
