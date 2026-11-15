@@ -910,10 +910,10 @@
    "also": [
     "darkness-falls/princeasmoien"
    ],
-   "title": "Princes Ba'alorien and Asmoien (Darkness Falls, no raid AI)",
-   "evidence": "overnight-2026-11-04 checks 2-3: Albion and Hibernia Darkness Falls raids each Defeated after two wipes at Prince Ba'alorien.",
+   "title": "Princes Ba'alorien and Asmoien (Darkness Falls)",
+   "evidence": "overnight-2026-11-04 checks 2-3: Albion and Hibernia Darkness Falls raids each Defeated after two wipes at Prince Ba'alorien. 2026-11-14 (e3b8238): both raids killed Ba'alorien (Midgard 3.5 minutes, Hibernia 5.5); Hibernia's Prince Asmoien took 15 minutes of fighting while 87 animist turrets went up beside him, each eaten within 5 s.",
    "why": "They eat a pet every 5 s and heal by its health; raids bring many pet classes.",
-   "plan": "Pet classes park pets out of reach (more than 2,000) for the princes. Darkness Falls has no raid AI; this is a proposal only."
+   "plan": "DF raid wave (1.2, tests only): pet classes whose pet is optional release it and fight him; necromancers and animists wait 2,400 away; no autonomous gamebot summons a pet or plants a turret within 3,000 of a fighting prince (EpicEncounterTactics.DarknessFalls)."
   },
   {
    "id": "tuscaran-glacier/fornfrusenen",
@@ -7508,6 +7508,13 @@
    ],
    "raidAi": "no raid AI",
    "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid.",
+   "aiTactics": {
+    "rangedAdds": [
+     "BeliathanMinion"
+    ],
+    "summary": "DF raid wave (1.2, tests only): a minion rises from each raider he kills; the casters and archers kill the minions while the melee stay on him. Period: 'the maggots are actually a feature of Beliathan himself' (Herald note quoted on the FH forums, March 2003); he wakes once the princes are dead ('the tunnels rumble and shake'). Not in the script: the AoE stun one later comment names.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -7607,6 +7614,11 @@
     }
    ],
    "raidAi": "no raid AI",
+   "aiTactics": {
+    "spreadRadius": 350,
+    "summary": "DF raid wave (1.2, tests only): under 25% every hit casts Aura of Baelerdoth (absorption debuff, 350 around his target), so casters, archers and healers outside his target's party stand clear of his target. Period: 'can be zerged', 'three Earl thingies' around him (darkageofcamelot.com quest page; the Prima room key puts Duke Harboris and Earl Fenex beside him).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -7730,6 +7742,13 @@
    ],
    "raidAi": "no raid AI",
    "notes": "When he is first hit out of combat, every idle monster of his own kind within 3,000 (same realm, alive, not a pet, a gamebot or a peaceful NPC: EpicEncounterMechanics.IsOwnKind) attacks the raider who hit him. 1.2 (True 1.65 port): before, every idle NPC was told to, so a raid's own gamebots and pets turned on that raider.",
+   "aiTactics": {
+    "rangedAdds": [
+     "BalnMinion"
+    ],
+    "summary": "DF raid wave (1.2, tests only): his first hit calls every idle demon of his kind within 3,000, so the Dukes, Earls and Marquis of his wing (Duke Alloc, Earl Zh'alzhak, Marquis Chaosmar, Duke Aypol) are killed first, one at a time; in his fight the casters and archers kill his minions (8-12 every 20-35 s, spawned at his feet) while the melee stay on him. Period: 'uses a Point Blank Area of Effect attack sometimes' (IGN board guide, 2003); the script's minions stand for it. (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -7815,6 +7834,10 @@
     }
    ],
    "raidAi": "no raid AI",
+   "aiTactics": {
+    "summary": "DF raid wave (1.2, tests only): his two copies come with him and die with him (HighLordOro.Die). The party a copy fights holds it and everyone else kills Oro; the route takes the real Oro, never a copy (they share his name: Hibernia's raid of 2026-11-14 took a respawned copy for the objective twice). Casters and healers keep 650 from every Oro (each drains 5% mana a turn within 350). Period: 'all three Oros will come ... tanks each engage one', 'a PBAE powertap ... be sure your Healers are a bit away' (Allakhazam, 2006); 'two illusionary duplicates ... significantly weaker' (IGN board guide, 2003). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -7908,6 +7931,10 @@
     }
    ],
    "raidAi": "no raid AI",
+   "aiTactics": {
+    "summary": "A copy of High Lord Oro (30,000 health, dies with him): its party holds it, the rest of the raid is sent to Oro (DF raid wave, 1.2, tests only; EpicEncounterTactics.DarknessFalls.cs, DF raid wave).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -7994,6 +8021,10 @@
    ],
    "raidAi": "no raid AI",
    "notes": "1.2: a dead bot heals him by its health too (EncounterTargets). Flood guard (EncounterFloodGuard 'HighLordSaeor.KillHeal'): at most 64 such heals in 5 minutes, Darkness Falls' period raid.",
+   "aiTactics": {
+    "summary": "DF raid wave (1.2, tests only): each raider who dies within 1,000 of him heals him by its whole health, so a wounded raider (under 40%) who isn't his target steps out to 1,300 and comes back at 75%; the healers near him take anyone under half first (KillHealBosses). Period: 'regaining life whenever they kill a player, making them the most difficult of the four high lords' (IGN board guide, 2003). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -8431,7 +8462,7 @@
    ],
    "raidAi": "no raid AI",
    "aiTactics": {
-    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot). Since the DF raid wave a class whose pet is optional releases it and fights him; a necromancer or animist (its pet is its fight) waits 2,400 away; no autonomous gamebot summons a pet or plants a turret within 3,000 of a fighting prince (2026-11-14: 87 animist turrets went up in Prince Asmoien's 15-minute fight). Period: 'Do not pet this mob, each time he kills something he heals himself' (Allakhazam, Prince Ba'alorien, 2006). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
     "since": "1.2"
    },
    "verified": true
@@ -8522,9 +8553,9 @@
    ],
    "raidAi": "no raid AI",
    "notes": "Prince of Darkness Falls. Every five seconds he eats the nearest summoned pet within 2,000 (never a bot, 1.2 fix) and heals by the pet's maximum health (changed from every pet on every brain turn, owner 2026-10-14).",
-   "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). No raid AI for Darkness Falls.",
+   "currentRaidAi": "2026-11-04: Albion and Hibernia's Darkness Falls raids were each defeated at him (two wipes each, Special Forces joined). 2026-11-14 (e3b8238): Midgard 3.5 minutes, Hibernia 5.5. DF raid AI: tests only.",
    "aiTactics": {
-    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot), so a raider with a pet drops him, calls its pet off and waits 2,400 away with it; everyone else fights him (EpicEncounterTactics.DarknessFalls).",
+    "summary": "Pets out (1.2): he eats the nearest summoned pet within 2,000 every 5 s and heals by its health (real pets only, never a bot). Since the DF raid wave a class whose pet is optional releases it and fights him; a necromancer or animist (its pet is its fight) waits 2,400 away; no autonomous gamebot summons a pet or plants a turret within 3,000 of a fighting prince (2026-11-14: 87 animist turrets went up in Prince Asmoien's 15-minute fight). Period: 'Do not pet this mob, each time he kills something he heals himself' (Allakhazam, Prince Ba'alorien, 2006). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
     "since": "1.2"
    },
    "verified": true
@@ -8682,6 +8713,13 @@
     }
    ],
    "raidAi": "no raid AI",
+   "aiTactics": {
+    "rangedAdds": [
+     "NahemahMinion"
+    ],
+    "summary": "DF raid wave (1.2, tests only): her 5-10 minions come with her first hit (fire area hit 170 within 350); the casters and archers kill them while the melee stay on her.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
