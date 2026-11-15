@@ -1809,8 +1809,13 @@ namespace DOL.GS
                     point = new Point3D((int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z);
                     return true;
                 }
+                // Otherwise at the party's own post at the hub (proven to lead to the hub and, since build 4, from it:
+                // RealmRaidMuster.HubReachesPost), not on the hub's centre, where Snowdonia Station's 12 failed raiders stood
+                // (PC 2026-11-14). The centre only when the party has no post.
                 region = raid.Hub.Region;
-                point = new Point3D((int)raid.Hub.Center.X, (int)raid.Hub.Center.Y, (int)raid.Hub.Center.Z);
+                Vector3 release = RealmRaidMuster.ReleasePoint(raid.Hub.Center,
+                    raid.Parties.TryGetValue(group, out Party own) ? own.HubPost : default);
+                point = new Point3D((int)release.X, (int)release.Y, (int)release.Z);
                 return true;
             }
         }

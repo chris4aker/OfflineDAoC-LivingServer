@@ -92,6 +92,14 @@ public static class RealmRaidMuster
         new("dungeon-hibernia-marfach", "Druim Ligen", 200, 207, 35, 51, new(334804,419842,5187))
     ];
 
+    /// <summary>The hub's centre has a walk to <paramref name="post"/> (a post above a drop may be reached only one way).</summary>
+    public static bool HubReachesPost(IPathfindingMgr nav, Zone zone, Vector3 center, Vector3 post) =>
+        AutonomousZonePointApproach.TryResolve(nav, zone, center, post, 160, out _);
+
+    /// <summary>Where a raider of a raid without a staging post releases at its hub (pure): its party's post, else the
+    /// hub's centre.</summary>
+    public static Vector3 ReleasePoint(Vector3 hubCenter, Vector3 partyPost) => partyPost != default ? partyPost : hubCenter;
+
     public const int MusterPostAttempts = 160;
     public const float MusterPostSpacing = 340;
 
@@ -113,6 +121,11 @@ public static class RealmRaidMuster
                 safe?.Invoke(floor.Value) == false ||
                 !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) ||
                 !AutonomousZonePointApproach.TryResolve(nav, zone, floor.Value, hub.Center, 160, out _) ||
+                // ...and from the hub's centre to the post, where the members arrive (the play test's move, the Special
+                // Forces, a release to the hub). Owner's PC, 2026-11-14 (build e3b8238), Snowdonia Station: 12 of 64 raiders
+                // failed "member-to-formation navmesh corridor is disconnected" three times each, some 100-340 from the
+                // centre 523562,408847 (REALM_RAID_HUB_ROUTE_FAILED/RELEASED); a post was only proven to lead down to it.
+                !HubReachesPost(nav, zone, hub.Center, floor.Value) ||
                 !RealmRaidStaging.HasOpenPartySpace(nav, zone, floor.Value)) continue;
             post = floor.Value;
             return true;
