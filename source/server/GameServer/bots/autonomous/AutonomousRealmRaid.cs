@@ -87,6 +87,9 @@ namespace DOL.GS
             /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
             /// has never been in is still on the way in and is never held at the way in.</summary>
             public readonly HashSet<long> BeenInside = new();
+            /// <summary>A dragon raid's raiders walking back after a release (or from beyond the staging ring), who gather at
+            /// their staging post and go back in as a wave (RealmRaidReturnWave.ClassifyDragonRaider).</summary>
+            public readonly HashSet<long> ReturningToDragon = new();
             public bool PreparationNoticeSent;
             /// <summary>The stall rule (RealmRaidRecruitmentPolicy.Stalled): when the raid last moved forward, and what it had then.</summary>
             public long LastProgressTick;
@@ -644,6 +647,7 @@ namespace DOL.GS
                     // A dragon raid's wipe (2026-10-30): the same regroup and Special Forces call as a dungeon raid's.
                     if (raid.Started && raid.DragonFight is { } fight)
                     {
+                        PulseDragonReturnWave(raid, now);
                         fight.Advance(DragonRaiders(raid), DragonState(raid), now);
                         while (fight.TryTakeWipe(out int failures))
                             OnWipe(raid, raid.Boss.Name, failures, now);
@@ -1568,6 +1572,11 @@ namespace DOL.GS
                         raid.Started ? route.TargetLevel : 50), !raid.Started || route.Hold || queued);
                 return;
             }
+            // Walking back after a release while the raid gathers a return wave: wait at the party's staging post on the
+            // ring and go back in with the others (PulseDragonReturnWave).
+            party.RallyView = new(raid.Definition.Id, "RAID — gathering at the staging ring to go back in together",
+                new($"realm-event-{raid.Definition.Id}", raid.Boss.Name, raid.Boss.CurrentZone?.Description ?? raid.Definition.Name,
+                    raid.Definition.Region, (int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z, false, false, 50), true);
             bool landed = DragonLanded(raid);
             // After a wipe the raid regroups at its staging ring, outside the dragon's aggro, and goes in again together
             // (RealmRaidDragonFight, 2026-10-30).
@@ -1632,8 +1641,9 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
-                if (raid.ReturnGathering && party.RallyView != null && !InRaidDungeon(raid, bot.CurrentRegionID) &&
-                    raid.BeenInside.Contains(bot.DatabaseID))
+                if (raid.ReturnGathering && party.RallyView != null && (raid.Definition.IsDungeon
+                        ? !InRaidDungeon(raid, bot.CurrentRegionID) && raid.BeenInside.Contains(bot.DatabaseID)
+                        : raid.ReturningToDragon.Contains(bot.DatabaseID)))
                     return party.RallyView;
                 return raid.HubDeparted && party.CatchingUp.Contains(bot.DatabaseID)
                     ? party.DestinationView ?? party.View : party.View;
@@ -1697,6 +1707,68 @@ namespace DOL.GS
             // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
             route.ReturnGathering = raid.ReturnGathering && waiting > 0;
             if (raid.Transit != null) raid.Transit.ReturnGathering = route.ReturnGathering;
+        }
+
+        /// <summary>
+        /// Under the raid lock, each pulse of a started dragon raid: the return wave of RealmRaidReturnWave for a dragon (from
+        /// zomboden/OfflineDAoC-True165's AutonomousRealmRaid.Reinforcements.cs, adapted). A dragon raider who falls releases to
+        /// a bind in the dragon's region and walked back alone into the fight; now, like a dungeon raider, it waits at its
+        /// party's staging post on the ring and goes back in with a wave. Never while the raid regroups after a wipe (the
+        /// regroup gathers everyone at the ring already).
+        /// </summary>
+        private static void PulseDragonReturnWave(Raid raid, long now)
+        {
+            if (!RealmRaidReturnWave.On || Regrouping(raid))
+            {
+                raid.ReturnGathering = false;
+                raid.ReturningToDragon.Clear();
+                return;
+            }
+            Point3D home = DragonLairPlacement.Home(raid.Definition.Realm);
+            int outside = 0, waiting = 0, fallen = 0;
+            foreach (GameBot b in raid.Support.OfType<GameBot>())
+            {
+                long id = b.DatabaseID;
+                bool inRegion = b.CurrentRegionID == raid.Definition.Region;
+                float lair = inRegion ? Vector2.Distance(new(b.X, b.Y), new(home.X, home.Y)) : float.MaxValue;
+                switch (RealmRaidReturnWave.ClassifyDragonRaider(b.IsAlive, raid.BeenInside.Contains(id),
+                            raid.ReturningToDragon.Contains(id), lair))
+                {
+                    case RealmRaidReturnWave.DragonRaider.WithTheRaid:
+                        raid.BeenInside.Add(id);
+                        break;
+                    case RealmRaidReturnWave.DragonRaider.Fallen:
+                        raid.ReturningToDragon.Add(id);
+                        fallen++;
+                        break;
+                    case RealmRaidReturnWave.DragonRaider.Returning:
+                        raid.ReturningToDragon.Add(id);
+                        outside++;
+                        if (IsStaged(raid, b)) waiting++;
+                        break;
+                }
+            }
+            if (waiting == 0) raid.ReturnWaitingSince = 0;
+            else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;
+            long waited = raid.ReturnWaitingSince == 0 ? 0 : now - raid.ReturnWaitingSince;
+            RealmRaidReturnWave.Step step = RealmRaidReturnWave.Next(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil);
+            if (step == RealmRaidReturnWave.Step.Gather)
+            {
+                if (!raid.ReturnGathering)
+                    Log.Info($"REALM_RAID_RETURN_GATHER event={raid.Definition.Id} dragon=true outside={outside} fallen={fallen} waiting={waiting}");
+                raid.ReturnGathering = true;
+                return;
+            }
+            if (step == RealmRaidReturnWave.Step.Go)
+            {
+                raid.ReturnOpenUntil = now + RealmRaidReturnWave.OpenMilliseconds;
+                raid.ReturnWaitingSince = 0;
+                Log.Info($"REALM_RAID_RETURN_WAVE event={raid.Definition.Id} dragon=true waiting={waiting} outside={outside} fallen={fallen} waited_s={waited / 1000}");
+            }
+            // Gone in (a wave, too few to wait for, or the wave is still open): the living walk to the dragon as before;
+            // those still down are on their way back when they stand up.
+            raid.ReturnGathering = false;
+            raid.ReturningToDragon.RemoveWhere(id => raid.Support.OfType<GameBot>().Any(b => b.DatabaseID == id && b.IsAlive));
         }
 
         private static RealmRaidDungeonRoute ActiveRoute(Raid raid) => raid.Transit ?? raid.DungeonRoute;

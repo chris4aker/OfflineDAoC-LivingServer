@@ -351,9 +351,9 @@
   "albion-named-mobs-classic-zones/morgana": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "7e15d7495a65f5404665e4f3051de7435309bea94a895a922a652dd1ff0d03bf"
+    "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "04ab35b46538ce36670b6e175110a5eede34960d91e0475fc36a45059b4666c5"
    },
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. Living Server 1.2 (every big boss in, 2026-11-14): no raid and no tactic, on purpose. In 2001-2005 Morgana was a quest NPC who appears only for players on certain quests, not a fought raid boss (Allakhazam 2003-2004; Herald \"Discovery of the Dark Spire\"; the raid research found no period raid of her), and here she has no spawn in the world database. Nothing was invented for her."
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region)."
   },
   "albion-named-mobs-classic-zones/mouth": {
    "verified": true,
@@ -468,7 +468,7 @@
   "avalon-city/draargusmighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "9ff04bbae65b44517567d941c5a5c40efc9a9574a5d5ff3ddb332b87afbdb1fd"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs": "cf37149e0f71eb71f0af53a8e7c4fdfd018fe83c8990ccd1090e363ae47805c7"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -476,18 +476,20 @@
     ],
     "summary": "Required add, from range (1.2): while the Drau'gyn Sphere burns he takes no damage and doesn't attack, and the sphere (10,000 health, floating above the floor) burns everyone within 500 for 300 every 4 s and pulls raiders at its edge into its middle. Casters and archers kill it from at least 650; melee, tanks and healers wait 850 from it, then everyone fights him (EpicEncounterTactics.AvalonCity).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. His immunity follows the sphere he spawned (alive and in the world) instead of a static sphere count."
   },
   "avalon-city/duraekempowered": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "1b4a503df6d398e60ec25599b729006779555528528b05f6f7087e154e73fa27"
-   }
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "d5b4768d7c0f7e8429458047c02dc3d1543dd62d82a9bea2590e70c818e33272"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "avalon-city/syssroruthless": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "28b464259e35602026380f6dbcdd54ced7ef89ca60d2e7fd7268ce7ff23fcb3b"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/SyssroTheRuthless.cs": "3a609d5c57d7ad2f745bf08a2672a96e84d0fdd5c26981172acecec9d0d66880"
    },
    "aiTactics": {
     "hazards": [
@@ -496,26 +498,29 @@
     "hazardRadius": 250,
     "summary": "Hazards (1.2): his 15 pit monsters can't be hurt (and die with him), so nobody attacks them; a raider within 400 of one steps out. His throw (every 10-15 s, a raider other than his target into the pit 1,200 away) takes bots too: a thrown bot walks out of the pit back to its party, ignoring the pit monsters that snare it, or is recalled if it can't.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "avalon-city/veraeriusbrave": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "f92eb6d85f0d2b90cee7fb7e836af2faa4869cedb6a970cbab27b8d74295617d"
-   }
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs": "53ef43660ed6b136e79b51e66c9d2df63fd41aeab7a84f3d1ca458c1fb9bf6ec"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "avalon-city/wenoiakenlightened": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "01037d035afe6761834bbc92154732fc27f2d596680aa686e26e4abdc64b57b5"
-   }
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs": "e2b07ad102d0f84800f45cde5f76d9c25c9ec975dbffd6b24f1ff28ee1cfa59d"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
    },
-   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh.",
+   "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed.",
    "aiTactics": {
     "summary": "Fly phases, Harbingers, Rain of Fire (1.2 big-boss plans, owner 2026-11-14; tests only): while he flies (at 99% and 50%, 30 s each, raining 650 heat on the 800 under him) every raider in the rain steps to a ring 1,050 from its centre, clear of the room's door (the barrier's keep-inside allows that ring then), healers too (held there); on the ground the party he fights holds him and everyone else kills the Harbingers of Fate first; casters, archers and healers stand at their party's spot 650 from the room's middle so a Rain of Fire (800 in 600 around one raider) catches one party. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he flies and rains fire, Harbingers come after four deaths, two at a time, and die before him; he teleports raiders who run away. EpicEncounterTactics.CaerSidi.",
     "since": "1.2"
@@ -524,44 +529,48 @@
   "caer-sidi/baneofhope": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "b431427cb2caaae3961ab07b0ddf7a16aeddd5f5563134f30f8fab87625fe46d"
    },
    "aiTactics": {
     "summary": "Spread, and Fate's Chosen first (1.2 big-boss plans, owner 2026-11-14; tests only): hit by a raider that is not its target it may cast Essence of Souls (600 around that raider) and throw that raider to one of three spots, one of them 123 from Fate's Chosen; so Fate's Chosen dies first, and in the Bane's fight casters, archers and healers of every party but its target's stand at their party's spot on a ring 1,000 from it (765 apart); melee from behind. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a straightforward melee fight that teleports itself away to regenerate; the script throws raiders instead. EpicEncounterTactics.CaerSidi.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "caer-sidi/cryptlord": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "7175f0f5859ceb0867147cee4a7be39e5b6c48b3906d95063b713dafdebd8613"
    },
    "aiTactics": {
     "summary": "His court comes with him (1.2): once he fights, his whole court within 10,000 (43 with PackageID CryptLordBaf) joins on his target, and a court monster fighting within 800 of him pulls him in. So the route clears the court first, one monster at a time, pulling each only while his patrol is predicted to stay at least 1,200 from it for the next 35 s (about 12% of his 132 s loop for the court monster in the middle of his rectangle). In his fight casters take the court monsters and melee take him (70% magic resist). A tactic's hold on a pull lapses after 20 minutes (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): his patrol is a scripted loop path (CryptLord.PatrolPoints, OpenDAoC-Core c2a55c5b9) walked by the brain's patrol state at 100 instead of a chain of WalkTo flags; the same five points, the same speed, still only out of combat. His do-nothing ReturnToSpawnPoint is gone with it (after a fight he resumes his loop). The court-pull prediction reads his loop's current point."
   },
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "caer-sidi/fatechosen": {
    "verified": true,
@@ -576,43 +585,45 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
     "summary": "Class and weapon puzzle (1.2, with the original on): any hit from the wrong class or weapon (pets too) heals him to full. Wave 3: clerics fight him as they like; scouts, mercenaries, armsmen and infiltrators who own their listed weapon (longbow, short bow, crossbow: gamebots start with a training one of their class's own kind when they learn the line and earn better ones) draw it and fight with it only: BotBrain never falls back to melee on him (out of endurance they wait), the native close-range melee switch is skipped, and unless they hold him they step back to 700 when he is within 450. Everyone else drops him, calls its pet off and waits 1,400 away (kept inside the room while its door is barred), and never puts an area spell where he stands. No bot's pet attacks him, takes him from an order or defends its owner against him (EpicEncounterTactics.PetMustNotHit). A damage shield's sting from a bot he can't be hurt by neither heals nor hurts him (server property epic_funus_bot_shield_guard, on; real players keep the original). Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back. Not played: how many of a raid's mercenaries, armsmen and infiltrators own the weapon depends on their earned gear.",
     "since": "1.2"
    },
-   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon."
+   "notes": "1.2 (wave 2): the class and weapon puzzle is on (AllowFunusWeaponPuzzle); see aiTactics. 1.2 (wave 3): the archer classes switch to their listed weapon. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "caer-sidi/host": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "286be32e65db40412d08665c6aee1ce7f5c1f83d05cf70dba015a9b28d5fba7c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "9d8538c48ea23180faaaee13e1d27fdb71bf56c081ccac9f14000cf62c3e6e22"
    },
    "aiTactics": {
     "summary": "Only the copy with PackageID HostReal matters: its death kills the rest. The route first clears his 21 linked monsters (the archliches among them) while every Host is predicted to stay 900 away for 45 s, holds the Hosts while any of those live, then musters in ambush at a fixed point of his patrol and goes in when he is due to pass; every raider fights HostReal (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed. 1.2 upstream port (tests only): the 52 WalkTo stages of HostBrain.HostPath (shared static flags path1..path51) are one scripted loop path per copy (Host.PatrolPoints, the same points from his spawn, OpenDAoC-Core cadc7b8c0's path part), walked by the brain's patrol state at 100, still only out of combat. Upstream's rewrite of the rest of the Host (no aggro while walking, no linked-monster speed and tether) was not taken: the mechanics are ours. The baf and ambush predictions read each copy's current loop point. Each Host's death (the copy count, the real one killing the rest) runs in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), once per death; no mechanic changed."
   },
   "caer-sidi/lichlordilron": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "1b55fb71aa108c987dd029a3e25d45187575044bd6688a7dd02a4016f2f4b103"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "ba750aedae0d3af37f6f3d5e70b58f6d1c524c4baa1f51e8cdd41dc24ccb24a3"
    },
    "aiTactics": {
     "summary": "His dark lights and lich's eyes within 1,000 on his floor are cleared before he is pulled; if his fight starts anyway, the party he is on holds him and the rest kill the adds, then his images (sweep 2026-11-14: a pull among live adds wiped at 6%, the pull after them won in 4.5 minutes; tests only).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "caer-sidi/lichlordsanguis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "235eeeb4cd0b8a6d2c91da81b000622913f7e543fcde0dae172bbaee4730bdc5"
    },
-   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.",
    "rules": {
-    "phase@335": {
+    "phase@356": {
      "summary": "At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets.",
      "tactic": "Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them.",
      "difficulty": "easy for the current raid AI"
@@ -629,7 +640,7 @@
   "caer-sidi/lordsanguis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "235eeeb4cd0b8a6d2c91da81b000622913f7e543fcde0dae172bbaee4730bdc5"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -637,12 +648,13 @@
     ],
     "summary": "Blood mages (1.2 big-boss plans, owner 2026-11-14; tests only): casters and archers kill his blood mages (8,000 health, up to two at a time) while the rest stay on him, the melee from behind. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he dies into the Lich Lord with several adds. EpicEncounterTactics.CaerSidi.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -652,7 +664,7 @@
     "summary": "Required adds (1.2, with his original swarm shield on): while a swarm of morbus lives (6-10 a wave, 15,000 health, weak to cold, every 25-40 s once the last wave is dead) he takes no damage and stops fighting, so the raid kills the swarm (each party takes one) and turns back on him once it is gone. Fight at home (1.2, with the original tether heal on): past 2,700 from his spawn (his tether is 3,600, where he heals to full) the raid stops hitting him and the raider he chases leads him back.",
     "since": "1.2"
    },
-   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds)."
+   "notes": "1.2 (wave 2): his swarm shield is on (AllowAddShield per encounter) and counts the swarm alive within 4,000 (SwarmAlive), not the static count; the raid kills the swarm first (catalog required adds). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "caer-sidi/silencer": {
    "verified": true,
@@ -675,10 +687,10 @@
    }
   },
   "caer-sidi/soulreckoner": {
-   "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none.",
+   "notes": "Mechanic change (owner 2026-10-14/15): while a reckoned soul lives he takes a quarter of the damage instead of none. Out of his room (SoulReckonerBrain.InRoom false) he takes none. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "b0b4cc8c6d55ffd5cf29023f221008eeea0e69a0fc007c6f39f49397dae4ce9c"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/SoulReckoner.cs": "7751273c193830f61b79ad5ce51c7a97dd3916d15fb412fa22b0cb803120c291"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -715,7 +727,7 @@
    }
   },
   "crystal-cave/xanxicar": {
-   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer).",
+   "notes": "Level 80 (npc template 102), 100,000 health. Announced Xanxicar's Stomp (PBAoE) at 80, 60, 40 and 20%. At 50% a Xanxicarian Champion (level 65, GameEpicNPC), then another 15-25 s after each champion dies. Throws a random raider within 2,500 every 20-40 s: real players, and bots since 1.2 (his AllowBotDisplacement is on; the pick asks the same switch as the move) and glares at another raider, bots included since 1.2 (never a necromancer). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05: lost with support 199 (required 150, Special Forces joined), one named kill.",
    "rules": {
     "teleport@224": {
@@ -736,7 +748,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "09379e00a5a4c86e25bcd76434f40bbf16c3ea155a230656b4ef284234511eb1"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/CrystalCave/Xanxicar.cs": "16664a7bc8cafd4c391d29184978018fb8d1608a98548cca404d0c1622060b24"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -751,7 +763,7 @@
    }
   },
   "cuuldurach-s-lair-sheeroe-hills/hibcuuldurach": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "rules": {
     "immune_while@54": {
      "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
@@ -771,7 +783,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "3e994a41816b51679515ee17b7bda71715e53ea8282bcccd4bffadb1bae0e294"
+    "source/server/GameServer/scripts/namedmobs/Dragons/HibCuuldurach.cs": "808d6ed854b4cc407644f0fe53e6c2ab47b62bbc28cea94dc2476f153af6d2fa"
    },
    "extraRules": [
     {
@@ -804,16 +816,16 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72"
    },
-   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20)."
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged."
   },
   "darkness-falls/beliathan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "5265ec39624ceb7e570ecda41a168e7edf51cf58114b03a565fafa7f4ec3cd4c"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs": "0720d631dd0ad1341fae08190bc31c7783b14040d8d234b44ff7ce3c3b874766"
    },
-   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid.",
+   "notes": "1.2: a minion rises from each raider he kills, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'Beliathan.Minions'): no new minion while 64 are up, Darkness Falls' period raid. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "BeliathanMinion"
@@ -858,22 +870,24 @@
   "darkness-falls/highlordoro": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "f96bc108d2e858edd2ffb64ffd984369aae2e6ab6b6f27cf7d25b6977097e26f"
    },
    "aiTactics": {
     "summary": "DF raid wave (1.2, tests only): his two copies come with him and die with him (HighLordOro.Die). The party a copy fights holds it and everyone else kills Oro; the route takes the real Oro, never a copy (they share his name: Hibernia's raid of 2026-11-14 took a respawned copy for the objective twice). Casters and healers keep 650 from every Oro (each drains 5% mana a turn within 350). Period: 'all three Oros will come ... tanks each engage one', 'a PBAE powertap ... be sure your Healers are a bit away' (Allakhazam, 2006); 'two illusionary duplicates ... significantly weaker' (IGN board guide, 2003). (EpicEncounterTactics.DarknessFalls.cs, DF raid wave)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "darkness-falls/highlordoroclone": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "67f1a42567b5bfe6c1c7b940928a22e9b30698eb6c0e4ab621038c3a23f4008b"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "f96bc108d2e858edd2ffb64ffd984369aae2e6ab6b6f27cf7d25b6977097e26f"
    },
    "aiTactics": {
     "summary": "A copy of High Lord Oro (30,000 health, dies with him): its party holds it, the rest of the raid is sent to Oro (DF raid wave, 1.2, tests only; EpicEncounterTactics.DarknessFalls.cs, DF raid wave).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "darkness-falls/highlordsaeor": {
    "verified": true,
@@ -887,21 +901,21 @@
    }
   },
   "darkness-falls/legion": {
-   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played.",
+   "notes": "Level 83, 300,000 health. No Darkness Falls raid AI: listed for completeness. 1.2: companions never follow a thrown player up. Flood guards (EncounterFloodGuard, Darkness Falls' period raid of 64): he counts at most 64 raiders for his adds (16 a 5% step) and heals by at most 64 deaths in 5 minutes. 1.2 wave 2: tactic rules for his adds, his 1,400 range and his kill heals (EpicEncounterTactics). 1.2 wave 3: his throw takes bots too (AllowBotDisplacement for Legion); the wounded step out of his reach; no bot bubbles near him. 1.2 (True 1.65 port): his soul blast lock-out (10 s after each blast) and his count of ended bladeturns belong to his brain and clear on a reset; before, the lock-out was shared and a reset or death during it stopped the blast for good until a restart. 1.2 Legion raid plan (EpicEncounterTactics.Legion.cs; tests only, not seen in game): his tank holds him on his lair (walks him back to his spawn when he is drawn more than 1,200 off it) and the raid's tanks taunt him back onto a tank (a tank under 35% hands him to one over 80%); the six raid healers nearest his target heal it first under 85%, whatever party it is in; casters, archers and healers stand 1,200 from him on the raid's side, spread across the corridor; a soul wave of more than four takes one melee party per four souls more (at most a third of the raid, never the tank's party); a thrown bot walks across Behemoth's hall on its north side to the zone point DF LEGION PURGATORY and is put where it puts players, recalled only when it can't (no path, no progress, over about 63 s, or within Behemoth's aggro range and 20). Period sources (Albion Encounters Guide, VN Boards, Feb 2003; Allakhazam comments 2003-2005; Herald, Apr 2002): aggro on the main tank because he heals by kills, kill the lesser monsters first, a ported group runs across Behemoth's chamber to the portal. The script differs from the period fight: it ends bladeturns and blasts after five (the guide used pulsing bladeturns), and a raider far from him does no damage (the period hearsay: he must be fought on his platform). Not played. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): his brain's flags (adds removed, throw, blast) are per brain, the 19 add bands are one array cleared on a reset, and the head count for a band is counted when it spawns (bots and the flood guard kept). His throw no longer re-checks his aggro inside the target loop (da1990cea). No mechanic changed.",
    "rules": {
-    "immune_while@243": {
+    "immune_while@240": {
      "summary": "Takes no damage from attackers more than 1,400 from him.",
      "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), the raid AI steps a raider farther out in to 1,100, and since the 1.2 Legion plan casters, archers and healers stand 1,200 from him on the raid's side.",
      "difficulty": "needs new raid AI"
     },
-    "teleport@696": {
+    "teleport@528": {
      "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands in Behemoth's hall; since the 1.2 Legion plan it walks across the hall on its north side, past Behemoth out of his aggro, to the zone point DF LEGION PURGATORY and is put where it puts players (EncounterDisplacementRecovery's way out, EpicEncounterTactics.LegionWayDown); with no path, no progress, over its time bound or with Behemoth about to notice it, it is recalled to its party. Companions of a thrown player stay down. Real players use the zone point as before. Tests only.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "25c0a15069026cb34413ec58471992669c09142b5a2f636783158390ce5915bc"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -962,7 +976,7 @@
   "darkness-falls/princessnahemah": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "e4979c4b62aaa342d40f11378aad1e1072120cec7bdef3c1e7d771e5b0dc4d63"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs": "152dc9b2cc0985387e922380e7b63646b38d91462eb37bab87dcbdb0b443c282"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -970,7 +984,8 @@
     ],
     "summary": "DF raid wave (1.2, tests only): her 5-10 minions come with her first hit (fire area hit 170 within 350); the casters and archers kill them while the melee stay on her.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "dodens-gruva/arosthespiritmaster": {
    "rules": {
@@ -988,8 +1003,9 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
-    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "5cba5d5c60cf1a5d2a51edeb8269232cbb8d120a24ee58d57bbc4c69859512d3"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "0e3a01939bcbdfe102b815f3ddccd653f675cc96adfbf65687346c058ec307ec"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "dodens-gruva/gudlaugr": {
    "rules": {
@@ -1001,8 +1017,9 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs": "e5bca75835cdf49f1d95f376357350c62764ab1afdb5243f2eb93cceb1a1427e"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs": "61474ba1d20988cd36d1723585598e4f71fb126ce990790ad47dfb9167ac8c0f"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "dodens-gruva/mistressofrunes": {
    "rules": {
@@ -1020,8 +1037,9 @@
   "dodens-gruva/spiritmasteraros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "9dc614ceda5750a5e1919ca934d50bd7dd599d5925a1d536a161d082827d3765"
-   }
+    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "7b5ba981cd8e53b7200de82429e397f05178dde0c8dea2bb672b2ff5243a294a"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "dodens-gruva/thanedyggve": {
    "verified": true,
@@ -1032,7 +1050,7 @@
   "fomor-city/anurigunda": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "ddbafcd28c0d85ab9a71d42b179edd8a4d705e1c1b8daf8c0c37f235702d65a2"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "1c5e602f857d2f65066f9b0de0fd0c6f3274422478efcfd243cfa7af9f3ae06e"
    },
    "rules": {
     "teleport@107": {
@@ -1047,7 +1065,8 @@
     ],
     "summary": "Touch of Flames (45 heat every 2 s for 60 s, 350 around his target, every 10-15 s): casters, archers and healers outside his target's party stand clear of 350 around it (the period: \"Fire GTAoE (about 250 radius) ... interrupts casting\", Allakhazam 2012). His fomorians at 40% and 20% (4, then 5): the casters and archers kill them while the melee hold him. Fomor City has no raid of its own (no path in on its navmesh, AutonomousRealmRaid.RaidDungeons), so this steers the gamebots that fight there.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "fomor-city/krackenschtein": {
    "verified": true,
@@ -1072,7 +1091,7 @@
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "311436168b56a011082fdb7896a2f1ce93ff2e48255a634cdb58bb814bd0e8a0"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "8bea60e8080d61f97845eccfd15eabf34a8279d8069d833da719751b6c40cf74"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -1108,16 +1127,18 @@
      "tactic": "The four heads are fought first, in the period's order (2, 4, 3, 5) (catalog: required adds in order).",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "fomor-city/nogoribando": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "5d3b338eec35ec06bacef311189dc0066981669f761bf95d88deaf814d987712"
-   }
+    "source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs": "597776894fc5a996015c46bf9db6e85e8f9465b8ae5057f0ef85e17ea825ea72"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "galladoria/airprimal": {
-   "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit.",
+   "notes": "900 health (by design: one strong nuke kills it), flies (FLYING), never melees (StartAttack empty), never walks home (ReturnToSpawnPoint does nothing while alive). Pets and turrets deal a fixed 5 per hit. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "currentRaidAi": "2026-10-16: it circled 690 above the floor and was skipped; route now shoots flyers within 1,200 from below (RealmRaidDungeonRoute.IsOutOfRangedReach).",
    "rules": {
     "damage_reduced@1151": {
@@ -1128,7 +1149,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
    "aiTactics": {
     "summary": "900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
@@ -1136,9 +1157,9 @@
    }
   },
   "galladoria/aroon": {
-   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history. 1.2 wave 2: the damage order is back (AllowAroonDamageOrder, EpicEncounterRestores.AroonAccepts).",
+   "notes": "300,000 health. Summons nine Scaith guardians (one per damage type) the first time he fights. The original fight let each damage type hurt him only after the matching Scaith died (Aroon_slash ... Aroon_spirit flags remain); that check was removed for bots and the original code is not in this repository's history. 1.2 wave 2: the damage order is back (AllowAroonDamageOrder, EpicEncounterRestores.AroonAccepts). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "rules": {
-    "aggro_wipe@1372": {
+    "aggro_wipe@1402": {
      "summary": "Each Scaith now and then drops its aggro and picks one random raider (real player or bot since 1.2) from its PlayersToAttack list.",
      "tactic": "Tanks pick the Scaith back up; the raider it picked holds it or brings it back to the tank.",
      "difficulty": "needs new raid AI"
@@ -1146,7 +1167,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "9f7b96e78af9a1c70b23bd8e099c65f5b704906fec526087baea2d68f7878910"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Aroon.cs": "bdedecd9ae4702c6549ad12fc40a7ef5bfc8b39677fedacf3835c704a16e4e36"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1166,25 +1187,26 @@
    }
   },
   "galladoria/beatha": {
-   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "f90f81de1ecc601123d4c42f610a7d2ca45dda7e6abad867dc4de13142b98566"
    }
   },
   "galladoria/conservator": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "3d39abfd2a900d792a7f542914506fc4ff7a11790287e2a2547f082c5721ae0a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs": "56073283937a6ce9d6f727a398ab152cc1d4f9c34c6aee10c156a34e11d64bce"
    },
    "aiTactics": {
     "fightAtHomeRadius": 600,
     "since": "1.2",
     "summary": "Close range (AllowPositionPuzzle, on since 1.2): he takes damage only from attackers within 800 of his spawn. A raider farther out steps in to 500; fight him at home: drawn past 600 from his spawn the raid stops hitting him and whoever he chases leads him back."
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "galladoria/earthprimal": {
-   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies.",
+   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; since run 18 they fight back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "rules": {
     "heal@2584": {
@@ -1195,7 +1217,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1241,7 +1263,7 @@
   "galladoria/easmarach": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "400d91fa752949ea0b928db0e9b9e1b6700f2d9a90cc57bb360e1ea64fb458cb"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Easmarach.cs": "16d0767a558331f3889b9f628ad6a4575b11a62c5a2db8c06930553741562cd2"
    },
    "aiTactics": {
     "since": "1.2",
@@ -1252,12 +1274,13 @@
      "tactic": "On since 1.2 wave 3 (AllowDisplacement and AllowBotDisplacement for Easmarach): the route kills him before Galladoria's last room, so the raid doesn't walk into the falls; a pushed bot stays where it lands (a barrier: no walk back into it). Off with epic_encounter_switches \"AllowDisplacement@Easmarach=False\".",
      "difficulty": "needs new raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. His scripted walk to his spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
    "aiTactics": {
     "hazards": [
@@ -1266,14 +1289,15 @@
     "hazardRadius": 450,
     "since": "1.2",
     "summary": "Trail of fire (AllowFullFirePatches, off by default, server property epic_full_fire_patches: 120 every 2 s in 300; on, the original 220 in 450): the primal walks its loop and leaves a patch where it stands. Casters and archers shoot it and step out of the patches; melee fight the Water or Earth primal while one lives, and fight the Fire primal in the fire only when it is the last."
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent)."
   },
   "galladoria/giantsporitecluster": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "fdd068e56e398088bb1b6e0007b5bc39fc5ee5cb8ad3b81c959fcf51ba6b42c2"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "f2ab131fba683b917c0d7a439de5a01e2adee5fdb4421107051f064f321426f9"
    },
-   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand.",
+   "notes": "Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 100,000-health pool (damage to any body sets the others' health) and die together: killing any body kills the cluster with the same killer and removes the copies. 1.2 (True 1.65 port): the cluster alone pays out, for the attackers of every body; before, a copy that had been hit paid out too and the cluster died by its own hand. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "rangedAdds": [
      "GSCAdds"
@@ -1284,9 +1308,9 @@
    }
   },
   "galladoria/hurionthex": {
-   "notes": "Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.",
+   "notes": "Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.",
    "rules": {
-    "reflect@681": {
+    "reflect@664": {
      "summary": "In Granidon form he casts Damage Shield (120 per hit back on melee attackers).",
      "tactic": "Melee ease off or eat it with healing during Granidon form; casters keep going.",
      "difficulty": "needs new raid AI"
@@ -1294,7 +1318,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "803467b4edadf2428fd2ef50dba29d129204e09353cfd8e8536d9afa4a13e13a"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "ec7559dc4df5cecda9b671c9dec34ffb683df7c5c3bca00d8036477ad826aa9a"
    },
    "aiTactics": {
     "spreadRadius": 350,
@@ -1306,15 +1330,16 @@
   "galladoria/olcasargeomancer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "6e8c9d0a8fd5b5a27046747f0e7ec0665d34926546865bea95978cc8d816ea89"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "e4a4c685603dcd217bf1f5d22ef0ec02cd6e0cc99fa43c1f49328ac70810bb04"
    },
    "aiTactics": {
     "summary": "A slain minion rises again at its killer's feet: the party a minion fights holds it, everyone else kills the Geomancer, whose death removes them (the period: \"just kept one group on his pets and he went down fast\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. A slain minion rises again only while Olcasar lives (it rose forever after his death)."
   },
   "galladoria/olcasgean": {
-   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second body sharing his 250,000 health) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots. 1.2 (True 1.65 port): killing either body ends both, and he alone pays out, for both bodies' attackers; before, Olcasgean2's death made him die by his own hand and both bodies could drop loot.",
+   "notes": "Level 87, 250,000 health, the final boss. Asleep until all four primals are dead. Spawns a copy of himself (Olcasgean2, a second body sharing his 250,000 health) when he wakes. The split-position puzzle (raiders must stand at two points or he spams his DD) and his throws are on since 1.2 wave 2. 1.2 wave 2: the safe spots, the throw (fixed as OpenDAoC-Core 3513bad: the fork's copy never started and could pick index -1) and the antipass are on for bots. 1.2 (True 1.65 port): killing either body ends both, and he alone pays out, for both bodies' attackers; before, Olcasgean2's death made him die by his own hand and both bodies could drop loot. 1.2 upstream port (tests only): both bodies' and the primals' deaths run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb's intent), so a primal counts once per death; the vortexes and antipass were already removed at his death here. Upstream's rewrite of the encounter (shared health pool, loop-path Air primal, per-instance state) was not taken: it conflicts with this fork's bot hooks.",
    "rules": {
     "position_puzzle@678": {
      "summary": "AllowPositionPuzzle (on for him since 1.2) gates his whole fight script: Root Effects, the throw, the DD spam at whoever is not at the two safe points (40170,62600 and 39237,62644), and the Waterfall Antipass.",
@@ -1329,7 +1354,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
    "aiTactics": {
     "since": "1.2",
@@ -1339,16 +1364,16 @@
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
-   "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port).",
+   "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port). 1.2 upstream port (tests only): its death runs in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb's intent); the main body still dies with the real killer and pays for both.",
    "aiTactics": {
     "summary": "The copy shares his 250,000 and answers each attacker with Olcasgean's Root (450, at most once a second per body): only the party holding the copy's safe spot fights it, everyone else fights Olcasgean, so one body roots the raid instead of two. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
    }
   },
   "galladoria/olcasgeaninitializator": {
-   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it. Living Server 1.2 (tests only): the route takes the primals in the period's order, Water, Fire, the Earthmenders and Earth, Air (Thredh's guide, May 2003, and the US plan of Jan 2003; the first live kill, VN Boards 7 May 2003, held Water and Earth in the safe spots while the rest killed Fire, then the menders, Earth and Water, Air last); the Fire primal's melee hold Water and Earth meanwhile (EpicEncounterTactics.Galladoria). The period's Fire and Air primals took only ground-targeted area spells; this script's take any damage.",
+   "notes": "Not a monster but the event controller for Galladoria's last room. A raid bot within 1,500 of the waterfall bridge (39652,60831,11893) starts it (a real player must stand within 350); 20 s of messages later it spawns the four Corrupt Primals, the four Earthmenders and eleven Watery Vortices. Olcasgean wakes 25 s after all four primals are dead (OIBrain.DeadPrimalsCount >= 4). 1.2 wave 2: AllowGalladoriaBridgeSpot is on: a raider must stand within 350 of the spot (the route stages its first party there); a raid bot that has stood within 1,500 for 3 minutes still starts it. Living Server 1.2 (tests only): the route takes the primals in the period's order, Water, Fire, the Earthmenders and Earth, Air (Thredh's guide, May 2003, and the US plan of Jan 2003; the first live kill, VN Boards 7 May 2003, held Water and Earth in the safe spots while the rest killed Fire, then the menders, Earth and Water, Air last); the Fire primal's melee hold Water and Earth meanwhile (EpicEncounterTactics.Galladoria). The period's Fire and Air primals took only ground-targeted area spells; this script's take any damage. 1.2 upstream port (tests only): the Olcasgean script's deaths run in ProcessDeath; the initializer itself is unchanged.",
    "rules": {
     "adds@223": {
      "summary": "Spawns eleven Watery Vortices at fixed spots around the waterfall room with the primals.",
@@ -1364,7 +1389,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -1378,22 +1403,22 @@
    }
   },
   "galladoria/spindlerbroodmother": {
-   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mesmerize (300 radius, 60 s) around a random raider within 1,500 of her every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back.",
+   "notes": "100,000 health, 40/70% resists. 1-2 Newly-born spindlers every 15-35 s in the fight; 20-25 underdeveloped spindlers burst out when she dies. A mesmerize (300 radius, 60 s) around a random raider within 1,500 of her every 20-30 s. 1.2 wave 2: her teleport (a raider within 2,500 to 21,115,53,483) is on for bots: they walk back. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.",
    "currentRaidAi": "2026-11-05 07:19 (owner's notes): the Hibernian epic raid wiped at her (46 fell, 146 living), Special Forces arrived; that log is on the owner's PC. 2026-11-06 (build 86eddd8): killed in 11.0 minutes with 96 mustered, no raider death credited to her; a newborn and an underdeveloped spindler were route targets after her death.",
    "rules": {
-    "adds@90": {
+    "adds@102": {
      "summary": "When she dies: about 20-25 underdeveloped spindlers (800 health, level 50) at her body.",
      "tactic": "In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.",
      "difficulty": "easy for the current raid AI"
     },
-    "adds@230": {
+    "adds@242": {
      "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "d3364e86a4983e519019db10e311a4b299c6d4a38d325dc0c3e1b18815254bf7"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1414,21 +1439,22 @@
    }
   },
   "galladoria/tine": {
-   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first).",
+   "notes": "See Xaga. 1.2 wave 2: she circles the room while fought again (AllowFairyFlight) and the raid kills her before Xaga (Beatha first). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "f90f81de1ecc601123d4c42f610a7d2ca45dda7e6abad867dc4de13142b98566"
    }
   },
   "galladoria/uaimhlairmaster": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "b378898bd7a8665b766bf4412fc6cf3b31bdb4fc7f76d0994cb1751edb863f0c"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "db0a97bcbcffb9823f7c7e3a875be6b4293d04b4642c66eefc96bec4733b148b"
    },
    "aiTactics": {
     "summary": "No rule: at 60% he runs home once at full speed and comes back (the period's fled at about 5% and came back at about 75%; this script does not heal him); the raid fights him where he stands (the period: \"we zerged the Lairmaster with our 70-80 people\"). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "galladoria/waterprimal": {
    "rules": {
@@ -1445,20 +1471,20 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "5c815a5f55796c3fa138ee39600954e1d7bd5bbd9edd83fcaf476c2049fdd2da"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
    },
-   "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back.",
+   "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "aiTactics": {
     "summary": "Below 30% it walks to its pool by the bridge, is immune there and heals a sixth: nobody hits it until it fights again. First in the period's order (Thredh, May 2003; the US plan, Jan 2003); the period's water primal also sank into the lake and healed (FreddysHouse, Apr 2003). (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
     "since": "1.2"
    }
   },
   "galladoria/xaga": {
-   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga).",
+   "notes": "Xaga spawns Tine and Beatha (two 50,000-health fairies) and calls them in when she is attacked; each calls the others. Beatha's damage heals Xaga twice over again since 1.2 wave 2 (AllowBeathaHealsXaga). 1.2 upstream port (tests only): Xaga's, Beatha's and Tine's death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a light's count drops once per death and Xaga's death still removes both lights; no mechanic changed. Upstream's Xaga cleanup (dfad601d2) was not taken: it puts the lights' fight-long circling on the patrol state, which stops in combat.",
    "currentRaidAi": "2026-11-05 (build 8d7baa3): the Hibernian epic raid wiped at Tine.",
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "d7f6f9a7091275d160126576d44ec794ca6bd1bf041c5d907900c6ae4bc25a93"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "f90f81de1ecc601123d4c42f610a7d2ca45dda7e6abad867dc4de13142b98566"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1471,7 +1497,7 @@
    }
   },
   "gjalpinulva-s-lair-malmohus/midgjalpinulva": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "rules": {
     "immune_while@54": {
      "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
@@ -1491,7 +1517,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1",
-    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "fa5a6e9fd36bee5aff9133862fc482a453332b4eef44a419ba013731c21a0f8c"
+    "source/server/GameServer/scripts/namedmobs/Dragons/MidGjalpinulva.cs": "d8939280fa45b5b6516ffd2a5914a8b35b49f2fac5eac704b29635794c1828cb"
    },
    "extraRules": [
     {
@@ -1522,7 +1548,7 @@
    }
   },
   "golestandt-s-lair-dartmoor/albgolestandt": {
-   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full.",
+   "notes": "Dragons have their own raid fight (RealmRaidDragonFight). Glare and the roaming glare pick from the whole raid, bots included (EncounterTargets, 1.2); before 1.2 they picked real players only. 1.2: the wing-gust throw is back (OpenDAoC-Core 3513bad, DragonEncounterThrow) and on for this dragon (AllowDragonThrow and AllowBotDisplacement per encounter): bots are thrown too and recover (EncounterDisplacementRecovery). The messenger waves are back behind AllowDragonMessengers, on for this dragon since 1.2 wave 2: the raid's casters and archers kill the runners. Other adds come from DragonEncounterAdds: at most six in a fight, one every 20 s at most, at 85/70/55/40/25/10% health. 1.2 (True 1.65 port): its full-health reset waits until it has been 8 s out of combat (EpicEncounterMechanics.FightIsOver), like every scripted boss; before, a moment with an empty aggro list in a big fight (a tether leash, the 6 s breath cast) healed it to full. 1.2 upstream port (tests only): SpawnHeading always returns the lair heading (OpenDAoC-Core b3b9a24f7's accessor fix), so the landing turn and a reset face the lair even when nothing set the heading. The rest of that commit (the flight ending at the spawn point, keeping FLYING until touchdown) was already done here by DragonFlightLanding; its FSM RETURN_TO_SPAWN call needs upstream's engine change and was not taken. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "rules": {
     "immune_while@55": {
      "summary": "Takes no damage while it is out of its lair (DragonLairPlacement.LairRadius from its spawn).",
@@ -1541,7 +1567,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "6185d3cbf0b543cd6c535f23b49a52b6294bb88aa1f7c065fbefbb440b4dc8e1",
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "0c124d89e2831fb1ce6b05b4826d1179a433407c169382797a4019c8e51adfc0",
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1"
    },
    "extraRules": [
@@ -1575,7 +1601,7 @@
   "hall-of-the-corrupt/aidonthearchwizard": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "eb4a19af9943f41fb676d0fee677eb24025e6215becb5ebf5af8aa3c12a9e372"
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "3eee5a36a26ec129b014ab22dbe4912ff8856fbf063db35c7fd253e283cdc5bf"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1588,32 +1614,36 @@
     "fightAtHomeRadius": 1100,
     "summary": "Required adds, keep one: once the fight is on the raid kills three of his four illusions (each party takes one) and leaves the last alive, because he summons a new set only when all four are dead; then everyone fights him. Fight at home: past 1,100 from his spawn (tether 1,500) the raid stops hitting him and leads him back."
    },
-   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip.",
+   "notes": "Level 75, 40,000 health, 30/40% resists, tether 1,500 (immune past it). What stops damage: only the tether; his permanent Damage Shield (Heat, 100 per hit back on melee attackers, recast whenever it is not on him) does not reduce damage taken, so he is killable by design; no damage type bypasses anything and no dispel is needed (he recasts it at once). What kills raids: his four illusions (5,000 health each, spawned at fixed spots the first time he is attacked) each cast a 300 area hit in 350 around their target every brain turn, and he casts Aidon's Fire (500 Heat, radius 350) every 10-15 s. A new set of illusions comes 30-45 s after all four are dead, never while one lives. No player-only mechanic is needed to beat him, so no switch has to flip. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05 (build 168f55d): at 22:21 about 40 raiders fell in ten seconds to the illusions' stacked area hits while clearing trash near him; at 22:38 the raid switched to him (\"it is fighting the raid\") without a muster; 31 raiders fought him, all fell, he never went below 99%, and that counted as the raid's first wipe with 56 living. The next muster was placed on the ramp his chase had reached (30927,35039,15365, 2,600 from his home) and gathered 0-2 of 75 in six minutes while the fallen walked back from Camelot Hills."
   },
   "hall-of-the-corrupt/captainatwell": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "2660a077543835d7cdbac811627b37b7ab380474eb9bf81db7d63c065274f684"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs": "c94e48865f20643eb277b281958f126edd55349c42b9fe015269cf28b8ed04ab"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/captainbardalph": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "1e6344c750ac65fbc54d13a04c41d884fc95af67e452582f6341344f77667b96"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs": "c1653f89ac908d89021d544f85581c6fa76c2f630dc924b32fdcef984b36c950"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/captainheathyr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "04866264482b4c82fc0ae6684bd2968cb0c20d584ba707d1e65de5bb540184c8"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs": "2b52cb1d75488c7e72ffe4286b336a66b01ab80c4e280ae4a02b5298e5cb6b0b"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/ladydarra": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs": "959ab906c88607fc0ba4e43bd5336e47b018907a91e5caedd00c559e254bbbf5"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs": "197bf04c41af8225ea71e709e424e4e357c84eb4cb3c3b6782ebb6bdd6f0efd7"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Her paladin count is the living spectral paladins of region 277 instead of a static counter."
   },
   "hall-of-the-corrupt/lieutenantelva": {
    "verified": true,
@@ -1624,8 +1654,9 @@
   "hall-of-the-corrupt/lieutenantmeade": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs": "34d7b479dc2cd9abb40bc12f631bfa35fbbb3f16439befa022b330cabc53ad38"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs": "0b229bb0d644b53afa266f0b9ceb68195b78c0a73f1f68375b2904c77f0c223b"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/lieutenantsaxe": {
    "verified": true,
@@ -1636,8 +1667,9 @@
   "hall-of-the-corrupt/lordgildas": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs": "2e85c44acc69e503faf8943ee3251394fb90f2b21f1d298671f88697f8e6eb0f"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs": "56eab9c6e055ec9d3c0af2acc463e90e7f25429298b6075e5df6a192adf65f15"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/sergeantdarryn": {
    "verified": true,
@@ -1648,14 +1680,16 @@
   "hall-of-the-corrupt/sergeanteddison": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs": "38b9bf4b7124a23ced26589ad3de2f75cb686551a921c7310e855632bc778f14"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs": "e0f35f1f8e04649e82b4d9a68e7a7f0a239938f2f0bfa625f1eb3b686c628e54"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hall-of-the-corrupt/sergeantreede": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs": "a374bf41adac4310bc37835fe6bae8567b8b512ee2ab762d6dfc17f3d8176a34"
-   }
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs": "5eae080ac814d63d9e2722a577a55639846d24b4547e6099b835aba175039ad5"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "hibernia-named-mobs-classic-zones/badb": {
    "verified": true,
@@ -1847,38 +1881,44 @@
   "iarnvidiur-s-lair/ancientsyver": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs": "f19a7ad65d3fcee2d9a84dc72977fed9e7480808a949b603f5b30a7c61e3a253"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs": "f67412e7602d7a80b95bf97602822ab8f5a0c7fcb947b825248cc906ceb19f58"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/delegalt": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Delegalt.cs": "d012c7f4ee605983ccd359209cbbb829043e0794d6f73fd830488221288c6c96"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Delegalt.cs": "d5e6a3dd402dd5680d7586a3ceb1b18102ca54532364736dff4e82dbe1257a8f"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/droom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Droom.cs": "3ab86ed0b05aef43d5322577a4984e838fc06334b61c06e8e0d944bfbcc53b58"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Droom.cs": "ed605c55b02309be6e0543d9289a54e6aec526199990910b275be7310361cc9a"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/dyranapur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs": "86c4e1343a60ddf7553d6f44726c8f85a73c1e16c8bf7faca4a2c449bdf685e1"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs": "837ab302498a5962c70d4e7b726164e8df8d0e763f09bcb8ca57cba5021f4088"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/hati": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hati.cs": "b45f866977458c1d05c36695e688e9fc580b6015b79d65e64fdc5650c567cfcc"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hati.cs": "f32eafb485c7417ee6a170d8ffd4dbf2fbe244d157266dab478e516d50282466"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/hurjavelen": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs": "b232139af678ba92bd1dd639fc4a51d336ccbf5c085550630f3904a80958cae6"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs": "59f4cae840fece76dc7c44b60ff80ea35d652ef14ac1fe2dfb418d7b4c47d998"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/iarnvidiur": {
    "verified": true,
@@ -1900,31 +1940,35 @@
   "iarnvidiur-s-lair/lydsyg": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs": "58b055d2e6018677976e4eaa2f9f5b37d51f3eeafb799c0495dfff6913f4e026"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs": "442d5472f631bb5d3fb0e959412db361a0c500f7d1f1abc0b6afed5148ea7fbe"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/mahattava": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs": "7c933eda3886469fb90badc23fab1118f675f719e2ee166da1793823e7c3db29"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs": "b48c8b71c1064e821ac0eba0e8d17a94c58f05bf0b191c3e680242e9f3b05a27"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/skoll": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs": "96ff2701447217c01b437fbb61fb54387738853b50076f4efa894e34e15585ea"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs": "f620ee59c02f136f8f3ad465a8a025ed65bc040150c3b828579214627cf169a1"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "iarnvidiur-s-lair/stanga": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs": "c5280d44f68475ed0f22a134e7802b40d56340836892daeecd53002cca37d928"
-   }
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs": "b096ab69fa52d91ad78b8c0de9ac1329af6f2d3bc88a5b1c0b3d4dd9a517b893"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "krondon/beransupplymaster": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs": "9b02e8d452e417df93032c54b5e7b841e0997d099ecdbe5db4c912a8e7616eea"
+    "source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs": "3547a6592924d4c53a497c7e5b30a96f61f7f95fd93d91317773baa30695d02d"
    },
    "aiTactics": {
     "hazards": [
@@ -1933,7 +1977,8 @@
     "hazardRadius": 1000,
     "summary": "Barrels and guards (1.2 big-boss plans, owner 2026-11-14; tests only): a lit barrel (one of five spots, all within 1,030 of him) explodes 8 s later for 1,200 heat in 1,000: everyone steps out of it (ground hazard; he follows his target out); the Onstal Hyrde he yells for are killed by everyone but the party he fights. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he ignites barrels that blow up sections of the room. EpicEncounterTactics.Krondon.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "krondon/debensegecynde": {
    "verified": true,
@@ -1958,7 +2003,7 @@
   "krondon/fuladl": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "5c77e0755bcf96121b2fa459a5ba574b6b289795ab47a5d850adee33cf270c70"
+    "source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs": "65cf36f2a818f2aedca9cb4716582a41ec91bdf98a1f00ebc2a344a150987cc2"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1966,12 +2011,13 @@
     ],
     "summary": "Parts first (1.2 big-boss plans, owner 2026-11-14; tests only): he resists 95% while any of his 4-5 parts (3,000 health) lives, so each party takes a part and he dies after. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a blob that splits when attacked; take the adds out first.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. His parts no longer respawn on the epic timer (they are spawned by the fight)."
   },
   "krondon/fulafeallan": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "f5ba58840999e90587f405a2b1be64ade0457b090be3aebddc35311537ecf756"
+    "source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs": "13818d0d462e0ad99a4c9130f97bfb1df03bb1c9b460b8f8341707db08d76a21"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1979,7 +2025,8 @@
     ],
     "summary": "Parts first (1.2 big-boss plans, owner 2026-11-14; tests only): she resists 95% while any of her 4-5 parts (3,000 health) lives, so each party takes a part and she dies after. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a blob that splits when attacked; take the adds out first.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. Its parts no longer respawn on the epic timer (they are spawned by the fight)."
   },
   "krondon/jehrogbysen": {
    "verified": true,
@@ -1995,7 +2042,7 @@
   "krondon/krevoricik": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "e064a5f8e93f2360c66c6ae74555da16cf04536b27b707c09e7a78baada04617"
+    "source/server/GameServer/scripts/namedmobs/Krondon/KrevoRicik .cs": "1bcc1066d4edf417baba449607563a289d9265a4e4598707d35b5479ec49414d"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2003,12 +2050,13 @@
     ],
     "summary": "Ranged add (1.2): his forgotten ghost (4,000 health, one at a time) explodes 30 s after it appears for 800 matter damage in 700 around it, so the casters and archers kill it as it comes while melee stay on him. His toss (one hit in ten throws its striker 400 straight up) is on for bots too: they land by him and fight on.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "krondon/lurfosherald": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs": "87caa007651e218233567dfbb5641ec0d7fed25f6d08320006c2d3b69befd650"
+    "source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs": "e3b08e237ccfdd0ac119ca8b97e92adcd210a648a5b74f81d831c24d1e442c0b"
    },
    "aiTactics": {
     "spreadRadius": 300,
@@ -2016,7 +2064,8 @@
     "tanksTaunt": true,
     "summary": "Weapon strike spread (1.2 big-boss plans, owner 2026-11-14; tests only): with his fire or ice weapon each hit lands 300 on everyone within 300 of his target, so casters and healers stand clear of his target, the other melee fight him from behind it, and a tank taunts him back when his target is not a tank. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): fire and ice effects on his weapon.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "krondon/morgusurgalorg": {
    "verified": true,
@@ -2027,9 +2076,9 @@
   "krondon/orshom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "c9352b6b931ea97d56ccdad5d41fcf0a46dccec5a93f56f28d555135ba4352ae"
    },
-   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked.",
+   "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random real player within 2,500 into it every 15-20 s while it burns (GetPlayersInRadius: never a bot). At 50% Orshom pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. PC test 2026-11-09 (build b72716e, forced Krondon): the fire is an IGameEpicNpc in combat with raiders, so the route turned on it (REALM_EXPEDITION_EARLY_PULL target=\"Orshom's Fire\" decision=Commit at 04:12:33) and the raid's melee walked into its 300: AUTONOMOUS_BOT_DEATH killer=\"Orshom's Fire\" 100 times between 04:12 and 04:18, 97 of them with activity \"Fighting Orshom's Fire\"; it was skipped for no damage for five minutes. Now the route never takes it as a target or encounter, and raiders follow the hazard tactic. That PC raid ran a 1.1.3 build without 1.2's hazard and cold-caster rules; the 1.2 line has both lines' rules (merged 2026-11-10), not yet seen in a PC log.",
    "aiTactics": {
     "hazards": [
@@ -2060,9 +2109,9 @@
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "1c2b8ef32670482a2447267a8a178634b8509ad599a56654b457d1d55b3e694c"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "c9352b6b931ea97d56ccdad5d41fcf0a46dccec5a93f56f28d555135ba4352ae"
    },
-   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him).",
+   "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
     "after": "Orshom",
     "hazards": [
@@ -2075,7 +2124,7 @@
    }
   },
   "krondon/scurceolhyrde": {
-   "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives.",
+   "notes": "Immune while any of his four Lyft Miht orbs lives. The orbs (level 90, 15,000 health, 40% melee and 50% magic resists, AF 250) float 450-790 above the room floor at its four corners (51236,20849 / 51316,19228 / 52702,19214 / 52713,20841; floor about 16964), never attack (StartAttack is empty), have a 250 aggro range and RespawnInterval -1. Once dead they stay dead: his reset does not bring them back, only his own respawn (SpawnOrbs runs in AddToWorld). He gains 60 Strength while any orb lives. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "The orbs are IGameEpicNpc, so the route treats them as named encounters, not as his adds (IsEncounterAdd excludes epic NPCs). They never fight, so HostileEncounter never turns to them, while Scurceol attacks the raid and pins it. Melee bots can't reach them (more than 400 up: AutonomousPveTargetPolicy.IsUnreachableFlyer); ranged can (under RangedFlyerReach 1,200). 2026-11-05: he was fought 3,219 units from his spawn, so the raid stood far from the orbs. 2026-11-06 (build 168f55d, night run): the tactic fired twice (REALM_EXPEDITION_TACTIC 01:49:29 and 02:16:58, fights=\"Lyft Miht\" alive=4), but the route then probed each orb through the ground-route gate (an approach within 256 of the target's height), which no orb passes; every orb was set aside a minute at a time and the raid went to Fuladl. No orb was attacked and he was never fought. Now a required add is never walked to: the route fights it from a floor spot the raid can reach within 1,400 of it with sight to the floor under it (RealmRaidDungeonRoute.TryRangedStand: under the orb, by Scurceol, or between), and sets the tactic aside only when no orb has one (REALM_EXPEDITION_TACTIC_ASIDE, with the reason per orb).",
    "rules": {
     "immune_while@33": {
@@ -2113,7 +2162,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "2b82f3796af153cc314cd5a8cad896927b2518a77a524d45aa35e393effc53c9"
+    "source/server/GameServer/scripts/namedmobs/Krondon/ScurceolHyrde.cs": "4476d361b8ff3ef17162599c979b3e1eb58ae7f5f30bafea2c76e6a50882c08a"
    }
   },
   "krondon/ulorbysen": {
@@ -2123,10 +2172,10 @@
    }
   },
   "marfach-caverns/ancientblackoak": {
-   "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits.",
+   "notes": "Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.",
    "currentRaidAi": "2026-11-05 (build 168f55d): the dies-with tactic sent the raid to Black Lady (REALM_EXPEDITION_TACTIC 20:46:33); she died in 1.2 minutes and the Hibernian Marfach raid won with no wipe.",
    "rules": {
-    "linked_pack@176": {
+    "linked_pack@168": {
      "summary": "When pulled it puts every living NPC with PackageID \"AncientOakBaf\" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody.",
      "tactic": "Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first.",
      "difficulty": "easy for the current raid AI"
@@ -2138,7 +2187,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "b55ebdb4163258f61661656bd550e975173411aacc683b9fe25646a0136d7491"
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs": "0104dcbd11414772013216ba760120da590b718b70fedbc0c053ef17040c6454"
    }
   },
   "marfach-caverns/avartack": {
@@ -2152,15 +2201,15 @@
    }
   },
   "marfach-caverns/blacklady": {
-   "notes": "Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target.",
+   "notes": "Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.",
    "currentRaidAi": "2026-11-05: taken to 44%, drawn 1,618 from her spawn and leashed home at full health (AUTONOMOUS_TETHER_RESET); the raid then switched to the Oak and never came back to her.",
    "rules": {
-    "adds@122": {
+    "adds@116": {
      "summary": "Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it.",
      "tactic": "In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home).",
      "difficulty": "needs new raid AI"
     },
-    "adds@207": {
+    "adds@201": {
      "summary": "Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets).",
      "tactic": "One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.",
      "difficulty": "easy for the current raid AI"
@@ -2174,26 +2223,29 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "b9b1fb6ac72b95f0dc51ff62bce049212d48f17b68730715bd8e746fc40d0beb"
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "e7cb119127761d27a9c9c944ba12c502dd3f050c7e894bd1e4e90a169f613ce3"
    }
   },
   "marfach-caverns/bluelady": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs": "346219674d0de534a7ea0603e761218fc128ecc9549ee02e209a6c4a00fcd88c"
-   }
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs": "58086d154e1d321e97b83f344256d0624306c24c9827eff4c279916edc49e266"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "marfach-caverns/chieftaincaimheul": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs": "3eebd1d0c1f025fe67097232c18088e47908ffa4b5e87ac086d1c0a64d79eb34"
-   }
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs": "9f96cdfcb3ba877d70451db3cc149ae2238c384ff387d8f82f18e4cdad0843e3"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "marfach-caverns/redlady": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs": "98f04623b5c8f19a1e84059408c2d9b871e933a2d10cc724e5e47b3f3326ed9a"
-   }
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs": "bcff52671847dc0d0e39b2fc8e1071c2773c109c27bc69900eacce06b321440b"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "midgard-named-mobs-classic-zones/hugi": {
    "verified": true,
@@ -2426,7 +2478,7 @@
   "open-world/evern": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Evern.cs": "a3e5510954c4bdcd32f1e368a147f42d32347c9c062831ae3c2edb7659953afe"
+    "source/server/GameServer/scripts/namedmobs/Evern.cs": "ba4d8e6ed7b5359cff9bb3aa3edb56512f40930c25c1d0e1f102d74560f8407e"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2450,7 +2502,8 @@
      "tactic": "In the raid AI (catalog: fight at home within 1,400 of his spawn, inside his 1,700 tether): past it the raid stops hitting him and his target leads him back.",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "open-world/glaciergiant": {
    "verified": true,
@@ -2471,8 +2524,9 @@
   "open-world/gnat": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Gnat.cs": "0cc35e556f8aff83f999e735bd6f9664d686fd701955c5884951198730c22f82"
-   }
+    "source/server/GameServer/scripts/namedmobs/Gnat.cs": "a20dbb9458a583fbabc70077b6d84e4766d420e9eccff26fa74c4e21dd7d735c"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "open-world/maldahartheglimmerprince": {
    "verified": true,
@@ -2483,16 +2537,16 @@
   "open-world/moranthemighty": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "5989d82c04e6e18990d4a5463b394710ed1ec86101e68a4f0d1573be64b30f45"
+    "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "0910d05368679747498798d6268eca22db6da480cdb879e7c522938f225ea86f"
    },
-   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran. On his first aggro every monster of his own kind within 1,500 (EpicEncounterMechanics.IsOwnKind: same realm, alive, not a pet, a gamebot or a peaceful NPC) is set on the raiders within 2,250 of him; 1.2 (True 1.65 port): before, every NPC there was, the raid's own bots and pets included."
+   "notes": "1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran. On his first aggro every monster of his own kind within 1,500 (EpicEncounterMechanics.IsOwnKind: same realm, alive, not a pet, a gamebot or a peaceful NPC) is set on the raiders within 2,250 of him; 1.2 (True 1.65 port): before, every NPC there was, the raid's own bots and pets included. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "open-world/ofgreenknight": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "d89b0e6d6adae7ee4a944ffcd0a31db5aad5c2152946ccd568d570d7095e386f"
+    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "36282f9c40a027363c38d43058829ec7c9bc2cbcf6a4fa99b8ee77dff3b53ee1"
    },
-   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today.",
+   "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today. 1.2 upstream port (tests only): his walks to the four tree spots use PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spots, same speed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): his walk, tree, healer-pick, port and heal flags and his random target are per brain instead of static, so a reset or a respawn starts clean. No mechanic changed.",
    "aiTactics": {
     "spreadRadius": 500,
     "tanksTaunt": true,
@@ -2527,9 +2581,9 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "3d6872d043c4d51baaeb12e1372a7e6d21b1b0d8760322a8465d6f435c52b2b2"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "9efeb9594d0b54d78ded8433fde7bc597df93230618d3f92a27e96e3395cefba"
    },
-   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port).",
+   "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The sacrifices' and demons' walk to the altar uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed 35. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): his stage flags are per brain; the sacrifice and the demon tell their own Govannon (OwnerBrain) when they reach the centre instead of static kill counts, and the Shade's port target is per Shade. The one-Shade-at-a-time scan is ours. No mechanic changed.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known.",
    "aiTactics": {
     "spreadRadius": 300,
@@ -2553,24 +2607,24 @@
     "reset@234": {
      "summary": "Resets when its aggro list is empty (after 8 s out of combat: EpicEncounterMechanics.FightIsOver): walks home at full health in his own form (template model, size and Strength), his sacrifice, demon and Shade removed; before 1.2's True 1.65 port only the later 30-35 s window restored his form, so a raid back within 30 s met Strength 800 and the demon model."
     },
-    "adds@320": {
+    "adds@324": {
      "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
      "difficulty": "needs new raid AI"
     },
-    "adds@349": {
+    "adds@356": {
      "summary": "Spawns the Shade of Aelfgar (one at a time) every time both the sacrifice and the demon of a pair have reached his altar (32063,40896) and died there; killed on the way, they never count. Two pairs a fight (at 80%, and again after he turns), so up to two Shades.",
      "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
      "difficulty": "needs new raid AI"
     },
-    "phase@288": {
+    "phase@290": {
      "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI"
     },
-    "phase@313": {
+    "phase@315": {
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI"
     },
-    "teleport@713": {
+    "teleport@712": {
      "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     }
@@ -2596,7 +2650,7 @@
   "summoner-s-hall/summonerlossren": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "44fa7d6315c047a70b7095c2bd5c40c2e400d0251f751a56cd261e94868c6d4c"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "4e29cc3cad285bfe8914e07bd980df3c0cd9a9a45c1aa04f92593a1c4245dd85"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2609,17 +2663,18 @@
     "fightAtHomeRadius": 1000
    },
    "rules": {
-    "adds@280": {
-     "summary": "Spawns the infected ghoul (4,000 health, walks at 110 to a random raider and bursts for 1,000 in 500 there) once 20 or more tortured souls have died since the last ghoul (checked every 5-8 s), one ghoul at a time (1.2: before, it needed exactly 20 at the check, so a raid that killed two souls between checks never saw the ghoul again that fight). A reset removes the ghoul and clears its count, so it comes again on the next pull (1.2, True 1.65 port: before, a ghoul removed by a reset blocked every later ghoul until a restart).",
-     "tactic": "Casters and archers kill the ghoul as it crawls; its raider walks away from it (see his tactic).",
-     "difficulty": "needs new raid AI"
-    },
     "damage_reduced@62": {
      "summary": "A summoned pet does 10 a hit to him (5 plus 5 critical), whatever it would have done.",
      "tactic": "Pets fight his souls and ghoul, not him: a gamebot's pet takes an add from its owner's aggro list instead, and one already on him is called off (BotBrain.PetTargetInsteadOfBoss, 1.2 True 1.65 port; tests only).",
      "difficulty": "easy for the current raid AI"
+    },
+    "adds@264": {
+     "summary": "Spawns the infected ghoul (4,000 health, walks at 110 to a random raider and bursts for 1,000 in 500 there) once 20 or more tortured souls have died since the last ghoul (checked every 5-8 s), one ghoul at a time (1.2: before, it needed exactly 20 at the check, so a raid that killed two souls between checks never saw the ghoul again that fight). A reset removes the ghoul and clears its count, so it comes again on the next pull (1.2, True 1.65 port: before, a ghoul removed by a reset blocked every later ghoul until a restart).",
+     "tactic": "Casters and archers kill the ghoul as it crawls; its raider walks away from it (see his tactic).",
+     "difficulty": "needs new raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): her soul-kill count, her souls and her ghoul are hers (her brain keeps the adds it spawned) instead of static counters; a soul's death counts for the Lossren that spawned it; her death removes every tortured soul and infected ghoul in the region; a ghoul's random target is its own. 20 soul kills still bring the ghoul. No mechanic changed."
   },
   "summoner-s-hall/summonerroesia": {
    "verified": true,
@@ -2635,11 +2690,12 @@
   "trollheim/dagar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "9c54b8e58b90b96c8d0cc2e20a20b5a50eb5a2f1f156172b47e89e7c3cada7b8"
-   }
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs": "3775058c74007cf96baf45dc60837299bfbdc94ea270d1e7aa012bc757e84f36"
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "trollheim/nosdoden": {
-   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits.",
+   "notes": "Level 80, 100,000 health. Every 10% from 90% down to 10% he spawns a wave of about 12-18 'essence of fallen' (level 60-62, 2,500 health, aggro 1,500) at his feet: nine waves, roughly 110-160 adds in one fight. His Acidic cloud (Body DoT 150 for 60 s, radius 500) and Call of Void (Cold 1,100, radius 550) go on a random raider within 2,000 (real players and bots since 1.2, EncounterTargets). Spirits of the fallen are made from dead raiders, bots included (since 1.2). A bot raid larger than Trollheim's period raid (64) gets at most 64 live spirits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05: lost twice at full size (support 80 and 132, Special Forces joined both times). The essence waves are script-spawned, not epic, so the route does put them first; the raid still died.",
    "rules": {
     "adds@167": {
@@ -2660,7 +2716,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "675a30a5962118f157aa1b003ef35b6d00acb6d9788afaad274f779a5407761d"
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs": "59d1124495856975f312b2f2aa1973a0e4f437facc1e1a35e41e310c231bb363"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -2673,42 +2729,48 @@
   "trollheim/rift": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "8d11894906325de83614eed8ce5bdf22f368f0ce2d4dd8bf50d6006b8eed813a"
-   }
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs": "ef0c4314707fae31db6d6fed21f2267a227e2d3c2bf8f5a032ce7ace58c1d27d"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "trollheim/rotoddjur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "9c7eb27994026aa4ed0168158089af2f5acc1abc71efd255079ccc00f7e0e24c"
-   }
+    "source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs": "10ecd5b3c04449ba27e85f7169a7c9d8e76da8403c5fa04ccbbe27387abaeae2"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tur-suil/abomossoultrapper": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "c41910c457057f8bb67f3ce8925a29a01d1367d02476e0a71ef5d63f242b576d"
-   }
+    "source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs": "ef474344a24adcc0784f91f619a465bdd1df2fa0c6cfadc1607d88f5a67f78ca"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "tur-suil/balor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "bd35c490f7ce0f6597679dd76bf6ca5243b9fc27025f816dba1d10664275146b"
+    "source/server/GameServer/scripts/namedmobs/TurSuil/Balor.cs": "4ce3825ddfa1ec64512f5ba2579c3b0f9b2259dccec53427a0b25d45e1c43669"
    },
    "aiTactics": {
     "summary": "Eye of Balor (each 10% he loses): it picks a raider within 2,500 and casts Balor's Eye Light (1,000 heat, 4 s, no interrupt, through walls) on it for 18 s. That raider, unless Balor fights it, runs out of the eye's 1,800 and waits; the healers heal it first (the script raises the pick). The period's two door guards and the throw (later reports) are not in this script. (EpicEncounterTactics.TurSuil, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "tur-suil/kieracdestroyer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb"
-   }
+    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "88e531205e0e0a961b8acd6d41135e75c1f080a3e872b4fe9979063c6a3cc9c6"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tur-suil/masterofpain": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "667bf9aa6176cfa63fd7f48a97255f08977135bd7f232c1020e49eab79509feb"
-   }
+    "source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs": "88e531205e0e0a961b8acd6d41135e75c1f080a3e872b4fe9979063c6a3cc9c6"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tur-suil/norsobannihilator": {
    "verified": true,
@@ -2719,8 +2781,9 @@
   "tur-suil/queenqunilaria": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "906a572c53b279f424e39f79e057ea1ddd7c53ae56e836d7b347bb2a9eb33362"
-   }
+    "source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs": "8b9b19d10795795583d69fff9692d127e11ef3b4fa0a10eea68164fba4d8c607"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "tur-suil/sarganconqueror": {
    "verified": true,
@@ -2731,17 +2794,18 @@
   "tuscaran-glacier/agmundr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "968acafc599e2fb740ec84a8df0f79f4c8c2831918dc434648eee93c572b42aa"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "b61905e087baeca0d1c6e197b64d4f776f3d5363543839c02eb3feb39b5d3f92"
    },
    "aiTactics": {
     "summary": "His six hrimthursa are cleared first (pulling one does not bring him), and nothing within 1,000 of him is pulled while he stands out of combat. In his fight his target's party fights as usual, casters and healers keep 750 from his target, melee stand behind him, and everyone near his target steps out of the 500 around it during his 3 s cold blast (EpicEncounterTactics.Tuscaran, sweep 2026-11-14; tests only).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tuscaran-glacier/birghir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "89cb44433186fac2b53a99232b4347e8925e6fb36b6a942f4ad03367e0ac6886"
    },
    "aiTactics": {
     "after": "Guthlac",
@@ -2751,7 +2815,8 @@
     "focusRangedAdds": true,
     "summary": "With Guthlac (pulling one brings the other): Guthlac first (his Ice Spike), the party Birghir fights holds him. An Ice Spike is a ranged add of both: every caster and archer of the raid takes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "tuscaran-glacier/fallingice": {
    "rules": {
@@ -2770,7 +2835,7 @@
   "tuscaran-glacier/fornfrusenen": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "902b66c51eecf6e1743f713eae627d606f0ff2e553bf4a9621a0a8ca51faad94"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "eebb3382c4986799a4280c2eca3f65efcd2f840d2eb001c93b1ed273a27c096c"
    },
    "aiTactics": {
     "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
@@ -2785,12 +2850,13 @@
      "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tuscaran-glacier/guthlac": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "c9bad5dfb31d1e1c4e6d7077b3f516d5a8b5735d5c9dff17f87b89fa71a120fc"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "89cb44433186fac2b53a99232b4347e8925e6fb36b6a942f4ad03367e0ac6886"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2799,15 +2865,16 @@
     "focusRangedAdds": true,
     "summary": "Ice Spike: every 35-60 s a 5,000-health spike appears on a raider within 4,500 and erupts 25 s later for 2,500 cold within 3,000 (the whole room): every caster and archer of the raid kills it before then; he dies before Birghir, and his death removes it. (EpicEncounterTactics.Tuscaran (catalog), Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "tuscaran-glacier/hakr": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "28131ab46a78822da6ec37da3081f5affa4f259ca3106efb0aaf612dc55033e9"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "6829e6e27f2c56d57f5ecc4231ad540d061dcee0284412c4b33b8da5d43b85d5"
    },
    "rules": {
-    "teleport@210": {
+    "teleport@215": {
      "tactic": "Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     }
@@ -2818,12 +2885,13 @@
     ],
     "summary": "Four Royal Iceweavers (20,000 each): the two in the far room (30,008,56,329; nothing links them) die before the pull; in his fight the two at his side (HakrBaf, brought in) are his required adds and die first, since his toss only comes while an iceweaver lives (the period's \"Magic barrier fades away\" message; this script gives him no immunity). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. His teleport and his message follow whether one of his iceweavers lives."
   },
   "tuscaran-glacier/hjalmar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "ea52c80415f2deb2b89e013241b424cc9b1a234e0fc0317ac149e9e96c364744"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2832,13 +2900,15 @@
     "focusRangedAdds": true,
     "summary": "The raider he fights faces him (his back style: Strength 740 on a turned back, 600 otherwise); his Morkimmas (1,000 health, heal themselves, 20% a hit near his target) are ranged adds the casters and archers kill together. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Hjalmar and Suttung register with their controller, which respawns one only when neither lives (instead of static up-counts); their message flags are per brain. No mechanic changed."
   },
   "tuscaran-glacier/hjalmarsuttungcontroller": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09"
-   }
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "ea52c80415f2deb2b89e013241b424cc9b1a234e0fc0317ac149e9e96c364744"
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): it tracks the Hjalmar or Suttung it spawned (and the one that registers at load) instead of static up-counts. No mechanic changed."
   },
   "tuscaran-glacier/hord": {
    "verified": true,
@@ -2853,7 +2923,7 @@
   "tuscaran-glacier/hurika": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a"
    },
    "rules": {
     "teleport@652": {
@@ -2880,7 +2950,8 @@
    "aiTactics": {
     "summary": "Her gust throws a raider within 1,000 of her 500-700 up every 15-20 s: casters, archers and healers outside her target's party keep 1,100-1,350 from her (in spell range); a thrown raider walks back (EncounterDisplacementRecovery). With the flying patrol on, the griffon pull first (Griffons.cs). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "tuscaran-glacier/issorden": {
    "verified": true,
@@ -2916,7 +2987,7 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6d12fadcc9bfd157b99a01e375341394f0d1b5a67d6ce5f852ffdfc250f06f61"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9"
    },
    "aiTactics": {
     "after": "QueenKula",
@@ -2924,16 +2995,17 @@
     "since": "1.2"
    },
    "rules": {
-    "heal@541": {
+    "heal@552": {
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): whether Queen Kula lives is read from the queen herself (found within 8,000) instead of a static count, so a stale count can no longer give a wrong enrage; his rage and message flags are per brain. No mechanic changed."
   },
   "tuscaran-glacier/kvasir": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "5b4998538d5f3ea491a9d937c1404735a346a20b0a0fd4ab1b4b647bd82a2b73"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "6f0d544f2f611c9a225433005f35aab26e3eec05e2d00f71576b9c5cfd9b3037"
    },
    "aiTactics": {
     "summary": "Cold heal (AllowKvasirColdHeal, on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell; casters use their other lines). Scream: from 3 s before his primal scream is due until 4.5 s after his mesmerize (800 around his target, 2 s after the scream), everyone but his target's party stands 1,050 from his target; melee wait there, casters and healers keep casting.",
@@ -2944,27 +3016,30 @@
      "tactic": "Cold heal (on since 1.2): no bot casts a cold spell at him (EpicEncounterTactics.ForbidsSpell on every bot's offensive casts); casters use their other lines.",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tuscaran-glacier/nokkvi": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "59ad11d32bb8c31a15e7a7c9af0e200b150b6c4a6b2101fcaa1caf87a9422455"
    },
    "aiTactics": {
     "summary": "Damage split with Council Vagn: Nokkvi resists 90% of melee, so the casters fight him while both live (see Vagn).",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "tuscaran-glacier/otrygg": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "2b25c53806a59264da80fa2bc3fd0116213e688d2cb49e57989b263298c18b3f"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs": "7bcc3ce00d2c44e33b2f4c1f487e08f1514c4ca570f721ba848862a18d35fb2b"
    },
    "aiTactics": {
     "summary": "His eight pets (10,000 each) come back as fast as they die while he fights and die with him: everyone fights Otrygg, the route never sends the raid to a pet. The period fought him at the T junction, away from his spawn, where his pets stayed home (CARNE-TG); not played here (no junction point recorded). (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong."
   },
   "tuscaran-glacier/ozur": {
    "verified": true,
@@ -2980,7 +3055,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "6d12fadcc9bfd157b99a01e375341394f0d1b5a67d6ce5f852ffdfc250f06f61"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9"
    },
    "aiTactics": {
     "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
@@ -2991,20 +3066,21 @@
      "tactic": "Twin heal (on since 1.2): in the raid AI (EpicEncounterTactics.Tuscaran and the catalog's after rule) the raid kills Queen Kula first and only the King's own target fights him, so almost nothing heals her; once she is dead nothing heals him.",
      "difficulty": "easy for the current raid AI"
     },
-    "teleport@282": {
+    "teleport@294": {
      "tactic": "Drag to her throne: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for QueenKula). A moved bot lands in her frost circle, waits out the mesmerize or root there like a player (crowd control is no stall; at most 5 minutes) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     },
-    "position_puzzle@295": {
+    "position_puzzle@307": {
      "tactic": "Frost circle: on since 1.2 (AllowPositionPuzzle for QueenKula). In the raid AI (EpicEncounterTactics.Tuscaran): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. A raider she drags there is held by the circle until the crowd control ends, then walks out.",
      "difficulty": "easy for the current raid AI"
     }
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): whether King Tuscar lives is read from the king himself (found within 8,000) instead of a static count, so a stale count can no longer give a wrong enrage; her flags and port target are per brain. No mechanic changed."
   },
   "tuscaran-glacier/skuf": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb"
    },
    "aiTactics": {
     "after": "Steinvor",
@@ -3014,12 +3090,13 @@
     "hazardRadius": 350,
     "summary": "After Steinvor: the party Skuf fights holds him, everyone else kills Steinvor first; Steinvor's pillars are stepped out of in Skuf's fight too. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "tuscaran-glacier/steinvor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "4d889113864409dfe983eab5c48fe7da4ece538a406d74d4e51a06e720fddd9e"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb"
    },
    "aiTactics": {
     "hazards": [
@@ -3028,20 +3105,21 @@
     "hazardRadius": 350,
     "summary": "With Skuf (pulling one brings the other) he dies first: his Pillar of Frost (750 cold, 350 around the spot of a raider he names, 3.5 s later) is a ground hazard everyone steps out of; Skuf's party holds Skuf meanwhile. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed."
   },
   "tuscaran-glacier/suttung": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "3c7724d289bf39019698a1ddcd88250c0dbfa600592149d5002aa71923701d09"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "ea52c80415f2deb2b89e013241b424cc9b1a234e0fc0317ac149e9e96c364744"
    },
    "extraRules": [
     {
      "kind": "empowered",
      "summary": "Berserker stance: while he has foes, a stance comes 20-35 s after the pull or after the last stance ended. For 10-20 s he has Strength 850 (hits much harder), is slower (speed 200, his template's 250) and larger (size 75), then his template Strength, speed and size come back. A stance that falls due while he is dead, out of combat or without foes is skipped and the wait starts again on his next fight (1.2, True 1.65 port: before, such a stance left the flag set and no Suttung went berserk again until a server restart).",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs",
-     "line": 155,
-     "lineEnd": 186,
+     "line": 154,
+     "lineEnd": 185,
      "anchor": "public int BerserkerPhase(ECSGameTimer timer)",
      "sourceClass": "SuttungBrain",
      "method": "BerserkerPhase",
@@ -3053,12 +3131,13 @@
    "aiTactics": {
     "summary": "Hjalmar's Ice Blast (450 cold to everyone within 440 of him, every 15 s): casters, archers and healers outside his target's party fight from beyond 540; melee take it and his berserker stance (Strength 850 for 10-20 s), healers on his target. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Hjalmar and Suttung register with their controller, which respawns one only when neither lives (instead of static up-counts); their message flags are per brain. No mechanic changed."
   },
   "tuscaran-glacier/torst": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "724944d493d223a602c0c681ea4a1f3be317b427e958be09c17d14657cc52d35"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a"
    },
    "rules": {
     "position_puzzle@50": {
@@ -3084,17 +3163,19 @@
     "tanksTaunt": true,
     "summary": "He roots his target and then jumps to a random raider within 1,500; his five untargetable eddies circle within 200 of him (Cold Snap 300). Casters, archers and healers keep 650 from him; his Torst DD (550, 400 around his target) is the spread: casters clear of his target, melee behind him, and the nearest tank taunts him back when he jumps to a non-tank. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
   "tuscaran-glacier/vagn": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "c0fd21b6b0420b60bfec2e291807a2494cd8d9686dfbb7a72fde8258831e18c2"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs": "59ad11d32bb8c31a15e7a7c9af0e200b150b6c4a6b2101fcaa1caf87a9422455"
    },
    "aiTactics": {
     "summary": "Damage split with Council Nokkvi: Vagn resists 90% of magic, so casters fight Nokkvi and everyone else (melee, archers, hybrids, pets) fights Vagn while both live.",
     "since": "1.2"
-   }
+   },
+   "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   }
  }
 }

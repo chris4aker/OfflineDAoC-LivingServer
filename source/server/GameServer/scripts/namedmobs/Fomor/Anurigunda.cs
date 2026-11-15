@@ -48,7 +48,7 @@ namespace DOL.GS
 
 			return base.HasAbility(keyName);
 		}
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(CurrentRegionID))
 			{
@@ -60,7 +60,7 @@ namespace DOL.GS
 					}
 				}
 			}
-			base.Die(killer);
+			base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
 		{
@@ -91,7 +91,7 @@ namespace DOL.AI.Brain
 			AggroRange = 600;
 			ThinkInterval = 1500;
 		}
-		public static bool IsPulled = false;
+		public bool IsPulled = false;
 		private bool RemoveAdds = false;
 		public void BlockEntrance()
         {
@@ -163,8 +163,8 @@ namespace DOL.AI.Brain
 			}
 			base.Think();
 		}
-		public static bool Adds1 = false;
-		public static bool Adds2 = false;
+		public bool Adds1 = false;
+		public bool Adds2 = false;
 		public void SpawnFomorians()
         {
 			if (Body.HealthPercent <= 40 && Adds1 == false)

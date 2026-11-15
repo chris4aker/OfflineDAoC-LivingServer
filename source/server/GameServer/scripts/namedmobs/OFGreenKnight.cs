@@ -70,24 +70,6 @@ namespace DOL.GS
             Styles.Add(taunt);
             MaxSpeedBase = 400;
 
-            OFGreenKnightBrain.walk1 = false;
-            OFGreenKnightBrain.walk2 = false;
-            OFGreenKnightBrain.walk3 = false;
-            OFGreenKnightBrain.walk4 = false;
-            OFGreenKnightBrain.walk5 = false;
-            OFGreenKnightBrain.Pick_healer = false;
-            OFGreenKnightBrain.walk6 = false;
-            OFGreenKnightBrain.IsSpawningTrees = false;
-            OFGreenKnightBrain.walk7 = false;
-            OFGreenKnightBrain.IsWalking = false;
-            OFGreenKnightBrain.walk8 = false;
-            OFGreenKnightBrain.walk9 = false;
-            OFGreenKnightBrain.CanHeal1 = false;
-            OFGreenKnightBrain.CanHeal2 = false;
-            OFGreenKnightBrain.CanHeal3 = false;
-            OFGreenKnightBrain.CanHeal4 = false;
-            OFGreenKnightBrain.PickPortPoint = false;
-
             Flags = eFlags.PEACE;
             VisibleActiveWeaponSlots = 34;
             MeleeDamageType = eDamageType.Slash;
@@ -311,8 +293,8 @@ namespace DOL.AI.Brain
                 base.OnAttackedByEnemy(ad);
         }
         #region GK pick random healer
-        public static GameLiving randomtarget = null;
-        public static GameLiving RandomTarget
+        public GameLiving randomtarget = null;
+        public GameLiving RandomTarget
         {
             get { return randomtarget; }
             set { randomtarget = value; }
@@ -344,14 +326,14 @@ namespace DOL.AI.Brain
                         if (healer.Count > 0)
                         {
                             GameLiving Target = healer[Util.Random(0, healer.Count - 1)]; //pick random target from list
-                            RandomTarget = Target; //set random target to static RandomTarget
+                            RandomTarget = Target;
                             if (RandomTarget != null) //check if it's not null
                             {
                                 ClearAggroList(); //clear aggro list or it may still stick to current target
                                 AddToAggroList(RandomTarget, 550); //set that target big aggro so boss will attack him
                                 Body.StartAttack(RandomTarget); //attack target
                             }
-                            RandomTarget = null; //reset static ranmdomtarget to null
+                            RandomTarget = null;
                             Pick_healer = false; //reset flag
                         }
                     }
@@ -361,19 +343,19 @@ namespace DOL.AI.Brain
         }
         #endregion
         #region GK check flags & strings & PortPoints list
-        public static bool Pick_healer = false;
-        public static bool IsSpawningTrees = false;
-        public static bool walk1 = false;
-        public static bool walk2 = false;
-        public static bool walk3 = false;
-        public static bool walk4 = false;
-        public static bool walk5 = false;
-        public static bool walk6 = false;
-        public static bool walk7 = false;
-        public static bool walk8 = false;
-        public static bool walk9 = false;
+        public bool Pick_healer = false;
+        public bool IsSpawningTrees = false;
+        public bool walk1 = false;
+        public bool walk2 = false;
+        public bool walk3 = false;
+        public bool walk4 = false;
+        public bool walk5 = false;
+        public bool walk6 = false;
+        public bool walk7 = false;
+        public bool walk8 = false;
+        public bool walk9 = false;
 
-        public static bool IsWalking = false;
+        public bool IsWalking = false;
         public List<string> PortPoints = new List<string>();
         public static string string1 = "point1";
         public static string string2 = "point2";
@@ -381,7 +363,7 @@ namespace DOL.AI.Brain
         public static string string4 = "point4";
         #endregion
         #region GK Teleport/Walk method
-        public static bool PickPortPoint = false;
+        public bool PickPortPoint = false;
         public int GkTeleport(ECSGameTimer timer)
         {
             if (Body.IsAlive)
@@ -412,7 +394,7 @@ namespace DOL.AI.Brain
                                     if (!Body.IsWithinRadius(point1, 50))
                                     {
                                         Body.StopAttack();
-                                        Body.WalkTo(point1, 400);
+                                        Body.PathTo(point1, 400);
                                         IsWalking = true;
                                     }
                                     break;
@@ -420,7 +402,7 @@ namespace DOL.AI.Brain
                                     if (!Body.IsWithinRadius(point2, 50))
                                     {
                                         Body.StopAttack();
-                                        Body.WalkTo(point2, 400);
+                                        Body.PathTo(point2, 400);
                                         IsWalking = true;
                                     }
                                     break;
@@ -428,7 +410,7 @@ namespace DOL.AI.Brain
                                     if (!Body.IsWithinRadius(point3, 50))
                                     {
                                         Body.StopAttack();
-                                        Body.WalkTo(point3, 400);
+                                        Body.PathTo(point3, 400);
                                         IsWalking = true;
                                     }
                                     break;
@@ -436,7 +418,7 @@ namespace DOL.AI.Brain
                                     if (!Body.IsWithinRadius(point4, 50))
                                     {
                                         Body.StopAttack();
-                                        Body.WalkTo(point4, 400);
+                                        Body.PathTo(point4, 400);
                                         IsWalking = true;
                                     }
                                     break;
@@ -449,10 +431,10 @@ namespace DOL.AI.Brain
             return 0;
         }
         #endregion
-        public static bool CanHeal1 = false;
-        public static bool CanHeal2 = false;
-        public static bool CanHeal3 = false;
-        public static bool CanHeal4 = false;
+        public bool CanHeal1 = false;
+        public bool CanHeal2 = false;
+        public bool CanHeal3 = false;
+        public bool CanHeal4 = false;
         public int StartHeal(ECSGameTimer timer)
         {
             IsWalking = false;

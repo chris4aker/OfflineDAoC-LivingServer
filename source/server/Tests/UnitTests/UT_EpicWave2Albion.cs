@@ -513,7 +513,7 @@ namespace DOL.UnitTests
             var bBrain = Brain<BaneOfHopeBrain>(bane);
             var p = Npc<Bot>(31300, 30833, 13954);
             bBrain.AddToAggroList(p, 100);
-            BaneOfHopeBrain.TeleportTarget = p;
+            bBrain.TeleportTarget = p; // per brain since the OpenDAoC-Core 66dbe4220 port (it was static)
             try
             {
                 Call(bBrain, "TeleportEnemy", new object[] { null });
@@ -525,8 +525,8 @@ namespace DOL.UnitTests
             }
             finally
             {
-                BaneOfHopeBrain.TeleportTarget = null;
-                BaneOfHopeBrain.CanPoison = false;
+                bBrain.TeleportTarget = null;
+                bBrain.CanPoison = false;
             }
         }
 

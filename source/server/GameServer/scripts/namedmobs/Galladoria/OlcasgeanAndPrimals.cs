@@ -416,7 +416,7 @@ namespace DOL.GS
             }
             return count;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             foreach (GameNPC npc in GetNPCsInRadius(10000))
             {
@@ -461,7 +461,7 @@ namespace DOL.GS
                 if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #endregion
         public override bool AddToWorld()
@@ -962,7 +962,7 @@ namespace DOL.GS
             }
             return count;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             bool mainBodyDied = false;
             foreach (GameNPC npc in GetNPCsInRadius(10000))
@@ -1010,7 +1010,7 @@ namespace DOL.GS
                 if (killer != null && killer is not (Olcasgean or Olcasgean2))
                     ReportNews(killer);
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         #endregion
         public override bool AddToWorld()
@@ -1195,10 +1195,10 @@ namespace DOL.GS
         public override void StopFollowing()
         {
         }      
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
         {
@@ -1543,10 +1543,10 @@ namespace DOL.GS
                 default: return 70;// dmg reduction for rest resists
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)
@@ -1859,10 +1859,10 @@ namespace DOL.GS
         {
             return;
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)
@@ -2231,7 +2231,7 @@ namespace DOL.GS
                 default: return 70;// dmg reduction for rest resists
             }
         }
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             ++OIBrain.DeadPrimalsCount;
             foreach (GameNPC npc in GetNPCsInRadius(8000))
@@ -2245,7 +2245,7 @@ namespace DOL.GS
                     }
                 }
             }
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
         public override bool HasAbility(string keyName)

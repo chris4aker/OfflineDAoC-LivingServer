@@ -72,6 +72,22 @@ namespace DOL.GS
         private readonly Dictionary<string, GameNPC> _finals = new();
         private GameNPC _target;
         private int _probeCursor;
+        // From rambodolphin13/DividedRealms (RealmRaidDungeonRoute.cs, DR-dev-0.1g), whose overnight 4,500-bot run saw the
+        // next-encounter search spend 7.7 s in one game tick after "olcasar deepstalker" died in Galladoria: a candidate no
+        // party can reach is tried from up to six anchors, each up to about forty corridor searches, three candidates a pass.
+        // The search now stops once it has spent its time for this pass and goes on from the same candidate and anchor on the
+        // next one.
+        public const double ProbeBudgetMilliseconds = 100;
+        private GameNPC _probeResumeNpc;
+        private int _probeResumeAnchor;
+
+        /// <summary>The next-encounter search has used its time for this pass (pure).</summary>
+        public static bool ProbeBudgetSpent(double elapsedMilliseconds) => elapsedMilliseconds >= ProbeBudgetMilliseconds;
+
+        /// <summary>The anchor a candidate's search starts from: where it stopped last pass for the same candidate, else the
+        /// first (pure).</summary>
+        public static int FirstProbeAnchor(bool sameCandidate, int resumeAnchor, int anchors) =>
+            sameCandidate ? Math.Clamp(resumeAnchor, 0, anchors) : 0;
         private long _nextClearFirstLog;
         /// <summary>When the raid began mustering for its final encounter (0: not yet; Darkness Falls' late objectives).</summary>
         private long _finalMusterSince;
@@ -751,6 +767,11 @@ namespace DOL.GS
                 { why.Add($"{id}: not this realm's entrance"); continue; }
                 if (homeRegion != 0 && !RealmRaidStaging.TryDungeonPost(nav, outside, new(outer.SourceX, outer.SourceY, outer.SourceZ), 0, [], out _))
                 { why.Add($"{id}: no staging post outside"); continue; }
+                // Through an approach dungeon (Summoner's Hall from Hall of the Corrupt): the walk from where the outer crossing
+                // lands to the inner crossing must exist (DividedRealms, night 2026-11-04: region 277 had no such walk on its
+                // mesh, and 146 raiders were held there 72 minutes before the raid ended unreached).
+                if (outer.Id != inner.Id && !ApproachDungeonConnects(nav, outer, inner))
+                { why.Add($"{id}: no proven walk through region {outer.TargetRegion} to its crossing"); continue; }
                 Vector3 raw = new(inner.TargetX, inner.TargetY, inner.TargetZ);
                 Vector3? floor = nav.GetClosestPoint(inside, raw, 48, 48, 64, nav.DefaultFilters);
                 if (!floor.HasValue) { why.Add($"{id}: no navmesh floor at the inside arrival point"); continue; }
@@ -767,6 +788,23 @@ namespace DOL.GS
             }
             LastFailure = why.Count == 0 ? "no entrance crossing into the region for this realm" : string.Join("; ", why);
             return false;
+        }
+
+        /// <summary>A walk exists through the approach dungeon from where <paramref name="outer"/> lands to where
+        /// <paramref name="inner"/> leaves it (DividedRealms). Proven inside one zone's mesh; crossings in two zones of the
+        /// region are left to the bots' router.</summary>
+        private static bool ApproachDungeonConnects(IPathfindingMgr nav, DbZonePoint outer, DbZonePoint inner)
+        {
+            Region through = WorldMgr.GetRegion(outer.TargetRegion);
+            Zone arrivalZone = through?.GetZone(outer.TargetX, outer.TargetY);
+            Zone exitZone = through?.GetZone(inner.SourceX, inner.SourceY);
+            if (arrivalZone == null || exitZone == null || !nav.HasNavmesh(arrivalZone))
+                return false;
+            if (arrivalZone != exitZone)
+                return true;
+            Vector3? arrival = nav.GetClosestPoint(arrivalZone, new(outer.TargetX, outer.TargetY, outer.TargetZ), 64, 64, 128, nav.DefaultFilters);
+            return arrival.HasValue && AutonomousZonePointApproach.TryResolve(nav, arrivalZone, arrival.Value,
+                new(inner.SourceX, inner.SourceY, inner.SourceZ), 220, out _);
         }
 
         /// <summary>
@@ -2211,11 +2249,14 @@ namespace DOL.GS
                     .Where(p => p.Group == null || p.Group.LivingLeader == p)
                     .Select(p => new Vector3(p.X, p.Y, p.Z)), 6);
             int probes = 0;
+            long probeStart = System.Diagnostics.Stopwatch.GetTimestamp();
             // Resume after the last examined candidate. With more blocked
             // spawns than the per-minute probe budget, always starting at zero
             // would retry the same expired failures and starve later rooms.
             for (int examined = 0; examined < candidates.Length && probes < 3; examined++)
             {
+                // Out of time for this pass: the next pass goes on with the next candidate (DividedRealms).
+                if (examined > 0 && ProbeBudgetSpent(System.Diagnostics.Stopwatch.GetElapsedTime(probeStart).TotalMilliseconds)) break;
                 GameNPC npc = candidates[_probeCursor % candidates.Length];
                 _probeCursor = (_probeCursor + 1) % candidates.Length;
                 if (_routeRetry.GetValueOrDefault(npc) > now) continue;
@@ -2268,12 +2309,24 @@ namespace DOL.GS
                     nav.GetClosestPoint(zone, raw, 128, 128, RangedFlyerReach, nav.DefaultFilters) is Vector3 below && raw.Z - below.Z > 256)
                     raw = below;
                 Vector3 approach = default;
-                bool reachable = false;
-                foreach (Vector3 anchor in anchors)
+                bool reachable = false, outOfTime = false;
+                int firstAnchor = FirstProbeAnchor(ReferenceEquals(_probeResumeNpc, npc), _probeResumeAnchor, anchors.Length);
+                _probeResumeNpc = null;
+                for (int a = firstAnchor; a < anchors.Length; a++)
                 {
+                    Vector3 anchor = anchors[a];
                     Zone anchorZone = WorldMgr.GetRegion(_region)?.GetZone((int)anchor.X, (int)anchor.Y) ?? zone;
                     if (nav.HasNavmesh(anchorZone) && AutonomousZonePointApproach.TryResolve(nav, anchorZone, anchor, raw, 220, out approach))
                     { reachable = true; break; }
+                    if (a + 1 < anchors.Length && ProbeBudgetSpent(System.Diagnostics.Stopwatch.GetElapsedTime(probeStart).TotalMilliseconds))
+                    { _probeResumeNpc = npc; _probeResumeAnchor = a + 1; outOfTime = true; break; }
+                }
+                if (outOfTime)
+                {
+                    // The same candidate again on the next pass, from its next anchor; it is not set aside as unreachable.
+                    _probeCursor = (_probeCursor + candidates.Length - 1) % candidates.Length;
+                    Hold = true; Destination = Front; Status = "Scouting the way to " + npc.Name;
+                    return;
                 }
                 if (!reachable && _region == AutonomousDarknessFallsPolicy.RegionId && _objectives != null &&
                     TryDarknessFallsChain(nav, zone, raw, out Vector3[] chain))

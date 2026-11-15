@@ -352,22 +352,16 @@ namespace DOL.GS
         public const int CourtPullClearance = 1_200;
         /// <summary>...for this long (a court monster dies in 20-60 s: PC log e3b8238, "KILLED dark light 1.0m" from the muster).</summary>
         public const int CourtPullHorizonSeconds = 35;
-        /// <summary>He walks his patrol at this speed (CryptLordBrain.LordPath: WalkTo(point, 100)).</summary>
-        public const int CryptLordWalkSpeed = 100;
+        /// <summary>He walks his patrol at this speed (CryptLord.PATROL_SPEED).</summary>
+        public const int CryptLordWalkSpeed = CryptLord.PATROL_SPEED;
 
-        /// <summary>His patrol (CryptLordBrain.LordPath): point1 to point4, then the walk back to his path's spawn point, round
-        /// and round while he is out of combat.</summary>
-        public static readonly Vector3[] CryptLordPatrol =
-        [
-            new(28461, 40166, 15373), new(28494, 43144, 15373), new(26751, 43111, 15373), new(26741, 40147, 15373),
-            new(24891, 40139, 15372),
-        ];
+        /// <summary>His patrol (CryptLord.PatrolPoints, his scripted loop since the OpenDAoC-Core c2a55c5b9 port): point1 to
+        /// point4, then the walk back to his path's spawn point, round and round while he is out of combat.</summary>
+        public static readonly Vector3[] CryptLordPatrol = LoopFromSecondPoint(CryptLord.PatrolPoints);
 
-        /// <summary>The patrol point he walks to now, from his script's flags (point1check..point4check, walkback). Settable
-        /// for tests.</summary>
-        public static Func<int> CryptLordNextPoint = () =>
-            NextUnreached([CryptLordBrain.point1check, CryptLordBrain.point2check, CryptLordBrain.point3check,
-                CryptLordBrain.point4check, CryptLordBrain.walkback]);
+        /// <summary>The patrol point <paramref name="lord"/> walks to now, from his scripted loop's current point. Settable for
+        /// tests.</summary>
+        public static Func<GameNPC, int> CryptLordNextPoint = lord => NextOnScriptedLoop(lord, CryptLordPatrol.Length);
 
         /// <summary>
         /// A court monster at <paramref name="spot"/> can be fought now (pure): the Crypt Lord, at <paramref name="lord"/>
@@ -400,7 +394,7 @@ namespace DOL.GS
             if (!IsCryptLordCourt(target) || BossNear(target, live, nameof(CryptLord), CryptLordCourtRange) is not { } lord ||
                 lord.InCombat)
                 return null;
-            float near = CourtPullApproach(At(lord), CryptLordNextPoint(), At(target));
+            float near = CourtPullApproach(At(lord), CryptLordNextPoint(lord), At(target));
             return near >= CourtPullClearance ? null
                 : $"the Crypt Lord's patrol comes within {(int)near} of it in the next {CourtPullHorizonSeconds} s " +
                   $"(a court monster fighting within {CryptLordCourtLink} pulls him)";
@@ -438,27 +432,12 @@ namespace DOL.GS
         public const int HostBafClearance = 900;
         /// <summary>...for this long.</summary>
         public const int HostBafHorizonSeconds = 45;
-        /// <summary>He walks at this speed (HostBrain.HostPath: WalkTo(point, 100)): his whole loop takes about 330 s.</summary>
-        public const int HostWalkSpeed = 100;
+        /// <summary>He walks at this speed (Host.PATROL_SPEED): his whole loop takes about 330 s.</summary>
+        public const int HostWalkSpeed = Host.PATROL_SPEED;
 
-        /// <summary>His patrol (HostBrain.HostPath): point1 to point51 down and up the three floors, then his spawn (the
-        /// Initializator's spot).</summary>
-        public static readonly Vector3[] HostPatrol =
-        [
-            new(26749, 29730, 17871), new(26180, 30241, 17871), new(25743, 30447, 17861), new(25154, 30151, 17861),
-            new(24901, 29673, 17861), new(25376, 29310, 17861), new(25360, 29635, 17866), new(25608, 29967, 17702),
-            new(25984, 29902, 17534), new(26121, 29617, 17405), new(25889, 29309, 17251), new(25453, 29390, 17051),
-            new(25372, 29775, 16897), new(25946, 29958, 16638), new(26116, 29523, 16495), new(26106, 29305, 16495),
-            new(25061, 29335, 16495), new(25046, 30229, 16495), new(25686, 30428, 16495), new(26832, 29793, 16495),
-            new(25718, 29012, 16495), new(25358, 29563, 16495), new(25426, 29842, 16406), new(25842, 29983, 16223),
-            new(26129, 29643, 16039), new(25714, 29267, 15796), new(25345, 29587, 15588), new(25711, 29995, 15357),
-            new(26123, 29645, 15122), new(25796, 28979, 15120), new(24729, 29725, 15119), new(25695, 30592, 15119),
-            new(26792, 29721, 15119), new(26102, 29302, 15120), new(26085, 29802, 15192), new(25487, 29903, 15457),
-            new(25370, 29483, 15625), new(25873, 29309, 15872), new(26103, 29695, 16058), new(25693, 29975, 16284),
-            new(25352, 29538, 16495), new(25775, 29107, 16495), new(26114, 29597, 16495), new(25730, 29985, 16722),
-            new(25368, 29610, 16957), new(25705, 29283, 17169), new(26109, 29587, 17393), new(25759, 30023, 17632),
-            new(25359, 29578, 17871), new(25809, 29142, 17871), new(26344, 29391, 17871), new(26995, 29733, 17871),
-        ];
+        /// <summary>His patrol (Host.PatrolPoints, his scripted loop since the OpenDAoC-Core cadc7b8c0 port): point1 to point51
+        /// down and up the three floors, then his spawn (the Initializator's spot).</summary>
+        public static readonly Vector3[] HostPatrol = LoopFromSecondPoint(Host.PatrolPoints);
 
         /// <summary>The ambush: point32 of his patrol, the bottom floor's south side, the one nearest the way the raid comes
         /// in (PC log e3b8238: the archlich's muster at 25669,31396,15120, 804 from it).</summary>
@@ -470,18 +449,9 @@ namespace DOL.GS
         /// <summary>...and this many.</summary>
         public const int HostAmbushWindowSeconds = 25;
 
-        private static System.Reflection.FieldInfo[] _hostPathFlags;
-
-        /// <summary>The patrol point the Hosts walk to now, from HostBrain's flags (path1..path51; then his spawn). They are
-        /// static, shared by all eight copies, which walk as one. Settable for tests.</summary>
-        public static Func<int> HostNextPoint = () =>
-        {
-            _hostPathFlags ??= Enumerable.Range(1, 51)
-                .Select(i => typeof(HostBrain).GetField("path" + i, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
-                .ToArray();
-            bool[] reached = _hostPathFlags.Select(f => f?.GetValue(null) is true).Append(false).ToArray();
-            return NextUnreached(reached);
-        };
+        /// <summary>The patrol point <paramref name="host"/> walks to now, from his scripted loop's current point (each of the
+        /// eight copies walks his own; they start together from the Initializator's spot). Settable for tests.</summary>
+        public static Func<GameNPC, int> HostNextPoint = host => NextOnScriptedLoop(host, HostPatrol.Length);
 
         /// <summary>How near a Host at <paramref name="host"/> walking to <see cref="HostPatrol"/>[<paramref name="next"/>]
         /// comes to <paramref name="spot"/> between <paramref name="fromSeconds"/> and <paramref name="toSeconds"/> from now (pure).</summary>
@@ -534,8 +504,7 @@ namespace DOL.GS
             {
                 GameNPC[] hosts = LiveOfType(live, nameof(Host)).Where(h => h.CurrentRegionID == target.CurrentRegionID).ToArray();
                 if (hosts.Length == 0 || hosts.Any(h => h.InCombat)) return null;
-                int next = HostNextPoint();
-                float near = hosts.Min(h => HostApproach(At(h), next, At(target), 0, HostBafHorizonSeconds));
+                float near = hosts.Min(h => HostApproach(At(h), HostNextPoint(h), At(target), 0, HostBafHorizonSeconds));
                 return near >= HostBafClearance ? null
                     : $"the Hosts' patrol comes within {(int)near} of it in the next {HostBafHorizonSeconds} s (they aggro at {HostPatrolAggro})";
             }
@@ -546,7 +515,7 @@ namespace DOL.GS
             if (linked > 0) return $"{linked} of his linked monsters live (every one joins his fight): they die first";
             GameNPC real = RealHost(target, live) ?? target;
             if (Vector3.Distance(At(real), HostAmbush) <= HostAmbushReach) return null;
-            float due = HostApproach(At(real), HostNextPoint(), HostAmbush, HostAmbushLeadSeconds, HostAmbushWindowSeconds);
+            float due = HostApproach(At(real), HostNextPoint(real), HostAmbush, HostAmbushLeadSeconds, HostAmbushWindowSeconds);
             return due <= HostAmbushReach ? null : "the raid waits at its ambush on his patrol for him to come by";
         }
 

@@ -26,7 +26,7 @@ namespace DOL.UnitTests
         private Region _region;
         private ushort _nextId = 2000;
         private EpicTestServerScope _server;
-        private Func<int> _lordNext, _hostNext;
+        private Func<GameNPC, int> _lordNext, _hostNext;
         private Func<GameNPC, bool> _agmundrCasting;
         private Func<GameNPC, int?> _floorUnder;
 
@@ -188,6 +188,46 @@ namespace DOL.UnitTests
             Assert.That(T.NextUnreached([true, true]), Is.EqualTo(0), "all reached: the loop starts again");
         }
 
+        [Test]
+        public void TheScriptedLoopsAreThePatrolsTheRaidPredicts()
+        {
+            // OpenDAoC-Core c2a55c5b9 / cadc7b8c0 (1.2 port): the Crypt Lord and the Host walk scripted loop paths, their points
+            // starting at the spawn; the predictions read them in the old WalkTo chains' order (point1 first, the spawn last).
+            Assert.That(T.CryptLordPatrol, Is.EqualTo(new Vector3[]
+            {
+                new(28461, 40166, 15373), new(28494, 43144, 15373), new(26751, 43111, 15373), new(26741, 40147, 15373),
+                new(24891, 40139, 15372),
+            }));
+            Assert.That(T.HostPatrol.Length, Is.EqualTo(52), "point1 to point51 and his spawn");
+            Assert.That(T.HostPatrol[0], Is.EqualTo(new Vector3(26749, 29730, 17871)));
+            Assert.That(T.HostPatrol[31], Is.EqualTo(T.HostAmbush), "point32 is still the ambush");
+            Assert.That(T.HostPatrol[^1], Is.EqualTo(new Vector3(26995, 29733, 17871)), "his spawn last");
+            Assert.That(T.CryptLordWalkSpeed, Is.EqualTo(100));
+            Assert.That(T.HostWalkSpeed, Is.EqualTo(100));
+
+            var lord = Npc<TestCryptLord>(24891, 40139, 15372);
+            Assert.That(lord.CanMoveOnPath, Is.False);
+            Assert.That(T.CryptLordNextPoint(lord), Is.EqualTo(0), "no path yet: point1");
+            lord.SetScriptedPath(DOL.GS.Movement.MovementMgr.CreatePath(DOL.Database.EPathType.Loop, CryptLord.PATROL_SPEED, CryptLord.PatrolPoints));
+            Assert.That(lord.CanMoveOnPath, Is.True, "a scripted loop is patrolled like a database path");
+            Assert.That(lord.CurrentPathPoint, Is.SameAs(lord.ScriptedPath));
+            Assert.That(T.CryptLordNextPoint(lord), Is.EqualTo(4), "at his spawn: the loop's last point");
+            lord.CurrentPathPoint = lord.ScriptedPath.Next.Next;
+            Assert.That(T.CryptLordNextPoint(lord), Is.EqualTo(1), "walking to point2");
+            Assert.That(lord.CurrentPathPoint.Type, Is.EqualTo(DOL.Database.EPathType.Loop));
+            Assert.That(lord.CurrentPathPoint.MaxSpeed, Is.EqualTo(CryptLord.PATROL_SPEED));
+
+            var host = Npc<TestHost>(26995, 29733, 17871);
+            host.SetScriptedPath(DOL.GS.Movement.MovementMgr.CreatePath(DOL.Database.EPathType.Loop, Host.PATROL_SPEED, Host.PatrolPoints));
+            var point = host.ScriptedPath;
+            for (int i = 0; i < 32; i++) point = point.Next;
+            host.CurrentPathPoint = point;
+            Assert.That(T.HostNextPoint(host), Is.EqualTo(31), "walking to point32");
+            Assert.That(new Vector3(point.X, point.Y, point.Z), Is.EqualTo(T.HostAmbush));
+            host.SetScriptedPath(null);
+            Assert.That(host.CanMoveOnPath, Is.False);
+        }
+
         // ---- the Crypt Lord's court ---------------------------------------------------------------------------------
 
         private (TestCryptLord Lord, Mob Court, List<GameNPC> Live) CryptLordRoom(int courtX, int courtY)
@@ -219,19 +259,19 @@ namespace DOL.UnitTests
             // A court monster by his patrol's first corner (28461,40166): he walks there from his path's spawn point.
             var (lord, court, live) = CryptLordRoom(28513, 39881);
             Move(lord, 26746, 42500, 15373);
-            T.CryptLordNextPoint = () => 3;
+            T.CryptLordNextPoint = _ => 3;
             Assert.That(T.PullWait(court, live, 1_000), Is.Null, "walking down the far side of his rectangle: 1,700 and more off");
             Move(lord, 24891, 40139, 15372);
-            T.CryptLordNextPoint = () => 0;
+            T.CryptLordNextPoint = _ => 0;
             Assert.That(T.PullWait(court, live, 1_000), Does.Contain("patrol comes within"), "he is on his way to it");
             // Past it, walking away up the far leg.
             Move(lord, 28490, 42300, 15373);
-            T.CryptLordNextPoint = () => 1;
+            T.CryptLordNextPoint = _ => 1;
             Assert.That(T.PullWait(court, live, 1_000), Is.Null, "walking away from it");
             Assert.That(T.CourtPullApproach(new(28490, 42300, 15373), 1, new(28513, 39881, 15373)), Is.GreaterThanOrEqualTo(T.CourtPullClearance));
             // In his fight there is nothing to time, and a monster that fights is never held.
             Move(lord, 27200, 40150, 15373);
-            T.CryptLordNextPoint = () => 0;
+            T.CryptLordNextPoint = _ => 0;
             lord.Fighting = true;
             Assert.That(T.PullWait(court, live, 1_000), Is.Null);
             lord.Fighting = false;
@@ -318,13 +358,13 @@ namespace DOL.UnitTests
             archlich.Name = "archlich";
             archlich.PackageID = T.HostLinkedPackage;
             live.Add(archlich);
-            T.HostNextPoint = () => 2;
+            T.HostNextPoint = _ => 2;
             Assert.That(T.ClearFirstOwner(archlich, live), Is.SameAs(real));
             Assert.That(T.PullWait(archlich, live, 1_000), Is.Null, "the Hosts are a floor away");
             Assert.That(T.PullWait(copy, live, 1_000), Does.Contain("linked monsters"), "the Hosts wait while it lives");
             // The Hosts coming down the ramp to the bottom floor.
             Move(real, 25711, 29995, 15357); Move(copy, 25711, 29995, 15357);
-            T.HostNextPoint = () => 28;
+            T.HostNextPoint = _ => 28;
             Assert.That(T.PullWait(archlich, live, 1_000), Does.Contain("patrol comes within"));
             archlich.Fighting = true;
             Assert.That(T.PullWait(archlich, live, 1_000), Is.Null, "a fight on is never held");
@@ -334,15 +374,15 @@ namespace DOL.UnitTests
         public void TheRaidWaitsAtItsAmbushForTheRealHost()
         {
             var (real, copy, live) = Hosts(new(26749, 29730, 17871));
-            T.HostNextPoint = () => 1;
+            T.HostNextPoint = _ => 1;
             Assert.That(T.PullWait(real, live, 1_000), Does.Contain("ambush"), "on the top floor: the raid waits");
             // Point 31 to 32 is 1,300 long: from point 31 he reaches the ambush (point 32) in 13 s.
             Move(real, 24729, 29725, 15119); Move(copy, 24729, 29725, 15119);
-            T.HostNextPoint = () => 31;
+            T.HostNextPoint = _ => 31;
             Assert.That(T.PullWait(real, live, 1_000), Is.Null, "he comes by within the window: in");
             Assert.That(T.PullWait(copy, live, 1_000), Is.Null, "whichever copy the raid musters for");
             Move(real, T.HostAmbush.X, T.HostAmbush.Y, T.HostAmbush.Z);
-            T.HostNextPoint = () => 32;
+            T.HostNextPoint = _ => 32;
             Assert.That(T.PullWait(real, live, 1_000), Is.Null, "at the ambush now");
         }
 

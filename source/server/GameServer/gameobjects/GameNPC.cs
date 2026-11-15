@@ -865,6 +865,9 @@ namespace DOL.GS
 		public bool IsAtDestination => movementComponent.IsAtDestination;
 		public bool CanRoam => movementComponent.CanRoam;
 		public bool CanMoveOnPath => movementComponent.CanMoveOnPath;
+		/// <summary>Offline DAoC: patrol a path built in code (MovementMgr.CreatePath) round and round; see NpcMovementComponent.ScriptedPath.</summary>
+		public void SetScriptedPath(DOL.GS.Movement.PathPoint first) => movementComponent.SetScriptedPath(first);
+		public DOL.GS.Movement.PathPoint ScriptedPath => movementComponent.ScriptedPath;
 
 		public void WalkTo(Point3D target, short speed)
 		{

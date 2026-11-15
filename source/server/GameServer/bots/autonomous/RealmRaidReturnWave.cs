@@ -8,7 +8,8 @@ namespace DOL.GS;
 /// to the raid's hub and walks back; alone it meets every monster that has come back on the way to the muster deep
 /// inside. Owner's PC, 2026-11-12: after a wipe the muster stayed empty for 20 minutes in six dungeons and the encounter
 /// was set aside. Now the raiders outside the dungeon wait at their party's staging by the way in, as before the raid
-/// went in, and enter as a wave. A few stragglers walk straight in, and nobody waits long.
+/// went in, and enter as a wave. A few stragglers walk straight in, and nobody waits long. Dragon raids too (1.2, from
+/// True165): a raider who released waits at its party's staging post on the ring and goes back in with a wave.
 /// </summary>
 public static class RealmRaidReturnWave
 {
@@ -50,6 +51,29 @@ public static class RealmRaidReturnWave
     public const long OpenMilliseconds = 2 * 60_000;
 
     public enum Step { Open, Gather, Go }
+
+    // ---- dragon raids (from zomboden/OfflineDAoC-True165, AutonomousRealmRaid.Reinforcements.cs, adapted) -----------------
+
+    /// <summary>A dragon raider farther than this from the lair (beyond the staging ring, 3,600-6,100 out) is not with the
+    /// raid: it is on its way back.</summary>
+    public const float DragonReturnDistance = 6_700;
+
+    public enum DragonRaider { NotYet, WithTheRaid, Returning, Fallen }
+
+    /// <summary>
+    /// Where a dragon raider stands for the return wave (pure): <paramref name="alive"/>; <paramref name="beenWithRaid"/>,
+    /// seen within <see cref="DragonReturnDistance"/> of the lair since the raid began; <paramref name="returning"/>, already
+    /// on its way back; <paramref name="distanceToLair"/>, flat (float.MaxValue out of the dragon's region). A raider down
+    /// is Fallen (it will release and walk back) once it has been with the raid; one on its way back stays Returning until
+    /// its wave goes; one that never reached the raid is still on its way in (NotYet) and is never held.
+    /// </summary>
+    public static DragonRaider ClassifyDragonRaider(bool alive, bool beenWithRaid, bool returning, float distanceToLair)
+    {
+        if (!alive) return beenWithRaid || returning ? DragonRaider.Fallen : DragonRaider.NotYet;
+        if (returning) return DragonRaider.Returning;
+        if (distanceToLair <= DragonReturnDistance) return DragonRaider.WithTheRaid;
+        return beenWithRaid ? DragonRaider.Returning : DragonRaider.NotYet;
+    }
 
     /// <summary>
     /// What the raiders outside the dungeon do now. <paramref name="outside"/>: living raiders not in the dungeon;

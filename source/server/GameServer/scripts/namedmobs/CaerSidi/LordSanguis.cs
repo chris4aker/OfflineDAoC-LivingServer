@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 using DOL.AI.Brain;
 using DOL.Events;
 using DOL.Database;
 using DOL.GS;
 using DOL.GS.PacketHandler;
+using static DOL.GS.Pathfinder;
 
 namespace DOL.GS
 {
@@ -77,7 +80,7 @@ namespace DOL.GS
             return true;
         }
 
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
             if (Spawn_Lich_Lord == false)
             {
@@ -87,10 +90,10 @@ namespace DOL.GS
                 Spawn_Lich_Lord = true;
             }
 
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 
-        public static bool Spawn_Lich_Lord = false;
+        public bool Spawn_Lich_Lord = false;
 
         public int SpawnLich(ECSGameTimer timer)
         {
@@ -106,12 +109,22 @@ namespace DOL.GS
 
         public void SpawnMages()
         {
+            Vector3 position = new(X, Y, Z);
+            Zone zone = CurrentZone;
+            bool usePathfinding = zone != null && zone.IsPathfindingEnabled;
+            EDtPolyFlags[] filters = usePathfinding ? PathfindingProvider.Instance.DefaultFilters : null;
+
             for (int i = 0; i < Util.Random(2, 4); i++) // Spawn 2-4 mages
             {
+                // Pick positions on the navmesh whenever possible, so that mages can't spawn inside walls.
+                Vector3 spawnPoint = usePathfinding ?
+                    PathfindingProvider.Instance.GetRandomPoint(zone, position, 80, filters) ?? position :
+                    new(X + Util.Random(-50, 80), Y + Util.Random(-50, 80), Z);
+
                 BloodMage Add = new BloodMage();
-                Add.X = X + Util.Random(-50, 80);
-                Add.Y = Y + Util.Random(-50, 80);
-                Add.Z = Z;
+                Add.X = (int) spawnPoint.X;
+                Add.Y = (int) spawnPoint.Y;
+                Add.Z = (int) spawnPoint.Z;
                 Add.CurrentRegion = CurrentRegion;
                 Add.Heading = Heading;
                 Add.AddToWorld();
@@ -174,6 +187,15 @@ namespace DOL.AI.Brain
             AggroRange = 500;
         }
         private bool RemoveAdds = false;
+        private readonly List<GameNPC> _mages = new List<GameNPC>();
+        private int AliveMageCount
+        {
+            get
+            {
+                _mages.RemoveAll(npc => npc == null || !npc.IsAlive || npc.ObjectState is not GameObject.eObjectState.Active);
+                return _mages.Count;
+            }
+        }
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))
@@ -181,7 +203,7 @@ namespace DOL.AI.Brain
                 //set state to RETURN TO SPAWN
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
                 Body.Health = Body.MaxHealth;
-                BloodMage.MageCount = 0;
+                _mages.Clear();
                 if (!RemoveAdds)
                 {
                     foreach (GameNPC mages in Body.GetNPCsInRadius(5000))
@@ -200,7 +222,7 @@ namespace DOL.AI.Brain
                 RemoveAdds = false;
                 if (Util.Chance(10))
                 {
-                    if (BloodMage.MageCount < 2)
+                    if (AliveMageCount < 2)
                         SpawnMages();
                 }
             }
@@ -215,6 +237,7 @@ namespace DOL.AI.Brain
             Add.CurrentRegion = Body.CurrentRegion;
             Add.Heading = Body.Heading;
             Add.AddToWorld();
+            _mages.Add(Add);
         }
     }
 }
@@ -278,7 +301,6 @@ namespace DOL.GS
             Name = "Lich Lord Sanguis";
             ParryChance = 35;
             RespawnInterval = -1;
-            LichLordSanguisBrain.set_flag = false;
 
             TetherRange = 2000;
             Size = 100;
@@ -288,7 +310,6 @@ namespace DOL.GS
             Faction = FactionMgr.GetFactionByID(64);
             BodyType = 8;
             Realm = eRealm.None;
-            LichLordSanguisBrain.set_flag = false;
             LichLordSanguisBrain adds = new LichLordSanguisBrain();
             SetOwnBrain(adds);
             base.AddToWorld();
@@ -321,7 +342,7 @@ namespace DOL.AI.Brain
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public static bool set_flag = false;
+        public bool set_flag = false;
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))
@@ -351,6 +372,9 @@ namespace DOL.GS
 {
     public class BloodMage : GameNPC //thrust resist
     {
+        private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+        private const int DESPAWN_RETRY_INTERVAL = 30000;
+
         public BloodMage() : base()
         {
         }
@@ -375,13 +399,6 @@ namespace DOL.GS
             get { return 8000; }
         }
 
-        public override void Die(GameObject killer)
-        {
-            --MageCount;
-            base.Die(killer);
-        }
-
-        public static int MageCount = 0;
         public override short Quickness { get => base.Quickness; set => base.Quickness = 80; }
         public override short Strength { get => base.Strength; set => base.Strength = 150; }   
         public override bool AddToWorld()
@@ -413,12 +430,25 @@ namespace DOL.GS
             Faction = FactionMgr.GetFactionByID(64);
             BodyType = 6;
             Realm = eRealm.None;
-            ++MageCount;
 
             BloodMageBrain adds = new BloodMageBrain();
             SetOwnBrain(adds);
+            new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
             base.AddToWorld();
             return true;
+        }
+
+        private int Despawn(ECSGameTimer timer)
+        {
+            if (!IsAlive)
+                return 0;
+
+            // Don't despawn mid fight.
+            if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+                return DESPAWN_RETRY_INTERVAL;
+
+            RemoveFromWorld();
+            return 0;
         }
     }
 }

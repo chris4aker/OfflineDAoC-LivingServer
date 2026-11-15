@@ -48,10 +48,10 @@ namespace DOL.GS
         {
             get { return 100000; }
         }
-        public override void Die(GameObject killer) //on kill generate orbs
+        public override void ProcessDeath(GameObject killer) //on kill generate orbs
         {
             SpawnSeers();
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
         public void SpawnSeers()
         {
@@ -487,6 +487,9 @@ namespace DOL.GS
 {
     public class HrimthursaSeer : GameEpicNPC
     {
+        private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+        private const int DESPAWN_RETRY_INTERVAL = 30000;
+
         public HrimthursaSeer() : base()
         {
         }
@@ -542,12 +545,28 @@ namespace DOL.GS
             Realm = eRealm.None;
             RespawnInterval = -1;
 
-            HrimthursaSeerBrain.walkto_point = false;
             HrimthursaSeerBrain adds = new HrimthursaSeerBrain();
             SetOwnBrain(adds);
             LoadedFromScript = false;
+
+            if (PackageID == "SteinvorDeathAdds")
+                new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
+
             base.AddToWorld();
             return true;
+        }
+
+        private int Despawn(ECSGameTimer timer)
+        {
+            if (!IsAlive)
+                return 0;
+
+            // Don't despawn mid fight.
+            if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+                return DESPAWN_RETRY_INTERVAL;
+
+            RemoveFromWorld();
+            return 0;
         }
     }
 }
@@ -566,7 +585,7 @@ namespace DOL.AI.Brain
             ThinkInterval = 1000;
         }
 
-        public static bool walkto_point = false;
+        private bool _walkedToRoom = false;
         public void Walk_To_Room()
         {
             Point3D point1 = new Point3D();
@@ -578,10 +597,10 @@ namespace DOL.AI.Brain
             {
                 if (Body.CurrentRegionID == 160) //TG
                 {
-                    if (!Body.IsWithinRadius(point1, 30) && walkto_point == false)
-                        Body.WalkTo(point1, 100);
+                    if (!Body.IsWithinRadius(point1, 30) && _walkedToRoom == false)
+                        Body.PathTo(point1, 100);
                     else
-                        walkto_point = true;
+                        _walkedToRoom = true;
                 }
             }
         }

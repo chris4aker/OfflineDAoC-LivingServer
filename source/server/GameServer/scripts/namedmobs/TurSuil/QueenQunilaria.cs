@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 using DOL.AI.Brain;
 using DOL.Database;
 using DOL.GS;
 using DOL.GS.PacketHandler;
 using DOL.Events;
+using static DOL.GS.Pathfinder;
 
 namespace DOL.GS
 {
 	public class QueenQunilaria : GameEpicBoss
 	{
 		public QueenQunilaria() : base() { }
+		public readonly List<GameNPC> Minions = new List<GameNPC>();
+		public readonly object MinionsLock = new object();
 
 		[ScriptLoadedEvent]
 		public static void ScriptLoaded(DOLEvent e, object sender, EventArgs args)
@@ -100,19 +105,29 @@ namespace DOL.GS
 			base.AddToWorld();
 			return true;
 		}
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			SpawnAdds();
-            base.Die(killer);
+            base.ProcessDeath(killer);
         }
 		public void SpawnAdds()
 		{
+			Vector3 position = new(X, Y, Z);
+			Zone zone = CurrentZone;
+			bool usePathfinding = zone != null && zone.IsPathfindingEnabled;
+			EDtPolyFlags[] filters = usePathfinding ? PathfindingProvider.Instance.DefaultFilters : null;
+
 			for (int i = 0; i < Util.Random(15,22); i++)
 			{
+				// Pick positions on the navmesh whenever possible, so that adds can't spawn inside walls.
+				Vector3 spawnPoint = usePathfinding ?
+					PathfindingProvider.Instance.GetRandomPoint(zone, position, 100, filters) ?? position :
+					new(X + Util.Random(-100, 100), Y + Util.Random(-100, 100), Z);
+
 				QunilariaAdd2 Add1 = new QunilariaAdd2();
-				Add1.X = X + Util.Random(-100, 100);
-				Add1.Y = Y + Util.Random(-100, 100);
-				Add1.Z = Z;
+				Add1.X = (int) spawnPoint.X;
+				Add1.Y = (int) spawnPoint.Y;
+				Add1.Z = (int) spawnPoint.Z;
 				Add1.CurrentRegion = CurrentRegion;
 				Add1.Heading = Heading;
 				Add1.RespawnInterval = -1;
@@ -134,19 +149,29 @@ namespace DOL.AI.Brain
 		}
 		public void SpawnAdds()
 		{
-			for (int i = 0; i < 3; i++)
+			if (Body is not QueenQunilaria queen)
+				return;
+
+			lock (queen.MinionsLock)
 			{
-				if (QunilariaAdd.MinionCount < 4)
+				queen.Minions.RemoveAll(npc => npc == null || !npc.IsAlive || npc.ObjectState is not GameObject.eObjectState.Active);
+				int minionCount = queen.Minions.Count;
+				for (int i = 0; i < 3; i++)
 				{
-					QunilariaAdd Add1 = new QunilariaAdd();
-					Add1.X = Body.X + Util.Random(-100, 100);
-					Add1.Y = Body.Y + Util.Random(-100, 100);
-					Add1.Z = Body.Z;
-					Add1.CurrentRegion = Body.CurrentRegion;
-					Add1.Heading = Body.Heading;
-					Add1.RespawnInterval = -1;
-					Add1.PackageID = "QunilariaCombatAdd";
-					Add1.AddToWorld();
+					if (minionCount < 4)
+					{
+						QunilariaAdd Add1 = new QunilariaAdd();
+						Add1.X = Body.X + Util.Random(-100, 100);
+						Add1.Y = Body.Y + Util.Random(-100, 100);
+						Add1.Z = Body.Z;
+						Add1.CurrentRegion = Body.CurrentRegion;
+						Add1.Heading = Body.Heading;
+						Add1.RespawnInterval = -1;
+						Add1.PackageID = "QunilariaCombatAdd";
+						Add1.AddToWorld();
+						queen.Minions.Add(Add1);
+						++minionCount;
+					}
 				}
 			}
 		}
@@ -235,14 +260,8 @@ namespace DOL.GS
 			get { return 3000; }
 		}
 
-		public static int MinionCount = 0;
 		public override bool CanDropLoot => false;
 		public override long ExperienceValue => 0;
-		public override void Die(GameObject killer)
-		{
-			--MinionCount;
-			base.Die(killer);
-		}
 		public override bool AddToWorld()
 		{
 			Model = 764;
@@ -254,7 +273,6 @@ namespace DOL.GS
 			RespawnInterval = -1;
 			MaxSpeedBase = 225;
 
-			++MinionCount;
 			Size = (byte)Util.Random(80, 100);
 			Level = (byte)Util.Random(58, 64);
 			Faction = FactionMgr.GetFactionByID(93);
@@ -270,6 +288,9 @@ namespace DOL.GS
 {
 	public class QunilariaAdd2 : GameNPC
 	{
+		private const int DESPAWN_DELAY = 180000; // Death-spawned adds despawn if they're left alone.
+		private const int DESPAWN_RETRY_INTERVAL = 30000;
+
 		public override int GetResist(eDamageType damageType)
 		{
 			switch (damageType)
@@ -311,8 +332,22 @@ namespace DOL.GS
 			Faction = FactionMgr.GetFactionByID(93);
 			QunilariaAddBrain add = new QunilariaAddBrain();
 			SetOwnBrain(add);
+			new ECSGameTimer(this, Despawn, DESPAWN_DELAY);
 			base.AddToWorld();
 			return true;
+		}
+
+		private int Despawn(ECSGameTimer timer)
+		{
+			if (!IsAlive)
+				return 0;
+
+			// Don't despawn mid fight.
+			if (InCombat || Brain is StandardMobBrain { HasAggro: true })
+				return DESPAWN_RETRY_INTERVAL;
+
+			RemoveFromWorld();
+			return 0;
 		}
 	}
 }

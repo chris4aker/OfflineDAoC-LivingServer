@@ -122,7 +122,7 @@ namespace DOL.GS
 			}
 			return count;
 		}
-		public override void Die(GameObject killer)
+		public override void ProcessDeath(GameObject killer)
 		{
             if (Brain is AlbGolestandtBrain encounterBrain) encounterBrain.EncounterAdds.Reset();
 				// debug
@@ -150,7 +150,7 @@ namespace DOL.GS
 				}
 
 			AwardDragonKillPoint();
-				base.Die(killer);
+				base.ProcessDeath(killer);
 
 				foreach (String message in m_deathAnnounce)
 				{
@@ -210,7 +210,7 @@ namespace DOL.GS
 				base.StartAttack(target);
 		}
 		private static readonly Point3D spawnPoint = DragonLairPlacement.Home(eRealm.Albion);
-		public override ushort SpawnHeading { get => base.SpawnHeading; set => base.SpawnHeading = 2071; }
+		public override ushort SpawnHeading { get => 2071; set { } }
 		public override Point3D SpawnPoint { get => spawnPoint; set => base.SpawnPoint = spawnPoint; }
 		public override bool AddToWorld()
 		{

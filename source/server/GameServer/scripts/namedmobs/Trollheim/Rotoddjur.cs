@@ -41,7 +41,7 @@ namespace DOL.GS
 		{
 			get { return 10000; }
 		}
-        public override void Die(GameObject killer)
+        public override void ProcessDeath(GameObject killer)
         {
 			foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(CurrentRegionID))
 			{
@@ -53,7 +53,7 @@ namespace DOL.GS
 					}
 				}
 			}
-			base.Die(killer);
+			base.ProcessDeath(killer);
         }
         public override bool AddToWorld()
 		{
@@ -81,7 +81,7 @@ namespace DOL.AI.Brain
 			AggroLevel = 100;
 			AggroRange = 500;
 		}
-		public static bool IsPulled = false;
+		public bool IsPulled = false;
 		private bool RemoveAdds = false;
 		public override void Think()
 		{
