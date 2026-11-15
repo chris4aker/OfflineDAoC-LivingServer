@@ -327,7 +327,7 @@ namespace DOL.GS.MonthlyQuest.Albion
 			if (e == GameLivingEvent.EnemyKilled && Step == 1 && PlayersKilled < MAX_KILLING_GOAL)
 			{
 				EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
-				if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || gArgs.Target is not GamePlayer ||
+				if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 				    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 				if (gArgs.Target.CurrentRegionID != 100 && gArgs.Target.CurrentRegionID != 200 &&
 				    gArgs.Target.CurrentRegionID != 1)
