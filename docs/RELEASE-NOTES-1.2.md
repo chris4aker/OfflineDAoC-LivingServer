@@ -8,7 +8,7 @@ launcher's update check reads GitHub's latest release, which leaves pre-releases
 describe work still on its own branch: keep them only if it is merged before the tag, and drop the marker. Lines marked
 "[owner: ...]" are for the owner to fill in before publishing. Nothing here names the Easter eggs or the project's
 internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #225
-(and since then #226, #228, #229 and #231; #230 is still open):
+(and since then #226, #228, #229, #230 and #231):
 the raid flow and boss tactics from the sweep, the Darkness Falls raid AI, Legion, the raid plans for every realm's big
 bosses and the open-world bosses, the route blockers, the period research, the upstream boss fixes and the epic armor
 rule. Every figure was checked on 2026-11-14 against integration/1.2 at 1dc66b6 (#225): the encounter counts against
@@ -382,7 +382,7 @@ only".
     and the sweep's raid fixes): Midgard's Darkness Falls raid, which the game opened itself, killed 41 named and Legion
     in one attempt, with no wipe. Hibernia's lost to Legion twice (lowest 92% and 60%). Caer Sidi, Tuscaran Glacier and
     Galladoria were lost, and Albion's Summoner's Hall was never reached.
-  - The night of 14 to 15 November (build 1dc66b6, bots only): Albion's automatic raid, a raid the game opened itself
+  - The night of 14 to 15 November (build 1dc66b6): Hall of the Corrupt's own Albion raid, a raid the game opened itself
     with the storyteller's tale first and then the horn call, beat Aidon the Archwizard in Hall of the Corrupt in 71
     minutes with no wipe. In the sweep, Galladoria's raid killed Spindler Broodmother, the first Broodmother kill on the
     1.2 candidate line, and then stalled behind Easmarach's falls. Albion's Summoner's Hall raid lost at Aidon on its
@@ -398,7 +398,7 @@ only".
 ### Known issues (it's a beta)
 
 - **Fights the bot raids still lose.** On build 1dc66b6 (14 to 15 November), Galladoria stalled behind Easmarach's
-  falls after Spindler Broodmother died [if it lands: a fix since (#230), tests only], and Albion's Summoner's Hall
+  falls after Spindler Broodmother died (fixed since in #230, tests only), and Albion's Summoner's Hall
   raid lost at Aidon on its way in, two wipes in 58 minutes (since then whoever Aidon chases out of his room leads him
   back: tests only). On build e3b8238 (14 November) Caer Sidi, Tuscaran Glacier and Hibernia's Darkness Falls (at
   Legion) were lost. [owner: tonight's sweep, filled in before publishing: Tuscaran Glacier, Caer Sidi, Krondon,
