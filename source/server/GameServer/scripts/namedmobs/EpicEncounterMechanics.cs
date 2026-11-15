@@ -79,10 +79,10 @@ namespace DOL.GS
         /// since 1.2: the raid fights each horseman within 2,700 of his spawn (catalog fight-at-home) and leads him back.</summary>
         public static bool AllowHorsemenTetherHeal { get => ServerProperties.Properties.EPIC_HORSEMEN_TETHER_HEAL; set => ServerProperties.Properties.EPIC_HORSEMEN_TETHER_HEAL = value; }
         /// <summary>Funus takes damage only from clerics and from mercenaries, armsmen, infiltrators and scouts with their
-        /// listed weapon; any other attacker (pets included) heals him to full. On since 1.2: only those raiders fight him,
+        /// listed weapon; any other attacker (pets included) heals him to full. Off by default; when on, only those raiders fight him,
         /// everyone else stands clear and never puts an area spell on him (EpicEncounterTactics.CaerSidi).</summary>
         public static bool AllowFunusWeaponPuzzle { get => ServerProperties.Properties.EPIC_FUNUS_WEAPON_PUZZLE; set => ServerProperties.Properties.EPIC_FUNUS_WEAPON_PUZZLE = value; }
-        /// <summary>Skeletal Sacristan walks his loop at 220 without stopping, with 70% magic resists. On since 1.2: the raid's
+        /// <summary>Skeletal Sacristan walks his loop at 195-250 without stopping, with 70% magic resists. On since 1.2: the raid's
         /// parties wait at stations along his loop and hit him as he passes (EpicEncounterTactics.CaerSidi).</summary>
         public static bool AllowSacristanPatrol { get => ServerProperties.Properties.EPIC_SACRISTAN_PATROL; set => ServerProperties.Properties.EPIC_SACRISTAN_PATROL = value; }
         /// <summary>Soul Reckoner takes no damage at all while a reckoned soul lives (not a quarter). On since 1.2: the souls
