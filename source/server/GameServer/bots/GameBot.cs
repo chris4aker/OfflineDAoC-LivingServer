@@ -272,11 +272,16 @@ namespace DOL.GS
 
         /// <summary>A player drags an item onto the bot: only a beggar takes it (AutonomousBeggars), into its own saved pack.</summary>
         public override bool ReceiveItem(GameLiving source, DbInventoryItem item) =>
-            AutonomousBeggars.TryReceiveItem(this, source as GamePlayer, item) || base.ReceiveItem(source, item);
+            AutonomousBeggars.TryReceiveItem(this, source as GamePlayer, item) ||
+            // A seam (Crafting 2.0 WP0): crafter commerce (WP8) after the beggars; it takes nothing by default.
+            CraftingEconomy.BotCommerceSeams.ReceiveItem(this, source as GamePlayer, item) ||
+            base.ReceiveItem(source, item);
 
         /// <summary>A player drags coin onto the bot: only a beggar takes it, into its own saved purse.</summary>
         public override bool ReceiveMoney(GameLiving source, long money) =>
-            AutonomousBeggars.TryReceiveMoney(this, source as GamePlayer, money) || base.ReceiveMoney(source, money);
+            AutonomousBeggars.TryReceiveMoney(this, source as GamePlayer, money) ||
+            CraftingEconomy.BotCommerceSeams.ReceiveMoney(this, source as GamePlayer, money) ||
+            base.ReceiveMoney(source, money);
 
         /// <summary>A bot's /say, recorded in the chat transcript (CHAT_LINE) when a player is near enough to hear it.</summary>
         public override bool Say(string str)

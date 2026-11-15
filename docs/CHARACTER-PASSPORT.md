@@ -108,6 +108,9 @@ A character's own record travels. Things that belong to one world stay in that w
 - `offline_server_firsts`: each world's own firsts.
 - `offline_auction_listings`, `offline_auction_escrow`, `offline_auction_ledger`: the gamebots' own auction.
 - `realm_exchange_sales`: that world's Realm Exchange sales.
+- `offline_bot_types`, `offline_bot_crafters`, `offline_bot_craft_orders`, `offline_exchange_index`,
+  `offline_economy_ledger`, `offline_crafter_customers`: that world's crafting and bot economy (Crafting 2.0). A craft
+  order you placed, and what its crafters remember of you, wait for you there.
 - `Guild`, `GuildRank`, `GuildAlliance`: guilds. Your character leaves its guild for the trip and rejoins it at home.
 - `DBHousePermissions`, `DBHouseCharsXPerms`, `DBIndoorItem`, `DBOutdoorItem`, `HouseConsignmentMerchant`,
   `househookpointitem`: houses.

@@ -8,6 +8,40 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 2.0: crafting and the economy
+
+In development on `integration/2.0`. The plan is [docs/CRAFTING-2.0-BUILD-PLAN.md](docs/CRAFTING-2.0-BUILD-PLAN.md);
+the design is [docs/CRAFTING-AND-ECONOMY.md](docs/CRAFTING-AND-ECONOMY.md) (build status in its §15). Each package adds
+its own block below. Nothing here has been played; every result is from automated tests.
+
+### WP0 Foundation
+
+Groundwork only: **nothing a player or a bot does changes**. Every new setting is declared but not read yet, every
+seam's default is today's code, and the new tables are created empty.
+
+- **The craft's numbers as pure functions.** `CraftRules` (con, chance to make, chance to gain with the capital bonus,
+  crafting time, quality, secondary-skill rules) and `SpellcraftRules` (imbue points, gem points, overcharge, preserve)
+  are copied line for line from `AbstractCraftingSkill` and `SpellCrafting`, so a gamebot will roll exactly as a player
+  does. Nothing calls them yet (WP1 does). Tests compare them with the originals over grids of skills and levels,
+  including the quality roll's distribution and the 32/28/18 imbue points of a level-51 piece. The same split as
+  rambodolphin13's DividedRealms refactor (93c25b69), as static functions.
+- **Contracts and seams for the later packages**, so they register code instead of editing the shared files: listing
+  caps and item rules for the bot economy, expired-listing reclaim, seller proceeds (the tax), a sale-committed event,
+  town-visit needs, merchant and Exchange steps, task-break activities and hooks, store lifecycle, drag-and-drop onto
+  bots, and coin-flow attribution on `AddMoney`/`TrySpend` (a kind and the caller, no call-site edits).
+- **Six tables** (`offline_bot_types`, `offline_bot_crafters`, `offline_bot_craft_orders`, `offline_exchange_index`,
+  `offline_economy_ledger`, `offline_crafter_customers`), saved progress that stays in its world: in the progress
+  policy (release builds empty them), the Passport's table map and the Passport guide.
+- **Every setting of 2.0** (`CraftingEconomyProperties`). Bot-side switches are off by default (`bot_crafters`,
+  `bot_craft_orders`, `bot_upkeep`, `bot_luxury_spending`, `bot_siege_supply`); the Exchange tax is built with a default
+  of 0, 5% being the documented option (owner, 2026-11-15: until the ledger shows a need); new Crafters are 7% of new
+  bots only.
+- **The `CRAFT_*` / `ECON_*` log format**, five AI_PROFILE scopes, and the voice registry's new kinds, flags, slots and
+  the `crafting` intent (no lines yet; `corpus.json` unchanged).
+- Ported contracts: the crafting-skill storage format and the craft-order table's columns from rambodolphin13
+  (93c25b69, ceac061a), via DividedRealms, GPL-3.0; the coin-flow kinds and the `crafting_skill_rate` key from
+  shadowofze (a8c793e, 00f9fbf), via True165, GPL-3.0.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous

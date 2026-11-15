@@ -581,8 +581,8 @@ public static class AutonomousBeggars
     {
         state.NextErrandAt = now + 180_000 + Random.Shared.Next(120_000);
         GameNPC[] anchors = Anchors(bot.CurrentRegion, bot.Realm);
-        if (AutonomousBotEconomy.FindValuableListingCandidate(bot) != null &&
-            AutonomousBotEconomy.FindFreeListingSlot(AutonomousBotEconomy.GetOwnerId(bot.DatabaseID)) >= 0 &&
+        if (AutonomousBotEconomy.FindValuableListingCandidate(bot) is { } listing &&
+            AutonomousBotEconomy.CanListNow(bot, listing.Item) &&
             Nearest<RealmExchangeBroker>(bot, anchors) is { } broker && broker.Realm == bot.Realm)
         {
             state.Errand = Errand.Listing;

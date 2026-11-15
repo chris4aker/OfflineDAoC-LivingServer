@@ -116,6 +116,13 @@ public static class PassportTables
         ["passport_trips"] = new(PassportDecision.StaysInWorld, "Every trip a host ever took in, so a travel file works only once there."),
         ["offline_lore_memory"] = new(PassportDecision.StaysInWorld,
             "Which lore lines the character heard in that world, by its id; the running server keeps them in memory.", true),
+        // Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md): the world's gamebot economy; a player's orders and deals stay there too.
+        ["offline_bot_types"] = new(PassportDecision.StaysInWorld, "That world's gamebots' stored personality types."),
+        ["offline_bot_crafters"] = new(PassportDecision.StaysInWorld, "That world's crafter gamebots."),
+        ["offline_bot_craft_orders"] = new(PassportDecision.StaysInWorld, "Craft orders of that world, with their coin held there; a player's order waits for the character at home.", true),
+        ["offline_exchange_index"] = new(PassportDecision.StaysInWorld, "That world's Realm Exchange prices."),
+        ["offline_economy_ledger"] = new(PassportDecision.StaysInWorld, "That world's hourly money supply."),
+        ["offline_crafter_customers"] = new(PassportDecision.StaysInWorld, "What that world's crafter gamebots remember of their customers, by name.", true),
     };
 
     /// <summary>
