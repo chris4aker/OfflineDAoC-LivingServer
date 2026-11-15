@@ -371914,6 +371914,323 @@
    "id": "92ced0536146"
   },
   {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "harbour talk from caer gothwaite. a land past the isles that sank in one day and one night. nobody has been",
+   "about": true,
+   "family": "ec0ef28d44",
+   "id": "e0e1e71be8cc"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "sailor talk from caer gothwaite. a land past the isles that sank in one day and one night. nobody has been",
+   "about": true,
+   "family": "ec0ef28d44",
+   "id": "5a6562b79c0d"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "aegirhamn sailor talk. a drowned land past the isles. buy one an ale and you get it twice",
+   "about": true,
+   "id": "bf3149f4d03f"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "the boatmen at the domnann dock talk about it. a sunk land out west. none of them has rowed out to look",
+   "about": true,
+   "family": "78b28466f0",
+   "id": "a7f8a9000432"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_atlantis"
+   ],
+   "text": "the boatmen at the domnann dock swear by it. a sunk land out west. none of them has rowed out to look",
+   "about": true,
+   "family": "78b28466f0",
+   "id": "3fac85356cd3"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "old crypts under camelot, bricked up. the cellar folk say the inconnu never had to ask the way down",
+   "about": true,
+   "id": "6079bd054ac5"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "kobold miners swear theres a city under jordheim. they hear picks below their own picks",
+   "about": true,
+   "family": "5bd769cacc",
+   "id": "1a72e0b0b3f9"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "kobold miners swear theres a city under jordheim. they hear picks under their own picks",
+   "about": true,
+   "family": "5bd769cacc",
+   "id": "631ffb7229d9"
+  },
+  {
+   "kind": "reply",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_below"
+   ],
+   "text": "the dream tree roots under tnn go down further than roots should. the druids stopped following them",
+   "about": true,
+   "id": "f9a86ba1eaea"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:isle of glass"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "lights in the water off gothwaite again. in it, not on it",
+   "about": true,
+   "id": "765c6f6b7769"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:aegir"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "fisherman in aegirhamn pulled up a carved stone. coral all over it. it has a face",
+   "about": true,
+   "id": "4ce371c914c5"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_atlantis",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:domnann"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "the boatmen rowed in early. said the lights under the sea were back",
+   "id": "e17eedb74819"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:camelot"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "something knocked under the bank floor in camelot. three times. i left",
+   "id": "c579923f2852"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:jordheim"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "joke",
+   "text": "kobold in jordheim told me to stop stamping. said i was bothering the neighbours",
+   "id": "877f614e7fff"
+  },
+  {
+   "kind": "ambient",
+   "topic": "rumour_below",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "at:tir na nog"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "put my ear to a dream tree in tnn. it was humming. from underneath",
+   "id": "98677d9e992c"
+  },
+  {
    "kind": "ambient",
    "topic": "newbie",
    "who": [],
@@ -689282,6 +689599,356 @@
    ],
    "needs": [],
    "exit": "A"
+  },
+  {
+   "id": "tale_atlantis",
+   "topic": "tale_atlantis",
+   "realm": "*",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [],
+     "class": []
+    },
+    "B": {
+     "type": [],
+     "class": []
+    },
+    "C": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Leveler",
+      "Crafter",
+      "Explorer"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b} you on? tell the glass ball one",
+     "variants": [
+      "{name_b} you on? tell the glass ball one",
+      "{name_b}, do your gran's story. the orb"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "oh this one. hush all",
+     "variants": [
+      "oh this one. hush all",
+      "quiet everyone, {name_b} is doing the orb"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "the talking ball again lol",
+     "variants": [
+      "the talking ball again lol",
+      "here we go, the ball that talks"
+     ],
+     "optional": true
+    },
+    {
+     "role": "D",
+     "text": "please {name_b}, i never heard it",
+     "variants": [
+      "please {name_b}, i never heard it",
+      "go on {name_b}, the new ones dont know it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "its my family's story, so no correcting me",
+     "variants": [
+      "its my family's story, so no correcting me"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "my gran's gran poured the cups at the council hall",
+     "variants": [
+      "my gran's gran poured the cups at the council hall"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "one winter a fisherman came up from the coast with a wet sack. his net had come up heavy",
+     "variants": [
+      "one winter a fisherman came up from the coast with a wet sack. his net had come up heavy"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "in it was a ball of glass the size of a baby's head. warm. coral grown over one side",
+     "variants": [
+      "in it was a ball of glass the size of a baby's head. warm. coral grown over one side"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the council paid him two coins to go away and set it on the high table like a pudding",
+     "variants": [
+      "the council paid him two coins to go away and set it on the high table like a pudding"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 8
+    },
+    {
+     "role": "D",
+     "text": "and then it talked?",
+     "variants": [
+      "and then it talked?",
+      "so when does it talk?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "the eighth night, candles low. a light came up inside it, like a lamp seen through water",
+     "variants": [
+      "the eighth night, candles low. a light came up inside it, like a lamp seen through water"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "in the light stood a man no bigger than her thumb, in robes nobody here ever wore",
+     "variants": [
+      "in the light stood a man no bigger than her thumb, in robes nobody here ever wore"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he said past the edge of the sea is a land where peoples are tried. ten trials, one for each thing worth being",
+     "variants": [
+      "he said past the edge of the sea is a land where peoples are tried. ten trials, one for each thing worth being"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "send your champions, he said. the ones who pass come home more than they were",
+     "variants": [
+      "send your champions, he said. the ones who pass come home more than they were"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "did they send anyone?",
+     "variants": [
+      "did they send anyone?",
+      "so who went?"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "they argued till dawn. then he said it all again. same words, same pause in the same place",
+     "variants": [
+      "they argued till dawn. then he said it all again. same words, same pause in the same place"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "he never once looked at them. thats when she went cold",
+     "variants": [
+      "he never once looked at them. thats when she went cold"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she dreamed for years after. sand to the end of the world. a mountain on fire. a city sat on a cloud",
+     "variants": [
+      "she dreamed for years after. sand to the end of the world. a mountain on fire. a city sat on a cloud"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and the sky cracking like pond ice, and the sea standing up, and all of it gone in a day and a night",
+     "variants": [
+      "and the sky cracking like pond ice, and the sea standing up, and all of it gone in a day and a night"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "in spring they sewed it back in the sack and rowed it out past the point",
+     "variants": [
+      "in spring they sewed it back in the sack and rowed it out past the point"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "she was in the boat. she said it was still talking when it went under",
+     "variants": [
+      "she was in the boat. she said it was still talking when it went under"
+     ],
+     "optional": false
+    },
+    {
+     "role": "~",
+     "pause": 25
+    },
+    {
+     "role": "F",
+     "text": "...still talking",
+     "variants": [
+      "...still talking",
+      "wait. still talking?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ty {name_b}. not going near the docks tonight",
+     "variants": [
+      "ty {name_b}. not going near the docks tonight",
+      "thanks {name_b}. i will never fish again"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "rumour_atlantis_uncle",
+   "topic": "rumour_atlantis",
+   "realm": "*",
+   "levels": [
+    1,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Socialite",
+      "Explorer"
+     ],
+     "class": []
+    },
+    "B": {
+     "type": [
+      "NoLifer",
+      "Daredevil"
+     ],
+     "class": []
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{q} my uncle says theres a whole city under the sea lol",
+     "variants": [
+      "{q} my uncle says theres a whole city under the sea lol"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "your uncle also said he soloed the dragon",
+     "variants": [
+      "your uncle also said he soloed the dragon"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "he said that once. but the fishermen really do drag up carved stone, crusted in coral",
+     "variants": [
+      "he said that once. but the fishermen really do drag up carved stone, crusted in coral"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "the sailors even have a name for it. atlantis",
+     "variants": [
+      "the sailors even have a name for it. atlantis",
+      "harbour folk call it atlantis. they get quiet about it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "so what are the lights out past the harbour at night?",
+     "variants": [
+      "so what are the lights out past the harbour at night?",
+      "then what are the lights under the water"
+     ],
+     "optional": true
+    },
+    {
+     "role": "B",
+     "text": "fish that glow. or your uncle with a lantern",
+     "variants": [
+      "fish that glow. or your uncle with a lantern"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "laugh all you like. somebody will row out there one day and come back with proof",
+     "variants": [
+      "laugh all you like. somebody will row out there one day and come back with proof"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and your uncle will say he was there first",
+     "variants": [
+      "and your uncle will say he was there first"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
   },
   {
    "id": "alb_cleric_three_ways",

@@ -28,6 +28,9 @@ public static class AutonomousChatKnowledge
         string query = message.Trim();
         if (TryExplainTerm(query, out answer))
             return true;
+        // 1.2 (owner, 2026-11-15): "what is atlantis?", "is there anything under camelot?" are answered as rumours only.
+        if (AutonomousBotVoices.Corpus != null && LoreLegends.TryAnswer(AutonomousBotVoices.Corpus, query, player.Realm, Random.Shared, out answer))
+            return true;
         if (LooksLikeStableQuestion(query) && TryAnswerStable(player.Realm, query, out answer))
             return true;
         if (TryAnswerTicketsInGeneral(query, out answer))

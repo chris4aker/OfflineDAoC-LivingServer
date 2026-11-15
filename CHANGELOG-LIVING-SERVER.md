@@ -85,6 +85,15 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
+  Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
+  a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is
+  atlantis?", "is there anything under camelot?"), and each capital's loremaster and book in that realm's voice. Nobody
+  has been, nobody can go, and no master level, artifact or Catacombs class is mentioned. The corpus builder allows the
+  words "atlantis" and "catacombs" only in lines tagged `rumour_atlantis` or `rumour_below`, and refuses any that claims a
+  trip there (`tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`). A loremaster now reads a question asked in
+  words for its keyword.
+
 **Era cuts and polish for the playful features** (tests only; owner's decisions 2026-11-15 07:10 after the Easter egg
 inventory: cut the jokes from after 2003, keep Leeroy; Trials of Atlantis and Catacombs "as rumors only from a lore
 perspective"; Caledonia's quests follow its bracket).

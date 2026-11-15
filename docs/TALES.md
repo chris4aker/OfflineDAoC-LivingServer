@@ -82,6 +82,12 @@ Hall) with a gamebot in your group, and a groupmate tells the short version in /
   Dura'ek the Empowered (Albion); Aros the Spiritmaster, Iarnvidiur and Queen Kula (Midgard); Avartack the Champion,
   Chieftain Caimheul and Balor (Hibernia). The ten have passed the corpus check and the unit tests only; none has been
   heard in game yet. Each has its fireside version.
+- **One legend** (2026-11-15, the era rumours): the glass that spoke, a grandmother's tale of an orb a fisherman's net
+  brought up, which spoke to a council of a land past the sea (Trials of Atlantis as a rumour only, owner 2026-11-15). Every
+  realm's storyteller tells it in the rotation like any tale, and a player can ask for it ("tell the one about atlantis",
+  "the glass ball story"). A legend is about no boss (`AutonomousTales.Legends`): it has no lore file, no raid and no
+  fireside version, and the rumour after it is one of the corpus's rumour lines on it (`LoreLegends.RumoursAfter`, topic
+  `rumour_atlantis`), never a raid. It lives in `data/chat/era_rumours.lines`. Tests only: not heard in game yet.
 
 ## Settings
 

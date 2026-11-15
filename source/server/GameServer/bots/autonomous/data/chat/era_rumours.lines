@@ -1,0 +1,126 @@
+# Trials of Atlantis and Catacombs as rumours only (owner, 2026-11-15, "Yes agreed on lore"). Nobody in this world has been
+# to a sunken land or under a capital, nobody has master levels, artifacts or a Catacombs class, and no line suggests the
+# player can go. Atlantis is sailors' and grandmothers' talk; what lies under the capitals is a door that stays shut.
+#
+# The tag: @topic rumour_atlantis or rumour_below. Only lines with that topic may say "atlantis" or "catacombs"
+# (tools/bot-voices/build_corpus.py, ERA_RUMOUR_TOPICS); every other out-of-era word stays banned in them too.
+# Where they are heard (rare by design):
+#   - the storyteller's legend of the glass that spoke (topic tale_atlantis, AutonomousTales.Legends), in the tale rotation;
+#   - one /faction debate (an ordinary scene, one of several hundred);
+#   - a few place-bound /faction musings (AutonomousChatFiller: musings are a 5% share of /faction openers, one written
+#     line per realm in 20 minutes);
+#   - answers when a player asks ("what is atlantis", "is there anything under camelot", LoreLegends).
+# New writing; Mythic's lore (camelotherald.com/node/244) paraphrased, never quoted.
+
+# ---------------------------------------------------------------- the storyteller's legend: the glass that spoke
+@kind debate
+@realm *
+@topic tale_atlantis
+@levels 1-50
+@scene tale_atlantis
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell the glass ball one | {name_b}, do your gran's story. the orb
+C: oh this one. hush all | quiet everyone, {name_b} is doing the orb
+?E: the talking ball again lol | here we go, the ball that talks
+D: please {name_b}, i never heard it | go on {name_b}, the new ones dont know it
+B: its my family's story, so no correcting me
+B: my gran's gran poured the cups at the council hall
+B: one winter a fisherman came up from the coast with a wet sack. his net had come up heavy
+B: in it was a ball of glass the size of a baby's head. warm. coral grown over one side
+B: the council paid him two coins to go away and set it on the high table like a pudding
+~ 8
+D: and then it talked? | so when does it talk?
+B: the eighth night, candles low. a light came up inside it, like a lamp seen through water
+B: in the light stood a man no bigger than her thumb, in robes nobody here ever wore
+B: he said past the edge of the sea is a land where peoples are tried. ten trials, one for each thing worth being
+B: send your champions, he said. the ones who pass come home more than they were
+?F: did they send anyone? | so who went?
+B: they argued till dawn. then he said it all again. same words, same pause in the same place
+B: he never once looked at them. thats when she went cold
+B: she dreamed for years after. sand to the end of the world. a mountain on fire. a city sat on a cloud
+B: and the sky cracking like pond ice, and the sea standing up, and all of it gone in a day and a night
+B: in spring they sewed it back in the sack and rowed it out past the point
+B: she was in the boat. she said it was still talking when it went under
+~ 25
+F: ...still talking | wait. still talking?
+A: ty {name_b}. not going near the docks tonight | thanks {name_b}. i will never fish again
+@end
+
+# ---------------------------------------------------------------- a /faction debate: the uncle's city
+@kind debate
+@realm *
+@topic rumour_atlantis
+@levels 1-50
+@scene rumour_atlantis_uncle
+@role A type=Socialite,Explorer
+@role B type=NoLifer,Daredevil
+@role C type=*
+@role D type=*
+A: {q} my uncle says theres a whole city under the sea lol
+B: your uncle also said he soloed the dragon
+A: he said that once. but the fishermen really do drag up carved stone, crusted in coral
+C: the sailors even have a name for it. atlantis | harbour folk call it atlantis. they get quiet about it
+?D: so what are the lights out past the harbour at night? | then what are the lights under the water
+B: fish that glow. or your uncle with a lantern
+A: laugh all you like. somebody will row out there one day and come back with proof
+B: and your uncle will say he was there first
+@end
+
+# ---------------------------------------------------------------- answers: "what is atlantis?" (LoreLegends)
+@kind reply
+@topic rumour_atlantis
+@answers ask_atlantis
+@realm alb
+@about place
+[harbour talk|sailor talk] from caer gothwaite. a land past the isles that sank in one day and one night. nobody has been
+@realm mid
+aegirhamn sailor talk. a drowned land past the isles. buy one an ale and you get it twice
+@realm hib
+the boatmen at the domnann dock [talk about it|swear by it]. a sunk land out west. none of them has rowed out to look
+
+# ---------------------------------------------------------------- answers: "is there anything under the city?"
+@kind reply
+@topic rumour_below
+@answers ask_below
+@realm alb
+@about place
+old crypts under camelot, bricked up. the cellar folk say the inconnu never had to ask the way down
+@realm mid
+kobold miners swear theres a city under jordheim. they hear picks [below|under] their own picks
+@realm hib
+the dream tree roots under tnn go down further than roots should. the druids stopped following them
+
+# ---------------------------------------------------------------- place-bound musings (rare: see AutonomousChatFiller)
+@kind ambient
+@topic rumour_atlantis
+@weight 0.5
+@realm alb
+@needs at:isle of glass
+@about place
+lights in the water off gothwaite again. in it, not on it
+@realm mid
+@needs at:aegir
+fisherman in aegirhamn pulled up a carved stone. coral all over it. it has a face
+@realm hib
+@needs at:domnann
+the boatmen rowed in early. said the lights under the sea were back
+
+@kind ambient
+@topic rumour_below
+@weight 0.5
+@realm alb
+@needs at:camelot
+something knocked under the bank floor in camelot. three times. i left
+@realm mid
+@needs at:jordheim
+@invites joke
+kobold in jordheim told me to stop stamping. said i was bothering the neighbours
+@realm hib
+@needs at:tir na nog
+@invites chat
+put my ear to a dream tree in tnn. it was humming. from underneath

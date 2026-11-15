@@ -86,6 +86,24 @@ public static class AutonomousTales
         ["balor"] = "dungeon-hibernia-tursuil",
     };
 
+    /// <summary>
+    /// Legends: tales of no boss, no raid and no fireside (owner, 2026-11-15: Trials of Atlantis as a rumour only). The lore id
+    /// and the names a player may ask for it by. The storyteller tells a legend in the realm's rotation like any tale; the
+    /// rumour after it is one of the corpus's rumour lines on it (LoreLegends), never a raid.
+    /// </summary>
+    public static readonly IReadOnlyDictionary<string, string[]> Legends = new Dictionary<string, string[]>(StringComparer.Ordinal)
+    {
+        ["atlantis"] = ["atlantis", "the orb", "glass orb", "glass ball", "talking ball", "glass that spoke", "sunken city", "drowned land",
+            "city under the sea"],
+    };
+
+    public static bool IsLegend(string loreId) => loreId != null && Legends.ContainsKey(loreId);
+
+    /// <summary>The names a request may use for a tale: a boss's names, else a legend's.</summary>
+    public static IEnumerable<string> RequestNames(string loreId, LoreBible bible) =>
+        bible?.BossById(loreId) is { } boss ? LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases)
+        : loreId != null && Legends.TryGetValue(loreId, out string[] names) ? names : [loreId];
+
     /// <summary>The realm's raid event on a tale's boss, or null when it has none.</summary>
     public static string RaidIdFor(string loreId, eRealm realm)
     {
@@ -707,8 +725,10 @@ public static class AutonomousTales
             });
             return;
         }
-        // A rumour the tale did not just tell (its own lines and the teller's answers are often the same lore).
-        string[] fresh = FreshRumours(boss, realm, heard);
+        // A rumour the tale did not just tell (its own lines and the teller's answers are often the same lore). A legend's
+        // rumour is one of the corpus's rumour lines on it (a sailor's word, a grandmother's), never a raid.
+        string[] fresh = IsLegend(loreId) ? LoreLegends.RumoursAfter(AutonomousBotVoices.Corpus, loreId, realm, heard)
+            : FreshRumours(boss, realm, heard);
         if (fresh.Length > 0)
             SayAfter(realm, tellerId, "rumour", fresh[Random.Shared.Next(fresh.Length)],
                 () => Log.Info($"TALE_RUMOUR realm={realmName} about={loreId} kind=lore no_raid=\"{noRaid}\""));
@@ -780,7 +800,9 @@ public static class AutonomousTales
             string[] heard;
             lock (state)
                 heard = LinesOf(playing).Concat(state.Answers).ToArray();
-            string[] fresh = FreshRumours(boss, realm, heard);
+            string taleLore = LoreIdOf(playing.Topic);
+            string[] fresh = IsLegend(taleLore) ? LoreLegends.RumoursAfter(AutonomousBotVoices.Corpus, taleLore, realm, heard)
+                : FreshRumours(boss, realm, heard);
             string answer = LoreChat.TryAnswer(message, out string known, realm) && !string.IsNullOrWhiteSpace(known) && !Repeats(known, heard)
                 ? known
                 : fresh.Length > 0 && Random.Shared.NextDouble() < 0.5
@@ -811,7 +833,7 @@ public static class AutonomousTales
         }
         LoreBible bible = LoreBible.Current;
         string loreId = RequestedLore(message, TalesOf(realm).Select(t => LoreIdOf(t.Topic)).Distinct()
-            .Select(id => (id, bible.BossById(id) is { } b ? LoreBible.NamesOf(b.Name, b.Id, b.Aliases) : (IEnumerable<string>)[id])));
+            .Select(id => (id, RequestNames(id, bible))));
         // A player who asks gets the tale even when both storytellers are out: another veteran tells it (as for a raid).
         if (TryStart(realm, loreId, player, out string why, standIn: true))
             return true;
