@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -64,9 +65,9 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyGovannonHasTheOrder()
         {
-            // 1.2 big-boss plans: Lurfos the Herald's weapon strike (300 around his target) uses the same order.
+            // Living Server 1.2: Torst (his DD lands 400 around his target) and Lurfos the Herald's weapon strike (300 around his target).
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.MeleeBehind).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "LurfosHerald" }));
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "LurfosHerald" }));
             // The healer hold was dropped after duo7 (15 healers died within 200 of him, kept there): no boss has it.
             Assert.That(EpicEncounterTactics.Catalog, Has.None.Matches<EpicEncounterTactics.Tactic>(t => t.HealersHoldInSpread));
             EpicEncounterTactics.Tactic gov = null;
@@ -134,8 +135,9 @@ namespace DOL.UnitTests
         public void OnlyGovannonHasTheRingAndTheTaunt()
         {
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.MeleeRing > 0));
+            // Living Server 1.2: Torst (he jumps to a random raider after rooting his target) and Lurfos's taunt-back.
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.TanksTaunt).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "LurfosHerald" }), "and Lurfos's taunt-back (1.2)");
+                Is.EquivalentTo(new[] { "GrandSummonerGovannon", "Torst", "LurfosHerald" }));
             foreach (var t in EpicEncounterTactics.Catalog)
                 if (t.Boss == "GrandSummonerGovannon")
                 {

@@ -667,8 +667,8 @@ namespace DOL.AI.Brain
                 foreach(KeyValuePair<GameLiving, AggroAmount> items in tempAggroTable)
                 {
                     // 1.2 (epic wave 3): bots on his aggro list are thrown too when his bot displacement is on (shipped on):
-                    // a thrown bot has no walked way down from the platform, so its recovery recalls it to its party after
-                    // 5 s (EncounterDisplacementRecovery: no path back), about the time a player needs for the zone point.
+                    // a thrown bot walks across Behemoth's hall to its zone point, as players do (EpicEncounterTactics.Legion.cs,
+                    // EncounterDisplacementRecovery's way out), and is recalled to its party only when it can't (1.2 Legion).
                     if (items.Key != null && items.Key.IsAlive &&
                         (items.Key is GamePlayer || items.Key is GameBot && EncounterTargets.DisplacesBots(Body)) && items.Key is GameLiving player)
                     {
@@ -691,7 +691,7 @@ namespace DOL.AI.Brain
                             if (player != null && player.IsAlive && EncounterTargets.NotGm(player) && HasAggro && player.IsWithinRadius(Body, 2500))
                             {
                                 // An encounter throw, not a party portal: companions stay down fighting Legion instead of
-                                // being dragged up to the platform, whose only way down is a zone point bots can't use
+                                // being dragged up into Behemoth's hall, whose way down is a zone point (bots walk to it)
                                 // (2026-10-30 livestream: "the bots get stuck on the platform once you teleport back").
                                 EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);
                                 //player.BroadcastUpdate();

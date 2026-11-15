@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -29,9 +30,9 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.For("GrandSummonerGovannon")?.FocusRangedAdds, Is.False, "others keep one add a party");
             Assert.That(EpicEncounterTactics.Catalog, Has.Exactly(1).Matches<EpicEncounterTactics.Tactic>(t => t.AddParties > 0),
                 "add parties: Spindler only");
+            // Living Server 1.2: the Giant Sporite Cluster (one health pool; the period PBAoEd the clump) and Lossren's tortured souls.
             Assert.That(EpicEncounterTactics.Catalog.Where(t => t.AreaOnClump).Select(t => t.Boss),
-                Is.EquivalentTo(new[] { "SpindlerBroodmother", "SummonerLossren" }),
-                "gated per tactic: area choice is shared caster AI (Lossren's tortured souls, 1.2)");
+                Is.EquivalentTo(new[] { "SpindlerBroodmother", "GiantSporiteCluster", "SummonerLossren" }), "area choice is shared caster AI: gated");
         }
 
         [Test]
