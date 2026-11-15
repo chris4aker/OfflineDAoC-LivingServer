@@ -62,6 +62,9 @@ next world update, inert until then. Separately, Living Server gets **its own ed
 (`chris4aker/OfflineDAoC-True165-LivingServ`): 1.1.4 is carried over now (`living-server/1.1.4`, features that clash with
 1.65 rules off by default), 1.2 after it ships. That edition is its own track and does not hold 1.2.
 
+Changed 2026-11-14 (owner, later that night): **the True 1.65 edition gets 1.2 only once 1.2 is fully released on the
+0.37 base.** Until then the edition stays at 1.1.4 (`living-server/1.1.4`); no 1.2 work is ported to it before that.
+
 ## Rules for every stop
 
 - A stop ships only after its in-game check on the owner's PC, reported separately from automated tests
@@ -454,10 +457,10 @@ On 2026-11-14:
 | Stop | State |
 |---|---|
 | 1.1.4 | Released 2026-11-12 (the latest release) |
-| 1.2 | All of it merged on `integration/1.2`; test build `16b3054` on the owner's test copy; held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
+| 1.2 | All of it merged on `integration/1.2`; test build `1dc66b6` on the owner's test copy (installed 2026-11-14 21:16); held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
 | Linux | After 1.2 (PR #206) |
 | 2.0 | Planned: a living realm (was 1.3), bots as people, the complete realm |
-| True 1.65 edition | Separate track: 1.1.4 carried over on `living-server/1.1.4`, waiting for its PR into the edition's `main` |
+| True 1.65 edition | Separate track: 1.1.4 carried over on `living-server/1.1.4`, waiting for its PR into the edition's `main`; 1.2 is ported only after 1.2 is fully released on 0.37 (owner, 2026-11-14) |
 
 On 2026-11-07:
 
