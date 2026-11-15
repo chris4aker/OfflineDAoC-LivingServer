@@ -96,6 +96,21 @@ Tuscaran Glacier carried all six Albion gamebots of a bot-led party into Midgard
   stable ride, the stuck watchdog's move to the player and a released gamebot's return to the player). A bot-led party
   logs `BOT_LED_NO_FOLLOW reason=enemy_realm` once (`BOT_NO_FOLLOW` for other bots), is not disbanded, and its
   "player far away / where u at" pacing takes over.
+**A "+ Lv.20" button for the battlegrounds** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: every gamebot on the
+test world was level 50, because the realm cards made only level 1 or 50, so every battleground was empty,
+`BG_KEEP_STATUS near=0/0/0`; owner, same day: "a Lvl 20 button for bot adds makes sense").
+
+- **Each realm card has "+ Lv.1", "+ Lv.20" and "+ Lv.50".** "+ Lv.20" makes bots for the Thidranki battleground: each
+  gets a random level from 20 to 24 (the server's bracket; a Battleground table row overrides it, as on the server), that
+  level's experience from the server's own table, a purse of its level squared in silver (4 to 5.76 gold) and no armour
+  (gamebots earn it), and starts in its capital beside the realm teleporters. Shift-click makes 10, Ctrl-click 100, in
+  one protected batch, and the Sluaghbinder edition switch applies as on the other buttons. The server gives it its
+  usual level-matched starter weapon (and a bow or instrument where the class has one), as every gamebot gets.
+- **They arrive trained, like "+ Lv.50" bots.** A never-saved bot above level 1 is trained in its lifetime build at its
+  first login (`GameBot.ArrivesTrained`). Before, it would have fought with every line at 1 until a break between PvE
+  tasks took it to a trainer. A bot that levelled by playing still visits its trainer.
+- **They go to Thidranki only for the Battlegrounds % share** the Bot Goals Setting tab gives Levels 20–49 (0% by
+  default). The rest do solo/group PvE or RvR as usual.
 
 **A bot-led party stuck in Caer Diogel** (tests only; owner's PC, build `1dc66b6`, 2026-11-15: party albion-f86e88-1370,
 on its way to griffins in Gwyddneau with the player hosted, stood in Caer Diogel from 00:55 to past 01:19 in phase

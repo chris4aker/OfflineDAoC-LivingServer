@@ -181,8 +181,8 @@ Beta 1.1.1 and earlier have no update check: install Beta 1.1.3 once by hand or 
 
 A fresh world has no bots yet, and most of these features need some.
 
-1. **Make bots.** On the launcher's main screen, use the **+ Lv.1** and **+ Lv.50** buttons for each
-   realm. Raids need level 50s, and a realm needs 8 bots of level 5 or higher before it forms a guild.
+1. **Make bots.** On the launcher's main screen, use the **+ Lv.1**, **+ Lv.20** and **+ Lv.50** buttons for each
+   realm (**+ Lv.20** makes levels 20–24, for the Thidranki battleground). Raids need level 50s, and a realm needs 8 bots of level 5 or higher before it forms a guild.
 2. **Switch features on.** With the server stopped, open the **Living Server** tab, tick what you want
    and click **Save settings**. Good first picks: Bot voices with /faction debates, Bot personalities and
    the Server life parts. Add Bot guilds once you have enough bots.

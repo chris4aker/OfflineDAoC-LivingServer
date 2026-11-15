@@ -2707,7 +2707,10 @@ namespace DOL.GS
             // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
             // bots a realm loaded with every line at 1, 792 of 2,700 had found a trainer after 80 minutes, and raids staged
             // 20 minutes in were fought by level 50s with level-1 skills (9 of the 72 sent to Golestandt had trained).
-            bool arrivedTrained = !IsEpicSpecialForce && ArrivesTrained(Level, _lastAutonomousTrainedLevel);
+            // Living Server 1.2: so does one the launcher made for the Thidranki battleground ("+ Lv.20", levels 20-24), which would
+            // otherwise fight its battleground with every line at 1 (it trains only at a break between PvE tasks).
+            bool arrivedTrained = !IsEpicSpecialForce &&
+                ArrivesTrained(Level, _lastAutonomousTrainedLevel, string.IsNullOrWhiteSpace(record.LastSavedUtc));
             if (arrivedTrained)
             {
                 SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
@@ -3447,9 +3450,11 @@ namespace DOL.GS
             return string.IsNullOrWhiteSpace(serializedSpecs) ? (byte)1 : currentLevel;
         }
 
-        /// <summary>The launcher makes bots at level 1 or at level 50 only, and a bot that leveled up trains on its way: a
-        /// level-50 bot that never trained was made at 50, and arrives trained in its lifetime build (pure).</summary>
-        public static bool ArrivesTrained(int level, int trainedLevel) => level >= 50 && trainedLevel <= 1;
+        /// <summary>A bot that leveled up trains on its way. One that never trained arrives trained in its lifetime build
+        /// when the launcher made it above level 1: at level 50 ("+ Lv.50"), or at any level above 1 when it has never been
+        /// saved ("+ Lv.20" makes levels 20-24; a saved bot above 1 got there by playing, and keeps visiting its trainer). Pure.</summary>
+        public static bool ArrivesTrained(int level, int trainedLevel, bool neverSaved = false) =>
+            trainedLevel <= 1 && (level >= 50 || neverSaved && level > 1);
 
         /// <summary>"trained-level|N|realm-points|M": realm ability points already spent at a trainer (0 when absent).</summary>
         public static int ParseTrainedRealmPoints(string serialized)

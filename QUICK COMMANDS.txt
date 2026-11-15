@@ -1,6 +1,7 @@
 OFFLINE DAOC - QUICK COMMANDS AND LAUNCHER SHORTCUTS
 
-On the launcher, click + Lv.1 or + Lv.50 under a faction:
+On the launcher, click + Lv.1, + Lv.20 or + Lv.50 under a faction
+(+ Lv.20 = a random level 20-24, the Thidranki battleground bracket):
   Normal click: +1 bot
   Hold Shift while clicking: +10 bots
   Hold Ctrl while clicking: +100 bots
