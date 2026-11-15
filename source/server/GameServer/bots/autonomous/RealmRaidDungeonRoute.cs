@@ -32,6 +32,80 @@ namespace DOL.GS
         /// </summary>
         public const long EpicTrashPhaseMilliseconds = 60 * 60_000;
 
+        /// <summary>
+        /// The monster came back to life after this route began (pure): its SpawnTick, set by every respawn
+        /// (GameNPC.RespawnTimerCallback) and 0 for a monster still on its first life, is later than the route's start.
+        /// </summary>
+        public static bool RespawnedSinceRouteStart(long spawnTick, long routeStartTick) =>
+            routeStartTick > 0 && spawnTick > routeStartTick;
+
+        /// <summary>
+        /// The first-hour sweep takes this monster (pure): the sweep is on, and the monster has not come back since the route
+        /// began. Owner's PC, 2026-11-15 (build 1dc66b6, Krondon): after Drihten Elreden died at 03:35 the raid killed only
+        /// thrawn ogre bocere in his rooms (42 bocere spawns, 180 s respawn) until the log ended at 03:48: 101 kills in 12
+        /// minutes, every one the walk-nearest monster to the front, because the ones it had killed were back before it had
+        /// finished the rest. A monster that came back is no sweep target: it is fought when it attacks, and it is still a
+        /// target as a boss's clear-first monster, an encounter's add or an objective.
+        /// Except on the way back (owner, 2026-11-15): one that came back on the walk from where the raid comes in from its
+        /// staging post to the current target, or within its aggro range of that walk (<see cref="OnWalkBack"/>), is cleared
+        /// again, because raiders coming back after a wipe walk that way. Only the ones off that walk are left out.
+        /// </summary>
+        public static bool SweepTarget(long now, long routeStartTick, long spawnTick, IReadOnlyList<Vector3> walkBack = null,
+            Vector3 at = default, int aggroRange = 0) =>
+            now - routeStartTick < EpicTrashPhaseMilliseconds &&
+            (!RespawnedSinceRouteStart(spawnTick, routeStartTick) || OnWalkBack(walkBack, at, aggroRange));
+
+        /// <summary>
+        /// A monster at <paramref name="at"/> stands on the walk (within <see cref="RealmRaidRouteGate.Margin"/> of it, on its
+        /// floor) or within its <paramref name="aggroRange"/> of it (pure; <see cref="RealmRaidRouteGate.Blocks"/>). A monster
+        /// that does not aggro counts only when it stands on the walk.
+        /// </summary>
+        public static bool OnWalkBack(IReadOnlyList<Vector3> walkBack, Vector3 at, int aggroRange) =>
+            RealmRaidRouteGate.Blocks(walkBack, at, Math.Max(aggroRange, 1));
+
+        /// <summary>
+        /// The walk from <paramref name="arrival"/> (where raiders come in from their staging post) to <paramref name="front"/>
+        /// (the current target's approach), pure: the path's corners between the two ends. Without a path (none found, or the
+        /// ends in different zones) it is the straight line, so a monster near it is cleared rather than left in the way.
+        /// </summary>
+        public static Vector3[] WalkBackOf(Vector3 arrival, Vector3 front, IReadOnlyList<Vector3> corners)
+        {
+            var walk = new List<Vector3> { arrival };
+            if (corners != null)
+                foreach (Vector3 corner in corners)
+                    if (Vector3.DistanceSquared(walk[^1], corner) > 1f) walk.Add(corner);
+            if (Vector3.DistanceSquared(walk[^1], front) > 64 * 64) walk.Add(front);
+            return walk.ToArray();
+        }
+
+        /// <summary>The walk back to the front (<see cref="WalkBackOf"/>), found again only once the front has moved.</summary>
+        private Vector3[] WalkBack(IPathfindingMgr nav)
+        {
+            if (_walkBack != null && Vector3.DistanceSquared(_walkBackFront, Front) <= 64 * 64) return _walkBack;
+            _walkBackFront = Front;
+            Region region = WorldMgr.GetRegion(_region);
+            Zone from = region?.GetZone((int)_arrival.X, (int)_arrival.Y), to = region?.GetZone((int)Front.X, (int)Front.Y);
+            Vector3[] corners = null;
+            if (from != null && from == to && nav.IsAvailable && nav.HasNavmesh(from))
+            {
+                Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+                PathfindingResult path = nav.GetPathStraight(from, _arrival, Front, nav.DefaultFilters, nodes);
+                if (path.Status is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound)
+                {
+                    corners = new Vector3[Math.Min(path.NodeCount, nodes.Length)];
+                    for (int i = 0; i < corners.Length; i++) corners[i] = nodes[i].Position;
+                }
+            }
+            return _walkBack = WalkBackOf(_arrival, Front, corners);
+        }
+
+        // Where raiders come in (the route's first front, the inside arrival of the crossing from the staging post), and the
+        // walk from there to the front, worked out again when the front moves (WalkBack).
+        private readonly Vector3 _arrival;
+        private Vector3[] _walkBack;
+        private Vector3 _walkBackFront;
+        private long _nextRespawnsLeftLog;
+
         // Run 14 (2026-10-16): Galladoria's Corrupt Primal of Earth took no damage for five minutes from 30 raiders and was
         // skipped: its four Earthmenders (script-spawned, not named) healed it, and after the first hour the raid only
         // targets named encounters. Adds a script spawns beside the front are part of the fight; they come first.
@@ -685,7 +759,7 @@ namespace DOL.GS
         private RealmRaidDungeonRoute(ushort region, DbZonePoint entrance, Vector3 entry, Vector3 trigger, string[] finals,
             string[] objectives, eRealm realm, DbZonePoint inner, GameNPC[] gates)
         {
-            _region = region; Entrance = entrance; Front = Destination = entry; _trigger = trigger; _finalTypes = finals;
+            _region = region; Entrance = entrance; Front = Destination = _arrival = entry; _trigger = trigger; _finalTypes = finals;
             _objectives = objectives; _realm = realm; InnerEntrance = inner ?? entrance; _gates = gates;
         }
 
@@ -2262,6 +2336,8 @@ namespace DOL.GS
             // test's focus names only the boss.
             Dictionary<GameNPC, GameNPC> clearFirst = live.Select(n => (Add: n, Boss: EpicEncounterTactics.ClearFirstOwner(n, live)))
                 .Where(pair => pair.Boss != null).ToDictionary(pair => pair.Add, pair => pair.Boss);
+            // The first hour's sweep clears again what came back on the raid's walk back to the front (SweepTarget).
+            Vector3[] walkBack = _objectives == null && now - _routeStartTick < EpicTrashPhaseMilliseconds ? WalkBack(nav) : null;
             GameNPC[] candidates = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
                 n.Level > 0 && n is not GameBot && n is not GameSummonedPet && n.Brain is not IControlledBrain &&
                 n is not GameMerchant && n is not GameTrainer && n is not GameTeleporter && n is not GameTaxi &&
@@ -2286,7 +2362,10 @@ namespace DOL.GS
                 !(Focus != null && (n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name)) && !n.InCombat &&
                   !InFocus(Focus, n.Name, n.GetType().Name) &&
                   !(clearFirst.TryGetValue(n, out GameNPC focusBoss) && InFocus(Focus, focusBoss.Name, focusBoss.GetType().Name))) &&
-                (_objectives == null ? now - _routeStartTick < EpicTrashPhaseMilliseconds || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
+                // The first hour's sweep never clears a monster that came back since the route began, unless it stands on
+                // (or within its aggro of) the walk back from the way in to the front (SweepTarget).
+                (_objectives == null ? SweepTarget(now, _routeStartTick, n.SpawnTick, walkBack, new(n.X, n.Y, n.Z),
+                        n.Brain is StandardMobBrain { AggroRange: var aggro } ? aggro : 0) || n is IGameEpicNpc || _finalTypes.Contains(n.GetType().Name) ||
                         IsEncounterAdd(n, Front, encounters) || clearFirst.ContainsKey(n)
                     // A monster that would join an objective's fight (High Lord Baln's wing) is killed first in an objective
                     // raid too: without it among the targets the objective waited for it for ever.
@@ -2296,6 +2375,23 @@ namespace DOL.GS
                 // everything else: High Lord Baln's Dukes would have drawn the Darkness Falls raid straight to his wing.
                 .ThenBy(n => IsEncounterAdd(n, Front, encounters) || _objectives == null && clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
+            // Once a minute while the sweep runs: the monsters it left out because they came back (SweepTarget).
+            if (_objectives == null && now >= _nextRespawnsLeftLog && now - _routeStartTick < EpicTrashPhaseMilliseconds)
+            {
+                _nextRespawnsLeftLog = now + 60_000;
+                var picked = candidates.ToHashSet();
+                GameNPC[] back = live.Where(n => n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm == eRealm.None &&
+                        n is not IGameEpicNpc && n is not GameBot && n is not GameSummonedPet && !picked.Contains(n) &&
+                        RespawnedSinceRouteStart(n.SpawnTick, _routeStartTick))
+                    .OrderBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
+                // Came back too but still targets: on the walk back, or a clear-first monster or an encounter add.
+                int onWalk = candidates.Count(n => n is not IGameEpicNpc && RespawnedSinceRouteStart(n.SpawnTick, _routeStartTick));
+                if (back.Length > 0)
+                    log.Info($"REALM_EXPEDITION_RESPAWNS_LEFT region={_region} left={back.Length} nearest=\"{back[0].Name}\" " +
+                             $"at={back[0].X},{back[0].Y},{back[0].Z} candidates={candidates.Length} keptRespawned={onWalk} " +
+                             $"walk={walkBack?.Length ?? 0} " +
+                             $"reason=\"came back since the route began, off the walk from the way in to the front; the first-hour sweep does not clear them again (fought if they attack)\"");
+            }
             // A gate whose bosses can't be taken as targets (gone, or no longer attackable) has nothing left to fight: the
             // raid goes on to its own dungeon instead of waiting at the way out.
             if (IsGate && candidates.Length == 0 && !Blocked)
