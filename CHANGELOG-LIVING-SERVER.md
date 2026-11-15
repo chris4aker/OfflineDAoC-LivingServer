@@ -210,6 +210,16 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   - Now no muster, his own included, lies within 1,100 of his patrol loop while he walks it, or within 500 of a court
     monster. When the raid musters for him again after a skirmish or a wipe, the route clears his living court first, as
     in Darkness Falls. He and his court are unchanged.
+- **The first-hour sweep does not chase respawns off its way back** (tests only). In Krondon (owner's PC, 2026-11-15,
+  build `1dc66b6`) the raid spent about 13 minutes after Drihten Elreden died (03:35:35) killing thrawn ogre bocere
+  again (180 s respawn) in rooms it had already cleared, 101 kills by 03:48; Orylle was still won at 04:03. Now the
+  sweep skips a monster that has come back since the route began, unless it stands on, or within its aggro of, the walk
+  from where raiders come in from their staging post to the current target, since raiders coming back after a wipe walk
+  that way. A boss's clear-first monsters, encounter adds, epics and the final are always targets. The skipped ones are
+  logged once a minute (`REALM_EXPEDITION_RESPAWNS_LEFT`). By the owner's decision the ten-minute "trash stays down"
+  respawn hold stays for the neutral raids only (Darkness Falls, Summoner's Hall). The code had listed Caer Sidi,
+  Galladoria and the realm raid dungeons too, but the hold never applied in them, so that list now names only the two
+  neutral dungeons. No respawn timer changes.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period

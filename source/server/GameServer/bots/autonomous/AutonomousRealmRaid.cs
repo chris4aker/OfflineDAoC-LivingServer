@@ -181,6 +181,8 @@ namespace DOL.GS
         private static readonly Dictionary<(ushort Region, int X, int Y), long> RecentDestinations = new();
         private const long DestinationMemory = 15 * 60_000;
 
+        /// <summary>A running neutral raid (Darkness Falls, Summoner's Hall) has a party destination in
+        /// <paramref name="region"/>. Realm raids in their own dungeons are never counted (<see cref="_raidDestinations"/>).</summary>
         public static bool HasActiveRaidIn(ushort region)
         {
             foreach (var d in _raidDestinations)
@@ -191,12 +193,17 @@ namespace DOL.GS
         /// <summary>
         /// Run 8 (2026-10-14): the Albion raid in Darkness Falls stood 6,000-10,000 units short of Prince Ba'alorien
         /// for forty minutes, fighting essence shredders, naburite drinkers and succubi that came back every 100-180
-        /// seconds (263 essence shredders alone), and skipped him untouched. While a bot raid is inside Darkness
-        /// Falls, Summoner's Hall, Caer Sidi or Galladoria, the ordinary monsters there stay down for ten minutes;
-        /// bosses, epic encounters and scripted adds keep their own timers, and nothing changes once the raid ends.
+        /// seconds (263 essence shredders alone), and skipped him untouched. While a neutral bot raid is inside Darkness
+        /// Falls or Summoner's Hall, the ordinary monsters there stay down for ten minutes; bosses, epic encounters and
+        /// scripted adds keep their own timers, and nothing changes once the raid ends.
+        /// Neutral raids only (owner, 2026-11-15): the realm raid dungeons (Caer Sidi, Galladoria, Krondon and the other
+        /// <see cref="RaidDungeons"/>) keep their monsters' own respawn timers while a raid is in them. They were listed here
+        /// before, but <see cref="HasActiveRaidIn"/> only ever saw neutral raids, so the hold never applied in them; the list
+        /// now says what the code does. Their first-hour sweep leaves out monsters that came back instead
+        /// (RealmRaidDungeonRoute.SweepTarget).
         /// </summary>
         public const int RaidTrashRespawnMilliseconds = 10 * 60_000;
-        public static readonly ushort[] SlowRespawnRegions = [249, 248, 60, 191, .. RaidDungeons.Select(d => d.Region)];
+        public static readonly ushort[] SlowRespawnRegions = [RealmRaidNeutralEvents.DarknessFalls, RealmRaidNeutralEvents.SummonersHall];
 
         public static int RaidRespawnInterval(GameNPC npc, int interval)
         {
