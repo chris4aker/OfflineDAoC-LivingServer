@@ -5404,8 +5404,12 @@
      "role": "final"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh.",
+   "aiTactics": {
+    "summary": "Fly phases, Harbingers, Rain of Fire (1.2 big-boss plans, owner 2026-11-14; tests only): while he flies (at 99% and 50%, 30 s each, raining 650 heat on the 800 under him) every raider in the rain steps to a ring 1,050 from its centre, clear of the room's door (the barrier's keep-inside allows that ring then), healers too (held there); on the ground the party he fights holds him and everyone else kills the Harbingers of Fate first; casters, archers and healers stand at their party's spot 650 from the room's middle so a Rain of Fire (800 in 600 around one raider) catches one party. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he flies and rains fire, Harbingers come after four deaths, two at a time, and die before him; he teleports raiders who run away. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -5502,7 +5506,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Spread, and Fate's Chosen first (1.2 big-boss plans, owner 2026-11-14; tests only): hit by a raider that is not its target it may cast Essence of Souls (600 around that raider) and throw that raider to one of three spots, one of them 123 from Fate's Chosen; so Fate's Chosen dies first, and in the Bane's fight casters, archers and healers of every party but its target's stand at their party's spot on a ring 1,000 from it (765 apart); melee from behind. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a straightforward melee fight that teleports itself away to regenerate; the script throws raiders instead. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -5662,7 +5670,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Tank and spank (1.2 big-boss plans, owner 2026-11-14; tests only): killed before the Bane of Hope (it stands at one of the Bane's landing spots); the party it fights holds it, the other melee fight it from behind. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -6048,7 +6060,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "BloodMage"
+    ],
+    "summary": "Blood mages (1.2 big-boss plans, owner 2026-11-14; tests only): casters and archers kill his blood mages (8,000 health, up to two at a time) while the rest stay on him, the melee from behind. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he dies into the Lich Lord with several adds. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -6137,8 +6156,15 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run.",
+   "aiTactics": {
+    "rangedAdds": [
+     "BloodMage"
+    ],
+    "summary": "Blood mages, then the last 5% (1.2 big-boss plans, owner 2026-11-14; tests only): casters and archers kill the 2-4 blood mages his rising brings while the rest fight him; his last 5% (untargetable) is the casters'. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he parries and is weak to crush and thrust, strong to slash and most magic (the script: 40% to all melee, 70% magic). EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -6250,7 +6276,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Few attackers (1.2 big-boss plans, owner 2026-11-14; tests only): each hit gives him a (distinct attackers / 10)% chance to resist 99% for 20 s, so at most 9 raiders hit him (chance 0) besides the party he fights, pets never, and during his 99% only that party stays on him. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he adapts to damage types and teleports the offender to a pit; the script has neither. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -6695,7 +6725,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Ambush on his loop (1.2 big-boss plans, owner 2026-11-14; tests only): he walks his loop at 195-300 the whole fight, so each party waits at its station along it and hits him as he passes (melee within 450, the rest within 1,400); no bot casts heat, spirit or cold on him (he takes none); the ProvisionerBaf monsters by his loop die first. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07; Allakhazam 2006): he runs and encumbers raiders with junk; clear his level first. EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -6857,7 +6891,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Knights first, from behind (1.2 big-boss plans, owner 2026-11-14; tests only): his crypt knights (DorinakkaBaf; every one in the region joins his fight) more than 700 from him die first; in his fight the casters take the knights beside him and the melee fight him from behind. Period: a straight melee fight, he parries (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07); guard the aggro holder, attack from behind (Allakhazam comments, 2003). EpicEncounterTactics.CaerSidi.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21221,7 +21259,15 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "hazards": [
+     "BarrelExplosive"
+    ],
+    "hazardRadius": 1000,
+    "summary": "Barrels and guards (1.2 big-boss plans, owner 2026-11-14; tests only): a lit barrel (one of five spots, all within 1,030 of him) explodes 8 s later for 1,200 heat in 1,000: everyone steps out of it (ground hazard; he follows his target out); the Onstal Hyrde he yells for are killed by everyone but the party he fights. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): he ignites barrels that blow up sections of the room. EpicEncounterTactics.Krondon.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21395,7 +21441,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Soldiers (1.2 big-boss plans, owner 2026-11-14; tests only): every 45-70 s he calls 1-3 fighters and 1-3 mages; the party he fights holds him, casters and archers kill the mages first and the other melee the fighters first. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a commander with excellent AI; pull his guards first (the world has none tagged). EpicEncounterTactics.Krondon.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21503,7 +21553,11 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Students first (1.2 big-boss plans, owner 2026-11-14; tests only): his students (DrihtenBaf thrawn ogre bocere, 25 around him) within 2,500 die first; one he calls in (one every 15-30 s) is the casters' and archers' while the melee stay on him, from behind (period, FreddysHouse 2003-03-27: high evade and parry; flank him). Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): his students watch; be careful for adds. EpicEncounterTactics.Krondon.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21615,7 +21669,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "requiredAdds": [
+     "FuladlAdd"
+    ],
+    "summary": "Parts first (1.2 big-boss plans, owner 2026-11-14; tests only): he resists 95% while any of his 4-5 parts (3,000 health) lives, so each party takes a part and he dies after. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a blob that splits when attacked; take the adds out first.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21727,7 +21788,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "requiredAdds": [
+     "FulafeallanAdd"
+    ],
+    "summary": "Parts first (1.2 big-boss plans, owner 2026-11-14; tests only): she resists 95% while any of her 4-5 parts (3,000 health) lives, so each party takes a part and she dies after. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): a blob that splits when attacked; take the adds out first.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -21983,7 +22051,14 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 300,
+    "meleeBehind": true,
+    "tanksTaunt": true,
+    "summary": "Weapon strike spread (1.2 big-boss plans, owner 2026-11-14; tests only): with his fire or ice weapon each hit lands 300 on everyone within 300 of his target, so casters and healers stand clear of his target, the other melee fight him from behind it, and a tank taunts him back when his target is not a tank. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): fire and ice effects on his weapon.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -22653,7 +22728,8 @@
      "LyftMihtFour"
     ],
     "fightAtHomeRadius": 1500,
-    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back."
+    "summary": "Required adds: the four Lyft Miht orbs are the raid's targets while any lives (each party takes one; fought from a floor spot within 1,400 that the raid can reach and that sees the orb; melee that can't reach a flying orb waits at that spot); nobody hits him until the last orb is dead. Fight at home: past 1,500 from his spawn the raid stops hitting him and the raider he chases leads him back. One orb at a time (1.2 big-boss plans, owner 2026-11-14; tests only): the whole raid's casters and archers take the same orb, in the catalog's order, instead of one orb a party: on the owner's PC (build e90bf21, 2026-11-11, 17:45-19:05) 2-10 raiders stood by the orbs, split over four stands, the orbs took no damage in 75 minutes and the route skipped them every 5 minutes for 'no damage', moving the stand each time. Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): about fifty players, the four nodes must die before he can be hurt. Era note: in 2003 the nodes respawned and a raid had to burn him before they did (FreddysHouse 2003-02-24/25); the script's orbs never respawn (RespawnInterval -1), so no burn timer is played.",
+    "addsInOrder": true
    },
    "verified": true
   },
@@ -22885,7 +22961,12 @@
      "role": "named"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "after": "UlorBysen",
+    "summary": "Ulor first (1.2 big-boss plans, owner 2026-11-14; tests only): the party Jehrog fights holds him while everyone else kills Ulor se Bysen (the caster: a 400 bolt, a body debuff, a 350 damage over time). Period (Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07): Ulor casts, Jehrog melees; attack Ulor first, then Jehrog.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -27972,10 +28053,11 @@
      "SummonedDemon"
     ],
     "since": "1.2",
-    "summary": "Step out of the Shroud (1.2, after play test duo28's damage ledger: 122,123 damage to the raid in the minute after his change, 53 raiders in it): while he casts Govannon's Shroud of Agony, four seconds, every raider within 350 of his target but that target steps out to 420 from it, and comes back when it has landed. Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from three ring spots 120 degrees apart, 190 from him, each party at its own spot (owner 2026-11-08: a Shroud of Agony, radius 300 around his target, on one melee raider then reaches about a third of the melee; before that, 2026-11-07, the melee fought from one spot behind him: duo9 still lost 6-12 a minute); while his target is not a tank, the raid tank nearest to him taunts him (taunt style, and the Paladin or Sluaghbinder taunt spell; owner 2026-11-08: duo9 tactic lines named casters, healers and pets as his target about half the time); casters, archers and healers outside his target's party keep 550 from that target (a hold for healers inside it was tried and dropped: duo7, 15 healers died within 200 of him). Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth).",
+    "summary": "Step out of the Shroud (1.2, after play test duo28's damage ledger: 122,123 damage to the raid in the minute after his change, 53 raiders in it): while he casts Govannon's Shroud of Agony, four seconds, every raider within 350 of his target but that target steps out to 420 from it, and comes back when it has landed. Spread in demon form: while he is the demon (model 636), his target keeps 150 from him and the other melee fight him from three ring spots 120 degrees apart, 190 from him, each party at its own spot (owner 2026-11-08: a Shroud of Agony, radius 300 around his target, on one melee raider then reaches about a third of the melee; before that, 2026-11-07, the melee fought from one spot behind him: duo9 still lost 6-12 a minute); while his target is not a tank, the raid tank nearest to him taunts him (taunt style, and the Paladin or Sluaghbinder taunt spell; owner 2026-11-08: duo9 tactic lines named casters, healers and pets as his target about half the time); casters, archers and healers outside his target's party keep 550 from that target (a hold for healers inside it was tried and dropped: duo7, 15 healers died within 200 of him). Ranged adds: casters and archers kill the summoned sacrifice and demon before they reach his altar (that is what brings the Shade of Aelfgar); melee, tanks and healers stay on him. Shade (1.2, epic wave 2): if the sacrifice and the demon both reach his altar the Shade of Aelfgar comes (10,000 health) and sends a raider within 2,000 up to the gallery every 10-20 s (bots too since 1.2; they walk back down or recall): the whole raid kills it first, then him. His full 300,000 health is on (AllowGovannonFullHealth). Inside his tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from his spawn he takes no damage, so the raid fights within 900 of it and his target leads him home past 1,000; in his own form the melee fight him from behind (period: he parries, keep attackers behind him, Salaris' Guide to Albion Epic Encounters, VN Boards, Wayback capture 2003-04-07).",
     "requiredAdds": [
      "ShadeOfAelfgar"
-    ]
+    ],
+    "fightAtHomeRadius": 1000
    },
    "verified": true
   },
@@ -28112,7 +28194,12 @@
      "role": "objective"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "fightAtHomeRadius": 1000,
+    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): as Roesia (no damage past 1,300; the raid within 900; past 1,000 her target leads her home); the raider she bolts and throws walks back. Period (ToT Raids walkthrough, 2006): pile all melee and pets on her; she throws raiders. EpicEncounterTactics.SummonersHall.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -28370,10 +28457,13 @@
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "rangedAdds": [
-     "ExplodeUndead"
+     "ExplodeUndead",
+     "TorturedSouls"
     ],
-    "summary": "Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls.",
-    "since": "1.2"
+    "summary": "Infected ghoul: casters and archers kill the ghoul (4,000 health, walks at 110) as it crawls toward its raider, and that raider walks away from it (it bursts for 1,000 in 500 when it reaches its target); the rest stay on Lossren and her tortured souls. Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets (PC log e3b8238 2026-11-14: the Hibernia raid's muster stood 1,388 from her spawn, she ran out to it, 55 of 55 fell, lowest 77%), so the raid fights within 900 of her spawn and her target leads her home past 1,000; while the ghoul lives every caster and archer shoots it, then they clear the tortured souls with area spells on the clumps while the melee stay on her (period, ToT Raids walkthrough 2006: casters clear the souls, all melee on Lossren). EpicEncounterTactics.SummonersHall.",
+    "since": "1.2",
+    "areaOnClump": true,
+    "fightAtHomeRadius": 1000
    },
    "verified": true
   },
@@ -28553,7 +28643,12 @@
      "role": "objective"
     }
    ],
-   "raidAi": "generic dungeon route",
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "fightAtHomeRadius": 1000,
+    "summary": "Inside her tether (1.2 big-boss plans, owner 2026-11-14; tests only): past 1,300 from her spawn she takes no damage and resets, so the raid fights within 900 of it (a raider further out walks in) and the raider she chases out leads her home past 1,000; her Summoner Pain (150 every 3 s for 36 s on everyone within 1,000 of a random raider) is cured (Cure Poison). Period (ToT Raids Summoner's Hall walkthrough, 2006): kill her nodes and orbs, then melee her down (no nodes in the script). EpicEncounterTactics.SummonersHall.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
