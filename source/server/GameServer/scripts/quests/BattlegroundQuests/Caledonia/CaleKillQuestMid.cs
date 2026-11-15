@@ -19,13 +19,13 @@ namespace DOL.GS.DailyQuest.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Caledonia Skirmishes";
 		// Caledonia's bracket, 30-35 as BattlegroundBrackets (1.2: all six Caledonia dailies, which asked 34-39; upstream
 		// had copied the Thidranki values into this one, so no Midgard player who could reach Caledonia could take it).
 		private const int minimumLevel = 30;
 		private const int maximumLevel = 35;
 
-		private static GameNPC PazzMid = null; // Start NPC
+		private static GameNPC CaptainMid = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -67,42 +67,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Midgard);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 250, 54259, 25234))
-					{
-						PazzMid = npc;
-						break;
-					}
-				}
-
-			if (PazzMid == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find PazzMid, creating it ...");
-				PazzMid = new GameNPC();
-				PazzMid.Model = 26;
-				PazzMid.Name = "Pazz";
-				PazzMid.GuildName = "Bone Collector";
-				PazzMid.Realm = eRealm.Midgard;
-				//Svasud Faste Location
-				PazzMid.CurrentRegionID = 250;
-				PazzMid.Size = 40;
-				PazzMid.Level = 59;
-				PazzMid.X = 54259;
-				PazzMid.Y = 25234;
-				PazzMid.Z = 4319;
-				PazzMid.Heading = 1744;
-				PazzMid.Flags |= GameNPC.eFlags.PEACE;
-				PazzMid.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					PazzMid.SaveIntoDatabase();
-				}
-			}
+			CaptainMid = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Midgard, 250); // Captain Thorgrim, the Caledonia portal keep
 
 			#endregion
 
@@ -115,11 +80,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(PazzMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(PazzMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			PazzMid.AddQuestToGive(typeof (CaleKillQuestMid));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainMid.AddQuestToGive(typeof (CaleKillQuestMid));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -129,27 +94,27 @@ namespace DOL.GS.DailyQuest.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (PazzMid == null)
+			if (CaptainMid == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(PazzMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(PazzMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			PazzMid.RemoveQuestToGive(typeof (CaleKillQuestMid));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainMid.RemoveQuestToGive(typeof (CaleKillQuestMid));
 		}
 
-		private static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(PazzMid.CanGiveQuest(typeof (CaleKillQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (CaleKillQuestMid), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -162,18 +127,18 @@ namespace DOL.GS.DailyQuest.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							PazzMid.SayTo(player, "You will find suitable players in the battlegrounds.");
+							CaptainMid.SayTo(player, "The enemy is out on the fields of Caledonia. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							PazzMid.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainMid.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					PazzMid.SayTo(player, "Hello "+ player.Name +", I am Pazz. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                       "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                       "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainMid.SayTo(player, "Well met, " + player.Name + ". I am Captain Thorgrim, and I hold this keep for Midgard. " +
+					                     "Albion and Hibernia send their young fighters into Caledonia day after day, and every one we turn back is one fewer at our gates. " +
+					                     "Will you [take the field] for Midgard?");
 				}
 			}
 				// The player whispered to the NPC
@@ -184,8 +149,8 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(PazzMid, QuestMgr.GetIDForQuestType(typeof(CaleKillQuestMid)), "Will you undertake " + questTitle + "?");
+						case "take the field":
+							player.Out.SendQuestSubscribeCommand(CaptainMid, QuestMgr.GetIDForQuestType(typeof(CaleKillQuestMid)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -193,10 +158,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Midgard holds Caledonia a while longer. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -262,7 +227,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(PazzMid.CanGiveQuest(typeof (CaleKillQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (CaleKillQuestMid), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (CaleKillQuestMid)) != null)
@@ -270,15 +235,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!PazzMid.GiveQuest(typeof (CaleKillQuestMid), player, 1))
+				if (!CaptainMid.GiveQuest(typeof (CaleKillQuestMid), player, 1))
 					return;
 
-				PazzMid.SayTo(player, "You will find suitable players in the battlegrounds.");
+				CaptainMid.SayTo(player, "Go, then. The enemy is out on the fields of Caledonia.");
 
 			}
 		}
@@ -297,9 +262,9 @@ namespace DOL.GS.DailyQuest.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in Caledonia. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Pazz in the Caledonia Portal Keep for your Reward.";
+						return "Return to Captain Thorgrim in the Caledonia portal keep for your reward.";
 				}
 				return base.Description;
 			}
@@ -321,12 +286,12 @@ namespace DOL.GS.DailyQuest.Hibernia
 			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}

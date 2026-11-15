@@ -19,11 +19,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Enemies of the Realm";
 		private const int minimumLevel = 40;
 		private const int maximumLevel = 50;
 
-		private static GameNPC ReyMid = null; // Start NPC
+		private static GameNPC CaptainMid = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -65,42 +65,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Midgard);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 100, 766491, 670375))
-					{
-						ReyMid = npc;
-						break;
-					}
-				}
-
-			if (ReyMid == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find Rey , creating it ...");
-				ReyMid = new GameNPC();
-				ReyMid.Model = 26;
-				ReyMid.Name = "Rey";
-				ReyMid.GuildName = "Bone Collector";
-				ReyMid.Realm = eRealm.Midgard;
-				//Svasud Faste Location
-				ReyMid.CurrentRegionID = 100;
-				ReyMid.Size = 60;
-				ReyMid.Level = 59;
-				ReyMid.X = 766491;
-				ReyMid.Y = 670375;
-				ReyMid.Z = 5736;
-				ReyMid.Heading = 2358;
-				ReyMid.Flags |= GameNPC.eFlags.PEACE;
-				ReyMid.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					ReyMid.SaveIntoDatabase();
-				}
-			}
+			CaptainMid = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Midgard, 100); // Captain Hallvard, Svasud Faste
 
 			#endregion
 
@@ -113,11 +78,11 @@ namespace DOL.GS.DailyQuest.Hibernia
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(ReyMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(ReyMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			ReyMid.AddQuestToGive(typeof (PlayerKillQuestMid));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainMid.AddQuestToGive(typeof (PlayerKillQuestMid));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -127,27 +92,27 @@ namespace DOL.GS.DailyQuest.Hibernia
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (ReyMid == null)
+			if (CaptainMid == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(ReyMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(ReyMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			ReyMid.RemoveQuestToGive(typeof (PlayerKillQuestMid));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainMid.RemoveQuestToGive(typeof (PlayerKillQuestMid));
 		}
 
-		private static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		private static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(ReyMid.CanGiveQuest(typeof (PlayerKillQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (PlayerKillQuestMid), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -160,18 +125,17 @@ namespace DOL.GS.DailyQuest.Hibernia
 					switch (quest.Step)
 					{
 						case 1:
-							ReyMid.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+							CaptainMid.SayTo(player, "The enemy is out in the frontiers and the battlegrounds. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							ReyMid.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainMid.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					ReyMid.SayTo(player, "Hello "+ player.Name +", I am Rey. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                       "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                       "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainMid.SayTo(player, "Well met, " + player.Name + ". I am Captain Hallvard of the Svasud Faste garrison. Our scouts tell me Albion and Hibernia are thick in the frontier today. " +
+					                     "Will you [ride out] and bring ten of them down?");
 				}
 			}
 				// The player whispered to the NPC
@@ -182,8 +146,8 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(ReyMid, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestMid)), "Will you undertake " + questTitle + "?");
+						case "ride out":
+							player.Out.SendQuestSubscribeCommand(CaptainMid, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestMid)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -191,10 +155,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Midgard is in your debt. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -260,7 +224,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(ReyMid.CanGiveQuest(typeof (PlayerKillQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (PlayerKillQuestMid), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (PlayerKillQuestMid)) != null)
@@ -268,15 +232,15 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!ReyMid.GiveQuest(typeof (PlayerKillQuestMid), player, 1))
+				if (!CaptainMid.GiveQuest(typeof (PlayerKillQuestMid), player, 1))
 					return;
 
-				ReyMid.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainMid.SayTo(player, "Go, then. You will find the enemy in the frontiers and the battlegrounds.");
 
 			}
 		}
@@ -295,9 +259,9 @@ namespace DOL.GS.DailyQuest.Hibernia
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the frontiers or in battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in the frontiers or the battlegrounds. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Rey in Svasud Faste for your Reward.";
+						return "Return to Captain Hallvard in Svasud Faste for your reward.";
 				}
 				return base.Description;
 			}
@@ -319,12 +283,12 @@ namespace DOL.GS.DailyQuest.Hibernia
 			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}
@@ -356,7 +320,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 			
 			if (reward > 0)
 			{
-				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for finishing Daily Quest.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for your service to the realm.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				m_questPlayer.GainRealmPoints(reward, false);
 				m_questPlayer.Out.SendUpdatePlayer();
 			}

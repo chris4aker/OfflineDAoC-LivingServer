@@ -20,11 +20,11 @@ namespace DOL.GS.WeeklyQuest.Midgard
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Weekly] For The Realm";
+		private const string questTitle = "For the Realm";
 		private const int minimumLevel = 40;
 		private const int maximumLevel = 50;
 
-		private static GameNPC ReyMid = null; // Start NPC
+		private static GameNPC CaptainMid = null; // Start NPC
 
 		private int _playersKilledHib = 0;
 		private int _playersKilledAlb = 0;
@@ -66,42 +66,7 @@ namespace DOL.GS.WeeklyQuest.Midgard
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Midgard);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 100, 766491, 670375))
-					{
-						ReyMid = npc;
-						break;
-					}
-				}
-
-			if (ReyMid == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find Rey , creating it ...");
-				ReyMid = new GameNPC();
-				ReyMid.Model = 26;
-				ReyMid.Name = "Rey";
-				ReyMid.GuildName = "Bone Collector";
-				ReyMid.Realm = eRealm.Midgard;
-				//Svasud Faste Location
-				ReyMid.CurrentRegionID = 100;
-				ReyMid.Size = 60;
-				ReyMid.Level = 59;
-				ReyMid.X = 766491;
-				ReyMid.Y = 670375;
-				ReyMid.Z = 5736;
-				ReyMid.Heading = 2242;
-				ReyMid.Flags |= GameNPC.eFlags.PEACE;
-				ReyMid.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					ReyMid.SaveIntoDatabase();
-				}
-			}
+			CaptainMid = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Midgard, 100); // Captain Hallvard, Svasud Faste
 
 			#endregion
 
@@ -114,11 +79,11 @@ namespace DOL.GS.WeeklyQuest.Midgard
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(ReyMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(ReyMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Rey the possibility to give this quest to players */
-			ReyMid.AddQuestToGive(typeof (ForTheRealmQuestMid));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainMid.AddQuestToGive(typeof (ForTheRealmQuestMid));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" Mid initialized");
@@ -128,27 +93,27 @@ namespace DOL.GS.WeeklyQuest.Midgard
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (ReyMid == null)
+			if (CaptainMid == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(ReyMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(ReyMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainMid, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainMid, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Rey the possibility to give this quest to players */
-			ReyMid.RemoveQuestToGive(typeof (ForTheRealmQuestMid));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainMid.RemoveQuestToGive(typeof (ForTheRealmQuestMid));
 		}
 
-		protected static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		protected static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(ReyMid.CanGiveQuest(typeof (ForTheRealmQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (ForTheRealmQuestMid), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -161,18 +126,17 @@ namespace DOL.GS.WeeklyQuest.Midgard
 					switch (quest.Step)
 					{
 						case 1:
-							ReyMid.SayTo(player, "Head into the enemy frontiers and slay their forces. There are many Hibernia and Albion enemies, you will find them.");
+							CaptainMid.SayTo(player, "Head into the frontiers and bring down the forces of Albion and Hibernia, fifty of each.");
 							break;
 						case 2:
-							ReyMid.SayTo(player, "Hello " + player.Name + ", did you [slay their forces] for your reward?");
+							CaptainMid.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					ReyMid.SayTo(player, "You won't believe it, "+ player.Name +". We got a bulk order for exotic bones too. "+
-					                     "My workload is way too high, I'm going to ask for a raise. Well, at least after you bring me a [bunch of toeknuckles]. \n\n"+
-					                     "I have an order to fill, after all...");
+					CaptainMid.SayTo(player, player.Name + ", the war on the frontier is not won by skirmishes. " +
+					                     "Bring down fifty of Albion and fifty of Hibernia and you will have done more for Midgard than a dozen sieges. Will you fight [for the realm]?");
 				}
 			}
 				// The player whispered to the NPC
@@ -183,8 +147,8 @@ namespace DOL.GS.WeeklyQuest.Midgard
 				{
 					switch (wArgs.Text)
 					{
-						case "bunch of toeknuckles":
-							player.Out.SendQuestSubscribeCommand(ReyMid, QuestMgr.GetIDForQuestType(typeof(ForTheRealmQuestMid)), "Will you undertake " + questTitle + "?");
+						case "for the realm":
+							player.Out.SendQuestSubscribeCommand(CaptainMid, QuestMgr.GetIDForQuestType(typeof(ForTheRealmQuestMid)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -192,10 +156,10 @@ namespace DOL.GS.WeeklyQuest.Midgard
 				{
 					switch (wArgs.Text)
 					{
-						case "slay their forces":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Thank you for your contribution!", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("A hard campaign, and well fought. Midgard will not forget it. In a week's time I will have need of you again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -261,7 +225,7 @@ namespace DOL.GS.WeeklyQuest.Midgard
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(ReyMid.CanGiveQuest(typeof (ForTheRealmQuestMid), player)  <= 0)
+			if(CaptainMid.CanGiveQuest(typeof (ForTheRealmQuestMid), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (ForTheRealmQuestMid)) != null)
@@ -269,15 +233,15 @@ namespace DOL.GS.WeeklyQuest.Midgard
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!ReyMid.GiveQuest(typeof (ForTheRealmQuestMid), player, 1))
+				if (!CaptainMid.GiveQuest(typeof (ForTheRealmQuestMid), player, 1))
 					return;
 
-				ReyMid.SayTo(player, "You will find suitable players in the frontiers.");
+				CaptainMid.SayTo(player, "Go, then. You will find the enemy in the frontiers.");
 
 			}
 		}
@@ -296,11 +260,11 @@ namespace DOL.GS.WeeklyQuest.Midgard
 				switch (Step)
 				{
 					case 1:
-						return "Head into the enemy frontiers and slay their forces. \n" +
-						       "Players Killed: Albion ("+ _playersKilledAlb +" | "+ MAX_KILLGOAL +")\n" +
-						       "Players Killed: Hibernia ("+ _playersKilledHib +" | "+ MAX_KILLGOAL +")";
+						return "Bring down fifty fighters each of Albion and Hibernia in the frontiers. \n" +
+						       "Albionians Slain: ("+ _playersKilledAlb +" | "+ MAX_KILLGOAL +")\n" +
+						       "Hibernians Slain: ("+ _playersKilledHib +" | "+ MAX_KILLGOAL +")";
 					case 2:
-						return "Return to Rey in Svasud Faste for your Reward.";
+						return "Return to Captain Hallvard in Svasud Faste for your reward.";
 				}
 				return base.Description;
 			}
@@ -322,19 +286,19 @@ namespace DOL.GS.WeeklyQuest.Midgard
 			if (gArgs.Target.Realm == eRealm.Hibernia && gArgs.Target.Realm != player.Realm && DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) && player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON && _playersKilledHib < MAX_KILLGOAL) 
 			{
 				_playersKilledHib++;
-				player.Out.SendMessage("[Daily] Killed Hibernia Enemy: (" + _playersKilledHib + " | " + MAX_KILLGOAL + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+				player.Out.SendMessage("Hibernian Slain: (" + _playersKilledHib + " | " + MAX_KILLGOAL + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 				player.Out.SendQuestUpdate(this);
 			}
 			else if (gArgs.Target.Realm == eRealm.Albion && gArgs.Target.Realm != player.Realm && DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) && player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON && _playersKilledAlb < MAX_KILLGOAL) 
 			{
 				_playersKilledAlb++;
-				player.Out.SendMessage("[Daily] Killed Albion Enemy: (" + _playersKilledAlb + " | " + MAX_KILLGOAL + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+				player.Out.SendMessage("Albionian Slain: (" + _playersKilledAlb + " | " + MAX_KILLGOAL + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 				player.Out.SendQuestUpdate(this);
 			}
 				
 			if (_playersKilledHib >= MAX_KILLGOAL && _playersKilledAlb >= MAX_KILLGOAL)
 			{
-				// FinishQuest or go back to Rey
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}
@@ -370,7 +334,7 @@ namespace DOL.GS.WeeklyQuest.Midgard
 			
 			if (reward > 0)
 			{
-				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for finishing Weekly Quest.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for your service to the realm.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				m_questPlayer.GainRealmPoints(reward, false);
 				m_questPlayer.Out.SendUpdatePlayer();
 			}

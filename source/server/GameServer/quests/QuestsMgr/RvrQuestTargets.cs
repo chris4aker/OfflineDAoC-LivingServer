@@ -1,7 +1,7 @@
 namespace DOL.GS.Quests
 {
     /// <summary>
-    /// Who an RvR or battleground kill quest counts as an enemy player (1.2, 2026-11-15). The Atlas quests (Pazz's
+    /// Who an RvR or battleground kill quest counts as an enemy player (1.2, 2026-11-15). The Atlas quests (the captains'
     /// battleground dailies in Thidranki and Caledonia, the realm dailies, weeklies and monthlies, the Darkness Falls
     /// weekly and the hardcore "kill a player") counted a kill only when the victim was a GamePlayer. Offline DAoC is
     /// single-player: the enemy realms' players are autonomous gamebots (GameBot : GameNPC, IGamePlayer), so none of

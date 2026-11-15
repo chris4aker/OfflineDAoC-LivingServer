@@ -20,11 +20,11 @@ namespace DOL.GS.DailyQuest.Albion
 		/// </summary>
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private const string questTitle = "[Daily] Fen's New Friends";
+		private const string questTitle = "Enemies of the Realm";
 		private const int minimumLevel = 40;
 		private const int maximumLevel = 50;
 
-		private static GameNPC ReyAlb = null; // Start NPC
+		private static GameNPC CaptainAlb = null; // Start NPC
 
 		private int PlayersKilled = 0;
 		private const int MAX_KILLED = 10;
@@ -66,42 +66,7 @@ namespace DOL.GS.DailyQuest.Albion
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Albion);
-
-			if (npcs.Length > 0)
-				foreach (GameNPC npc in npcs)
-				{
-					if (DOL.GS.Quests.QuestNpcPlacement.IsAt(npc, 1, 583867, 477355))
-					{
-						ReyAlb = npc;
-						break;
-					}
-				}
-
-			if (ReyAlb == null)
-			{
-				if (log.IsWarnEnabled)
-					log.Warn("Could not find Rey , creating it ...");
-				ReyAlb = new GameNPC();
-				ReyAlb.Model = 26;
-				ReyAlb.Name = "Rey";
-				ReyAlb.GuildName = "Bone Collector";
-				ReyAlb.Realm = eRealm.Albion;
-				//Druim Ligen Location
-				ReyAlb.CurrentRegionID = 1;
-				ReyAlb.Size = 60;
-				ReyAlb.Level = 59;
-				ReyAlb.X = 583867;
-				ReyAlb.Y = 477355;
-				ReyAlb.Z = 2600;
-				ReyAlb.Heading = 3054;
-				ReyAlb.Flags |= GameNPC.eFlags.PEACE;
-				ReyAlb.AddToWorld();
-				if (SAVE_INTO_DATABASE)
-				{
-					ReyAlb.SaveIntoDatabase();
-				}
-			}
+			CaptainAlb = DOL.GS.Quests.QuestCaptains.Ensure(eRealm.Albion, 1); // Captain Edric, Castle Sauvage
 
 			#endregion
 
@@ -114,11 +79,11 @@ namespace DOL.GS.DailyQuest.Albion
 			GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.AddHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.AddHandler(ReyAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.AddHandler(ReyAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.AddHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.AddHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we bring to Dean the possibility to give this quest to players */
-			ReyAlb.AddQuestToGive(typeof (PlayerKillQuestAlb));
+			/* Now we bring to the captain the possibility to give this quest to players */
+			CaptainAlb.AddQuestToGive(typeof (PlayerKillQuestAlb));
 
 			if (log.IsInfoEnabled)
 				log.Info("Quest \"" + questTitle + "\" initialized");
@@ -128,27 +93,27 @@ namespace DOL.GS.DailyQuest.Albion
 		public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			//if not loaded, don't worry
-			if (ReyAlb == null)
+			if (CaptainAlb == null)
 				return;
 			// remove handlers
 			GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, new DOLEventHandler(SubscribeQuest));
 			GameEventMgr.RemoveHandler(GamePlayerEvent.DeclineQuest, new DOLEventHandler(SubscribeQuest));
 
-			GameEventMgr.RemoveHandler(ReyAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToRey));
-			GameEventMgr.RemoveHandler(ReyAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToRey));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameObjectEvent.Interact, new DOLEventHandler(TalkToCaptain));
+			GameEventMgr.RemoveHandler(CaptainAlb, GameLivingEvent.WhisperReceive, new DOLEventHandler(TalkToCaptain));
 
-			/* Now we remove to Dean the possibility to give this quest to players */
-			ReyAlb.RemoveQuestToGive(typeof (PlayerKillQuestAlb));
+			/* Now we remove to the captain the possibility to give this quest to players */
+			CaptainAlb.RemoveQuestToGive(typeof (PlayerKillQuestAlb));
 		}
 
-		protected static void TalkToRey(DOLEvent e, object sender, EventArgs args)
+		protected static void TalkToCaptain(DOLEvent e, object sender, EventArgs args)
 		{
 			//We get the player from the event arguments and check if he qualifies		
 			GamePlayer player = ((SourceEventArgs) args).Source as GamePlayer;
 			if (player == null)
 				return;
 
-			if(ReyAlb.CanGiveQuest(typeof (PlayerKillQuestAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (PlayerKillQuestAlb), player)  <= 0)
 				return;
 
 			//We also check if the player is already doing the quest
@@ -161,18 +126,17 @@ namespace DOL.GS.DailyQuest.Albion
 					switch (quest.Step)
 					{
 						case 1:
-							ReyAlb.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+							CaptainAlb.SayTo(player, "The enemy is out in the frontiers and the battlegrounds. Bring down ten of them and come back to me.");
 							break;
 						case 2:
-							ReyAlb.SayTo(player, "Hello " + player.Name + ", did you [hit your quota]?");
+							CaptainAlb.SayTo(player, "Welcome back, " + player.Name + ". Have you come to [report]?");
 							break;
 					}
 				}
 				else
 				{
-					ReyAlb.SayTo(player, "Hello "+ player.Name +", I am Rey. My master, Fen, has tasked me with collecting bones for a project he's working on. "+
-					                     "I'm way behind quota and could use some... subcontractors to [help me out]. \n\n"+
-					                     "\nCan you lend me a hand? A leg could probably work too.");
+					CaptainAlb.SayTo(player, "Well met, " + player.Name + ". I am Captain Edric of the Castle Sauvage garrison. Our scouts tell me Midgard and Hibernia are thick in the frontier today. " +
+					                     "Will you [ride out] and bring ten of them down?");
 				}
 			}
 				// The player whispered to the NPC
@@ -183,8 +147,8 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "help me out":
-							player.Out.SendQuestSubscribeCommand(ReyAlb, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestAlb)), "Will you undertake " + questTitle + "?");
+						case "ride out":
+							player.Out.SendQuestSubscribeCommand(CaptainAlb, QuestMgr.GetIDForQuestType(typeof(PlayerKillQuestAlb)), "Will you undertake " + questTitle + "?");
 							break;
 					}
 				}
@@ -192,10 +156,10 @@ namespace DOL.GS.DailyQuest.Albion
 				{
 					switch (wArgs.Text)
 					{
-						case "hit your quota":
+						case "report":
 							if (quest.Step == 2)
 							{
-								player.Out.SendMessage("Ugh, some of these are still dripping. Well done, he'll be pleased.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
+								player.Out.SendMessage("Well fought. Albion is in your debt. Come back on the morrow if you would serve again.", eChatType.CT_Chat, eChatLoc.CL_PopupWindow);
 								quest.FinishQuest();
 							}
 							break;
@@ -261,7 +225,7 @@ namespace DOL.GS.DailyQuest.Albion
 
 		private static void CheckPlayerAcceptQuest(GamePlayer player, byte response)
 		{
-			if(ReyAlb.CanGiveQuest(typeof (PlayerKillQuestAlb), player)  <= 0)
+			if(CaptainAlb.CanGiveQuest(typeof (PlayerKillQuestAlb), player)  <= 0)
 				return;
 
 			if (player.IsDoingQuest(typeof (PlayerKillQuestAlb)) != null)
@@ -269,15 +233,15 @@ namespace DOL.GS.DailyQuest.Albion
 
 			if (response == 0x00)
 			{
-				player.Out.SendMessage("Thank you for helping me.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+				player.Out.SendMessage("Another time, then.", eChatType.CT_Say, eChatLoc.CL_PopupWindow);
 			}
 			else
 			{
 				//Check if we can add the quest!
-				if (!ReyAlb.GiveQuest(typeof (PlayerKillQuestAlb), player, 1))
+				if (!CaptainAlb.GiveQuest(typeof (PlayerKillQuestAlb), player, 1))
 					return;
 
-				ReyAlb.SayTo(player, "You will find suitable players in the frontiers or in battlegrounds.");
+				CaptainAlb.SayTo(player, "Go, then. You will find the enemy in the frontiers and the battlegrounds.");
 
 			}
 		}
@@ -296,9 +260,9 @@ namespace DOL.GS.DailyQuest.Albion
 				switch (Step)
 				{
 					case 1:
-						return "You will find suitable players in the frontiers or in battlegrounds. \nPlayers Killed: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
+						return "Bring down enemy fighters in the frontiers or the battlegrounds. \nEnemies Slain: ("+ PlayersKilled +" | "+ MAX_KILLED +")";
 					case 2:
-						return "Return to Rey in Castle Sauvage for your Reward.";
+						return "Return to Captain Edric in Castle Sauvage for your reward.";
 				}
 				return base.Description;
 			}
@@ -320,12 +284,12 @@ namespace DOL.GS.DailyQuest.Albion
 			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
-			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
+			player.Out.SendMessage("Enemy Slain: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 			player.Out.SendQuestUpdate(this);
 					
 			if (PlayersKilled >= MAX_KILLED)
 			{
-				// FinishQuest or go back to Dean
+				// FinishQuest or go back to the captain
 				Step = 2;
 			}
 		}
@@ -364,7 +328,7 @@ namespace DOL.GS.DailyQuest.Albion
 			
 			if (reward > 0)
 			{
-				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for finishing Daily Quest.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+				m_questPlayer.Out.SendMessage($"You have been rewarded {reward} Realmpoints for your service to the realm.", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				m_questPlayer.GainRealmPoints(reward, false);
 				m_questPlayer.Out.SendUpdatePlayer();
 			}
