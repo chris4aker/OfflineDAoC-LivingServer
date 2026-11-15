@@ -24,7 +24,7 @@ namespace DOL.GS.Commands;
     "/epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start",
     "/epictest latecall <threshold|all|off> - test only: the raid's call of that blast threshold (Xanxicar 80/60/40/20) always comes late. Also latecall=<threshold|all> on start",
     "/epictest stop <event> - end a running raid",
-    "/epictest sweep start [all|event,event] [guest] - every raid once, one after another (Darkness Falls last); guest: you take a seat in each, your realm set to its realm until the sweep ends",
+    "/epictest sweep start [all|openworld|event,event] [guest] - every raid once, one after another (Darkness Falls last; openworld: the open-world big bosses only); guest: you take a seat in each, your realm set to its realm until the sweep ends",
     "/epictest sweep status | skip | stop - the sweep's progress, end the raid running now, or end the sweep")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
 {

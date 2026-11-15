@@ -28,7 +28,7 @@ internal sealed class RealmEventRecordsControl : UserControl
         layout.RowStyles.Add(new RowStyle(SizeType.Absolute,70));layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         var toolbar=new FlowLayoutPanel{Dock=DockStyle.Fill,AutoSize=true,WrapContents=true};
         _realm.Items.AddRange(["All realms","Albion","Midgard","Hibernia"]);
-        _kind.Items.AddRange(["All events","Dragon","Epic dungeon","Neutral raid","Keep","Relic keep","Relic"]);
+        _kind.Items.AddRange(["All events","Dragon","Open-world boss","Epic dungeon","Neutral raid","Keep","Relic keep","Relic"]);
         _outcome.Items.AddRange(["All outcomes","In progress","Boss defeated","Beaten to it","Defeated","Failed rally","Stopped by player","Route blocked","Timed out","Defended (timeout)","Captured","Captured / returned","Relic taken","Interrupted","Ended (unconfirmed)","Encounter unavailable"]);
         _realm.SelectedIndex=_kind.SelectedIndex=_outcome.SelectedIndex=0;
         toolbar.Controls.AddRange([_realm,_kind,_outcome,_search,_refresh,_deleteAll]);layout.Controls.Add(toolbar,0,0);

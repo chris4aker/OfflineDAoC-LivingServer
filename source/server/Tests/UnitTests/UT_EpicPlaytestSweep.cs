@@ -19,7 +19,7 @@ namespace DOL.UnitTests
             string[] order = EpicPlaytestSweep.Parse("all", known, out string[] unknown);
             Assert.That(unknown, Is.Empty);
             Assert.That(order, Is.EquivalentTo(known));
-            Assert.That(order.Length, Is.EqualTo(21));
+            Assert.That(order.Length, Is.EqualTo(37), "21 raids, and the 16 open-world big bosses since 1.2");
             Assert.That(order.TakeLast(3), Is.All.StartsWith("darkness-"));
             Assert.That(order.SkipLast(3), Has.None.StartsWith("darkness-"));
             Assert.That(order.SkipLast(3), Is.EqualTo(known.Where(id => !id.StartsWith("darkness-"))), "the definitions' own order otherwise");

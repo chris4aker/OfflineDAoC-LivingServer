@@ -89,7 +89,36 @@ public static class RealmRaidMuster
         new("dungeon-midgard-dodens", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
         new("dungeon-hibernia-tursuil", "Aalid Feie", 181, 183, 32, 40, new(312698,352420,3573)),
         new("dungeon-hibernia-marfach", "Druim Cain", 200, 206, 47, 59, new(421782,485582,1824)),
-        new("dungeon-hibernia-marfach", "Druim Ligen", 200, 207, 35, 51, new(334804,419842,5187))
+        new("dungeon-hibernia-marfach", "Druim Ligen", 200, 207, 35, 51, new(334804,419842,5187)),
+        // The open-world big bosses (Living Server 1.2, RealmRaidOpenWorld): a service settlement of the boss's realm in its
+        // region, the nearest in the world database first (healer or stablemaster as the centre), then a hub another raid
+        // already uses there. The first with a whole route to the staging ring is taken; none was walked on a navmesh yet.
+        new("openworld-albion-greenknight", "Castle Sauvage", 1, 11, 69, 51, new(585484,475520,2602)),
+        new("openworld-albion-greenknight", "Snowdonia Station", 1, 3, 59, 45, new(523562,408847,4204)),
+        new("openworld-albion-coliath", "Caer Diogel", 51, 56, 44, 58, new(403177,502596,4680)),
+        new("openworld-albion-coliath", "Fort Gwyntell", 51, 53, 46, 46, new(426905,416817,5712)),
+        new("openworld-albion-emthoro", "Caer Diogel", 51, 56, 44, 58, new(403177,502596,4680)),
+        new("openworld-albion-emthoro", "Fort Gwyntell", 51, 53, 46, 46, new(426905,416817,5712)),
+        new("openworld-midgard-glaciergiant", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-wreth-jotun", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-wreth-jotun", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-wreth-arachite", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-wreth-arachite", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-wreth-spider", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-wreth-spider", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-wreth-crab", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-wreth-crab", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-wreth-scorpion", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-wreth-scorpion", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-revenant", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
+        new("openworld-midgard-revenant", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
+        new("openworld-midgard-mortufoghus", "Hagall", 151, 154, 44, 40, new(379260,385996,7752)),
+        new("openworld-hibernia-evern", "Druim Cain", 200, 206, 47, 59, new(421782,485582,1824)),
+        new("openworld-hibernia-evern", "Druim Ligen", 200, 207, 35, 51, new(334804,419842,5187)),
+        new("openworld-hibernia-juggernaut", "Druim Cain", 200, 206, 47, 59, new(421782,485582,1824)),
+        new("openworld-hibernia-curengkur", "Dalniver's service settlement (World's End)", 181, 185, 42, 28, new(368881,263409,3472)),
+        new("openworld-hibernia-marfoirwort", "Aalid Feie", 181, 183, 32, 40, new(312698,352420,3573)),
+        new("openworld-hibernia-mollunero", "Dalniver's service settlement (World's End)", 181, 185, 42, 28, new(368881,263409,3472))
     ];
 
     /// <summary>The hub's centre has a walk to <paramref name="post"/> (a post above a drop may be reached only one way).</summary>

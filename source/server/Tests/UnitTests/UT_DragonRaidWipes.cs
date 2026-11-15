@@ -436,9 +436,10 @@ namespace DOL.UnitTests
         {
             Assert.Multiple(() =>
             {
+                // The open-world big bosses (1.2, RealmRaidOpenWorld) are fought by the same engine.
                 foreach (var dragon in AutonomousRealmRaid.Definitions.Where(d => !d.IsDungeon))
                 {
-                    Assert.That(dragon.Id, Does.StartWith("dragon-"));
+                    Assert.That(dragon.Id.StartsWith("dragon-") || dragon.IsOpenWorld, Is.True, dragon.Id);
                     Assert.That(RealmRaidMuster.Hubs.Any(h => h.Event == dragon.Id && h.Region == dragon.Region), Is.True,
                         $"{dragon.Name}: the Special Forces arrive at the raid's hub and walk to the staging ring");
                 }
