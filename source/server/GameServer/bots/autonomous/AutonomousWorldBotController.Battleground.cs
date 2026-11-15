@@ -113,9 +113,15 @@ namespace DOL.GS
                 GameLiving target = FindRvrTarget(bot);
                 // While the gates stand the wave marches on the gate together and fights the guards that come at it,
                 // instead of each bot running at its own nearest guard (AutonomousBattlegroundWave.WaveTakesGuard).
-                if (target is GameKeepGuard guard && !AutonomousBattlegroundWave.WaveTakesGuard(
-                        central.Doors.Values.Any(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed),
-                        guard is GuardLord, bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
+                bool gatesShut = central.Doors.Values.Any(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed);
+                // ...and the guard that comes at one of them is fought by the bots around that one, together. On the owner's
+                // PC (build ea882e6, Thidranki 2026-11-15 08:57-08:59) 16 Hibernians died to the keep's level-33 guards while
+                // their wave of 15 went, most with one attacker on them, one at a time: each bot's own pick among the guards near it
+                // (SelectDistributedRvrTarget) was not the guard hitting its neighbour, and was dropped above.
+                if (gatesShut && WaveAssistGuard(bot, central) is { } hitting)
+                    target = hitting;
+                else if (target is GameKeepGuard guard && !AutonomousBattlegroundWave.WaveTakesGuard(
+                        gatesShut, guard is GuardLord, bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
                     target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
                 if (target != null)
@@ -150,18 +156,28 @@ namespace DOL.GS
                     GameKeepDoor gate = central.Doors.Values
                         .Where(door => door.IsAttackableDoor && !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))
                         .OrderBy(door => bot.GetDistanceTo(door)).FirstOrDefault();
-                    // Every main gate still shut: march on the nearest one and batter it (FindReachableEnemyDoor above
-                    // takes it once in reach). Pathing to the lord through the closed keep found no path: 90 stormers of
-                    // Dun Abermenai gave up their route that way in run 21 (2026-10-17).
-                    if (gate == null && ClosedMainGate(bot, central) is { } shut)
+                    // A main door still shut (the lord is shielded while one stands): march on the door that is the way
+                    // in, in keep order, and batter it (FindReachableEnemyDoor above takes it once in reach). Pathing to the
+                    // lord through the closed keep found no path: 90 stormers of Dun Abermenai gave up their route that way
+                    // in run 21 (2026-10-17). The door is the outer gate first, then the keep door behind it, never simply
+                    // the nearest: on the owner's PC (build 3d67b6f, Thidranki 2026-11-15) 18 of 19 storm samples marched
+                    // from outside the walls on Thidranki Faste's keep door (252000302, behind the outer gate) and stood
+                    // at the south wall with no path. And with the outer gate broken and the keep door shut (build
+                    // ea882e6) a bot through the gate walked at the lord, whose path the shut keep door refuses
+                    // (Pathfinder's closed-door hold), so it held just inside the gate, 1,700 from the door it had to hit.
+                    if (StormDoor(bot, central) is { } shut)
                     {
                         // Each storm step turns the bot at once (a moving bot otherwise finished its previous walk first).
-                        if (IssuePath(bot, new Vector3(shut.X, shut.Y, shut.Z), retargetWhileMoving: true))
+                        // The walk ends on the attackers' side of the door, not on the door's own (blocked) floor; the
+                        // navmesh takes it in through a broken gate when the door stands inside the walls.
+                        if (IssuePath(bot, DoorFront(bot, central, shut), retargetWhileMoving: true))
                         {
-                            TraceStorm(this, bot, central, lord, shut, "closed-gate");
-                            SetBattlegroundStatus(bot, bracket, "Marching on the keep gate", $"{central.Name}: the gates are shut", shut.Name);
+                            TraceStorm(this, bot, central, lord, shut, gate == null ? "closed-gate" : "keep-door");
+                            SetBattlegroundStatus(bot, bracket, "Marching on the keep gate",
+                                gate == null ? $"{central.Name}: the gates are shut" : $"{central.Name}: through the broken gate to the keep door", shut.Name);
                             return true;
                         }
+                        TraceStorm(this, bot, central, lord, shut, "closed-gate-path-refused");
                     }
                     if (rally.Hold && HoldBattlegroundRally(bot, bracket, central, lord, gate, rally))
                         return true;
@@ -191,10 +207,9 @@ namespace DOL.GS
                     return true;
                 }
                 // With every main gate shut the keep's centre has no path (209 route give-ups in Abermenai, run 21): the
-                // approach is then the nearest main gate.
-                Vector3 approach = _rvrApproachDestination ?? (ClosedMainGate(bot, central) is { } closedGate &&
-                    !central.Doors.Values.Any(door => door.IsAttackableDoor && !door.IsPostern && (!door.IsAlive || door.State == eDoorState.Open))
-                        ? new Vector3(closedGate.X, closedGate.Y, closedGate.Z)
+                // approach is then the front of the door that is the way in (StormDoor).
+                Vector3 approach = _rvrApproachDestination ?? (StormDoor(bot, central) is { } closedGate
+                        ? DoorFront(bot, central, closedGate)
                         : new Vector3(central.X, central.Y, central.Z));
                 if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), approach) > 120 * 120)
                     IssuePath(bot, approach);
@@ -309,17 +324,22 @@ namespace DOL.GS
         }
 
         // Stormers stop 1,600-2,500 from the lord with the gates down (runs 18-21), though the mesh reaches him from the
-        // gates (navmesh probe 2026-10-17). One line every 20 s server-wide says where a stormer stands and what it walks to.
-        private static long _nextStormTraceTick;
+        // gates (navmesh probe 2026-10-17). One line every 20 s for each realm says where a stormer stands and what it walks
+        // to (was one line server-wide: build ea882e6 wrote four in two waves, all Hibernian).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> NextStormTraceTick = new();
         private static void TraceStorm(AutonomousWorldBotController controller, GameBot bot, AbstractGameKeep keep, GameKeepGuard lord,
             GameKeepDoor gate, string step)
         {
             long now = GameLoop.GameLoopTime;
-            long next = System.Threading.Interlocked.Read(ref _nextStormTraceTick);
-            if (now < next || System.Threading.Interlocked.CompareExchange(ref _nextStormTraceTick, now + 20_000, next) != next)
+            long next = NextStormTraceTick.GetOrAdd(bot.Realm, 0);
+            if (now < next || !NextStormTraceTick.TryUpdate(bot.Realm, now + 20_000, next))
                 return;
             var mover = bot.movementComponent;
-            Log.Info($"BG_STORM_TRACE bot={bot.Name} keep=\"{keep.Name}\" step={step} at={bot.X},{bot.Y},{bot.Z} " +
+            long waveMs = AutonomousBattlegroundWave.GoingMilliseconds(bot.CurrentRegionID, bot.Realm, now);
+            // pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are
+            // still those of the previous order (build ea882e6: "dest" next to the bot was the staging hold, not the route).
+            Log.Info($"BG_STORM_TRACE bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" step={step} " +
+                     $"wave={(waveMs < 0 ? "-" : $"{waveMs / 1000}s")} pending={mover?.HasPendingMoveRequest} at={bot.X},{bot.Y},{bot.Z} " +
                      $"toLord={(int)bot.GetDistanceTo(lord)} lordAt={lord.X},{lord.Y},{lord.Z} " +
                      $"gate={(gate == null ? "none" : $"{gate.DoorId}@{gate.X},{gate.Y},{gate.Z} alive={gate.IsAlive} state={gate.State} toGate={(int)bot.GetDistanceTo(gate)}")} " +
                      $"moving={bot.IsMoving} path={mover?.LastPathfindingStatus} dest={(mover == null ? "-" : $"{mover.Destination.X:0},{mover.Destination.Y:0},{mover.Destination.Z:0}")} " +
@@ -388,12 +408,109 @@ namespace DOL.GS
         private static string Holder(AbstractGameKeep keep) =>
             keep.Realm == eRealm.None ? "its neutral guards" : GlobalConstants.RealmToName(keep.Realm);
 
-        /// <summary>The nearest standing, closed main gate (not a postern) of the keep.</summary>
-        private static GameKeepDoor ClosedMainGate(GameBot bot, AbstractGameKeep keep) =>
-            keep?.Doors.Values
-                .Where(door => door.IsAlive && door.IsAttackableDoor && !door.IsPostern && door.State == eDoorState.Closed)
-                .OrderBy(bot.GetDistanceTo)
-                .FirstOrDefault();
+        /// <summary>
+        /// The main door a storm marches on while one stands closed: the way in, in keep order (StormDoorIndex), or null.
+        /// </summary>
+        private static GameKeepDoor StormDoor(GameBot bot, AbstractGameKeep keep)
+        {
+            if (keep == null) return null;
+            GameKeepDoor[] doors = keep.Doors.Values.ToArray();
+            var facts = new (int Number, float FromCentre, float FromBot, bool PosternLike, bool ClosedAndStanding)[doors.Length];
+            for (int i = 0; i < doors.Length; i++)
+            {
+                GameKeepDoor door = doors[i];
+                facts[i] = (SiegeDoorNumber(door), Vector2.Distance(new(door.X, door.Y), new(keep.X, keep.Y)), bot.GetDistanceTo(door),
+                    PosternLike(keep, door), door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed);
+            }
+            int index = StormDoorIndex(facts);
+            return index < 0 ? null : doors[index];
+        }
+
+        /// <summary>
+        /// Which closed main door a storm goes for: posterns never (they are not battered and lead nowhere a wave goes),
+        /// then keep order as the siege crews use it (SiegeDoor: the outer gate, door 01, before the keep door behind it),
+        /// then the door farther from the keep's centre, then the nearer to the bot. -1 when no main door stands closed.
+        /// Thidranki Faste: gate 252000301 (1,244 from the centre, east) before keep door 252000302 (435, by the lord). Pure.
+        /// </summary>
+        public static int StormDoorIndex(
+            System.Collections.Generic.IReadOnlyList<(int Number, float FromCentre, float FromBot, bool PosternLike, bool ClosedAndStanding)> doors)
+        {
+            int best = -1;
+            for (int i = 0; i < doors.Count; i++)
+            {
+                var door = doors[i];
+                if (!door.ClosedAndStanding || door.PosternLike) continue;
+                if (best < 0) { best = i; continue; }
+                var held = doors[best];
+                if (door.Number != held.Number ? door.Number < held.Number
+                    : door.FromCentre != held.FromCentre ? door.FromCentre > held.FromCentre
+                    : door.FromBot < held.FromBot)
+                    best = i;
+            }
+            return best;
+        }
+
+        /// <summary>How far in front of a door a storm's walk ends: inside FindReachableEnemyDoor's 450, off the door's floor.</summary>
+        public const float DoorFrontDistance = 230f;
+
+        /// <summary>
+        /// The spot in front of a door on the attackers' side (SiegePlacement.OutwardNormal: away from the keep's centre for
+        /// the outer gate, toward the outer gate for the keep door behind it). Pure.
+        /// </summary>
+        public static Vector3 DoorFrontPoint(Vector3 door, ushort heading, Vector2 keepCentre, Vector2? approach)
+        {
+            Vector2 outward = SiegePlacement.OutwardNormal(new(door.X, door.Y), heading, keepCentre, approach);
+            return new(door.X + outward.X * DoorFrontDistance, door.Y + outward.Y * DoorFrontDistance, door.Z);
+        }
+
+        /// <summary><see cref="DoorFrontPoint"/> settled on the navmesh (the door's own position when there is no mesh).</summary>
+        private static Vector3 DoorFront(GameBot bot, AbstractGameKeep keep, GameKeepDoor door)
+        {
+            // A door behind the outer gate (nearer the centre than door 01) faces the gate; any other door faces out.
+            Vector2 centre = new(keep.X, keep.Y);
+            Vector2? approach = InnerDoorApproach(keep, door) is { } gate &&
+                Vector2.Distance(gate, centre) > Vector2.Distance(new(door.X, door.Y), centre) ? gate : null;
+            Vector3 front = DoorFrontPoint(new(door.X, door.Y, door.Z), door.Heading, centre, approach);
+            Zone zone = bot.CurrentRegion?.GetZone((int)front.X, (int)front.Y);
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
+                return new(door.X, door.Y, door.Z);
+            return nav.GetClosestPoint(zone, front, 120, 120, 256, nav.DefaultFilters) ?? front;
+        }
+
+        /// <summary>
+        /// The keep guard (never the lord) that is hitting one of the bot's realm near it, for a going wave to fight together:
+        /// the one whose victim is nearest the bot (AutonomousBattlegroundWave.WaveAssists). Null when none.
+        /// </summary>
+        private static GameKeepGuard WaveAssistGuard(GameBot bot, AbstractGameKeep keep)
+        {
+            if (keep == null) return null;
+            bool ranged = AutonomousRvrDefense.IsRangedDefender(bot);
+            GameKeepGuard best = null;
+            float bestVictim = float.MaxValue;
+            // The guard it already fights stays its target while it still qualifies (no switching between two guards).
+            if (bot.TargetObject is GameKeepGuard current && current.Component?.Keep == keep && Assists(current, out _))
+                return current;
+            foreach (GameKeepGuard guard in keep.Guards.Values)
+            {
+                if (!Assists(guard, out float victimToBot) || victimToBot >= bestVictim) continue;
+                best = guard;
+                bestVictim = victimToBot;
+            }
+            return best;
+
+            bool Assists(GameKeepGuard guard, out float victimToBot)
+            {
+                victimToBot = float.MaxValue;
+                if (guard is GuardLord || !guard.IsAlive || guard.CurrentRegionID != bot.CurrentRegionID ||
+                    !(guard.IsAttacking || guard.IsCasting) || guard.TargetObject is not GameLiving victim ||
+                    victim.Realm != bot.Realm || !victim.IsAlive || victim.CurrentRegionID != bot.CurrentRegionID)
+                    return false;
+                victimToBot = bot.GetDistanceTo(victim);
+                return AutonomousBattlegroundWave.WaveAssists(ranged, victimToBot, guard.GetDistanceTo(victim)) &&
+                       GameServer.ServerRules.IsAllowedToAttack(bot, guard, true);
+            }
+        }
 
         /// <summary>A closed gate of the enemy-held keep that this bot can stand at and hit, like players did.</summary>
         private static GameKeepDoor FindReachableEnemyDoor(GameBot bot, AbstractGameKeep keep)

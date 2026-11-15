@@ -50,6 +50,8 @@ public static class AutonomousBattlegroundWave
         public int Total, Gathered, NearKeep, GatheredInCombat, HolderNearKeep;
         // Fights a gatherer did not pick (TryEngageFrontierThreat) or dropped (a chase away from the staging point).
         public int Refused, Dropped;
+        // The realm's bots that died in this battleground while the wave was going: to the keep's guards, and to anything else.
+        public int DiedToGuards, DiedOther;
     }
 
     private static readonly ConcurrentDictionary<(ushort Region, eRealm Realm), Wave> Waves = new();
@@ -109,6 +111,44 @@ public static class AutonomousBattlegroundWave
 
     /// <summary>See <see cref="WaveTakesGuard"/>.</summary>
     public const float WaveGuardReach = 1_200f;
+
+    /// <summary>A going wave fights a keep guard that is hitting one of the realm this close to the bot (<see cref="WaveAssists"/>).</summary>
+    public const float WaveAssistRadius = 1_500f;
+    /// <summary>A guard this close to the one it hits stands beside it, so a melee bot reaches it where its victim stands.</summary>
+    public const float WaveAssistMeleeReach = 400f;
+
+    /// <summary>
+    /// A bot of a going wave joins the fight against a keep guard that is hitting one of its realm within
+    /// <see cref="WaveAssistRadius"/> of it: the wave helps its own, as a zerg did, instead of walking past. On the owner's PC
+    /// (build ea882e6, Thidranki 2026-11-15) 16 Hibernians died to the keep's level-33 guards in the two minutes after their wave
+    /// of 15 went, most deaths with one attacker on them, and the guards stood at 19/19. A melee bot helps only against a guard
+    /// beside its victim (<see cref="WaveAssistMeleeReach"/>), not an archer or caster on the wall it cannot walk to; a ranged
+    /// bot helps against either. Pure.
+    /// </summary>
+    public static bool WaveAssists(bool ranged, float victimToBot, float guardToVictim) =>
+        victimToBot <= WaveAssistRadius && (ranged || guardToVictim <= WaveAssistMeleeReach);
+
+    /// <summary>How long the realm's wave in this region has been going, or -1 when it is not going (diagnostics).</summary>
+    public static long GoingMilliseconds(ushort regionId, eRealm realm, long now)
+    {
+        if (!Waves.TryGetValue((regionId, realm), out Wave wave)) return -1;
+        lock (wave) return wave.Going ? now - wave.GoingSince : -1;
+    }
+
+    /// <summary>
+    /// Counts a death of the realm's bot in a battleground while its wave goes, for BG_WAVE_SPENT and BG_WAVE_STATUS: the
+    /// owner's PC (build ea882e6) logged a wave "spent" with nearKeep 1 and nothing to say its bots had died on the way.
+    /// </summary>
+    public static void NoteDeath(ushort regionId, eRealm realm, bool killedByKeepGuard)
+    {
+        if (!Waves.TryGetValue((regionId, realm), out Wave wave)) return;
+        lock (wave)
+        {
+            if (!wave.Going) return;
+            if (killedByKeepGuard) wave.DiedToGuards++;
+            else wave.DiedOther++;
+        }
+    }
 
     // When each realm's going wave was last seen, per region; read without the waves' locks (no lock order between
     // realms). A wave not seen going for 30 s (spent, or its realm took the keep) no longer counts.
@@ -209,7 +249,7 @@ public static class AutonomousBattlegroundWave
                     wave.GatherSince = now;
                     GoingSeen.TryRemove((bracket.RegionId, bot.Realm), out _);
                     Log.Info($"BG_WAVE_SPENT battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                             $"nearKeep={wave.NearKeep} inside={wave.Total}");
+                             $"nearKeep={wave.NearKeep} inside={wave.Total} diedToGuards={wave.DiedToGuards} diedOther={wave.DiedOther}");
                     going = false;
                 }
                 else going = true;
@@ -220,6 +260,8 @@ public static class AutonomousBattlegroundWave
             {
                 wave.Going = true;
                 wave.GoingSince = now;
+                wave.DiedToGuards = 0;
+                wave.DiedOther = 0;
                 going = true;
                 Log.Info($"BG_WAVE_ASSAULT battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{central.Name}\" " +
                          $"gathered={wave.Gathered} needed={WaveSize(wave.Total)} patienceNeeded={PatienceWaveSize(wave.Total)} inside={wave.Total} " +
@@ -235,7 +277,8 @@ public static class AutonomousBattlegroundWave
                          $"inside={wave.Total} gathered={wave.Gathered} gatheredInCombat={wave.GatheredInCombat} needed={WaveSize(wave.Total)} " +
                          $"patienceNeeded={PatienceWaveSize(wave.Total)} waitedSeconds={(wave.Going ? 0 : (now - wave.GatherSince) / 1000)} " +
                          $"staging={at} nearKeep={wave.NearKeep} holderNearKeep={wave.HolderNearKeep} going={(gatesDown ? "gates-down" : !wave.Staging.HasValue ? "no-staging" : wave.Going ? "yes" : "no")} " +
-                         $"goingSeconds={(wave.Going ? (now - wave.GoingSince) / 1000 : 0)} fightsRefused={wave.Refused} chasesDropped={wave.Dropped}");
+                         $"goingSeconds={(wave.Going ? (now - wave.GoingSince) / 1000 : 0)} fightsRefused={wave.Refused} chasesDropped={wave.Dropped} " +
+                         $"diedToGuards={wave.DiedToGuards} diedOther={wave.DiedOther}");
                 wave.Refused = 0;
                 wave.Dropped = 0;
             }
