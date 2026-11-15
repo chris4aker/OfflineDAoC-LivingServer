@@ -85,6 +85,18 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **A bot listing on the Realm Exchange no longer stalls the server while the database writer is busy** (tests only;
+  owner's PC, build 1dc66b6, overnight 2026-11-14/15). At 02:38:03 the game loop stopped for 5.6 s: Waffleironer
+  (level 50 Midgard Spiritmaster, solo PvE, between tasks in a capital, full backpack) was listing Bodybender Cloth Pants,
+  and its AI turn (5,582 ms) waited for the shared database write lock while the once-a-second bot status save held it
+  through a 6,062 ms Inventory INSERT (`lock.db_write` 4 waits / 17.0 s, `db.inventory_batch` 7.95 s that minute against
+  about 1.3 s normally). Why that one INSERT took 6 s is not known (that minute also had a 682 ms gen-2 GC, a 2.1 GB heap
+  and 20,000 page faults a second). A bot's listing or purchase now waits at most 50 ms for the lock; if it is still
+  held, nothing changes and the bot keeps the item and tries again a second later (a purchase at its next exchange
+  check, a beggar at its next line). A status save that holds the lock over 500 ms now logs
+  `AUTONOMOUS_STATUS_BATCH_SLOW` (its time split, bots, items, GC and heap), and a deferral logs
+  `AUTONOMOUS_DB_WRITE_DEFERRED` at most once a minute, so the next slow write is named. The SQL itself still runs on
+  the bot's turn once it has the lock. `UT_RealmExchangeEconomy`.
 - **The battlegrounds' lore** (tests only; owner 2026-11-15, "We need full lore for the battlegrounds written"): one
   backstory for the four fields, why only the young may fight there, why the fallen wake at their own portal keep and who
   keeps the gates, told three ways by the three loremasters (a new neutral place, `proving-fields.json`, with no region

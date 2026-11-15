@@ -553,6 +553,115 @@ namespace DOL.UnitTests
             Assert.That(candidate.SlotPosition, Is.EqualTo((int)eInventorySlot.Consignment_First));
         }
 
+        /// <summary>
+        /// 2026-11-15 02:38 (owner's PC, build 1dc66b6): the status flush held DatabaseWriteLock through a 6,062 ms
+        /// Inventory INSERT while Waffleironer listed Bodybender Cloth Pants; its AI turn waited 5,582 ms on the lock and
+        /// the game loop with it. Here another thread holds the lock for two seconds, as that batch did.
+        /// </summary>
+        private static System.Threading.Thread HoldDatabaseWriteLock(System.Threading.ManualResetEventSlim held,
+            System.Threading.ManualResetEventSlim release)
+        {
+            var holder = new System.Threading.Thread(() =>
+            {
+                lock (AutonomousBotStatusPersistence.DatabaseWriteLock)
+                {
+                    held.Set();
+                    release.Wait(TimeSpan.FromSeconds(10));
+                }
+            }) { IsBackground = true };
+            holder.Start();
+            Assert.That(held.Wait(TimeSpan.FromSeconds(5)), Is.True);
+            return holder;
+        }
+
+        [Test]
+        public void ListingWhileTheDatabaseWriterIsBusy_DefersWithinTheBudgetAndKeepsTheItem()
+        {
+            ExchangeBot seller = Bot(120, 500);
+            DbInventoryItem item = FillBackpack(seller).First();
+            eInventorySlot source = (eInventorySlot)item.SlotPosition;
+            using var held = new System.Threading.ManualResetEventSlim();
+            using var release = new System.Threading.ManualResetEventSlim();
+            System.Threading.Thread holder = HoldDatabaseWriteLock(held, release);
+            try
+            {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                bool listed = AutonomousBotEconomy.TryList(seller, item, 700, out bool deferred);
+                watch.Stop();
+
+                Assert.That(listed, Is.False);
+                Assert.That(deferred, Is.True);
+                // the bound is 50 ms; a generous ceiling keeps a loaded CI machine from failing it
+                Assert.That(watch.ElapsedMilliseconds, Is.LessThan(1_000), "the AI turn waited on the database writer");
+                Assert.That(seller.Inventory.GetItem(source), Is.SameAs(item));
+                Assert.That(item.OwnerLot, Is.Zero);
+                Assert.That(item.SellPrice, Is.Zero);
+                Assert.That(_store.Writes, Is.Zero);
+                Assert.That(MarketCache.SearchItems(new ItemQuery { Owner = AutonomousBotEconomy.GetOwnerId(seller.DatabaseID) }),
+                    Is.Empty);
+            }
+            finally
+            {
+                release.Set();
+                holder.Join(TimeSpan.FromSeconds(10));
+            }
+
+            Assert.That(AutonomousBotEconomy.TryList(seller, item, 700, out bool laterDeferred), Is.True);
+            Assert.That(laterDeferred, Is.False);
+            Assert.That(seller.Inventory.GetItem(source), Is.Null);
+            Assert.That(item.SellPrice, Is.EqualTo(700));
+        }
+
+        [Test]
+        public void BuyingWhileTheDatabaseWriterIsBusy_DefersWithoutDebitOrLosingTheListing()
+        {
+            ExchangeBot buyer = Bot(121, 900);
+            ExchangeBot seller = Bot(122, 100);
+            DbInventoryItem listing = Listing(AutonomousBotEconomy.GetOwnerId(seller.DatabaseID), 400,
+                (int)eInventorySlot.Consignment_First);
+            MarketCache.AddItem(listing);
+            using var held = new System.Threading.ManualResetEventSlim();
+            using var release = new System.Threading.ManualResetEventSlim();
+            System.Threading.Thread holder = HoldDatabaseWriteLock(held, release);
+            try
+            {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                bool bought = AutonomousBotEconomy.TryBuy(buyer, listing, out bool deferred);
+                watch.Stop();
+
+                Assert.That(bought, Is.False);
+                Assert.That(deferred, Is.True);
+                Assert.That(watch.ElapsedMilliseconds, Is.LessThan(1_000), "the AI turn waited on the database writer");
+                Assert.That(buyer.PersistentRecord.MoneyCopper, Is.EqualTo(900));
+                Assert.That(seller.PersistentRecord.MoneyCopper, Is.EqualTo(100));
+                Assert.That(listing.OwnerLot, Is.EqualTo(RealmExchangeBroker.HiberniaOwnerLot));
+                Assert.That(MarketCache.SearchItems(new ItemQuery { Owner = listing.OwnerID }), Does.Contain(listing));
+            }
+            finally
+            {
+                release.Set();
+                holder.Join(TimeSpan.FromSeconds(10));
+            }
+
+            Assert.That(AutonomousBotEconomy.TryBuy(buyer, listing, out bool laterDeferred), Is.True);
+            Assert.That(laterDeferred, Is.False);
+            Assert.That(buyer.PersistentRecord.MoneyCopper, Is.EqualTo(500));
+        }
+
+        [Test]
+        public void TryLock_IsReentrantAndReleasesOnlyWhatItTook()
+        {
+            object gate = new();
+            using (AiProfile.TryLock(gate, 0, AiSystem.LockDatabaseWrite, out bool outer))
+            {
+                Assert.That(outer, Is.True);
+                using (AiProfile.TryLock(gate, 0, AiSystem.LockDatabaseWrite, out bool inner))
+                    Assert.That(inner, Is.True);
+                Assert.That(System.Threading.Monitor.IsEntered(gate), Is.True);
+            }
+            Assert.That(System.Threading.Monitor.IsEntered(gate), Is.False);
+        }
+
         private ExchangeBot Bot(long id, long copper)
         {
             ExchangeBot bot = (ExchangeBot)RuntimeHelpers.GetUninitializedObject(typeof(ExchangeBot));
