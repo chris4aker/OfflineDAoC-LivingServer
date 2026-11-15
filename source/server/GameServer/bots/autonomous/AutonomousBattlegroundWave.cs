@@ -239,6 +239,15 @@ public static class AutonomousBattlegroundWave
                     wave.GatheredInCombat = gathered.Count(other => other.InCombat);
                 }
             }
+            if (gatesDown && wave.Going)
+            {
+                // The doors are down: the keep rally takes over (AutonomousBattlegroundKeepRally), and the wave gathers afresh
+                // if the doors are rebuilt. On build 3b808b4 Hibernia's last wave stayed "going" through 46 minutes of
+                // gates-down and BG_WAVE_STATUS kept counting its deaths (diedToGuards 11 -> 203 by 10:58) while Midgard's stood at 15.
+                wave.Going = false;
+                wave.GatherSince = now;
+                GoingSeen.TryRemove((bracket.RegionId, bot.Realm), out _);
+            }
             bool going;
             if (gatesDown || !wave.Staging.HasValue) going = true;
             else if (wave.Going)

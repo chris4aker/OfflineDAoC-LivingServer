@@ -27,6 +27,7 @@ namespace DOL.GS
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
             _battlegroundRallyHold = null;
+            _battlegroundStorming = false;
             _battlegroundGatherStaging = null;
             BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
             if (bracket == null)
@@ -93,23 +94,24 @@ namespace DOL.GS
                     return true;
                 }
                 GameKeepGuard lord = central?.Guards.Values.FirstOrDefault(guard => guard is GuardLord && guard.IsAlive);
-                bool nearLord = lord != null && lord.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(lord, BattlegroundLordReach);
-                // Away from the lord (a new life after a release, or chased out) the bot comes in through a gate again. The
-                // old reset sat inside the near-lord branch where it could never be true, so a bot that once passed the gate
-                // walked straight at the lord ever after (playtest 2026-11-04: 12 of the 14 "lord" storm samples stood
-                // 1,100-2,900 from the gate, outside the walls).
-                _battlegroundGatePassed = KeepsGatePassed(_battlegroundGatePassed, nearLord, _battlegroundGateKeep == central.KeepID);
-                _battlegroundGateKeep = central.KeepID;
-                // The lord is exposed: the realm rallies inside the breach and goes up together (AutonomousBattlegroundKeepRally).
-                AutonomousBattlegroundKeepRally.Order rally = nearLord && lord is GuardLord { ShieldedFromBots: false }
+                bool lordHere = lord != null && lord.CurrentRegionID == bot.CurrentRegionID;
+                // The lord is exposed: the realm rallies outside the breach and goes up together (AutonomousBattlegroundKeepRally).
+                // Every assaulting bot of the realm takes the rally, wherever it stands: on the owner's PC (build 3b808b4,
+                // Thidranki 2026-11-15 10:12-10:58) only those within 4,000 of the lord did, while 17-33 others "marched" on
+                // the keep's centre on their own and fought whatever they met.
+                AutonomousBattlegroundKeepRally.Order rally = lordHere && lord is GuardLord { ShieldedFromBots: false }
                     ? AutonomousBattlegroundKeepRally.Decide(bot, bracket, central, lord)
                     : default;
                 _battlegroundRallyHold = rally.Hold ? rally.Point : null;
-                // Going up from the rally (inside the breach): straight for the lord, not back out to the nearest gate.
-                if (rally.Step == AutonomousBattlegroundKeepRally.Step.Storm &&
-                    Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), rally.Point) <=
-                    AutonomousBattlegroundKeepRally.RallyRadius * AutonomousBattlegroundKeepRally.RallyRadius)
-                    _battlegroundGatePassed = true;
+                _battlegroundStorming = rally.Step == AutonomousBattlegroundKeepRally.Step.Storm;
+                bool nearLord = lordHere && (bot.IsWithinRadius(lord, BattlegroundLordReach) || rally.Step != AutonomousBattlegroundKeepRally.Step.None);
+                // Away from the lord (a new life after a release, or chased out) the bot comes in through a gate again. The
+                // old reset sat inside the near-lord branch where it could never be true, so a bot that once passed the gate
+                // walked straight at the lord ever after (playtest 2026-11-04: 12 of the 14 "lord" storm samples stood
+                // 1,100-2,900 from the gate, outside the walls). The rally stands outside the breach, so a storm from it goes
+                // through the gate first too.
+                _battlegroundGatePassed = KeepsGatePassed(_battlegroundGatePassed, nearLord, _battlegroundGateKeep == central.KeepID);
+                _battlegroundGateKeep = central.KeepID;
                 GameLiving target = FindRvrTarget(bot);
                 // While the gates stand the wave marches on the gate together and fights the guards that come at it,
                 // instead of each bot running at its own nearest guard (AutonomousBattlegroundWave.WaveTakesGuard).
@@ -118,10 +120,13 @@ namespace DOL.GS
                 // PC (build ea882e6, Thidranki 2026-11-15 08:57-08:59) 16 Hibernians died to the keep's level-33 guards while
                 // their wave of 15 went, most with one attacker on them, one at a time: each bot's own pick among the guards near it
                 // (SelectDistributedRvrTarget) was not the guard hitting its neighbour, and was dropped above.
-                if (gatesShut && WaveAssistGuard(bot, central) is { } hitting)
+                // The same once the doors are down, while the realm rallies and storms the lord: on 3b808b4 every bot took any
+                // guard in sight up to 5,000 away, alone (103 deaths "Fighting Armsman", 70 "Fighting Armswoman").
+                if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step) && WaveAssistGuard(bot, central) is { } hitting)
                     target = hitting;
                 else if (target is GameKeepGuard guard && !AutonomousBattlegroundWave.WaveTakesGuard(
-                        gatesShut, guard is GuardLord, bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
+                        AutonomousBattlegroundKeepRally.DisciplinedKeepFight(gatesShut, rally.Step), guard is GuardLord,
+                        bot.GetDistanceTo(guard), FiringOnRealm(bot, guard)))
                     target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
                 if (target != null)
@@ -234,8 +239,8 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Walks to the realm's rally inside the breach and holds there (fighting what comes, through the normal combat turn)
-        /// until the rally goes up. False only when neither the rally point nor the gate can be walked to.
+        /// Walks to the realm's rally outside the breach and holds there (fighting only what comes at it, through the normal
+        /// combat turn: BattlegroundGatherHold) until the rally goes up. False only when the rally point can't be walked to.
         /// </summary>
         private bool HoldBattlegroundRally(GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep central,
             GameKeepGuard lord, GameKeepDoor gate, AutonomousBattlegroundKeepRally.Order rally)
@@ -244,24 +249,16 @@ namespace DOL.GS
             if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), rally.Point) <=
                 AutonomousBattlegroundKeepRally.RallyHoldRadius * AutonomousBattlegroundKeepRally.RallyHoldRadius)
             {
-                // The rally stands inside the breach: whoever reached it has passed the gate.
-                _battlegroundGatePassed = true;
+                // The rally stands outside the breach: going up, the bot comes in through the gate.
+                _battlegroundGatePassed = false;
                 bot.StopMovingOnPath();
                 bot.StopMoving();
                 SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
                 return true;
             }
-            if (gate != null && bot.IsWithinRadius(gate, BattlegroundGateReached))
-                _battlegroundGatePassed = true;
             if (IssuePath(bot, rally.Point, retargetWhileMoving: true))
             {
                 TraceStorm(this, bot, central, lord, gate, "rally");
-                SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
-                return true;
-            }
-            if (gate != null && !_battlegroundGatePassed && IssuePath(bot, new Vector3(gate.X, gate.Y, gate.Z), retargetWhileMoving: true))
-            {
-                TraceStorm(this, bot, central, lord, gate, "rally-via-gate");
                 SetBattlegroundStatus(bot, bracket, "Rallying for the keep lord", detail, lord.Name);
                 return true;
             }
@@ -359,12 +356,42 @@ namespace DOL.GS
         private Vector3? _battlegroundGatherStaging;
 
         /// <summary>This bot is gathering for its realm's battleground wave, at <paramref name="staging"/>.</summary>
-        private bool BattlegroundGatherHold(GameBot bot, out Vector3 staging)
+        private bool BattlegroundGatherHold(GameBot bot, out Vector3 staging) => BattlegroundGatherHold(bot, out staging, out _);
+
+        /// <summary>
+        /// This bot is gathering for its realm's battleground wave, or holding at its realm's keep rally
+        /// (<paramref name="atRally"/>), at <paramref name="staging"/>: either way it fights only what comes at it.
+        /// </summary>
+        private bool BattlegroundGatherHold(GameBot bot, out Vector3 staging, out bool atRally)
         {
             staging = default;
-            return _battlegroundGatherStaging.HasValue && BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) &&
-                   AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
-                   AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out staging);
+            atRally = false;
+            if (!BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
+                !AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground))
+                return false;
+            if (_battlegroundGatherStaging.HasValue && AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out staging))
+                return true;
+            atRally = _battlegroundRallyHold.HasValue &&
+                      AutonomousBattlegroundKeepRally.IsRallying(bot.CurrentRegionID, bot.Realm, bot.DatabaseID, out staging);
+            return atRally;
+        }
+
+        /// <summary>This bot is one of its realm's stormers going up to the keep lord (AutonomousBattlegroundKeepRally).</summary>
+        private bool BattlegroundStormHold(GameBot bot) =>
+            _battlegroundStorming && BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) &&
+            AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
+            AutonomousBattlegroundKeepRally.IsStorming(bot.CurrentRegionID, bot.Realm, bot.DatabaseID);
+
+        /// <summary>Whether a stormer takes a fight with this enemy (AutonomousBattlegroundKeepRally.StormerMayEngage); the
+        /// keep's own guards are the storm's to decide.</summary>
+        private static bool StormerMayEngage(GameBot bot, GameLiving target) =>
+            target is GameKeepGuard || AutonomousBattlegroundKeepRally.StormerMayEngage(FiringOnRealm(bot, target), bot.GetDistanceTo(target));
+
+        /// <summary>Counts a fight a gatherer, rally holder or stormer left alone (dropped: broke off).</summary>
+        private static void NoteBattlegroundHeldBack(GameBot bot, bool rally, bool dropped)
+        {
+            if (rally) AutonomousBattlegroundKeepRally.NoteHeldBack(bot.CurrentRegionID, bot.Realm, dropped);
+            else AutonomousBattlegroundWave.NoteHeldBack(bot.CurrentRegionID, bot.Realm, dropped);
         }
 
         /// <summary>Whether a gathering bot takes a fight with this target (AutonomousBattlegroundWave.GathererMayEngage).</summary>
@@ -373,14 +400,25 @@ namespace DOL.GS
                 Vector3.Distance(new(target.X, target.Y, target.Z), staging), bot.GetDistanceTo(target));
 
         /// <summary>
-        /// A gatherer in a fight drops a target that is no longer coming at it and has left the staging point (a fleeing
-        /// enemy, or one it was pulled toward), and walks back instead of chasing it under the keep's walls.
+        /// A gatherer (or rally holder) in a fight drops a target that is no longer coming at it and has left the staging point
+        /// (a fleeing enemy, or one it was pulled toward), and walks back instead of chasing it under the keep's walls. A
+        /// stormer drops an enemy (not a keep guard) that is neither upon it nor firing on the realm near it, and goes on up.
         /// </summary>
         private bool DropBattlegroundGatherChase(BotBrain brain, GameBot bot)
         {
-            if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive ||
-                !BattlegroundGatherHold(bot, out Vector3 staging) || GathererMayEngage(bot, target, staging))
+            if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive)
                 return false;
+            bool atRally;
+            if (BattlegroundGatherHold(bot, out Vector3 staging, out atRally))
+            {
+                if (GathererMayEngage(bot, target, staging)) return false;
+            }
+            else if (BattlegroundStormHold(bot))
+            {
+                if (StormerMayEngage(bot, target)) return false;
+                atRally = true;
+            }
+            else return false;
             brain.RemoveFromAggroList(target);
             bot.StopAttack();
             bot.TargetObject = null;
@@ -392,14 +430,15 @@ namespace DOL.GS
             }
             if (!brain.HasAggro && brain.FSM.GetCurrentState()?.StateType == eFSMStateType.AGGRO)
                 brain.FSM.SetCurrentState(eFSMStateType.IDLE);
-            AutonomousBattlegroundWave.NoteHeldBack(bot.CurrentRegionID, bot.Realm, dropped: true);
+            NoteBattlegroundHeldBack(bot, atRally, dropped: true);
             return true;
         }
 
-        // Set while this bot holds at its realm's rally (AutonomousBattlegroundKeepRally): it fights what comes to the rally,
-        // not the lord and not guards elsewhere on the walls.
+        // Set while this bot holds at its realm's rally (AutonomousBattlegroundKeepRally): it fights what comes to the rally
+        // (GathererMayEngage), not the lord and not guards elsewhere on the walls.
         private Vector3? _battlegroundRallyHold;
-        public const int BattlegroundRallyEngageRadius = 1_500;
+        // Set while this bot is one of its realm's stormers going up to the lord.
+        private bool _battlegroundStorming;
         public const int BattlegroundLordStrike = 900;
 
         /// <summary>A stormer keeps "through the gate" only while it stays by the same keep's lord. Pure.</summary>

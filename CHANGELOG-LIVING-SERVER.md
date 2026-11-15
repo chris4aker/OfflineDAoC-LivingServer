@@ -209,6 +209,42 @@ closer than 1,425 to the door; guards 17-19/19, lord 100%; the guards were level
 - Unchanged: guard respawn (15 minutes, ±10, the upstream default), claiming rules, the waves and their siege crews (the
   2002-2004 Thidranki threads describe the same thing: rams, two or three groups, a keep that changed hands "twice a week").
 
+**Battleground lord rallies gather outside the breach and storm together** (tests only; owner's PC, build `3b808b4`,
+Thidranki 2026-11-15 10:12-10:58: all six doors of Thidranki Faste down, 30-46 bots of each attacking realm inside, and in
+all eleven `BG_KEEP_STATUS` samples both rallies read "rallying 0/31-34": no rally ever went up, the lord stayed at 100% with
+no attacker on his floor, and 276 Midgard and Hibernian bots died to the keep's guards).
+
+- **Why nobody rallied.** The rally point stood just inside the keep door (32475,38224,3728): under the lord's floor, 1,860
+  past the outer gate, with the courtyard's guards (Armsmen and Wizards, aggro 1,000) in between. Every bot crossed the
+  courtyard alone and was fought there or on the way, so none ever counted as rallied. Only bots within 4,000 of the lord
+  took the rally at all (17-33 others "marched" on the keep's centre), and with the waves bypassed once the doors are down
+  nothing held anyone out of fights: 33-57 bots were "Fighting" at every sample, 173 deaths were "Fighting Armsman" or
+  "Fighting Armswoman", guards picked up to 5,000 away. The `step=rally` samples with `dest` at the bot were orders given
+  that very turn (`pending=True`, 88 of 119 samples); the 31 others all walked a found path toward the outer gate.
+- **The rally stands outside the breach.** The breach is the outermost broken main gate (the outer gate before the keep
+  door, never a postern, the one on the realm's side when there are two); the rally stands 900-1,800 out from it, on the
+  navmesh with a complete walk to the gate, and as far as it can be from every guard's post (1,300: a guard's aggro of
+  1,000 and a few steps). Every assaulting bot of the realm goes there, wherever it is in the battleground.
+- **Holders fight only what comes at them,** as a wave's gatherers do (an enemy at the rally, or one firing on the realm
+  near it or near the bot); never the lord, and never a guard on the walls that isn't attacking them.
+- **Enough is at most a wave of the realm.** The strength model asked 31-34 of 30-46 bots dying about every four minutes.
+  A rally now waits for the model's number or 60% of the realm inside, whichever is smaller (at least 8); half of that
+  after three minutes, whoever is there (at least 8) after six, as before.
+- **The two attacking realms cue each other.** While the other realm storms the same lord, a rally goes with half of
+  what it needs, as #247's waves do.
+- **The storm keeps the wave's discipline.** From the rally the stormers go through the gate and up to the lord together.
+  On the way they fight the guard that is hitting one of their own nearby (a going wave's rule), a guard in their way or
+  firing on them, and an enemy that is upon them or firing on the realm near them; everything else is left alone.
+- **`BG_RALLY_STATUS`** once a minute for each attacking realm: state, rallying, needed (and the model's number), inside,
+  the rally point and its gate, its distance to the nearest guard post, onLordFloor, atLord, the deaths to guards and to
+  others, and the fights its holders and stormers turned down or broke off. `BG_RALLY_STORM` also logs inside, the model's
+  number, withOtherRealm and the gate. A wave still "going" when the doors fall now stands down (Hibernia's of `3b808b4`
+  went on counting deaths to guards as its own, 11 to 203 between 10:10 and 10:58).
+- Not verified here: the walk from the courtyard up to the lord's floor (the Thidranki navmesh isn't in the build
+  container). On `3b808b4` Albion's own defenders were killed on the tower stairs (z 4,012 and 4,209) and on the lord's floor
+  (z 4,592), so a way up exists for them; the 2026-10-17 navmesh probe found the lord reachable from the gates. Unchanged:
+  the keep, its guards, lord, doors and respawns, the strength model, attempt endings, reinforcement batches and leases.
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 
