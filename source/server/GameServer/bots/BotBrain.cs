@@ -665,6 +665,8 @@ namespace DOL.AI.Brain
         private long _nextExchangeCheckTick;
         private long _nextMerchantServiceTick;
         private long _pendingExchangeListTick;
+        // A listing deferred because the database writer was busy is retried this soon (ms).
+        private const int ExchangeWriteRetryMs = 1_000;
         private DbInventoryItem _pendingExchangeItem;
         private int _pendingExchangePrice;
         private AutonomousWorldBotController _autonomousWorldController;
@@ -1881,10 +1883,17 @@ namespace DOL.AI.Brain
 
                 DbInventoryItem item = _pendingExchangeItem;
                 int price = _pendingExchangePrice;
+                bool listed = AutonomousBotEconomy.TryList(bot, item, price, out bool listingDeferred);
+                if (!listed && listingDeferred)
+                {
+                    // The database writer is busy: keep the reserved item and try again in a moment.
+                    _pendingExchangeListTick = now + ExchangeWriteRetryMs;
+                    bot.StopMoving();
+                    return true;
+                }
                 _pendingExchangeItem = null;
                 _pendingExchangePrice = 0;
                 _pendingExchangeListTick = 0;
-                bool listed = AutonomousBotEconomy.TryList(bot, item, price);
                 SetExchangeStatus(bot, listed
                     ? $"Listed {item.Name} on the Realm Exchange"
                     : $"Kept {item.Name} after its listing failed",
@@ -1913,7 +1922,16 @@ namespace DOL.AI.Brain
                                   AutonomousBotChatCoordinator.TryAdvertiseExchangeItem(bot, candidate.Item.Name);
                 if (!advertised)
                 {
-                    bool listed = AutonomousBotEconomy.TryList(bot, candidate.Item, listingPrice);
+                    bool listed = AutonomousBotEconomy.TryList(bot, candidate.Item, listingPrice, out bool listingDeferred);
+                    if (!listed && listingDeferred)
+                    {
+                        // The database writer is busy: reserve the item and list it in a moment, as after chatter.
+                        _pendingExchangeItem = candidate.Item;
+                        _pendingExchangePrice = listingPrice;
+                        _pendingExchangeListTick = now + ExchangeWriteRetryMs;
+                        bot.StopMoving();
+                        return true;
+                    }
                     if (listed)
                     {
                         SetExchangeStatus(bot, $"Listed {candidate.Item.Name} on the Realm Exchange",
@@ -1937,7 +1955,7 @@ namespace DOL.AI.Brain
             if (purchase != null)
             {
                 int paidCopper = purchase.Item.SellPrice;
-                if (AutonomousBotEconomy.TryBuy(bot, purchase.Item))
+                if (AutonomousBotEconomy.TryBuy(bot, purchase.Item, out bool purchaseDeferred))
                 {
                     bool equipped = AutonomousBotEconomy.TryEquipPurchasedUpgrade(bot, purchase);
                     SetExchangeStatus(bot,
@@ -1948,6 +1966,10 @@ namespace DOL.AI.Brain
                     _nextExchangeCheckTick = now + 3_000 + Random.Shared.Next(4_001);
                     return true;
                 }
+                // The database writer was busy and nothing changed: the listing is still there, so keep the
+                // cached decision and try again at the next check.
+                if (purchaseDeferred)
+                    return false;
             }
 
             // Another buyer can remove the prospective upgrade while this bot

@@ -633,13 +633,17 @@ public static class AutonomousBeggars
         {
             AutonomousBotEconomy.ListingCandidate candidate = AutonomousBotEconomy.FindValuableListingCandidate(bot);
             int price = candidate == null ? 0 : AutonomousBotEconomy.RollListingPrice(candidate.Item);
-            if (candidate != null && AutonomousBotEconomy.TryList(bot, candidate.Item, price))
+            bool listingDeferred = false;
+            if (candidate != null && AutonomousBotEconomy.TryList(bot, candidate.Item, price, out listingDeferred))
             {
                 Log.Info($"BEGGAR_LISTED bot=\"{bot.Name}\" item=\"{candidate.Item.Name}\" copper={price}");
                 if (Random.Shared.NextDouble() < 0.5)
                     Say(bot, "listed", SlotsFor(bot, state, null, CoinText(price), candidate.Item.Name.ToLowerInvariant()));
                 return;
             }
+            // The database writer was busy: nothing changed, try again at the next line.
+            if (listingDeferred)
+                return;
             // Nothing (more) to list: sell the trash on the way back, or go home.
             GameMerchant merchant = AutonomousBotEconomy.FindVendorTrashCandidate(bot) != null
                 ? Nearest<GameMerchant>(bot, Anchors(bot.CurrentRegion, bot.Realm)) : null;
