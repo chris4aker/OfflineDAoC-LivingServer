@@ -73,6 +73,34 @@ namespace DOL.GS
             return 0;
         }
 
+        // ---- a scripted loop path (MovementMgr.CreatePath, OpenDAoC-Core's patrol cleanup) -------------------------
+
+        /// <summary>A boss's scripted loop (his script's points, the first his spawn) as a patrol for <see cref="PredictPatrol"/>,
+        /// starting at its second point: the order the old WalkTo chains (point1 ... his spawn last) were read in (pure).</summary>
+        public static Vector3[] LoopFromSecondPoint(IReadOnlyList<(int X, int Y, int Z)> points) =>
+            points is not { Count: > 0 } ? []
+                : points.Skip(1).Append(points[0]).Select(p => new Vector3(p.X, p.Y, p.Z)).ToArray();
+
+        /// <summary>The index in his script's points of the point <paramref name="npc"/> walks to on his scripted loop (the
+        /// first is 0), or -1 without one.</summary>
+        public static int ScriptedPathIndex(GameNPC npc)
+        {
+            DOL.GS.Movement.PathPoint at = npc?.CurrentPathPoint, first = npc?.ScriptedPath;
+            if (at == null || first == null) return -1;
+            int i = 0;
+            for (DOL.GS.Movement.PathPoint p = first; p != null && i < 10_000; p = p.Next, i++)
+                if (ReferenceEquals(p, at)) return i;
+            return -1;
+        }
+
+        /// <summary>The patrol point (an index of <see cref="LoopFromSecondPoint"/>'s loop of <paramref name="count"/>) that
+        /// <paramref name="npc"/> walks to now; the loop's first (his script's second point) when he has no path yet.</summary>
+        public static int NextOnScriptedLoop(GameNPC npc, int count)
+        {
+            int at = ScriptedPathIndex(npc);
+            return at < 0 || count <= 0 ? 0 : (at - 1 + count) % count;
+        }
+
         // ---- living bosses of a region, once per list ---------------------------------------------------------
 
         private static readonly object BossLookupLock = new();

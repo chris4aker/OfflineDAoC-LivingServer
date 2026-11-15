@@ -866,13 +866,15 @@ Area spells: Essense of Souls (DamageOverTime, damage 150, radius 600).
 
 #### Crypt Lord (`CryptLord`)
 
-`source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs` lines 7-76. level 86; 100,000 health; npc template 60159518; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs` lines 8-86. level 86; 100,000 health; npc template 60159518; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+1.2 upstream port (tests only): his patrol is a scripted loop path (CryptLord.PatrolPoints, OpenDAoC-Core c2a55c5b9) walked by the brain's patrol state at 100 instead of a chain of WalkTo flags; the same five points, the same speed, still only out of combat. His do-nothing ReturnToSpawnPoint is gone with it (after a fight he resumes his loop). The court-pull prediction reads his loop's current point.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reset / out_of_combat | Resets after 60 s out of combat: aggro cleared, full health | `CryptLord.cs:259` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: every NPC with PackageID "CryptLordBaf" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul) | `CryptLord.cs:179` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "CryptLordBaf" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul) | `CryptLord.cs:245` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| reset / out_of_combat | Resets after 60 s out of combat: aggro cleared, full health | `CryptLord.cs:186` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: every NPC with PackageID "CryptLordBaf" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul) | `CryptLord.cs:106` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "CryptLordBaf" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul) | `CryptLord.cs:172` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Fate's Chosen (`FateChosen`)
 
@@ -884,14 +886,14 @@ Area spells: Essense of Souls (DamageOverTime, damage 150, radius 600).
 
 #### Host (`Host`)
 
-`source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs` lines 219-368. level 79; 30,000 health; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HostInitializator.
+`source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs` lines 221-383. level 79; 30,000 health; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by HostInitializator.
 
-1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed.
+1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed. 1.2 upstream port (tests only): the 52 WalkTo stages of HostBrain.HostPath (shared static flags path1..path51) are one scripted loop path per copy (Host.PatrolPoints, the same points from his spawn, OpenDAoC-Core cadc7b8c0's path part), walked by the brain's patrol state at 100, still only out of combat. Upstream's rewrite of the rest of the Host (no aggro while walking, no linked-monster speed and tether) was not taken: the mechanics are ours. The baf and ambush predictions read each copy's current loop point.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Host.cs:4031` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: every NPC with PackageID "HostBaf" (21 in the world database: 4 archlich, 5 black revenant, 4 cursed lacula, 3 forerunner, 2 herald of trucidation) | `Host.cs:4044` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Host.cs:449` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: every NPC with PackageID "HostBaf" (21 in the world database: 4 archlich, 5 black revenant, 4 cursed lacula, 3 forerunner, 2 herald of trucidation) | `Host.cs:462` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Lich Lord Ilron (`LichLordIlron`)
 

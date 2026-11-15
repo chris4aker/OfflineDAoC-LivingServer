@@ -32,9 +32,9 @@
   "source/server/GameServer/scripts/namedmobs/BrotherDon.cs": "8964e56930f3d641f924427da766faabeca87ea5d3fcb1cfb62d604e69bb18c7",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "57065639c7951fb77baa62c549ee14f5d3f6849a916e439dba44bb5b7d4395b5",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs": "d542dd1cbdb80e979f477a5c38320fc610694471341a665a08deae313b24f26d",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "e2e7619fd86fbe4e47cc123e655884760c8d140a3fd46bd8eeeae5479ac8dc76",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs": "7175f0f5859ceb0867147cee4a7be39e5b6c48b3906d95063b713dafdebd8613",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/FateChosen.cs": "b4037d917fcbfb2c84542097738575f0a806e08b6e0c816825f0831f8b454f42",
-  "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "ca0f6c2871e2f8a5e26d2721e65f4f9a618315edd66297ca652e4aad8fc560a3",
+  "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs": "2c91f10b27bcc75fc229de7600101ff52d67fdfa70a0b78e83c693890e196659",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs": "1b55fb71aa108c987dd029a3e25d45187575044bd6688a7dd02a4016f2f4b103",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs": "01e443b7d98085cd982e19cf197db42c0a7eabc8718686956aac95637f16d9d3",
   "source/server/GameServer/scripts/namedmobs/CaerSidi/Silencer.cs": "e5060ec57836251496f991973dc069e54b13c0bc326e1637d99d183b3d373491",
@@ -5733,8 +5733,8 @@
    "brain": "CryptLordBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs",
    "lines": [
-    7,
-    76
+    8,
+    86
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -5751,8 +5751,8 @@
      "kind": "reset",
      "summary": "Resets after 60 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs",
-     "line": 259,
-     "lineEnd": 259,
+     "line": 186,
+     "lineEnd": 186,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "CryptLordBrain",
@@ -5762,14 +5762,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@259"
+     "key": "reset@186"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"CryptLordBaf\" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs",
-     "line": 179,
-     "lineEnd": 179,
+     "line": 106,
+     "lineEnd": 106,
      "anchor": "if (npc != null && npc.IsAlive && npc.PackageID == \"CryptLordBaf\")",
      "confidence": "read",
      "sourceClass": "CryptLordBrain",
@@ -5779,14 +5779,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@179"
+     "key": "linked_pack@106"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"CryptLordBaf\" (43 in the world database: 11 dark light, 10 fate's bearer, 12 forerunner, 10 reckoned soul)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/CryptLord.cs",
-     "line": 245,
-     "lineEnd": 245,
+     "line": 172,
+     "lineEnd": 172,
      "anchor": "AddToAggroList(player, 10);//aggro players if roaming",
      "confidence": "read",
      "sourceClass": "CryptLordBrain",
@@ -5796,7 +5796,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@245"
+     "key": "linked_pack@172"
     }
    ],
    "spells": [],
@@ -5818,6 +5818,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): his patrol is a scripted loop path (CryptLord.PatrolPoints, OpenDAoC-Core c2a55c5b9) walked by the brain's patrol state at 100 instead of a chain of WalkTo flags; the same five points, the same speed, still only out of combat. His do-nothing ReturnToSpawnPoint is gone with it (after a fight he resumes his loop). The court-pull prediction reads his loop's current point.",
    "aiTactics": {
     "summary": "His court comes with him (1.2): once he fights, his whole court within 10,000 (43 with PackageID CryptLordBaf) joins on his target, and a court monster fighting within 800 of him pulls him in. So the route clears the court first, one monster at a time, pulling each only while his patrol is predicted to stay at least 1,200 from it for the next 35 s (about 12% of his 132 s loop for the court monster in the middle of his rectangle). In his fight casters take the court monsters and melee take him (70% magic resist). A tactic's hold on a pull lapses after 20 minutes (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
@@ -5897,8 +5898,8 @@
    "brain": "HostBrain",
    "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs",
    "lines": [
-    219,
-    368
+    221,
+    383
    ],
    "dungeon": "Caer Sidi",
    "region": 60,
@@ -5918,8 +5919,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs",
-     "line": 4031,
-     "lineEnd": 4036,
+     "line": 449,
+     "lineEnd": 454,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "HostBrain",
@@ -5929,14 +5930,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@4031"
+     "key": "reset@449"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: every NPC with PackageID \"HostBaf\" (21 in the world database: 4 archlich, 5 black revenant, 4 cursed lacula, 3 forerunner, 2 herald of trucidation)",
      "file": "source/server/GameServer/scripts/namedmobs/CaerSidi/Host.cs",
-     "line": 4044,
-     "lineEnd": 4044,
+     "line": 462,
+     "lineEnd": 462,
      "anchor": "AddToAggroList(player, 10);",
      "confidence": "read",
      "sourceClass": "HostBrain",
@@ -5946,7 +5947,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@4044"
+     "key": "linked_pack@462"
     }
    ],
    "spells": [],
@@ -5958,7 +5959,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed.",
+   "notes": "1.2 upstream port (tests only): the initializer's check (spawn the eight copies, pick HostReal, start the respawn wait) runs on a game-loop ECSGameTimer every 10 s instead of a thread-pool System.Timers.Timer every 1 s, and stops when the initializer is gone; each Host's death decrements the copy count atomically (OpenDAoC-Core c0476c41b). No mechanic changed. 1.2 upstream port (tests only): the 52 WalkTo stages of HostBrain.HostPath (shared static flags path1..path51) are one scripted loop path per copy (Host.PatrolPoints, the same points from his spawn, OpenDAoC-Core cadc7b8c0's path part), walked by the brain's patrol state at 100, still only out of combat. Upstream's rewrite of the rest of the Host (no aggro while walking, no linked-monster speed and tether) was not taken: the mechanics are ours. The baf and ambush predictions read each copy's current loop point.",
    "aiTactics": {
     "summary": "Only the copy with PackageID HostReal matters: its death kills the rest. The route first clears his 21 linked monsters (the archliches among them) while every Host is predicted to stay 900 away for 45 s, holds the Hosts while any of those live, then musters in ambush at a fixed point of his patrol and goes in when he is due to pass; every raider fights HostReal (EpicEncounterTactics.CaerSidi, sweep 2026-11-14; tests only).",
     "since": "1.2"
