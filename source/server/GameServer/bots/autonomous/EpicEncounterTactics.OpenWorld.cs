@@ -68,8 +68,6 @@ namespace DOL.GS
             },
         ];
 
-        private static Vector3 SpawnOf(GameNPC npc) => new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z);
-
         private static Advice? GlacierGiantHealers(RuleContext c)
         {
             if (!c.Target.InCombat || c.Holds || c.ClassId <= 0 || !BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId) ||
