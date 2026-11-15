@@ -2638,6 +2638,18 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_beggars", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight.", true)]
 		public static bool BOT_LIVING_BEGGARS;
 
+		/// <summary>Living Server 1.2: a share of the No Lifer bots run a level-50 buffbot (NoLiferBuffBots, docs/BOT-PERSONALITIES.md).</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off.", true)]
+		public static bool BOT_NOLIFER_BUFFBOTS;
+
+		/// <summary>Percent (0-100) of the No Lifer bots that have a buffbot, fixed per main from its roster id.</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbot_percent", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts.", 30)]
+		public static int BOT_NOLIFER_BUFFBOT_PERCENT;
+
+		/// <summary>The 2003 rule for buffbots' concentration buffs: no range limit (the 5,000-unit limit came with the July 2005 Classic servers).</summary>
+		[ServerProperty("bots", "bot_nolifer_buffbot_era_conc_range", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range.", true)]
+		public static bool BOT_NOLIFER_BUFFBOT_ERA_CONC_RANGE;
+
 		/// <summary>Bots that saw the player do something tell the realm; reputation and nicknames (AutonomousPlayerDeeds).</summary>
 		[ServerProperty("bots", "bot_living_deeds", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname.", true)]
 		public static bool BOT_LIVING_DEEDS;

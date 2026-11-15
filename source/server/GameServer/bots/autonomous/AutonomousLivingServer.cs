@@ -229,8 +229,9 @@ public static partial class AutonomousLivingServer
 
     #region Speaking
 
+    // A No Lifer's buffbot is a parked second character: it never joins the realm's chatter (NoLiferBuffBots has its few lines).
     internal static bool IsSpeaker(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-        bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
+        !bot.IsNoLiferBuffBot && bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
 
     internal static bool CanTalk(GameBot bot) => IsSpeaker(bot) && bot.IsAlive && !bot.InCombat && !bot.IsCasting;
 

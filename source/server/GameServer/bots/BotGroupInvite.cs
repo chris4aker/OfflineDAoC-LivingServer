@@ -9,7 +9,7 @@ public static class BotGroupInvite
         player?.CurrentRegion != null && bot?.CurrentRegion == player.CurrentRegion && player.IsWithinRadius(bot, InviteByNameRange);
 
     /// <summary>The duty that keeps an autonomous gamebot from answering an invitation (None when it is free).</summary>
-    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper, Begging }
+    public enum Duty { None, Dead, Siege, Relic, RvrEvent, RealmRaid, StableRoute, Helper, Begging, Buffing }
 
     /// <summary>
     /// The first duty that rules out an invitation, in a fixed order. Pure, so the rules are tested without a world.
@@ -37,6 +37,7 @@ public static class BotGroupInvite
         Duty.StableRoute => $"{name} is riding a stable master route right now.",
         Duty.Helper => $"{name} is already helping another player.",
         Duty.Begging => $"{name} won't leave their corner.",
+        Duty.Buffing => $"{name} is a buffbot and never joins a group.",
         _ => null,
     };
 
@@ -59,6 +60,9 @@ public static class BotGroupInvite
             AutonomousRealmRaid.IsReserved(bot),
             bot.IsOnStableMasterRoute,
             bot.IsTemporaryGroupHelper);
+        // A No Lifer's buffbot never groups, whatever else it is doing (NoLiferBuffBots).
+        if (bot.IsNoLiferBuffBot)
+            return Duty.Buffing;
         // A beggar (bot_living_beggars) never groups.
         return duty == Duty.None && AutonomousBeggars.Is(bot) ? Duty.Begging : duty;
     }

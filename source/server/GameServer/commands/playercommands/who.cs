@@ -45,7 +45,8 @@ namespace DOL.GS.Commands
 			ArrayList filters = null;
 			ArrayList clientsList = new ArrayList();
 			ArrayList resultMessages = new ArrayList();
-			GameBot[] worldBots = AutonomousBotRegistry.Snapshot()
+			// The No Lifers' buffbots are listed too: a second character, online in its realm, as in 2003.
+			GameBot[] worldBots = AutonomousBotRegistry.Snapshot().Concat(AutonomousBotRegistry.BuffBotSnapshot())
 				.Where(bot => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
 					bot.ObjectState == GameObject.eObjectState.Active &&
 					(client.Account.PrivLevel > (uint)ePrivLevel.Player || bot.Realm == client.Player.Realm))

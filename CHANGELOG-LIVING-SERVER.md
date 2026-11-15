@@ -97,6 +97,24 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
   `AUTONOMOUS_STATUS_BATCH_SLOW` (its time split, bots, items, GC and heap), and a deferral logs
   `AUTONOMOUS_DB_WRITE_DEFERRED` at most once a minute, so the next slow write is named. The SQL itself still runs on
   the bot's turn once it has the lock. `UT_RealmExchangeEconomy`.
+- **No Lifer buffbots** (tests only; owner 2026-11-15, "I want 30% of the No Lifer personality bots to have a 'buff bot.'"):
+  - **Who and what:** 30% of the No Lifers (fixed per main from its roster id; existing and new rosters alike) run a
+    level-50 buffbot. Albion gets a Cleric (Enhancement 50), Midgard a Shaman (Augmentation 50), Hibernia a Druid
+    (Nurture 50).
+  - **Gear:** the launcher's level-50 starter gear. No coin, no loot.
+  - **Where it goes:** it follows its main through its realm's PvE land and stays out of the main's fights. It parks at
+    the nearest bind (the portal keep in the frontier, the main's bind for dungeons, battlegrounds and raids).
+  - **Buffs:** it keeps every single-target buff on its main, concentration buffs first, and recasts them as they drop.
+  - **Never groups:** a buffbot never joins a group or raid. `Group.AddMember` refuses it, and `/invite` answers "is a
+    buffbot and never joins a group". Raid and epic code is unchanged.
+  - **Memory only:** like the Epic Special Forces it lives in memory only: never saved, not in the roster or the
+    population. It logs in and out with its main, shows in `/who`, and answers tells with "afk buffbot".
+  - **Concentration range:** its buffs follow the 2003 rule of no range (`bot_nolifer_buffbot_era_conc_range`). Mythic's
+    5,000-unit limit came with the July 2005 Classic servers. Everyone else keeps this server's range.
+  - **Settings:** `bot_nolifer_buffbots` (launcher switch, on) and `bot_nolifer_buffbot_percent` (30).
+  - **Log lines:** `BUFFBOT_CREATED`, `BUFFBOT_FOLLOW`, `BUFFBOT_PARKED`, `BUFFBOT_BUFFED`, `BUFFBOT_RELOCATED` and others.
+  - **Docs and tests:** research in `docs/research/BUFFBOTS-2003.md`, details in `docs/BOT-PERSONALITIES.md` 2.3.
+    `UT_NoLiferBuffBots`.
 - **The battlegrounds' lore** (tests only; owner 2026-11-15, "We need full lore for the battlegrounds written"): one
   backstory for the four fields, why only the young may fight there, why the fallen wake at their own portal keep and who
   keeps the gates, told three ways by the three loremasters (a new neutral place, `proving-fields.json`, with no region

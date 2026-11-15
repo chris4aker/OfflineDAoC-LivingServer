@@ -43,6 +43,8 @@ public sealed record SocialExpansionSettings
     public bool LivingBodyLanguage { get; init; }
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
     public bool LivingBeggars { get; init; } = true;
+    /// <summary>Some No Lifer bots run a level-50 buffbot that keeps them buffed (NoLiferBuffBots, Living Server 1.2). On by default.</summary>
+    public bool LivingBuffBots { get; init; } = true;
     /// <summary>Deeds and reputation, storylines, gold spammers and roleplayers, true rumours (the living-world parts). On by default.</summary>
     public bool LivingDeeds { get; init; } = true;
     public bool LivingStorylines { get; init; } = true;
@@ -91,7 +93,7 @@ public sealed record SocialExpansionSettings
         PlayerGuildEconomy = true, ManaRegenModifier = DefaultManaRegenModifier, ManaHalvedBelowHalf = false,
         Personalities = true, Voices = true, Debates = true,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
-        ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingDeeds = true,
+        ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingBuffBots = true, LivingDeeds = true,
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
         LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
@@ -123,6 +125,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them)."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
+        ("bot_nolifer_buffbots", "bots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off."),
         ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
         ("bot_living_storylines", "bots", "Server life: pairs of bots live out dramas in /faction over days: a kill steal, a guild split, a romance, a ninja-loot trial. The same two bots play every episode; take a side in faction and the ending follows you."),
         ("bot_living_characters", "bots", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them."),
@@ -170,6 +173,7 @@ public sealed record SocialExpansionSettings
         ["bot_living_breaks"] = Bool(LivingBreaks),
         ["bot_living_body_language"] = Bool(LivingBodyLanguage),
         ["bot_living_beggars"] = Bool(LivingBeggars),
+        ["bot_nolifer_buffbots"] = Bool(LivingBuffBots),
         ["bot_living_deeds"] = Bool(LivingDeeds),
         ["bot_living_storylines"] = Bool(LivingStorylines),
         ["bot_living_characters"] = Bool(LivingCharacters),
@@ -336,6 +340,7 @@ public sealed record SocialExpansionSettings
             LivingBreaks = ReadBool("bot_living_breaks", d.LivingBreaks),
             LivingBodyLanguage = ReadBool("bot_living_body_language", d.LivingBodyLanguage),
             LivingBeggars = ReadBool("bot_living_beggars", d.LivingBeggars),
+            LivingBuffBots = ReadBool("bot_nolifer_buffbots", d.LivingBuffBots),
             LivingDeeds = ReadBool("bot_living_deeds", d.LivingDeeds),
             LivingStorylines = ReadBool("bot_living_storylines", d.LivingStorylines),
             LivingCharacters = ReadBool("bot_living_characters", d.LivingCharacters),
@@ -360,7 +365,7 @@ public sealed record SocialExpansionSettings
 
     /// <summary>True when any Living Server part is on.</summary>
     public bool AnyLiving => LivingMemory || LivingGrats || LivingFirsts || LivingDeath || LivingAlarms || LivingNemesis ||
-                             ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage || LivingBeggars ||
+                             ScheduleMode != "off" || LivingBreaks || LivingBodyLanguage || LivingBeggars || LivingBuffBots ||
                              LivingDeeds || LivingStorylines || LivingCharacters || LivingRumours || LivingHolidays || LivingLeeroy ||
                              LivingAtmosphere;
 
@@ -373,7 +378,7 @@ public sealed record SocialExpansionSettings
     {
         BotGuilds = false, Personalities = false, Voices = false, PlayerXpByLevel = "", BotXpByLevel = "",
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
-        LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false,
+        LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false, LivingBuffBots = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
         LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
     };

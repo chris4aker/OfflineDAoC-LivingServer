@@ -43,6 +43,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _breaks = Switch("Breaks and linkdeads");
     private readonly CheckBox _body = Switch("Body language");
     private readonly CheckBox _beggars = Switch("Beggars");
+    private readonly CheckBox _buffBots = Switch("No Lifer buffbots");
     private readonly CheckBox _deeds = Switch("Deeds and reputation");
     private readonly CheckBox _storylines = Switch("Storylines");
     private readonly CheckBox _characters = Switch("Spammers and roleplayers");
@@ -128,6 +129,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _breaks, null, "Idle bots go brb for 5–25 minutes; a bot in your group rarely goes linkdead for a minute.");
         Add(living, _body, null, "Idle bots look around, emote, shift their feet in town, wave when you walk up and cheer a ding. No jumping or sitting.");
         Add(living, _beggars, null, "A few Crafter bots beg in their capital and hoard coin. Ask anyone for gold and they follow you, insulting you, until you leave.");
+        Add(living, _buffBots, null, "30% of the No Lifer bots run a level-50 buffbot (Cleric, Shaman, Druid) that follows them or parks at the nearest bind and keeps them buffed. Buffbots never group, fight or loot.");
         Add(living, _deeds, null, "Bots that see you solo a named, go on a streak or die to a rat tell /faction. You earn a reputation and a nickname.");
         Add(living, _storylines, null, "Pairs of bots live out dramas over days. Take a side in /faction and the ending follows you.");
         Add(living, _characters, null, "Gold spammers flood /faction until they're banned; a few bots roleplay in thee and thou and get mocked.");
@@ -211,7 +213,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
 
         foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
                      _personalities, _voices, _debates,
-                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
+                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _joinMode.SelectedIndexChanged += (_, _) => Edited();
@@ -280,6 +282,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingBreaks = _breaks.Checked,
         LivingBodyLanguage = _body.Checked,
         LivingBeggars = _beggars.Checked,
+        LivingBuffBots = _buffBots.Checked,
         LivingDeeds = _deeds.Checked,
         LivingStorylines = _storylines.Checked,
         LivingCharacters = _characters.Checked,
@@ -330,6 +333,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _breaks.Checked = settings.LivingBreaks;
         _body.Checked = settings.LivingBodyLanguage;
         _beggars.Checked = settings.LivingBeggars;
+        _buffBots.Checked = settings.LivingBuffBots;
         _deeds.Checked = settings.LivingDeeds;
         _storylines.Checked = settings.LivingStorylines;
         _characters.Checked = settings.LivingCharacters;
