@@ -111,6 +111,9 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   a pull lapses after 20 minutes.
 - **A raid fights the monster attacking it.** A route rule could turn a monster attacking the raid into a "switch" to the
   raid's own idle target every 10 seconds (Easmarach 208 times); in-combat monsters are now left alone.
+- **A boss no longer yells its aggro line as it dies** (tests only). The killing blow's attack came after the boss's
+  death had closed its fight, so it opened a new one: Spindler Broodmother and Aidon yelled their aggro line right after
+  their death line (sweep of 2026-11-15, build `1dc66b6`). A dead boss starts no fight now.
 - **Summoner Lossren's exploding ghoul** came only at exactly 20 killed souls at a 5-8 s check, so a quick raid never saw
   it again that fight; now at 20 or more.
 - **The sweep's guest** follows a living raider at the raid's front, never a dead or released one, and lands on that

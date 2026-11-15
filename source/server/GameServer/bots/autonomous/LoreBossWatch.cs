@@ -220,7 +220,18 @@ public static class LoreBossWatch
 
     private static void OnAttacked(DOLEvent e, object sender, EventArgs args)
     {
-        if (sender is not GameNPC npc || npc is GameBot || Fights.ContainsKey(npc))
+        if (sender is GameNPC npc)
+            HearAttacked(npc);
+    }
+
+    /// <summary>
+    /// A boss was attacked: a fight it was not in starts, with its aggro yell. A dead boss starts nothing: the killing
+    /// blow's attack event comes after Dying, which already ended the fight, and Aidon and Spindler Broodmother (sweep of
+    /// 2026-11-15, build 1dc66b6) yelled their aggro line over their own death line.
+    /// </summary>
+    public static void HearAttacked(GameNPC npc)
+    {
+        if (!OpensFight(npc))
             return;
         LoreBible.Boss boss = BossOf(npc);
         if (boss == null || !Fights.TryAdd(npc, new Watched { Boss = boss }))
@@ -228,6 +239,13 @@ public static class LoreBossWatch
         if (!ScriptSpeaksOn(boss.ClassKey, "aggro") && boss.AggroYells.Length > 0)
             Yell(npc, Fights[npc], boss.AggroYells, GameLoop.GameLoopTime, force: true, trigger: "aggro");
     }
+
+    /// <summary>Whether an attack on this NPC starts a watched fight: a living, active NPC (not a bot) not watched yet.</summary>
+    public static bool OpensFight(GameNPC npc) =>
+        npc != null && npc is not GameBot && npc.IsAlive && npc.ObjectState == GameObject.eObjectState.Active && !Fights.ContainsKey(npc);
+
+    /// <summary>Tests: whether the fight of this NPC is watched.</summary>
+    public static bool IsWatching(GameNPC npc) => npc != null && Fights.ContainsKey(npc);
 
     private static void OnDying(DOLEvent e, object sender, EventArgs args)
     {
