@@ -42,7 +42,7 @@ And the bots play with you now: they invite you, lead groups you can just follow
 friends can join your world (experimental).
 
 It's a beta: the new raid plans pass their automated tests but are new to real nights, and the notes say plainly
-which fights bot raids still lose. Built on shadowofze's Offline DAoC, with thanks to the forks and the emulator
-community. Free, non-commercial, not affiliated with EA or Broadsword.
+which fights bot raids still lose. Built on shadowofze's Offline DAoC; thanks to rambodolphin13, stefanrows,
+lometur, Nikse77, Cancain and the emulator community. Free, non-commercial, not affiliated with EA or Broadsword.
 
 [link to the release]
