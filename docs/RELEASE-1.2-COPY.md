@@ -43,6 +43,6 @@ friends can join your world (experimental).
 
 It's a beta: the new raid plans pass their automated tests but are new to real nights, and the notes say plainly
 which fights bot raids still lose. Built on shadowofze's Offline DAoC; thanks to rambodolphin13, stefanrows,
-lometur, Nikse77, Cancain and the emulator community. Free, non-commercial, not affiliated with EA or Broadsword.
+lometur, Nikse77, Cancain, ryan-grafana and the emulator community. Free, non-commercial, not affiliated with EA or Broadsword.
 
 [link to the release]

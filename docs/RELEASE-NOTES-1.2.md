@@ -472,7 +472,7 @@ only".
 
 Living Server is an add-on for Offline DAoC 0.37, built on shadowofze's Offline DAoC and the OpenDAoC project. Thanks
 to the community whose forks, work and ideas helped along the way: shadowofze, rambodolphin13, stefanrows, lometur,
-Nikse77 and Cancain. Boss
+Nikse77, Cancain and ryan-grafana. Boss
 lore checked against Mythic's Camelot Herald, and raid plans
 against the period's guides and forums. Reports from the community on GitHub and r/daoc. Directed and play-tested by
 [chris4aker](https://github.com/chris4aker), coded with Claude (Anthropic). GPL-3.0; licences and attributions are in
