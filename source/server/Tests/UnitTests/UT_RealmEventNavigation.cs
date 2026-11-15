@@ -35,7 +35,8 @@ namespace DOL.UnitTests
                 {
                     Region region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, definition.Region, loaded);
                     var nav = PathfindingProvider.LocalPathfindingMgr;
-                    Point3D home = DragonLairPlacement.Home(definition.Realm);
+                    // A dragon's lair, or an open-world boss's spawn in the world database (1.2, RealmRaidOpenWorld).
+                    Point3D home = definition.IsOpenWorld ? OpenWorldSpawn(db, definition) : DragonLairPlacement.Home(definition.Realm);
                     var occupied = new List<Vector3>();
                     for (int slot = 0; slot < 30; slot++)
                         for (int attempt = 0; attempt < 12; attempt++)
@@ -258,6 +259,19 @@ namespace DOL.UnitTests
         // Climb links must reach the actual end polygon. Ordinary arrival's
         // 48-unit tolerance is appropriate at a doorway but could hide a
         // missing short link between a climbing pad and the real floor.
+        /// <summary>An open-world boss's spawn in the world database (its Mob row by script class), where its raid stages.</summary>
+        private static Point3D OpenWorldSpawn(SQLiteConnection db, AutonomousRealmRaid.Definition definition)
+        {
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = "SELECT X, Y, Z FROM Mob WHERE Region = @r AND (ClassType = @c OR ClassType LIKE @s) LIMIT 1";
+            cmd.Parameters.AddWithValue("@r", (int)definition.Region);
+            cmd.Parameters.AddWithValue("@c", definition.BossType);
+            cmd.Parameters.AddWithValue("@s", "%." + definition.BossType);
+            using var reader = cmd.ExecuteReader();
+            Assert.That(reader.Read(), Is.True, definition.Id + ": its boss in the world database");
+            return new Point3D(Convert.ToInt32(reader.GetValue(0)), Convert.ToInt32(reader.GetValue(1)), Convert.ToInt32(reader.GetValue(2)));
+        }
+
         private static bool StrictCorridor(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end)
         {
             var nodes = new WrappedPathfindingNode[512];

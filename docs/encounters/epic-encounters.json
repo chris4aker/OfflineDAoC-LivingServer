@@ -580,7 +580,7 @@
    "finals": [
     "Orylle"
    ],
-   "line": 59
+   "line": 61
   },
   {
    "id": "dungeon-albion-avalon",
@@ -592,7 +592,7 @@
    "finals": [
     "DuraekEmpowered"
    ],
-   "line": 60
+   "line": 62
   },
   {
    "id": "dungeon-albion-crystal",
@@ -604,7 +604,7 @@
    "finals": [
     "Xanxicar"
    ],
-   "line": 61
+   "line": 63
   },
   {
    "id": "dungeon-albion-corrupt",
@@ -617,7 +617,7 @@
     "AidonTheArchwizard",
     "LordGildas"
    ],
-   "line": 62
+   "line": 64
   },
   {
    "id": "dungeon-midgard-trollheim",
@@ -629,7 +629,7 @@
    "finals": [
     "Nosdoden"
    ],
-   "line": 64
+   "line": 66
   },
   {
    "id": "dungeon-midgard-iarnvidiur",
@@ -641,7 +641,7 @@
    "finals": [
     "Iarnvidiur"
    ],
-   "line": 65
+   "line": 67
   },
   {
    "id": "dungeon-midgard-dodens",
@@ -653,7 +653,7 @@
    "finals": [
     "SpiritmasterAros"
    ],
-   "line": 66
+   "line": 68
   },
   {
    "id": "dungeon-hibernia-tursuil",
@@ -665,7 +665,7 @@
    "finals": [
     "Balor"
    ],
-   "line": 67
+   "line": 69
   },
   {
    "id": "dungeon-hibernia-marfach",
@@ -679,7 +679,7 @@
     "ChieftainCaimheul",
     "Avartack"
    ],
-   "line": 68
+   "line": 70
   },
   {
    "id": "dragon-albion",
@@ -691,7 +691,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 429
+   "line": 444
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +703,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 430
+   "line": 445
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +715,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 431
+   "line": 446
   },
   {
    "id": "epic-albion",
@@ -727,7 +727,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 432
+   "line": 447
   },
   {
    "id": "epic-midgard",
@@ -740,7 +740,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 433
+   "line": 448
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +752,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 434
+   "line": 449
   },
   {
    "id": "summoners-albion",
@@ -764,7 +764,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 435
+   "line": 450
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 436
+   "line": 451
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 437
+   "line": 452
   },
   {
    "id": "darkness-albion",
@@ -800,7 +800,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 438
+   "line": 453
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 439
+   "line": 454
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +824,199 @@
    "finals": [
     "Legion"
    ],
-   "line": 440
+   "line": 455
+  },
+  {
+   "id": "openworld-albion-greenknight",
+   "name": "Green Knight",
+   "realm": "Albion",
+   "region": 1,
+   "bossType": "OFGreenKnight",
+   "suggestedBots": 40,
+   "finals": [
+    "OFGreenKnight"
+   ],
+   "line": 2266
+  },
+  {
+   "id": "openworld-albion-coliath",
+   "name": "Coliath",
+   "realm": "Albion",
+   "region": 51,
+   "bossType": "Colialt",
+   "suggestedBots": 64,
+   "finals": [
+    "Colialt"
+   ],
+   "line": 2268
+  },
+  {
+   "id": "openworld-albion-emthoro",
+   "name": "Spirit of Lord Emthoro",
+   "realm": "Albion",
+   "region": 51,
+   "bossType": "SpiritOfLordEmthoro",
+   "suggestedBots": 40,
+   "finals": [
+    "SpiritOfLordEmthoro"
+   ],
+   "line": 2270
+  },
+  {
+   "id": "openworld-midgard-glaciergiant",
+   "name": "Glacier Giant",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "GlacierGiant",
+   "suggestedBots": 48,
+   "finals": [
+    "GlacierGiant"
+   ],
+   "line": 2273
+  },
+  {
+   "id": "openworld-midgard-wreth-jotun",
+   "name": "Wretch of Winter (jotun)",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "WrethOfWinterJotun",
+   "suggestedBots": 40,
+   "finals": [
+    "WrethOfWinterJotun"
+   ],
+   "line": 2275
+  },
+  {
+   "id": "openworld-midgard-wreth-arachite",
+   "name": "Wretch of Winter (arachite)",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "WrethOfWinterArachite",
+   "suggestedBots": 40,
+   "finals": [
+    "WrethOfWinterArachite"
+   ],
+   "line": 2277
+  },
+  {
+   "id": "openworld-midgard-wreth-spider",
+   "name": "Wretch of Winter (spider)",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "WrethOfWinterSpider",
+   "suggestedBots": 40,
+   "finals": [
+    "WrethOfWinterSpider"
+   ],
+   "line": 2279
+  },
+  {
+   "id": "openworld-midgard-wreth-crab",
+   "name": "Wretch of Winter (crab)",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "WrethOfWinterCrab",
+   "suggestedBots": 40,
+   "finals": [
+    "WrethOfWinterCrab"
+   ],
+   "line": 2281
+  },
+  {
+   "id": "openworld-midgard-wreth-scorpion",
+   "name": "Wretch of Winter (scorpion)",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "WrethOfWinterScorp",
+   "suggestedBots": 40,
+   "finals": [
+    "WrethOfWinterScorp"
+   ],
+   "line": 2283
+  },
+  {
+   "id": "openworld-midgard-revenant",
+   "name": "Raumarik Revenant",
+   "realm": "Midgard",
+   "region": 100,
+   "bossType": "RaumarikRevenant",
+   "suggestedBots": 40,
+   "finals": [
+    "RaumarikRevenant"
+   ],
+   "line": 2285
+  },
+  {
+   "id": "openworld-midgard-mortufoghus",
+   "name": "Mortufoghus",
+   "realm": "Midgard",
+   "region": 151,
+   "bossType": "Mortufoghus",
+   "suggestedBots": 40,
+   "finals": [
+    "Mortufoghus"
+   ],
+   "line": 2287
+  },
+  {
+   "id": "openworld-hibernia-evern",
+   "name": "Evern",
+   "realm": "Hibernia",
+   "region": 200,
+   "bossType": "Evern",
+   "suggestedBots": 40,
+   "finals": [
+    "Evern"
+   ],
+   "line": 2290
+  },
+  {
+   "id": "openworld-hibernia-juggernaut",
+   "name": "Juggernaut",
+   "realm": "Hibernia",
+   "region": 200,
+   "bossType": "EpicJuggernaut",
+   "suggestedBots": 40,
+   "finals": [
+    "EpicJuggernaut"
+   ],
+   "line": 2292
+  },
+  {
+   "id": "openworld-hibernia-curengkur",
+   "name": "Curengkur",
+   "realm": "Hibernia",
+   "region": 181,
+   "bossType": "Curengkur",
+   "suggestedBots": 40,
+   "finals": [
+    "Curengkur"
+   ],
+   "line": 2294
+  },
+  {
+   "id": "openworld-hibernia-marfoirwort",
+   "name": "Marfoirwort",
+   "realm": "Hibernia",
+   "region": 181,
+   "bossType": "Marfoirwort",
+   "suggestedBots": 40,
+   "finals": [
+    "Marfoirwort"
+   ],
+   "line": 2296
+  },
+  {
+   "id": "openworld-hibernia-mollunero",
+   "name": "Mollunero",
+   "realm": "Hibernia",
+   "region": 181,
+   "bossType": "Mollunero",
+   "suggestedBots": 40,
+   "finals": [
+    "Mollunero"
+   ],
+   "line": 2298
   }
  ],
  "neutralObjectives": {
@@ -1771,7 +1963,7 @@
    "templateTetherRange": 2000,
    "raids": [],
    "raidAi": "no raid",
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked.",
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. Living Server 1.2 (every big boss in, 2026-11-14): no raid and no tactic, on purpose. In 2001-2005 Morgana was a quest NPC who appears only for players on certain quests, not a fought raid boss (Allakhazam 2003-2004; Herald \"Discovery of the Dark Spire\"; the raid research found no period raid of her), and here she has no spawn in the world database. Nothing was invented for her.",
    "verified": true
   },
   {
@@ -2374,10 +2566,9 @@
      "addBrain": "ColialtAddsBrain",
      "trigger": "when it spawns (via SpawnZombies)",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "In the raid AI (catalog: ranged adds, focused): the casters and archers kill his zombies one at a time while the melee hold him.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@86"
     },
     {
@@ -2391,10 +2582,9 @@
      "sourceClass": "ColialtBrain",
      "method": "Think",
      "threshold": 30,
+     "tactic": "Below 30% his Lifedrain heals him by its damage and nothing interrupts it: the raid burns him; healers keep his target up.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "phase@146"
     },
     {
@@ -2457,8 +2647,22 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-albion-coliath",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "ColialtAdds"
+    ],
+    "focusRangedAdds": true,
+    "areaOnClump": true,
+    "summary": "Its realm raid since 1.2: openworld-albion-coliath (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 64: \"about Legion difficulty\" (Albion epic raid guide, Feb 2003), sized as Legion). His 10-15 ancient zombies (5,000 health) join him at the pull: the raid's casters and archers kill them one at a time, area casters where they clump on his target, while the melee hold him. Below 30% he stops swinging and casts Lifedrain (700 body, 3.5 s, uninterruptible, 1,800 range) at his target, and his spell damage heals him: the raid burns him and the healers keep his target up; nothing in the plan stops the drain. Not in the script: the period's midnight-to-6 AM invulnerability and the Lamias' help (S1, beta); nothing was added.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -2901,10 +3105,9 @@
      "method": "TakeDamage",
      "subtype": "attacker_position",
      "condition": "if (!source.IsWithinRadius(spawn, 440))",
+     "tactic": "In the raid AI since 1.2 (EpicEncounterTactics.OpenWorld; its realm raid: RealmRaidOpenWorld). Tests only. Every raider fights from within 360 of his spawn.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Attack only from where the script allows (see the condition).",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "immune_while@33"
     },
     {
@@ -2968,8 +3171,17 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 1200,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-albion-emthoro",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-albion-emthoro (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: more than one full group (Allakhazam, Mar 2004)). He takes damage only from attackers within 440 of his spawn (the period: \"Theurgist pets only worked when summoned inside the pit\", Allakhazam, Mar 2004): every raider, casters too, fights from within 360 of it (EpicEncounterTactics.OpenWorld). His Lifedrain Pulse (80 spirit, 440 around him every 10 s) and his servants (one every 25-40 s) are fought where they come.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -9746,6 +9958,14 @@
    "templateTetherRange": 4500,
    "raids": [],
    "raidAi": "no raid",
+   "aiTactics": {
+    "spreadRadius": 350,
+    "rangedAdds": [
+     "AnurigundaAdds"
+    ],
+    "summary": "Touch of Flames (45 heat every 2 s for 60 s, 350 around his target, every 10-15 s): casters, archers and healers outside his target's party stand clear of 350 around it (the period: \"Fire GTAoE (about 250 radius) ... interrupts casting\", Allakhazam 2012). His fomorians at 40% and 20% (4, then 5): the casters and archers kill them while the melee hold him. Fomor City has no raid of its own (no path in on its navmesh, AutonomousRealmRaid.RaidDungeons), so this steers the gamebots that fight there.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -9982,10 +10202,9 @@
      "addBrain": null,
      "trigger": "when it spawns (via SpawnHeads)",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "The four heads are fought first, in the period's order (2, 4, 3, 5) (catalog: required adds in order).",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@189"
     },
     {
@@ -10135,10 +10354,9 @@
       "MyrddraxisSecondHead",
       "MyrddraxisThirdHead"
      ],
+     "tactic": "In the raid AI since 1.2 (catalog: the heads as required adds, in order): the heads die first, head 2 first, so nothing heals the body when the raid turns on it.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@1482"
     },
     {
@@ -10157,10 +10375,9 @@
       "MyrddraxisSecondHead",
       "MyrddraxisThirdHead"
      ],
+     "tactic": "In the raid AI since 1.2: the raid takes one head at a time in the period's order (2, 4, 3, 5); the others' tenth is healed back while it fights one, as in the period (\"the head being fought kept healing itself\", Allakhazam 2003).",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@1492"
     }
    ],
@@ -10344,8 +10561,15 @@
      20
     ],
     "blastRadius": 2150,
-    "summary": "Breaths at health thresholds: within 3% above 80/60/40/20% (stunning breath, 30 s stun in 1,800) and 75/50/25% (Breath of Annihilation, 2,000 heat in 1,800), and for 9 s after crossing one, everyone but the party he fights stands 2,350 from him; the 5-6 s warning in the script lands inside that window. Fomor City has no raid of its own (no path in on its navmesh), so this steers the gamebots that fight there.",
-    "since": "1.2"
+    "summary": "Heads first, in the period's order: head 2 (the lifetap head), then 4, then 3, then 5, then the body (Thredh's hydra guide, 2003-08-17: everyone on head 2, then 4, then 3; head 5 usually dies by itself). Every head heals the body by half the damage it deals and the other heads by a tenth (MyrddraxisSecondHead.DealDamage and the rest), so the whole raid takes one head at a time in that order and nobody hits the body before the heads are dead; in the script head 5 does not die by itself, so the raid kills it fourth. Breaths at health thresholds: within 3% above 80/60/40/20% (stunning breath, 30 s stun in 1,800) and 75/50/25% (Breath of Annihilation, 2,000 heat in 1,800), and for 9 s after crossing one, everyone but the party he fights stands 2,350 from him; the 5-6 s warning in the script lands inside that window. Not modelled: the period's fixed bridge stations (no map of zone 180 here), and no bot uses a siege weapon (the period: \"if the siege weapon makes the last hit, Myrddraxis will not drop anything\"), so none lands the last hit. Fomor City has no raid of its own (no path in on its navmesh), so this steers the gamebots that fight there.",
+    "since": "1.2",
+    "requiredAdds": [
+     "MyrddraxisSecondHead",
+     "MyrddraxisFourthHead",
+     "MyrddraxisThirdHead",
+     "MyrddraxisFifthHead"
+    ],
+    "addsInOrder": true
    },
    "verified": true
   },
@@ -18089,9 +18313,18 @@
     {
      "id": "dragon-hibernia",
      "role": "named"
+    },
+    {
+     "id": "openworld-hibernia-juggernaut",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "fightAtHomeRadius": 3000,
+    "summary": "Its realm raid since 1.2: openworld-hibernia-juggernaut (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: a full group with bladeturn took it to 25% (Allakhazam, 2002)). Melee and a taunt style, no adds or area hit in the script; the period's 60 s mez is a 2012 report and not in it. He walks home at full health past 3,600 from his spawn: the raid fights him within 3,000 of it and leads him back.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -18988,10 +19221,9 @@
      "addBrain": "CurengkurNestBrain",
      "trigger": "when it spawns (via SpawnNest)",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "His nest is a hazard (catalog): nobody fights it or stands within 800 of it.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@82"
     },
     {
@@ -19036,10 +19268,9 @@
      "confidence": "inferred",
      "sourceClass": "CurengkurBrain",
      "method": "Think",
+     "tactic": "In the raid AI since 1.2 (EpicEncounterTactics.OpenWorld; its realm raid: RealmRaidOpenWorld). Tests only. The raider he fights leads him 1,500 out of his spawn, out of the 800 where he heals.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@115"
     }
    ],
@@ -19098,8 +19329,21 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-hibernia-curengkur",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "hazards": [
+     "CurengkurNest"
+    ],
+    "hazardRadius": 800,
+    "summary": "Its realm raid since 1.2: openworld-hibernia-curengkur (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: no count (Allakhazam 2005-2012)). He heals 200 every 1.5 s within 800 of his spawn, where his nest burns everyone within 800 every 4 s (200 heat): the period's \"Pulling it out of the nest stops the regen\" (Allakhazam, 2005). The raider he fights leads him 1,500 out from his spawn while he is within 1,000 of it (EpicEncounterTactics.OpenWorld), and nobody stands in the nest's 800 (catalog hazard). His Strike (400 cold) and poison land on his target.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -19614,8 +19858,18 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-hibernia-marfoirwort",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 350,
+    "summary": "Its realm raid since 1.2: openworld-hibernia-marfoirwort (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: a Writhing Death quest boss, no count (Herald 2003)). His Life-leech (450 body, 350 around his target, on a quarter of his hits) heals him by every point of body damage he deals (period: \"uses lifeleech often\", Allakhazam): casters, archers and healers outside his target's party stand clear of 350 around his target, so each leech heals him from his target's melee only.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -19737,8 +19991,22 @@
     }
    ],
    "levelSource": "npc template",
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-hibernia-mollunero",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "MolluneroAdd"
+    ],
+    "focusRangedAdds": true,
+    "areaOnClump": true,
+    "summary": "Its realm raid since 1.2: openworld-hibernia-mollunero (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: no count (Allakhazam)). He comes with 7-8 young octonoids (2,000 health, within 300 of him) at the pull (period: \"7-8 yellow-to-orange baby octonids\", Allakhazam): the casters and archers kill them one at a time, area casters where they clump on him, while the melee hold him.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -24549,9 +24817,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-revenant",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-revenant (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: killed with the Wretch of Winter on Excalibur (FreddysHouse, May 2002); no count). No mechanic in the script but its linked pack (RevenantBaf, none in the world database) and no period mechanics found (Allakhazam, the Fenrir's Folly quest): the tank holds it and the raid kills it.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -24823,9 +25099,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-wreth-scorpion",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-wreth-scorpion (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: groups of about 10 (Allakhazam 2002-2003); the smallest raid). No adds, no move, no area hit: a 100 body poison on a quarter of its hits on its target only. The period's answer was the pulsing bladeturn (\"NECESSARY\", Allakhazam 2002-2003), which the bots keep up anyway, and cures; the plan is the tank holding it and the raid on it. The five Wretches of Winter are one choice on the realm's schedule.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -24906,9 +25190,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-wreth-spider",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-wreth-spider (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: groups of about 10 (Allakhazam 2002-2003); the smallest raid). No adds, no move, no area hit: a 100 body poison on a quarter of its hits (\"the easiest\", Allakhazam 2002-2003) on its target only. The period's answer was the pulsing bladeturn (\"NECESSARY\", Allakhazam 2002-2003), which the bots keep up anyway, and cures; the plan is the tank holding it and the raid on it. The five Wretches of Winter are one choice on the realm's schedule.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -24989,9 +25281,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-wreth-crab",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-wreth-crab (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: groups of about 10 (Allakhazam 2002-2003); the smallest raid). No adds, no move, no area hit: a 100 body poison on a quarter of its hits on its target only. The period's answer was the pulsing bladeturn (\"NECESSARY\", Allakhazam 2002-2003), which the bots keep up anyway, and cures; the plan is the tank holding it and the raid on it. The five Wretches of Winter are one choice on the realm's schedule.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -25072,9 +25372,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-wreth-jotun",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-wreth-jotun (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: groups of about 10 (Allakhazam 2002-2003); the smallest raid). No adds, no move, no area hit: Frost Shock (400 cold) on a quarter of his hits; the hardest Wretch (\"The human form wretch wiped out everyone 3 times\", FreddysHouse, May 2002) on its target only. The period's answer was the pulsing bladeturn (\"NECESSARY\", Allakhazam 2002-2003), which the bots keep up anyway, and cures; the plan is the tank holding it and the raid on it. The five Wretches of Winter are one choice on the realm's schedule.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -25487,9 +25795,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-wreth-arachite",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-wreth-arachite (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: groups of about 10 (Allakhazam 2002-2003); the smallest raid). No adds, no move, no area hit: a 150 body poison on a quarter of its hits (\"wiped a 10-person group twice\", Allakhazam 2002-2003) on its target only. The period's answer was the pulsing bladeturn (\"NECESSARY\", Allakhazam 2002-2003), which the bots keep up anyway, and cures; the plan is the tank holding it and the raid on it. The five Wretches of Winter are one choice on the realm's schedule.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -26238,7 +26554,7 @@
      "method": "ThrowPlayer",
      "subtype": "fixed_spot",
      "displacement": "Teleport",
-     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Mortufoghus). A moved bot lands up to 1,500 from him on the floor nearest the spot (a fifth of its health as fall damage, as for players) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "tactic": "Throw: on since 1.2 for bots too (AllowBotDisplacement for Mortufoghus). A moved bot lands up to 1,500 from him on the floor nearest the spot (a fifth of its health as fall damage, as for players) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. Its realm raid since 1.2 (openworld-midgard-mortufoghus).",
      "difficulty": "easy for the current raid AI",
      "verified": true,
      "key": "teleport@171"
@@ -26285,8 +26601,18 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "openworld-midgard-mortufoghus",
+     "role": "final"
+    }
+   ],
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "spreadRadius": 1000,
+    "summary": "Its realm raid since 1.2: openworld-midgard-mortufoghus (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: three groups couldn't get it under 50% (Allakhazam, Oct 2003); 1.5-3 groups (JeuxOnline, Apr 2003)). Dark Packt (250 cold, 1,000 around his target, every 15-25 s): casters, archers and healers outside his target's party stand clear of 1,000 around it. Every 25-35 s he throws a raider who is not his target up to 1,500 away with a fifth of its health as fall damage (period: \"Throws people far, stuns whoever has aggro\", Allakhazam 2003): it walks back and the healers heal it first.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -26748,10 +27074,9 @@
      "method": "TakeDamage",
      "subtype": "out_of_tether",
      "condition": "if (IsOutOfTetherRange)",
-     "verified": true,
-     "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
+     "tactic": "In the raid AI (catalog: fight at home within 1,400 of his spawn, inside his 1,700 tether): past it the raid stops hitting him and his target leads him back.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "immune_while@51"
     },
     {
@@ -26770,10 +27095,9 @@
      "count": 5,
      "trigger": "on a timer (via DoSpawn)",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "In the raid AI (catalog: ranged adds, focused): the raid's casters and archers kill the fairies one at a time before they reach a stone.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@233"
     },
     {
@@ -26838,10 +27162,9 @@
      "sourceClass": "EvernFairyBrain",
      "method": "Fairy_Heal",
      "from": "add",
+     "tactic": "The fairies' heal (1,000 on him from a stone, 3 s, uninterruptible): stopped by killing each fairy first (catalog: ranged adds, focused). In the raid AI since 1.2.",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@382"
     }
    ],
@@ -26876,9 +27199,22 @@
     {
      "id": "dragon-hibernia",
      "role": "named"
+    },
+    {
+     "id": "openworld-hibernia-evern",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "rangedAdds": [
+     "EvernFairy"
+    ],
+    "focusRangedAdds": true,
+    "fightAtHomeRadius": 1400,
+    "summary": "Its realm raid since 1.2: openworld-hibernia-evern (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: a full group was beaten, eight killed him in 20 minutes (Allakhazam, May and Jul 2003); the Green Knight's equal (Albion epic raid guide, Feb 2003)). His Wraith Fairies (2-5 every 10-20 s once he is hurt, 2,000 health, flying) fly to the stones around him and heal him 1,000 a cast from there (period: \"Evern summons fairies that fly to one of the 23 stones around him. A fairy that lands heals Evern\", Allakhazam 2003): the whole raid's casters and archers kill one fairy at a time as they come, the weakest first, while the melee stay on him. He is immune drawn past his tether: the raid fights him within 1,400 of his spawn and leads him back.",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -26948,7 +27284,7 @@
      "method": "TeleportPlayer",
      "subtype": "air_toss",
      "displacement": "Throw",
-     "tactic": "Kick: on since 1.2 for bots too (AllowBotDisplacement for GlacierGiant). A moved bot flies up to about 12,000 units, falls and and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
+     "tactic": "Kick: on since 1.2 for bots too (AllowBotDisplacement for GlacierGiant). A moved bot flies up to about 12,000 units, falls and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. Since 1.2 (EpicEncounterTactics.OpenWorld): the healers outside his target's party stand 2,060 from him, out of the kick's 2,000.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
      "key": "teleport@180"
@@ -26970,9 +27306,17 @@
     {
      "id": "dragon-midgard",
      "role": "named"
+    },
+    {
+     "id": "openworld-midgard-glaciergiant",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
+   "aiTactics": {
+    "summary": "Its realm raid since 1.2: openworld-midgard-glaciergiant (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 48: two guild groups wiped in seven minutes, done with 5-6 groups (FreddysHouse \"Glacier Giant\", Dec 2003)). Neutral until pulled. His kick throws a raider within 2,000 of him who is not his target, about every 7 s, to one of six spots up to 2,000 around points far across Odin's Gate, 300-600 up (period: \"throws random players who are not the main tank to random spots across Jamtland and Odin's Gate\", Allakhazam Oct 2002, FreddysHouse Dec 2003): the thrown raider walks back and the healers heal it first, and the healers outside his target's party stand 2,060 from him on his target's side, within 1,975 of it, where the kick can't reach them (EpicEncounterTactics.OpenWorld).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {
@@ -27349,10 +27693,9 @@
      "count": 1,
      "trigger": "on a timer (Util.Random(25000, 35000) ms)",
      "addIsEpic": false,
-     "verified": true,
-     "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
+     "tactic": "In the raid AI (catalog: ranged adds and area on the clump): the raid's casters and archers kill the trees while the melee stay on him. Flood guard: at most 70 a wave (EncounterFloodGuard 'OFGreenKnight.Trees', still the Albion dragon raid's size; his own raid's period size is 40).",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "adds@658"
     },
     {
@@ -27427,10 +27770,9 @@
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
      "method": "PickHeal",
-     "verified": true,
-     "tactic": "Off-tanks pick it up after the wipe; healers keep the casters alive.",
+     "tactic": "In the raid AI (catalog: tanks taunt): when he turns on a healer, the raid's nearest tank that fights him taunts him back.",
      "difficulty": "easy for the current raid AI",
-     "tacticSource": "default for its kind",
+     "verified": true,
      "key": "aggro_wipe@350"
     },
     {
@@ -27459,10 +27801,9 @@
      "confidence": "read",
      "sourceClass": "OFGreenKnightBrain",
      "method": "GreenKnightHeal",
+     "tactic": "Uninterruptible (a 3 s self heal of 400 at one of four spots, after each 10% he loses): nothing stops it; the raid follows him and keeps hitting. Period: \"Heals himself\" (Albion epic raid guide, Feb 2003).",
+     "difficulty": "easy for the current raid AI",
      "verified": true,
-     "tactic": "Kill or interrupt whatever heals it first.",
-     "difficulty": "needs new raid AI",
-     "tacticSource": "default for its kind",
      "key": "heal@680"
     }
    ],
@@ -27511,10 +27852,24 @@
     {
      "id": "dragon-albion",
      "role": "named"
+    },
+    {
+     "id": "openworld-albion-greenknight",
+     "role": "final"
     }
    ],
-   "raidAi": "dragon fight",
+   "raidAi": "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)",
    "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today.",
+   "aiTactics": {
+    "spreadRadius": 500,
+    "tanksTaunt": true,
+    "rangedAdds": [
+     "GKTrees"
+    ],
+    "areaOnClump": true,
+    "summary": "Its realm raid since 1.2: openworld-albion-greenknight (RealmRaidOpenWorld, the dragon-fight engine at its spawn; period size 40: 4-5 groups, about Grand Summoner difficulty (Albion epic raid guide, FreddysHouse 115688, Feb 2003)). His fight starts when eight raiders stand within 1,000 of him for 20 s (his script's raid challenge). Might of the Forest (250 heat, 500 around his target, on 30% of his hits): casters, archers and healers outside his target's party stand clear of 500 around it. Every 40-60 s he drops his aggro and goes for a healer: the raid's nearest tank taunts him back. His trees (one at every raider within 4,000 every 25-35 s, 800 health, yellow to a 50): the casters and archers kill them, area casters where most of them and he stand, while the melee stay on him; at each 10% he walks to one of four spots and heals 400 there, and the raid follows and keeps hitting him (a heal it can't stop: uninterruptible).",
+    "since": "1.2"
+   },
    "verified": true
   },
   {

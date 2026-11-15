@@ -30,6 +30,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 SCRIPTS = Path("source/server/GameServer/scripts/namedmobs")
 RAID_FILE = Path("source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs")
+# The open-world big bosses' realm raids (Living Server 1.2): each linked to its own boss only.
+OPEN_WORLD_RAID_FILE = Path("source/server/GameServer/bots/autonomous/RealmRaidOpenWorld.cs")
 NEUTRAL_FILE = Path("source/server/GameServer/bots/autonomous/RealmRaidNeutralEvents.cs")
 ROUTE_FILE = Path("source/server/GameServer/bots/autonomous/RealmRaidDungeonRoute.cs")
 SWITCH_FILE = SCRIPTS / "EpicEncounterMechanics.cs"
@@ -1257,8 +1259,10 @@ DETECTORS = (detect_offline_changes, detect_take_damage, detect_adds, detect_pha
 
 def read_raids() -> tuple[list[dict], dict]:
     text = read_text(REPO / RAID_FILE)
+    if (REPO / OPEN_WORLD_RAID_FILE).exists():
+        text += "\n" + read_text(REPO / OPEN_WORLD_RAID_FILE)
     raids = []
-    for mm in re.finditer(r'new\("((?:dungeon|dragon|epic|summoners|darkness)-[\w-]+)",\s*"([^"]+)",\s*eRealm\.(\w+),\s*(\d+),\s*"(\w+)",\s*(\d+)'
+    for mm in re.finditer(r'new\("((?:dungeon|dragon|epic|summoners|darkness|openworld)-[\w-]+)",\s*"([^"]+)",\s*eRealm\.(\w+),\s*(\d+),\s*"(\w+)",\s*(\d+)'
                           r'(?:,\s*new\(([-\d, ]+)\),\s*\[([^\]]*)\])?', text):
         finals = [f.strip().strip('"') for f in (mm.group(8) or "").split(",") if f.strip()]
         raids.append({"id": mm.group(1), "name": mm.group(2), "realm": mm.group(3), "region": int(mm.group(4)),
@@ -1688,6 +1692,9 @@ def relink_raids(encounters, raids, objectives):
         for raid in raids:
             if raid["region"] != region:
                 continue
+            # An open-world boss's raid is that boss's alone, not every encounter's in its region.
+            if raid["id"].startswith("openworld-") and name != raid["bossType"]:
+                continue
             role = "final" if name in raid["finals"] or name == raid["bossType"] else "named"
             if region in objectives:
                 role = "final" if display == objectives[region][-1] else (
@@ -1697,7 +1704,9 @@ def relink_raids(encounters, raids, objectives):
             links.append({"id": raid["id"], "role": role})
         e["raids"] = links
         ai = "no raid"
-        if links:
+        if any(r["id"].startswith("openworld-") for r in links):
+            ai = "open-world raid (dragon-fight engine)"
+        elif links:
             ai = "dragon fight" if any(r["id"].startswith("dragon") for r in links) else "generic dungeon route"
         if region == 249:
             ai = "no raid AI"
@@ -1921,6 +1930,8 @@ def apply_hand_notes(encounters: list[dict], notes: dict, world: World) -> list[
     for enc in encounters:
         if enc.get("aiTactics") and enc.get("raidAi") == "generic dungeon route":
             enc["raidAi"] = "generic dungeon route + tactics (EpicEncounterTactics)"
+        if enc.get("aiTactics") and enc.get("raidAi") == "open-world raid (dragon-fight engine)":
+            enc["raidAi"] = "open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics)"
         enc.setdefault("verified", False)
         for r in enc["rules"]:
             r.setdefault("verified", False)

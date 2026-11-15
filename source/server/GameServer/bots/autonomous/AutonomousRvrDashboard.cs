@@ -182,7 +182,7 @@ public static class AutonomousRvrDashboard
                     AutonomousRvrEventLayer.RelicCarrierTargetId(relic));
             });
             var forceTargets = AutonomousRvrEventLayer.ForceTargets();
-            var raids = AutonomousRealmRaid.Snapshot().Select(r => new Objective(r.Id.StartsWith("epic-") || r.Id.StartsWith("dungeon-") ? "Epic dungeon" : r.Id.StartsWith("summoners-") || r.Id.StartsWith("darkness-") ? "Neutral raid" : "Dragon", r.Name, r.Realm, r.State,
+            var raids = AutonomousRealmRaid.Snapshot().Select(r => new Objective(r.Id.StartsWith("epic-") || r.Id.StartsWith("dungeon-") ? "Epic dungeon" : r.Id.StartsWith("summoners-") || r.Id.StartsWith("darkness-") ? "Neutral raid" : RealmRaidOpenWorld.Is(r.Id) ? RealmRaidOpenWorld.Kind : "Dragon", r.Name, r.Realm, r.State,
                 r.Name, "", $"Assigned: {r.Assigned}/{RealmRaidRecruitmentPolicy.MaximumBots} · Present: {r.Present} · Start requires: {r.Suggested}" +
                     (r.Phase == "Waiting" ? " · Holding for arrivals / dragon landing (not attacking)" : ""),
                 r.Id, r.State is "Respawning" or "Event cooldown" ? r.Remaining : 0,
