@@ -3,8 +3,8 @@ using DOL.GS.PacketHandler;
 namespace DOL.GS
 {
     /// <summary>
-    /// The rules of the original OpenDAoC mechanics restored behind <see cref="EpicEncounterMechanics"/> switches (all off by
-    /// default). Values read from OpenDAoC-Core 3513bad (2026-11-04). Kept apart from the scripts so they can be tested
+    /// The rules of the original OpenDAoC mechanics restored behind <see cref="EpicEncounterMechanics"/> switches (most on by
+    /// default; see ServerProperties). Values read from OpenDAoC-Core 3513bad (2026-11-04). Kept apart from the scripts so they can be tested
     /// without a world. Gamebots count as the class they are, like players: only the originals' target picking stays
     /// player-only (see docs/encounters/EPIC-ENCOUNTERS.md).
     /// </summary>
