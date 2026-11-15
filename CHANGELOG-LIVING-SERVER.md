@@ -153,6 +153,31 @@ the gate; lord 100%, guards 19/19, both gates standing).
   bots within 2,500 of its keep); siege crews; the rally inside the breach; and releases (a gamebot releases to its bind,
   as a player does with `bg_release_to_portal_keep` off).
 
+**Battleground storms go in by the keep's own door order, and a wave fights the guard that hits one of its own** (tests
+only; owner's PC, build `ea882e6`, Thidranki 2026-11-15 08:39-09:02: the waves now gather and go (Hibernia 15 at 08:57:20,
+Midgard 9 five seconds later), walk round the walls toward the broken outer gate in 20-55 s, and are "spent" at 09:00:23/27
+because they died on the way: in those three minutes 16 Hibernian and 4 Midgard bots fell to the keep's level-33 guards
+800-2,400 from the keep's centre, most of them with one attacker on them; guards 19/19, lord 100%).
+
+- **The door a storm marches on is the way in, not the nearest door.** While a main door stands shut, the wave goes for the
+  outer gate first and then the keep door behind it (the order the siege crews already used). On build `3d67b6f`, with
+  both doors of Thidranki Faste shut, 18 of 19 storm samples marched on the keep door, which lies behind the outer wall,
+  from outside it and stood at the south wall with no path.
+- **Through a broken outer gate, on to the shut keep door.** With the outer gate broken and the keep door shut, a bot that
+  got through the gate walked at the lord, whose path the shut door refuses, and held just inside the gate, 1,700 from the
+  door it had to hit. Now it walks to the keep door's courtyard side and batters it.
+- **A storm's walk ends in front of the door** (230 out, on the attackers' side), not on the door's own floor.
+- **A going wave fights together.** While a door stands, a bot of a going wave fights a keep guard that is hitting one of
+  its realm within 1,500 of it, and keeps that guard until it is down. Each bot used to keep its own pick among the guards
+  near it, so the guard hitting its neighbour was ignored. A melee bot helps only against a guard beside its victim, not
+  an archer or caster on the wall.
+- **Logs.** `BG_STORM_TRACE` writes a sample every 20 s for each realm (was one server-wide; `ea882e6` wrote four, all
+  Hibernian), with the realm, how long its wave has been going, and `pending=` (the order was given that turn, so moving,
+  path and dest are still the previous order's: the "dest next to the bot" of `ea882e6` was the staging hold, not a short
+  path). `BG_WAVE_SPENT` and `BG_WAVE_STATUS` count the wave's deaths to the keep's guards and to anything else.
+- Unchanged: the navmesh (the bots' route round the walls was real: they reached 570 from the broken gate), door flags (a
+  broken door is open and passable), the keep, guards, lord and gates, the 3-minute spent check, and siege crews.
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 
