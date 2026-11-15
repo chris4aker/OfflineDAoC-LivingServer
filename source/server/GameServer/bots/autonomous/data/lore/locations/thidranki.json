@@ -10,7 +10,7 @@
   "renegades",
   "tomte"
  ],
- "summary": "The oldest of the proving fields, a lost farmstead of tomte and bwca around Thidranki Faste, the one field whose renegades were driven out (20-24).",
+ "summary": "The oldest of the proving fields, a farm gone wild around Thidranki Faste, where the tomte and the bwca still quarrel over a household that left (20-24).",
  "facts": [
   {
    "text": "Thidranki is the battleground for levels 20 to 24 (region 252); level is the only limit in Offline DAoC.",
@@ -48,30 +48,34 @@
    "source": "world data: Mob table, regions 250-253 (0.37b runtime database, world tables only)"
   },
   {
-   "text": "In the Old Norse tale Þiðranda þáttr ok Þórhalls, the young Thidrandi is killed on a winter night by nine women in black, the disir of the old faith. Thidranki may echo the name; to verify.",
-   "provenance": "myth",
-   "source": "https://en.wikipedia.org/wiki/%C3%9Ei%C3%B0randa_%C3%BE%C3%A1ttr_ok_%C3%9E%C3%B3rhalls"
-  },
-  {
    "text": "Tomte are the farm spirits of Swedish folklore and bwca the household spirits of Welsh tradition; both are the spirits of a farmstead.",
    "provenance": "myth",
    "source": "https://en.wikipedia.org/wiki/Tomte"
   },
   {
-   "text": "The farm, the feud of the two kinds of farm spirit and the Faste Winter are Living Server lore.",
+   "text": "In Thidranda thattr ok Thorhalls, Thidrandi goes out at a Winter Nights feast against a seer's warning when someone knocks three times; nine women in black ride from the north and kill him, nine in white from the south come too late, and the seer calls them the family's disir.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/%C3%9Ei%C3%B0randa_%C3%BE%C3%A1ttr_ok_%C3%9E%C3%B3rhalls"
+  },
+  {
+   "text": "The tomte is the Scandinavian farm spirit who minds the beasts; the bwca is the Welsh house-spirit who works by night for a bowl of cream.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Tomte; https://en.wikipedia.org/wiki/Bwbach"
+  },
+  {
+   "text": "Thidrand's farm, the two kinds of spirit, Haluka's cream, the Faste Winter and Ulfhild's account are Living Server lore.",
    "provenance": "original",
    "source": "Living Server"
   }
  ],
- "story": "Thidranki is the oldest of the proving fields, and before it was a field it was a farm.\n\nThe farm. The skalds of Mularn say a northman called Thidrand cleared the ground in the old days and built a longhouse where the Faste now stands, and kept cattle on the hill, and that the farm took its name from him. The bards of the west say the ground was cleared long before by people of their own and that the northman only moved in. Both are probably true, because the farm had two kinds of spirit, and a farm only gets its spirits from the people who keep it. The tomte came with the northmen: small, grey and grave, who mind the beasts and punish a careless farmer. The bwca came with the older folk: shaggy house-spirits who do the work at night for a bowl of cream and turn on a household that forgets them. For as long as the farm stood they kept it together, and quarrelled, and kept it.\n\nWhat went wrong. The farm did not survive the realm wars. Nobody agrees on how it ended: Midgard says a winter took the household, Hibernia says reavers from the south did, and Albion says it does not remember the farm at all. What is agreed is that the household died or left, and the spirits did not. A tomte without a farmer and a bwca without a bowl of cream are both very angry things, and each kind blamed the other. When the realms came to the hill in the first summer of the fields they found a ruin, a stone keep built by somebody over the longhouse, renegades in the keep, and the tomte and the bwca fighting each other across the fields for a farm that was no longer there.\n\nThe Faste Winter. Thidranki was the first field the realms sent their young to, and the first they fought over hard. In the second winter of the fields all three realms marched on the Faste in the same week, each without knowing the others were coming, and the renegades who held it found themselves under three sieges at once. They left. Their chieftain walked out of the back gate in the snow with whoever would follow and went south and east to the wood of Murdaigean, where, the renegades say, he took that keep's name instead. Thidranki Faste has had no renegade lord since. It belongs to whichever realm last took it, and its walls have changed colour more often than any keep in the world.\n\nWhat lives there now. The tomte still hunt and soldier across the hill, and their mystics and visionaries still watch the sky for the farmer who will not come. The bwca roam, perturbed, and their eldest, Haluka, who is twice the size of any of them and remembers the farm when it had a fire, keeps to one place by the Hibernian portal keep and does not leave it. The boars and badgers of the old fields have gone wild and mean. At each portal keep the realms keep siegemasters, Salendar and Cadman for Albion, Ordrand and Sigfreid for Midgard, Camey and Erinden for Hibernia, because Thidranki is the field where the young first learn that a keep can be taken.\n\nWhy it matters. Every veteran of every realm remembers Thidranki. It is where the realms learned to send their young to a field instead of the frontier, and where the young learned that a keep belongs to whoever is standing in it.",
- "legend": "Thidranki is the 20-24 battleground and the busiest of the four: the classic one, where most characters first fight over a keep that matters. Thidranki Faste in the middle has no renegade chieftain here; it is whoever's took it last, so it changes hands a lot. The siegemasters at each portal keep (Salendar and Cadman for Albion, Ordrand and Sigfreid for Midgard, Camey and Erinden for Hibernia) sell rams and the like, and there are Void Merchants at the Midgard and Hibernia portal keeps. The tomte and the bwca aggro on anyone, and the bwca wander, so watch your back when you rest out in the fields. Haluka, the big bwca by the Hibernian portal keep, is level 24 and twice the size of the others; Hibernians meet him on their first day. Players call the field Thid and swear it was better in the old days.",
+ "story": "Thidranki was a farm before it was a field, and it was the first of the four the realms found open.\n\nMidgard's skalds say that a northman's grandson named Thidrand kept the farm on the hill where the Faste stands now, and that he was killed in his own homefield on the winter nights by nine riders in black, while nine in white came on from the south too late to save him. The household left the hill the next spring. Albion remembers no farm, and says only that its squires pushed their first ram up that hill. Hibernia makes no claim on the farm, and says that a house which keeps two kinds of spirit will end by losing both.\n\nIt kept two. The tomte came over the water with the northmen, small grey spirits who mind the beasts and punish a careless farmer. The bwca were on the hill before them, shaggy house-spirits who do the night's work for a bowl of cream and turn on a household that forgets to set it out. With no farmer left, the two have quarrelled over the farm ever since, and both take the realms' soldiers for poor substitutes. The eldest bwca, Haluka, still keeps his corner below the Hibernian portal keep, twice the size of the rest.\n\nSomebody raised the Faste over the old longhouse, and renegades held it when the realms came. In the second winter all three realms marched on it in the same week without knowing the others were coming, and the renegades went out by the back gate in the snow. The Faste has belonged to whoever took it last ever since, and its walls have worn more realms' colours than any keep in the world.",
+ "legend": "Thidranki is the 20-24 battleground and the busiest of the four, the classic one, where most characters first fight over a keep that matters. Thidranki Faste in the middle has no renegade chieftain; it belongs to whoever took it last, so it changes hands a lot. The siegemasters at each portal keep (Salendar and Cadman for Albion, Ordrand and Sigfreid for Midgard, Camey and Erinden for Hibernia) sell rams and the like, and there are Void Merchants at the Midgard and Hibernia portal keeps. The tomte and the bwca attack anyone, and the bwca wander, so watch your back when you rest out in the fields. Haluka, the big bwca by the Hibernian portal keep, is level 24 and twice the size of the others; Hibernians meet him on their first day. Players call the field Thid and swear it was better in the old days.",
  "atmosphere": {
   "firstEntry": [
-   "A hill of old fields, gone wild. A keep stands on top.",
+   "A hill of old fields gone to grass, with a keep on top.",
    "Small grey figures watch from the long grass.",
-   "Somewhere a bwca is muttering about cream.",
-   "This was a farm once. The ground remembers the plough.",
-   "Thidranki. Everyone fought here once."
+   "The ground here still remembers the plough.",
+   "Thidranki. The oldest of the fields."
   ],
   "areas": [
    {
@@ -82,8 +86,8 @@
     "radius": 1500,
     "lines": [
      "The Faste is built over an old longhouse.",
-     "No renegade lord holds this keep. It is anyone's.",
-     "The walls have changed colour many times."
+     "No renegade holds the Faste. It is anyone's.",
+     "These walls have worn every realm's colours."
     ]
    },
    {
@@ -93,8 +97,8 @@
     "z": 3944,
     "radius": 1200,
     "lines": [
-     "Siegemasters Salendar and Cadman keep Albion's rams.",
-     "Albion's portal keep, on the southern slope."
+     "Albion's portal keep, on the southern slope.",
+     "Siegemasters Salendar and Cadman keep Albion's rams."
     ]
    },
    {
@@ -105,7 +109,7 @@
     "radius": 1200,
     "lines": [
      "Ordrand and Sigfreid keep Midgard's siege gear.",
-     "A tomte watches Midgard's gate. It looks disappointed."
+     "A tomte watches Midgard's gate, unimpressed."
     ]
    },
    {
@@ -126,97 +130,85 @@
     "z": 3964,
     "radius": 1000,
     "lines": [
-     "An old bwca, bigger than the rest, will not move from here.",
-     "Haluka remembers the farm. He is still waiting for cream."
+     "An old bwca, bigger than the rest, keeps this corner.",
+     "Haluka is still waiting for his cream."
     ]
    }
   ]
  },
  "botLines": {
   "lore": [
-   "thidranki was a farm before it was a field. [the faste is built on the longhouse|the keep sits on an old farmhouse]",
-   "the tomte and the bwca are [farm spirits|the farm's old spirits]. no farmer, so they fight each other",
-   "[skalds say|mids say] a northman called thidrand cleared the farm. hibs say [they were there first|it was theirs before]",
-   "the renegades got kicked out of thidranki in the faste winter. [all three realms hit it the same week|three sieges at once]",
-   "the old thidranki chieftain [went to murdaigean|walked off to murdaigean] and took that keep's name, [so they say|word is]",
-   "thidranki faste has no renegade lord. [whoever took it last|it's whoever's standing in it]",
-   "haluka is the eldest bwca, [twice the size of the others|big one by the hib pk]. remembers the farm",
-   "a bwca does the work at night for a bowl of cream. [no cream, no farm|forget it and it turns on you]",
-   "tomte mind the beasts and [punish a careless farmer|hate a lazy farmer]. thats why they hate us",
-   "thidranki was the first field the realms sent their young to. [the oldest bg|before murd and cale]",
-   "the faste's walls have changed colour more than [any keep in the world|any keep anywhere]",
-   "[every vet|everyone] remembers thid. its where you learn a keep belongs to whoever stands in it"
+   "thidranki was a farm before it was a bg. [the faste sits on the longhouse|the keep is on top of the old farmhouse]",
+   "tomte and bwca are the old farm spirits. [no farmer left|nobody to work for], so they fight each other and us",
+   "haluka is the oldest bwca in thid. [still waiting for his cream|nobody ever brought the cream]",
+   "the renegades walked out of thid faste the winter all three realms showed up [the same week|at once]"
   ],
   "rumour": [
-   "[heard|someone said] if you leave cream at the hib portal keep haluka leaves you alone. [lol no|doesnt work]",
-   "the tomte visionaries are [watching for the farmer|waiting for the farmer to come back], [so the skalds say|supposedly]",
-   "[word is|i heard] there's a hearthstone under thidranki faste from the old longhouse",
-   "[someone told me|heard] the siegemasters in thid are brothers. [salendar and cadman|the alb ones]",
-   "[heard|word is] haluka has never once left his corner. [true, he doesnt move|he just stands there]",
-   "[heard|word is] the faste winter was the only time all three realms hit one keep the same week",
-   "thidranki is named after a northman who died young. [the skalds say|thidrand]. [creepy story|nine women in black]",
-   "[someone said|my guildie says] the tomte and bwca will team up on you if you take the faste. [no they wont|they just aggro lol]"
+   "[heard|someone said] the skalds say nine riders in black killed the farmer at thid. [the white ones were late|creepy]",
+   "[heard|word is] the bwca in thid hate albs most. [every realm says that|everyone says that about their own realm]"
   ],
   "tell": [
-   "thidranki? the 20-24 battleground. [old farm|tomte and bwca], thidranki faste in the middle",
-   "is thid hard? the [mobs are easy|tomte are fine], the other realms are the hard part. bwca wander, watch your back",
-   "where is thidranki? [bg portal at 20|portal from your frontier] at 20, out at 25",
+   "thidranki? the 20-24 bg. [old farm|tomte and bwca], thidranki faste in the middle",
    "whats in thidranki? tomte, bwca, boars, badgers, beetles. [haluka by the hib pk|a big bwca called haluka]",
    "who holds thidranki faste? [no renegades|whoever took it last]. it changes hands all the time",
-   "need rams in thid? [siegemasters at your pk|buy from the siegemasters at the portal keep]"
+   "need rams in thid? [siegemasters at your pk|buy from the siegemasters at the portal keep]",
+   "where is thid? ask a teleporter for battlegrounds [at 20|between 20 and 24]"
   ]
  },
  "loremaster": {
-  "intro": "Thidranki? The oldest of the [proving fields], and a [farm] before it was a field. Its spirits are still there, the [tomte] and the [bwca], and the eldest of the bwca, [Haluka], still waits for his cream. The renegades were driven out in the [Faste Winter], and [Thidranki Faste] has had no lord of its own since. Ask me about the [siegemasters], too, if you mean to take it.",
+  "intro": "Thidranki, the oldest of the proving fields, and a [farm] once. Ask me of the [tomte], the [bwca] and [Haluka], of the [Faste Winter], or of [Thidranki Faste] and its [siegemasters].",
   "topics": {
-   "proving fields": "The four contested fields away from the great frontier where the realms send soldiers of one age at a time: Abermenai, [Thidranki], Murdaigean and Caledon. Thidranki was the first.",
-   "thidranki": "The field of 20 to 24, a farm before the realm wars, named, the skalds say, for a northman called Thidrand who cleared it. Its keep is [Thidranki Faste].",
-   "farm": "A longhouse on a hill with cattle and two kinds of spirit, the [tomte] of the northmen and the [bwca] of the older folk. The household died or left in the realm wars; Midgard says a winter took it, Hibernia a raid, and Albion does not remember it at all.",
-   "tomte": "Small grey farm spirits of the north who mind the beasts and punish a careless farmer. With no farmer left they hunt and soldier across the hill, and their visionaries watch the sky for one.",
-   "bwca": "Shaggy house-spirits of the older folk who do a farm's work at night for a bowl of cream and turn on a household that forgets them. Thidranki's are perturbed, and roam. Their eldest is [Haluka].",
-   "haluka": "The eldest bwca of Thidranki, twice the size of any other, who remembers the [farm] when it had a fire. He keeps to one place near the Hibernian portal keep and does not leave it. He is still waiting for his cream, and he is not friendly.",
-   "faste winter": "The second winter of the fields, when all three realms marched on [Thidranki Faste] in the same week without knowing the others were coming. The renegades left by the back gate in the snow, and their chieftain went to Murdaigean and took that keep's name.",
-   "thidranki faste": "A stone keep built over the old longhouse. Since the [Faste Winter] it has had no renegade lord and belongs to whichever realm last took it.",
+   "farm": "A longhouse on a hill, with cattle and two kinds of spirit, the [tomte] and the [bwca]. Midgard says a northman's grandson kept it; Albion does not remember it; Hibernia makes no claim on it. The household left the hill and the spirits did not.",
+   "tomte": "Small grey farm spirits of the north who mind the beasts and punish a careless farmer. With no farmer left they hunt and soldier across the hill, and their visionaries watch the long grass as if somebody were expected.",
+   "bwca": "Shaggy house-spirits who do a farm's night work for a bowl of cream and turn on a household that forgets to set it out. Thidranki's have nobody to work for, and they roam. Their eldest is [Haluka].",
+   "haluka": "The eldest bwca of Thidranki, twice the size of the others, who keeps one corner below the Hibernian portal keep and does not wander. The druids say he is waiting for the household to come back with his cream.",
+   "faste winter": "The second winter of the fields, when all three realms marched on [Thidranki Faste] in the same week, each without knowing the others were coming. The renegades went out by the back gate in the snow while the three rams stood at the front one.",
+   "thidranki faste": "The keep on the crown of the hill, raised by somebody over the old longhouse. It has had no lord since the [Faste Winter], and belongs to whoever took it last.",
    "siegemasters": "Each realm keeps siegemasters at its Thidranki portal keep: Salendar and Cadman for Albion, Ordrand and Sigfreid for Midgard, Camey and Erinden for Hibernia. Thidranki is where the young first learn that a keep can be taken."
   }
  },
  "book": {
-  "title": "The Farm under the Faste, by Ulfhild Long-Memory, skald of Mularn",
+  "title": "The Farm under the Faste, as Ulfhild Long-Memory, skald of Mularn, set it down",
   "pages": [
-   "I am a skald of Mularn and I have sung the farm of Thidrand at three funerals, so I will set it down before I forget a verse. Thidrand was a young man of the north who came south and west over the water and cleared a hill nobody wanted. He built a longhouse of turf and timber and kept cattle, and the tomte came with him in his ship, as they come with every northman who keeps beasts. When he turned the first sod he found a bowl of cream already set out on a stone, and nobody to have set it, and he did not drink it. That was wise of him.",
-   "The bowl was for the bwca, the old folk's house-spirits, who were on the hill before him. The tomte did not like them and they did not like the tomte, but they both liked the farm, and between them the beasts were minded and the work was done at night and the farmer who forgot either was sorry. Our skalds say Thidrand died young on a winter night, called out of the house by women in black, as in the old tale of his namesake. The bards of the west say reavers took the farm. I have heard both sung and I do not choose.",
-   "When our young came to the hill in the first summer of the fields there was a stone keep on the longhouse and men of no realm in it, and the tomte and the bwca were fighting each other in the long grass for a farm that was no longer there. A tomte without a farmer is a sad and dangerous thing. A bwca without his cream is worse. Our recruits learned to sleep with their backs to a wall. In the second winter all three realms came for the keep in the same week, and the renegades went out the back in the snow.",
-   "The eldest bwca is called Haluka. He sits near the Hibernians' portal keep and does not move, and he is twice the size of the others, and I am told that he remembers the farm when it had a fire. I went to see him once, with a bowl of cream, because I am a skald and I wanted the verse. He did not take it. He looked at the bowl and then at me, and then he came for me, and I ran. I have made a verse of that too. The cream was the wrong cream, or I was the wrong farmer, or it was simply too late."
+   "I have sung Thidrand's farm at three funerals, and I set it down now before I lose a verse. The farm stood on the hill where the Faste stands. The grandfather came over the water with his cattle and his tomte, and found a bowl of cream already set out on a stone, with nobody near it, and he had the sense not to drink it. The cream was for the bwca, who were on the hill before him, and he let them keep their corner. In his grandson's time it was a good farm. The beasts were minded and the night's work was done, and the household forgot neither kind of spirit.",
+   "Then came the winter nights on which Thidrand went out to the knocking, and in the spring the household left the hill, and the spirits did not. A tomte without a farmer has nobody to punish but strangers. A bwca without his cream turns on whoever is nearest. They have blamed each other for the farm ever since and fought over it in the long grass, and the young we send there are only the latest strangers. The eldest bwca sits in his corner below the Hibernians' gate and does not fight anyone he can wait out.",
+   "I was at the Faste in the second winter. We came up the hill in the snow with our ram, and found Albion's ram already at the gate and Hibernia's coming up the far slope, and none of us had known. The renegades went out by the back gate while we stood looking at each other. Nobody has held the Faste long since then. The tomte watched us take it that day without any interest at all. A keep is not a farm, and we are not the farmer."
   ]
  },
  "bosses": [],
  "realmTakes": {
-  "albion": {
-   "story": "Albion does not remember the farm and does not much care. Its captains tell Thidranki as the field where Albion's young learned siegecraft: the first ram an Albion squire ever pushed against a keep was pushed up Thidranki's hill, and Siegemaster Salendar's family has kept Albion's siege gear at the southern portal keep since. Albion's squires call the field the Proving Hill and say that the tomte are only goblins with better manners.",
-   "legend": "Albion players say Thid is where you learn to push a ram, and that every Albion squire's first keep take is the Faste. They also say the bwca hate Albion most, which every realm says about itself.",
-   "botLines": {
-    "lore": [
-     "albs say thidranki is where the first alb squire pushed a ram up a hill. [siegemaster salendar's family|the siegemasters remember]"
-    ]
+  "midgard": {
+   "story": "Midgard tells Thidranki as its own. The farm was a northman's, and the tomte came over the water in his ship, and his grandson Thidrand was the last of the household to die on that hill. The skalds of Mularn sing it at funerals. Midgard's recruits leave a little porridge out for the tomte before they ride, as their grandmothers did for the tomte at home, and say it is only good manners. The tomte attack them all the same, and the skalds hold that a tomte's manners are his own affair.",
+   "loremaster": {
+    "intro": "Thidranki is Midgard's, whatever the others tell you. The first of the proving fields was a farm, and the farmer's son was [Thidrand]. The [tomte] came over the water with his grandfather; the [bwca] were on the hill before them, and the eldest, [Haluka], is there yet. The Faste on the longhouse has had no lord since the [Faste Winter].",
+    "topics": {
+     "thidrand": "Thidrand kept the farm on that hill, and he was eighteen, well liked, and courteous to a fault. On the winter nights a seer at the feast said that nobody should go out, whoever knocked. Someone knocked three times, and Thidrand went out because it was shameful to leave a guest at the door, and nine riders in black killed him in his own homefield while nine in white came on from the south too late. The seer said both were spirits of the house: the black taking their due before a change, the white belonging to what was coming. The skalds have never agreed what the change was. The women of Mularn say it was the fields."
+    }
    }
   },
-  "midgard": {
-   "story": "Midgard claims the farm. The skalds of Mularn sing that Thidrand was a northman and the tomte came over the water in his ship, and that the field still bears his name; they tell the old tale of his namesake who was called out on a winter night by women in black, and say Thidrand of the farm died the same way. Midgard's recruits leave a little porridge out for the tomte before they ride, as their grandmothers did for the farm tomte at home, and say it is only good manners.",
-   "legend": "Midgard players leave porridge for the tomte at the portal keep, out of habit. The tomte aggro on them anyway. The skalds say a tomte never forgives a farmer who left, and that every northman is that farmer now.",
-   "botLines": {
-    "lore": [
-     "the skalds say thidrand was a northman and the tomte came over in his ship. [its our farm|thid is a mid name]"
-    ]
+  "albion": {
+   "story": "Albion remembers no farm at Thidranki and does not much care for the skalds' account of one. Its captains tell Thidranki as the hill where Albion's young learned siegecraft: the first ram an Albion squire ever pushed against a keep was pushed up that slope, and Siegemaster Salendar's family has kept the realm's rams at the southern gate since. Albion does claim the bwca, which are spirits of its own hills, and holds that they prove the farm was Albion's before a northman moved onto it.",
+   "loremaster": {
+    "intro": "Thidranki is the oldest of the proving fields, and the northmen say there was a [farm] on it, which may be so; Albion remembers only the hill. It was up that hill that an Albion squire first pushed a ram against a wall, and our [siegemasters] have kept the realm's siege gear at the southern gate ever since. The keep on the crown is [Thidranki Faste]. The grey things in the grass are [tomte], and the shaggy ones are [bwca], which are ours, whatever the skalds say.",
+    "topics": {
+     "bwca": "The bwca is a house-spirit of Albion's own hills, known from the Black Mountains to the sea, that does a farm's work by night for a bowl of cream and turns on a house that forgets to set it out. That there are bwca on the hill at Thidranki is the best proof that the farm was Albion's before ever a northman moved onto it, and the skalds have never answered it. The eldest of them is [Haluka]. He has been waiting for his cream a very long time, and he is in no mood to discuss whose he is."
+    }
    }
   },
   "hibernia": {
-   "story": "Hibernia's bards say the hill was cleared by people of the west long before any northman came, and that the bwca are the proof, since a bwca only comes to an old house. They say Haluka is the last of the hill's first household and that he waits for cream from the hands that set it out before the realms had names. Hibernia's recruits meet Haluka on their first day, because their portal keep is nearest his corner, and come back with a story.",
-   "legend": "Hibernians say Haluka is theirs, and that every Hibernian recruit is warned about him and goes to look anyway. He is level 24 and does not like visitors. Most Hibernians' first death in Thid is Haluka.",
-   "botLines": {
-    "lore": [
-     "the bards say the bwca prove thid was ours first. [a bwca only comes to an old house|older than the northmen]"
-    ]
+   "story": "Hibernia makes no claim on Thidranki and is content to let the others quarrel over it. The druids say only that a house which keeps two kinds of spirit will end by losing both, and that the farm on the hill did. Hibernia's young meet the eldest of the bwca on their first day in the field, because his corner lies below their own gate, and the druids teach them to give him the respect due to an old neighbour who has been badly treated.",
+   "loremaster": {
+    "intro": "Thidranki, the oldest of the proving fields. It was a [farm], and the northmen will tell you whose, and the Albions will tell you otherwise. Hibernia makes no claim on it. A house that keeps two kinds of spirit, the [tomte] and the [bwca], will end by losing both, and so it did; and the eldest of the bwca, [Haluka], sits below our own gate to this day, waiting on a bowl of cream nobody has brought him.",
+    "topics": {
+     "haluka": "Haluka is the eldest of the bwca of Thidranki, twice the size of the rest of them, and he keeps the one corner below our gate and will not stir from it. Every young Hibernian meets him on their first day in the field, and most of them meet him again on their second, from the floor. The druids say he is waiting for the household to come back and set out his cream. Some of the young ones have tried leaving a bowl for him. He has never once touched it, which the druids say is only right, since it was not set out by the household."
+    }
    }
   }
- }
+ },
+ "related": [
+  {
+   "id": "proving-fields",
+   "relation": "why the fields take only the young"
+  }
+ ]
 }

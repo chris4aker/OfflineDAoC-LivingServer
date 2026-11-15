@@ -259,8 +259,8 @@
   {
    "id": "neu-the-proving-fields",
    "order": 6,
-   "name": "The Proving Fields (the four battlegrounds)",
-   "summary": "The frontier war was too dangerous for recruits. A squire sent to Emain at nineteen came home in a sack, and the three realms lost more young soldiers to the frontier than they could raise. So in the first summer of the fields each realm, without ever agreeing with the others, began to send its young to contested fields that lay away from the great frontier: Thidranki first, a lost farmstead, then the dark wood of Murdaigean and the old wild of Caledon. Each field has the same bones, a portal keep for each realm at three corners and a central keep between them, and each takes soldiers of one age only; the portal stones turn the rest away. When the realms came, the central keeps were already held by renegades, deserters and exiles of all three realms who fly no banner and pay no tithe, under a chieftain or chieftess who keeps the keep's name. The fields have their own history since. In the second winter, the Faste Winter, all three realms marched on Thidranki Faste in the same week, and its renegades walked out of the back gate in the snow; their chieftain went to Dun Murdaigean and took that keep's name, and the Faste has had no lord of its own since. In the third summer the realms counted their youngest dead and opened a fourth field for the youngest of all, the drowned shore of Abermenai. In the fourth summer the spiders of Murdaigean closed its west road for a season, until the three realms' foresters burned it open in the same week. In the fifth autumn the Arawnite headhunters of Caledon set recruits' heads on stakes along the road to Caer Caledon, and the renegades of the caer fought them back into the north, the only time renegades have fought for the realms' dead. The fields keep older tenants too: the tomte and the bwca of Thidranki's farm, and the eldest bwca, Haluka, who remembers it; the goblins of the Black Mountains and the corpse crawlers of Murdaigean's holy wood; the forlorn spectres of the drowned shore; and the Arawnites, who worship the lord of the dead in the hills behind Caer Caledon.",
+   "name": "The Age of the Fields (the four battlegrounds)",
+   "summary": "After Camlann the three realms went to war over the frontier, and in the first years each buried more of its young than it could raise. Then each realm found the way open into four small walled countries off the frontier: Thidranki first, the farm of Thidrand; then the dark wood of Murdaigean and the old wild of Caledonia; and last, for the youngest of all, the drowned shore of Abermenai. The way into a field opens only for soldiers of one seasoning, and whoever falls inside wakes at their own realm's portal keep. Albion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel; Midgard, that they are hazelled ground where a man fights only his match; Hibernia, that they lie under a geis, the other half of Macha's curse. Each realm raised its own portal keeps, in the same week by every realm's own rolls, and in every field they stand in the same three places. The keeps at the fields' hearts were held by renegades when the realms came, under chieftains who take the keeps' names. In the second winter all three realms marched on Thidranki Faste in the same week without knowing the others were coming, and its renegades went out by the back gate in the snow; the Faste has belonged to whoever took it last ever since.",
    "events": [
     {
      "text": "The four period battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon); level is the only limit.",
@@ -283,12 +283,13 @@
      "source": "docs/bot-voices/PERIOD-CHAT-RESEARCH.md"
     },
     {
-     "text": "The renegades who hold the central keeps are deserters and exiles of all three realms.",
+     "text": "The renegades who hold the central keeps are deserters and exiles of all three realms; the charge, the hazels and the geis are Living Server lore.",
      "provenance": "original",
      "source": "Living Server"
     }
    ],
    "places": [
+    "proving-fields",
     "abermenai",
     "thidranki",
     "murdaigean",
@@ -544,6 +545,7 @@
    "name": "The renegades of the proving fields",
    "summary": "Deserters and exiles of all three realms who hold the central keeps of the four battlegrounds under a chieftain or chieftess named for the keep: Renegade Chieftain Abermenai, Renegade Chieftain Murdaigean, Renegade Chieftess Caledon, with guardians, rangers, commanders, armsmen, huscarls, wizards and runemasters of every realm's training.",
    "places": [
+    "proving-fields",
     "abermenai",
     "thidranki",
     "murdaigean",

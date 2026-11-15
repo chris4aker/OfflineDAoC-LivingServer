@@ -382,6 +382,11 @@ All four read the same files and treat the three realms alike. The code is in `s
     loremaster's own voice, nobody has sailed there) and an `under <capital>` topic (the shut door: Camelot's crypts and
     the Inconnu, the kobolds' picks below Jordheim, the Dream Trees' roots and the one question a woman of the Shar asked), reached
     from an existing topic ([under-streets], [longboat], [Dream Trees]). The capitals' books have a page each on it.
+  - The battlegrounds (owner, 2026-11-15): the four fields' shared backstory is a neutral place with no region,
+    `proving-fields.json` (like the Shrouded Isles). Each realm's take gives its loremaster that realm's account: [only
+    the young], [the fallen] and [masters at the gate] (Albion a charge laid after Camlann, Midgard hazelled ground,
+    Hibernia a geis, the other half of Macha's curse). Each field's file links back to it with `related`, because a
+    `[keyword]` must resolve in its own file.
 - **Players only.** The loremasters are not merchants, so gamebots never sell to them, and they ignore bots.
 
 ### Lore books

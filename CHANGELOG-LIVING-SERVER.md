@@ -85,6 +85,15 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **The battlegrounds' lore** (tests only; owner 2026-11-15, "We need full lore for the battlegrounds written"): one
+  backstory for the four fields, why only the young may fight there, why the fallen wake at their own portal keep and who
+  keeps the gates, told three ways by the three loremasters (a new neutral place, `proving-fields.json`, with no region
+  of its own). Abermenai, Thidranki, Murdaigean and Caledonia are rewritten: each realm's claim on the field, a book in
+  one voice, and a storyteller's legend per field (Abermenai in every realm, the others in the realm whose tradition
+  names the keep), with the rumours that follow it and a few lines said in the field (`data/chat/battleground_lore.lines`).
+  A player standing in a field is told its legend first. The old battleground stories that no longer fit (the Ferryman's
+  Peace, the Spider Summer, the Headhunters' Autumn) are gone. Caledon's lore file is now named Caledonia, as the game
+  names the zone. `UT_BattlegroundLore`.
 - **Rumours of a sunken land, and of what lies under the capitals** (tests only; owner 2026-11-15, "Yes agreed on lore"):
   Trials of Atlantis and Catacombs exist only as hearsay. Now and then the realm hears of it: an old family legend,
   a /faction argument, a rare remark at the harbours and in the capitals, an answer when a player asks ("what is

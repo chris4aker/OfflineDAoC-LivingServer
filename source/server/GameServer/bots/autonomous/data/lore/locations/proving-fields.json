@@ -1,0 +1,146 @@
+{
+ "id": "proving-fields",
+ "name": "The Proving Fields",
+ "realm": "Neutral",
+ "regions": [],
+ "era": "neu-the-proving-fields",
+ "factions": [
+  "renegades"
+ ],
+ "aliases": [
+  "proving fields",
+  "the battlegrounds",
+  "battlegrounds"
+ ],
+ "related": [
+  {
+   "id": "abermenai",
+   "relation": "the youngest"
+  },
+  {
+   "id": "thidranki",
+   "relation": "the oldest"
+  },
+  {
+   "id": "murdaigean",
+   "relation": "the dark wood"
+  },
+  {
+   "id": "caledon",
+   "relation": "the last"
+  }
+ ],
+ "summary": "The four small walled countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, where the three realms send their young to fight the young.",
+ "facts": [
+  {
+   "text": "The four battlegrounds are Abermenai (15-19, Dun Abermenai), Thidranki (20-24, Thidranki Faste), Murdaigean (25-29, Dun Murdaigean) and Caledonia (30-35, Caer Caledon), regions 253 to 250; level is the only limit in Offline DAoC.",
+   "provenance": "game",
+   "source": "source/server/GameServer/world/BattlegroundBrackets.cs"
+  },
+  {
+   "text": "A realm teleporter offers only the battleground of the player's own bracket (\"only for fighters of levels ... to ...\"); a player who dies there releases to the realm's portal keep in that battleground.",
+   "provenance": "game",
+   "source": "source/server/GameServer/scripts/teleporters/BattlegroundTeleportOptions.cs"
+  },
+  {
+   "text": "In all four battlegrounds the Albion, Midgard and Hibernia portal keeps and the central keep stand at the same coordinates (Albion 37301/52362, Midgard 54053/24680, Hibernia 18362/18257, centre 33089/38271).",
+   "provenance": "game",
+   "source": "world data: Keep table, regions 250-253"
+  },
+  {
+   "text": "Portal keep guards are level 255: Knight Commander, Master Wizard and Bowman Commander for Albion; Master of Runes, huscarls and archers for Midgard; Master Eldritch, Master Ranger and Master Guardian for Hibernia.",
+   "provenance": "game",
+   "source": "source/server/GameServer/keeps/Managers/GuardTemplateManager.cs; language/EN/Keeps/Managers.txt"
+  },
+  {
+   "text": "Malory tells that Camlann began at a parley, when a knight drew his sword on an adder and both hosts saw the blade (Le Morte d'Arthur, book XXI, chapter 4).",
+   "provenance": "myth",
+   "source": "https://www.gutenberg.org/ebooks/1252"
+  },
+  {
+   "text": "In Egils saga the field at Vinheidr is \"hazelled\", marked with hazel stakes by agreement, and the other side may not raid until the battle is fought.",
+   "provenance": "myth",
+   "source": "https://deremilitari.org/2014/06/discretion-and-deceit-a-re-examination-of-a-military-stratagem-in-egils-saga/"
+  },
+  {
+   "text": "In the Ulster cycle Macha's curse weakens the men of Ulster in their hour of need but not the boys; in the Tain thrice fifty youths of Emain go to help Cu Chulainn and none survives.",
+   "provenance": "myth",
+   "source": "https://mythopedia.com/library/tain-bo-cuailnge-dunn-1914/12e-the-slaughter-of-the-boy-troop/"
+  },
+  {
+   "text": "The charge after Camlann, the hazelled fields, the geis on the fields, the masters at the gate, the gate book and the three measurers are Living Server lore.",
+   "provenance": "original",
+   "source": "Living Server"
+  }
+ ],
+ "story": "After Camlann, when the three realms first went to war over the frontier, the young went out first and came home last, and in those years every realm buried more of its squires and recruits than it could raise. Then the fields were found, and each realm tells the finding its own way.\n\nWhat the three accounts agree on is short. There are four small countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, each shut in by hills and water, with no road into any of them. A realm's teleporters can send a soldier there, but the way opens only for soldiers of one seasoning. It does not count years. It counts the war a soldier has in them, and on the day a soldier outgrows a field it puts them out and will not take them back. Whoever falls inside a field wakes at their own realm's portal keep, cold and whole. At the heart of each field a keep was standing before any realm came, named in one realm's tongue, and each is held by renegades, grown soldiers of all three realms whom the fields let in for reasons nobody agrees on.\n\nAlbion holds that the fields keep a charge laid on the realm after Camlann, that its young should never again be spent in their elders' quarrel. Midgard holds that they are hazelled ground, marked out under the old law by which a man fights only his match. Hibernia holds that they lie under a geis, the other half of the curse Macha laid on the men of the kingdom.\n\nEach realm says it raised its own portal keep in every field. None of them can say why the portal keeps stand in the same three places in all four fields, to the stride, as if one surveyor had walked them all.",
+ "legend": "The battlegrounds are the four small RvR zones between level 15 and 35: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29 and Caledonia 30-35. Any realm teleporter sends you to the one that matches your level and no other, and once you out-level it you cannot go back. Die there and you release to your own portal keep, a short run from the fighting. Each has three portal keeps whose level 255 guards kill any enemy in reach, and a central keep held by renegades (Thidranki's by whoever took it last). Everyone remembers their first one, and everyone complains about twinks.",
+ "atmosphere": {
+  "firstEntry": [
+   "Four small fields, and the young of three realms."
+  ]
+ },
+ "botLines": {
+  "lore": [
+   "albs say the bgs are from camlann, mids say its hazel law, hibs say its a geis. [nobody agrees|go figure]",
+   "the portal keeps are in the exact same spots in all four bgs. [nobody knows why|weird if you think about it]"
+  ],
+  "rumour": [
+   "[heard|someone said] the masters at the bg portal keeps never go one step past the gate"
+  ],
+  "tell": [
+   "the battlegrounds? four little rvr zones, 15 to 35. abermenai, thid, murd, cale. a teleporter sends you to yours",
+   "bgs are where you learn rvr before the frontier. die there and you wake at your own pk"
+  ]
+ },
+ "loremaster": {
+  "intro": "The proving fields are four: Abermenai, Thidranki, Murdaigean and Caledonia. Ask me why they take [only the young], what becomes of [the fallen] there, who the [masters at the gate] are, and who holds the keeps in the middle, the [renegade chieftains].",
+  "topics": {
+   "renegade chieftains": "The keep at the heart of every field was held by renegades when the realms first came, and the renegades are there still: soldiers of all three realms who put off their banners and their names together. Their chieftain takes the keep's name, because it is the only one the field will give him. Why the fields let grown renegades in when they keep grown soldiers out, each realm answers in its own way. Albion's clerks say the charge binds the soldiers of a realm, and a renegade has none. Midgard says an outlaw stands outside every law, the hazel's with the rest. Hibernia says the geis was laid for the young of the realms and does not see a renegade at all, which may be why they stay. Thidranki's were put out of the Faste in the Faste Winter, and the Faste has had no lord since."
+  }
+ },
+ "book": {
+  "title": "The Three Measurers, three accounts of the fields copied into one book",
+  "pages": [
+   "Hywel, master mason of Caerwent, to the Academy. You asked me to walk the four fields from Albion's gate and set down the measure of each, and I have done it. From the gate of our portal keep to the gate of the keep in the middle is the same number of strides in Abermenai as in Caledonia, and the same in Thidranki and Murdaigean, within the length of my foot. I thought at first that our masons had worked to one drawing. Then I stood on our wall and took the bearings of the other realms' keeps, and they also stand in the same places in every field. I have no drawing that explains that, and I would ask the Academy not to send me again to look for one.",
+   "Arngrim the rune-cutter, as he told it to the jarl's steward. I cut the runes on the way at our gate in all four fields, as my master did before me. The jarl wanted to know whether the Albions and the Hibernians cut the same runes on theirs, so in the summer of the truce I crossed the hazel line under a white shield and looked. They do not. Each realm keeps its own way in its own fashion, the Albions with wizards' letters and the Hibernians with ogham. But every way is cut on the same stone of the same course of the gate, the fourth from the ground, on the left as you come in. Nobody in any of the three realms could tell me who chose it.",
+   "Fionnait the harper, for the filidh of Tir na Nog. The rolls of all three realms name the summer their portal keeps were raised, and I have read all three, which took some arranging. All three name the same summer, and the same week of it. Three realms raised twelve keeps in one week, in four countries none of them could walk to, and each believes it did so alone. I used to think that was the strangest thing about the fields. Now I think the strangest thing is that in all the years since, none of the three has ever thought to ask the others."
+  ]
+ },
+ "bosses": [],
+ "realmTakes": {
+  "albion": {
+   "story": "Albion tells the proving fields as a charge kept. After Camlann the Academy found among its rolls a single sheet in a clerk's hand, under no seal, laying it upon the realm that its young should never again be spent in their elders' quarrel; and in the same year the masters found the way open into four fields that would take no soldier grown old in war. The Academy holds that Merlin foresaw Camlann and left the working behind him. The Church holds that it was a prayer answered. Albion's squires are taught that the fields protect them. Their captains learn that the fields keep the captains out.",
+   "loremaster": {
+    "intro": "The proving fields are four small countries off the frontier, Abermenai, Thidranki, Murdaigean and Caledonia, and Albion sends its squires there to be taught what the frontier would teach them less gently. The way in opens for [only the young], and [the fallen] there do not stay fallen. Our portal keeps are held by the [masters at the gate], and the keeps at the fields' hearts by [renegade chieftains].",
+    "topics": {
+     "only the young": "There is a sheet in the Academy's rolls, in a clerk's hand and under no seal, which says that none who has grown old in war shall pass into the fields, and most men read it as a kindness to the young. Read it again. Camlann began at a parley, when an adder came out of the heath and stung a knight, and he drew his sword to kill it, and both hosts saw the blade and closed. By nightfall the most part of the young of Albion lay dead on that down for a quarrel that was not theirs. The fields do not keep the young from harm. They keep the young from us, and our quarrels with us. The squires are taught the first reading. Their captains learn the second.",
+     "the fallen": "Whoever falls in a field wakes at our own portal keep, cold to the bone and whole. The Church calls it a mercy and the Academy calls it an art, and neither has ever said whose. Brother Deiniol, who kept Albion's gate at Abermenai in the summer it opened, wrote down every waking in a book, and the first words each one spoke. He kept it for a year, and nearly every entry is the same question: whether the day was won. I copy it out as the book of Abermenai, with what he answered.",
+     "masters at the gate": "Each of Albion's portal keeps is held by a Knight Commander, a Master Wizard and a Bowman Commander, the oldest soldiers the realm keeps under arms and the only grown ones the fields will suffer. The clerks say the charge forbids the field and not the gate, and clerks have been paid for less. The Master Wizard keeps the way open, the Knight Commander keeps the gate, and the Bowman Commander keeps the slope below it. None of them goes one step past the gate. When a muster goes down the slope at dusk they watch it until the last of it is out of sight, which is in nobody's orders."
+    }
+   }
+  },
+  "midgard": {
+   "story": "Midgard tells the proving fields as law. In the old days, when two hosts agreed to fight, they marked the ground with hazel rods, and inside the hazels it was battle and outside them no man might harry. Midgard says the four fields are hazelled in that way, and that their law is the oldest part of the old law: a man fights his match. Who set the hazels the skalds do not say, and the jarls have never asked. Midgard sends its young to the fields because the law is kept there, and it is kept better in the fields than anywhere in Midgard.",
+   "loremaster": {
+    "intro": "The proving fields. There are four of them, Abermenai, Thidranki, Murdaigean and Caledonia, all hazelled ground, and they take [only the young]. What happens to [the fallen] there is the law's business. Our portal keeps are held by the [masters at the gate]. The keeps in the middle belong to [renegade chieftains], who belong to nobody.",
+    "topics": {
+     "only the young": "The fields are hazelled. When two hosts meant to fight in the old days, they set hazel rods round the ground, and inside the hazels it was battle and not murder. The oldest part of that law is that a man fights his match. A grown warrior who kills a boy has done a nithing's work under any banner, and no skald will sing it. So the fields take the matched, the green against the green. Who set the hazels round them the law does not say; a law has only to be kept. It is the one law in Midgard nobody has found a way around.",
+     "the fallen": "Inside the hazels a man can be beaten. He cannot be slain. A youth who falls in the fields wakes at our own portal keep, sore and angry, and the law counts him beaten, which at twenty is worse. The old skalds argued whether a death that does not hold is a death at all. The young never argue it; they go straight back in. The women of Mularn say it is the riders in white, who were late once and have not been late since. Ask a storyteller about Thidrand.",
+     "masters at the gate": "Our portal keeps are held by Masters of Runes, and by huscarls and archers who were old when I was young. They are the only grown warriors the fields allow, and they stand on the hazel line and not one step inside it. The rune-masters cut the runes of the way fresh every spring, as the law requires of marked ground. I asked three of them who had taught them the runes. Each named the one before him. None of them could name the first."
+    }
+   }
+  },
+  "hibernia": {
+   "story": "Hibernia tells the proving fields as a geis. When Macha laid her curse on the men of the kingdom it passed over the boys, and in the hour of need the boys alone could stand; thrice fifty of them went out from Emain, and not one came home. The filidh hold that the fields are the other half of that curse, with the grown made helpless at their edge and the young unable to be lost inside them. Who laid it, and on whom, is told two ways, and Hibernia tells both.",
+   "loremaster": {
+    "intro": "The proving fields, so. There are four of them, Abermenai, Thidranki, Murdaigean and Caledonia, and every one of them lies under a geis. That is why they take [only the young], and why [the fallen] there are given back to us. The [masters at the gate] of our portal keeps stand on the threshold of it, and the [renegade chieftains] in the middle stand outside it altogether, which is a lonely place to stand.",
+    "topics": {
+     "only the young": "Did nobody ever tell you of the boys of Emain? When Macha laid her curse on the men of the kingdom, so that in the hour of their need they lay as weak as a woman in her labour, it passed over the boys; and when the hour of need came, the boys were the only ones on their feet. Thrice fifty of them went out from Emain to help one lad who was holding the border alone, and not one of them came home. The filidh say the fields are the other half of that curse. In them it is the grown who are helpless, and cannot so much as set foot inside, and the young who cannot be lost. Some say Macha laid it for amends. The old women say a mother of Emain laid it on Macha herself, and that Macha keeps it because a geis must be kept.",
+     "the fallen": "The ground of the fields will not take the young. That is the geis at its work. A lad or a girl who falls there is set down again at our own portal keep, and wakes with the field still on them, sand from Abermenai or the leaf-mould of Murdaigean, though the gate is swept every morning. The healers brush it off and say nothing about it, and there's not a young one yet has asked them where it came from.",
+     "masters at the gate": "The Master Eldritch at our gates keeps the way open, and the Master Ranger and the Master Guardian keep the Master Eldritch, and the three of them are as old as any soldier the realm has standing. The geis lets them onto the threshold and no further, and they have never asked it for more. I asked one of them once why he had taken the post. He said his daughter went through that gate the first summer it opened, and he had been waiting on her ever since; and then he laughed, because she was forty that year and a grandmother, and he supposed he would stop when she told him to."
+    }
+   }
+  }
+ }
+}

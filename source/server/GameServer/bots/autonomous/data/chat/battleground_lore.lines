@@ -1,0 +1,232 @@
+# The battlegrounds' lore in chat (Living Server 1.2, owner 2026-11-15: "We need full lore for the battlegrounds written,
+# and it needs to be REALLY good"). The lore itself is in data/lore/locations/proving-fields.json and the four
+# battleground files; this file holds what the bots say of it.
+#
+# - Four storyteller legends (AutonomousTales.Legends: no boss, no raid, no fireside), one a battleground. Abermenai is
+#   told in every realm; Thidranki is Midgard's, Murdaigean Hibernia's and Caledonia Albion's, each in the realm whose
+#   tradition names the keep. The teller writes whole sentences with capitals and stops, as in tale_atlantis; the chat
+#   pass keeps them and sends a line of more than 14 words as two, at a sentence or the comma nearest its middle.
+# - The rumours that follow each legend (topic rumour_<lore id>, LoreLegends.RumoursAfter: no @needs), which are also
+#   ordinary musings in /faction.
+# - A few lines said in the field itself (topic battlegrounds, @needs in_battleground and the field).
+# New writing. Myth adapted from public-domain sources (the Mabinogi, Cad Goddeu, the Thidrandi tale, the Fianna's
+# tests in Keating); nothing is quoted.
+
+# ---------------------------------------------------------------- Abermenai: the one who waited (every realm)
+@kind debate
+@realm *
+@topic tale_abermenai
+@levels 1-50
+@scene tale_abermenai
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell the abermenai one, the mother at the teleporter | {name_b}, do the one about the woman who waited
+C: oh, the abermenai one. hush everyone | quiet in faction for a bit, {name_b} is telling abermenai
+?E: is this the sad one | here we go, the mum story
+D: go on {name_b}, i never heard how it ends | please {name_b}, the new ones need to hear this one
+B: In the summer they opened Abermenai there was a woman on the frontier with one son, and he had just turned fifteen.
+B: She had held a wall for twenty years, and she knew better than anyone what fifteen is worth when the other side comes over it.
+B: On the night of his first muster she walked him to the teleporter, and when he was sent she asked to be sent after him.
+B: The teleporter would not. She had too much war in her for that field, and he told her so as politely as he tells everyone.
+B: She made him try three times. Then she stood by the teleporter all night in her mail, facing the way her son had gone.
+~ 8
+D: so what happened to the kid? | did he make it?
+B: He went down onto the sand at dusk with eleven others his own age, and the renegades came out of the old fort to meet them.
+B: Somewhere on the flats below the walls he fell. He told her afterward that it was very cold, and then it was morning.
+B: He woke at our own portal keep, whole, with sand in his hair, and at dawn he came back out of the teleporter to her.
+?F: what did she say? | did she yell at him?
+B: Nothing. He had a renegade's belt he was very proud of, and she took it off him to carry, and she carried it all the way home.
+B: She never once asked him how it went. He went back the next night, and every night that summer, and she stood there every night.
+B: The year after there were four of them standing there. By the third summer the teleporters had stopped asking them to go home.
+B: Go and look on the first night of a muster. There are always a few grown soldiers by the teleporter with nowhere to be.
+~ 25
+F: ...i always thought they were just afk | ...huh. i thought those were people afk
+A: ty {name_b}. that one gets me every time | thanks {name_b}, i needed that one tonight
+@end
+
+# ---------------------------------------------------------------- Thidranki: Thidrand and the winter nights (Midgard)
+@kind debate
+@realm mid
+@topic tale_thidranki
+@levels 1-50
+@scene tale_thidranki
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell thidrand, the farm under the faste | {name_b}, do the winter nights one for the new ones
+C: hush in faction, {name_b} is telling thidrand | everyone quiet, this one is old
+?E: the farm story again lol | here we go, nine ladies on horses
+D: go on {name_b}, i only know theres a farm under the keep | please {name_b}, i never heard all of it
+B: The hill where the Faste stands was a farm once, and the farmer's son was Thidrand. He was eighteen, and everyone liked him.
+B: At the winter nights feast there was a seer among the guests, and he said that nobody should go out that night, whoever knocked.
+B: Late, when the household was asleep on the benches, someone knocked at the door three times.
+B: Thidrand thought it shameful to leave a guest out in the cold, so he took his sword and went to the door.
+~ 8
+D: who was it? | so who was knocking?
+B: There was nobody at the door. But nine women in black were riding into the homefield from the north with their swords drawn.
+B: And from the south came nine more, in white, on white horses, riding as hard as they could.
+B: The ones in black reached him first. They found him at first light by the woodpile, and he lived long enough to say what he saw.
+?F: who were they? | so what were the ones in white?
+B: The seer said both were spirits of the house. The black knew a change was coming, and would have their due before it came.
+B: The white belonged to what was coming. They had meant to save him, and they had been too late.
+B: The family left the hill in the spring. The tomte and the bwca stayed, and they have quarrelled over that farm ever since.
+B: Nobody who has fallen on that hill since has stayed dead. The ones in white are never late there now.
+~ 25
+F: ...going to leave porridge out for the tomte tonight | ...never late there now. huh
+E: ok, that one is good | fine. that one i like
+@end
+
+# ---------------------------------------------------------------- Murdaigean: the run and the knots (Hibernia)
+@kind debate
+@realm hib
+@topic tale_murdaigean
+@levels 1-50
+@scene tale_murdaigean
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} are you on? tell the murdaigean one, the knots | {name_b}, do the run through murd for the new ones
+C: whisht everyone, {name_b} is telling the wood | quiet in faction please, the murdaigean one
+?E: the knots story? go on then | here we go, braid your hair everyone
+D: go on {name_b}, i keep seeing those cords on the trees | please {name_b}, i never knew what the knots were
+B: Long before the realm war the Fianna tried their young in that wood, and the dun at the heart of it was where the trial ended.
+B: They braided your hair and gave you the start of one tree, and then the whole company came after you through the wood.
+B: If they caught you, you had failed. If a braid came loose on a branch, or a dry stick cracked under your foot, you had failed.
+B: You had to leap a branch as high as your brow, go under one as low as your knee, and pull a thorn from your foot at a run.
+~ 8
+D: did anyone ever reach the dun? | so who made it to the fort?
+B: Hardly anyone. So wherever they caught you they tied a knot in a cord on the nearest tree, to show how far you had come.
+B: A boy who was caught halfway would come back as a grown man, and find his knot, and stand under it a while without a word.
+B: The Fianna went away a long time ago. The cords stayed on the trees, and the spiders took them over, one knot at a time.
+?F: wait, the webs are the cords? | so the webs in murd are the old knots?
+B: Some of them. On the oldest trees, now and then, there is a knot in a web where no spider would ever tie one.
+B: The name of the dun says fortress twice in the old tongue. The filidh say that was so a runner who reached it would believe it.
+B: It was never built to keep anyone out. It was the one place in that wood where nobody was chasing you.
+~ 25
+F: ...going to look for knots next time | ...i always thought those were just webs
+A: ty {name_b}, lovely telling | thanks {name_b}, i never knew that one
+@end
+
+# ---------------------------------------------------------------- Caledonia: the battle of the trees (Albion)
+@kind debate
+@realm alb
+@topic tale_caledon
+@levels 1-50
+@scene tale_caledon
+@role A type=*
+@role B type=*
+@role C type=Socialite,Explorer
+@role D type=*
+@role E type=NoLifer,Daredevil
+@role F type=Leveler,Crafter,Explorer
+A: {name_b} you on? tell the battle of the trees for the new ones | {name_b}, tell them why the trees in cale stand in ranks
+C: hush in faction, {name_b} is telling the trees | quiet everyone, this one is very old
+?E: the walking trees again lol | here we go, the grovewood
+D: go on {name_b}, those trees keep killing me | please {name_b}, i want to know why they hate us
+B: Long before Arthur, a man of Gwynedd stole a white roebuck and a hound pup out of Annwn.
+B: Arawn came up out of the earth after them with a host, and the thief's brother was Gwydion, the best enchanter in the west.
+B: Gwydion had no host to meet him with, so he went into the wood of Celidon and sang, and the trees pulled up their roots.
+B: They came down the hill in ranks. The alders went in the front line, and the willow and the rowan were slow to form up.
+B: The birch was too proud to hurry. The oak came last of all, and the ground shook under it the whole way down.
+~ 8
+D: so did the trees win? | who won?
+B: Arawn had a champion who could not be beaten while his name was hidden, and the trees broke on him all day.
+B: Then Gwydion saw sprigs of alder on the man's shield, and guessed that his name was Bran, and called it out, and he fell.
+B: Arawn went back under the earth. His people stayed in the hills above the wood, and they keep those hills for him still.
+?F: and the trees? | so why are the trees still standing there?
+B: Gwydion meant to sing them back to sleep once the day was done. Before he could, word came that he was wanted at home.
+B: A boy of his house had no name and could not get one, and Gwydion walked him down the shore to Aber Menai to see to it.
+B: He never went back to Celidon. The grovewood are standing in their ranks yet, facing the hills, waiting on the second song.
+B: The boy got his name in the end.
+~ 25
+F: ...aber menai. as in abermenai? | wait. aber menai, like the beach?
+A: ty {name_b}. i will be nicer to the trees | thanks {name_b}, nobody does the old ones like you
+@end
+
+# ---------------------------------------------------------------- the rumours after each legend (also /faction musings)
+@kind ambient
+@topic rumour_abermenai
+@who *
+@levels 15-50
+@about place
+@invites chat
+[heard|someone said] the masters at the abermenai portal keeps watch every muster go down the slope till its out of sight
+[heard|word is] the spectres on the abermenai flats are waiting on a ship that never came back
+my guildie says a kings daughter sailed from abermenai once with thirteen ships, and only seven men came home
+
+@kind ambient
+@topic rumour_thidranki
+@who *
+@levels 20-50
+@about place
+@invites chat
+[heard|someone said] haluka never touches the cream people leave him in thid. not from the right house, apparently
+[heard|word is] all three realms showed up at thidranki faste the same week once, and the renegades just walked out the back
+
+@kind ambient
+@topic rumour_murdaigean
+@who *
+@levels 25-50
+@about place
+@invites chat
+[heard|someone said] the hibs braid their hair before they go into murdaigean and nobody knows who started it
+[heard|word is] the wolves in murdaigean were the fianna's hounds once, before they went wild
+
+@kind ambient
+@topic rumour_caledon
+@who *
+@levels 30-50
+@about place
+@invites chat
+[heard|someone said] the grovewood in caledonia all face the arawnite hills, like an army still lined up
+[heard|word is] mids never cut green wood in caledonia. not even for a fire
+
+# ---------------------------------------------------------------- said in the field itself
+@kind rvr
+@topic battlegrounds
+@who *
+@levels 15-19
+@needs in_battleground, at:abermenai
+@invites chat
+did anyone else notice the spectres on the flats always face the water
+the salt line on the keep walls here is higher than my head. how
+
+@kind rvr
+@topic battlegrounds
+@who *
+@levels 20-24
+@needs in_battleground, at:thidranki
+@invites joke
+a tomte just stared at me like i forgot to feed the cows
+@invites chat
+haluka is sitting in his corner again, still waiting on that cream
+
+@kind rvr
+@topic battlegrounds
+@who *
+@levels 25-29
+@needs in_battleground, at:murdaigean
+@invites chat
+found a knot in a web by the old oaks. no spider did that
+@realm hib
+braided my hair before coming in. everyone does, dont ask me why
+
+@kind rvr
+@topic battlegrounds
+@who *
+@levels 30-35
+@needs in_battleground, at:caledonia
+@invites chat
+the grovewood are all facing the hills again, same as always
+@realm mid
+nobody cut any green wood in here. i mean it

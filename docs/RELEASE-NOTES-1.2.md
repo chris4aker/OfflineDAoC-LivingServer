@@ -89,8 +89,9 @@ too hard on your world, each restored rule is a server setting of its own and ca
 
 ### A world whose stories come alive
 
-- **Every place has its story.** 107 places, 578 bosses and 4 realm histories (Albion, Midgard, Hibernia and the places
-  no realm holds), from the dragons and epic dungeons down to the named monsters of every zone.
+- **Every place has its story.** 108 places, 578 bosses and 4 realm histories (Albion, Midgard, Hibernia and the places
+  no realm holds), from the dragons and epic dungeons down to the named monsters of every zone. The four battlegrounds
+  have one too, and no two realms tell it alike.
 - **Checked against Mythic's own words.** Where Mythic told a story, it is kept, in our own words, with its source. 832
   Camelot Herald articles from November 2001 to February 2005, read from the web archive, were checked against the
   lore, and where ours disagreed with Mythic's, Mythic's version won: Dartmoor's history, Gjalpinulva's mother, the Legendary

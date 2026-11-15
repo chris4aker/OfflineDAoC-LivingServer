@@ -95,7 +95,25 @@ public static class AutonomousTales
     {
         ["atlantis"] = ["atlantis", "the orb", "glass orb", "glass ball", "talking ball", "glass that spoke", "sunken city", "drowned land",
             "city under the sea"],
+        // The battlegrounds (owner, 2026-11-15: "full lore for the battlegrounds"): each legend's id is its battleground's lore
+        // file, so a player standing in the field is told its tale first (LocalTale). data/chat/battleground_lore.lines.
+        ["abermenai"] = ["abermenai", "the one who waited", "the woman who waited", "the mother at the teleporter"],
+        ["thidranki"] = ["thidranki", "thid", "thidrand", "winter nights", "nine riders", "the farm under the faste"],
+        ["murdaigean"] = ["murdaigean", "murd", "the knots", "the run", "fianna"],
+        ["caledon"] = ["caledonia", "caledon", "cale", "battle of the trees", "the trees", "grovewood", "gwydion"],
     };
+
+    /// <summary>
+    /// The tale that belongs to the place a player stands in (pure): one of its bosses' tales the realm has, else the place's
+    /// own legend (a battleground's), else null.
+    /// </summary>
+    public static string LocalTale(string placeId, IEnumerable<string> bossIds, ISet<string> told)
+    {
+        if (told == null)
+            return null;
+        string boss = (bossIds ?? []).FirstOrDefault(told.Contains);
+        return boss ?? (placeId != null && IsLegend(placeId) && told.Contains(placeId) ? placeId : null);
+    }
 
     public static bool IsLegend(string loreId) => loreId != null && Legends.ContainsKey(loreId);
 
@@ -565,7 +583,7 @@ public static class AutonomousTales
             if (player?.CurrentZone == null)
                 continue;
             LoreBible.Location here = LoreEntryRules.LocationAt(bible, player.CurrentRegionID, player.CurrentZone.ID);
-            if (here != null && bible.BossesAt(here.Id).Select(boss => boss.Id).FirstOrDefault(told.Contains) is { } local &&
+            if (here != null && LocalTale(here.Id, bible.BossesAt(here.Id).Select(boss => boss.Id), told) is { } local &&
                 Random.Shared.NextDouble() < 0.6)
                 return local;
         }

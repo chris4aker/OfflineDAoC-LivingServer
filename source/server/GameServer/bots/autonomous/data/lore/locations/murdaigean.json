@@ -9,7 +9,7 @@
  "factions": [
   "renegades"
  ],
- "summary": "A dark wood of webs, goblins and wolves around Dun Murdaigean, where the renegade chieftain driven out of Thidranki took a new name (25-29).",
+ "summary": "The dark wood of the proving fields around Dun Murdaigean, where the Fianna once ran their young, for soldiers of 25 to 29.",
  "facts": [
   {
    "text": "Murdaigean is the battleground for levels 25 to 29 (region 251); level is the only limit in Offline DAoC.",
@@ -47,24 +47,28 @@
    "source": "world data: Faction and Mob tables"
   },
   {
-   "text": "No source found for the meaning of the name Murdaigean; it reads as Gaelic, to verify.",
-   "provenance": "original",
-   "source": "Living Server"
+   "text": "Keating's history gives the Fianna's tests: the candidate runs a wood with braided hair and a tree's start, and fails if caught, if a braid is loosed by a branch or a dry stick cracks underfoot; he must leap a branch at his brow, stoop under one at his knee and draw a thorn from his foot without slowing.",
+   "provenance": "myth",
+   "source": "https://en.wikipedia.org/wiki/Fianna"
   },
   {
-   "text": "The wood, the Spider Summer and the chieftain's two names are Living Server lore.",
+   "text": "Irish daingean means a fortress and mur (from Latin murus) a wall or rampart, so the name reads as \"wall fortress\"; this reading is Living Server's, not Mythic's.",
+   "provenance": "myth",
+   "source": "https://logainm.gaois.ie/en/gls/171-daingean"
+  },
+  {
+   "text": "The run through Murdaigean, the knotted cords, the fortress named twice, the goblins the wardens drove west, the wolf wood and Cobthach's account are Living Server lore.",
    "provenance": "original",
    "source": "Living Server"
   }
  ],
- "story": "Murdaigean is the dark field, a wood where the light comes down green and goes out early, and every field-hand who has served there says the trees are closer together than when they came.\n\nThe wood. The bards of Hibernia give the name in their own tongue and say it was a holy wood once, where the people of the west kept their dead in the branches until the birds had cleaned them. The webs came later. Nobody keeps their dead in Murdaigean now, and the corpse crawlers that root among the trees are said to be what is left of the old custom: things that came for the bones and stayed when the bones ran out. The spiders are worse, large and bloated and patient, and the realms' foresters say a death spider's web across a path is the wood's way of saying the path is closed.\n\nThe goblins. In the first summer of the fields a band of goblins came into the wood from the east, out of the Black Mountains of Albion, and dug in along the southern edge, where they still crawl and watch. Albion says they were driven out of the mountains by Albion's own wardens and that the wood is welcome to them. Hibernia says Albion sent them. The goblins have never said anything a realm could understand, except, the watchers' cry at dusk, which every recruit who has served in Murdaigean learns to dread.\n\nThe chieftain of two names. In the second winter of the fields, when the renegades left Thidranki Faste under three sieges at once, their chieftain walked south and east in the snow with whoever would follow him and came to Dun Murdaigean, an old fort on a rise in the middle of the wood, held by renegades of its own. Its chieftain was dead that winter, nobody says how, and the man from Thidranki took the keep and its name, as every renegade chieftain takes the name of the keep he holds. The renegades of the wood are the strongest of the three fields' renegade garrisons after Caledon's, and the realms say that is because they are led by a man who has already lost one keep and does not mean to lose another. His guardians are many, and his commanders stand close to the walls.\n\nThe Spider Summer. In the fourth summer of the fields the webs closed the road from the Hibernian portal keep to the dun. For a whole season no recruit of any realm reached the keep from the west, and the renegades held it unchallenged, and the wolves, the ire wolves and the rage wolves of the deep wood, grew bold on what the webs let go. It ended when the three realms' foresters burned the road open in the autumn, the second thing the realms ever did in the same week. The wood grew back. It always does.\n\nWhy it matters. Murdaigean is the field where the realms' young stop being recruits and start being soldiers. The bards say that the young who come out of the wood come out older than five years should have made them.",
- "legend": "Murdaigean is the 25-29 battleground: a dark wood with Dun Murdaigean on a rise in the middle. The renegades are serious here, a lot of Renegade Guardians at 32 with rangers and commanders, under Renegade Chieftain Murdaigean at 39, so bring a full group and siege gear if you want the keep; the three Siege Masters stand at the portal keeps. The wood is full of aggressive spiders, corpse crawlers and wolves, and the goblins along the southern edge, so stay on the roads and do not fight in the trees if you can help it. Players call it Murd, say it is the darkest field, and swear the old Thidranki chieftain runs Dun Murdaigean now under a new name. Old hands remember the season the spiders closed the west road.",
+ "story": "Murdaigean is a wood, and the light in it comes down green and goes out early.\n\nHibernia's filidh say it is the oldest proving ground there is, older than the fields: the wood where the Fianna tried their young before ever there was a realm war. A candidate ran it with braided hair and a tree's length of start while the company came after him, and he failed if they caught him, if a braid caught on a branch, or if a dry stick cracked under his foot. Wherever a runner was caught the Fianna knotted a cord to the nearest tree to mark the place, and the dun at the heart of the wood was where the run ended. Its name, the filidh say, says fortress twice in the old tongue.\n\nAlbion calls Murdaigean the goblin wood, for the goblins of the Black Mountains who came into it from the east and dug in along its southern edge; Albion says its wardens drove them there, and Hibernia says Albion sent them. Midgard calls it the wolf wood, and its skalds say the ire wolves and rage wolves of the deep wood are its true lords and everyone else a guest. Spiders have strung the paths between, and corpse crawlers root in the leaf-mould under the webs.\n\nRenegades hold Dun Murdaigean, more of them and harder than at the younger fields, under a chieftain who has taken its name.",
+ "legend": "Murdaigean is the 25-29 battleground, a dark wood with Dun Murdaigean on a rise in the middle. The renegades are serious here, a lot of Renegade Guardians at 32 with rangers and commanders, under Renegade Chieftain Murdaigean at 39, so bring a full group and siege gear if you want the keep; the three Siege Masters stand at the portal keeps. The wood is full of aggressive spiders, corpse crawlers and wolves, and the goblins along the southern edge, so stay on the paths and do not fight in the trees if you can help it. Players call it Murd and say it is the darkest of the four.",
  "atmosphere": {
   "firstEntry": [
-   "The light comes down green and goes out early.",
-   "Webs between the trees, thick as sailcloth.",
-   "Something in the branches is watching the road.",
-   "An old fort stands on a rise in the middle of the wood.",
+   "The light comes down green here and goes out early.",
+   "Webs hang between the trees, thick and grey.",
+   "Old knotted cords hang from some of the trees.",
    "Far off, a goblin watcher cries at the dusk."
   ],
   "areas": [
@@ -75,9 +79,9 @@
     "z": 3720,
     "radius": 1500,
     "lines": [
-     "Renegades hold the old fort on its rise.",
-     "The chieftain here has lost one keep already.",
-     "The guardians stand thick before the walls."
+     "Renegades hold the old dun in the heart of the wood.",
+     "The guardians stand thick before the walls.",
+     "The dun's old name says fortress twice."
     ]
    },
    {
@@ -99,7 +103,7 @@
     "radius": 1200,
     "lines": [
      "Midgard's portal keep stands among the badger setts.",
-     "The wood thins here. Not enough."
+     "Wolf sign on the path. Fresh."
     ]
    },
    {
@@ -109,8 +113,8 @@
     "z": 4320,
     "radius": 1200,
     "lines": [
-     "Hibernia's portal keep. The west road starts here.",
-     "The spiders once closed this road for a whole summer."
+     "Hibernia's portal keep. The oldest trees start here.",
+     "A knotted cord, grey with web, hangs from an oak."
     ]
    },
    {
@@ -128,88 +132,74 @@
  },
  "botLines": {
   "lore": [
-   "murdaigean was a holy wood once. the hibs [kept their dead in the trees|left their dead in the branches]",
-   "the corpse crawlers in murd [came for the bones|are what came for the old dead]. stayed when the bones ran out",
-   "the goblins in murd came from the black mountains in albion. [albs drove them out|hibs say albs sent them]",
-   "dun murdaigean's chieftain [used to run thidranki|is the old thidranki chieftain]. [took the new name|renegade chiefs take the keep's name]",
-   "renegade chieftains always take the name of the keep they hold. [murdaigean, abermenai, caledon|thats the custom]",
-   "the spider summer: [webs closed the west road|the spiders shut the hib road] for a whole season",
-   "the three realms' foresters burned the [west road|road] open after the spider summer. [same week|only time they agreed]",
-   "a death spider web across a path is the wood saying [the path is closed|go back], [so the foresters say|old saying]",
-   "murd is where recruits [stop being recruits|become soldiers]. [darkest field|grows you up fast]",
-   "the trees in murdaigean are [closer together|thicker] than when you came. [everyone says it|swear it]",
-   "the rage wolves and ire wolves [got bold in the spider summer|deep wood wolves]. [still are|never stopped]",
-   "the renegades in murd are [the strongest after caledon's|tougher than abermenai's]. the chief doesnt mean to lose twice"
+   "murd was where the fianna ran their young, [before the realm war|way before the bgs]. braided hair and a head start",
+   "the knots on the trees in murd [mark where runners got caught|are fianna knots], [hibs say|so the hibs say]",
+   "albs call murdaigean the goblin wood, mids call it the wolf wood. [everyone else just says murd|we just say murd]",
+   "the name dun murdaigean says fort twice, [hib bards say|in the old tongue]. [like they werent sure|lol]"
   ],
   "rumour": [
-   "[heard|someone said] the renegade chief in murd still has the keys to thidranki faste",
-   "the goblin watchers [hate the dark|hate the wood] as much as we do, [the foresters say|supposedly]",
-   "[word is|i heard] the old hib dead are still up in the murd trees somewhere",
-   "[someone told me|heard] the spiders in murd are bigger every year. [lol|cant prove it]",
-   "the hib foresters burned the road after the spider summer [and the albs took the credit|and nobody thanked them]",
-   "[heard|word is] dun murdaigean's old chieftain died the same winter thidranki fell. [nobody says how|convenient]",
-   "murd renegade chieftain is 39. [ten on us easy|bring a full group]",
-   "[someone said|my guildie says] the corpse crawlers only show up near old graves. [no they dont|theyre everywhere lol]"
+   "[heard|someone said] some of the webs in murd are grown over old knotted cords",
+   "[heard|word is] the albs drove the murd goblins out of the black mountains. hibs say [the albs sent them|they were sent]"
   ],
   "tell": [
-   "murdaigean? the 25-29 battleground. [dark wood|spiders and goblins], dun murdaigean in the middle",
+   "murdaigean? the 25-29 bg. [dark wood|spiders and goblins], dun murdaigean in the middle",
    "is murd hard? the [renegades|keep guards] are tough, guardians at 32 and the chief at 39. the wood mobs aggro too",
-   "where is murdaigean? [bg portal at 25|portal from your frontier] at 25, out at 30",
    "whats in murdaigean? spiders, corpse crawlers, ire wolves, rage wolves, water badgers, goblins on the south edge",
-   "who holds dun murdaigean? [renegades|the renegade chieftain murdaigean]. old thidranki chief, they say",
+   "where is murd? ask a teleporter for battlegrounds [at 25|between 25 and 29]",
    "taking murd keep? [full group and a ram|siege masters at your pk], lots of guardians on the walls"
   ]
  },
  "loremaster": {
-  "intro": "Murdaigean? The dark field. The [wood] was holy once, and the [corpse crawlers] still root for its dead. Since then the [goblins] have come in from the Black Mountains, the [Spider Summer] has come and gone, and [Dun Murdaigean] has a [chieftain of two names]. It is where the [proving fields] make soldiers of recruits.",
+  "intro": "Murdaigean, the dark wood of the proving fields. Ask me of [Dun Murdaigean], the [goblins] on its southern edge, the [wolves] of the deep wood, or the [webs].",
   "topics": {
-   "proving fields": "The four contested fields away from the great frontier: Abermenai, Thidranki, [Murdaigean] and Caledon. Murdaigean is the third, for soldiers of 25 to 29.",
-   "murdaigean": "A dark wood with an old fort on a rise in the middle, [Dun Murdaigean]. The bards give its name in their own tongue and say the [wood] was holy.",
-   "wood": "The bards of Hibernia say the people of the west kept their dead in the branches of Murdaigean until the birds had cleaned them. Nobody keeps their dead there now. The webs and the [corpse crawlers] came after.",
-   "corpse crawlers": "Things that came to the [wood] for the bones of the old dead and stayed when the bones ran out. They root among the trees still.",
-   "goblins": "A band of goblins that came into the wood out of Albion's Black Mountains in the first summer of the fields and dug in along its southern edge. Albion says it drove them out; Hibernia says Albion sent them. Their watchers cry at dusk.",
-   "dun murdaigean": "An old fort on a rise in the middle of the wood, held by renegades: many guardians, rangers and commanders, under the [chieftain of two names].",
-   "chieftain of two names": "The renegade chieftain who walked out of Thidranki Faste in the snow of the Faste Winter, came to Dun Murdaigean, found its chieftain dead, and took the keep and its name, as every renegade chieftain takes the name of the keep he holds.",
-   "spider summer": "The fourth summer of the fields, when webs closed the road from the Hibernian portal keep to the dun for a whole season and the deep-wood wolves grew bold. The three realms' foresters burned the road open in the autumn. The [wood] grew back."
+   "dun murdaigean": "The dun on a rise at the heart of the wood, held by renegades: many guardians, with rangers and commanders, under a chieftain who has taken its name, as the renegade chieftains of the fields do.",
+   "goblins": "Goblins of the Black Mountains who came into the wood from the east in the first summer of the fields and dug in along its southern edge. Albion says its wardens drove them there; Hibernia says Albion sent them. Their watchers cry out at dusk.",
+   "wolves": "The ire wolves and rage wolves of the deep wood, who hunt in packs and are patient. Midgard calls Murdaigean the wolf wood for them.",
+   "webs": "The spiders of Murdaigean have strung every path, the large bloated ones near the edges and the death spiders deeper in, and the corpse crawlers root in the leaf-mould under the webs. Some of the webs on the oldest trees are strung over something older."
   }
  },
  "book": {
-  "title": "The Green Dark, by Cobthach of the Path, ranger of Tir na Nog",
+  "title": "The Green Dark, by Cobthach, Master Ranger at Hibernia's gate in Murdaigean",
   "pages": [
-   "I was a ranger of the Path for twenty years before I was sent to teach the young in Murdaigean, and I tell you plainly that I have never been in a wood I liked less. The light comes down through the leaves green and thin and goes out an hour before it should. My grandmother told me the people of the west once kept their dead in these branches, wrapped in bark, until the birds had made clean bones of them, and that the wood was holy then. I believe her. A holy place that has been forgotten is the worst kind of place.",
-   "The crawlers that root among the trees are pale and blind and many-legged, and I am told by the druids that they came for the old bones and stayed when the bones ran out. The spiders came after the crawlers, and they are patient in a way I do not like in anything. When a death spider spins across a path, the foresters say, the wood has closed the path, and they do not walk it until the web is down. In the fourth summer they closed the whole west road. I spent that summer cutting webs and burying recruits.",
-   "On the south edge there are goblins, out of the Black Mountains of Albion, which the Albions say they drove out and we say they sent. I have watched them. They dig, and they watch, and at dusk their watchers cry out in a voice I would not have believed a goblin had, and the young ones in my charge learn to hate the sound. We burned the west road open in the autumn of that summer, the three realms' foresters in the same week without a word between us, and I counted it the second miracle of the fields.",
-   "The fort in the middle of the wood is held by deserters, and their chieftain is a man who has lost a keep before. He came to Murdaigean from Thidranki in the snow, they say, and found the old chieftain dead and took his name with the keep. I met him once, under a white cloth, to bring back our dead. He was courteous and tired and he asked after the hill at Thidranki as a man asks after a house he grew up in. When I told him the Faste had no lord he laughed, and said that was the only lord it deserved."
+   "I was twenty years a ranger of the Path before they gave me the gate at Murdaigean, and I have not looked on a wood I liked less. The light comes down green and thin and goes out an hour before it should. The spiders have strung every path, the corpse crawlers root in the leaf-mould under them, and the wolves keep the deep wood. On the old oaks by our gate there are cords tied, grey with web and half rotten, and every cord has knots in it.",
+   "My grandmother told me what the knots are. When the Fianna ran their young through this wood, they tied a knot on the nearest tree wherever a runner was caught, so that he would know how far he had come. A grown man would come back years after and find his knot, she said, and stand under it a while. I counted the knots on the one oak by our gate in my first winter here. I stopped at three hundred, because the light had gone, and I have not gone back to finish.",
+   "This summer I noticed that the young of our muster braid their hair before they go down into the wood. None of them could tell me who had told them to, and I did not tell them either. I have only begun walking down with them at dusk as far as the old oak, which is as far as the field will let me, and standing there until the last of them is out of sight among the trees."
   ]
  },
  "bosses": [],
  "realmTakes": {
+  "hibernia": {
+   "story": "Hibernia tells Murdaigean as its own, and the oldest proving ground there is: the wood where the Fianna tried their young long before the realms made a field of it. The knotted cords on its oldest trees are the Fianna's marks, and the dun at its heart was the end of their run. Hibernia's young braid their hair before they go down into that wood, and not one of them can say who first told them to.",
+   "loremaster": {
+    "intro": "Murdaigean is ours, the oldest proving ground there is, and the proving fields only borrowed it. It was the wood of [the run], where the Fianna tried their young, and the dun at the heart of it, [Dun Murdaigean], was where the run ended. Mind the [webs], and mind what's under them.",
+    "topics": {
+     "the run": "When a youth asked to be taken into the Fianna, they braided his hair and gave him a tree's length of start, and then the whole company came after him through Murdaigean. If they caught him, he had failed. If a braid was pulled loose by a branch, or a dry stick cracked under his foot, or the spear shook in his hand, he had failed. He had to leap a branch as high as his brow and go under one as low as his knee, and pull a thorn from his foot without slowing. Nearly all of them failed, and there was no shame in that. The shame was only in not running."
+    }
+   }
+  },
   "albion": {
-   "story": "Albion tells Murdaigean as the goblin wood. Albion's wardens of the Black Mountains say they drove the goblins out of the mountains in the first summer of the fields and that the goblins fled west into the wood; Albion's recruits are told the goblins of Murdaigean are Albion's old enemy and are proud to kill them first. Albion's squires call the field the Webwood.",
-   "legend": "Albion players say the goblins on the south edge are their own leftovers from the Black Mountains, and kill them on principle. They also say Hibernia started the story that Albion sent them, which Hibernia denies.",
-   "botLines": {
-    "lore": [
-     "albs say they drove the murd goblins out of the black mountains. [hibs say we sent them|we didnt send them]"
-    ]
+   "story": "Albion tells Murdaigean as the goblin wood. The wardens of the Black Mountains drove a band of goblins out of the passes in the first summer of the fields, and the goblins went west into the wood and dug in along its southern edge. Albion's squires are told that the goblins of Murdaigean are the realm's own unfinished business, and kill them first. Albion has no tale of the wood older than that, and does not dispute the Hibernians' one.",
+   "loremaster": {
+    "intro": "Murdaigean is the dark wood of the proving fields, and Albion knows it as the goblin wood. The [goblins] on its southern edge are the realm's own leftovers from the Black Mountains. The Hibernians say the wood was a proving ground of their Fianna before ever it was a field, and Albion has no tale to set against it. The fort at its heart is [Dun Murdaigean].",
+    "topics": {
+     "goblins": "In the first summer of the fields the wardens of the Black Mountains drove a band of goblins out of the passes, and the goblins went west into Murdaigean and dug in along its southern edge, where they crawl and watch to this day. Albion's squires are told they are the realm's own unfinished business, and kill them first. The Hibernians say Albion sent them. The wardens' report says only that the goblins went west, and that nobody followed them, and that this was thought at the time to be the end of the matter."
+    }
    }
   },
   "midgard": {
-   "story": "Midgard's skalds call Murdaigean the wolf wood and sing of the Spider Summer as the season the wolves grew fat. They say the rage wolves and ire wolves of the deep wood are the true lords of Murdaigean and that the renegades and goblins are only guests; Midgard's recruits are taught to read wolf sign before they are taught the roads. Midgard remembers the chieftain of two names as a man who ran from three sieges, and has no respect for him.",
-   "legend": "Midgard players say the wolves in Murd are the real danger, more than the renegades, and that a Midgard group always knows where the wolves are. They call the renegade chief the runner, after the Faste Winter.",
-   "botLines": {
-    "lore": [
-     "skalds call murd the wolf wood. [the wolves are the real lords|the wolves own it]"
-    ]
-   }
-  },
-  "hibernia": {
-   "story": "Hibernia's bards say Murdaigean is theirs by its name and by its dead: the people of the west kept their dead in its branches when it was holy, and the bards sing that the old dead are still somewhere in the high boughs, watching the realms fight in their wood. Cobthach of the Path's account is read to every Hibernian recruit before Murdaigean. Hibernia's foresters burned the west road open after the Spider Summer, and say the others only helped.",
-   "legend": "Hibernians say the west road is theirs because their foresters burned it open, and that you should never cut a branch in Murd, because the old dead are up there. Nobody cuts branches in Murd anyway.",
-   "botLines": {
-    "lore": [
-     "the bards say the old dead are still in the murd branches. [never cut a branch there|dont look up]"
-    ]
+   "story": "Midgard's skalds call Murdaigean the wolf wood. They hold that the ire wolves and rage wolves of the deep wood are its true lords and that the renegades, the goblins and the realms' young are all guests in it, and Midgard's recruits are taught to read wolf sign before they are taught the paths. The Hibernians' tale of their Fianna the skalds allow, on the ground that it is a good tale and the wolves do not dispute it.",
+   "loremaster": {
+    "intro": "Murdaigean. The skalds call it the wolf wood, and they are right: the [wolves] are its lords and the rest are guests. The Hibernians say their Fianna ran their young through it once, and the [goblins] have dug into its southern edge since. The keep in the middle is [Dun Murdaigean]. Learn the wolves' sign before you learn the paths.",
+    "topics": {
+     "wolves": "The ire wolves and the rage wolves of Murdaigean hunt the deep wood in packs, and Midgard teaches its young to read their sign before it teaches them the paths. The Hibernians say the wolves are the Fianna's hounds, gone wild when the Fianna left. That may be. A wolf does not care whose it was. It knows the wood, and it knows that the young who come into it are tired, and it is patient."
+    }
    }
   }
- }
+ },
+ "related": [
+  {
+   "id": "proving-fields",
+   "relation": "why the fields take only the young"
+  }
+ ]
 }
