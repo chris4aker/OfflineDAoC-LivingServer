@@ -157,6 +157,20 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
 - **The raid's wipe line says who was in the attempt** (tests only). `REALM_RAID_WIPE` adds `engaged=` and `fallen=`: its
   `living=` counts the raiders who released and stand at the staging post outside, so Aidon's second wipe (65 of 65 in the
   attempt fell) read as a wipe scored while the raid stood. The scoring itself was right.
+- **Nothing a bot raid does heals Icelord Kvasir with cold** (tests only). On the owner's PC (2026-11-15, build
+  `1dc66b6`) the Midgard raid fought him 18 minutes and never took him below 81%: he jumped 90→99, 81→99 and 90→97 in
+  combat, and in the second attempt the chat read "thank you spirit champion for healing me !" five times in 30 seconds
+  while the raid did 24,000 a minute to him. The rule (cold heals him a fifth) stays on and his script is unchanged; the
+  bot filter had stopped only bots' own cold spells. Now no bot's pet that deals cold goes at him (the Spiritmaster's
+  spirit swordsman, warrior and champion buff themselves with a 70 cold DD proc; the Sluaghbinder's zombie magician casts
+  cold), and no bot casts a spell whose sub spell is cold, an area spell that would reach him from an add, or a style whose
+  proc is cold (the berserker's Aurora Borealis). A bot whose melee weapon deals cold switches to its clean weapon set or
+  does not swing; an autonomous one fights his icetouch adds instead, like one whose armor's reactive proc is cold (95
+  cold DD on Tuscaran loot), and a healer with such armor heals from 1,000 away. Every heal is logged as
+  `EPIC_KVASIR_HEALED` (who, pet and owner, class, spell, style, weapon). His attempt also ended with no wipe and no line
+  at all after 85 raiders had died 104 times in it: the fallen were counted only when he reset, after the return waves
+  had brought them back. Raiders who fall during an attempt now count as fallen in it, and an attempt that was no wipe
+  says so (`REALM_EXPEDITION_ATTEMPT_ENDED`).
 - **Whoever a fight-at-home boss chases out of its home leads it back** (tests only). Only a raider whose own target was
   the boss did; Aidon (home 1,100, tether 1,500) went after the healers at the muster 1,400 out, past his tether, and
   healed from 58% to 100% in combat. Now the raider he chases, a healer too, walks to his spawn. The boss is unchanged.

@@ -3805,6 +3805,16 @@ namespace DOL.AI.Brain
             // An off-hand-only persisted loadout is not combat-ready; weapon
             // reconciliation will move/create a legal primary weapon instead.
             bool oneHandUsable = rightUsable;
+            // 1.2 epic rule (Kvasir: cold heals him): with one melee set that would land a forbidden damage type on the target
+            // and another that would not, the bot fights with the clean one (a raider swaps weapons for the fight).
+            if (Body.TargetObject is GameNPC ruled && oneHandUsable && twoHandUsable)
+            {
+                bool oneHandHeals = EpicEncounterTactics.WeaponForbidden(ruled, rightHand) ||
+                                    leftUsable && leftHand.Object_Type != (int)eObjectType.Shield && EpicEncounterTactics.WeaponForbidden(ruled, leftHand);
+                bool twoHandHeals = EpicEncounterTactics.WeaponForbidden(ruled, twoHand);
+                if (oneHandHeals && !twoHandHeals) oneHandUsable = false;
+                else if (twoHandHeals && !oneHandHeals) twoHandUsable = false;
+            }
             bool preferTwoHand = PreferTwoHandedSlot(twoHandUsable, oneHandUsable,
                 BotBody.BotSpec?.Is2H == true ||
                 BotBody.CharacterClass.ClassType == eClassType.ListCaster ||

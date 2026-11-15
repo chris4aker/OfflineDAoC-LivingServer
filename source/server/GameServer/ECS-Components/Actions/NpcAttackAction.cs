@@ -204,6 +204,14 @@ namespace DOL.GS
                 }
             }
 
+            // 1.2 epic rule (Icelord Kvasir: cold heals him a fifth): a bot whose melee weapon deals a damage type the target's
+            // rule forbids does not swing at it. Companion bots too; an autonomous gamebot is sent to the adds by the rule.
+            if (_npcOwner is GameBot coldBot && EpicEncounterTactics.MeleeForbidden(coldBot, _target as GameLiving))
+            {
+                _interval = TICK_INTERVAL_FOR_NON_ATTACK;
+                return false;
+            }
+
             return true;
         }
 

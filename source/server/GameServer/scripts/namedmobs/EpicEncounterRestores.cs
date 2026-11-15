@@ -113,6 +113,74 @@ namespace DOL.GS
 
         private static readonly System.Collections.Generic.Dictionary<int, long> HealTraces = new();
 
+        /// <summary>
+        /// 1.2 play test (PC log 1dc66b6, 2026-11-15: the Midgard raid could not take Kvasir below 81% in 18 minutes and the
+        /// log could not say who healed him): a hit that Kvasir's cold rule turns into a heal is in the server log, as
+        /// EPIC_KVASIR_HEALED. Asked from GameLiving.TakeDamage(AttackData) before his script heals him, with the same test
+        /// (rule on, cold, a combatant source). One line per source and damage source every five seconds; the lines skipped
+        /// meanwhile are counted on the next one.
+        /// </summary>
+        public static void NoteKvasirHeal(GameLiving victim, AttackData ad)
+        {
+            if (victim is not Kvasir || ad == null || !EpicEncounterMechanics.AllowKvasirColdHeal || !KvasirHealedBy(ad.DamageType) ||
+                !EpicEncounterActors.IsCombatant(ad.Attacker) || !Log.IsInfoEnabled)
+                return;
+            GameLiving source = ad.Attacker;
+            string how = KvasirHealVia(ad);
+            long now = GameLoop.GameLoopTime;
+            int skipped;
+            lock (KvasirHeals)
+            {
+                var key = (source.ObjectID, how);
+                if (KvasirHeals.TryGetValue(key, out var last) && now - last.At < 5_000)
+                {
+                    KvasirHeals[key] = (last.At, last.Skipped + 1);
+                    return;
+                }
+                if (KvasirHeals.Count > 512) KvasirHeals.Clear();
+                skipped = last.Skipped;
+                KvasirHeals[key] = (now, 0);
+            }
+            GameLiving owner = (source as GameNPC)?.Brain is DOL.AI.Brain.IControlledBrain { } brain && source is not GameBot
+                ? brain.GetLivingOwner() : null;
+            Spell spell = ad.SpellHandler?.Spell;
+            Log.Info($"EPIC_KVASIR_HEALED source=\"{source.Name}\" kind={KindOf(source)} class={(eCharacterClass)ClassId(source)} " +
+                     $"owner=\"{owner?.Name}\" ownerKind={(owner == null ? "-" : KindOf(owner))} ownerClass={(eCharacterClass)ClassId(owner)} " +
+                     $"via={how} attack={ad.AttackType} spellId={spell?.ID ?? 0} spell=\"{spell?.Name}\" spellType={spell?.SpellType} " +
+                     $"line=\"{ad.SpellHandler?.SpellLine?.KeyName}\" style=\"{ad.Style?.Name}\" weapon=\"{ad.Weapon?.Name}\" " +
+                     $"damageType={ad.DamageType} healthBefore={victim.HealthPercent}% target=\"{(source.TargetObject as GameObject)?.Name}\" " +
+                     $"skipped={skipped}");
+        }
+
+        /// <summary>What dealt a hit, for EPIC_KVASIR_HEALED (pure): melee, a style's proc, an item's proc or charge (weapon,
+        /// armor), a damage shield, a pet's proc or spell, or a spell.</summary>
+        public static string KvasirHealVia(AttackData ad)
+        {
+            if (ad == null) return "unknown";
+            Spell spell = ad.SpellHandler?.Spell;
+            bool pet = ad.Attacker is GameNPC and not GameBot;
+            if (spell == null) return ad.IsMeleeAttack ? pet ? "pet-melee" : "melee" : ad.AttackType == AttackData.eAttackType.Ranged ? "ranged" : "other";
+            if (spell.SpellType is eSpellType.DamageShield) return "damage-shield";
+            string line = ad.SpellHandler.SpellLine?.KeyName;
+            if (line == GlobalSpellsLines.Combat_Styles_Effect) return "style-proc";
+            if (line == GlobalSpellsLines.Item_Effects) return pet ? "pet-item-effect" : "item-effect";
+            if (line == GlobalSpellsLines.Mundane_Poisons) return "poison";
+            return pet ? "pet-spell" : "spell";
+        }
+
+        private static string KindOf(GameObject source) => source switch
+        {
+            GamePlayer => "player",
+            GameBot { IsAutonomousWorldBot: true } => "gamebot",
+            GameBot => "companion",
+            GameSummonedPet => "pet",
+            GameNPC { Brain: DOL.AI.Brain.IControlledBrain } => "pet",
+            null => "-",
+            _ => source.GetType().Name
+        };
+
+        private static readonly System.Collections.Generic.Dictionary<(int, string), (long At, int Skipped)> KvasirHeals = new();
+
         /// <summary>Play test diagnostic: a bot that may fight <paramref name="target"/> only at range was switched to melee.</summary>
         public static void NoteMeleeSwitch(GameObject bot, GameLiving target)
         {

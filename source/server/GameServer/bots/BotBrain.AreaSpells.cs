@@ -57,22 +57,24 @@ namespace DOL.AI.Brain
             ushort look = (ushort)Math.Min(ushort.MaxValue, radius + BotAoePolicy.SafetyMargin);
             _blastCandidates.Clear();
             foreach (GameNPC npc in center.GetNPCsInRadius(look))
-                AddBlastCandidate(center, npc);
+                AddBlastCandidate(center, npc, spell);
             foreach (GamePlayer player in center.GetPlayersInRadius(look))
-                AddBlastCandidate(center, player);
+                AddBlastCandidate(center, player, spell);
             return BotAoePolicy.Evaluate(_blastCandidates, radius - BotAoePolicy.EdgeMargin - extraSlack, radius, IsMezSpell(spell));
         }
 
-        private void AddBlastCandidate(GameObject center, GameLiving living)
+        private void AddBlastCandidate(GameObject center, GameLiving living, Spell spell)
         {
             // What the spell itself would skip (the caster's side, the untargetable, the dead) is neither counted nor feared.
             if (living == null || living == Body || !living.IsAlive || living.ObjectState != GameObject.eObjectState.Active ||
                 IsUntargetable(living) || !GameServer.ServerRules.IsAllowedToAttack(Body, living, true))
                 return;
             // Mesmerized, or rooted by a root that damage breaks: the blast would free it.
-            // A boss this bot must not hit at all (Funus while his puzzle is on) vetoes the blast like a mesmerized monster.
+            // A boss this bot must not hit at all (Funus while his puzzle is on) vetoes the blast like a mesmerized monster,
+            // and so does one the blast's damage type would heal (1.2: a cold area spell aimed at Kvasir's adds reaches him).
             _blastCandidates.Add(new(center.GetDistanceTo(living), IsEngagedEnemy(living),
-                IsBreakablyControlled(living) || EpicEncounterTactics.MustNotHit(BotBody, living)));
+                IsBreakablyControlled(living) || EpicEncounterTactics.MustNotHit(BotBody, living) ||
+                EpicEncounterTactics.ForbidsSpell(BotBody, living, spell)));
         }
 
         private bool HasBlastPlayerLike()
@@ -127,11 +129,11 @@ namespace DOL.AI.Brain
         {
             if (target == null)
                 return null;
-            Dictionary<(int, bool), BotAoePolicy.Blast> blasts = null;
+            Dictionary<(int, bool, eDamageType), BotAoePolicy.Blast> blasts = null;
             BotAoePolicy.Blast BlastOf(Spell spell)
             {
                 blasts ??= new();
-                (int, bool) key = (spell.Radius, IsMezSpell(spell));
+                (int, bool, eDamageType) key = (spell.Radius, IsMezSpell(spell), spell.DamageType);
                 if (!blasts.TryGetValue(key, out BotAoePolicy.Blast blast))
                     blasts[key] = blast = EvaluateBlast(target, spell);
                 return blast;
