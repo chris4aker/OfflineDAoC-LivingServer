@@ -87,7 +87,9 @@ Hall) with a gamebot in your group, and a groupmate tells the short version in /
   realm's storyteller tells it in the rotation like any tale, and a player can ask for it ("tell the one about atlantis",
   "the glass ball story"). A legend is about no boss (`AutonomousTales.Legends`): it has no lore file, no raid and no
   fireside version, and the rumour after it is one of the corpus's rumour lines on it (`LoreLegends.RumoursAfter`, topic
-  `rumour_atlantis`), never a raid. It lives in `data/chat/era_rumours.lines`. Tests only: not heard in game yet.
+  `rumour_atlantis`), never a raid. It lives in `data/chat/era_rumours.lines`. Its teller writes whole sentences with
+  capitals and stops, which the chat pass keeps (it drops a line's last stop and sends a long line as two chat lines at a
+  sentence or comma); the listeners type as players do. Tests only: not heard in game yet.
 
 ## Settings
 

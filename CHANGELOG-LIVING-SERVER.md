@@ -92,7 +92,7 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
   has been, nobody can go, and no master level, artifact or Catacombs class is mentioned. The corpus builder allows the
   words "atlantis" and "catacombs" only in lines tagged `rumour_atlantis` or `rumour_below`, and refuses any that claims a
   trip there (`tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`). A loremaster now reads a question asked in
-  words for its keyword.
+  words for its keyword. The prose (the legend, the loremasters' topics, the book pages) was rewritten after the owner's read.
 
 **Era cuts and polish for the playful features** (tests only; owner's decisions 2026-11-15 07:10 after the Easter egg
 inventory: cut the jokes from after 2003, keep Leeroy; Trials of Atlantis and Catacombs "as rumors only from a lore
