@@ -24,8 +24,9 @@ namespace DOL.GS.Commands;
     "/epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start",
     "/epictest latecall <threshold|all|off> - test only: the raid's call of that blast threshold (Xanxicar 80/60/40/20) always comes late. Also latecall=<threshold|all> on start",
     "/epictest stop <event> - end a running raid",
-    "/epictest sweep start [all|openworld|event,event] [guest] - every raid once, one after another (Darkness Falls last; openworld: the open-world big bosses only); guest: you take a seat in each, your realm set to its realm until the sweep ends",
-    "/epictest sweep status | skip | stop - the sweep's progress, end the raid running now, or end the sweep")]
+    "/epictest sweep start [all|openworld|event,event] [guest] [parallel] [cap=<minutes>|off] - every raid once, one after another, in the list's order (Darkness Falls last; openworld: the open-world big bosses only); guest: you take a seat in each, your realm set to its realm until the sweep ends; parallel: one lane per realm side by side, bots only; cap: stop a raid after that long (default 240, off: its own clocks only)",
+    "/epictest sweep add event,event - add raids to the running sweep, after those waiting in their lane (a long list typed in parts)",
+    "/epictest sweep status | skip [event] | stop - the sweep's progress, end a raid running now (its lane goes on), or end the sweep")]
 public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicPlaytestCommandHandler));
@@ -168,21 +169,61 @@ public sealed class EpicPlaytestCommandHandler : AbstractCommandHandler, IComman
         switch (verb)
         {
             case "start":
-                string word = args.Skip(3).FirstOrDefault(a => !a.Equals("guest", StringComparison.OrdinalIgnoreCase)) ?? "all";
-                bool guest = args.Skip(3).Any(a => a.Equals("guest", StringComparison.OrdinalIgnoreCase));
+                if (!TryParseSweepStart(args.Skip(3).ToArray(), out string word, out bool guest, out bool parallel, out long capMs, out string error))
+                {
+                    Say(client, error);
+                    return;
+                }
                 if (guest && client?.Player == null) { Say(client, "A guest is the GM who starts the sweep in game; from the console it runs bots only."); return; }
-                Say(client, EpicPlaytestSweep.Start(word, guest ? client.Player : null));
+                Say(client, EpicPlaytestSweep.Start(word, guest ? client.Player : null, parallel, capMs));
+                return;
+            case "add":
+                if (args.Length != 4) { Say(client, "/epictest sweep add event,event (one list, no spaces)"); return; }
+                Say(client, EpicPlaytestSweep.Add(args[3]));
                 return;
             case "stop":
                 Say(client, EpicPlaytestSweep.Stop("stopped by a GM"));
                 return;
             case "skip":
-                Say(client, EpicPlaytestSweep.Skip());
+                Say(client, EpicPlaytestSweep.Skip(args.Length > 3 ? args[3] : null));
                 return;
             default:
                 foreach (string line in EpicPlaytestSweep.Status()) Say(client, line);
                 return;
         }
+    }
+
+    /// <summary>
+    /// The words after "/epictest sweep start" (pure): the raids (all, openworld or a comma list without spaces; all when
+    /// none is given), and the flags in any order: guest, parallel (one lane per realm, side by side) and cap=&lt;minutes|off&gt;
+    /// (the per-raid cap, four hours when not given).
+    /// </summary>
+    public static bool TryParseSweepStart(string[] words, out string raids, out bool guest, out bool parallel, out long capMs, out string error)
+    {
+        raids = null;
+        guest = parallel = false;
+        capMs = EpicPlaytestSweep.RaidCapMs;
+        error = null;
+        string capWord = null;
+        foreach (string w in words)
+        {
+            if (w.Equals("guest", StringComparison.OrdinalIgnoreCase)) guest = true;
+            else if (w.Equals("parallel", StringComparison.OrdinalIgnoreCase)) parallel = true;
+            else if (w.StartsWith("cap=", StringComparison.OrdinalIgnoreCase)) capWord = w[4..];
+            else if (raids == null) raids = w;
+            else
+            {
+                error = $"\"{w}\": one raid list only, without spaces (event,event,event).";
+                return false;
+            }
+        }
+        raids ??= "all";
+        if (!EpicPlaytestSweep.TryParseCap(capWord, out capMs))
+        {
+            error = $"cap={capWord} is not off or a number of minutes ({EpicPlaytestSweep.MinimumCapMinutes} or more).";
+            return false;
+        }
+        return true;
     }
 
     internal static void MoveTo(string eventId, string where, ushort regionId, Vector3 point, GameBot[] recruits)

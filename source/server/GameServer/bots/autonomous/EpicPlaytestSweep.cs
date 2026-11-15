@@ -14,6 +14,9 @@ namespace DOL.GS
     /// realm yourself through a true playtest without losing access"). It runs every raid once, one after another, on the
     /// server alone: a locked screen or a dropped link to the PC can't stop it, and each raid's own clocks end it (the
     /// play test's hour without progress). Each raid is the /epictest start path at its period size.
+    /// A start may name the raids and their order (a comma list), run one lane per realm side by side (<c>parallel</c>,
+    /// bots only) and set the per-raid cap (<c>cap=</c>minutes or off); 2026-11-15, for a night that has to fit the
+    /// raid bar, the big three's re-runs and the open-world bosses (docs/OVERNIGHT-SWEEP-1.2.md).
     ///
     /// The guest: the GM who started the sweep, if asked, takes a seat in every raid as a player would (the raid leader's
     /// invite, accepted). Their realm is set to the raid's for it and put back when the sweep ends (as /player realm does),
@@ -35,8 +38,13 @@ namespace DOL.GS
 
         public const long PulseMs = 10_000;
         public const long PauseBetweenMs = 3 * 60_000;
-        /// <summary>A raid the sweep started is stopped after this long, whatever its own clocks say.</summary>
+        /// <summary>A raid the sweep started is stopped after this long, whatever its own clocks say (the default;
+        /// <c>cap=</c> on the start changes it for that sweep).</summary>
         public const long RaidCapMs = 4 * 60 * 60_000L;
+        /// <summary>The smallest cap a start may ask for: a raid needs its muster and walk before it fights.</summary>
+        public const int MinimumCapMinutes = 30;
+        /// <summary>How far apart a parallel sweep's lanes start their first raids, so three musters don't land in one tick.</summary>
+        public const long LaneStaggerMs = 60_000;
         public const long GuestAwayMs = 20_000;
         public const long GuestDeadMs = 30_000;
         public const float GuestAwayRange = 3_000;
@@ -50,10 +58,28 @@ namespace DOL.GS
             public string LastFailure;
         }
 
-        private static readonly List<Step> Queue = [];
+        /// <summary>
+        /// One queue of raids run one after another. A sweep has one lane, or with <c>parallel</c> one per realm
+        /// (2026-11-15: the night's list is over 30 hours one raid at a time; each realm raids with its own bots, so the
+        /// realms run side by side and no two sweep raids ever ask one realm's bots at once).
+        /// </summary>
+        private sealed class Lane
+        {
+            public readonly List<Step> Queue = [];
+            public string Name;
+            public Step Current;
+            public long CurrentStarted, NextStartAt;
+            /// <summary>The last EPIC_SWEEP_HELD logged for this lane (logged again only when it changes).</summary>
+            public string Held;
+        }
+
+        private static readonly List<Lane> Lanes = [];
         private static readonly List<string> Results = [];
-        private static Step _current;
-        private static long _currentStarted, _nextStartAt, _nextPulse, _guestAwaySince, _guestDeadSince, _nextSeatTry;
+        private static long _capMs = RaidCapMs;
+        private static bool _parallel;
+        private static long _nextPulse, _guestAwaySince, _guestDeadSince, _nextSeatTry;
+        /// <summary>The raid the guest sits in: the only lane's (a guest sweep has one lane).</summary>
+        private static Step GuestRaid => Lanes.Count == 1 ? Lanes[0].Current : null;
         // A seat the guest did not get yet (the raid had no party with room when it started): tried again every
         // SeatRetryMs until the raid goes in (2026-11-13, Gjalpinulva: "no_party" at the start, and the guest was left).
         private static AutonomousRealmRaid.Definition _seatPendingFor;
@@ -89,6 +115,61 @@ namespace DOL.GS
             unknown = asked.Where(a => !known.Contains(a)).ToArray();
             return Order(asked.Where(known.Contains).Distinct());
         }
+
+        /// <summary>
+        /// The lanes a sweep runs (pure): one lane with every raid, or with <paramref name="parallel"/> one lane per realm in
+        /// the order the realms first appear, each keeping the raids' own order (Darkness Falls stays last in its lane).
+        /// </summary>
+        public static (string Name, string[] Ids)[] SplitLanes(string[] ordered, Func<string, eRealm> realmOf, bool parallel)
+        {
+            if (!parallel) return [("sweep", ordered)];
+            return ordered.GroupBy(realmOf)
+                .Select(g => (GlobalConstants.RealmToName(g.Key), g.ToArray()))
+                .ToArray();
+        }
+
+        /// <summary>
+        /// The per-raid cap a start asks for (pure): null (no <c>cap=</c>: the default four hours), "off" (none: the raid's
+        /// own stall clock ends it) or whole minutes of at least <see cref="MinimumCapMinutes"/>. 0 is no cap.
+        /// </summary>
+        public static bool TryParseCap(string value, out long capMs)
+        {
+            capMs = RaidCapMs;
+            if (value == null) return true;
+            if (value.Equals("off", StringComparison.OrdinalIgnoreCase))
+            {
+                capMs = 0;
+                return true;
+            }
+            if (!int.TryParse(value, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int minutes) ||
+                minutes < MinimumCapMinutes)
+                return false;
+            capMs = minutes * 60_000L;
+            return true;
+        }
+
+        /// <summary>
+        /// Where <c>add</c> puts each raid (pure): with <paramref name="parallel"/> its realm's lane (a new lane when that realm
+        /// has none yet), else the one lane, in the order given (Darkness Falls last). A raid the sweep already holds, queued
+        /// or running, is left out (<paramref name="skipped"/>): the night's commands may be typed twice without running a
+        /// raid twice.
+        /// </summary>
+        public static (string Lane, string Id)[] PlanAdd(string[] ordered, string[] alreadyIn, string onlyLane,
+            Func<string, eRealm> realmOf, bool parallel, out string[] skipped)
+        {
+            var held = new HashSet<string>(alreadyIn);
+            skipped = ordered.Where(held.Contains).ToArray();
+            return ordered.Where(id => !held.Contains(id))
+                .Select(id => (parallel ? GlobalConstants.RealmToName(realmOf(id)) : onlyLane, id))
+                .ToArray();
+        }
+
+        /// <summary>Why a start with a guest is refused (pure), or null: a guest sits in one raid at a time, so a parallel sweep runs bots only.</summary>
+        public static string GuestRefusal(bool parallel, bool guest) =>
+            parallel && guest ? "A parallel sweep runs bots only (a guest sits in one raid at a time): start it without guest." : null;
+
+        /// <summary>Whether a sweep raid that has run this long is stopped by the cap (pure; a cap of 0 never stops one).</summary>
+        public static bool CapReached(long capMs, long ranMs) => capMs > 0 && ranMs >= capMs;
 
         /// <summary>
         /// The party member the guest is moved to (pure): the one with the most party members within 2,000 units in its
@@ -187,14 +268,22 @@ namespace DOL.GS
             get { lock (Sync) return _running; }
         }
 
-        public static string Start(string word, GamePlayer guest)
+        public static string Start(string word, GamePlayer guest) => Start(word, guest, false, RaidCapMs);
+
+        /// <summary>
+        /// Starts a sweep. <paramref name="parallel"/>: one lane per realm, side by side (bots only: a guest sits in one raid
+        /// at a time). <paramref name="capMs"/>: the per-raid cap, 0 for none.
+        /// </summary>
+        public static string Start(string word, GamePlayer guest, bool parallel, long capMs)
         {
             lock (Sync)
             {
                 if (_running) return "A sweep is already running: /epictest sweep status, or /epictest sweep stop.";
+                if (GuestRefusal(parallel, guest != null) is string refusal) return refusal;
                 string[] ids = Parse(word, AutonomousRealmRaid.Definitions.Select(d => d.Id).ToArray(), out string[] unknown);
                 if (unknown.Length > 0) return $"No raid {string.Join(", ", unknown)}; /epictest list shows them.";
                 if (ids.Length == 0) return "No raids to sweep.";
+                var lanes = SplitLanes(ids, id => AutonomousRealmRaid.Definitions.First(d => d.Id == id).Realm, parallel);
                 eRealm homeRealm = guest?.Realm ?? eRealm.None;
                 uint homePrivLevel = 0;
                 // A GM can't be attacked, takes no fall damage and is left out of every boss mechanic that picks players
@@ -210,11 +299,17 @@ namespace DOL.GS
                     if (guest.Realm != homeRealm) guest.Realm = homeRealm;
                     if (homePrivLevel > 0 && guest.IsStealthed) guest.Stealth(false);
                 }
-                Queue.Clear();
-                Queue.AddRange(ids.Select(id => new Step { Id = id }));
+                Lanes.Clear();
+                long start = GameLoop.GameLoopTime;
+                for (int i = 0; i < lanes.Length; i++)
+                {
+                    var lane = new Lane { Name = lanes[i].Name, NextStartAt = start + i * LaneStaggerMs };
+                    lane.Queue.AddRange(lanes[i].Ids.Select(id => new Step { Id = id }));
+                    Lanes.Add(lane);
+                }
                 Results.Clear();
-                _current = null;
-                _nextStartAt = GameLoop.GameLoopTime;
+                _capMs = capMs;
+                _parallel = parallel;
                 _guest = guest;
                 _guestHomeRealm = homeRealm;
                 _guestHomePrivLevel = homePrivLevel;
@@ -222,52 +317,115 @@ namespace DOL.GS
                 _guestCharacterId = guest?.DBCharacter?.ObjectId;
                 _guestName = guest?.Name;
                 _running = true;
-                Log.Info($"EPIC_SWEEP_START raids={ids.Length} order={string.Join(",", ids)} guest=\"{guest?.Name}\" guestRealm={_guestHomeRealm} " +
+                string capWord = capMs > 0 ? (capMs / 60_000).ToString() : "off";
+                Log.Info($"EPIC_SWEEP_START raids={ids.Length} lanes={lanes.Length} cap={capWord} " +
+                         $"order={string.Join("|", lanes.Select(l => string.Join(",", l.Ids)))} guest=\"{guest?.Name}\" guestRealm={_guestHomeRealm} " +
                          $"guestLevel={guest?.Level} guestPlaysAsPlayer={_guestHomePrivLevel > 0} guestHomePrivLevel={_guestHomePrivLevel}");
-                return $"Sweep started: {ids.Length} raids, one after another ({string.Join(", ", ids)})" +
-                       (guest != null ? $"; {guest.Name} takes a seat in each." : "; bots only.");
+                string capText = capMs > 0 ? $"each stopped after {capWord} minutes at most" : "no cap (each raid's own clocks end it)";
+                return lanes.Length == 1
+                    ? $"Sweep started: {ids.Length} raids, one after another ({string.Join(", ", ids)}); {capText}" +
+                      (guest != null ? $"; {guest.Name} takes a seat in each." : "; bots only.")
+                    : $"Sweep started: {ids.Length} raids in {lanes.Length} lanes side by side, one raid at a time in each " +
+                      $"({string.Join("; ", lanes.Select(l => $"{l.Name}: {string.Join(", ", l.Ids)}"))}); {capText}; bots only.";
             }
         }
 
         public static string Stop(string why)
         {
-            string current;
+            string[] current;
             lock (Sync)
             {
                 if (!_running) return "No sweep is running.";
-                current = _current?.Id;
+                current = Lanes.Where(l => l.Current != null).Select(l => l.Current.Id).ToArray();
                 _running = false;
             }
-            if (current != null && AutonomousRealmRaid.IsRunning(current))
-                AutonomousRealmRaid.Stop(current, out _);
+            foreach (string id in current)
+                if (AutonomousRealmRaid.IsRunning(id))
+                    AutonomousRealmRaid.Stop(id, out _);
             Finish(why);
             return $"Sweep stopped ({why}).";
         }
 
-        /// <summary>Ends the raid running now and goes on with the next.</summary>
-        public static string Skip()
+        /// <summary>
+        /// Adds raids to the running sweep, after those already waiting in their lane (2026-11-15: the night's list is over 800
+        /// characters, too long for one line in the game client's chat, so it is typed as a start and a few adds).
+        /// </summary>
+        public static string Add(string word)
         {
-            string current;
-            lock (Sync) current = _running ? _current?.Id : null;
-            if (current == null) return "No sweep raid is running.";
+            lock (Sync)
+            {
+                if (!_running) return "No sweep is running: /epictest sweep start first.";
+                if (string.IsNullOrWhiteSpace(word) || word.Equals("all", StringComparison.OrdinalIgnoreCase))
+                    return "Name the raids to add (event,event or openworld).";
+                string[] ids = Parse(word, AutonomousRealmRaid.Definitions.Select(d => d.Id).ToArray(), out string[] unknown);
+                if (unknown.Length > 0) return $"No raid {string.Join(", ", unknown)}; /epictest list shows them. Nothing was added.";
+                string[] held = Lanes.SelectMany(l => l.Queue.Select(q => q.Id).Concat(l.Current != null ? new[] { l.Current.Id } : Array.Empty<string>())).ToArray();
+                var plan = PlanAdd(ids, held, Lanes[0].Name, id => AutonomousRealmRaid.Definitions.First(d => d.Id == id).Realm, _parallel,
+                    out string[] skipped);
+                long now = GameLoop.GameLoopTime;
+                foreach ((string laneName, string id) in plan)
+                {
+                    Lane lane = Lanes.FirstOrDefault(l => l.Name == laneName);
+                    if (lane == null)
+                    {
+                        lane = new Lane { Name = laneName, NextStartAt = now };
+                        Lanes.Add(lane);
+                    }
+                    lane.Queue.Add(new Step { Id = id });
+                }
+                Log.Info($"EPIC_SWEEP_ADD added={plan.Length} skipped={skipped.Length} order={string.Join(",", plan.Select(p => p.Id))} " +
+                         $"lanes={string.Join("|", Lanes.Select(l => $"{l.Name}:{l.Queue.Count}"))}");
+                return $"Added {plan.Length} raids" + (_parallel ? " to their realms' lanes" : "") +
+                       (skipped.Length > 0 ? $"; already in the sweep: {string.Join(", ", skipped)}" : "") +
+                       $". Waiting now: {Lanes.Sum(l => l.Queue.Count)}.";
+            }
+        }
+
+        /// <summary>Ends the raid running now and goes on with the next.</summary>
+        public static string Skip() => Skip(null);
+
+        /// <summary>
+        /// Ends a sweep raid running now and its lane goes on with the next: <paramref name="eventId"/>, or with none the only
+        /// one running (a parallel sweep with several running asks which).
+        /// </summary>
+        public static string Skip(string eventId)
+        {
+            string[] running;
+            lock (Sync) running = _running ? Lanes.Where(l => l.Current != null).Select(l => l.Current.Id).ToArray() : [];
+            string current = SkipTarget(running, eventId, out string refusal);
+            if (current == null) return refusal;
             AutonomousRealmRaid.Stop(current, out string reason);
             return $"{current}: {reason} The sweep goes on with the next.";
+        }
+
+        /// <summary>Which running sweep raid a skip ends (pure), or null and why not.</summary>
+        public static string SkipTarget(string[] running, string eventId, out string refusal)
+        {
+            refusal = null;
+            if (running.Length == 0) { refusal = "No sweep raid is running."; return null; }
+            if (!string.IsNullOrEmpty(eventId))
+            {
+                if (running.Contains(eventId)) return eventId;
+                refusal = $"{eventId} is not a sweep raid running now ({string.Join(", ", running)}).";
+                return null;
+            }
+            if (running.Length == 1) return running[0];
+            refusal = $"Several sweep raids run now ({string.Join(", ", running)}): /epictest sweep skip <event>.";
+            return null;
         }
 
         public static string[] Status()
         {
             lock (Sync)
             {
-                var lines = new List<string>
-                {
-                    _running
-                        ? $"Sweep: {Results.Count} done, {Queue.Count} waiting; now {_current?.Id ?? "between raids"}" +
-                          (_current != null ? $" ({(GameLoop.GameLoopTime - _currentStarted) / 60_000} min)" : "") +
-                          (_guest != null ? $"; guest {_guest.Name}" : "")
-                        : "No sweep is running."
-                };
-                lines.AddRange(Results);
-                return lines.ToArray();
+                if (!_running) return ["No sweep is running.", .. Results];
+                long now = GameLoop.GameLoopTime;
+                string Now(Lane l) => l.Current != null ? $"{l.Current.Id} ({(now - l.CurrentStarted) / 60_000} min)" : "between raids";
+                string head = $"Sweep: {Results.Count} done, {Lanes.Sum(l => l.Queue.Count)} waiting; now " +
+                              (Lanes.Count == 1 ? Now(Lanes[0]) : string.Join("; ", Lanes.Select(l => $"{l.Name} {Now(l)}"))) +
+                              $"; cap {(_capMs > 0 ? $"{_capMs / 60_000} min" : "off")}" +
+                              (_guest != null ? $"; guest {_guest.Name}" : "");
+                return [head, .. Results];
             }
         }
 
@@ -276,82 +434,139 @@ namespace DOL.GS
         {
             if (now < _nextPulse) return;
             _nextPulse = now + PulseMs;
-            Step current;
+            Lane[] lanes;
             lock (Sync)
             {
                 if (!_running) return;
-                current = _current;
+                lanes = Lanes.ToArray();
             }
+            foreach (Lane lane in lanes)
+                PulseLane(lane, now);
+            bool done;
+            lock (Sync)
+            {
+                done = _running && Lanes.All(l => l.Current == null && l.Queue.Count == 0);
+                if (done) _running = false;
+            }
+            if (done) Finish("every raid ran");
+        }
+
+        private static void PulseLane(Lane lane, long now)
+        {
+            Step current;
+            lock (Sync) current = lane.Current;
             if (current != null)
             {
                 bool running = AutonomousRealmRaid.IsRunning(current.Id);
-                if (running && now - _currentStarted >= RaidCapMs)
+                if (running && CapReached(_capMs, now - lane.CurrentStarted))
                 {
                     AutonomousRealmRaid.Stop(current.Id, out _);
-                    Log.Info($"EPIC_SWEEP_CAP event={current.Id} minutes={(now - _currentStarted) / 60_000}");
+                    Log.Info($"EPIC_SWEEP_CAP event={current.Id} minutes={(now - lane.CurrentStarted) / 60_000} cap={_capMs / 60_000} lane={lane.Name}");
                     running = false;
                 }
                 if (running)
                 {
-                    RetrySeat(now);
-                    TagAlong(now);
+                    if (_guest != null)
+                    {
+                        RetrySeat(now);
+                        TagAlong(now);
+                    }
                     return;
                 }
                 // The raid ended (REALM_RAID_ENDED has its outcome).
-                string line = $"{current.Id}: ended after {(now - _currentStarted) / 60_000} min";
+                string line = $"{current.Id}: ended after {(now - lane.CurrentStarted) / 60_000} min";
+                int done, left;
                 lock (Sync)
                 {
                     Results.Add(line);
-                    _current = null;
-                    _nextStartAt = now + PauseBetweenMs;
+                    lane.Current = null;
+                    lane.NextStartAt = now + PauseBetweenMs;
+                    done = Results.Count;
+                    left = Lanes.Sum(l => l.Queue.Count);
                 }
-                Log.Info($"EPIC_SWEEP_RAID_DONE event={current.Id} minutes={(now - _currentStarted) / 60_000} done={Results.Count} left={Queue.Count}");
-                LeaveParty();
+                Log.Info($"EPIC_SWEEP_RAID_DONE event={current.Id} minutes={(now - lane.CurrentStarted) / 60_000} done={done} left={left} lane={lane.Name}");
+                if (_guest != null) LeaveParty();
                 return;
             }
-            if (now < _nextStartAt) return;
+            if (now < lane.NextStartAt) return;
+            string[] queued;
+            lock (Sync)
+            {
+                if (lane.Queue.Count == 0) return;
+                queued = lane.Queue.Select(q => q.Id).ToArray();
+            }
+            // Summoner's Hall and Darkness Falls are one dungeon for all three realms: a lane does not send its raid into one
+            // another realm's raid holds now (theirs would fight each other, and a shared final boss credits one realm only).
+            var raiding = AutonomousRealmRaid.Definitions.Where(d => AutonomousRealmRaid.IsRunning(d.Id))
+                .Select(d => (d.Id, d.Realm, d.Region)).ToArray();
+            int pick = NextStartable(queued, RealmAndRegionOf, raiding);
+            string held = pick == 0 ? null : HeldLine(queued, pick, raiding);
+            if (held != lane.Held)
+            {
+                lane.Held = held;
+                if (held != null) Log.Info($"EPIC_SWEEP_HELD lane={lane.Name} {held}");
+            }
+            if (pick < 0) return;
             Step next;
             lock (Sync)
             {
-                if (Queue.Count == 0)
-                {
-                    _running = false;
-                    next = null;
-                }
-                else
-                {
-                    next = Queue[0];
-                    Queue.RemoveAt(0);
-                }
+                next = lane.Queue.FirstOrDefault(q => q.Id == queued[pick]);
+                if (next == null) return;
+                lane.Queue.Remove(next);
             }
-            if (next == null)
-            {
-                Finish("every raid ran");
-                return;
-            }
-            StartNext(next, now);
+            StartNext(lane, next, now);
         }
 
-        private static void StartNext(Step step, long now)
+        private static (eRealm Realm, ushort Region) RealmAndRegionOf(string id)
+        {
+            var d = AutonomousRealmRaid.Definitions.First(x => x.Id == id);
+            return (d.Realm, d.Region);
+        }
+
+        /// <summary>
+        /// The first queued raid a lane may start now (pure), or -1: one whose region no raid of another realm holds
+        /// (<paramref name="running"/>: every raid running now, the sweep's and the realms' own).
+        /// </summary>
+        public static int NextStartable(string[] queued, Func<string, (eRealm Realm, ushort Region)> of,
+            (string Id, eRealm Realm, ushort Region)[] running)
+        {
+            for (int i = 0; i < queued.Length; i++)
+            {
+                var (realm, region) = of(queued[i]);
+                if (!running.Any(r => r.Region == region && r.Realm != realm)) return i;
+            }
+            return -1;
+        }
+
+        /// <summary>The EPIC_SWEEP_HELD details (pure): which raid waits, for whom, and what goes first meanwhile.</summary>
+        public static string HeldLine(string[] queued, int pick, (string Id, eRealm Realm, ushort Region)[] running)
+        {
+            string first = queued[0];
+            var (realm, region) = RealmAndRegionOf(first);
+            string by = running.Where(r => r.Region == region && r.Realm != realm).Select(r => r.Id).FirstOrDefault() ?? "-";
+            return $"event={first} region={region} by={by} next={(pick < 0 ? "wait" : queued[pick])}";
+        }
+
+        private static void StartNext(Lane lane, Step step, long now)
         {
             var definition = AutonomousRealmRaid.Definitions.First(d => d.Id == step.Id);
             step.Tries++;
             if (AutonomousRealmRaid.IsRunning(step.Id))
             {
-                Requeue(step, "already running (a raid of the realm's own)", now);
+                Requeue(lane, step, "already running (a raid of the realm's own)", now);
                 return;
             }
             AutonomousRealmRaid.ResetCooldown(step.Id);
             int size = EpicPlaytestCommandHandler.SizeFor("era", definition.SuggestedBots);
             if (!AutonomousRealmRaid.Start(definition.Id, definition.Realm, out string reason, true, size, null, false))
             {
-                Requeue(step, reason, now);
+                Requeue(lane, step, reason, now);
                 return;
             }
             lock (Sync)
             {
-                _current = step;
-                _currentStarted = now;
+                lane.Current = step;
+                lane.CurrentStarted = now;
                 _guestAwaySince = _guestDeadSince = 0;
                 _seatPendingFor = null;
                 _nextSeatTry = now + SeatRetryMs;
@@ -364,22 +579,22 @@ namespace DOL.GS
                 EpicPlaytestCommandHandler.MoveTo(definition.Id, hub.Name, hub.Region, hub.Center, recruits);
             }
             Log.Info($"EPIC_SWEEP_RAID_START event={definition.Id} name=\"{definition.Name}\" realm={definition.Realm} size={size} try={step.Tries} " +
-                     $"toHub={moved} reason=\"{reason}\"");
+                     $"toHub={moved} reason=\"{reason}\" lane={lane.Name}");
             SeatGuest(definition, hub);
         }
 
-        private static void Requeue(Step step, string reason, long now)
+        private static void Requeue(Lane lane, Step step, string reason, long now)
         {
             step.LastFailure = reason;
             bool again = step.Tries < Attempts;
             lock (Sync)
             {
-                if (again) Queue.Add(step);
+                if (again) lane.Queue.Add(step);
                 else Results.Add($"{step.Id}: not run ({reason})");
                 // Nothing started: try the next one soon, not after the full pause.
-                _nextStartAt = now + 30_000;
+                lane.NextStartAt = now + 30_000;
             }
-            Log.Info($"EPIC_SWEEP_RAID_NOT_STARTED event={step.Id} try={step.Tries} again={again} reason=\"{reason}\"");
+            Log.Info($"EPIC_SWEEP_RAID_NOT_STARTED event={step.Id} try={step.Tries} again={again} reason=\"{reason}\" lane={lane.Name}");
         }
 
         private static void SeatGuest(AutonomousRealmRaid.Definition definition, RealmRaidMuster.Hub hub)
@@ -431,7 +646,7 @@ namespace DOL.GS
                 if (_guest?.Group != null) _seatPendingFor = null;
                 definition = _seatPendingFor;
                 hub = _seatPendingHub;
-                if (definition == null || _current?.Id != definition.Id || now < _nextSeatTry) return;
+                if (definition == null || GuestRaid?.Id != definition.Id || now < _nextSeatTry) return;
                 _nextSeatTry = now + SeatRetryMs;
             }
             SeatGuest(definition, hub);
@@ -442,11 +657,11 @@ namespace DOL.GS
             GamePlayer guest;
             lock (Sync) guest = _guest;
             if (guest?.Client == null || guest.ObjectState != GameObject.eObjectState.Active || guest.Group == null) return;
-            GameLiving anchor = AnchorFor(guest, _current?.Id);
+            GameLiving anchor = AnchorFor(guest, GuestRaid?.Id);
             if (anchor == null) return;
             bool sameRegion = anchor.CurrentRegionID == guest.CurrentRegionID;
             float distance = sameRegion ? guest.GetDistanceTo(anchor) : float.MaxValue;
-            GameNPC boss = AutonomousRealmRaid.BossOf(_current?.Id);
+            GameNPC boss = AutonomousRealmRaid.BossOf(GuestRaid?.Id);
             bool nearFight = guest.IsAlive && boss != null && boss.IsAlive && boss.ObjectState == GameObject.eObjectState.Active &&
                 boss.CurrentRegionID == guest.CurrentRegionID && guest.IsWithinRadius(boss, (int)GuestAwayRange);
             bool away = IsAway(sameRegion, distance, nearFight);
@@ -457,7 +672,7 @@ namespace DOL.GS
             string action = GuestAction(guest.IsAlive, true, sameRegion, distance,
                 _guestAwaySince == 0 ? 0 : now - _guestAwaySince, _guestDeadSince == 0 ? 0 : now - _guestDeadSince, nearFight);
             if (action == null) return;
-            string eventId = _current?.Id;
+            string eventId = GuestRaid?.Id;
             _guestAwaySince = _guestDeadSince = 0;
             ClientService.Instance.Post(static state =>
             {
