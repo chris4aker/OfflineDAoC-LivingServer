@@ -1,6 +1,6 @@
-# Battleground talk by bracket: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35,
-# Cathal Valley 45-49 (world database). "We're there now" lines need in_rvr; the rest are plans and
-# memories. Adds to rvr.lines (topic battlegrounds). New writing (see docs/bot-voices).
+# Battleground talk by bracket: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35
+# (world database). Cathal Valley is left out: it came after this era. "We're there now" lines need
+# in_rvr; the rest are plans and memories. Adds to rvr.lines (topic battlegrounds). New writing (see docs/bot-voices).
 
 # ---------------- Abermenai 15-19 ----------------
 @kind rvr
@@ -121,23 +121,6 @@ cale before the frontier, good practice for the big fights
 @about place
 caledonia at 30, worth it or skip straight to leveling?
 @about
-
-# ---------------- Cathal Valley 45-49 ----------------
-@kind rvr
-@topic battlegrounds
-@who *
-@levels 45-49
-@needs in_battleground
-cathal valley is a real fight, everyone here knows their class
-{enemy} 8man in cathal, stay grouped
-lost my group, anyone near the cathal keep?
-@needs
-@invites lfg
-cathal valley tonight? last chance before 50
-@invites
-cathal is the best rvr nobody talks about
-@invites joke
-47 and still in cathal, i might never leave
 
 # ---------------- Outgrowing a bracket ----------------
 @kind ambient
