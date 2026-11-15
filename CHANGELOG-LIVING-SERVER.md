@@ -240,6 +240,20 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   damages the soul. With no such bot in the raid the soul is only left alone. Lossren, her souls and her ghoul are
   unchanged. Sources: in 2003 her adds were trivial; the 2006 walkthrough says casters clear the souls and all melee go
   on Lossren; a later guide (Eden) says mesmerize the adds and use no area damage.
+- **A raid released in the frontier stands together** (tests only). On the owner's PC (sweep of 2026-11-14/15, build
+  `1dc66b6`) Albion's Summoner's Hall raid walks through Hall of the Corrupt, whose way in is in Pennine Mountains. All 59
+  Pennine deaths came after the first Aidon fight: raiders released at their party's staging post there were picked off
+  by enemy-realm bots, some two or three times in a row (Edor at 22:57:53 in Hall of the Corrupt, then 22:59:41 and
+  23:00:05 in Pennine; Armois 22:59:43 and 23:00:21). The owner's decision (2026-11-15):
+  - A raider released at a staging post in an RvR/frontier zone goes to one raid-wide post (the staging post nearest the
+    middle of them all), and the return wave there gathers at it too, so the released raiders stand and fight as a raid
+    (`realm_raid_frontier_raid_post`, on).
+  - When enemy players, bots, pets or guards are within 2,300 of that post (the threat scan radius), the raider releases
+    at the raid's hub instead. Those released there wait at the hub and go back together (all of them there after
+    90 seconds, eight after 4 minutes, or anyone after 8), then join the return wave, never one by one. RvR is unchanged:
+    nobody is immune.
+  - Staging posts outside the frontier keep the party's own post. `REALM_RAID_RELEASE_POST post=raid|party|hub reason=...`
+    logs each frontier release, and `REALM_RAID_HUB_GROUP` each group leaving the hub.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period
