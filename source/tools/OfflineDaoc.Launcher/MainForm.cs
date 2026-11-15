@@ -432,8 +432,9 @@ internal sealed partial class MainForm : Form
     private Control BuildCards()
     {
         var cards = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 6, RowCount = 1, Padding = new Padding(0, 4, 0, 5), BackColor = Color.Transparent };
-        // Realm cards need room for two generation actions; status cards do not.
-        foreach (float width in new[] { 16f, 13f, 19f, 19f, 19f, 14f })
+        // Realm cards need room for three generation actions (+ Lv.1, + Lv.20, + Lv.50); status cards do not. The server card
+        // keeps its 16: at 15 "NOT CONFIGURED" broke as "CONFIGURE / D" (CI preview, 2026-11-15).
+        foreach (float width in new[] { 16f, 12f, 20f, 20f, 20f, 12f })
             cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
         cards.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         cards.Controls.Add(Card("SERVER", _serverState, DaocTheme.Iron), 0, 0);
@@ -460,58 +461,84 @@ internal sealed partial class MainForm : Form
 
     private Control RealmGenerateButton(int realm, string realmName, Color accent)
     {
-        var split = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty, Padding = Padding.Empty };
-        split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        var split = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1, Margin = Padding.Empty, Padding = Padding.Empty };
+        for (int column = 0; column < 3; column++)
+            split.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / 3));
         split.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        // In level order: + Lv.1, + Lv.20, + Lv.50 (which stays at the right, where it was).
         split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 1), 0, 0);
-        split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 50), 1, 0);
+        split.Controls.Add(RealmGenerateBattlegroundButton(realm, realmName, accent), 1, 0);
+        split.Controls.Add(RealmGenerateLevelButton(realm, realmName, accent, 50), 2, 0);
         return split;
     }
 
-    private Button RealmGenerateLevelButton(int realm, string realmName, Color accent, int level)
+    private Button RealmGenerateCardButton(string text, Color accent)
     {
-        Button button = ActionButton($"+ Lv.{level}", accent);
+        Button button = ActionButton(text, accent);
         if (button is RuneButton rune) rune.ShowOrnaments = false;
         button.Margin = new Padding(1, 0, 1, 0);
         button.Font = new Font("Georgia", 8f, FontStyle.Bold);
         button.Height = 22;
         button.Dock = DockStyle.Fill;
         _realmGenerateButtons.Add(button);
-        button.Click += async (_, _) =>
-        {
-            if (_generatingBot)
-                return;
-
-            int batchSize = GetGenerationBatchSize();
-            _generatingBot = true;
-            SetRealmGenerationEnabled(false);
-            _footer.Text = batchSize == 1
-                ? $"Rolling a new level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} character…"
-                : $"Creating {batchSize} level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} characters as one protected batch…";
-            try
-            {
-                IReadOnlyList<BotCharacterGenerator.Identity> identities =
-                    await Task.Run(() => GenerateBotCharacters(realm, batchSize, level));
-                _realmFilter.SelectedItem = realmName[0] + realmName[1..].ToLowerInvariant();
-                await RefreshDashboardAsync();
-                BotCharacterGenerator.Identity last = identities[^1];
-                SelectBot(last.Name);
-                _footer.Text = batchSize == 1
-                    ? $"Created {last.Name}, a level {level} {last.RaceName} {last.ClassName}. Queued for staggered login."
-                    : $"Created all {batchSize} level {level} {realmName[0] + realmName[1..].ToLowerInvariant()} characters. All are queued for staggered login.";
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(this, exception.Message, "Unable to generate bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                _generatingBot = false;
-                SetRealmGenerationEnabled(true);
-            }
-        };
         return button;
+    }
+
+    private Button RealmGenerateLevelButton(int realm, string realmName, Color accent, int level)
+    {
+        Button button = RealmGenerateCardButton($"+ Lv.{level}", accent);
+        button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, level, null);
+        return button;
+    }
+
+    // Living Server 1.2 (owner, 2026-11-15: "a Lvl 20 button for bot adds makes sense"): "+ Lv.20" makes bots for the
+    // Thidranki battleground, each at a random level 20-24 (BattlegroundBotLevels). Shift 10, Ctrl 100, as the others.
+    private Button RealmGenerateBattlegroundButton(int realm, string realmName, Color accent)
+    {
+        BattlegroundBotLevels.Bracket bracket = BattlegroundBotLevels.Default;
+        Button button = RealmGenerateCardButton(BattlegroundBotLevels.ButtonText, accent);
+        _helpTip.SetToolTip(button, BattlegroundBotLevels.ButtonTip(bracket));
+        button.Click += async (_, _) => await GenerateFromRealmCardAsync(realm, realmName, 0, bracket);
+        return button;
+    }
+
+    private async Task GenerateFromRealmCardAsync(int realm, string realmName, int level, BattlegroundBotLevels.Bracket? battleground)
+    {
+        if (_generatingBot)
+            return;
+
+        int batchSize = GetGenerationBatchSize();
+        string realmTitle = realmName[0] + realmName[1..].ToLowerInvariant();
+        string levelText = battleground == null ? $"level {level}" : $"level {battleground.MinLevel}–{battleground.MaxLevel}";
+        _generatingBot = true;
+        SetRealmGenerationEnabled(false);
+        _footer.Text = batchSize == 1
+            ? $"Rolling a new {levelText} {realmTitle} character…"
+            : $"Creating {batchSize} {levelText} {realmTitle} characters as one protected batch…";
+        try
+        {
+            IReadOnlyList<CreatedBot> created =
+                await Task.Run(() => GenerateBotCharacters(realm, batchSize, level, battleground));
+            _realmFilter.SelectedItem = realmTitle;
+            await RefreshDashboardAsync();
+            CreatedBot last = created[^1];
+            SelectBot(last.Identity.Name);
+            string levels = battleground == null
+                ? $"level {level}"
+                : $"{battleground.Name}, levels {created.Min(bot => bot.Level)}–{created.Max(bot => bot.Level)}";
+            _footer.Text = batchSize == 1
+                ? $"Created {last.Identity.Name}, a level {last.Level} {last.Identity.RaceName} {last.Identity.ClassName}. Queued for staggered login."
+                : $"Created all {batchSize} {realmTitle} characters ({levels}). All are queued for staggered login.";
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, exception.Message, "Unable to generate bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            _generatingBot = false;
+            SetRealmGenerationEnabled(true);
+        }
     }
 
     // Ctrl-click makes 100, Shift-click 10. The keys are read as they were when the click arrived (Control.ModifierKeys
@@ -2243,13 +2270,18 @@ internal sealed partial class MainForm : Form
         return value is not string text || !text.Trim().Equals("false", StringComparison.OrdinalIgnoreCase);
     }
 
-    private IReadOnlyList<BotCharacterGenerator.Identity> GenerateBotCharacters(int realm, int count, int level = 1)
+    private sealed record CreatedBot(BotCharacterGenerator.Identity Identity, int Level);
+
+    /// <param name="battleground">"+ Lv.20": each bot gets a random level in this bracket (<paramref name="level"/> is then
+    /// unused); otherwise <paramref name="level"/> is 1 or 50.</param>
+    private IReadOnlyList<CreatedBot> GenerateBotCharacters(int realm, int count, int level = 1,
+        BattlegroundBotLevels.Bracket? battleground = null)
     {
         if (!File.Exists(_database))
             throw new InvalidOperationException("The prepared world database is missing.");
         if (count is not (1 or 10 or 100))
             throw new ArgumentOutOfRangeException(nameof(count));
-        if (level is not (1 or 50)) throw new ArgumentOutOfRangeException(nameof(level));
+        if (battleground == null && level is not (1 or 50)) throw new ArgumentOutOfRangeException(nameof(level));
 
         using var connection = new SQLiteConnection($"Data Source={_database};Version=3;Pooling=False;Default Timeout=10");
         connection.Open();
@@ -2270,16 +2302,23 @@ internal sealed partial class MainForm : Form
         }
 
         bool allowSluaghbinder = SluaghbinderEnabled(connection, transaction);
+        // The server's own bracket for that battleground: a Battleground table row replaces the period levels.
+        if (battleground != null)
+            battleground = LiveBattlegroundBracket(connection, transaction, battleground);
         // The server's own invalid-names list, so a launcher bot never gets a name a player couldn't.
         Func<string, bool> rejected = OfflineDaoc.Shared.EraBotNames.LoadRejected(Path.Combine(_serverDirectory, "config", "invalidnames.txt"));
-        var identities = new List<BotCharacterGenerator.Identity>(count);
+        var identities = new List<CreatedBot>(count);
         for (int index = 0; index < count; index++)
         {
             BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, allowSluaghbinder, rejected);
-            BotStartingLocation start = level == 50
+            int botLevel = battleground == null ? level : BattlegroundBotLevels.RollLevel(battleground, Random.Shared);
+            // Level 1 starts in a Classic/SI starting area. Higher levels start in their capital, where the realm's
+            // teleporters (with the [Battlegrounds] choice) and every class trainer are.
+            bool startsInCapital = botLevel > 1;
+            BotStartingLocation start = startsInCapital
                 ? CapitalBotStartingLocation(identity.Realm)
                 : ChooseBotStartingLocation(connection, transaction, identity.Realm, identity.RaceId, identity.ClassId);
-            identities.Add(identity);
+            identities.Add(new CreatedBot(identity, botLevel));
             string now = DateTime.UtcNow.ToString("O");
             using var insert = connection.CreateCommand();
             insert.Transaction = transaction;
@@ -2296,9 +2335,12 @@ internal sealed partial class MainForm : Form
                      'Awaiting staggered login queue', @placement, @now, 0)
                 """;
             insert.Parameters.AddWithValue("@name", identity.Name);
-            insert.Parameters.AddWithValue("@level", level);
-            insert.Parameters.AddWithValue("@xp", level == 50 ? 169999999950L : 0L);
-            insert.Parameters.AddWithValue("@money", level == 50 ? 100000000L : 0L);
+            insert.Parameters.AddWithValue("@level", botLevel);
+            // The server's experience for the level (169,999,999,950 at 50, 0 at 1).
+            insert.Parameters.AddWithValue("@xp", BattlegroundBotLevels.ExperienceForLevel(botLevel));
+            insert.Parameters.AddWithValue("@money", battleground != null
+                ? BattlegroundBotLevels.PurseCopper(botLevel)
+                : botLevel == 50 ? 100000000L : 0L);
             insert.Parameters.AddWithValue("@realm", identity.Realm);
             insert.Parameters.AddWithValue("@classId", identity.ClassId);
             insert.Parameters.AddWithValue("@className", identity.ClassName);
@@ -2311,13 +2353,14 @@ internal sealed partial class MainForm : Form
             insert.Parameters.AddWithValue("@y", start.Y);
             insert.Parameters.AddWithValue("@z", start.Z);
             insert.Parameters.AddWithValue("@zoneId", start.ZoneId);
-            insert.Parameters.AddWithValue("@zoneName", level == 50 ? start.ZoneName : start.RegionId is 51 or 151 or 181
+            insert.Parameters.AddWithValue("@zoneName", startsInCapital ? start.ZoneName : start.RegionId is 51 or 151 or 181
                 ? "Shrouded Isles starting area"
                 : "Classic starting area");
             insert.Parameters.AddWithValue("@placement",
                 $"Launcher assigned a realm/race/class-valid random start in region {start.RegionId} before server startup");
             insert.ExecuteNonQuery();
-            if (level == 50)
+            // Only "+ Lv.50" gets a gear set. "+ Lv.20" bots start without armour and earn it (owner's rule).
+            if (battleground == null && botLevel == 50)
             {
                 long botId = connection.LastInsertRowId;
                 using var gear = connection.CreateCommand();
@@ -2340,6 +2383,23 @@ internal sealed partial class MainForm : Form
     }
 
     private sealed record BotStartingLocation(int RegionId, int X, int Y, int Z, int ZoneId = 0, string ZoneName = "");
+
+    /// <summary>The bracket as the server reads it (BattlegroundBrackets.Load): its Battleground table row, if any.</summary>
+    private static BattlegroundBotLevels.Bracket LiveBattlegroundBracket(SQLiteConnection connection, SQLiteTransaction transaction,
+        BattlegroundBotLevels.Bracket period)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Battleground' COLLATE NOCASE";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+            return period;
+        command.CommandText = "SELECT MinLevel, MaxLevel FROM Battleground WHERE RegionID=@region LIMIT 1";
+        command.Parameters.AddWithValue("@region", (int)period.RegionId);
+        using var reader = command.ExecuteReader();
+        return reader.Read() && !reader.IsDBNull(0) && !reader.IsDBNull(1)
+            ? BattlegroundBotLevels.WithDatabaseRow(period, Convert.ToInt32(reader.GetValue(0)), Convert.ToInt32(reader.GetValue(1)))
+            : period;
+    }
 
     // Match the server's established capital recovery anchors. Its normal
     // login validation grounds these positions on the current navmesh.

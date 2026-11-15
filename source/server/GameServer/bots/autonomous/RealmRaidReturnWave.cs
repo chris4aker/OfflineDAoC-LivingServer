@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Numerics;
 using DOL.GS.ServerProperties;
 
 namespace DOL.GS;
@@ -29,6 +31,75 @@ public static class RealmRaidReturnWave
     /// staging post outside the way in (it was proven walkable and clear when the raid staged there), when the party has one.
     /// </summary>
     public static bool ReleasesAtStaging(bool on, bool dungeonRaid, bool partyHasStaging) => on && dungeonRaid && partyHasStaging;
+
+    // ---- staging posts in the frontier (Living Server 1.2, after the sweep of 2026-11-14) -------------------------------
+
+    [ServerProperty("autonomous", "realm_raid_frontier_raid_post",
+        "Raid dungeons whose way in lies in an RvR/frontier zone: a raider who dies inside releases at ONE raid-wide post (not its party's post), so the released raiders stand and fight together; when enemy players, bots or pets already hold that post, it releases at the raid's hub and comes back with the others. False = per-party posts everywhere, as before.", true)]
+    public static bool FrontierRaidPost = true;
+
+    /// <summary>Enemy combatants within this of the raid-wide post hold it (the threat scan radius of
+    /// AutonomousThreatAwarePathing).</summary>
+    public const int RaidPostHeldRadius = 2_300;
+
+    public enum ReleasePost { Hub, Party, Raid }
+
+    /// <summary>
+    /// Where a raider who died in a raid dungeon releases (pure). Owner's PC, 2026-11-14/15 (build 1dc66b6): Albion's
+    /// Summoner's Hall raid walks through Hall of the Corrupt, whose way in is in Pennine Mountains; all 59 Pennine deaths
+    /// came after the first Aidon fight, raiders released at their party's post in the frontier picked off by enemy-realm
+    /// bots, some two or three times in a row. Owner's decision (2026-11-15): a staging post in an RvR/frontier zone sends
+    /// every released raider to one raid-wide post, so they stand together; when enemies already hold that post, the
+    /// raid's hub, and they come back together. Staging posts outside the frontier keep the party's own post.
+    /// </summary>
+    public static ReleasePost ChooseReleasePost(bool atStaging, bool dungeonRaid, bool partyHasStaging, bool frontierPostOn,
+        bool stagingInFrontier, bool raidHasPost, int enemiesAtRaidPost, out string reason)
+    {
+        if (!atStaging) { reason = "release_at_staging_off"; return ReleasePost.Hub; }
+        if (!dungeonRaid) { reason = "not_a_dungeon_raid"; return ReleasePost.Hub; }
+        if (!partyHasStaging) { reason = "party_has_no_staging_post"; return ReleasePost.Hub; }
+        if (!stagingInFrontier) { reason = "staging_outside_frontier"; return ReleasePost.Party; }
+        if (!frontierPostOn) { reason = "frontier_raid_post_off"; return ReleasePost.Party; }
+        if (!raidHasPost) { reason = "no_raid_post"; return ReleasePost.Party; }
+        if (enemiesAtRaidPost > 0) { reason = "enemies_hold_raid_post"; return ReleasePost.Hub; }
+        reason = "frontier_staging";
+        return ReleasePost.Raid;
+    }
+
+    /// <summary>The raid-wide post (pure): of the parties' staging posts (each proven walkable when the raid staged), the
+    /// one nearest their middle; -1 when there is none.</summary>
+    public static int RaidPost(IReadOnlyList<Vector3> posts)
+    {
+        if (posts == null || posts.Count == 0) return -1;
+        var middle = Vector3.Zero;
+        foreach (var p in posts) middle += p;
+        middle /= posts.Count;
+        int best = 0;
+        for (int i = 1; i < posts.Count; i++)
+            if (Vector3.DistanceSquared(posts[i], middle) < Vector3.DistanceSquared(posts[best], middle))
+                best = i;
+        return best;
+    }
+
+    /// <summary>A raider released at the hub because enemies held the raid-wide post waits this long there at least, so the
+    /// raiders falling together (the corpse wait is 90 s) leave together.</summary>
+    public const long HubGraceMilliseconds = 90_000;
+
+    /// <summary>
+    /// The raiders released at the hub because enemies held the raid-wide post (pure): they wait at the hub and go back
+    /// together, never one by one through the frontier. <paramref name="returners"/>: living raiders released there and
+    /// not yet gone; <paramref name="atHub"/>: of them, standing at the hub; <paramref name="waitedMilliseconds"/>: since
+    /// the first of them stood there. They go once all of them are there (and the grace has passed), once a wave's worth
+    /// has waited out the patience, or at the last call. A lone raider waits for company until the last call.
+    /// </summary>
+    public static Step HubGroup(int returners, int atHub, long waitedMilliseconds)
+    {
+        if (atHub <= 0) return Step.Gather;
+        if (waitedMilliseconds >= LastCallMilliseconds) return Step.Go;
+        if (atHub >= 2 && atHub >= returners && waitedMilliseconds >= HubGraceMilliseconds) return Step.Go;
+        if (atHub >= MinimumWave && waitedMilliseconds >= PatienceMilliseconds) return Step.Go;
+        return Step.Gather;
+    }
 
     /// <summary>A raider's corpse waits this long for a resurrection while raiders stand near it.</summary>
     public const long CorpseWaitMilliseconds = 90_000;

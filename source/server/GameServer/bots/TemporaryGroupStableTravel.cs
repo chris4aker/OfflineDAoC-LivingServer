@@ -58,6 +58,7 @@ public static class TemporaryGroupStableTravel
         _monitorTimer = null;
         ActiveRoutes.Clear();
         PendingPlayerTransfers.Clear();
+        EnemyRealmNoFollowLogged.Clear();
     }
 
     /// <summary>
@@ -117,6 +118,35 @@ public static class TemporaryGroupStableTravel
         freeToGo && botRegion == originRegion &&
         (long)(botX - originX) * (botX - originX) + (long)(botY - originY) * (botY - originY) <= (long)GroupmateTravelRadius * GroupmateTravelRadius;
 
+    // One line per player transfer, however many bots stay behind.
+    private static readonly ConcurrentDictionary<GamePlayer, DateTime> EnemyRealmNoFollowLogged = new();
+
+    private static DateTime TransferStamp(GamePlayer player) =>
+        player != null && TransferOrigins.TryGetValue(player, out var origin) ? origin.Utc : DateTime.MinValue;
+
+    /// <summary>
+    /// Owner 2026-11-15: "No, bots should not follow a teleport into another realm." True (and the bot stays where it
+    /// is) when the player landed in another realm's territory for this bot (RealmTerritory): every bot kind, a party
+    /// gamebot (player-led or bot-led) and a /spawn companion alike. A bot-led party is not disbanded; its own "player far
+    /// away" pacing takes over.
+    /// </summary>
+    private static bool HoldsBackFromEnemyRealm(GameBot bot, GamePlayer player, DateTime transferUtc)
+    {
+        if (!RealmTerritory.IsEnemyRealmTerritoryFor(bot, player))
+            return false;
+        if (!EnemyRealmNoFollowLogged.TryGetValue(player, out DateTime logged) || logged != transferUtc)
+        {
+            EnemyRealmNoFollowLogged[player] = transferUtc;
+            bool botLed = bot.PlayerGroupLeader == null && BotLedGroups.ViewOf(bot.Group) != null;
+            eRealm owner = RealmTerritory.OwnerOf(player.CurrentRegionID, player.CurrentZone?.ID ?? ushort.MaxValue);
+            Log.Info($"{(botLed ? "BOT_LED_NO_FOLLOW" : "BOT_NO_FOLLOW")} reason=enemy_realm player=\"{player.Name}\" " +
+                     $"leader=\"{bot.Group?.LivingLeader?.Name}\" firstBot=\"{bot.Name}\" kind={(bot.IsTemporaryGroupHelper ? "companion" : "gamebot")} " +
+                     $"realm={GlobalConstants.RealmToName(bot.Realm)} to={player.CurrentRegionID}:{player.X},{player.Y},{player.Z} " +
+                     $"zone=\"{player.CurrentZone?.Description}\" owner={GlobalConstants.RealmToName(owner)}");
+        }
+        return true;
+    }
+
     /// <summary>
     /// Play test 2026-10-27: an autonomous gamebot invited into the player's group stayed behind whenever the player took a
     /// porter, so it ended up in another region with no way to follow. A gamebot that was beside the player when the player
@@ -135,6 +165,10 @@ public static class TemporaryGroupStableTravel
             return false;
         bool free = !bot.InCombat && BotGroupInvite.DutyOf(bot) == BotGroupInvite.Duty.None;
         if (!WasBesideDeparture(bot.CurrentRegionID, bot.X, bot.Y, origin.Region, origin.X, origin.Y, free))
+            return false;
+        // Owner 2026-11-15 (build 1dc66b6): a GM /jump into Midgard's Tuscaran Glacier carried a whole Albion party into
+        // Midgard's Kvasir raid. Another realm's territory is never followed into; the bot stays where it is.
+        if (HoldsBackFromEnemyRealm(bot, player, origin.Utc))
             return false;
         bot.StopCurrentSpellcast();
         bot.StopMoving();
@@ -275,6 +309,9 @@ public static class TemporaryGroupStableTravel
         bot.StowedForRide = false;
         if (bot.ObjectState is not GameObject.eObjectState.Active || player?.ObjectState is not GameObject.eObjectState.Active)
             return;
+        // Back in view where it waited: a ride that ends in another realm's territory (a GM /jump off the horse) is not followed.
+        if (HoldsBackFromEnemyRealm(bot, player, TransferStamp(player)))
+            return;
         Vector3 beside = FormationPoint(player, ordinal);
         bot.MoveTo(player.CurrentRegionID, (int)Math.Round(beside.X), (int)Math.Round(beside.Y), (int)Math.Round(beside.Z), player.Heading);
         if (petStowed && pet.IsAlive && pet.ObjectState is GameObject.eObjectState.Active && bot.ObjectState is GameObject.eObjectState.Active &&
@@ -333,6 +370,8 @@ public static class TemporaryGroupStableTravel
                     bot.CurrentZone?.ID ?? 0,
                     player.CurrentZone.ID);
             if (!needsRelocation || !bot.IsTemporaryGroupHelper || bot.Group != player.Group || bot.PlayerGroupLeader != player)
+                continue;
+            if (HoldsBackFromEnemyRealm(bot, player, TransferStamp(player)))
                 continue;
 
             bot.CompleteStableMasterRoute();

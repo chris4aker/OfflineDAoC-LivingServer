@@ -30,7 +30,16 @@ public static class AutonomousRaidLeeroy
 
     public static bool Rolls(double draw) => draw < Chance;
 
-    private static int _forceNextRaid, _chargeNow;
+    private static int _forceNextRaid;
+    // The GM's "now" (/lstest leeroy now): armed until this clock time (ms), 0 when not armed. 1.2: it used to stay armed for
+    // good, so a "now" with no Leeroy raid gathering fired on some later Leeroy raid, hours on.
+    private static long _chargeNowUntil;
+
+    /// <summary>How long a GM's /lstest leeroy now waits for a Leeroy raid gathering at its final encounter.</summary>
+    public const long ChargeNowWindowMilliseconds = 10 * 60_000;
+
+    /// <summary>The clock the GM's "now" goes by (milliseconds); tests set their own.</summary>
+    public static Func<long> Clock { get; set; } = () => Environment.TickCount64;
 
     /// <summary>GM test (/lstest leeroy): the next realm raid to form has a Leeroy.</summary>
     public static void ForceNextRaid() => Volatile.Write(ref _forceNextRaid, 1);
@@ -38,12 +47,38 @@ public static class AutonomousRaidLeeroy
     /// <summary>The raid forming now has a Leeroy: the 5% roll, or once after /lstest leeroy.</summary>
     public static bool RollForRaid(double draw) => Interlocked.Exchange(ref _forceNextRaid, 0) == 1 || Rolls(draw);
 
-    /// <summary>GM test (/lstest leeroy now): a raid with a Leeroy that is gathering for its final encounter charges at once.</summary>
-    public static void ChargeNow() => Volatile.Write(ref _chargeNow, 1);
+    /// <summary>
+    /// GM test (/lstest leeroy now): a raid with a Leeroy that is gathering for its final encounter charges at once. Used once,
+    /// and only for the next <see cref="ChargeNowWindowMilliseconds"/>; then it lapses.
+    /// </summary>
+    public static void ChargeNow() => Volatile.Write(ref _chargeNowUntil, Math.Max(1, Clock() + ChargeNowWindowMilliseconds));
 
-    /// <summary>Whether a raid with a Leeroy goes now: its own rules, or a GM's "now" with at least two raiders there (used once).</summary>
-    public static bool GoesNow(bool rulesSay, int present) =>
-        rulesSay || present >= 2 && Interlocked.Exchange(ref _chargeNow, 0) == 1;
+    /// <summary>Whether the GM's "now" is still waiting for a raid.</summary>
+    public static bool ChargeNowArmed
+    {
+        get
+        {
+            long until = Volatile.Read(ref _chargeNowUntil);
+            return until != 0 && Clock() <= until;
+        }
+    }
+
+    /// <summary>
+    /// Whether a raid with a Leeroy goes now: its own rules, or a GM's "now" with at least two raiders there (used once, and
+    /// lapsed after <see cref="ChargeNowWindowMilliseconds"/>).
+    /// </summary>
+    public static bool GoesNow(bool rulesSay, int present)
+    {
+        if (rulesSay)
+            return true;
+        if (present < 2)
+            return false;
+        long until = Volatile.Read(ref _chargeNowUntil);
+        if (until == 0)
+            return false;
+        bool fresh = Clock() <= until;
+        return Interlocked.CompareExchange(ref _chargeNowUntil, 0, until) == until && fresh;
+    }
 
     /// <summary>
     /// Whether he charges now: a first attempt at the encounter (never a regroup after a wipe), the muster standing for a
@@ -121,7 +156,7 @@ public static class AutonomousRaidLeeroy
         "was that the plan? nobody said that was the plan",
         "wipe incoming",
         "omg",
-        "well at least he has chicken",
+        "who brought him. seriously, who brought him",
         "rez him after... if we live",
     ];
 
@@ -144,7 +179,7 @@ public static class AutonomousRaidLeeroy
     [
         "thanks a lot {leeroy}",
         "wiped on {boss}. we all know whose fault that was, {leeroy}",
-        "{leeroy} cost us the raid. at least he has chicken",
+        "{leeroy} cost us the raid. he can buy the ale tonight",
     ];
 
     public static string Fill(string line, string leeroy, string boss) =>

@@ -87,6 +87,13 @@ namespace DOL.GS
             /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
             /// has never been in is still on the way in and is never held at the way in.</summary>
             public readonly HashSet<long> BeenInside = new();
+            /// <summary>The raid-wide post a frontier raid's released raiders gather at (RealmRaidReturnWave.RaidPost), once
+            /// chosen from the staging posts.</summary>
+            public Vector3? RaidPost;
+            /// <summary>Raiders released at the hub because enemies held the raid-wide post: they wait there and go back
+            /// together (RealmRaidReturnWave.HubGroup).</summary>
+            public readonly HashSet<long> HubReturners = new();
+            public long HubWaitingSince;
             /// <summary>A dragon raid's raiders walking back after a release (or from beyond the staging ring), who gather at
             /// their staging post and go back in as a wave (RealmRaidReturnWave.ClassifyDragonRaider).</summary>
             public readonly HashSet<long> ReturningToDragon = new();
@@ -181,6 +188,8 @@ namespace DOL.GS
         private static readonly Dictionary<(ushort Region, int X, int Y), long> RecentDestinations = new();
         private const long DestinationMemory = 15 * 60_000;
 
+        /// <summary>A running neutral raid (Darkness Falls, Summoner's Hall) has a party destination in
+        /// <paramref name="region"/>. Realm raids in their own dungeons are never counted (<see cref="_raidDestinations"/>).</summary>
         public static bool HasActiveRaidIn(ushort region)
         {
             foreach (var d in _raidDestinations)
@@ -191,12 +200,17 @@ namespace DOL.GS
         /// <summary>
         /// Run 8 (2026-10-14): the Albion raid in Darkness Falls stood 6,000-10,000 units short of Prince Ba'alorien
         /// for forty minutes, fighting essence shredders, naburite drinkers and succubi that came back every 100-180
-        /// seconds (263 essence shredders alone), and skipped him untouched. While a bot raid is inside Darkness
-        /// Falls, Summoner's Hall, Caer Sidi or Galladoria, the ordinary monsters there stay down for ten minutes;
-        /// bosses, epic encounters and scripted adds keep their own timers, and nothing changes once the raid ends.
+        /// seconds (263 essence shredders alone), and skipped him untouched. While a neutral bot raid is inside Darkness
+        /// Falls or Summoner's Hall, the ordinary monsters there stay down for ten minutes; bosses, epic encounters and
+        /// scripted adds keep their own timers, and nothing changes once the raid ends.
+        /// Neutral raids only (owner, 2026-11-15): the realm raid dungeons (Caer Sidi, Galladoria, Krondon and the other
+        /// <see cref="RaidDungeons"/>) keep their monsters' own respawn timers while a raid is in them. They were listed here
+        /// before, but <see cref="HasActiveRaidIn"/> only ever saw neutral raids, so the hold never applied in them; the list
+        /// now says what the code does. Their first-hour sweep leaves out monsters that came back instead
+        /// (RealmRaidDungeonRoute.SweepTarget).
         /// </summary>
         public const int RaidTrashRespawnMilliseconds = 10 * 60_000;
-        public static readonly ushort[] SlowRespawnRegions = [249, 248, 60, 191, .. RaidDungeons.Select(d => d.Region)];
+        public static readonly ushort[] SlowRespawnRegions = [RealmRaidNeutralEvents.DarknessFalls, RealmRaidNeutralEvents.SummonersHall];
 
         public static int RaidRespawnInterval(GameNPC npc, int interval)
         {
@@ -1547,9 +1561,11 @@ namespace DOL.GS
             {
                 // The gate on the way while one is fought (RealmRaidRouteGate), else the raid's own dungeon.
                 RealmRaidDungeonRoute route = ActiveRoute(raid);
+                // A frontier way in: the raid-wide post, where the released raiders stand together (ReturnPost).
+                Vector3 rally = ReturnPost(raid, party);
                 party.RallyView = route.Entrance == null ? null : new(raid.Definition.Id, "RAID — gathering at the way in to go back in together",
                     new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Definition.Name, route.Entrance.SourceRegion,
-                        (int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z, false, false, 50), true);
+                        (int)rally.X, (int)rally.Y, (int)rally.Z, false, false, 50), true);
                 Vector3 destination = raid.Started ? route.Destination : party.Staging;
                 ushort region = raid.Started ? route.Region : route.Entrance.SourceRegion;
                 string target = raid.Started ? route.TargetName : raid.Definition.Name;
@@ -1639,6 +1655,15 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party)) return null;
+                // Released at the hub because enemies held a frontier raid's raid-wide post: it waits at its post there and
+                // goes back with the others (PulseHubGroup), never alone through the frontier.
+                if (raid.HubReturners.Contains(bot.DatabaseID) && raid.Hub != null)
+                {
+                    Vector3 wait = RealmRaidMuster.ReleasePoint(raid.Hub.Center, party.HubPost);
+                    return new(raid.Definition.Id, "RAID — waiting at the hub to go back together",
+                        new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Hub.Name, raid.Hub.Region,
+                            (int)wait.X, (int)wait.Y, (int)wait.Z, false, false, 50), true);
+                }
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
                 if (raid.ReturnGathering && party.RallyView != null && (raid.Definition.IsDungeon
@@ -1659,6 +1684,7 @@ namespace DOL.GS
         private static void PulseReturnWave(Raid raid, long now)
         {
             RealmRaidDungeonRoute route = raid.DungeonRoute;
+            PulseHubGroup(raid, now);
             if (!RealmRaidReturnWave.On || route.Entrance == null)
             {
                 raid.ReturnGathering = false;
@@ -1707,6 +1733,39 @@ namespace DOL.GS
             // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
             route.ReturnGathering = raid.ReturnGathering && waiting > 0;
             if (raid.Transit != null) raid.Transit.ReturnGathering = route.ReturnGathering;
+        }
+
+        /// <summary>
+        /// Under the raid lock, each pulse of a started dungeon raid: the raiders released at the hub because enemies held a
+        /// frontier raid's raid-wide post (RealmRaidReturnWave.HubGroup) wait there and go back together, then join the
+        /// return wave at the way in. Owner's decision, 2026-11-15: never walking back alone (Pennine Mountains, build 1dc66b6:
+        /// raiders released alone at the way in were picked off by enemy-realm bots two or three times in a row).
+        /// </summary>
+        private static void PulseHubGroup(Raid raid, long now)
+        {
+            if (raid.HubReturners.Count == 0) { raid.HubWaitingSince = 0; return; }
+            GameBot[] bots = raid.Support.OfType<GameBot>().Where(b => raid.HubReturners.Contains(b.DatabaseID)).ToArray();
+            // Gone from the raid: no longer waited for. One down again is not counted; its next release decides again.
+            raid.HubReturners.RemoveWhere(id => !bots.Any(b => b.DatabaseID == id));
+            if (!RealmRaidReturnWave.On || raid.Hub == null) { raid.HubReturners.Clear(); raid.HubWaitingSince = 0; return; }
+            GameBot[] returners = bots.Where(b => b.IsAlive).ToArray();
+            GameBot[] atHub = returners.Where(b => b.CurrentRegionID == raid.Hub.Region && AtHubPost(raid, b)).ToArray();
+            if (atHub.Length == 0) raid.HubWaitingSince = 0;
+            else if (raid.HubWaitingSince == 0) raid.HubWaitingSince = now;
+            long waited = raid.HubWaitingSince == 0 ? 0 : now - raid.HubWaitingSince;
+            if (RealmRaidReturnWave.HubGroup(returners.Length, atHub.Length, waited) != RealmRaidReturnWave.Step.Go) return;
+            foreach (GameBot b in atHub) raid.HubReturners.Remove(b.DatabaseID);
+            raid.HubWaitingSince = 0;
+            Log.Info($"REALM_RAID_HUB_GROUP event={raid.Definition.Id} going={atHub.Length} returners={returners.Length} " +
+                     $"waited_s={waited / 1000} hub=\"{raid.Hub.Name}\"");
+        }
+
+        private static bool AtHubPost(Raid raid, GameBot bot)
+        {
+            Group group = bot.Group;
+            Vector3 post = RealmRaidMuster.ReleasePoint(raid.Hub.Center,
+                group != null && raid.Parties.TryGetValue(group, out Party party) ? party.HubPost : default);
+            return bot.IsWithinRadius(new Point3D((int)post.X, (int)post.Y, (int)post.Z), 600);
         }
 
         /// <summary>
@@ -1876,7 +1935,9 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Parties.TryGetValue(group, out var party) ||
                     !raid.HubDeparted || bot.CurrentRegionID != raid.Hub.Region ||
                     !(raid.Started || party.CatchingUp.Contains(bot.DatabaseID))) return false;
-                destination = raid.DungeonRoute != null ? party.Staging :
+                // Released at the hub because enemies held the raid-wide post: it waits at the hub for the others (GetTravelView).
+                if (raid.HubReturners.Contains(bot.DatabaseID)) return false;
+                destination = raid.DungeonRoute != null ? raid.Started ? ReturnPost(raid, party) : party.Staging :
                     new Vector3(party.DestinationView.Camp.X, party.DestinationView.Camp.Y, party.DestinationView.Camp.Z);
                 via = raid.Hub.Via;
                 return true;
@@ -1893,26 +1954,97 @@ namespace DOL.GS
             region = 0; point = null;
             Group group = bot?.Group;
             if (group == null) return false;
+            string id;
+            ushort stagingRegion = 0;
+            Vector3 staging = default, hub;
+            Vector3? raidPost;
+            bool partyHasStaging, frontier;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
                 if (!Membership.TryGetValue(group, out var raid) || raid.DungeonRoute == null || raid.Hub == null) return false;
-                // At the party's staging post by the way in, where the return wave gathers (RealmRaidReturnWave).
-                if (raid.Parties.TryGetValue(group, out Party party) && raid.DungeonRoute.Entrance is { } edge &&
-                    RealmRaidReturnWave.ReleasesAtStaging(RealmRaidReturnWave.ReleaseAtStaging, true, party.Staging != default))
+                id = raid.Definition.Id;
+                raid.Parties.TryGetValue(group, out Party party);
+                partyHasStaging = party != null && party.Staging != default && raid.DungeonRoute.Entrance != null;
+                if (partyHasStaging)
                 {
-                    region = edge.SourceRegion;
-                    point = new Point3D((int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z);
-                    return true;
+                    stagingRegion = raid.DungeonRoute.Entrance.SourceRegion;
+                    staging = party.Staging;
                 }
-                // Otherwise at the party's own post at the hub (proven to lead to the hub and, since build 4, from it:
+                frontier = partyHasStaging && InFrontier(stagingRegion, staging);
+                raidPost = frontier ? RaidWidePost(raid) : null;
+                // The hub: the party's own post there (proven to lead to the hub and, since build 4, from it:
                 // RealmRaidMuster.HubReachesPost), not on the hub's centre, where Snowdonia Station's 12 failed raiders stood
                 // (PC 2026-11-14). The centre only when the party has no post.
                 region = raid.Hub.Region;
-                Vector3 release = RealmRaidMuster.ReleasePoint(raid.Hub.Center,
-                    raid.Parties.TryGetValue(group, out Party own) ? own.HubPost : default);
-                point = new Point3D((int)release.X, (int)release.Y, (int)release.Z);
-                return true;
+                hub = RealmRaidMuster.ReleasePoint(raid.Hub.Center, party?.HubPost ?? default);
             }
+            // Enemies at the raid-wide post are looked for outside the raid lock (a spatial scan of the region).
+            int enemies = raidPost.HasValue ? EnemiesNear(bot.Realm, stagingRegion, raidPost.Value) : 0;
+            RealmRaidReturnWave.ReleasePost choice = RealmRaidReturnWave.ChooseReleasePost(RealmRaidReturnWave.ReleaseAtStaging,
+                true, partyHasStaging, RealmRaidReturnWave.FrontierRaidPost, frontier, raidPost.HasValue, enemies, out string reason);
+            Vector3 release = choice switch
+            {
+                // One raid-wide post when the way in lies in the frontier, so the released raiders stand together.
+                RealmRaidReturnWave.ReleasePost.Raid => raidPost.Value,
+                // The party's staging post by the way in, where the return wave gathers (RealmRaidReturnWave).
+                RealmRaidReturnWave.ReleasePost.Party => staging,
+                _ => hub,
+            };
+            if (choice != RealmRaidReturnWave.ReleasePost.Hub) region = stagingRegion;
+            point = new Point3D((int)release.X, (int)release.Y, (int)release.Z);
+            // Released at the hub because enemies held the raid-wide post: it waits there for the others and goes back with
+            // them (PulseHubGroup), never alone through the frontier.
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                if (Membership.TryGetValue(group, out var raid))
+                {
+                    if (choice == RealmRaidReturnWave.ReleasePost.Hub && enemies > 0) raid.HubReturners.Add(bot.DatabaseID);
+                    else raid.HubReturners.Remove(bot.DatabaseID);
+                }
+            // The party post outside the frontier is today's release: only the frontier's choices are logged.
+            if (frontier)
+                Log.Info($"REALM_RAID_RELEASE_POST event={id} bot={bot.Name} id={bot.DatabaseID} " +
+                         $"post={choice.ToString().ToLowerInvariant()} reason={reason} enemies={enemies} region={region} " +
+                         $"at={point.X},{point.Y},{point.Z}");
+            return true;
+        }
+
+        /// <summary>A point in an RvR/frontier zone (Pennine Mountains, Hadrian's Wall, ...) or an RvR region.</summary>
+        private static bool InFrontier(ushort regionId, Vector3 point)
+        {
+            Region region = WorldMgr.GetRegion(regionId);
+            return region?.IsRvR == true || region?.GetZone((int)point.X, (int)point.Y)?.IsRvR == true;
+        }
+
+        /// <summary>Under the raid lock: the raid-wide post (the staging post nearest the middle of them all), chosen once.</summary>
+        private static Vector3? RaidWidePost(Raid raid)
+        {
+            if (raid.RaidPost == null)
+            {
+                Vector3[] posts = raid.StagingPosts.OrderBy(p => p.Key).Select(p => p.Value).ToArray();
+                int index = RealmRaidReturnWave.RaidPost(posts);
+                if (index >= 0) raid.RaidPost = posts[index];
+            }
+            return raid.RaidPost;
+        }
+
+        /// <summary>Under the raid lock: where a frontier raid's raiders gather to go back in (the raid-wide post), else the
+        /// party's own staging post.</summary>
+        private static Vector3 ReturnPost(Raid raid, Party party) =>
+            RealmRaidReturnWave.FrontierRaidPost && party.Staging != default && raid.DungeonRoute?.Entrance is { } edge &&
+            InFrontier(edge.SourceRegion, party.Staging) && RaidWidePost(raid) is { } post ? post : party.Staging;
+
+        /// <summary>Enemy-realm players, bots, pets and guards (not peaceful NPCs) within the hold radius of a post.</summary>
+        private static int EnemiesNear(eRealm realm, ushort region, Vector3 post)
+        {
+            int count = 0;
+            ushort radius = RealmRaidReturnWave.RaidPostHeldRadius;
+            foreach (GamePlayer p in WorldMgr.GetPlayersCloseToSpot(region, (int)post.X, (int)post.Y, (int)post.Z, radius))
+                if (p.IsAlive && p.Realm != eRealm.None && p.Realm != realm) count++;
+            foreach (GameNPC n in WorldMgr.GetNPCsCloseToSpot(region, (int)post.X, (int)post.Y, (int)post.Z, radius))
+                if (n.IsAlive && n.ObjectState == GameObject.eObjectState.Active && n.Realm != eRealm.None && n.Realm != realm &&
+                    (n.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0)
+                    count++;
+            return count;
         }
 
         public static void RejoinAfterRelease(GameBot bot)

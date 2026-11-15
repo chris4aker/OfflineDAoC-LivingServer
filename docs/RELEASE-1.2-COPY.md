@@ -23,7 +23,7 @@ the group.
 Longer form, for the release's opening line or a card:
 
 The epics are back on most of their own rules, every big boss has a raid plan, and every one of 578 bosses has a
-story. A storyteller tells the dragon's tale in /faction, a horn sounds across your screen, and your realm's raid starts
+story. The dragon's tale is told in /faction, a horn sounds across your screen, and your realm's raid starts
 to gather. This time it saves you a seat.
 
 ## Elevator pitch (2-3 sentences)
@@ -63,9 +63,8 @@ original rules, every big boss has a raid plan, and 578 bosses have a story. Fre
 > lords and princes, Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that
 > now draw a realm raid of their own.
 >
-> **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Loremasters in
-> each capital, lore books, a Bestiary, bosses that speak, and a storyteller who tells the boss's tale before the horn
-> calls the raid.
+> **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Old stories kept
+> in each capital, a Bestiary, bosses that speak, and the boss's tale told in /faction before the horn calls the raid.
 >
 > **The bots play with you.** Gamebot leaders invite you and run the group, raid leaders save you a seat, RvR bots
 > notice you the way a player would, and a few friends can join your world (experimental).
@@ -98,8 +97,8 @@ heal each other, Kvasir drinks cold, and the bosses pick targets from the whole 
 So the raids learned. Every big boss has a plan, built from the scripts and the raid guides of
 2002-06: Legion gets a main tank, Saeor's wounded step out, Agmundr's raid spreads for his cold blast.
 
-Every boss also has a story: 578 of them, checked against 832 Herald articles. The storyteller tells it in /faction
-before the horn sounds.
+Every boss also has a story: 578 of them, checked against 832 Herald articles. Before the horn sounds, someone tells
+it in /faction.
 
 The bots play with you too: they invite you, lead the group, save you a raid spot. A few friends can join your world
 (experimental).

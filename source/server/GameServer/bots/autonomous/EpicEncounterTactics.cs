@@ -407,13 +407,15 @@ namespace DOL.GS
                                    Array.IndexOf(t.Hazards, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius)).ToArray();
         }
 
-        /// <summary>The living ranged adds of <paramref name="boss"/>'s tactic near it, in the catalog's order.</summary>
+        /// <summary>The living ranged adds of <paramref name="boss"/>'s tactic near it, in the catalog's order (an add a dungeon
+        /// rule leaves alive is not one: Lossren's kept soul).</summary>
         public static GameNPC[] LiveRangedAdds(GameNPC boss, IEnumerable<GameNPC> live)
         {
             Tactic t = For(boss);
             if (t?.RangedAdds is not { Length: > 0 } || !Present(boss)) return [];
             return live.Where(n => Present(n) && n != boss && n.CurrentRegionID == boss.CurrentRegionID &&
-                                   Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius))
+                                   Array.IndexOf(t.RangedAdds, n.GetType().Name) >= 0 && boss.IsWithinRadius(n, AddSearchRadius) &&
+                                   !LeftAlive(n))
                 .OrderBy(n => Array.IndexOf(t.RangedAdds, n.GetType().Name)).ThenBy(n => n.ObjectID).ToArray();
         }
 
@@ -1562,6 +1564,8 @@ namespace DOL.GS
             IReadOnlyList<GameNPC> live = Nearby(target);
             WatchHome(target, live, GameLoop.GameLoopTime);
             DungeonActs(bot, target, live);
+            // A rule's crowd control takes the whole turn (the raid's mesmerizer on Lossren's kept soul).
+            if (DungeonControls(bot, target, live)) return true;
             // Tanks taunt him back when his target is not a tank (Govannon's demon); the bot fights on as decided below.
             if (TauntDue(bot, target, live, GameLoop.GameLoopTime) && bot.Brain is BotBrain tankBrain)
                 LogTaunt(bot, target, tankBrain.TauntForEncounter(target));
@@ -1573,8 +1577,9 @@ namespace DOL.GS
             switch (advice.Action)
             {
                 case BotAction.Retarget:
-                    // A ground hazard is left for good, not only this turn (it would come back as the bot's highest aggro).
-                    if (HazardOf(target) != null) (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
+                    // A ground hazard is left for good, not only this turn (it would come back as the bot's highest aggro), and
+                    // so is a monster the raid leaves alive (Lossren's kept soul).
+                    if (HazardOf(target) != null || LeftAlive(target)) (bot.Brain as BotBrain)?.RemoveFromAggroList(target);
                     bot.TargetObject = advice.Target;
                     (bot.Brain as BotBrain)?.AddToAggroList(advice.Target, 1_000);
                     LogDecision(bot, target, advice);

@@ -153,9 +153,11 @@ public static partial class AutonomousBotGroupCoordinator
                     session.Group);
             bool assembling = IsAssemblyPhase(session.Phase);
             // With bot_led_group_join_mode = lead the player takes over at once; the handover says "all yours" instead.
+            // A player who already stands by the leader is not told to "come find us" (owner's PC 2026-11-15).
+            bool sameRegion = player.CurrentRegionID == leader.CurrentRegionID;
             if (welcome)
-                BotLedGroups.Announce(leader, assembling ? BotLedGroups.Lead.Welcome : BotLedGroups.Lead.WelcomeOnTheWay, player,
-                    assembling ? session.RendezvousName : PlaceOf(leader), session.Camp?.MonsterName);
+                BotLedGroups.Announce(leader, BotLedGroups.WelcomeFor(assembling, sameRegion, sameRegion ? player.GetDistanceTo(leader) : -1),
+                    player, assembling ? session.RendezvousName : PlaceOf(leader), session.Camp?.MonsterName ?? session.PlannedCamp?.MonsterName);
             if (Log.IsInfoEnabled)
                 Log.Info($"BOT_LED_GROUP_HOSTING group={session.Id} player=\"{player.Name}\" level={player.Level} role={session.PlayerRole} " +
                      $"leader=\"{leader.Name}\" phase=\"{session.Phase}\" bots={members.Length}");
@@ -164,7 +166,9 @@ public static partial class AutonomousBotGroupCoordinator
         }
     }
 
-    private static string PlaceOf(GameBot bot) => bot?.CurrentZone?.Description ?? bot?.CurrentRegion?.Description ?? "here";
+    /// <summary>Where the leader is, as the player would name it: the town it stands in (Caer Diogel), else its zone (Aldland).</summary>
+    private static string PlaceOf(GameBot bot) =>
+        (IsTownArea(bot) ? TownName(bot) : null) ?? bot?.CurrentZone?.Description ?? bot?.CurrentRegion?.Description ?? "here";
 
     /// <summary>Where the leader's party hunts (its camp's zone, or where it meets up), for the invite tell.</summary>
     internal static string HuntingPlace(GameBot leader)

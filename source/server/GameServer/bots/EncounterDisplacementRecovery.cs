@@ -48,7 +48,7 @@ namespace DOL.GS
         /// <summary>A heal target counts as displaced this long after it was moved.</summary>
         public const int HealPriorityMilliseconds = 20_000;
 
-        public enum Stage { Airborne, Landed, Walking, Jailed, Recalling, Done, Exiting }
+        public enum Stage { Airborne, Landed, Walking, Jailed, Recalling, Done, Exiting, Barred }
 
         public enum OrderKind
         {
@@ -106,6 +106,9 @@ namespace DOL.GS
             public ExitRoute Exit;
             public int Leg;
             public bool ExitUsed;
+            /// <summary>A barrier's way back (null: none known): true when a walk from the first point to the second goes into
+            /// it (<see cref="BarredWayFor"/>).</summary>
+            public Func<Vector3, Vector3, bool> BarredWay;
 
             /// <summary>The plan for a bot moved at <paramref name="now"/>; it lands at once unless it is in the air.</summary>
             public static Plan For(DisplacementKind kind, long now, Vector3 landing, int fallHeight, int safeFallLevel, bool onMesh) => new()
@@ -118,6 +121,32 @@ namespace DOL.GS
                 OnMesh = onMesh,
             };
         }
+
+        /// <summary>A bot a barrier moved waits at most this long where it landed while its way back goes into the barrier.</summary>
+        public const int BarrierHoldMilliseconds = 180_000;
+
+        /// <summary>The barrier still stands (<see cref="Observation.Released"/> false) and the walk from where the bot stands
+        /// to its party or raid goes into it (pure).</summary>
+        public static bool BarrierBlocksWayBack(Plan p, Observation o) =>
+            p.BarredWay != null && !o.Released && p.BarredWay(o.Position, o.ReturnPoint);
+
+        /// <summary>The walk back into each barrier, by encounter: Easmarach's push behind the falls
+        /// (EpicEncounterTactics.WalksIntoTheFalls). The horsemen's room has none: its raid stays inside the room.</summary>
+        private static readonly ConcurrentDictionary<string, Func<Vector3, Vector3, bool>> BarredWays = new(StringComparer.Ordinal)
+        {
+            ["Easmarach"] = EpicEncounterTactics.WalksIntoTheFalls,
+        };
+
+        /// <summary>Sets an encounter's barred way (tests, later encounters); null removes it.</summary>
+        public static void RegisterBarredWay(string encounter, Func<Vector3, Vector3, bool> way)
+        {
+            if (string.IsNullOrEmpty(encounter)) return;
+            if (way == null) BarredWays.TryRemove(encounter, out _);
+            else BarredWays[encounter] = way;
+        }
+
+        public static Func<Vector3, Vector3, bool> BarredWayFor(string encounter) =>
+            encounter != null && BarredWays.TryGetValue(encounter, out var way) ? way : null;
 
         /// <summary>The walk budget for <paramref name="distance"/> units: twice the walk at <see cref="AssumedSpeed"/>, at
         /// least <see cref="MinimumWalkMilliseconds"/>, at most <see cref="MaximumWalkMilliseconds"/>.</summary>
@@ -144,7 +173,18 @@ namespace DOL.GS
                     // back to where it stood, which is the barrier itself. The raid's orders keep it inside from here
                     // (EpicEncounterTactics.KeepInsideFor); a bot sent to the barrier again and again is logged.
                     if (p.Kind == DisplacementKind.Barrier)
+                    {
+                        // Its party or raid is still past the barrier (Easmarach's falls, owner's PC 2026-11-15: pushed bots
+                        // walked straight back in, 78% fall damage each time): it waits where it landed, fighting what attacks
+                        // it, until its way back is clear or the barrier is down (BarrierHoldMilliseconds at most).
+                        if (BarrierBlocksWayBack(p, o))
+                        {
+                            p.Stage = Stage.Barred;
+                            p.Deadline = o.Now + BarrierHoldMilliseconds;
+                            return new(OrderKind.Hold, Reason: "barred: its way back lies through the barrier");
+                        }
                         return Finish(p, "kept inside");
+                    }
                     if (p.Kind == DisplacementKind.Jail)
                     {
                         p.Stage = Stage.Jailed;
@@ -156,6 +196,11 @@ namespace DOL.GS
 
                 case Stage.Exiting:
                     return StepExit(p, o);
+
+                case Stage.Barred:
+                    if (!BarrierBlocksWayBack(p, o)) return Finish(p, o.Released ? "kept inside; the barrier is down" : "kept inside");
+                    if (o.Now >= p.Deadline) return Finish(p, "kept inside; held at the barrier too long");
+                    return o.UnderAttack ? new(OrderKind.Fight) : new(OrderKind.Hold, Reason: "barred: its way back lies through the barrier");
 
                 case Stage.Jailed:
                     if (o.Released) return StartBack(p, o);
@@ -425,6 +470,7 @@ namespace DOL.GS
             try { safeFall = bot.GetAbilityLevel(Abilities.SafeFall); } catch (Exception) { }
             Plan plan = Plan.For(e.Kind, e.At, e.Landing, e.FallHeight, safeFall, e.OnMesh);
             if (e.Kind is DisplacementKind.Teleport or DisplacementKind.Throw) plan.Exit = ExitRouteFor(e.Encounter);
+            if (e.Kind == DisplacementKind.Barrier) plan.BarredWay = BarredWayFor(e.Encounter);
             Active[bot] = new Record { Event = e, Plan = plan };
         }
 
@@ -506,7 +552,10 @@ namespace DOL.GS
             GameNPC boss = r.Event.Source as GameNPC;
             bool atFight = r.Plan.Stage == Stage.Walking && boss is { IsAlive: true } && bot.CurrentRegionID == boss.CurrentRegionID &&
                 bot.IsWithinRadius(boss, FightRadius);
-            bool released = r.Plan.Stage == Stage.Jailed && JailReleased(bot, r.Event.Source, r.Event.Encounter);
+            bool released = r.Plan.Stage == Stage.Jailed && JailReleased(bot, r.Event.Source, r.Event.Encounter) ||
+                            // A barrier is down once its boss is dead or gone (Easmarach's push runs only while he lives).
+                            r.Plan.Kind == DisplacementKind.Barrier && !(boss is { IsAlive: true } && boss.CurrentRegionID == bot.CurrentRegionID &&
+                                                                        boss.ObjectState == GameObject.eObjectState.Active);
             bool danger = r.Plan.Stage == Stage.Exiting && r.Plan.Exit != null && InDanger(bot, r.Plan.Exit.Avoid);
             return new Observation(GameLoop.GameLoopTime, bot.IsAlive, position, ReturnPoint(bot, r.Event), UnderAttack(bot),
                 released, atFight, (from, to) => HasPath(bot, from, to), IsHeld(bot), HazardEscapeFor(bot), danger);
@@ -525,6 +574,14 @@ namespace DOL.GS
                         if (Log.IsInfoEnabled)
                             Log.Info($"EPIC_DISPLACEMENT_FALLBACK bot=\"{bot.Name}\" encounter={r.Event.Encounter} reason=\"{r.Plan.Reason}\" " +
                                      $"at={bot.X},{bot.Y},{bot.Z} recall_in={RecallMilliseconds}ms");
+                    }
+                    if (!r.Plan.Spoke && r.Plan.Stage == Stage.Barred)
+                    {
+                        r.Plan.Spoke = true;
+                        if (Log.IsInfoEnabled)
+                            Log.Info($"EPIC_DISPLACEMENT_BARRED bot=\"{bot.Name}\" encounter={r.Event.Encounter} at={bot.X},{bot.Y},{bot.Z} " +
+                                     $"back={(int)r.Plan.ReturnPoint.X},{(int)r.Plan.ReturnPoint.Y},{(int)r.Plan.ReturnPoint.Z} " +
+                                     $"hold_max={BarrierHoldMilliseconds}ms reason=\"its way back lies through the barrier; it waits where it landed\"");
                     }
                     return true;
                 case OrderKind.Land:

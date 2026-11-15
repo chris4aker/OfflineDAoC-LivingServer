@@ -146,6 +146,7 @@ They run in this order (file-name order):
 | `7-realms-classes` | **A probe of 8 pages.** `/realms/<Server>/` repeats the same ~110 pages for each of 22 servers, which looks like server rankings and population pages rather than class descriptions. It reads the `/realms/` index and 7 Merlin pages first; the next pass widens it to one server only if they describe classes, races or specs. |
 | `8-spells` | The Herald's spell database (captured 2004): 245 spell-line pages first, then 2,707 spell pages, one per spell id. Two or three days under the daily cap. |
 | `9-herald-articles` | The Herald's `/more/<id>.php` and `.shtml` pages, 1,940 article ids, one save per id. Its content is a guess from the URLs. About 1.6 hours of requests, after the spells. |
+| `b-raid-gaps` | The raid research's Wayback-only gap pages (`docs/research/raid-sources/wayback-gaps.md`, `wayback-pass3.md`): IGN raid threads, Camelot Vault and Classes of Camelot raid guides, 63 Allakhazam boss pages and 16 raid zones in their 2002-2005 form, map folders. 156 targets, one day's run. Drag it onto `RUN-WAYBACK-FETCH.cmd`, then `PACK-RESULTS.cmd`. |
 
 Each page of jobs 6-9 is saved once, its latest capture in 2002-2005, except where the job says otherwise. Not
 fetched at all: `/hdirectory`, `/guilds`, `/japan`, `/chardisplay.php` and Classes of Camelot's `/dr/` (Darkness

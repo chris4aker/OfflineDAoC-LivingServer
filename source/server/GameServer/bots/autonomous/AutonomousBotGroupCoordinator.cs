@@ -772,10 +772,14 @@ public static partial class AutonomousBotGroupCoordinator
         if (BotLedGroups.ViewOf(directive.Leader.Group)?.HoldsPace == true)
             return false;
         long now = GameLoop.GameLoopTime;
+        // A PvE party's member in another region, or one not getting closer, holds it at most 10 minutes
+        // (AutonomousGroupMemberStall.LongHoldMilliseconds; owner's PC 2026-11-15, build 1dc66b6).
+        bool boundedHold = directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve;
         return BotMembers(directive.Leader.Group).Where(member => member.IsAlive)
-            .All(member => member.CurrentRegionID == directive.Leader.CurrentRegionID &&
-                (member.GetDistanceTo(directive.Leader) is var distance && distance <= CohesionRadius ||
-                 AutonomousGroupMemberStall.Release(member, directive.Leader, distance, CohesionRadius, now)));
+            .All(member => member.CurrentRegionID == directive.Leader.CurrentRegionID
+                ? member.GetDistanceTo(directive.Leader) is var distance && distance <= CohesionRadius ||
+                  AutonomousGroupMemberStall.Release(member, directive.Leader, distance, CohesionRadius, now, boundedHold)
+                : boundedHold && AutonomousGroupMemberStall.ReleaseFromOtherRegion(member, directive.Leader, now));
     }
 
     /// <summary>How far the farthest living member trails the leader; MaxValue when one is in another region.</summary>
@@ -787,13 +791,20 @@ public static partial class AutonomousBotGroupCoordinator
         if (BotLedGroups.ViewOf(leader.Group)?.HoldsPace == true) return float.MaxValue;
         float farthest = 0;
         long now = GameLoop.GameLoopTime;
+        bool boundedHold = directive.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && AutonomousRealmRaid.GetView(leader.Group) == null;
         foreach (GameBot member in BotMembers(leader.Group))
         {
             if (!member.IsAlive || member == leader) continue;
-            if (member.CurrentRegionID != leader.CurrentRegionID) return float.MaxValue;
+            if (member.CurrentRegionID != leader.CurrentRegionID)
+            {
+                // A PvE member away in another region for 10 minutes no longer stops the leader (it keeps travelling).
+                if (boundedHold && AutonomousGroupMemberStall.ReleaseFromOtherRegion(member, leader, now)) continue;
+                return float.MaxValue;
+            }
             float distance = member.GetDistanceTo(leader);
-            // A member stuck for 45 seconds no longer holds the group (see AutonomousGroupMemberStall).
-            if (AutonomousGroupMemberStall.Release(member, leader, distance, CohesionRadius, now)) continue;
+            // A member stuck for 45 seconds, or not getting closer for 10 minutes in a PvE party, no longer holds the
+            // group (see AutonomousGroupMemberStall).
+            if (AutonomousGroupMemberStall.Release(member, leader, distance, CohesionRadius, now, boundedHold)) continue;
             farthest = Math.Max(farthest, distance);
         }
         return farthest;
@@ -2911,6 +2922,9 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static bool IsTownArea(GameObject obj) => obj?.CurrentRegion?.IsCapitalCity == true ||
         NamedTownArea(obj) != null;
+
+    /// <summary>The object stands in a capital or a named town area (the meetup towns' rule), for chat.</summary>
+    internal static bool IsInTownArea(GameObject obj) => IsTownArea(obj);
 
     private static string TownName(GameObject obj) => obj?.CurrentRegion?.IsCapitalCity == true
         ? obj.CurrentRegion.Description

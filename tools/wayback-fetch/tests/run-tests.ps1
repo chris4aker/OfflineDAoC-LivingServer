@@ -284,7 +284,7 @@ Assert-Equal '1.41;1.42;1.43' (Get-PatchMentions 'patch 1.41 patch 1.42 patch 1.
 # --- Starter jobs: the re-planned set (lore, vocab, builds, specs; no character or roster harvesting) -----------
 $jobsDir = Join-Path (Split-Path -Parent $here) 'jobs'
 $names = @(Get-ChildItem -LiteralPath $jobsDir -Filter '*.json' | Sort-Object Name | ForEach-Object { $_.BaseName }) -join ','
-Assert-Equal '1-site-map,2-patch-notes,3-builds-specs,4-vocab,5-lore,6-mechanics,7-realms-classes,8-spells,9-herald-articles,a-raid-sizes' $names 'jobs: run order map, patch notes, builds, vocab, lore, mechanics, realms probe, spells, articles'
+Assert-Equal '1-site-map,2-patch-notes,3-builds-specs,4-vocab,5-lore,6-mechanics,7-realms-classes,8-spells,9-herald-articles,a-raid-sizes,b-raid-gaps' $names 'jobs: run order map, patch notes, builds, vocab, lore, mechanics, realms probe, spells, articles, raid gaps'
 $allTargets = @()
 foreach ($jf in Get-ChildItem -LiteralPath $jobsDir -Filter '*.json') { $allTargets += @((Read-Job $jf.FullName).Targets) }
 Assert-Equal 0 @($allTargets | Where-Object { $_.url -match 'chardisplay|/chars/' -and -not (@(Get-Prop $_ 'cdxFilters' @()) -match '^!') }).Count 'jobs: no character pages fetched'
@@ -391,6 +391,8 @@ $spRows = @((Row 'http://www.camelotherald.com/spells/spell.php?s=1462&amp' '200
 $spSel = Select-Captures $spRows $s8.Def $sp
 Assert-Equal '20040901000000,20040801000000' (@($spSel | ForEach-Object { $_.timestamp }) -join ',') 'spells: one page per spell id (the latest), &amp; variants merged'
 Assert-True ([int]$s8.Def.maxCaptures -ge 2950) 'spells: room for every spell and line page'
+$rg = Read-Job (Join-Path $jobsDir 'b-raid-gaps.json')
+Assert-Equal 0 @($rg.Targets | Where-Object { $_.url -like '*camelotherald.com/more/*' }).Count 'raid gaps: Herald articles are left to 9-herald-articles'
 $a9 = Read-Job (Join-Path $jobsDir '9-herald-articles.json')
 Assert-True ([bool]$a9.Targets[0].guess) 'articles: content marked a guess'
 

@@ -146,8 +146,8 @@ namespace LivingServerSetup
             {
                 o.NewInstall = true;
                 o.Destination = a.Get("--dest") ?? Wizard.DefaultFolder();
-                o.Classic = a.Has("--classic");
-                o.NewClient = a.Has("--new-client");
+                o.Classic = a.Has("--classic") || !Offers.Editions;
+                o.NewClient = a.Has("--new-client") && Offers.NewClient;
                 if (a.Get("--import-from") != null) o.ImportFrom = GameScanner.Inspect(a.Get("--import-from"));
             }
             else if (a.Get("--game") != null)

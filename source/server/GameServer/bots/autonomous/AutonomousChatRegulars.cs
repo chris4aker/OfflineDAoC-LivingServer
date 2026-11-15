@@ -93,8 +93,8 @@ public static class AutonomousChatRegulars
 
     private static readonly string[] JokerBits =
     [
-        "if anyone needs me ill be face down in a bog somewhere", "i solo for the challenge. the challenge is staying alive", "my horse has better gear than me",
-        "pretty sure that last mob was lagging on purpose", "achievement unlocked: died to a rabbit again", "i dont run from fights, i strategically relocate",
+        "if anyone needs me ill be face down in a bog somewhere", "i solo for the challenge. the challenge is staying alive", "the stablemaster's horse has better gear than me",
+        "pretty sure that last mob was lagging on purpose", "died to a rabbit again. third one this week", "i dont run from fights, i strategically relocate",
     ];
 
     private static readonly string[] ComplainerBits =

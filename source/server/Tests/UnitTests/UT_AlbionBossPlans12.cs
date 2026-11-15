@@ -5,6 +5,8 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using DOL.AI.Brain;
+using DOL.Database;
 using DOL.GS;
 using NUnit.Framework;
 using T = DOL.GS.EpicEncounterTactics;
@@ -87,6 +89,32 @@ namespace DOL.UnitTests
             public override bool IsAlive => true;
             public override bool InCombat => true;
         }
+        /// <summary>Lossren and her soul under their own class names (the catalog matches class names).</summary>
+        public static class Named
+        {
+            public sealed class SummonerLossren : DOL.GS.SummonerLossren
+            {
+                public override bool IsAlive => true;
+                public override bool InCombat => true;
+            }
+            public sealed class TorturedSouls : DOL.GS.TorturedSouls
+            {
+                public override bool IsAlive => true;
+                public override bool InCombat => true;
+            }
+        }
+        /// <summary>An autonomous raid bot with the spells the test gives it (no brain, so it casts nothing).</summary>
+        public sealed class HoldBot : GameBot
+        {
+            private HoldBot() : base((OfflineWorldBotRecord)null) { }
+            public List<Spell> Known;
+            public override bool IsAlive => true;
+            public override List<Spell> Spells => Known ?? [];
+        }
+        public sealed class TestPet : GameNPC
+        {
+            public override bool IsAlive => true;
+        }
         public sealed class TestGhoul : ExplodeUndead
         {
             public override bool IsAlive => true;
@@ -148,6 +176,7 @@ namespace DOL.UnitTests
             T.SilencerResisting = _resisting;
             T.AlbionFloorSnap = _snap;
             T.ResetAttackerSlotsForTests();
+            T.ResetKeptSoulsForTests();
             EpicEncounterMechanics.ResetPerEncounter();
             _server.Dispose();
         }
@@ -281,22 +310,94 @@ namespace DOL.UnitTests
 
         // ---- Warlord Dorinakka ----------------------------------------------------------------------------------------
 
+        /// <summary>The world database's twelve DorinakkaBaf crypt knights (two columns of six up the hall to him).</summary>
+        private static readonly (int X, int Y)[] DorinakkaKnightSpawns =
+        [
+            (35303, 40668), (35300, 40861), (35303, 41054), (35304, 41240), (35306, 41439), (35308, 41627),
+            (35978, 40673), (35977, 40869), (35981, 41062), (35983, 41251), (35980, 41444), (35983, 41632),
+        ];
+
+        private Mob Knight(int x, int y)
+        {
+            var knight = Npc<Mob>(x, y, 15631);
+            knight.PackageID = T.DorinakkaKnights;
+            knight.Name = "crypt knight";
+            return knight;
+        }
+
         [Test]
-        public void DorinakkasFarKnightsDieFirstAndHisCastersTakeTheRest()
+        public void NoDorinakkaKnightIsPulledOnItsOwnWhileHeLives()
+        {
+            // Owner's PC, build 1dc66b6, 2026-11-15: the second knight cleared "first" brought him and the ten left.
+            var lord = Npc<TestDorinakka>(35625, 41676, 15631);
+            var live = new List<GameNPC> { lord };
+            Mob[] knights = DorinakkaKnightSpawns.Select(s => Knight(s.X, s.Y)).ToArray();
+            live.AddRange(knights);
+            foreach (Mob knight in knights)
+            {
+                Assert.That(T.ClearFirstOwner(knight, live), Is.Null, $"{knight.X},{knight.Y}: no knight is a clear-first of its own");
+                Assert.That(T.DungeonRoute(knight, live, out string why), Is.SameAs(lord), $"{knight.X},{knight.Y}: the route musters for him");
+                Assert.That(why, Does.StartWith("dorinakka-pack"));
+                Assert.That(T.RouteTarget(knight, live, At(lord), out _), Is.SameAs(lord));
+            }
+            Assert.That(T.ClearFirstOwner(lord, live), Is.Null);
+            Assert.That(T.DungeonRoute(lord, live, out _), Is.Null, "he himself is fought");
+            knights[6].Fighting = true;
+            Assert.That(T.DungeonRoute(knights[6], live, out _), Is.Null, "a knight already fighting the raid is answered");
+            // The thirteenth crypt knight (no PackageID, a plain monster beside the hall) is not his.
+            var stray = Npc<Mob>(35073, 41287, 15631);
+            stray.Name = "crypt knight";
+            live.Add(stray);
+            Assert.That(T.DungeonRoute(stray, live, out _), Is.Null);
+            // Without him the knights are ordinary targets again.
+            var alone = new List<GameNPC>(knights);
+            Assert.That(T.DungeonRoute(knights[0], alone, out _), Is.Null);
+        }
+
+        [Test]
+        public void DorinakkasMusterLiesInsideHisTether()
+        {
+            // The knights' own musters lay 2,250 from him (02:44:03, 35,274,39,462): he chased the raid out of his 2,000
+            // tether, immune, nine times. His own muster is 1,400 from his spawn.
+            T.Leash leash = T.Leashes.Single(l => l.Boss == nameof(DOL.GS.Scripts.WarlordDorinakka));
+            Assert.That(leash.Resets, Is.True);
+            Assert.That(RealmRaidDungeonRoute.FinalMusterStandOff, Is.LessThan(leash.TetherRange));
+            Assert.That(RealmRaidDungeonRoute.MusterReference(new(35000, 39600, 15631), new(35625, 41676, 15631), leash.TetherRange, leash.Resets),
+                Is.EqualTo(new Vector3(35625, 41676, 15631)), "out chasing raiders, the raid musters for him at home");
+        }
+
+        [Test]
+        public void InDorinakkasFightEveryoneButHisPartyAndTheHealersKillsTheKnightsOneAtATime()
         {
             var lord = Npc<TestDorinakka>(35625, 41676, 15631);
-            var far = Npc<Mob>(35303, 40668, 15631); far.PackageID = T.DorinakkaKnights; far.Name = "crypt knight";
-            var near = Npc<Mob>(35303, 41627, 15631); near.PackageID = T.DorinakkaKnights; near.Name = "crypt knight";
-            var live = new List<GameNPC> { lord, far, near };
-            Assert.That(T.ClearFirstOwner(far, live), Is.SameAs(lord), "1,058 from him: cleared first");
-            Assert.That(T.ClearFirstOwner(near, live), Is.Null, "325 from him: in his fight");
             var tank = Npc<Raider>(35725, 41676, 15631);
             var wizard = Npc<Raider>(35300, 42200, 15631);
+            var warrior = Npc<Raider>(35640, 41300, 15631);
+            var scout = Npc<Raider>(35500, 41000, 15631);
+            var cleric = Npc<Raider>(35600, 41100, 15631);
             lord.TargetObject = tank;
-            live.AddRange([tank, wizard]);
-            near.Fighting = true;
-            Assert.That(Rule(wizard, lord, live, true, Wizard)?.Target, Is.SameAs(near), "casters on the knight beside him");
-            Assert.That(Rule(wizard, lord, live, true, Scout), Is.Null, "archers stay on him (his 70% magic is not theirs)");
+            Mob a = Knight(35308, 41627), b = Knight(35983, 41632), sleeping = Knight(35303, 40668), mezzed = Knight(35306, 41439);
+            a.Fighting = b.Fighting = mezzed.Fighting = true;
+            b.Hurt = 30;
+            mezzed.Hurt = 60;
+            mezzed.IsMezzed = true;
+            var live = new List<GameNPC> { lord, tank, wizard, warrior, scout, cleric, a, b, sleeping, mezzed };
+            Assert.That(Rule(tank, lord, live, false, Warrior), Is.Null, "the party he fights holds him");
+            foreach (var (raider, ranged, cls) in new[] { (wizard, true, Wizard), (warrior, false, Warrior), (scout, true, Scout) })
+            {
+                var advice = Rule(raider, lord, live, ranged, cls);
+                Assert.That((advice?.Action, advice?.Target), Is.EqualTo(((T.BotAction?)T.BotAction.Retarget, (GameNPC)b)),
+                    $"class {cls}: the most hurt knight awake, so the raid's damage lands on one; the mesmerized one waits");
+                Assert.That(advice.Value.Reason, Does.StartWith("dorinakka-knights"));
+            }
+            Assert.That(Rule(cleric, lord, live, true, Cleric), Is.Null, "healers heal");
+            b.Dead = a.Dead = true;
+            Assert.That(Rule(warrior, lord, live, false, Warrior)?.Target, Is.SameAs(mezzed), "the mesmerized knight once it is the last");
+            mezzed.Dead = true;
+            Assert.That(Rule(wizard, lord, live, true, Wizard), Is.Null, "a knight out of combat is not his fight's: everyone on him");
+            var front = Npc<Raider>(35700, 41700, 15631);
+            live.Add(front);
+            Assert.That(Rule(front, lord, live, false, Warrior)?.Action, Is.EqualTo(T.BotAction.Reposition), "his melee from behind him");
         }
 
         // ---- the Silencer --------------------------------------------------------------------------------------------
@@ -424,6 +525,190 @@ namespace DOL.UnitTests
             Assert.That(Rule(wizard, lossren, live, true, Wizard)?.Target, Is.SameAs(ghoul));
             Assert.That(Rule(wizard, soul, live, true, Wizard)?.Target, Is.SameAs(ghoul), "from a soul too");
             Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null, "melee stay on her");
+        }
+
+        [Test]
+        public void OneOfLossrensSoulsIsLeftAliveSoNoNewWaveComes()
+        {
+            // Owner's PC, build 1dc66b6, 2026-11-15: she calls a new wave only when none of hers lives; the raid cleared 14 and
+            // 18 waves, and the souls killed 98 of the 170 who fell. One soul of hers is left alive.
+            UseRegion(248);
+            var lossren = Npc<Named.SummonerLossren>(39276, 41166, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var wizard = Npc<Raider>(39000, 41166, 16001);
+            var first = Npc<Named.TorturedSouls>(39189, 41500, 16000);
+            var second = Npc<Named.TorturedSouls>(38900, 41211, 16001);
+            var live = new List<GameNPC> { lossren, warrior, wizard, first, second };
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null, "on her: the melee fight her");
+            Assert.That(T.LeftAlive(first), Is.True, "her first soul (whole, lowest id) is kept");
+            Assert.That(T.LeftAlive(second), Is.False, "the rest are killed");
+            var a = Rule(warrior, first, live, false, Warrior);
+            Assert.That((a?.Action, a?.Target), Is.EqualTo((T.BotAction.Retarget, (GameNPC)lossren)), "a raider on it goes back to her");
+            Assert.That(a.Value.Reason, Does.StartWith("lossren-kept-soul"));
+            Assert.That(Rule(warrior, second, live, false, Warrior), Is.Null, "any other soul is fought");
+            Assert.That(T.LiveRangedAdds(lossren, live), Is.EqualTo(new GameNPC[] { second }), "the casters' list skips it");
+            var bot = (GameBot)RuntimeHelpers.GetUninitializedObject(typeof(GameBot));
+            Assert.That(T.MustNotHit(bot, first), Is.True, "no bot hits it, area spells included");
+            Assert.That(T.MustNotHit(bot, second), Is.False);
+            Assert.That(T.MustNotHit(bot, lossren), Is.False);
+
+            // While the ghoul lives a caster on the kept soul takes the ghoul.
+            var ghoul = Npc<TestGhoul>(39745, 41176, 16001);
+            live.Add(ghoul);
+            Assert.That(Rule(wizard, first, live, true, Wizard)?.Target, Is.SameAs(ghoul));
+            Assert.That(Rule(warrior, first, live, false, Warrior)?.Target, Is.SameAs(lossren));
+
+            // The kept soul died anyway (a real player's hit): one of the souls still alive is kept instead.
+            first.ObjectState = GameObject.eObjectState.Inactive;
+            Assert.That(T.LeftAlive(second), Is.False, "chosen on a raider's turn, not by the check");
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null);
+            Assert.That(T.LeftAlive(second), Is.True);
+            // Her reset or death ends it.
+            lossren.ObjectState = GameObject.eObjectState.Inactive;
+            Assert.That(T.LeftAlive(second), Is.False);
+        }
+
+        [Test]
+        public void TheKeptSoulIsTheHealthiestThenTheLowestId()
+        {
+            UseRegion(248);
+            var hurt = Npc<Mob>(0, 0, 0); hurt.Hurt = 40;
+            var whole = Npc<Mob>(0, 0, 0);
+            var wholeLater = Npc<Mob>(0, 0, 0);
+            Assert.That(T.ChooseKeptSoul(new GameNPC[] { wholeLater, hurt, whole }), Is.SameAs(whole));
+            Assert.That(T.ChooseKeptSoul(new GameNPC[] { hurt }), Is.SameAs(hurt));
+            Assert.That(T.ChooseKeptSoul(new GameNPC[0]), Is.Null);
+            Assert.That(T.ChooseKeptSoul(null), Is.Null);
+        }
+
+        [Test]
+        public void OnlyLossrensSoulsAreLeftAlive()
+        {
+            var rules = T.AllDungeonRules.Where(r => r.LeaveAlive != null).ToArray();
+            Assert.That(rules.Select(r => r.Encounter), Is.EqualTo(new[] { "SummonerLossrenKeptSoul" }));
+            Assert.That(rules[0].Targets, Does.Contain(nameof(TorturedSouls)));
+            // Her ghoul and every other monster are fought as before.
+            UseRegion(248);
+            var lossren = Npc<TestLossren>(39276, 41166, 16001);
+            var ghoul = Npc<TestGhoul>(39745, 41176, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var live = new List<GameNPC> { lossren, ghoul, warrior };
+            Assert.That(Rule(warrior, ghoul, live, false, Warrior), Is.Null, "no soul: nothing kept");
+            Assert.That(T.LeftAlive(ghoul), Is.False);
+            Assert.That(T.LeftAlive(lossren), Is.False);
+        }
+
+        // ---- Lossren's kept soul held mesmerized (owner approved 2026-11-15) -------------------------------------------
+
+        private static Spell Hold(eSpellType type, string target = "Enemy", int radius = 0, double damage = 0, double value = 0,
+            int duration = 60, int level = 40, int sub = 0) => new(new DbSpell
+        {
+            SpellID = 9_300 + level, Type = type.ToString(), Target = target, Range = 1500, Radius = radius, Damage = damage,
+            Value = value, Duration = duration, SubSpellID = sub, CastTime = 3
+        }, level);
+
+        [Test]
+        public void TheKeptSoulsHoldIsAMesmerizeThenAStunThenARootDamageDoesNotBreak()
+        {
+            Spell mez = Hold(eSpellType.Mesmerize), stun = Hold(eSpellType.Stun, duration: 9),
+                root = Hold(eSpellType.UnbreakableSpeedDecrease, value: 99);
+            Assert.That(T.HoldRank(mez), Is.EqualTo(0), "the period's way: mesmerize her adds");
+            Assert.That(T.HoldRank(Hold(eSpellType.Mez)), Is.EqualTo(0));
+            Assert.That(T.HoldRank(stun), Is.EqualTo(1));
+            Assert.That(T.HoldRank(root), Is.EqualTo(2));
+            Assert.That(T.HoldRank(Hold(eSpellType.Mesmerize, radius: 350)), Is.EqualTo(-1), "an area mesmerize reaches her other souls");
+            Assert.That(T.HoldRank(Hold(eSpellType.Stun, damage: 50)), Is.EqualTo(-1), "no damage on it");
+            Assert.That(T.HoldRank(Hold(eSpellType.Stun, sub: 1234)), Is.EqualTo(-1), "nor a sub spell's");
+            Assert.That(T.HoldRank(Hold(eSpellType.SpeedDecrease, value: 99)), Is.EqualTo(-1), "a root damage breaks is no hold");
+            Assert.That(T.HoldRank(Hold(eSpellType.UnbreakableSpeedDecrease, value: 50)), Is.EqualTo(-1), "a snare is no hold");
+            Assert.That(T.HoldRank(Hold(eSpellType.DirectDamage, damage: 100)), Is.EqualTo(-1));
+            Assert.That(T.HoldRank(null), Is.EqualTo(-1));
+
+            Assert.That(T.BestHoldSpell(new[] { root, stun, mez }, 50), Is.SameAs(mez));
+            Assert.That(T.BestHoldSpell(new[] { root, stun }, 50), Is.SameAs(stun));
+            Assert.That(T.BestHoldSpell(new[] { root, stun, mez }, 30), Is.Null, "above the bot's level");
+            Spell longer = Hold(eSpellType.Mesmerize, duration: 80, level: 45);
+            Assert.That(T.BestHoldSpell(new[] { mez, longer }, 50), Is.SameAs(longer));
+            Assert.That(T.BestHoldSpell(null, 50), Is.Null);
+
+            // Cast again before it wakes: with at most its cast time and the lead left, never earlier.
+            Assert.That(T.HoldDue(0, 3_000), Is.True, "not held");
+            Assert.That(T.HoldDue(3_000 + T.KeptSoulRecastLeadMilliseconds, 3_000), Is.True, "lands before it ends");
+            Assert.That(T.HoldDue(3_001 + T.KeptSoulRecastLeadMilliseconds, 3_000), Is.False, "too early (an early recast is shorter)");
+        }
+
+        [Test]
+        public void OneCrowdControlBotHoldsTheKeptSoulAMesmerizerFirst()
+        {
+            UseRegion(248);
+            var lossren = Npc<Named.SummonerLossren>(39276, 41166, 16001);
+            var stunner = Npc<Raider>(39000, 41166, 16001);
+            var mezzer = Npc<Raider>(39100, 41166, 16001);
+            var otherMezzer = Npc<Raider>(39150, 41166, 16001);
+            Assert.That(T.HoldsKeptSoul(lossren, stunner, 1, 1_000), Is.True, "no mesmerizer yet: a stun holds it");
+            Assert.That(T.HoldsKeptSoul(lossren, stunner, 1, 2_000), Is.True, "its own turn keeps its place");
+            Assert.That(T.HoldsKeptSoul(lossren, mezzer, 0, 3_000), Is.True, "a mesmerizer takes over");
+            Assert.That(T.HoldsKeptSoul(lossren, stunner, 1, 3_500), Is.False);
+            Assert.That(T.HoldsKeptSoul(lossren, otherMezzer, 0, 4_000), Is.False, "one holder: the second mesmerizer fights");
+            Assert.That(T.HoldsKeptSoul(lossren, mezzer, 0, 5_000), Is.True);
+            Assert.That(T.HoldsKeptSoul(lossren, stunner, -1, 6_000), Is.False, "no hold: never the holder");
+
+            mezzer.IsMezzed = true;
+            Assert.That(T.HoldsKeptSoul(lossren, otherMezzer, 0, 6_000), Is.True, "a holder held itself gives up its place");
+            mezzer.IsMezzed = false;
+            Assert.That(T.HoldsKeptSoul(lossren, mezzer, 0, 6_500), Is.False);
+            Assert.That(T.HoldsKeptSoul(lossren, mezzer, 0, 6_000 + T.KeptSoulHolderStaleMilliseconds + 1), Is.True,
+                "a holder whose turn stops coming is replaced");
+            mezzer.ObjectState = GameObject.eObjectState.Inactive;
+            Assert.That(T.HoldsKeptSoul(lossren, otherMezzer, 0, 17_500), Is.True, "a holder gone is replaced");
+        }
+
+        [Test]
+        public void WithNoCrowdControlBotTheKeptSoulIsOnlyLeftAlone()
+        {
+            var rules = T.AllDungeonRules.Where(r => r.Control != null).ToArray();
+            Assert.That(rules.Select(r => r.Encounter), Is.EqualTo(new[] { "SummonerLossrenKeptSoul" }), "only her kept soul is held");
+            UseRegion(248);
+            var lossren = Npc<Named.SummonerLossren>(39276, 41166, 16001);
+            var soul = Npc<Named.TorturedSouls>(39189, 41500, 16000);
+            var warrior = Npc<HoldBot>(39200, 41166, 16001);
+            warrior.Known = [Hold(eSpellType.DirectDamage, damage: 100, level: 1), Hold(eSpellType.SpeedDecrease, value: 99, level: 1)];
+            var live = new List<GameNPC> { lossren, soul, warrior };
+            Assert.That(rules[0].Control(warrior, lossren, live), Is.False, "no hold: it fights on");
+            Assert.That(T.LeftAlive(soul), Is.True, "the soul is kept all the same");
+            var stunner = Npc<Raider>(39000, 41166, 16001);
+            Assert.That(T.HoldsKeptSoul(lossren, stunner, 1, 1_000), Is.True, "nobody took the holder's place");
+        }
+
+        [Test]
+        public void NoAreaSpellPetOrDamageOverTimeBreaksTheKeptSoulsMesmerize()
+        {
+            UseRegion(248);
+            var lossren = Npc<Named.SummonerLossren>(39276, 41166, 16001);
+            var kept = Npc<Named.TorturedSouls>(39189, 41500, 16000);
+            var other = Npc<Named.TorturedSouls>(38900, 41211, 16001);
+            var warrior = Npc<Raider>(39200, 41166, 16001);
+            var live = new List<GameNPC> { lossren, kept, other, warrior };
+            Assert.That(Rule(warrior, lossren, live, false, Warrior), Is.Null);
+            Assert.That(T.LeftAlive(kept), Is.True);
+            kept.IsMezzed = true;
+
+            // Area spells: AddBlastCandidate marks a mesmerized monster and one a bot must not hit; either vetoes the blast.
+            var bot = Npc<HoldBot>(39000, 41166, 16001);
+            Assert.That(BotBrain.IsBreakablyControlled(kept), Is.True);
+            Assert.That(T.MustNotHit(bot, kept), Is.True, "no spell, damage over time included (CanCastOffensiveSpell and " +
+                "CheckInstantOffensiveSpells ask it), no swing (GameBot.StartAttack), no area spell");
+            Assert.That(T.MustNotHit(bot, other), Is.False, "her other souls are fought");
+            var blast = BotAoePolicy.Evaluate(new[] { new BotAoePolicy.Candidate(100, true, false),
+                new BotAoePolicy.Candidate(150, true, BotBrain.IsBreakablyControlled(kept) || T.MustNotHit(bot, kept)) }, 300, 350, false);
+            Assert.That(blast.Vetoed, Is.True, "an area spell on a soul beside it is not cast");
+
+            // Pets: a bot's pet never takes it.
+            var pet = Npc<TestPet>(39050, 41166, 16001);
+            typeof(GameNPC).GetField("m_ownBrain", Hidden)!.SetValue(pet, new ControlledMobBrain(bot) { Body = pet });
+            Assert.That(T.PetMustNotHit(pet, kept), Is.True);
+            Assert.That(T.PetMustNotHit(pet, other), Is.False);
+            Assert.That(T.PetMustNotHit(pet, lossren), Is.False);
         }
 
         // ---- Krondon -------------------------------------------------------------------------------------------------------

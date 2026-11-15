@@ -40,7 +40,27 @@ public static class AutonomousHolidays
     /// <summary>Share of unprompted realm and /say lines that are holiday lines: in the window, and on the day itself.</summary>
     public const double WindowShare = 0.10, DayShare = 0.22;
 
-    /// <summary>The holiday the date falls in, or null. Pure: the date's year decides the movable ones.</summary>
+    /// <summary>
+    /// What a player says to wish bots a happy holiday (the /lstest holiday hint), as AutonomousChatIntentModel.IsHolidayWish
+    /// reads it. Null for April Fools, which has jokes but no wish. Pure.
+    /// </summary>
+    public static string Wish(string name) => name?.ToLowerInvariant() switch
+    {
+        "newyear" => "happy new year",
+        "valentines" => "happy valentines",
+        "stpatricks" => "happy st patricks",
+        "easter" => "happy easter",
+        "midsummer" => "happy midsummer",
+        "halloween" => "happy halloween",
+        "thanksgiving" => "happy thanksgiving",
+        "christmas" => "merry christmas",
+        _ => null,
+    };
+
+    /// <summary>
+    /// The holiday the date falls in, or null. Pure: the date's year decides the movable ones. Where two overlap, Easter
+    /// wins over April Fools (1.2: Easter Monday 2024, Easter Sunday 2029); <see cref="Flags"/> still names both.
+    /// </summary>
     public static Window For(DateTime date)
     {
         DateTime d = date.Date;
@@ -50,14 +70,22 @@ public static class AutonomousHolidays
         return null;
     }
 
-    /// <summary>The voice flags for that date (empty outside every holiday).</summary>
+    /// <summary>
+    /// The voice flags for that date (empty outside every holiday). On a date two holidays share (April Fools on Easter
+    /// weekend) both are named, so both are acknowledged; holiday_today when it is either one's day.
+    /// </summary>
     public static IReadOnlyCollection<string> Flags(DateTime date)
     {
-        Window window = For(date);
-        if (window == null)
-            return [];
-        var flags = new List<string> { "holiday", "holiday_" + window.Name };
-        if (date.Date >= window.Day && date.Date <= window.DayLast)
+        var flags = new List<string>();
+        bool today = false;
+        foreach (Window window in Containing(date))
+        {
+            if (flags.Count == 0)
+                flags.Add("holiday");
+            flags.Add("holiday_" + window.Name);
+            today |= IsDay(window, date);
+        }
+        if (today)
             flags.Add("holiday_today");
         return flags;
     }
@@ -65,10 +93,20 @@ public static class AutonomousHolidays
     /// <summary>How often an unprompted line is a holiday line on that date (0 outside a holiday).</summary>
     public static double AmbientShare(DateTime date)
     {
-        Window window = For(date);
-        if (window == null)
-            return 0;
-        return date.Date >= window.Day && date.Date <= window.DayLast ? DayShare : WindowShare;
+        double share = 0;
+        foreach (Window window in Containing(date))
+            share = Math.Max(share, IsDay(window, date) ? DayShare : WindowShare);
+        return share;
+    }
+
+    private static bool IsDay(Window window, DateTime date) => date.Date >= window.Day && date.Date <= window.DayLast;
+
+    private static IEnumerable<Window> Containing(DateTime date)
+    {
+        DateTime d = date.Date;
+        foreach (Window window in WindowsAround(d))
+            if (d >= window.First && d <= window.Last)
+                yield return window;
     }
 
     private static IEnumerable<Window> WindowsAround(DateTime d)
@@ -79,9 +117,10 @@ public static class AutonomousHolidays
         int y = d.Year;
         yield return new("valentines", new(y, 2, 12), new(y, 2, 14), new(y, 2, 14), new(y, 2, 14));
         yield return new("stpatricks", new(y, 3, 15), new(y, 3, 17), new(y, 3, 17), new(y, 3, 17));
-        yield return new("aprilfools", new(y, 4, 1), new(y, 4, 1), new(y, 4, 1), new(y, 4, 1));
+        // Easter before April Fools: For() takes the first, and Easter weekend wins the day they share.
         DateTime easter = EasterSunday(y);
         yield return new("easter", easter.AddDays(-2), easter.AddDays(1), easter, easter);
+        yield return new("aprilfools", new(y, 4, 1), new(y, 4, 1), new(y, 4, 1), new(y, 4, 1));
         yield return new("midsummer", new(y, 6, 19), new(y, 6, 24), new(y, 6, 21), new(y, 6, 21));
         yield return new("halloween", new(y, 10, 24), new(y, 11, 1), new(y, 10, 31), new(y, 10, 31));
         DateTime thanksgiving = Thanksgiving(y);

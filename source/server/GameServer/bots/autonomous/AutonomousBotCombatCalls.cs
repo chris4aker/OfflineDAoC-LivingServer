@@ -274,6 +274,21 @@ public static class AutonomousBotCombatCalls
     private static readonly ConditionalWeakTable<Group, GroupState> Groups = new();
     private static readonly ConditionalWeakTable<GameBot, BotState> Bots = new();
 
+    /// <summary>
+    /// Whether a bot's think looks at the fight (<see cref="Observe"/>): an autonomous gamebot in the real player's group, or
+    /// in a gamebot party that hosts the player (bot-led, not a raid party's guest seat). Owner's PC 2026-11-15 (build
+    /// 1dc66b6): party albion-f86e88-1370 fought orc beachcombers and a griffin with the player from 01:36 to 01:43 and said
+    /// nothing in /group, because a gamebot that leads never enters the player's group (IsPlayerLedGroup) and B4's leader
+    /// pull call was never reached. Pure.
+    /// </summary>
+    public static bool ObservesFight(bool autonomousWorldBot, bool temporaryHelper, bool playerLedGroup, bool hostedNotRaidGuest) =>
+        autonomousWorldBot && !temporaryHelper && (playerLedGroup || hostedNotRaidGuest);
+
+    /// <summary><see cref="ObservesFight(bool, bool, bool, bool)"/> for a live bot.</summary>
+    public static bool ObservesFight(GameBot bot) =>
+        bot != null && ObservesFight(bot.IsAutonomousWorldBot, bot.IsTemporaryGroupHelper, bot.IsPlayerLedGroup,
+            BotLedGroups.ViewOf(bot.Group) is { RaidGuest: false });
+
     /// <summary>From the bot's think: a bot in the real player's group looks at the fight once a second.</summary>
     public static void Observe(GameBot bot)
     {

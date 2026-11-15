@@ -180,6 +180,10 @@ public sealed class LauncherPresentationTests
         var realmButtons = (System.Collections.IEnumerable)mainFormType.GetField("_realmGenerateButtons", HiddenInstance)!.GetValue(form)!;
         Assert.That(realmButtons.Cast<Button>().Count(button => button.Text == "+ Lv.1"), Is.EqualTo(3));
         Assert.That(realmButtons.Cast<Button>().Count(button => button.Text == "+ Lv.50"), Is.EqualTo(3));
+        // Living Server 1.2: "+ Lv.20" (Thidranki 20-24) on every realm card, with its tooltip.
+        Button[] levelTwenty = realmButtons.Cast<Button>().Where(button => button.Text == "+ Lv.20").ToArray();
+        Assert.That(levelTwenty, Has.Length.EqualTo(3));
+        Assert.That(levelTwenty.Select(button => helpTip.GetToolTip(button)), Has.All.Contain("Thidranki battleground bracket"));
     }
 
     [Test]

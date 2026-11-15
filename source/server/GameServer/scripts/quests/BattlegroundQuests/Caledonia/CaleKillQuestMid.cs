@@ -20,8 +20,10 @@ namespace DOL.GS.DailyQuest.Hibernia
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private const string questTitle = "[Daily] Fen's New Friends";
-		private const int minimumLevel = 20;
-		private const int maximumLevel = 24;
+		// Caledonia's bracket, 30-35 as BattlegroundBrackets (1.2: all six Caledonia dailies, which asked 34-39; upstream
+		// had copied the Thidranki values into this one, so no Midgard player who could reach Caledonia could take it).
+		private const int minimumLevel = 30;
+		private const int maximumLevel = 35;
 
 		private static GameNPC PazzMid = null; // Start NPC
 
@@ -65,7 +67,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 
 			#region defineNPCs
 
-			GameNPC[] npcs = WorldMgr.GetNPCsByName("Rey", eRealm.Midgard);
+			GameNPC[] npcs = WorldMgr.GetNPCsByName("Pazz", eRealm.Midgard);
 
 			if (npcs.Length > 0)
 				foreach (GameNPC npc in npcs)
@@ -316,7 +318,7 @@ namespace DOL.GS.DailyQuest.Hibernia
 			if (Step != 1 || e != GameLivingEvent.EnemyKilled) return;
 			EnemyKilledEventArgs gArgs = (EnemyKilledEventArgs) args;
 
-			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || gArgs.Target is not GamePlayer ||
+			if (gArgs.Target.Realm == 0 || gArgs.Target.Realm == player.Realm || !DOL.GS.Quests.RvrQuestTargets.IsEnemyPlayer(gArgs.Target, player) ||
 			    !(player.GetConLevel(gArgs.Target) > MIN_PLAYER_CON)) return;
 			PlayersKilled++;
 			player.Out.SendMessage("[Daily] Enemy Killed: (" + PlayersKilled + " | " + MAX_KILLED + ")", eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);

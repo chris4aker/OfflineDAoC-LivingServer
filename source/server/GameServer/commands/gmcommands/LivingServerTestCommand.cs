@@ -23,7 +23,7 @@ namespace DOL.GS.Commands;
     "/lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that",
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
-    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once",
+    "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)",
     "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
     "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
@@ -132,7 +132,8 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 else if (arg == "now")
                 {
                     AutonomousRaidLeeroy.ChargeNow();
-                    Say(client, "A raid with a Leeroy that is gathering for its final boss charges at once (two raiders there will do).");
+                    Say(client, $"A raid with a Leeroy that is gathering for its final boss charges at once (two raiders there will do). " +
+                        $"This lapses if none is gathering within {AutonomousRaidLeeroy.ChargeNowWindowMilliseconds / 60_000} minutes.");
                 }
                 else
                 {
@@ -244,18 +245,36 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             return;
         }
         AutonomousHolidays.TestDate = day.Value.Date.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
-        Say(client, $"Bots treat today as {day:yyyy-MM-dd} ({name}) until /lstest holiday off or a restart. Say \"happy {name}\" in /faction, or wait for their own lines (about one line in five on the day).");
+        Say(client, HolidayHint(name, day.Value));
         if (!AutonomousHolidays.On)
             Say(client, "Holiday chatter is off (bot_living_holidays).");
     }
 
+    /// <summary>What /lstest holiday tells the GM to say: the holiday's own wish ("happy new year"), as bots read it. Pure.</summary>
+    public static string HolidayHint(string name, DateTime day)
+    {
+        string wish = AutonomousHolidays.Wish(name);
+        string say = wish == null ? "Wait for their own lines" : $"Say \"{wish}\" in /faction, or wait for their own lines";
+        return $"Bots treat today as {day:yyyy-MM-dd} ({name}) until /lstest holiday off or a restart. {say} (about one line in five on the day).";
+    }
+
     private static void List(GameClient client)
     {
-        Say(client, "Living Server parts (on/off):");
-        Say(client, $"  voices {OnOff(AutonomousBotVoices.Enabled)}, debates {OnOff(AutonomousBotDebates.Enabled)}, tells {OnOff(Properties.BOT_VOICES_TELLS)}, memory {OnOff(AutonomousLivingServer.MemoryOn)}");
-        Say(client, $"  deeds {OnOff(Properties.BOT_LIVING_DEEDS)}, storylines {OnOff(Properties.BOT_LIVING_STORYLINES)}, spammers and roleplayers {OnOff(Properties.BOT_LIVING_CHARACTERS)}, rumours {OnOff(Properties.BOT_LIVING_RUMOURS)}");
-        Say(client, $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), leeroy {OnOff(AutonomousRaidLeeroy.On)}");
+        foreach (string line in ListLines())
+            Say(client, line);
     }
+
+    /// <summary>The /lstest list lines: every part and its switch. Pure but for the settings it reads.</summary>
+    public static string[] ListLines() =>
+    [
+        "Living Server parts (on/off):",
+        $"  voices {OnOff(AutonomousBotVoices.Enabled)}, debates {OnOff(AutonomousBotDebates.Enabled)}, tells {OnOff(Properties.BOT_VOICES_TELLS)}, memory {OnOff(AutonomousLivingServer.MemoryOn)}",
+        $"  deeds {OnOff(Properties.BOT_LIVING_DEEDS)}, storylines {OnOff(Properties.BOT_LIVING_STORYLINES)}, spammers and roleplayers {OnOff(Properties.BOT_LIVING_CHARACTERS)}, rumours {OnOff(Properties.BOT_LIVING_RUMOURS)}",
+        $"  tales {OnOff(Properties.BOT_LIVING_TALES)}, tale raids {OnOff(Properties.BOT_LIVING_TALE_RAIDS)}, beggars {OnOff(Properties.BOT_LIVING_BEGGARS)}, bonds {OnOff(Properties.BOT_GROUP_BONDS)}",
+        $"  atmosphere lines {OnOff(Properties.LIVING_ATMOSPHERE_LINES)}, cosmetics {OnOff(Properties.BOT_COSMETICS)}",
+        $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), " +
+        $"leeroy {OnOff(AutonomousRaidLeeroy.On)}{(AutonomousRaidLeeroy.ChargeNowArmed ? " (a \"now\" is armed)" : "")}",
+    ];
 
     private static string OnOff(bool on) => on ? "on" : "OFF";
 

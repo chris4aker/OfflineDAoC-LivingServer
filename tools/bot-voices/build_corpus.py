@@ -155,6 +155,9 @@ BANNED = [
     # Later internet phrases (audit 2026-10-18)
     r'change my mind', r'fight me', r'\bvibes?\b', r'love language', r'no thoughts', r'\blifestyle\b', r'\bsalty\b',
     r'\bthe meta\b', r'i felt that', r'\bpog', r'\bbased\b', r'\bno cap\b', r'\bgg ez\b', r'\bsus\b', r'\bmain character\b',
+    # Jokes from after October 2003 (owner, 2026-11-15: cut them; Leeroy himself stays)
+    r'achievement unlocked', r'over 9000', r'\bhas chicken\b', r'we had chicken', r'cake is a lie', r'cool story',
+    r'i see what you did', r'\bikr\b', r'\bftw\b',
 ]
 # A line that assumes a time of day needs a time flag (in game a noon session heard "late night crew checking in").
 # "tonight" and "all night" need none: by day the server says "today" and "all day" (AutonomousBotVoiceCorpus.ForTimeOfDay).

@@ -13,7 +13,8 @@ namespace DOL.GS
     /// kills Kula first (the catalog's "after") and only the King's own target fights him; nobody stands in Kula's frost
     /// circle by her throne (AllowPositionPuzzle), and casters and healers on Kula keep clear of the King's hammers (500
     /// around his target).</item>
-    /// <item>Icelord Kvasir: cold heals him (AllowKvasirColdHeal), so no bot casts cold at him; when his primal scream is due,
+    /// <item>Icelord Kvasir: cold heals him (AllowKvasirColdHeal), so no bot casts cold at him (nor an area spell that reaches
+    /// him, nor a style with a cold proc), a bot whose weapon or armor proc deals cold fights his adds; when his primal scream is due,
     /// everyone but his target's party steps 1,050 away from his target (his mesmerize hits 800 around it).</item>
     /// <item>Jailer Vifil: the jail (AllowDisplacement) opens when his two tunnel guardians are dead, so once the fight is on
     /// one or two parties go down the tunnel, kill them and come back; every raider jailed after that walks free.</item>
@@ -51,9 +52,10 @@ namespace DOL.GS
             {
                 Summary = "Twin heal: Kula first, only the King's target fights him; out of Kula's frost circle; casters clear of his hammers.",
             },
-            new("Kvasir", ["Kvasir"], KvasirScream)
+            new("Kvasir", ["Kvasir"], c => KvasirScream(c) ?? KvasirColdCarrier(c))
             {
-                Summary = "No cold at him (it heals him); out of 800 around his target when his scream is due.",
+                Summary = "No cold at him (it heals him): no cold spell, area spell, style proc or cold weapon; a bot whose " +
+                          "armor procs cold stays off him; out of 800 around his target when his scream is due.",
                 Forbids = [eDamageType.Cold],
                 ForbidsWhile = _ => EpicEncounterMechanics.AllowKvasirColdHeal,
                 Act = (bot, boss, _) =>
@@ -351,6 +353,42 @@ namespace DOL.GS
             return spot is Vector3 at
                 ? new(BotAction.Reposition, c.Target, at, $"scream: out of {KvasirMezRadius} around \"{anchor.Name}\"", "epic_kvasir_scream")
                 : default;
+        }
+
+        /// <summary>A healer whose armor procs cold stands this far from Kvasir (out of his reach) and heals from there.</summary>
+        public const int KvasirColdStandOff = 1_000;
+
+        /// <summary>
+        /// A bot that would heal Kvasir without casting at him (1.2, PC log 1dc66b6, 2026-11-15: the Midgard raid held him at
+        /// 81-99% for 18 minutes; the cast filter stopped only bots' cold spells): a melee bot whose weapon deals cold
+        /// (<see cref="MeleeForbidden"/>: it found no clean weapon to switch to), or any bot whose armor's reactive proc casts
+        /// cold at whoever hits it (<see cref="ArmorProcForbidden"/>). As a disciplined raid would: it fights his hrimthursa
+        /// icetouch adds instead; with none left it stands off him, and a healer stands out of his reach and heals on.
+        /// </summary>
+        private static Advice? KvasirColdCarrier(RuleContext c)
+        {
+            if (!EpicEncounterMechanics.AllowKvasirColdHeal || c.Raider is not GameBot bot) return default;
+            bool weapon = !c.AtRange && MeleeForbidden(bot, c.Target);
+            bool armor = !weapon && ArmorProcForbidden(bot, c.Target);
+            if (!weapon && !armor) return default;
+            GameNPC add = c.All("HrimthursaIcetouch").FirstOrDefault(n => n.PackageID == "KvasirBaf" && n.InCombat);
+            return KvasirColdAdvice(c.At, c.Target, weapon, armor, BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId), add);
+        }
+
+        /// <summary>The cold carrier's advice (pure): a healer whose armor procs cold heals from
+        /// <see cref="KvasirColdStandOff"/> away; anyone else fights his add <paramref name="add"/>, or with none stands off him.</summary>
+        public static Advice? KvasirColdAdvice(Vector3 at, GameNPC kvasir, bool weaponHeals, bool armorHeals, bool healer, GameNPC add)
+        {
+            if (!weaponHeals && !armorHeals) return default;
+            string why = weaponHeals ? "kvasir-cold: its weapon deals cold" : "kvasir-cold: its armor procs cold";
+            Vector3 boss = PosOf(kvasir);
+            if (!weaponHeals && healer)
+                return AwayFrom(at, boss, KvasirColdStandOff) is Vector3 away
+                    ? new(BotAction.Reposition, kvasir, away, $"{why}; heals from out of his reach")
+                    : default;
+            if (add != null) return new(BotAction.Retarget, add, null, $"{why}; on his \"{add.Name}\" instead");
+            return new(BotAction.StandOff, kvasir, Flat(at, boss) < KvasirColdStandOff - 100 ? PointAway(at, boss, KvasirColdStandOff) : null,
+                $"{why}; stands off him");
         }
 
         // ---- Jailer Vifil ----------------------------------------------------------------------------------------------

@@ -349,7 +349,10 @@ public partial class PassportRoundTripTests
     {
         string passport = Leave();
         byte[] data = File.ReadAllBytes(passport);
-        data[data.Length / 2] ^= 0xFF;
+        // A run of bytes, not one: a single flipped byte sometimes lands in a zip local-header field the reader never
+        // checks (the modification time), and the damaged file then reads fine (CI, 2026-11-15, PR #238).
+        for (int i = data.Length / 2 - 32; i < data.Length / 2 + 32; i++)
+            data[i] ^= 0xFF;
         File.WriteAllBytes(passport, data);
 
         Assert.That(Refusal(() => PassportFile.Read(passport)), Is.EqualTo("damaged"));

@@ -25,6 +25,62 @@ namespace DOL.GS
         private const long SampleEveryMilliseconds = 30_000;
         private const int SampleCount = 6;
 
+        /// <summary>
+        /// A PvE party's member that has not come <see cref="CloserUnits"/> nearer its leader for this long (in the leader's
+        /// region or out of it) no longer holds the party either, even while it keeps walking: the leader goes on to the camp
+        /// and the member keeps travelling there (<see cref="HoldClock"/>). The same 10 minutes the party gives a hosted
+        /// player who is not getting closer (BotLedGroups.GoOnWithoutMs). Owner's PC 2026-11-15 (build 1dc66b6): party
+        /// albion-f86e88-1370 stood in Caer Diogel from 00:55 to past 01:19 on its way to griffins in Gwyddneau; two of its
+        /// members were in Camelot at 01:05 (AUTONOMOUS_CAPITAL_EGRESS_RECOVERY), and a member in another region never let
+        /// the leader go: the 45-second rule above only looks at members in the leader's region that stand still.
+        /// </summary>
+        public const long LongHoldMilliseconds = 10 * 60_000L;
+        public const float CloserUnits = 200f;
+        /// <summary>A clock not stepped for this long (the member was close, or nobody waited for it) starts again.</summary>
+        public const long HoldClockStaleMilliseconds = 30_000L;
+
+        /// <summary>
+        /// How long a trailing member has held its leader without getting closer. Pure: fed one observation at a time.
+        /// <c>sameRegion</c> false (the member is in another region) is never "closer"; coming back into the leader's region is.
+        /// </summary>
+        public sealed class HoldClock
+        {
+            /// <summary>The member is out of formation and holds the leader.</summary>
+            public bool Holding { get; private set; }
+            /// <summary>When the member last got <see cref="CloserUnits"/> nearer (or started holding).</summary>
+            public long Since { get; private set; }
+            public float Closest { get; private set; } = float.MaxValue;
+            public long LastStep { get; private set; }
+
+            /// <summary>True when the member has held the leader <see cref="LongHoldMilliseconds"/> without getting closer.</summary>
+            public bool Step(bool sameRegion, float distance, int cohesionRadius, long now)
+            {
+                bool stale = LastStep > 0 && now - LastStep > HoldClockStaleMilliseconds;
+                LastStep = now;
+                if (sameRegion && distance <= cohesionRadius)
+                {
+                    Holding = false;
+                    Since = 0;
+                    Closest = float.MaxValue;
+                    return false;
+                }
+                if (!Holding || stale)
+                {
+                    Holding = true;
+                    Since = now;
+                    Closest = sameRegion ? distance : float.MaxValue;
+                    return false;
+                }
+                if (sameRegion && (Closest == float.MaxValue || distance <= Closest - CloserUnits))
+                {
+                    Closest = distance;
+                    Since = now;
+                    return false;
+                }
+                return now - Since >= LongHoldMilliseconds;
+            }
+        }
+
         private static readonly Logger Log = LoggerManager.Create(typeof(AutonomousGroupMemberStall));
 
         private sealed class Trail
@@ -37,6 +93,8 @@ namespace DOL.GS
             public long NextSample;
             public readonly (long Tick, int X, int Y, int Z, ushort Zone)[] Samples = new (long, int, int, int, ushort)[SampleCount];
             public int SampleTotal;
+            public readonly HoldClock Hold = new();
+            public bool LongHoldLogged;
         }
 
         private static readonly ConditionalWeakTable<GameBot, Trail> Trails = new();
@@ -62,8 +120,48 @@ namespace DOL.GS
             return string.Join(" ", parts);
         }
 
-        /// <summary>True when this trailing member should no longer hold the group.</summary>
-        public static bool Release(GameBot member, GameBot leader, float distance, int cohesionRadius, long now)
+        /// <summary>
+        /// A PvE party's member in another region than its leader: true once it has been away (and not come back) for
+        /// <see cref="LongHoldMilliseconds"/>, so it no longer holds the party (logged once). The member is never moved.
+        /// </summary>
+        public static bool ReleaseFromOtherRegion(GameBot member, GameBot leader, long now)
+        {
+            if (member == null || leader == null || member == leader || member.CurrentRegionID == leader.CurrentRegionID)
+                return false;
+            Trail trail = Trails.GetOrCreateValue(member);
+            lock (trail)
+                return StepLongHold(trail, member, leader, false, float.MaxValue, 0, now);
+        }
+
+        private static bool StepLongHold(Trail trail, GameBot member, GameBot leader, bool sameRegion, float distance, int cohesionRadius, long now)
+        {
+            if (!trail.Hold.Step(sameRegion, distance, cohesionRadius, now))
+            {
+                if (!trail.Hold.Holding)
+                    trail.LongHoldLogged = false;
+                return false;
+            }
+            if (!trail.LongHoldLogged)
+            {
+                trail.LongHoldLogged = true;
+                Log.Warn($"AUTONOMOUS_GROUP_MEMBER_LONG_HOLD leader={leader.Name} member={member.Name} id={member.DatabaseID} " +
+                         $"class=\"{member.ClassName}\" region={member.CurrentRegionID} leaderRegion={leader.CurrentRegionID} " +
+                         $"distance={(sameRegion ? distance.ToString("0") : "-1")} position={member.X},{member.Y},{member.Z} " +
+                         $"zone=\"{member.CurrentZone?.Description}\"({member.CurrentZone?.ID}) " +
+                         $"leaderZone=\"{leader.CurrentZone?.Description}\"({leader.CurrentZone?.ID}) leaderAt={leader.X},{leader.Y},{leader.Z} " +
+                         $"heldSeconds={(now - trail.Hold.Since) / 1000} alive={member.IsAlive} returning={member.IsReturningAfterRelease} " +
+                         $"riding={member.IsOnStableMasterRoute} activity=\"{member.PersistentRecord?.Activity}\" " +
+                         $"progress=\"{member.PersistentRecord?.ObjectiveProgress}\"; " +
+                         "not closer for 10 minutes, the leader goes on and the member keeps travelling to the camp");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// True when this trailing member should no longer hold the group. With <paramref name="boundedHold"/> (a PvE party)
+        /// a member that keeps moving but has not come closer for <see cref="LongHoldMilliseconds"/> is let go too.
+        /// </summary>
+        public static bool Release(GameBot member, GameBot leader, float distance, int cohesionRadius, long now, bool boundedHold = false)
         {
             if (member == null || leader == null || member == leader)
                 return false;
@@ -77,6 +175,7 @@ namespace DOL.GS
                         (now, member.X, member.Y, member.Z, (ushort)(member.CurrentZone?.ID ?? 0));
                     trail.SampleTotal++;
                 }
+                bool heldTooLong = boundedHold && StepLongHold(trail, member, leader, true, distance, cohesionRadius, now);
                 float moved = System.MathF.Sqrt((member.X - trail.AnchorX) * (member.X - trail.AnchorX) +
                     (member.Y - trail.AnchorY) * (member.Y - trail.AnchorY));
                 if (distance <= cohesionRadius || trail.Since == 0 || moved >= ProgressUnits)
@@ -86,10 +185,10 @@ namespace DOL.GS
                     trail.Since = now;
                     if (distance <= cohesionRadius)
                         trail.Logged = false;
-                    return false;
+                    return heldTooLong;
                 }
                 if (!IsStalled(moved, trail.Since, now))
-                    return false;
+                    return heldTooLong;
                 if (ShouldRecover(trail.Since, now, trail.LastRecovered))
                     trail.RecoverRequested = true;
                 if (!trail.Logged)

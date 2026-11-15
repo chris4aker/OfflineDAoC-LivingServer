@@ -5,6 +5,8 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using DOL.AI.Brain;
+using DOL.Database;
+using DOL.GS.Styles;
 
 namespace DOL.GS
 {
@@ -65,12 +67,18 @@ namespace DOL.GS
             /// <summary>What the rule does, for logs and the docs.</summary>
             public string Summary { get; init; }
             /// <summary>Damage types the rule's targets must not take from bots (Kvasir: cold heals him), while
-            /// <see cref="ForbidsWhile"/> says so (null: always).</summary>
+            /// <see cref="ForbidsWhile"/> says so (null: always). Asked for a bot's spells (sub spells too) and the area
+            /// spells that would reach the target (<see cref="ForbidsSpell"/>), its styles' procs (<see cref="ForbidsStyle"/>),
+            /// its melee weapons (<see cref="MeleeForbidden"/>) and its armor's reactive procs (<see cref="ArmorProcForbidden"/>).</summary>
             public eDamageType[] Forbids { get; init; } = [];
             public Func<GameNPC, bool> ForbidsWhile { get; init; }
             /// <summary>Done for the bot on each of its tactic turns before the decision (face the boss, start a team's
             /// errand). Autonomous gamebots only, like the decision.</summary>
             public Action<GameBot, GameNPC, IReadOnlyList<GameNPC>> Act { get; init; }
+            /// <summary>Done for the bot on each of its tactic turns before the decision, as <see cref="Act"/>; true when the bot
+            /// spent the turn on it, and does nothing else this turn (Summoner Lossren's kept soul: the raid's one
+            /// crowd-control bot keeps it mesmerized). Autonomous gamebots only.</summary>
+            public Func<GameBot, GameNPC, IReadOnlyList<GameNPC>, bool> Control { get; init; }
             /// <summary>This bot must not hit the target at all, not even with an area spell aimed at another monster (Funus
             /// while his puzzle is on: the wrong class heals him to full). Every bot, companions too (BotBrain).</summary>
             public Func<GameBot, GameNPC, bool> MustNotHit { get; init; }
@@ -84,6 +92,11 @@ namespace DOL.GS
             /// <summary>While true, no bot's pet attacks the target, defends its owner against it or takes it from its owner's
             /// orders (Funus: a pet's hit heals him to full). ControlledMobBrain asks <see cref="PetMustNotHit"/>.</summary>
             public Func<GameNPC, bool> NoPets { get; init; }
+            /// <summary>While true the raid leaves this monster alive (Summoner Lossren's kept soul: her next wave of tortured
+            /// souls comes only once none of hers lives). No bot hits it, area spells included (as <see cref="MustNotHit"/>),
+            /// no bot's pet takes it (as <see cref="NoPets"/>), the catalog's ranged-add and clump lists skip it, and a bot
+            /// told to leave it drops it from its aggro list. Asked for the rule's targets; null: never (<see cref="LeftAlive"/>).</summary>
+            public Func<GameNPC, bool> LeaveAlive { get; init; }
             /// <summary>The <see cref="Route"/> also redirects a monster that is in combat (the horsemen's barred room). By
             /// default a route rule leaves a fighting monster alone: a monster fighting the raid is answered, never mapped onto
             /// the raid's current target (PC log e3b8238: "Crypt Lord -&gt; Crypt Lord" 22 times and "Easmarach -&gt;
@@ -101,6 +114,15 @@ namespace DOL.GS
             /// <summary>A fixed point the raid musters for this encounter at instead of where it stands (the Host's ambush on
             /// his patrol: the muster chased him every 10 s); null: none.</summary>
             public Func<GameNPC, Vector3?> MusterAnchor { get; init; }
+            /// <summary>Spots no muster of the raid goes near while this NPC is out of combat, each with its radius (the Crypt
+            /// Lord's patrol loop, where a fight near him pulls him and his court; his court monsters' aggro). Asked for every
+            /// living NPC of the dungeon, the encounter mustered for included; null or empty: none
+            /// (<see cref="MusterDangersOf"/>, RealmRaidDungeonRoute.GuardMuster).</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, IEnumerable<(Vector3 At, float Radius)>> MusterDangers { get; init; }
+            /// <summary>This boss is never pulled while a monster that would join its fight (<see cref="ClearFirstOf"/>) lives:
+            /// when the raid musters for it again (after a skirmish or a wipe) with one alive, the route clears it first, as it
+            /// does in Darkness Falls. Asked for the raid's target.</summary>
+            public bool ClearsAgainBeforePull { get; init; }
         }
 
         private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes)
@@ -108,6 +130,7 @@ namespace DOL.GS
             public DungeonRule[] ClearFirsts { get; } = All.Where(r => r.ClearFirstOf != null).ToArray();
             public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null).ToArray();
             public DungeonRule[] Anchors { get; } = All.Where(r => r.MusterAnchor != null).ToArray();
+            public DungeonRule[] Dangers { get; } = All.Where(r => r.MusterDangers != null).ToArray();
         }
 
         private static readonly object DungeonRuleLock = new();
@@ -271,6 +294,27 @@ namespace DOL.GS
             return null;
         }
 
+        /// <summary>The spots (and radii) no muster goes near because of <paramref name="npc"/> (a dungeon rule's
+        /// <see cref="DungeonRule.MusterDangers"/>), while it is out of combat; empty: none.</summary>
+        public static List<(Vector3 At, float Radius)> MusterDangersOf(GameNPC npc, IReadOnlyList<GameNPC> live)
+        {
+            var found = new List<(Vector3 At, float Radius)>();
+            if (!Present(npc) || npc.InCombat) return found;
+            foreach (DungeonRule rule in DungeonRuleSet.Dangers)
+            {
+                try
+                {
+                    if (rule.MusterDangers(npc, live) is { } spots) found.AddRange(spots);
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon muster danger {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return found;
+        }
+
+        /// <summary>A dungeon rule of <paramref name="boss"/> says it is never pulled while a monster that would join its fight
+        /// lives (<see cref="DungeonRule.ClearsAgainBeforePull"/>).</summary>
+        public static bool ClearsAgainBeforePull(GameNPC boss) => DungeonRulesFor(boss).Any(r => r.ClearsAgainBeforePull);
+
         /// <summary>This bot must not hit <paramref name="living"/> at all, not even with an area spell aimed at another
         /// monster (BotBrain refuses the cast or the blast): a dungeon rule of it says so (Funus while his puzzle is on and
         /// the bot isn't one he takes damage from).</summary>
@@ -280,6 +324,22 @@ namespace DOL.GS
             foreach (DungeonRule rule in DungeonRulesFor(npc))
                 if (rule.MustNotHit != null && rule.MustNotHit(bot, npc))
                     return true;
+            return LeftAlive(npc);
+        }
+
+        /// <summary>A dungeon rule of <paramref name="npc"/> says the raid leaves it alive now (<see cref="DungeonRule.LeaveAlive"/>).</summary>
+        public static bool LeftAlive(GameNPC npc)
+        {
+            if (npc == null) return false;
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+            {
+                if (rule.LeaveAlive == null) continue;
+                try
+                {
+                    if (rule.LeaveAlive(npc)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon leave-alive rule {rule.Encounter} failed: {ex.Message}"); }
+            }
             return false;
         }
 
@@ -309,6 +369,7 @@ namespace DOL.GS
         {
             if (pet == null || pet is GameBot || living is not GameNPC npc) return false;
             if ((pet.Brain as IControlledBrain)?.GetLivingOwner() is not GameBot) return false;
+            if (LeftAlive(npc)) return true;
             foreach (DungeonRule rule in DungeonRulesFor(npc))
             {
                 if (rule.NoPets == null) continue;
@@ -318,8 +379,51 @@ namespace DOL.GS
                 }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pet rule {rule.Encounter} failed: {ex.Message}"); }
             }
-            return false;
+            // 1.2, Kvasir (owner's PC, build 1dc66b6, 2026-11-15: "aahhhh thank you spirit champion for healing me !" five
+            // times in 30 s): a pet that deals a damage type the target's rule forbids stays off it like a NoPets target.
+            return HasForbids(npc) && PetDamageTypes(pet).Any(type => ForbidsDamage(npc, type));
         }
+
+        /// <summary>
+        /// Every damage type a pet can deal: its melee (a Bonedancer commander's weapon, any other pet's MeleeDamageType), its
+        /// harmful spells and their sub spells, and the spells its offensive procs cast (the Spiritmaster's spirit swordsman,
+        /// warrior and champion buff themselves with Pet-Cold-DD-Proc, a 70 cold DD on their hits; the Sluaghbinder's zombie
+        /// magician casts Rotting Gloom Blast, cold). Kept per pet until its spell list changes.
+        /// </summary>
+        public static IReadOnlyCollection<eDamageType> PetDamageTypes(GameNPC pet)
+        {
+            if (pet == null) return [];
+            List<Spell> spells = pet.Spells;
+            if (PetTypes.TryGetValue(pet, out PetTypeCache known) && ReferenceEquals(known.Spells, spells) && known.Count == (spells?.Count ?? 0))
+                return known.Types;
+            var types = new HashSet<eDamageType>();
+            if (pet is CommanderPet && MeleeDamageOf(pet.ActiveWeapon) is eDamageType weapon) types.Add(weapon);
+            else types.Add(pet.MeleeDamageType);
+            foreach (Spell spell in spells ?? [])
+                AddSpellDamageTypes(spell, types);
+            PetTypes.AddOrUpdate(pet, new PetTypeCache(spells, spells?.Count ?? 0, types));
+            return types;
+        }
+
+        /// <summary>The damage types <paramref name="spell"/> lands (pure but for the sub spell lookup): a harmful spell's own and
+        /// its sub spell's; an offensive or defensive proc's, the proc spell's (its Value names it).</summary>
+        public static void AddSpellDamageTypes(Spell spell, ISet<eDamageType> types)
+        {
+            if (spell == null) return;
+            if (spell.SpellType is eSpellType.OffensiveProc or eSpellType.DefensiveProc)
+            {
+                if ((int)spell.Value is int procId && procId > 0 && procId != spell.ID && ItemSpell(procId) is { } proc && proc.IsHarmful)
+                    types.Add(proc.DamageType);
+                return;
+            }
+            if (!spell.IsHarmful) return;
+            types.Add(spell.DamageType);
+            if (spell.SubSpellID > 0 && spell.SubSpellID != spell.ID && ItemSpell(spell.SubSpellID) is { } sub && sub.IsHarmful)
+                types.Add(sub.DamageType);
+        }
+
+        private sealed record PetTypeCache(List<Spell> Spells, int Count, HashSet<eDamageType> Types);
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GameNPC, PetTypeCache> PetTypes = new();
 
         /// <summary>The rules' per-turn acts for this bot and target.</summary>
         private static void DungeonActs(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
@@ -332,6 +436,21 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The <see cref="DungeonRule.Control"/>s of <paramref name="target"/>'s rules: true when one used the bot's turn.</summary>
+        private static bool DungeonControls(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
+        {
+            foreach (DungeonRule rule in DungeonRulesFor(target))
+            {
+                if (rule.Control == null) continue;
+                try
+                {
+                    if (rule.Control(bot, target, live)) return true;
+                }
+                catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon control {rule.Encounter} failed: {ex.Message}"); }
+            }
+            return false;
+        }
+
         /// <summary>
         /// A bot must not cast <paramref name="spell"/> on <paramref name="target"/>: a dungeon rule forbids its damage type there
         /// (Icelord Kvasir while cold heals him). Asked by every bot's offensive casts (BotBrain), companion bots included: a
@@ -340,9 +459,121 @@ namespace DOL.GS
         public static bool ForbidsSpell(GameLiving caster, GameLiving target, Spell spell)
         {
             if (caster is not GameBot || target is not GameNPC npc || spell == null || !spell.IsHarmful) return false;
+            if (ForbidsDamage(npc, spell.DamageType)) return true;
+            // A spell whose sub spell lands the forbidden type (1.2, Kvasir: the filter read only the outer spell).
+            return spell.SubSpellID > 0 && spell.SubSpellID != spell.ID && ItemSpell(spell.SubSpellID) is { } sub && sub.IsHarmful &&
+                   ForbidsDamage(npc, sub.DamageType);
+        }
+
+        /// <summary>A dungeon rule of <paramref name="npc"/> forbids <paramref name="type"/> on it now (Kvasir: cold while
+        /// <see cref="EpicEncounterMechanics.AllowKvasirColdHeal"/> is on).</summary>
+        public static bool ForbidsDamage(GameNPC npc, eDamageType type)
+        {
+            if (npc == null) return false;
             foreach (DungeonRule rule in DungeonRulesFor(npc))
-                if (rule.Forbids is { Length: > 0 } && Array.IndexOf(rule.Forbids, (eDamageType)spell.DamageType) >= 0 &&
+                if (rule.Forbids is { Length: > 0 } && Array.IndexOf(rule.Forbids, type) >= 0 &&
                     (rule.ForbidsWhile == null || rule.ForbidsWhile(npc)))
+                    return true;
+            return false;
+        }
+
+        /// <summary>The spell an item or a spell names by id (a proc, a sub spell). Settable for tests.</summary>
+        public static Func<int, Spell> ItemSpell = id => id > 0 ? SkillBase.GetSpellByID(id) : null;
+
+        /// <summary>A harmful spell id whose damage type is forbidden on <paramref name="npc"/> (an item's proc or poison).</summary>
+        private static bool ForbidsSpellId(GameNPC npc, int spellId) =>
+            spellId > 0 && ItemSpell(spellId) is { } spell && spell.IsHarmful &&
+            (ForbidsDamage(npc, spell.DamageType) ||
+             spell.SubSpellID > 0 && spell.SubSpellID != spell.ID && ItemSpell(spell.SubSpellID) is { } sub && sub.IsHarmful &&
+             ForbidsDamage(npc, sub.DamageType));
+
+        /// <summary>
+        /// A bot must not use <paramref name="style"/> on <paramref name="target"/>: one of the style's procs lands a damage type
+        /// a dungeon rule forbids there (1.2, Kvasir: a berserker's Aurora Borealis procs a 95 cold DD at 100%, and cold
+        /// heals him a fifth of his health). Asked by BotMeleeStylePolicy.Usable, so the bot picks another style.
+        /// </summary>
+        public static bool ForbidsStyle(GameLiving attacker, GameLiving target, Style style)
+        {
+            if (attacker is not GameBot bot || target is not GameNPC npc || style?.Procs is not { Count: > 0 } procs) return false;
+            int classId = bot.CharacterClass?.ID ?? 0;
+            foreach (StyleProcInfo proc in procs)
+                if (proc?.Spell != null && (proc.ClassId == 0 || proc.ClassId == style.ClassID || proc.ClassId == classId) &&
+                    proc.Spell.IsHarmful && (ForbidsDamage(npc, proc.Spell.DamageType) || ForbidsSpellId(npc, proc.Spell.SubSpellID)))
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// The melee damage type of <paramref name="weapon"/> for a bot (AttackComponent.AttackDamageType: a shield hits
+        /// crush, any other weapon its Type_Damage), or null for a bow or no weapon.
+        /// </summary>
+        public static eDamageType? MeleeDamageOf(DbInventoryItem weapon) => weapon == null ? null : (eObjectType)weapon.Object_Type switch
+        {
+            eObjectType.Shield => eDamageType.Crush,
+            eObjectType.Longbow or eObjectType.CompositeBow or eObjectType.RecurvedBow or eObjectType.Fired or eObjectType.Crossbow => null,
+            _ => GlobalConstants.IsWeapon(weapon.Object_Type) ? (eDamageType)weapon.Type_Damage : null
+        };
+
+        /// <summary>
+        /// A melee swing of <paramref name="weapon"/> lands a forbidden damage type on <paramref name="npc"/>: its own damage
+        /// type (real loot: 125 Midgard weapon templates deal cold) or its poison. Weapon procs are not asked: they go off for
+        /// a GamePlayer only (GameLiving.CheckWeaponMagicalEffect), never for a bot.
+        /// </summary>
+        public static bool WeaponForbidden(GameNPC npc, DbInventoryItem weapon) =>
+            weapon != null && npc != null &&
+            (MeleeDamageOf(weapon) is eDamageType type && ForbidsDamage(npc, type) || ForbidsSpellId(npc, weapon.PoisonSpellID));
+
+        /// <summary>
+        /// The bot's melee on <paramref name="target"/> would land a forbidden damage type (its active weapon, or in the standard
+        /// slot its off-hand weapon, which swings too): NpcAttackAction swings no more, and the dungeon rule sends an autonomous
+        /// gamebot to the adds. A distance weapon is not melee.
+        /// </summary>
+        public static bool MeleeForbidden(GameBot bot, GameLiving target)
+        {
+            if (bot == null || target is not GameNPC npc || bot.ActiveWeaponSlot == eActiveWeaponSlot.Distance || !HasForbids(npc)) return false;
+            return MeleeForbidden(npc, bot.ActiveWeaponSlot, bot.ActiveWeapon, bot.Inventory?.GetItem(eInventorySlot.LeftHandWeapon));
+        }
+
+        /// <summary>The melee of a weapon set lands a forbidden damage type on <paramref name="npc"/> (pure but for the rule
+        /// lookup): the active weapon, and in the standard slot an off-hand weapon (never a shield, which only blocks).</summary>
+        public static bool MeleeForbidden(GameNPC npc, eActiveWeaponSlot slot, DbInventoryItem active, DbInventoryItem left) =>
+            slot != eActiveWeaponSlot.Distance &&
+            (WeaponForbidden(npc, active) ||
+             slot == eActiveWeaponSlot.Standard && left != null && left.Object_Type != (int)eObjectType.Shield && WeaponForbidden(npc, left));
+
+        /// <summary>
+        /// One of the bot's worn armor pieces (or its shield) carries a reactive proc that lands a forbidden damage type on the
+        /// monster that hits it (GameLiving.CheckArmorMagicalEffect: Tuscaran loot such as the Tuscarian Monitor and
+        /// Dragon-shadow pieces cast a 95 cold DD at their attacker). Each of Kvasir's swings on such a bot could heal him a fifth.
+        /// </summary>
+        public static bool ArmorProcForbidden(GameBot bot, GameNPC npc)
+        {
+            if (bot?.Inventory == null || npc == null || !HasForbids(npc)) return false;
+            return ArmorProcForbidden(npc, ReactiveSlots.Select(slot => bot.Inventory.GetItem(slot)));
+        }
+
+        /// <summary>One of <paramref name="worn"/> carries a reactive proc forbidden on <paramref name="npc"/> (pure but for the
+        /// rule and spell lookups).</summary>
+        public static bool ArmorProcForbidden(GameNPC npc, IEnumerable<DbInventoryItem> worn)
+        {
+            foreach (DbInventoryItem item in worn ?? [])
+                if (item != null && (ForbidsSpellId(npc, item.ProcSpellID) || ForbidsSpellId(npc, item.ProcSpellID1)))
+                    return true;
+            return false;
+        }
+
+        /// <summary>Where a struck bot's reactive proc can come from: its armor (ArmorHitLocation) and its shield (a block).</summary>
+        private static readonly eInventorySlot[] ReactiveSlots =
+        [
+            eInventorySlot.HeadArmor, eInventorySlot.HandsArmor, eInventorySlot.FeetArmor, eInventorySlot.TorsoArmor,
+            eInventorySlot.ArmsArmor, eInventorySlot.LegsArmor, eInventorySlot.LeftHandWeapon
+        ];
+
+        /// <summary>Any dungeon rule of <paramref name="npc"/> forbids a damage type now (a cheap first check).</summary>
+        private static bool HasForbids(GameNPC npc)
+        {
+            foreach (DungeonRule rule in DungeonRulesFor(npc))
+                if (rule.Forbids is { Length: > 0 } && (rule.ForbidsWhile == null || rule.ForbidsWhile(npc)))
                     return true;
             return false;
         }
