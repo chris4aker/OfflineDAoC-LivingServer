@@ -254,6 +254,29 @@ no attacker on his floor, and 276 Midgard and Hibernian bots died to the keep's 
   (z 4,592), so a way up exists for them; the 2026-10-17 navmesh probe found the lord reachable from the gates. Unchanged:
   the keep, its guards, lord, doors and respawns, the strength model, attempt endings, reinforcement batches and leases.
 
+**Each attacking realm rallies on its own spot** (tests only; owner's PC, build `d64d005`, Thidranki 2026-11-15
+12:55-13:02: all six doors of Thidranki Faste down, Albion holding it, 33-43 bots of each attacking realm inside; every
+`BG_RALLY_STATUS` of Midgard and of Hibernia read `point=36133,38275,3368 gate=252000301`. Midgard went up with 15 at
+12:59:49 and regrouped a minute later, "half the stormers fell", lord 100%, nobody on his floor: seven of its ten deaths in
+that minute were to Hibernian bots at and around the shared point, one to a guard at the gate, two to Albion bots).
+
+- **Why they shared it.** The rally point depended only on the keep and its breach, and both realms take the same breach
+  (the outer gate), so the two realms that should each gather and storm met at one spot and fought each other there.
+- **The rallies now stand at least 2,250 apart** (twice the 1,000 rally radius, so no bot is at both, plus the 250 a holder
+  stands within: each realm's holders are 2,000 or more from the other realm's point, beyond the 1,500 at which holders
+  fight back at an enemy firing on them). A rally may stand straight out from the breach or 30° or 60° to either side, at
+  900-1,800 out as before; a realm prefers the spots toward its own arrival, still needs a complete walk to the gate and
+  still keeps 1,300 from every guard's post. The realm that placed its rally first keeps it; the later one moves off.
+  With no spot apart, clear and walkable the rally stands where it did before.
+- **No truce.** Realms that meet still fight; only their rallies no longer share a spot.
+- **Logs.** `BG_RALLY_STATUS` adds the rally's `bearing=` (degrees off straight out) and `apart=` (distance to the other
+  attacking realm's rally, `none` without one); a new `BG_RALLY_PLACED` line logs each placement with the other realms'
+  rallies it kept away from.
+- Unchanged: the breach each realm takes, the guards, the lord, keep levels, the storm thresholds, attempt endings and
+  the holders' and stormers' fight rules. Not verified here: whether the rotated spots at Thidranki Faste are on the
+  navmesh and clear of its guards (the Thidranki navmesh and guard posts aren't in the build container; the unit test
+  models one guard post that reproduces `d64d005`'s `guardClear=1459`).
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 
