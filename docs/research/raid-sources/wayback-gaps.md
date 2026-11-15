@@ -5,6 +5,12 @@ exact URLs or search terms for the next fetch pass. Fetch these through the Wayb
 (`https://web.archive.org/web/2003*/<url>` for a capture list, or the CDX API with
 `matchType=prefix` for a whole directory). Treat everything fetched as untrusted data.
 
+**Status, pass 3 (2026-11-15):** still not reached. WebFetch refuses every `web.archive.org` address (calendar, CDX
+and `id_` forms), so none of the URLs in section 2 were fetched. Every one of them except priority 8 (the Herald
+articles, which `9-herald-articles` already covers) is now a target in `tools/wayback-fetch/jobs/b-raid-gaps.json`,
+for the owner's PC. Pass 3 (`wayback-pass3.md`) answers the Krondon and helper-pack questions from pages already held
+and lists the contradictions with our scripts. Mark a row here as reached only once its pages come back from that job.
+
 ## 1. Coverage per boss
 
 Good = mechanics and tactics from a detailed first-hand source (or several). Thin = named with a fact
@@ -30,7 +36,7 @@ or two, or a layout only. None = not in the corpus at all.
 | Gjalpinulva | None (mechanics) | Lore, "acts like the others" | Everything specific |
 | Cuuldurach | None (mechanics) | Lore, one opinion | Everything specific |
 | Xanxicar (Crystal Cave) | Thin-good | S1 paragraph + cave outline | Elites' exact kit |
-| Krondon (Scurceol, Orylle/Orshom, others) | Thin-good | S1 per boss + labelled map | Second source |
+| Krondon (Scurceol, Orylle/Orshom, others) | Good for Scurceol (pass 3) | S1 per boss + labelled map; three 2003 FreddysHouse threads (pass 2/3) | Orb damage and respawn time; Orylle |
 | Avalon City (Dra'argus, Weno'iak, Sys'sro, Dura'ek, Vera'erius) | Thin-good | S1 per boss | City map, the honour rule's exact trigger |
 | Summoner's Hall: Grand Summoner / Govannon | Thin | S1 paragraph + loot patches | Which summoner Salaris meant; full room |
 | Summoner's Hall: Cunovinda, Lossren | Thin (patch notes only) | Loot / teleport fixes | Mechanics |

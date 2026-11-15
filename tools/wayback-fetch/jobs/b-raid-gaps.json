@@ -1,0 +1,1063 @@
+{
+    "name": "b-raid-gaps",
+    "note": "Living Server 1.2 raid AI, pass 3 (2026-11-15): every page that docs/research/raid-sources/wayback-gaps.md and wayback-pass2.md list as reachable only on the Wayback Machine (the cloud session's WebFetch and shell both are refused web.archive.org). Priority bosses: Caer Sidi, Tuscaran Glacier, Galladoria, Summoner's Hall, Krondon, Darkness Falls, Trollheim, the dragons. Herald articles (The Death of a Dragon, more/226, and the Grab Bags) are not repeated here: 9-herald-articles covers every /more/ id. Raw pages stay on the PC; facts go into our own words in docs/research/raid-sources/.",
+    "from": "2001",
+    "to": "2005",
+    "mimetypes": [
+        "text/html"
+    ],
+    "maxCaptures": 700,
+    "targets": [
+        {
+            "url": "vnboards.ign.com/message.asp?topic=46131774&replies=118",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 1: Dabokel's Tuscaran Glacier guide (source of the Carne/Dabokel PDF tactics), the link form the gap list names."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=46131774",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 1: the same thread under any later parameter (the archive sorts parameters, so 'page=' or 'replies=' forms are separate targets).",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 5
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=1&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 1 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=2&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 2 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=3&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 3 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=4&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 4 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=5&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 5 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?page=6&topic=46131774",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 1: page 6 of Dabokel's guide (page form)."
+        },
+        {
+            "url": "vnboards.ign.com/Realm_of_Midgard/b22182/46131774/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 1: the boards' later path form (/b22182/46131774/p1, p2 ...).",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 12
+        },
+        {
+            "url": "boards.ign.com/Realm_of_Midgard/b22182/46131774/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 1: the same path on IGN's later boards.ign.com host.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 12
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=4",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 4 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=6",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 6 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=7",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 7 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=8",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 8 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=9",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 9 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=10",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 10 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=11",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 11 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=12",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 12 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=13",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 13 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=14",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 14 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=15",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 15 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=16",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 16 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=17",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 17 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=18",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 18 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=19",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 19 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=41447313&page=20",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 2: Galladoria Notes page 20 (corpus has pages 1, 2, 3, 5; captured 2003-07-12)."
+        },
+        {
+            "url": "vnboards.ign.com/Realm_of_Hibernia/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 2: Galladoria Notes under the later path form (thread 41447313).",
+            "cdxFilters": [
+                "urlkey:.*41447313.*"
+            ],
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=55001015&page=2",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 3: 'Your dragon questions answered' (Drasticle, Aug 2003) page 2; the corpus has page 1 (capture 2005-04-29)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=55001015&page=3",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 3: 'Your dragon questions answered' (Drasticle, Aug 2003) page 3; the corpus has page 1 (capture 2005-04-29)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=55001015&page=4",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 3: 'Your dragon questions answered' (Drasticle, Aug 2003) page 4; the corpus has page 1 (capture 2005-04-29)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=55001015&page=5",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 3: 'Your dragon questions answered' (Drasticle, Aug 2003) page 5; the corpus has page 1 (capture 2005-04-29)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=55001015&page=6",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 3: 'Your dragon questions answered' (Drasticle, Aug 2003) page 6; the corpus has page 1 (capture 2005-04-29)."
+        },
+        {
+            "url": "vnboards.ign.com/Realm_of_Albion/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 3: the dragon Q&A under the later path form (thread 55001015).",
+            "cdxFilters": [
+                "urlkey:.*55001015.*"
+            ],
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=43419655",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Pass 2 lead: IGN topic 43419655 (Hibernian dragon)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=45888307",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 6: Salaris' Guide to Albion Epic Encounters, one capture per month to see later versions (corpus has v0.1, captures 2003-04-07 and 2003-05-18).",
+            "collapse": "timestamp:6",
+            "maxCaptures": 24
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=49803406&page=2",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 7: first Olcasgean kill write-up, page 2 (page 1 captured 2004-04-05)."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=49794656",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 7: Olcasgean kill screenshots thread."
+        },
+        {
+            "url": "vnboards.ign.com/message.asp?topic=42300236",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 7: Galladoria feedback thread on the developer board."
+        },
+        {
+            "url": "www.trekstation.be/daoc/galladoria-2/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 7: screenshot pages of the first EU Olcasgean kill.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "unkiller.dragon-fire.net/daoc/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 7: Unoid's Galladoria screenshots.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "camelotvault.ign.com/?dir=guides/epicraid",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 4: IGN Camelot Vault 'Epic Raid Guides' section (linked from the 2005 IGN page)."
+        },
+        {
+            "url": "camelotvault.ign.com/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 4: the guide pages that section links (content= children). Keyword filter on the sorted URL key; may be slow on the archive side.",
+            "cdxFilters": [
+                "urlkey:.*(epicraid|epic_raid|raid|sidi|tuscar|gallad|dragon|legion|apocal|olcasg|krondon|summoner).*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 2,
+            "maxCaptures": 60
+        },
+        {
+            "url": "www.classesofcamelot.com/misc/ClassGuides/caer_sidi.asp",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 5: Caer Sidi Raid Guide by Gwaeni and Niysa (CoC news, Sep 2003)."
+        },
+        {
+            "url": "www.classesofcamelot.com/misc/ClassGuides/mid_dragon.asp",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 5: Guide to Slaying the Midgard Dragon (CoC news, Aug 2003)."
+        },
+        {
+            "url": "www.classesofcamelot.com/misc/ClassGuides/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 5: any other guide in the same folder (raid or class guides).",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "www.classesofcamelot.com/other/caer_sidi/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 5: KabuKi's Caer Sidi loot list (may map drops to bosses).",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "www.classesofcamelot.com/archives.asp?date=7-2003",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 5: CoC news of July 2003, which links the Krondon unique-drops featurette."
+        },
+        {
+            "url": "www.classesofcamelot.com/other/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 5: the Krondon featurette's folder is unknown; keyword filter.",
+            "cdxFilters": [
+                "urlkey:.*(krondon|ogre|epic|raid).*"
+            ],
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 10
+        },
+        {
+            "url": "www.oc.edu/pages/nick.stageberg/sidi/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Pass 2 lead: a 2003 Caer Sidi guide named in a FreddysHouse post.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "oc.edu/pages/nick.stageberg/sidi/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Pass 2 lead: the same guide without www.",
+            "cdxPageSize": 50,
+            "cdxMaxPages": 1,
+            "maxCaptures": 20
+        },
+        {
+            "url": "www.silverdaggers.net/daoc/csg_index.html",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Pass 2 lead: a 2003 Caer Sidi guide (csg = Caer Sidi guide?) named in a FreddysHouse post."
+        },
+        {
+            "url": "www.silverdaggers.net/daoc/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Pass 2 lead: the rest of that guide's pages.",
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "home.concepts-ict.nl/~akebono/dragonguide.html",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Pass 2 lead: Bedroc's Hibernian dragon guide (Dec 2002)."
+        },
+        {
+            "url": "forums.freddyshouse.com/showthread.php?t=11253&page=2",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 11: page 2 of Excalibur 'Dragon and Sidi Raid Announcements'."
+        },
+        {
+            "url": "www.prydwen.net/archive/topic/",
+            "matchType": "prefix",
+            "guess": true,
+            "note": "Gap 12: Prydwen 2003 forum archive (titles not in the index): a sample to keyword-filter on the PC.",
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4237",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Apocalypse (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5714",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Archlich (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4233",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Fames (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5743",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Morbus (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4235",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Swarm of Morbus (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4236",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Funus (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5718",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Bellum (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5726",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Crypt Lord (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4224",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Spectral Provisioner (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5748",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Skeletal Sacristan (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4231",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Soul Reckoner (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4228",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Lich Lord Ilron (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6062",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Icelord Agmundr (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6063",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Icelord Hakr (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6064",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Icelord Kvasir (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6065",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Icelord Skuf (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6066",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Icelord Steinvor (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6035",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Elder Icelord Suttung (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6034",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Elder Icelord Hjalmar (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6070",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Issorden (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6036",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Fornfrusenen (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6072",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for King Tuscar (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6074",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Queen Kula (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4677",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Spindler Broodmother (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4682",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Aroon the Uriamhai (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4685",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Easmarach (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5136",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Olcasgean (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4674",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Conservator (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6660",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Corrupt Primal of Fire (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5102",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Corrupt Primal of Air (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5103",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Corrupt Primal of Earth (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=5104",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Corrupt Primal of Water (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3789",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Grand Summoner Govannon (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3958",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Summoner Roesia (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3985",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Summoner Lossren (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6428",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Summoner Cunovinda (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3783",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Aidon the Archwizard (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3784",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Lord Gildas (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4735",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Scurceol Hyrde (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4734",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Lyft Miht (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4695",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Orylle (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=2861",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Legion (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=2862",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Behemoth (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3072",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for High Lord Baln (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=2904",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for High Lord Oro (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3073",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for High Lord Saeor (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=2903",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for High Lord Baelerdoth (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3122",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Prince Abdin (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3123",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Prince Asmoien (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3124",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Prince Ba'alorien (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3060",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Princess Nahemah (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3014",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Beliathan (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3049",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Grand Chancellor Adremal (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4687",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Nosdoden (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=6019",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for The Rift (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3195",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Golestandt (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3223",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Gjalpinulva (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3606",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Cuuldurach the Glimmer King (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=4732",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Xanxicar (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3968",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Ancient Black Oak (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3969",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Black Lady (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3970",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam bestiary page for Chieftain Caimheul (period description and comments, with dates)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmob=3804",
+            "matchType": "exact",
+            "guess": true,
+            "note": "Gap 9 / helpers: Raumarik Revenant (id from the earlier Midgard notes' ZAM-3804 key; unchecked)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=84",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Caer Sidi (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=84",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Caer Sidi (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=75",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Galladoria (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=75",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Galladoria (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=76",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Tuscaran Glacier (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=76",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Tuscaran Glacier (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=94",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Krondon (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=94",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Krondon (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=66",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Avalon City (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=66",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Avalon City (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=97",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Crystal Cave (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=97",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Crystal Cave (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=96",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Tur Suil (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=96",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Tur Suil (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=67",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Trollheim (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=67",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Trollheim (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=93",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Iarnvidiur's Lair (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=93",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Iarnvidiur's Lair (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=74",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Summoner's Hall (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=74",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Summoner's Hall (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=69",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Hall of the Corrupt (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=69",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Hall of the Corrupt (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=68",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Doden's Gruva (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=68",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Doden's Gruva (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=70",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Marfach Caverns (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=70",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Marfach Caverns (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=59",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Dartmoor (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=59",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Dartmoor (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=60",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Malmohus (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=60",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Malmohus (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/db/search.html?cmzone=61",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam mob list for Sheeroe Hills (period levels)."
+        },
+        {
+            "url": "camelot.allakhazam.com/zones.html?czone=61",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 9: Allakhazam zone page for Sheeroe Hills (description, links to maps and guides)."
+        },
+        {
+            "url": "camelot.allakhazam.com/Maps/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 10: labelled dungeon maps (Caer Sidi, Avalon City, Trollheim, Iarnvidiur, Summoner's Hall, Tur Suil). Several already saved by an earlier run are copied, not fetched again.",
+            "mimetypes": [
+                "text/html",
+                "image/gif",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ],
+            "cdxFilters": [
+                "urlkey:.*(sidi|avalon|troll|iarn|summon|tursuil|tur_suil|gallad|krondon|tuscar|marfach|corrupt|crystal|darkness|dragon|lair).*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 2,
+            "maxCaptures": 60
+        },
+        {
+            "url": "daoc.catacombs.com/maps/c_",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 10: Catacombs map site's dungeon maps (Caer Sidi, Galladoria, Avalon City, Summoner's Hall).",
+            "mimetypes": [
+                "text/html",
+                "image/gif",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 60
+        },
+        {
+            "url": "www.io.com/~caladin/kirstena/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 10: Kirstena's Atlas (including albionmaps/darknessfalls.pdf).",
+            "mimetypes": [
+                "text/html",
+                "image/gif",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ],
+            "cdxFilters": [
+                "urlkey:.*(dungeon|darkness|sidi|avalon|krondon|index).*"
+            ],
+            "cdxPageSize": 200,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        },
+        {
+            "url": "www.grailbrotherhood.info/maps/si_ava_zone_dungeon_maps.htm",
+            "matchType": "exact",
+            "guess": false,
+            "note": "Gap 10: Albion SI dungeon maps (linked from Allakhazam)."
+        },
+        {
+            "url": "www.grailbrotherhood.info/maps/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 10: the map images that page links.",
+            "mimetypes": [
+                "text/html",
+                "image/gif",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ],
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 30
+        },
+        {
+            "url": "home.iprimus.com.au/fraggle/maps/",
+            "matchType": "prefix",
+            "guess": false,
+            "note": "Gap 10: Kriyanna's maps.",
+            "mimetypes": [
+                "text/html",
+                "image/gif",
+                "image/jpeg",
+                "image/png",
+                "application/pdf"
+            ],
+            "cdxPageSize": 100,
+            "cdxMaxPages": 1,
+            "maxCaptures": 40
+        }
+    ]
+}
