@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using DOL.AI.Brain;
 using DOL.Events;
@@ -92,7 +93,7 @@ namespace DOL.GS
             base.ProcessDeath(killer);
         }
 
-        public static bool Spawn_Lich_Lord = false;
+        public bool Spawn_Lich_Lord = false;
 
         public int SpawnLich(ECSGameTimer timer)
         {
@@ -186,6 +187,15 @@ namespace DOL.AI.Brain
             AggroRange = 500;
         }
         private bool RemoveAdds = false;
+        private readonly List<GameNPC> _mages = new List<GameNPC>();
+        private int AliveMageCount
+        {
+            get
+            {
+                _mages.RemoveAll(npc => npc == null || !npc.IsAlive || npc.ObjectState is not GameObject.eObjectState.Active);
+                return _mages.Count;
+            }
+        }
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))
@@ -193,7 +203,7 @@ namespace DOL.AI.Brain
                 //set state to RETURN TO SPAWN
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
                 Body.Health = Body.MaxHealth;
-                BloodMage.MageCount = 0;
+                _mages.Clear();
                 if (!RemoveAdds)
                 {
                     foreach (GameNPC mages in Body.GetNPCsInRadius(5000))
@@ -212,7 +222,7 @@ namespace DOL.AI.Brain
                 RemoveAdds = false;
                 if (Util.Chance(10))
                 {
-                    if (BloodMage.MageCount < 2)
+                    if (AliveMageCount < 2)
                         SpawnMages();
                 }
             }
@@ -227,6 +237,7 @@ namespace DOL.AI.Brain
             Add.CurrentRegion = Body.CurrentRegion;
             Add.Heading = Body.Heading;
             Add.AddToWorld();
+            _mages.Add(Add);
         }
     }
 }
@@ -290,7 +301,6 @@ namespace DOL.GS
             Name = "Lich Lord Sanguis";
             ParryChance = 35;
             RespawnInterval = -1;
-            LichLordSanguisBrain.set_flag = false;
 
             TetherRange = 2000;
             Size = 100;
@@ -300,7 +310,6 @@ namespace DOL.GS
             Faction = FactionMgr.GetFactionByID(64);
             BodyType = 8;
             Realm = eRealm.None;
-            LichLordSanguisBrain.set_flag = false;
             LichLordSanguisBrain adds = new LichLordSanguisBrain();
             SetOwnBrain(adds);
             base.AddToWorld();
@@ -333,7 +342,7 @@ namespace DOL.AI.Brain
                 player.Out.SendMessage(message, eChatType.CT_Broadcast, eChatLoc.CL_SystemWindow);
             }
         }
-        public static bool set_flag = false;
+        public bool set_flag = false;
         public override void Think()
         {
             if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))
@@ -390,13 +399,6 @@ namespace DOL.GS
             get { return 8000; }
         }
 
-        public override void ProcessDeath(GameObject killer)
-        {
-            --MageCount;
-            base.ProcessDeath(killer);
-        }
-
-        public static int MageCount = 0;
         public override short Quickness { get => base.Quickness; set => base.Quickness = 80; }
         public override short Strength { get => base.Strength; set => base.Strength = 150; }   
         public override bool AddToWorld()
@@ -428,7 +430,6 @@ namespace DOL.GS
             Faction = FactionMgr.GetFactionByID(64);
             BodyType = 6;
             Realm = eRealm.None;
-            ++MageCount;
 
             BloodMageBrain adds = new BloodMageBrain();
             SetOwnBrain(adds);
@@ -446,10 +447,7 @@ namespace DOL.GS
             if (InCombat || Brain is StandardMobBrain { HasAggro: true })
                 return DESPAWN_RETRY_INTERVAL;
 
-            // RemoveFromWorld skips ProcessDeath, so the counter must be decremented here.
-            if (RemoveFromWorld())
-                --MageCount;
-
+            RemoveFromWorld();
             return 0;
         }
     }

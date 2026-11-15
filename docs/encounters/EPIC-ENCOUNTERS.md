@@ -194,7 +194,7 @@ Where the fork had changed a mechanic for bots with no switch, the original is b
 These still pick real players only, so bots are never chosen. Since 1.2 the scripts pick through `EncounterTargets` (real players and bots); what is left here are the moves (throws, teleports, jails), whose picks include bots only once `EncounterTargets.BotsCanBeDisplaced` is on, and anything still on `GetPlayersInRadius` / `is GamePlayer`.
 
 - Scurceol Hyrde (Krondon): teleport `ScurceolHyrde.cs:684`: An orb hit by a real player has a 25% chance (once per pick) to throw that player, 8-15 s later, to one of four spots on the floor and deal 20% of their health 
-- Moran the Mighty (Open world): teleport `MoranTheMighty.cs:180`: Throws portPlayer[ranPlayer] into the air or across the room: one of 3 spots (MoveTo 1, 401943, 753091, 222, 3499; 1, 406787, 749150, 213, 3926; 1, 401061, 7558
+- Moran the Mighty (Open world): teleport `MoranTheMighty.cs:179`: Throws portPlayer[ranPlayer] into the air or across the room: one of 3 spots (MoveTo 1, 401943, 753091, 222, 3499; 1, 406787, 749150, 213, 3926; 1, 401061, 7558
 
 ## Priority: encounters that block raids today
 
@@ -226,15 +226,15 @@ Rules of Scurceol Hyrde (`source/server/GameServer/scripts/namedmobs/Krondon/Scu
 Rules of Ancient Black Oak (`source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs`):
 
 - **immune_while** (verified): Takes no damage while it is drawn past its tether. `AncientBlackOak.cs:54`. *easy for the current raid AI*: Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).
-- **reset** (verified): Resets when its aggro list is empty: walks home at full health `AncientBlackOak.cs:161`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **linked_pack** (verified): When pulled it puts every living NPC with PackageID "AncientOakBaf" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody. `AncientBlackOak.cs:176`. *easy for the current raid AI*: Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first.
+- **reset** (verified): Resets when its aggro list is empty: walks home at full health `AncientBlackOak.cs:153`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **linked_pack** (verified): When pulled it puts every living NPC with PackageID "AncientOakBaf" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody. `AncientBlackOak.cs:168`. *easy for the current raid AI*: Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first.
 
 Rules of Black Lady (`source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs`):
 
-- **immune_while** (verified): Takes no damage while it is drawn past its tether. `BlackLady.cs:24`. *easy for the current raid AI*: Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).
-- **adds** (verified): Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it. `BlackLady.cs:122`. *needs new raid AI*: In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home).
-- **adds** (verified): Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets). `BlackLady.cs:207`. *easy for the current raid AI*: One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.
-- **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared `BlackLady.cs:167`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **immune_while** (verified): Takes no damage while it is drawn past its tether. `BlackLady.cs:25`. *easy for the current raid AI*: Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).
+- **adds** (verified): Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it. `BlackLady.cs:116`. *needs new raid AI*: In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home).
+- **adds** (verified): Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets). `BlackLady.cs:201`. *easy for the current raid AI*: One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first.
+- **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared `BlackLady.cs:160`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 
 ### 3. Nosdoden (Trollheim): nine waves of 12-18 adds
 
@@ -423,10 +423,10 @@ Rules of Fornfrusenen (`source/server/GameServer/scripts/namedmobs/TuscarianGlac
 
 Rules of Icelord Agmundr (`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs`):
 
-- **reset** (verified): Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `IcelordAgmundr.cs:127`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **reset** (verified): Resets while drawn past its tether: aggro cleared, back to full health `IcelordAgmundr.cs:159`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `IcelordAgmundr.cs:164`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "AgmundrBaf" (6 in the world database: 1 hrimthursa depredator, 2 hrimthursa icespine, 2 hrimthursa icetouch, 1 hrimthursa seer) `IcelordAgmundr.cs:143`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
+- **reset** (verified): Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `IcelordAgmundr.cs:125`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **reset** (verified): Resets while drawn past its tether: aggro cleared, back to full health `IcelordAgmundr.cs:157`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `IcelordAgmundr.cs:162`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **linked_pack** (verified): Brings others into the fight: every NPC with PackageID "AgmundrBaf" (6 in the world database: 1 hrimthursa depredator, 2 hrimthursa icespine, 2 hrimthursa icetouch, 1 hrimthursa seer) `IcelordAgmundr.cs:141`. *easy for the current raid AI*: Pull its linked pack with it on purpose: clear them first or fight them at the muster.
 
 ### 9. Aidon the Archwizard (Hall of the Corrupt)
 
@@ -527,19 +527,19 @@ Area spells: Crush (DirectDamageNoVariance, damage 400, radius 800).
 
 #### Morgana (`Morgana`)
 
-`source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs` lines 14-45. level 90; npc template 700000001; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs` lines 14-41. level 90; npc template 700000001; raid AI: no raid.
 
-A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. Living Server 1.2 (every big boss in, 2026-11-14): no raid and no tactic, on purpose. In 2001-2005 Morgana was a quest NPC who appears only for players on certain quests, not a fought raid boss (Allakhazam 2003-2004; Herald "Discovery of the Dark Spire"; the raid research found no period raid of her), and here she has no spawn in the world database. Nothing was invented for her. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh.
+A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `MorganaBechardSilcharde.cs:230` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns Bechard: from SpawnBechard; count 1 spawn call in SpawnBechard | `MorganaBechardSilcharde.cs:190` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
-| adds | Spawns Silcharde: from SpawnSilcharde; count 1 spawn call in SpawnSilcharde | `MorganaBechardSilcharde.cs:208` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
-| adds | Spawns demonic minion (DemonicMinion): from SpawnDemonic; count 1 spawn call in SpawnDemonic | `MorganaBechardSilcharde.cs:325` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| reset | Resets when its aggro list is empty: walks home at full health | `MorganaBechardSilcharde.cs:358` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: SilchardeBrain | `MorganaBechardSilcharde.cs:372` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
-| linked_pack | Brings others into the fight: BechardBrain | `MorganaBechardSilcharde.cs:526` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `MorganaBechardSilcharde.cs:222` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns Bechard: from SpawnBechard; count 1 spawn call in SpawnBechard | `MorganaBechardSilcharde.cs:184` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
+| adds | Spawns Silcharde: from SpawnSilcharde; count 1 spawn call in SpawnSilcharde | `MorganaBechardSilcharde.cs:200` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
+| adds | Spawns demonic minion (DemonicMinion): from SpawnDemonic; count 1 spawn call in SpawnDemonic | `MorganaBechardSilcharde.cs:340` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| reset | Resets when its aggro list is empty: walks home at full health | `MorganaBechardSilcharde.cs:374` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: SilchardeBrain | `MorganaBechardSilcharde.cs:388` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: BechardBrain | `MorganaBechardSilcharde.cs:566` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Mouth (`Mouth`)
 
@@ -694,22 +694,24 @@ Area spells: D/Q Debuff (DexterityQuicknessDebuff, damage None, radius 350); Fir
 
 #### Dra'argus the Mighty (`DraargusMighty`)
 
-`source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs` lines 9-88. level 68; 30,000 health; npc template 60160055; raids: dungeon-albion-avalon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/AvalonCity/DraargusMighty.cs` lines 9-91. level 68; 30,000 health; npc template 60160055; raids: dungeon-albion-avalon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. His immunity follows the sphere he spawned (alive and in the world) instead of a static sphere count.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reflect | Has a damage shield / reflect spell: Dra'argus Shield (DamageShield, damage 120, target SELF) | `DraargusMighty.cs:125` | read, verified |  | needs new raid AI | Check who it punishes; switch damage type or attacker if it reflects. |
-| adds | Spawns DraugynSphere: when it spawns (via CreateSphere); count 1 spawn call in CreateSphere | `DraargusMighty.cs:79` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
-| reset | Resets when its aggro list is empty: walks home at full health | `DraargusMighty.cs:103` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / fixed_spot | Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading) | `DraargusMighty.cs:270` | inferred, verified |  | unsafe for bots today | Recover the moved raider: walk back to the fight, or free them. |
+| reflect | Has a damage shield / reflect spell: Dra'argus Shield (DamageShield, damage 120, target SELF) | `DraargusMighty.cs:128` | read, verified |  | needs new raid AI | Check who it punishes; switch damage type or attacker if it reflects. |
+| adds | Spawns DraugynSphere: when it spawns (via CreateSphere); count 1 spawn call in CreateSphere | `DraargusMighty.cs:81` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
+| reset | Resets when its aggro list is empty: walks home at full health | `DraargusMighty.cs:106` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| teleport / fixed_spot | Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, Body.X, Body.Y, Body.Z, Body.Heading) | `DraargusMighty.cs:263` | inferred, verified |  | unsafe for bots today | Recover the moved raider: walk back to the fight, or free them. |
 
 Area spells: Sphere Explosion (DirectDamageNoVariance, damage 300, radius 500).
 
 #### Dura'ek the Empowered (`DuraekEmpowered`)
 
 `source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs` lines 10-130. level 71; 30,000 health; npc template 60160230; raids: dungeon-albion-avalon (final); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -739,6 +741,8 @@ Area spells: Flames of Dura'ek (DirectDamageNoVariance, damage 150, radius 350).
 
 `source/server/GameServer/scripts/namedmobs/AvalonCity/VeraeriusBrave.cs` lines 10-90. level 68; 30,000 health; npc template 60167614; raids: dungeon-albion-avalon (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / damage_type | Takes no damage from Spirit/Body damage. | `VeraeriusBrave.cs:47` | inferred, verified |  | needs new raid AI | Those damage types do nothing: classes that deal them switch weapon or target. |
@@ -750,6 +754,8 @@ Area spells: Flames of Dura'ek (DirectDamageNoVariance, damage 150, radius 350).
 #### Weno'iak the Enlightened (`WenoiakEnlightened`)
 
 `source/server/GameServer/scripts/namedmobs/AvalonCity/WenoiakEnlightened.cs` lines 10-65. level 68; 30,000 health; npc template 60167846; raids: dungeon-albion-avalon (named); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -865,6 +871,8 @@ Area spells: Rain of Fire (DirectDamageNoVariance, damage 650, radius 800); Rain
 
 `source/server/GameServer/scripts/namedmobs/CaerSidi/BaneOfHope.cs` lines 7-55. level 81; 100,000 health; npc template 60158245; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `BaneOfHope.cs:114` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -907,7 +915,7 @@ Area spells: Essense of Souls (DamageOverTime, damage 150, radius 600).
 
 `source/server/GameServer/scripts/namedmobs/CaerSidi/LichLordIlron.cs` lines 9-88. level 79; 100,000 health; npc template 60163266; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -920,29 +928,29 @@ Area spells: Mesmerized (Mesmerize, damage 0, radius 300).
 
 #### Lord Sanguis (`LordSanguis`)
 
-`source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs` lines 12-173. level 81; 100,000 health; npc template 60163412; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs` lines 13-174. level 81; 100,000 health; npc template 60163412; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns Lich Lord Sanguis (LichLordSanguis): on a timer (6000 ms); count 1 spawn call in SpawnLich | `LordSanguis.cs:99` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
-| adds | Spawns blood mage (BloodMage): from SpawnMages; count about 2-4 (loop to a random bound) | `LordSanguis.cs:123` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns blood mage (BloodMage): from Think when if (Util.Chance(10)); count 1 spawn call in SpawnMages | `LordSanguis.cs:223` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| tether | Tether range 3000 (blood mage (BloodMage)): drawn further from its spawn it walks home. | `LordSanguis.cs:422` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `LordSanguis.cs:191` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| adds | Spawns Lich Lord Sanguis (LichLordSanguis): on a timer (6000 ms); count 1 spawn call in SpawnLich | `LordSanguis.cs:100` | inferred, verified |  | needs new raid AI | Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn. |
+| adds | Spawns blood mage (BloodMage): from SpawnMages; count about 2-4 (loop to a random bound) | `LordSanguis.cs:124` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns blood mage (BloodMage): from Think when if (Util.Chance(10)); count 1 spawn call in SpawnMages | `LordSanguis.cs:233` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| tether | Tether range 3000 (blood mage (BloodMage)): drawn further from its spawn it walks home. | `LordSanguis.cs:424` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `LordSanguis.cs:201` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Lich Lord Sanguis (`LichLordSanguis`)
 
-`source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs` lines 237-314. level 81; 100,000 health; npc template 60163267; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by LordSanguis.
+`source/server/GameServer/scripts/namedmobs/CaerSidi/LordSanguis.cs` lines 248-323. level 81; 100,000 health; npc template 60163267; raids: epic-albion (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by LordSanguis.
 
-At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.
+At 5% health he turns untargetable (CANTTARGET) until the fight resets; area spells and running damage over time still hit him. 1.2: bots never fight an untargetable NPC, so the raid would stall on his last 5%; now offensive casters keep him as their target and finish him with spells (EpicEncounterTactics.FinishedBySpells), and the dungeon route keeps him as a target. Untested in a run. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| phase | At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets. | `LordSanguis.cs:347` | inferred, verified |  | easy for the current raid AI | Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them. |
-| tether | Tether range 2000: drawn further from its spawn it walks home. | `LordSanguis.cs:295` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `LordSanguis.cs:339` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| phase | At 5% health: announces 'becomes almost untouchable in his last act of agony' and turns untargetable (CANTTARGET) until the fight resets. | `LordSanguis.cs:356` | inferred, verified |  | easy for the current raid AI | Finish him with spells: the offensive casters keep casting at him (nukes, DoTs, area spells; EpicEncounterTactics.FinishedBySpells), melee and archers keep the adds off them. |
+| tether | Tether range 2000: drawn further from its spawn it walks home. | `LordSanguis.cs:305` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `LordSanguis.cs:348` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Silencer (`Silencer`)
 
@@ -1181,7 +1189,7 @@ Prince of Darkness Falls. Every five seconds he eats the nearest summoned pet wi
 
 `source/server/GameServer/scripts/namedmobs/DarknessFalls/PrincessNahemah.cs` lines 9-81. level 71; 100,000 health; npc template 60165038; raids: darkness-albion (objective), darkness-midgard (objective), darkness-hibernia (objective); raid AI: no raid AI.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1217,6 +1225,8 @@ Area spells: Negate Spirit (SpiritResistDebuff, damage 0, radius 1500); Summonin
 #### Gudlaugr (`Gudlaugr`)
 
 `source/server/GameServer/scripts/namedmobs/Dodens/Gudlaugr.cs` lines 13-92. level 64; 30,000 health; npc template 9919; raids: dungeon-midgard-dodens (named); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1288,7 +1298,7 @@ Area spells: Command Mjollnir (DirectDamageNoVariance, damage 500, radius 350).
 
 `source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs` lines 10-81. level 75; 30,000 health; npc template 60157942; raid AI: no raid.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1338,6 +1348,8 @@ Area spells: Disease (Disease, damage None, radius 800); Combat Speed Debuff (Co
 
 `source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs` lines 9-65. level 70; 30,000 health; npc template 60164519; raid AI: no raid.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Nogoribando.cs:113` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -1368,6 +1380,8 @@ Area spells: Root (SpeedDecrease, damage None, radius 1200).
 #### Conservator (`Conservator`)
 
 `source/server/GameServer/scripts/namedmobs/Galladoria/Conservator.cs` lines 10-148. level 77; 100,000 health; npc template 60159351; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1417,20 +1431,20 @@ Eight bodies, the cluster and the seven copies it spawns (GSCAdds), share one 10
 
 #### Hurionthex (`Hurionthex`)
 
-`source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs` lines 20-152. level 81; 100,000 health; npc template 60162285; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs` lines 20-135. level 81; 100,000 health; npc template 60162285; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it.
+Changes form every 18 s: base, Treant (casts a damage add on itself), Saiyan (monkey: Black Plague disease) and Granidon (damage shield 120). 2026-10-14 he reset from 31% again and again; the 8 s quiet rule fixed it. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reflect | In Granidon form he casts Damage Shield (120 per hit back on melee attackers). | `Hurionthex.cs:681` | read, verified |  | needs new raid AI | Melee ease off or eat it with healing during Granidon form; casters keep going. |
-| phase / form | Changes form in FormBase (Strength = 250; Dexterity = 200; Quickness = 80; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:213` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase / form | Changes form in FormTreant (calls SetConstitutionKeepingHealth; Strength = 400; Dexterity = 200; Quickness = 100; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:239` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase / form | Changes form in FormSaiyan (calls SetConstitutionKeepingHealth; Strength = 350; Dexterity = 200; Quickness = 205; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:266` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| phase / form | Changes form in FormGranidon (calls SetConstitutionKeepingHealth; Strength = 300; Dexterity = 200; Quickness = 80; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:293` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Hurionthex.cs:508` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Hurionthex.cs:532` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `Hurionthex.cs:538` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reflect | In Granidon form he casts Damage Shield (120 per hit back on melee attackers). | `Hurionthex.cs:664` | read, verified |  | needs new raid AI | Melee ease off or eat it with healing during Granidon form; casters keep going. |
+| phase / form | Changes form in FormBase (Strength = 250; Dexterity = 200; Quickness = 80; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:196` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase / form | Changes form in FormTreant (calls SetConstitutionKeepingHealth; Strength = 400; Dexterity = 200; Quickness = 100; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:222` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase / form | Changes form in FormSaiyan (calls SetConstitutionKeepingHealth; Strength = 350; Dexterity = 200; Quickness = 205; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:249` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase / form | Changes form in FormGranidon (calls SetConstitutionKeepingHealth; Strength = 300; Dexterity = 200; Quickness = 80; Intelligence = 200; Empathy = 400; Piety = 200) | `Hurionthex.cs:276` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Hurionthex.cs:491` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Hurionthex.cs:515` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `Hurionthex.cs:521` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 Area spells: Black Plague (Disease, damage None, radius 350).
 
@@ -1598,7 +1612,7 @@ Area spells: Mesmerized (Mesmerize, damage None, radius 300).
 
 `source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs` lines 10-168. level 81; 100,000 health; npc template 60167362; raids: epic-hibernia (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1717,50 +1731,56 @@ Area spells: Aidons's Fire (DirectDamageNoVariance, damage 500, radius 350); Aid
 
 `source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainAtwell.cs` lines 11-189. 30,000 health; npc template 7718; raids: dungeon-albion-corrupt (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `CaptainAtwell.cs:64` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| reset | Resets when its aggro list is empty: walks home at full health | `CaptainAtwell.cs:208` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainAtwell.cs:216` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainAtwell.cs:220` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health | `CaptainAtwell.cs:207` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainAtwell.cs:215` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainAtwell.cs:219` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Captain Bardalph (`CaptainBardalph`)
 
 `source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainBardalph.cs` lines 11-210. level 65; 30,000 health; raids: dungeon-albion-corrupt (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `CaptainBardalph.cs:64` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
 | tether | Tether range 1500: drawn further from its spawn it is immune (its TakeDamage) until it is back inside, and walks home. | `CaptainBardalph.cs:123` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health | `CaptainBardalph.cs:228` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainBardalph.cs:236` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainBardalph.cs:240` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health | `CaptainBardalph.cs:227` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainBardalph.cs:235` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainBardalph.cs:239` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Captain Heathyr (`CaptainHeathyr`)
 
 `source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/CaptainHeathyr.cs` lines 11-199. 30,000 health; npc template 7717; raids: dungeon-albion-corrupt (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `CaptainHeathyr.cs:64` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| reset | Resets when its aggro list is empty: walks home at full health | `CaptainHeathyr.cs:216` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainHeathyr.cs:224` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainHeathyr.cs:228` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health | `CaptainHeathyr.cs:215` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `CaptainHeathyr.cs:223` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `CaptainHeathyr.cs:227` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Lady Darra (`LadyDarra`)
 
-`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs` lines 11-228. level 68; 30,000 health; npc template 7720; raids: dungeon-albion-corrupt (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LadyDarra.cs` lines 11-237. level 68; 30,000 health; npc template 7720; raids: dungeon-albion-corrupt (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Her paladin count is the living spectral paladins of region 277 instead of a static counter.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `LadyDarra.cs:75` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns SpectralPaladin: when it spawns (via SpawnPaladins); count 4 spawn calls in SpawnPaladins | `LadyDarra.cs:190` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| reset | Resets when its aggro list is empty: walks home at full health | `LadyDarra.cs:245` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `LadyDarra.cs:253` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `LadyDarra.cs:257` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| heal | Has a heal spell: Spectral Heal (Heal, value 350, target REALM) | `LadyDarra.cs:407` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
+| adds | Spawns SpectralPaladin: when it spawns (via SpawnPaladins); count 4 spawn calls in SpawnPaladins | `LadyDarra.cs:199` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| reset | Resets when its aggro list is empty: walks home at full health | `LadyDarra.cs:254` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `LadyDarra.cs:262` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `LadyDarra.cs:266` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| heal | Has a heal spell: Spectral Heal (Heal, value 350, target REALM) | `LadyDarra.cs:408` | read, verified |  | needs new raid AI | Kill or interrupt whatever heals it first. |
 
 #### Lieutenant Elva (`LieutenantElva`)
 
@@ -1774,12 +1794,14 @@ Area spells: Aidons's Fire (DirectDamageNoVariance, damage 500, radius 350); Aid
 
 #### Lieutenant Meade (`LieutenantMeade`)
 
-`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs` lines 11-170. level 50; 5,000 health; npc template 7716; raids: dungeon-albion-corrupt (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LieutenantMeade.cs` lines 11-169. level 50; 5,000 health; npc template 7716; raids: dungeon-albion-corrupt (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `LieutenantMeade.cs:49` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| reset | Resets when its aggro list is empty: walks home at full health | `LieutenantMeade.cs:189` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health | `LieutenantMeade.cs:188` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 Area spells: Aching Curse (MeleeDamageDebuff, damage None, radius 350).
 
@@ -1795,16 +1817,18 @@ Area spells: Aching Curse (MeleeDamageDebuff, damage None, radius 350).
 
 #### Lord Gildas (`LordGildas`)
 
-`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs` lines 10-187. level 75; 40,000 health; npc template 7719; raids: dungeon-albion-corrupt (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/LordGildas.cs` lines 10-184. level 75; 40,000 health; npc template 7719; raids: dungeon-albion-corrupt (final); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `LordGildas.cs:72` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| phase | At 50% health (Think): calls GameNpcInventoryTemplate; calls AddNPCEquipment; calls CloseTemplate | `LordGildas.cs:310` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| reset | Resets when its aggro list is empty: walks home | `LordGildas.cs:213` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `LordGildas.cs:221` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `LordGildas.cs:225` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| empowered | Strength becomes 340 while if (HasAggro && Body.TargetObject != null) && if(Stage2 == true) | `LordGildas.cs:335` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
+| phase | At 50% health (Think): calls GameNpcInventoryTemplate; calls AddNPCEquipment; calls CloseTemplate | `LordGildas.cs:307` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| reset | Resets when its aggro list is empty: walks home | `LordGildas.cs:210` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `LordGildas.cs:218` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `LordGildas.cs:222` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| empowered | Strength becomes 340 while if (HasAggro && Body.TargetObject != null) && if(Stage2 == true) | `LordGildas.cs:332` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
 
 #### Sergeant Darryn (`SergeantDarryn`)
 
@@ -1819,6 +1843,8 @@ Area spells: Aching Curse (MeleeDamageDebuff, damage None, radius 350).
 
 `source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantEddison.cs` lines 10-213. 5,000 health; npc template 7713; raids: dungeon-albion-corrupt (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `SergeantEddison.cs:97` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
@@ -1826,12 +1852,14 @@ Area spells: Aching Curse (MeleeDamageDebuff, damage None, radius 350).
 
 #### Sergeant Reede (`SergeantReede`)
 
-`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs` lines 10-179. 5,000 health; npc template 7715; raids: dungeon-albion-corrupt (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/SergeantReede.cs` lines 10-178. 5,000 health; npc template 7715; raids: dungeon-albion-corrupt (monster on the way (not an epic NPC)); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `SergeantReede.cs:53` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| reset | Resets when its aggro list is empty: walks home at full health | `SergeantReede.cs:198` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health | `SergeantReede.cs:197` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 
 ### Hibernia Named Mobs / Classic Zones (region 200)
@@ -2125,6 +2153,8 @@ Area spells: Marfoirwort Life-leech (DirectDamageNoVariance, damage 450, radius 
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/AncientSyver.cs` lines 9-105. level 68; 30,000 health; npc template 83007; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `AncientSyver.cs:121` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2136,6 +2166,8 @@ Area spells: Ancient Syver's Strike (DirectDamageNoVariance, damage 350, radius 
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Delegalt.cs` lines 10-110. 30,000 health; npc template 83019; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Delegalt.cs:126` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2144,6 +2176,8 @@ Area spells: Ancient Syver's Strike (DirectDamageNoVariance, damage 350, radius 
 #### Droom (`Droom`)
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Droom.cs` lines 9-65. 30,000 health; npc template 83003; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2156,6 +2190,8 @@ Area spells: Droom's Debuff S/C (StrengthConstitutionDebuff, damage None, radius
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Dyranapur.cs` lines 9-110. level 59; 10,000 health; npc template 83010; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Dyranapur.cs:126` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2167,6 +2203,8 @@ Area spells: Black Plague (Disease, damage None, radius 450).
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hati.cs` lines 9-105. level 69; 30,000 health; npc template 83026; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Hati.cs:121` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2177,6 +2215,8 @@ Area spells: Hati's Mezz (Mesmerize, damage None, radius 450).
 #### Hurjavelen (`Hurjavelen`)
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Hurjavelen.cs` lines 9-108. level 68; 30,000 health; npc template 83015; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2201,6 +2241,8 @@ Area spells: Iarnvidiur's Plague (DamageOverTime, damage 100, radius 700); Black
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Lydsyg.cs` lines 9-110. level 58; 10,000 health; npc template 83009; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Lydsyg.cs:126` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2212,6 +2254,8 @@ Area spells: Black Plague (Disease, damage None, radius 450).
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Mahattava.cs` lines 9-69. level 66; 30,000 health; npc template 83022; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Mahattava.cs:85` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2221,6 +2265,8 @@ Area spells: Black Plague (Disease, damage None, radius 450).
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Skoll.cs` lines 10-108. level 69; 30,000 health; npc template 83027; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | reset | Resets when its aggro list is empty: walks home at full health | `Skoll.cs:124` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
@@ -2229,6 +2275,8 @@ Area spells: Black Plague (Disease, damage None, radius 450).
 #### Stanga (`Stanga`)
 
 `source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Stanga.cs` lines 9-66. level 66; 30,000 health; npc template 83014; raids: dungeon-midgard-iarnvidiur (named); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2244,7 +2292,7 @@ Area spells: Black Plague (Disease, damage None, radius 450); Stanga's Debuff S/
 
 `source/server/GameServer/scripts/namedmobs/Krondon/BeranSupplyMaster.cs` lines 10-78. level 78; 30,000 health; npc template 60158369; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2276,27 +2324,27 @@ Area spells: Explosion (DirectDamageNoVariance, damage 1200, radius 1000).
 
 #### Fuladl (`Fuladl`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs` lines 9-93. level 77; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/Krondon/Fuladl.cs` lines 10-112. level 77; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. His parts no longer respawn on the epic timer (they are spawned by the fight).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns Part of Fuladl (FuladlAdd): from SpawnAdds; count about 4-5 (loop to a random bound) | `Fuladl.cs:148` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| tether | Tether range 3800: drawn further from its spawn it walks home. | `Fuladl.cs:81` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Fuladl.cs:111` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| adds | Spawns Part of Fuladl (FuladlAdd): from SpawnAdds; count about 4-5 (loop to a random bound) | `Fuladl.cs:166` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| tether | Tether range 3800: drawn further from its spawn it walks home. | `Fuladl.cs:100` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Fuladl.cs:130` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Fulafeallan (`Fulafeallan`)
 
-`source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs` lines 9-93. level 77; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/Krondon/Fulafeallan.cs` lines 10-112. level 77; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. Its parts no longer respawn on the epic timer (they are spawned by the fight).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns Part of Fulafeallan (FulafeallanAdd): from SpawnAdds; count about 4-5 (loop to a random bound) | `Fulafeallan.cs:148` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| tether | Tether range 3800: drawn further from its spawn it walks home. | `Fulafeallan.cs:81` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Fulafeallan.cs:111` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| adds | Spawns Part of Fulafeallan (FulafeallanAdd): from SpawnAdds; count about 4-5 (loop to a random bound) | `Fulafeallan.cs:166` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| tether | Tether range 3800: drawn further from its spawn it walks home. | `Fulafeallan.cs:100` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Fulafeallan.cs:130` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Krevo Ricik (`KrevoRicik`)
 
@@ -2316,6 +2364,8 @@ Area spells: Dark Explosion (DirectDamageNoVariance, damage 800, radius 700).
 #### Lurfos the Herald (`LurfosHerald`)
 
 `source/server/GameServer/scripts/namedmobs/Krondon/LurfosHerald.cs` lines 9-151. level 76; 30,000 health; raids: dungeon-albion-krondon (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -2406,15 +2456,15 @@ Area spells: Lance Spirit (DamageOverTime, damage 83, radius 350).
 
 #### Ancient Black Oak (`AncientBlackOak`)
 
-`source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs` lines 8-142. level 68; 40,000 health; npc template 8823; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by BlackLady.
+`source/server/GameServer/scripts/namedmobs/MarfachCaverns/AncientBlackOak.cs` lines 8-134. level 68; 40,000 health; npc template 8823; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics); spawned by BlackLady.
 
-Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+Spawned by Black Lady's AddToWorld at 30091,37620,15049 (48 units above her spawn floor, probably inside the tree). Level 68 (npc template 8823), 40,000 health. AggroLevel 0 with AggroRange 400: it never pulls itself; it fights whoever attacks it. Its Ancient Root (Body, 700 damage, radius 800, 60% snare 30 s) goes off on half of its melee hits. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `AncientBlackOak.cs:54` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| reset | Resets when its aggro list is empty: walks home at full health | `AncientBlackOak.cs:161` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | When pulled it puts every living NPC with PackageID "AncientOakBaf" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody. | `AncientBlackOak.cs:176` | read, verified |  | easy for the current raid AI | Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first. |
+| reset | Resets when its aggro list is empty: walks home at full health | `AncientBlackOak.cs:153` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | When pulled it puts every living NPC with PackageID "AncientOakBaf" in the region on its aggro list. The release world database has no such NPC, so today it brings nobody. | `AncientBlackOak.cs:168` | read, verified |  | easy for the current raid AI | Nothing to do today; if the world gets AncientOakBaf mobs, clear or pull them first. |
 
 Area spells: Ancient Root (DamageSpeedDecreaseNoVariance, damage 700, radius 800).
 
@@ -2429,57 +2479,59 @@ Area spells: Ancient Root (DamageSpeedDecreaseNoVariance, damage 700, radius 800
 
 #### Black Lady (`BlackLady`)
 
-`source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs` lines 10-150. level 65; 40,000 health; npc template 8817; raids: dungeon-hibernia-marfach (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs` lines 11-143. level 65; 40,000 health; npc template 8817; raids: dungeon-hibernia-marfach (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+Level 65 (npc template 8817), 40,000 health. Spawns the Ancient Black Oak when she spawns; when she dies the Oak dies with her (Die kills every AncientBlackOakBrain NPC in the region). Casts Void Strike (Cold, 400, radius 350) every brain turn she has a target. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `BlackLady.cs:24` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it. | `BlackLady.cs:122` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home). |
-| adds | Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets). | `BlackLady.cs:207` | inferred, verified |  | easy for the current raid AI | One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `BlackLady.cs:167` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `BlackLady.cs:25` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns the Ancient Black Oak (a separate epic encounter, RespawnInterval -1) when she spawns; her death kills it. | `BlackLady.cs:116` | inferred, verified |  | needs new raid AI | In the raid AI (EpicEncounterTactics, dies with): the raid fights Black Lady instead of the Oak; the Oak dies with her. She is fought within 1,100 of her spawn (fight at home). |
+| adds | Each brain turn in combat (every 2 s), a 20% chance to spawn one Ogress (level 50-55, 2,500 health, aggro 1,200) at one of two spots, up to 5 alive. Ogresses put healer and caster classes on their aggro list at 150 and others at 10 (real players and bots since 1.2, EncounterTargets). | `BlackLady.cs:201` | inferred, verified |  | easy for the current raid AI | One party kills Ogresses as they appear; they are script-spawned adds, so the route already puts them first. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `BlackLady.cs:160` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 Area spells: Void Strike (DirectDamageNoVariance, damage 400, radius 350).
 
 #### Blue Lady (`BlueLady`)
 
-`source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs` lines 10-124. level 65; 30,000 health; npc template 8818; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlueLady.cs` lines 11-125. level 65; 30,000 health; npc template 8818; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `BlueLady.cs:27` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns 2 kinds of add (summoned sword (BlueLadySwordAdd), summoned axe (BlueLadyAxeAdd)): on a timer (Util.Random(25000, 45000) ms) | `BlueLady.cs:178` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `BlueLady.cs:143` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `BlueLady.cs:28` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns 2 kinds of add (summoned sword (BlueLadySwordAdd), summoned axe (BlueLadyAxeAdd)): on a timer (Util.Random(25000, 45000) ms) | `BlueLady.cs:184` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `BlueLady.cs:144` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 Area spells: Mana Bomb (DirectDamageNoVariance, damage 800, radius 550).
 
 #### Chieftain Caimheul (`ChieftainCaimheul`)
 
-`source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs` lines 10-188. level 65; 30,000 health; npc template 8821; raids: dungeon-hibernia-marfach (final); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/MarfachCaverns/ChieftainCaimheul.cs` lines 10-185. level 65; 30,000 health; npc template 8821; raids: dungeon-hibernia-marfach (final); raid AI: generic dungeon route.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `ChieftainCaimheul.cs:72` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| phase | At 50% health (Think): see the block | `ChieftainCaimheul.cs:294` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| reset | Resets when its aggro list is empty: walks home at full health | `ChieftainCaimheul.cs:209` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| empowered | Strength becomes 400 while if (Body.InCombat && HasAggro && Body.TargetObject != null) && if (Body.TargetObject != null) && if(Phase2) | `ChieftainCaimheul.cs:300` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "CaimheulBaf" (none in the world database) | `ChieftainCaimheul.cs:235` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| phase | At 50% health (Think): see the block | `ChieftainCaimheul.cs:291` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| reset | Resets when its aggro list is empty: walks home at full health | `ChieftainCaimheul.cs:206` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| empowered | Strength becomes 400 while if (Body.InCombat && HasAggro && Body.TargetObject != null) && if (Body.TargetObject != null) && if(Phase2) | `ChieftainCaimheul.cs:297` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "CaimheulBaf" (none in the world database) | `ChieftainCaimheul.cs:232` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Red Lady (`RedLady`)
 
-`source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs` lines 10-120. level 65; 30,000 health; npc template 8819; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/MarfachCaverns/RedLady.cs` lines 11-120. level 65; 30,000 health; npc template 8819; raids: dungeon-hibernia-marfach (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `RedLady.cs:24` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns summoned innocent (SpecialInnocent): on a timer (Util.Random(20000, 30000) ms); count 8 (loop), at most 9 alive | `RedLady.cs:142` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `RedLady.cs:158` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: SpecialInnocentBrain | `RedLady.cs:188` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `RedLady.cs:25` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns summoned innocent (SpecialInnocent): on a timer (Util.Random(20000, 30000) ms); count 8 (loop), at most 9 alive | `RedLady.cs:143` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `RedLady.cs:167` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: SpecialInnocentBrain | `RedLady.cs:196` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 Area spells: Soul Drain (DamageOverTime, damage 100, radius 350).
 
@@ -2789,18 +2841,18 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 #### Evern (`Evern`)
 
-`source/server/GameServer/scripts/namedmobs/Evern.cs` lines 10-155. level 76; 100,000 health; npc template 60160628; raids: dragon-hibernia (named), openworld-hibernia-evern (final); raid AI: open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/Evern.cs` lines 10-154. level 76; 100,000 health; npc template 60160628; raids: dragon-hibernia (named), openworld-hibernia-evern (final); raid AI: open-world raid (dragon-fight engine) + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `Evern.cs:51` | read, verified |  | easy for the current raid AI | In the raid AI (catalog: fight at home within 1,400 of his spawn, inside his 1,700 tether): past it the raid stops hitting him and his target leads him back. |
-| adds | Spawns Wraith Fairy (EvernFairy): on a timer (via DoSpawn); count about 2-5 (loop to a random bound) | `Evern.cs:233` | inferred, verified |  | easy for the current raid AI | In the raid AI (catalog: ranged adds, focused): the raid's casters and archers kill the fairies one at a time before they reach a stone. |
-| reset | Resets when its aggro list is empty: walks home at full health | `Evern.cs:174` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Evern.cs:209` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / self | Teleports itself (MoveTo Body.CurrentRegionID, target.X, target.Y, target.Z, Body.Heading) | `Evern.cs:314` | read, verified |  | easy for the current raid AI | Follow it when it moves; ranged keep hitting. |
-| heal | Has a heal spell: Heal (Heal, value 1000, target REALM) | `Evern.cs:382` | read, verified |  | easy for the current raid AI | The fairies' heal (1,000 on him from a stone, 3 s, uninterruptible): stopped by killing each fairy first (catalog: ranged adds, focused). In the raid AI since 1.2. |
+| adds | Spawns Wraith Fairy (EvernFairy): on a timer (via DoSpawn); count about 2-5 (loop to a random bound) | `Evern.cs:232` | inferred, verified |  | easy for the current raid AI | In the raid AI (catalog: ranged adds, focused): the raid's casters and archers kill the fairies one at a time before they reach a stone. |
+| reset | Resets when its aggro list is empty: walks home at full health | `Evern.cs:173` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Evern.cs:208` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| teleport / self | Teleports itself (MoveTo Body.CurrentRegionID, target.X, target.Y, target.Z, Body.Heading) | `Evern.cs:313` | read, verified |  | easy for the current raid AI | Follow it when it moves; ranged keep hitting. |
+| heal | Has a heal spell: Heal (Heal, value 1000, target REALM) | `Evern.cs:381` | read, verified |  | easy for the current raid AI | The fairies' heal (1,000 on him from a stone, 3 s, uninterruptible): stopped by killing each fairy first (catalog: ranged adds, focused). In the raid AI since 1.2. |
 
 #### Glacier Giant (`GlacierGiant`)
 
@@ -2814,14 +2866,16 @@ No scripted rule found (normal fight: stats, resists, spells).
 
 #### Gnat (`Gnat`)
 
-`source/server/GameServer/scripts/namedmobs/Gnat.cs` lines 7-34. level 35; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Gnat.cs` lines 7-31. level 35; raid AI: no raid.
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns fiery ant (GnatAnts): from Think when if (Body.HealthPercent < 95 && spawnants == true); count 7 (loop) | `Gnat.cs:94` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| phase | At 95% health (Think): calls Spawn | `Gnat.cs:55` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| tether | Tether range 2000: drawn further from its spawn it walks home. | `Gnat.cs:24` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| linked_pack | Brings others into the fight: GnatAntsBrain | `Gnat.cs:74` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| adds | Spawns fiery ant (GnatAnts): from Think when if (Body.HealthPercent < 95 && spawnants == true); count 7 (loop) | `Gnat.cs:91` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| phase | At 95% health (Think): calls Spawn | `Gnat.cs:52` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| tether | Tether range 2000: drawn further from its spawn it walks home. | `Gnat.cs:22` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| linked_pack | Brings others into the fight: GnatAntsBrain | `Gnat.cs:71` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Maldahar the Glimmer Prince (`MaldaharTheGlimmerPrince`)
 
@@ -2835,16 +2889,16 @@ Area spells: None (DirectDamage, damage 1150, radius 550).
 
 #### Moran the Mighty (`MoranTheMighty`)
 
-`source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs` lines 11-74. level 73; 40,000 health; npc template 770024; raids: dragon-albion (named); raid AI: dragon fight.
+`source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs` lines 11-73. level 73; 40,000 health; npc template 770024; raids: dragon-albion (named); raid AI: dragon fight.
 
-1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran. On his first aggro every monster of his own kind within 1,500 (EpicEncounterMechanics.IsOwnKind: same realm, alive, not a pet, a gamebot or a peaceful NPC) is set on the raiders within 2,250 of him; 1.2 (True 1.65 port): before, every NPC there was, the raid's own bots and pets included.
+1.2 (wave 2): below 50% each brain turn has a 5% chance to start a gust, and a gust throws ONE random raider (WindVictims) to one of three camps, whose monsters then attack it. The loop used to throw every raider within 2,000 (a one-element list per raider), in the original too. Bots are thrown too (AllowBotDisplacement on); the camp's own monsters attack, never bots or Moran. On his first aggro every monster of his own kind within 1,500 (EpicEncounterMechanics.IsOwnKind: same realm, alive, not a pet, a gamebot or a peaceful NPC) is set on the raiders within 2,250 of him; 1.2 (True 1.65 port): before, every NPC there was, the raid's own bots and pets included. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| phase | At 50% health (Think): starts timer TeleportPlayerAway | `MoranTheMighty.cs:128` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| phase | At 50% health (Think): starts timer TeleportPlayerAway | `MoranTheMighty.cs:127` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
 | tether | Tether range 4500: drawn further from its spawn it walks home. | `MoranTheMighty.cs:63` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset / out_of_combat | Resets after 60 s out of combat: aggro cleared, full health | `MoranTheMighty.cs:104` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / air_toss | Throws portPlayer[ranPlayer] into the air or across the room: one of 3 spots (MoveTo 1, 401943, 753091, 222, 3499; 1, 406787, 749150, 213, 3926; 1, 401061, 755882, 469, 3050) *(real players only (bots are never picked))* | `MoranTheMighty.cs:180` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |
+| reset / out_of_combat | Resets after 60 s out of combat: aggro cleared, full health | `MoranTheMighty.cs:103` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| teleport / air_toss | Throws portPlayer[ranPlayer] into the air or across the room: one of 3 spots (MoveTo 1, 401943, 753091, 222, 3499; 1, 406787, 749150, 213, 3926; 1, 401061, 755882, 469, 3050) *(real players only (bots are never picked))* | `MoranTheMighty.cs:179` | inferred, verified |  | off today | Off for bots today: it picks real players only (GameBot is no GamePlayer). To play it with bots: recover the moved raider: walk back to the fight, or free them. |
 
 #### Green Knight (`OFGreenKnight`)
 
@@ -2953,9 +3007,11 @@ Area spells: Summoner Pain (DamageOverTime, damage 150, radius 1000).
 
 `source/server/GameServer/scripts/namedmobs/Trollheim/Dagar.cs` lines 9-65. level 60; 8,000 health; npc template 60159616; raids: dungeon-midgard-trollheim (named); raid AI: generic dungeon route.
 
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
+
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| linked_pack | Brings others into the fight: every NPC with PackageID "DagarBaf" (3 in the world database: 1 gruppchef, 2 morvalt larling) | `Dagar.cs:86` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "DagarBaf" (3 in the world database: 1 gruppchef, 2 morvalt larling) | `Dagar.cs:85` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Fostra Orm (`FostraOrm`)
 
@@ -2990,24 +3046,24 @@ Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of 
 
 #### Trollkarl Bonchar (`Rift`)
 
-`source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs` lines 9-93. level 65; 30,000 health; raids: dungeon-midgard-trollheim (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/Trollheim/Rift.cs` lines 9-92. level 65; 30,000 health; raids: dungeon-midgard-trollheim (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns morkenhet (Morkenhet): on a timer (Util.Random(10000, 20000) ms); count 1 spawn call in SpawnAdds | `Rift.cs:199` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| phase / form | Changes form in ChangeAppearance (Strength = 320; Dexterity = 150; Constitution = 100; Quickness = 100; Piety = 150; Intelligence = 150; Empathy = 300) | `Rift.cs:115` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| adds | Spawns morkenhet (Morkenhet): on a timer (Util.Random(10000, 20000) ms); count 1 spawn call in SpawnAdds | `Rift.cs:198` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| phase / form | Changes form in ChangeAppearance (Strength = 320; Dexterity = 150; Constitution = 100; Quickness = 100; Piety = 150; Intelligence = 150; Empathy = 300) | `Rift.cs:114` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
 | tether | Tether range 3500: drawn further from its spawn it walks home. | `Rift.cs:79` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Rift.cs:155` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| empowered | Strength becomes 320, Dexterity 150, Quickness 100, Piety 150, Intelligence 150, Empathy 300 while if (!HasAggro && Body.IsAlive && IsValkyn == false) | `Rift.cs:119` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
-| empowered | Strength becomes 320, Dexterity 150, Quickness 100, Piety 150, Intelligence 150, Empathy 300 while if(HasAggro && Body.IsAlive && IsRift==false) | `Rift.cs:137` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
+| reset | Resets when its aggro list is empty: walks home at full health, adds cleared | `Rift.cs:154` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| empowered | Strength becomes 320, Dexterity 150, Quickness 100, Piety 150, Intelligence 150, Empathy 300 while if (!HasAggro && Body.IsAlive && IsValkyn == false) | `Rift.cs:118` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
+| empowered | Strength becomes 320, Dexterity 150, Quickness 100, Piety 150, Intelligence 150, Empathy 300 while if(HasAggro && Body.IsAlive && IsRift==false) | `Rift.cs:136` | inferred, verified |  | needs new raid AI | Remove what empowers it first, or burn it fast; healers ready for bigger hits. |
 
 #### Rotodjur (`Rotoddjur`)
 
 `source/server/GameServer/scripts/namedmobs/Trollheim/Rotoddjur.cs` lines 9-72. level 71; 10,000 health; npc template 60165428; raids: dungeon-midgard-trollheim (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3019,16 +3075,16 @@ Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of 
 
 #### Abomos the Soultrapper (`AbomosSoultrapper`)
 
-`source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs` lines 10-140. level 68; 30,000 health; npc template 60157522; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TurSuil/AbomosSoultrapper.cs` lines 11-142. level 68; 30,000 health; npc template 60157522; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `AbomosSoultrapper.cs:57` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns Abomos Servant (AbomosAdd): from Think when if(Body.InCombat && HasAggro && Body.HealthPercent <= 50); count 2 (loop), at most 3 alive | `AbomosSoultrapper.cs:190` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| phase | At 50% health (Think): calls SpawnAdds | `AbomosSoultrapper.cs:178` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
-| reset | Resets when its aggro list is empty: walks home at full health | `AbomosSoultrapper.cs:156` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `AbomosSoultrapper.cs:59` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns Abomos Servant (AbomosAdd): from Think when if(Body.InCombat && HasAggro && Body.HealthPercent <= 50); count 2 (loop), at most 3 alive | `AbomosSoultrapper.cs:197` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| phase | At 50% health (Think): calls SpawnAdds | `AbomosSoultrapper.cs:180` | inferred, verified |  | needs new raid AI | Know the threshold: get ready for what it starts (adds, a big hit) before pushing it past. |
+| reset | Resets when its aggro list is empty: walks home at full health | `AbomosSoultrapper.cs:158` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 #### Balor (`Balor`)
 
@@ -3047,7 +3103,7 @@ Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of 
 
 `source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs` lines 10-150. level 69; 30,000 health; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3060,7 +3116,7 @@ Area spells: Nosdoden's Venom (DamageOverTime, damage 150, radius 500); Call of 
 
 `source/server/GameServer/scripts/namedmobs/TurSuil/KieracDestroyerAndMasterOfPain.cs` lines 214-305. level 74; 30,000 health; npc template 60163806; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route; spawned by KieracDestroyer.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3091,36 +3147,38 @@ Area spells: Vitality Dispersal (StrengthConstitutionDebuff, damage None, radius
 
 #### Queen Qunilaria (`QueenQunilaria`)
 
-`source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs` lines 12-134. level 72; 30,000 health; npc template 60165085; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route.
+`source/server/GameServer/scripts/namedmobs/TurSuil/QueenQunilaria.cs` lines 13-137. level 72; 30,000 health; npc template 60165085; raids: dungeon-hibernia-tursuil (named); raid AI: generic dungeon route.
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Adds spawn on a random navmesh point near the old spot when the zone has a navmesh (never inside a wall), else at the old random offset. Its adds (upstream's "death-spawned adds") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `QueenQunilaria.cs:48` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
-| adds | Spawns Qunilaria's minion (QunilariaAdd2): from SpawnAdds; count about 15-22 (loop to a random bound) | `QueenQunilaria.cs:124` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns Qunilaria's minion (QunilariaAdd): from OnAttackedByEnemy when if(Util.Chance(25)); count 3 (loop), at most 4 alive | `QueenQunilaria.cs:153` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| reset | Resets when its aggro list is empty: walks home at full health | `QueenQunilaria.cs:176` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| immune_while / out_of_tether | Takes no damage while it is drawn past its tether. | `QueenQunilaria.cs:51` | read, verified |  | easy for the current raid AI | Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this). |
+| adds | Spawns Qunilaria's minion (QunilariaAdd2): from SpawnAdds; count about 15-22 (loop to a random bound) | `QueenQunilaria.cs:127` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns Qunilaria's minion (QunilariaAdd): from OnAttackedByEnemy when if(Util.Chance(25)); count 3 (loop), at most 4 alive | `QueenQunilaria.cs:163` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| reset | Resets when its aggro list is empty: walks home at full health | `QueenQunilaria.cs:189` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 
 ### Tuscaran Glacier (region 160)
 
 #### Council Otrygg (`Otrygg`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs` lines 9-73. level 77; 100,000 health; npc template 60159451; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilOtrygg.cs` lines 10-73. level 77; 100,000 health; npc template 60159451; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns summoned pet (OtryggAdd): from SpawnPets; count 8 (loop) | `CouncilOtrygg.cs:136` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
-| adds | Spawns summoned pet (OtryggAdd): from SpawnPetsMore; count 1 spawn call in SpawnPetsMore | `CouncilOtrygg.cs:148` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns summoned pet (OtryggAdd): from SpawnPets; count 8 (loop) | `CouncilOtrygg.cs:151` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns summoned pet (OtryggAdd): from SpawnPetsMore; count 1 spawn call in SpawnPetsMore | `CouncilOtrygg.cs:164` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `CouncilOtrygg.cs:92` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: OtryggAddBrain | `CouncilOtrygg.cs:255` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| linked_pack | Brings others into the fight: OtryggAddBrain | `CouncilOtrygg.cs:265` | inferred, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Council Vagn (`Vagn`)
 
 `source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs` lines 9-60. level 78; 100,000 health; npc template 60159453; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3132,6 +3190,8 @@ Area spells: Vitality Dispersal (StrengthConstitutionDebuff, damage None, radius
 #### Council Nokkvi (`Nokkvi`)
 
 `source/server/GameServer/scripts/namedmobs/TuscarianGlacier/CouncilVagnAndNokkvi.cs` lines 146-199. level 78; 100,000 health; npc template 60159450; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+
+1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3227,7 +3287,7 @@ Area spells: Falling Ice (DirectDamageNoVariance, damage 400, radius 450).
 
 `source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs` lines 9-125. level 75; 100,000 health; npc template 60161047; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -3251,39 +3311,39 @@ Area spells: Frost Shock (DirectDamageNoVariance, damage 300, radius 300).
 
 #### Icelord Agmundr (`Agmundr`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs` lines 9-83. level 81; 100,000 health; npc template 60162346; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs` lines 9-81. level 81; 100,000 health; npc template 60162346; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `IcelordAgmundr.cs:127` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `IcelordAgmundr.cs:159` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `IcelordAgmundr.cs:164` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| linked_pack | Brings others into the fight: every NPC with PackageID "AgmundrBaf" (6 in the world database: 1 hrimthursa depredator, 2 hrimthursa icespine, 2 hrimthursa icetouch, 1 hrimthursa seer) | `IcelordAgmundr.cs:143` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `IcelordAgmundr.cs:125` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `IcelordAgmundr.cs:157` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `IcelordAgmundr.cs:162` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| linked_pack | Brings others into the fight: every NPC with PackageID "AgmundrBaf" (6 in the world database: 1 hrimthursa depredator, 2 hrimthursa icespine, 2 hrimthursa icetouch, 1 hrimthursa seer) | `IcelordAgmundr.cs:141` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 Area spells: None (DirectDamageNoVariance, damage 650, radius 500).
 
 #### Icelord Hakr (`Hakr`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs` lines 12-136. level 82; 100,000 health; npc template 60162347; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs` lines 12-141. level 82; 100,000 health; npc template 60162347; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. Its add counts are the adds it spawned that still live (a list it keeps) instead of a static counter that a reset or a removed add could leave wrong. His teleport and his message follow whether one of his iceweavers lives.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns Royal Iceweaver (HakrAdd): when it spawns (via SpawnSnakes); count 2 (loop) | `IcelordHakr.cs:114` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| adds | Spawns Royal Iceweaver (HakrAdd): when it spawns (via SpawnSnakes); count 2 (loop) | `IcelordHakr.cs:119` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | tether | Tether range 3800 (Royal Iceweaver (HakrAdd)): drawn further from its spawn it walks home. | `IcelordHakr.cs:316` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `IcelordHakr.cs:246` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `IcelordHakr.cs:252` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | reset | Resets when its aggro list is empty: walks home (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `IcelordHakr.cs:368` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / air_toss | Throws PortTarget into the air or across the room (MoveTo Body.CurrentRegionID, Body.X + Util.Random(-50, 50), Body.Y + Util.Random(-50, 50), Body.Z + 220, Body.Heading) | `IcelordHakr.cs:210` | inferred, verified | AllowDisplacement | easy for the current raid AI | Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. |
-| linked_pack | Brings others into the fight: every NPC with PackageID "HakrBaf" (none in the world database) | `IcelordHakr.cs:160` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
+| teleport / air_toss | Throws PortTarget into the air or across the room (MoveTo Body.CurrentRegionID, Body.X + Util.Random(-50, 50), Body.Y + Util.Random(-50, 50), Body.Z + 220, Body.Heading) | `IcelordHakr.cs:215` | inferred, verified | AllowDisplacement | easy for the current raid AI | Toss: on since 1.2 for bots too (AllowBotDisplacement, AllowDisplacement for Hakr). A moved bot falls 220 by him (about 4% fall damage) and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group. |
+| linked_pack | Brings others into the fight: every NPC with PackageID "HakrBaf" (none in the world database) | `IcelordHakr.cs:165` | read, verified |  | easy for the current raid AI | Pull its linked pack with it on purpose: clear them first or fight them at the muster. |
 
 #### Icelord Kvasir (`Kvasir`)
 
 `source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs` lines 9-126. level 80; 100,000 health; npc template 60162348; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
