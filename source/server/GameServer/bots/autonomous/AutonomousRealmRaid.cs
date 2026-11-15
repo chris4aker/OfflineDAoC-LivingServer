@@ -207,9 +207,25 @@ namespace DOL.GS
 
         /// <summary>A dead epic monster whose respawn waits while a realm raid is in its dungeon (RealmRaidRouteGate): read
         /// without the raid lock by the monster's respawn timer.</summary>
-        public static bool HoldsEpicRespawn(GameNPC npc) =>
-            npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
+        public static bool HoldsEpicRespawn(GameNPC npc)
+        {
+            bool holds = npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
                 npc.Realm == eRealm.None, npc.RespawnInterval, Array.IndexOf(_epicHoldRegions, npc.CurrentRegionID) >= 0);
+            // Once per wait, so the owner's log shows which epics a raid kept down (Gatekeeper Dommel, PC 2026-11-14).
+            if (npc == null) return false;
+            if (!holds) { HeldRespawns.TryRemove(npc, out _); return false; }
+            if (HeldRespawns.TryAdd(npc, 0))
+                Log.Info($"REALM_RAID_EPIC_RESPAWN_HELD npc=\"{npc.Name}\" region={npc.CurrentRegionID} respawn_s={npc.RespawnInterval / 1000} " +
+                         $"reason=\"a realm raid is in its dungeon; it comes back once the raid has ended\"");
+            return true;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, byte> HeldRespawns = new();
+
+        /// <summary>The regions whose epic respawns a started dungeon raid holds (pure): its own dungeon and the one its way
+        /// in leads through (Hall of the Corrupt for Albion's Summoner's Hall raid, where Aidon stands).</summary>
+        public static ushort[] EpicHoldRegionsOf(ushort raidRegion, ushort? entranceTarget) =>
+            entranceTarget is ushort through && through != 0 && through != raidRegion ? [raidRegion, through] : [raidRegion];
 
         public static bool IsActiveRaidDestination(ushort region, int x, int y)
         {
@@ -655,7 +671,7 @@ namespace DOL.GS
                 _raidDestinations = RecentDestinations.Keys.ToArray();
                 // The dungeons whose epic respawns wait while a raid is in them (RealmRaidRouteGate.HoldEpicRespawn).
                 _epicHoldRegions = Raids.Values.Where(r => r.Started && r.DungeonRoute != null)
-                    .SelectMany(r => new[] { r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion ?? r.Definition.Region })
+                    .SelectMany(r => EpicHoldRegionsOf(r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion))
                     .Distinct().ToArray();
             }
         }
@@ -1726,6 +1742,56 @@ namespace DOL.GS
         private static bool InRaidDungeon(Raid raid, ushort region) => region == raid.Definition.Region ||
             raid.DungeonRoute?.Entrance is { } edge && edge.TargetRegion == region;
 
+        /// <summary>
+        /// Whether <paramref name="region"/> is the dungeon the bot's raid walks through on its way in (Dodens Gruva, Hall of
+        /// the Corrupt or Marfach Caverns for Summoner's Hall; Avalon City for Crystal Cave), not the raid's own dungeon.
+        /// Owner's PC, 2026-11-14 (build e3b8238): after the Roesia wipe the Midgard raiders walking back through Dodens Gruva
+        /// stood for up to 15 minutes before ordinary monsters there (cavernous yeti, decayed dire wolf, icebound moribund:
+        /// AUTONOMOUS_DUNGEON_HOLD_LONG mayPull=False raidHold=True), because only the raid's own dungeon let a held raid
+        /// clear its walk. Its ordinary monsters are now the raid's walk too (AutonomousDungeonTraversal); its epic monsters
+        /// are not (they are route gates, RealmRaidRouteGate).
+        /// </summary>
+        public static bool IsRaidApproachDungeon(GameBot bot, ushort region)
+        {
+            Group group = bot?.Group;
+            if (group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(group, out var raid) && region != raid.Definition.Region && InRaidDungeon(raid, region);
+        }
+
+        /// <summary>
+        /// Where a raid member that has not moved for 15 minutes inside its raid's dungeon (or the one its way in leads
+        /// through) is put back (AutonomousStuckWatchdog): where the living raider nearest the route's front stands, or the
+        /// front itself. Owner's PC, 2026-11-11 (build e90bf21, Krondon): 26 "no movement for fifteen minutes" recoveries came from
+        /// the entrance ogre ceorls' camp (x 31,200-31,720, y 34,750-35,560, z 15,130-15,310: the same spots 31533,35487 and
+        /// 31285,35307 again and again, route traces PartialPathFound nodes=0); each sent the raider to Camelot, it walked
+        /// back for 30 minutes and stood in the same spot again, so the orbs never had the raid. False when the bot is in no
+        /// started dungeon raid or not in its dungeon (then the capital, as before).
+        /// </summary>
+        public static bool TryRecoverInsideRaid(GameBot bot, out ushort region, out Vector3 point, out string near)
+        {
+            region = 0; point = default; near = null;
+            Group group = bot?.Group;
+            if (group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Membership.TryGetValue(group, out var raid) || !raid.Started || raid.DungeonRoute == null) return false;
+                RealmRaidDungeonRoute route = ActiveRoute(raid);
+                if (bot.CurrentRegionID != route.Region) return false;
+                Vector3 front = route.Front;
+                GameLiving[] others = raid.Support.Where(b => b != bot && b.IsAlive && b.CurrentRegionID == route.Region &&
+                    b.ObjectState == GameObject.eObjectState.Active).ToArray();
+                if (RealmRaidStuckRecovery.Choose(new Vector3(bot.X, bot.Y, bot.Z), front,
+                        others.Select(b => new Vector3(b.X, b.Y, b.Z)).ToArray(), out point, out int index))
+                {
+                    region = route.Region;
+                    near = index >= 0 ? others[index].Name : "the route's front";
+                    return true;
+                }
+                return false;
+            }
+        }
+
         // Late/released members skip muster attendance, not the connected exterior route.
         // Navigation is performed by their controller outside the expedition lock.
         public static bool TryIndependentApproach(GameBot bot, out Vector3 destination, out Vector3? via)
@@ -1766,8 +1832,13 @@ namespace DOL.GS
                     point = new Point3D((int)party.Staging.X, (int)party.Staging.Y, (int)party.Staging.Z);
                     return true;
                 }
+                // Otherwise at the party's own post at the hub (proven to lead to the hub and, since build 4, from it:
+                // RealmRaidMuster.HubReachesPost), not on the hub's centre, where Snowdonia Station's 12 failed raiders stood
+                // (PC 2026-11-14). The centre only when the party has no post.
                 region = raid.Hub.Region;
-                point = new Point3D((int)raid.Hub.Center.X, (int)raid.Hub.Center.Y, (int)raid.Hub.Center.Z);
+                Vector3 release = RealmRaidMuster.ReleasePoint(raid.Hub.Center,
+                    raid.Parties.TryGetValue(group, out Party own) ? own.HubPost : default);
+                point = new Point3D((int)release.X, (int)release.Y, (int)release.Z);
                 return true;
             }
         }

@@ -1546,7 +1546,8 @@ namespace DOL.GS
                 bot.StopFollowing();
                 // Resolve well inside the slot's attendance boundary. The
                 // mover's own completion tolerance must fit inside it too.
-                if (!TryResolveConnectedApproach(bot, formation, arrivalRadius, out Vector3 approach))
+                if (!TryResolveConnectedApproach(bot, formation, arrivalRadius, out Vector3 approach) &&
+                    !TryRaidHubWayToFormation(bot, directive, formation, out approach))
                 {
                     AutonomousBotGroupCoordinator.ReportUnreachableRendezvous(
                         bot, directive.GroupId,
@@ -4535,6 +4536,47 @@ namespace DOL.GS
             }
             ResetRouteOrderState();
             _nextStableCheckTick = 0;
+            return false;
+        }
+
+        private long _nextHubWayLog;
+
+        /// <summary>
+        /// A raid party member whose own slot is not connected from where it stands walks first to its party's post (the
+        /// slot was proven connected both ways from there), then to the raid hub's centre (the post was proven connected
+        /// from there), before the failure is reported. Owner's PC, 2026-11-14 (build e3b8238), Snowdonia Station: 12 of
+        /// 64 raiders failed "member-to-formation navmesh corridor is disconnected" three times each and were released from
+        /// the raid, some 100-340 from the hub's centre, others 1,000-7,700 out where they had walked after the move to the
+        /// hub. Logged as REALM_RAID_HUB_ROUTE_VIA so the owner's log shows which way was taken. Without a mesh nothing
+        /// changes (TryResolveConnectedApproach already passes then).
+        /// </summary>
+        private bool TryRaidHubWayToFormation(GameBot bot, AutonomousBotGroupCoordinator.Directive directive, Vector3 formation,
+            out Vector3 approach)
+        {
+            approach = formation;
+            if (AutonomousRealmRaid.GetView(bot.Group) is not { Muster: true } view) return false;
+            var ways = new List<(string Name, Vector3 Point, int Radius)> { ("party post", directive.Rendezvous, 200) };
+            if (AutonomousRealmRaid.TryGetHub(view.EventId, out RealmRaidMuster.Hub hub) && hub.Region == bot.CurrentRegionID)
+                ways.Add(("hub centre", hub.Center, 300));
+            foreach ((string name, Vector3 point, int radius) in ways)
+            {
+                // Never a way to where it already stands: from there the slot failed, so it is reported as before.
+                if (Vector3.DistanceSquared(point, formation) < 16 * 16 ||
+                    Vector2.Distance(new(bot.X, bot.Y), new(point.X, point.Y)) <= radius ||
+                    !TryResolveConnectedApproach(bot, point, radius, out approach))
+                    continue;
+                long now = GameLoop.GameLoopTime;
+                if (now >= _nextHubWayLog)
+                {
+                    _nextHubWayLog = now + 60_000;
+                    Log.Warn($"REALM_RAID_HUB_ROUTE_VIA event={view.EventId} group={directive.GroupId} bot={bot.Name} region={bot.CurrentRegionID} " +
+                             $"position={bot.X},{bot.Y},{bot.Z} via=\"{name}\" to={(int)approach.X},{(int)approach.Y},{(int)approach.Z} " +
+                             $"slot={(int)formation.X},{(int)formation.Y},{(int)formation.Z} reason=\"its slot is not connected from here; it walks " +
+                             $"to the {name} first\"");
+                }
+                return true;
+            }
+            approach = formation;
             return false;
         }
 

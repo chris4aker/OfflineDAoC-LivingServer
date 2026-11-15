@@ -429,6 +429,25 @@ namespace DOL.GS
         /// </summary>
         public static bool ShouldSkipTarget(bool finalBoss, long sinceProgressMilliseconds) =>
             !finalBoss && sinceProgressMilliseconds >= TargetNoProgressMilliseconds;
+
+        /// <summary>
+        /// Owner's PC, 2026-11-11 (build e90bf21, Krondon): for 75 minutes only 2-11 raiders stood near Scurceol Hyrde's orbs,
+        /// none took damage, and every five minutes the route skipped the orb "no damage for five minutes" (near=11, 8, 6),
+        /// took the next one and moved the raid's stand, so the raid never gathered at any. An add of a boss whose adds die
+        /// in order (EpicEncounterTactics AddsInOrder) is the whole raid's target: the no-damage clock waits until a third of
+        /// the raiders inside (at least a party) stand near it (at most 20 minutes, TargetAbsencePauseLimitMilliseconds).
+        /// </summary>
+        public static bool RequiredAddMusterShort(int near, int inside) =>
+            near < Math.Max(MinimumRaidersAtTarget, (int)Math.Ceiling(inside / 3.0));
+
+        /// <summary>A stalled add of a boss whose adds die in order is not swapped for the next one: the boss's encounter is
+        /// set aside instead, and the raid comes back to the same add (pure).</summary>
+        public static bool RequiredAddStays(bool addOfOrderedBoss) => addOfOrderedBoss;
+
+        /// <summary>The living boss whose adds die in order and of which <paramref name="target"/> is one, or null.</summary>
+        private static GameNPC OrderedAddOwner(GameNPC target, IReadOnlyList<GameNPC> live) =>
+            EpicEncounterTactics.RequiredAddOwner(target, live) is { } owner && EpicEncounterTactics.For(owner)?.AddsInOrder == true
+                ? owner : null;
         /// <summary>
         /// The front plus up to <paramref name="max"/> party positions, skipping any within
         /// 150 units across and 64 up/down of one already kept (a party standing 96 units
@@ -1746,6 +1765,51 @@ namespace DOL.GS
 
         /// <summary>The current target's tactic sends the raid to another encounter (EpicEncounterTactics): a required add
         /// of the boss, or the boss an encounter dies with. Logged as REALM_EXPEDITION_TACTIC for the run reports.</summary>
+        private long _nextTrailGateCheck;
+        public const long TrailGateCheckMilliseconds = 60_000;
+
+        /// <summary>
+        /// Darkness Falls (1.2, build 4): an epic monster the raid has killed that is alive again on the raid's own trail
+        /// (AutonomousDarknessFallsRaidTrail, the way every late member, return wave and Special Force walks) is the raid's
+        /// next target while it is not fighting,
+        /// so the raid clears it with a muster instead of its late members meeting it a few at a time. Owner's PC,
+        /// 2026-11-14 (build e3b8238): Gatekeeper Dommel (level 65, aggro 500, 40-minute respawn) at the central crossing
+        /// 39793,32004 killed 108 Hibernian raiders in seven batches (08:11, 10:04, 11:09, 11:18, 12:06, 12:47, 13:05),
+        /// each after he had come back behind the raid, all at his own spot while the raid's target was High Lord Oro or
+        /// Legion. The epic-respawn hold (RealmRaidRouteGate.HoldEpicRespawn) now keeps him down once the raid has killed
+        /// him; this covers one that came back anyway (a respawn under ten minutes, or the hold switched off). True when
+        /// the raid turned on one this turn.
+        /// </summary>
+        private bool TrailGate(GameNPC[] live, GameLiving[] participants, long now)
+        {
+            if (_region != AutonomousDarknessFallsPolicy.RegionId || _realm == eRealm.None || !RealmRaidRouteGate.On ||
+                now < _nextTrailGateCheck || _target?.InCombat == true) return false;
+            _nextTrailGateCheck = now + TrailGateCheckMilliseconds;
+            if (!AutonomousDarknessFallsRaidTrail.TryPoints(_realm, out Vector3[] trail)) return false;
+            GameNPC gate = null;
+            foreach (GameNPC npc in live)
+            {
+                // Only one the raid has already killed (it came back behind the raid): a monster alive since before the raid
+                // came stood where the lead raider walked and was answered then, or it is not on the walk.
+                if (npc == _target || npc is not IGameEpicNpc || !_clearedNames.Contains(npc.Name) || !npc.IsAlive || npc.InCombat ||
+                    npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
+                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain ||
+                    _finalTypes.Contains(npc.GetType().Name) || IsEncounterHazard(npc) ||
+                    EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, live) || _routeRetry.GetValueOrDefault(npc) > now)
+                    continue;
+                if (!RealmRaidRouteGate.Blocks(trail, new Vector3(npc.X, npc.Y, npc.Z), brain.AggroRange)) continue;
+                gate = npc;
+                break;
+            }
+            if (gate == null) return false;
+            log.Warn($"REALM_EXPEDITION_TRAIL_GATE region={_region} target=\"{gate.Name}\" level={gate.Level} at={gate.X},{gate.Y},{gate.Z} " +
+                     $"aggro={((StandardMobBrain)gate.Brain).AggroRange} trail={trail.Length} from=\"{TargetName}\" " +
+                     $"reason=\"a living epic stands on the raid's trail; the raid clears it before its late members walk past it\"");
+            TurnOn(gate, participants, now, "it stands on the raid's trail, where late members walk");
+            return true;
+        }
+
         private void TurnOn(GameNPC attacking, GameLiving[] participants, long now, string reason)
         {
             bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
@@ -1891,6 +1955,7 @@ namespace DOL.GS
                 _target = null;
             }
             if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
+            if (TrailGate(live, participants, now)) return;
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
                 EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
             {
@@ -1929,7 +1994,12 @@ namespace DOL.GS
                     .Select(p => (float)p.GetDistanceTo(_target)).DefaultIfEmpty(float.MaxValue).Min();
                 if (closest < _targetClosest - TargetApproachStepUnits) { _targetClosest = closest; _targetApproachTick = now; }
                 bool approaching = now - _targetApproachTick < TargetApproachStallMilliseconds;
-                if (near < MinimumRaidersAtTarget && (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
+                // One of a boss's adds that die in order (Scurceol Hyrde's orbs): the whole raid commits to it, so the clock
+                // waits for a third of the raiders inside to stand near it, not only for a party (RequiredAddMusterShort).
+                GameNPC orderedOwner = OrderedAddOwner(_target, live);
+                int insideNow = orderedOwner == null ? 0 : participants.Count(p => p.IsAlive && p.CurrentRegionID == _region);
+                if ((near < MinimumRaidersAtTarget || orderedOwner != null && RequiredAddMusterShort(near, insideNow)) &&
+                    (now - _targetStartTick < TargetAbsencePauseLimitMilliseconds || approaching))
                     _targetProgressTick = Math.Max(_targetProgressTick, now - 1_000);
                 // A tethered boss outside its tether is immune while the raid leads it home: not a stall.
                 if (_target is GameNPC tethered && (AutonomousTetherReset.IsOutOfTether(tethered) || EpicEncounterTactics.OutsideHome(tethered)))
@@ -1989,6 +2059,17 @@ namespace DOL.GS
                 {
                     CallTarget(participants, now);
                     Hold = false; Status = $"Clearing {_target.Name} ({_target.HealthPercent}%)"; return;
+                }
+                // An add of a boss whose adds die in order is never swapped for the next one (each swap moved the raid's
+                // stand): the boss's whole fight is set aside, and the raid comes back to this same add (RequiredAddStays).
+                if (RequiredAddStays(orderedOwner != null))
+                {
+                    log.Warn($"REALM_EXPEDITION_TARGET_SKIPPED region={_region} target=\"{_target.Name}\" at={_target.X},{_target.Y},{_target.Z} " +
+                             $"health={_target.HealthPercent} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} near={near} inside={insideNow} " +
+                             $"encounter=\"{orderedOwner.Name}\" reason=\"no damage for five minutes with the raid at it; its encounter is set " +
+                             $"aside and the raid comes back to this add, not the next one\"");
+                    SetTacticAside(orderedOwner, $"no damage to {_target.Name} for five minutes ({near} raiders near it)", now);
+                    return;
                 }
                 log.Warn($"REALM_EXPEDITION_TARGET_SKIPPED region={_region} target=\"{_target.Name}\" at={_target.X},{_target.Y},{_target.Z} " +
                          $"health={_target.HealthPercent} front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} near={near} reason=\"no damage for five minutes\"");
