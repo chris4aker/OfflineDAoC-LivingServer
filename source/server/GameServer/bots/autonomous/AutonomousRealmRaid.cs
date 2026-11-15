@@ -632,8 +632,8 @@ namespace DOL.GS
                         RealmRaidDungeonRoute route = PulseRouteGate(raid, now);
                         route.Advance(raid.Support, now);
                         PulseReturnWave(raid, now);
-                        while (route.TryTakeWipe(out string wipedBy, out int failures))
-                            OnWipe(raid, wipedBy, failures, now);
+                        while (route.TryTakeWipe(out string wipedBy, out int failures, out int engaged, out int fallen))
+                            OnWipe(raid, wipedBy, failures, now, engaged, fallen);
                         if (route.Defeated)
                         {
                             End(raid, now, $"Defeated at {route.DefeatedAt} after {RealmRaidDungeonRoute.MaximumFailedAttempts} failed attempts.");
@@ -2210,16 +2210,19 @@ namespace DOL.GS
                      $"mostRecruited={raid.MostRecruited} underStrength={underStrength} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
+            // The encounter that beat the raid: a route gate's (Aidon in Hall of the Corrupt), its own dungeon's or the dragon.
+            string defeatedBy = DefeatedBy(raid.Transit?.DefeatedAt, raid.DungeonRoute?.DefeatedAt, raid.DragonFight?.DefeatedAt,
+                FinalBossName(raid), raid.Definition.BossType);
             if (outcome == "Defeated")
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.RaidDefeated(raid.Definition.Realm,
-                    raid.DungeonRoute?.DefeatedAt ?? raid.DragonFight?.DefeatedAt ?? raid.Definition.BossType, raid.Definition.Name));
+                    defeatedBy, raid.Definition.Name));
             // Owner 2026-10-07: every realm hears when a raid (automatic or forced) brings down the final boss of an
             // epic dungeon, Summoner's Hall or Darkness Falls.
             if (outcome == "Boss defeated" && raid.Definition.IsDungeon)
             {
                 GameNPC finalBoss = (raid.DungeonRoute?.FinalBosses ?? [raid.Boss]).FirstOrDefault(n => n != null && !n.IsAlive);
                 GameWideAnnouncements.Queue(AnnouncementKind.PveRealmEvent, GameWideAnnouncements.FinalBossDefeated(raid.Definition.Realm,
-                    finalBoss?.Name ?? raid.Definition.BossType, raid.Definition.Name));
+                    finalBoss?.Name ?? Readable(raid.Definition.BossType), raid.Definition.Name));
             }
             GameBot[] recipients = raid.Support.OfType<GameBot>().ToArray();
             // A raid beaten to its final encounter has no share in its loot.
@@ -2237,7 +2240,8 @@ namespace DOL.GS
             if (!stoppedByPlayer)
                 Cooldowns[raid.Definition.Id] = now + (30 + Random.Shared.Next(61)) * 60_000L;
             // The talking update: a win or a defeat is news the realm's bots tell and talk about.
-            string bossName = (raid.DungeonRoute?.FinalBosses ?? [raid.Boss]).FirstOrDefault(n => n != null)?.Name ?? raid.Boss?.Name;
+            // A defeat is told with the encounter that beat the raid (Aidon, not Govannon, for a raid lost on its way in).
+            string bossName = outcome == "Defeated" ? defeatedBy : FinalBossName(raid) ?? Readable(raid.Definition.BossType);
             string newsTopic = outcome == "Boss defeated" ? "raid_won" : outcome == "Defeated" ? "raid_wiped" : null;
             if (newsTopic != null)
                 AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, bossName, newsTopic == "raid_won");
@@ -2253,6 +2257,40 @@ namespace DOL.GS
                 AutonomousRaidLeeroy.AfterRaid(raid.Definition.Realm, leeroyName, bossName, newsTopic == "raid_won", recipients);
         }
 
+        /// <summary>The display name of the raid's final boss (its dungeon's first final, or the raid's boss), or null.</summary>
+        private static string FinalBossName(Raid raid) =>
+            (raid.DungeonRoute?.FinalBosses ?? [raid.Boss]).FirstOrDefault(n => n != null && !string.IsNullOrWhiteSpace(n.Name))?.Name ??
+            (string.IsNullOrWhiteSpace(raid.Boss?.Name) ? null : raid.Boss.Name);
+
+        /// <summary>
+        /// The name a defeat is announced with (pure): the encounter that beat the raid, a route gate's first (it is fought on
+        /// the way in, before the raid's own dungeon), then the raid's own dungeon route's, then the dragon's; with none, the
+        /// final boss's display name; with no display name either, its class name made readable. Owner's PC, 2026-11-14
+        /// (build 1dc66b6): Albion's Summoner's Hall raid lost twice at Aidon the Archwizard in Hall of the Corrupt, a route
+        /// gate, and every player read "Albion's expedition has been driven out of Summoner's Hall by GrandSummonerGovannon!":
+        /// only the main route's defeat was read, and the fallback was the final boss's C# class name.
+        /// </summary>
+        public static string DefeatedBy(string gateDefeatedAt, string routeDefeatedAt, string dragonDefeatedAt, string finalBossName,
+            string bossType) =>
+            new[] { gateDefeatedAt, routeDefeatedAt, dragonDefeatedAt, finalBossName }.FirstOrDefault(n => !string.IsNullOrWhiteSpace(n)) ??
+            Readable(bossType);
+
+        /// <summary>A class name as words ("GrandSummonerGovannon" -> "Grand Summoner Govannon"); anything else unchanged.</summary>
+        public static string Readable(string typeName)
+        {
+            if (string.IsNullOrEmpty(typeName) || typeName.Contains(' ')) return typeName;
+            var words = new System.Text.StringBuilder(typeName.Length + 8);
+            for (int i = 0; i < typeName.Length; i++)
+            {
+                char c = typeName[i];
+                if (i > 0 && char.IsUpper(c) && (char.IsLower(typeName[i - 1]) ||
+                                                 i + 1 < typeName.Length && char.IsLower(typeName[i + 1]) && char.IsUpper(typeName[i - 1])))
+                    words.Append(' ');
+                words.Append(c);
+            }
+            return words.ToString();
+        }
+
         /// <summary>The names a raid's news lines use ({raid}, {boss}).</summary>
         public static Dictionary<string, string> RaidSlots(string raid, string boss)
         {
@@ -2266,17 +2304,29 @@ namespace DOL.GS
 
         /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
         /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
-        private static void OnWipe(Raid raid, string boss, int failures, long now)
+        private static void OnWipe(Raid raid, string boss, int failures, long now, int engaged = -1, int fallen = -1)
         {
             raid.Wipes++;
-            Log.Info($"REALM_RAID_WIPE event={raid.Definition.Id} boss=\"{boss}\" failures={failures} support={raid.Support.Length} " +
-                     $"living={raid.Support.Count(b => b.IsAlive)} minutes={(now - raid.Created) / 60_000}");
+            Log.Info(WipeLine(raid.Definition.Id, boss, failures, raid.Support.Length, raid.Support.Count(b => b.IsAlive), engaged, fallen,
+                (now - raid.Created) / 60_000));
             if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;
             AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
                 "raid_wiped", RaidSlots(raid.Definition.Name, boss));
             AutonomousEpicSpecialForces.Request(raid.Definition.Id, raid.Definition.Name, raid.Definition.Realm, $"a wipe at {boss}");
         }
+
+        /// <summary>
+        /// The REALM_RAID_WIPE line (pure). <paramref name="living"/> is every living raider wherever it stands, raiders who
+        /// released and stand at their staging post outside included; <paramref name="engaged"/> and <paramref name="fallen"/>
+        /// are the raiders in the failed attempt and how many of them fell (-1: not known, a dragon's wipe). Owner's PC,
+        /// 2026-11-14 (build 1dc66b6): "failures=2 support=80 living=76" read as a wipe scored while the raid stood; all 65
+        /// raiders in that attempt at Aidon the Archwizard had fallen (REALM_EXPEDITION_WIPE engaged=65 fallen=65) and 54 of them
+        /// were already back on their feet at the staging post outside.
+        /// </summary>
+        public static string WipeLine(string id, string boss, int failures, int support, int living, int engaged, int fallen, long minutes) =>
+            $"REALM_RAID_WIPE event={id} boss=\"{boss}\" failures={failures} support={support} living={living} " +
+            (engaged >= 0 ? $"engaged={engaged} fallen={fallen} " : "") + $"minutes={minutes}";
 
         // Runs 12 and 13 (2026-10-15/16): an automatic Darkness Falls or Summoner's Hall rally opened a minute before the
         // forced raid and held 140+ of the realm's level-50 bots, so forced Galladoria reserved only 288 of 300 and forced
