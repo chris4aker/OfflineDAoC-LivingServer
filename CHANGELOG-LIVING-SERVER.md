@@ -522,8 +522,9 @@ property (`/serverproperty`, section `npc`), and the game reads it as it plays, 
 `epic_soul_reckoner_small_room`, `epic_aroon_damage_order`, `epic_galladoria_bridge_spot`, `epic_full_fire_patches`,
 `epic_earthmender_class_puzzle`, `epic_earthmenders_passive`, `epic_earthmender_quick_reset`,
 `epic_earthmender_mutual_heal`, `epic_beatha_heals_xaga`, `epic_fairy_flight`, `epic_govannon_full_health`,
-`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal` and `epic_dragon_messengers`. All are on except Funus's weapon puzzle,
-the full fire patches and Govannon's full health, which stay off (15 of the 18 are on). `epic_encounter_switches` changes any one boss's
+`epic_kvasir_cold_heal`, `epic_tuscar_twin_heal`, `epic_dragon_messengers`, `epic_govannon_full_heal` and
+`epic_easmarach_endless_falls_heal`. All are on except Funus's weapon puzzle, the full fire patches, Govannon's full
+health, Govannon's full heal at his change and Easmarach's endless heal on the falls, which stay off (15 of the 20 are on). `epic_encounter_switches` changes any one boss's
 switch, for example `AllowBotDisplacement@Orylle=False; AllowPositionPuzzle@Olcasgean=False`.
 
 **The dragons, Xanxicar and Galladoria play their full mechanics, and the bots play them back** (the epic encounters,

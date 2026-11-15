@@ -187,8 +187,8 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 
 | Part | Built | Seen on the owner's PC |
 |---|---|---|
-| Epic encounters: the bosses' own rules back on (15 of 18 settings on), throws and jails that take bots, add caps | Merged | Partly: raids fought with them since test build 2 |
-| Raid tactics (about 40 encounters new or reworked), the raid skill layer, the raid flow after a wipe | Merged; the sweep fixes of 2026-11-14 (#211-#214) are tests only | Dragons and the smaller dungeons won on earlier builds; **Caer Sidi, Tuscaran Glacier, Galladoria, Trollheim, Krondon and Summoner's Hall (Albion, Hibernia) not won by bots on the PC yet**; Grand Summoner Govannon never beaten by bots anywhere |
+| Epic encounters: the bosses' own rules back on (15 of 20 settings on), throws and jails that take bots, add caps | Merged | Partly: raids fought with them since test build 2 |
+| Raid tactics (about 40 encounters new or reworked), the raid skill layer, the raid flow after a wipe | Merged; the sweep fixes of 2026-11-14 (#211-#214) are tests only | Dragons and the smaller dungeons won on earlier builds; Midgard's Darkness Falls (Legion) won on `e3b8238`; Midgard's Summoner's Hall (Grand Summoner Govannon) won once on `3e64140` (run 2); **Caer Sidi, Tuscaran Glacier, Galladoria, Trollheim, Krondon and Summoner's Hall (Albion, Hibernia) not won by bots on the PC yet** |
 | A raid is a realm event: the boss's tale, then the call and the horn; one raid every four hours | Merged | Seen on test builds 3 and 4 |
 | The lore: 107 places, 578 bosses, 4 realm histories; loremasters, books, the Herald, the Bestiary, `/lore`, boss lines, atmosphere lines | Merged | Tales and boss lines seen on earlier 1.2 builds; loremasters, books, Herald and Bestiary have no played record |
 | Tales: the storyteller, asked-for tales, fireside tales | Merged | Seen on earlier builds; a tale that starts by itself not seen |
