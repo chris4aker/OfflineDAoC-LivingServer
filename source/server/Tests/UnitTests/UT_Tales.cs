@@ -47,6 +47,13 @@ namespace DOL.GS.Tests
             foreach (VC.Scene tale in TaleScenes.Concat(FiresideScenes))
             {
                 string loreId = Tales.LoreIdOf(tale.Topic);
+                // A legend (Atlantis, a rumour only) is about no boss: it has no lore file, and must not have one.
+                if (Tales.IsLegend(loreId))
+                {
+                    Assert.That(Tales.IsTale(tale), Is.True, $"{tale.Id}: a legend has no fireside version (there is no place to rest in)");
+                    Assert.That(LoreBible.Current.BossById(loreId), Is.Null, $"{tale.Id}: a legend is no boss");
+                    continue;
+                }
                 Assert.That(LoreBible.Current.BossById(loreId), Is.Not.Null, $"{tale.Id}: no lore file \"{loreId}\"");
             }
         }
@@ -81,7 +88,7 @@ namespace DOL.GS.Tests
         [Test]
         public void EveryTaleHasItsFiresideVersionForTheSameRealms()
         {
-            foreach (VC.Scene tale in TaleScenes)
+            foreach (VC.Scene tale in TaleScenes.Where(t => !Tales.IsLegend(Tales.LoreIdOf(t.Topic))))
                 foreach (eRealm realm in Realms.Where(r => VC.RealmFits(tale.Realm, r)))
                     Assert.That(FiresideScenes.Any(f => Tales.LoreIdOf(f.Topic) == Tales.LoreIdOf(tale.Topic) && VC.RealmFits(f.Realm, realm)),
                         Is.True, $"{tale.Id}: no fireside tale for {realm}");
@@ -102,6 +109,11 @@ namespace DOL.GS.Tests
             foreach (VC.Scene tale in TaleScenes)
                 foreach (eRealm realm in Realms.Where(r => VC.RealmFits(tale.Realm, r)))
                 {
+                    if (Tales.IsLegend(Tales.LoreIdOf(tale.Topic)))
+                    {
+                        Assert.That(Tales.RaidIdFor(Tales.LoreIdOf(tale.Topic), realm), Is.Null, $"{tale.Id}: a legend never leads to a raid");
+                        continue;
+                    }
                     string raid = Tales.RaidIdFor(Tales.LoreIdOf(tale.Topic), realm);
                     Assert.That(raid, Is.Not.Null, tale.Id);
                     Assert.That(AutonomousRealmRaid.Definitions.Any(d => d.Id == raid && d.Realm == realm), Is.True, $"{tale.Id}: no raid {raid} for {realm}");
@@ -281,6 +293,14 @@ namespace DOL.GS.Tests
             // The rumour after a tale is one the tale did not just say, so every tale's boss needs one the tale leaves out.
             foreach (var scene in TaleScenes)
             {
+                if (Tales.IsLegend(Tales.LoreIdOf(scene.Topic)))
+                {
+                    // A legend's rumour is a corpus rumour line on it, one the tale did not just tell (LoreLegends).
+                    foreach (eRealm realm in Realms.Where(r => VC.RealmFits(scene.Realm, r)))
+                        Assert.That(LoreLegends.RumoursAfter(Corpus, Tales.LoreIdOf(scene.Topic), realm, Tales.LinesOf(scene)), Is.Not.Empty,
+                            $"{scene.Id} ({realm}): no rumour to follow the legend");
+                    continue;
+                }
                 var boss = LoreBible.Current.BossById(Tales.LoreIdOf(scene.Topic));
                 Assert.That(boss, Is.Not.Null, scene.Id);
                 string[] lines = Tales.LinesOf(scene).ToArray();

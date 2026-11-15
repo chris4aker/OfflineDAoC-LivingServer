@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.PacketHandler;
 using DOL.GS.ServerProperties;
@@ -71,7 +72,8 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     string[] words = args.Skip(2).Take(args.Length - 2 - (raid ? 1 : 0)).ToArray();
                     string about = words.Length > 0 ? string.Join(' ', words) : null;
                     string loreId = about == null ? null : AutonomousTales.RequestedLore(about,
-                        LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases))));
+                        LoreBible.Current.Bosses.Select(boss => (boss.Id, LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases)))
+                            .Concat(AutonomousTales.Legends.Select(legend => (legend.Key, (IEnumerable<string>)legend.Value))));
                     if (!AutonomousTales.TryStart(realm, loreId, null, out string noTale))
                         Say(client, $"No tale: {noTale}.");
                     else

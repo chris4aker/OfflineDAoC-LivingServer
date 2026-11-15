@@ -167,6 +167,29 @@ TIME_WORDS_RE = re.compile(r"\b(late night|so late|up late|off to bed|to bed|bed
 PLURAL_MONSTER_RE = re.compile(r'\{count\} \{monster\}|\{monster\} (are|were|keep|give|drop|hit)\b')
 BANNED_RE = re.compile('|'.join(BANNED), re.IGNORECASE)
 SLOT_RE = re.compile(r'\{([^{}]*)\}')
+# Trials of Atlantis and Catacombs exist only as rumours (owner, 2026-11-15). The one exception to BANNED: a line tagged as
+# such a rumour (@topic rumour_atlantis or rumour_below, any kind, a debate scene's topic too) may name "atlantis" or
+# "catacombs". Every other banned word (artifacts, master levels, ml, the classes, the races) stays banned there, and no
+# rumour line may claim the speaker has been there or is going.
+ERA_RUMOUR_TOPICS = {'rumour_atlantis', 'rumour_below'}
+ERA_RUMOUR_WORDS_RE = re.compile(r'\b(atlantis|catacombs)\b', re.IGNORECASE)
+ERA_RUMOUR_CLAIM_RE = re.compile(
+    r"\b(i|we|me and|my (group|guild))( have| has|'ve|ve|'m|m| am| are)? (been|went|go|going|gone|sailed|sail|swam|got|get|"
+    r"rowed|row|dove|dived|headed|heading) (to|into|down|under|out to|in) (atlantis|the catacombs|catacombs|the sunken|the drowned)|"
+    r"\bbeen to (atlantis|the catacombs)\b|\b(lets|let's|wanna|want to|who wants to) (go|sail|row|head)\b", re.IGNORECASE)
+
+
+def banned_word(text, topic=''):
+    """The out-of-era or banned word in a line as said, or None. A rumour line (ERA_RUMOUR_TOPICS) may name atlantis and
+    catacombs, nothing else banned; it must not claim a trip there either. Pure."""
+    said = SLOT_RE.sub('', text)
+    if topic in ERA_RUMOUR_TOPICS:
+        claim = ERA_RUMOUR_CLAIM_RE.search(said)
+        if claim:
+            return claim.group(0)
+        said = ERA_RUMOUR_WORDS_RE.sub(' ', said)
+    hit = BANNED_RE.search(said)
+    return hit.group(0) if hit else None
 
 
 class Problem(Exception):
@@ -211,9 +234,9 @@ def check_text(text, tags, where, problems):
             problems.append(f'{where}: memory slot {{{slot}}} needs @needs knows_player or a memory kind')
     if text.count('{') != text.count('}'):
         problems.append(f'{where}: unbalanced braces')
-    hit = BANNED_RE.search(SLOT_RE.sub('', text))
+    hit = banned_word(text, str(tags.get('topic') or ''))
     if hit:
-        problems.append(f'{where}: out-of-era or banned word "{hit.group(0)}": {text}')
+        problems.append(f'{where}: out-of-era or banned word "{hit}": {text}')
     if PLURAL_MONSTER_RE.search(text):
         problems.append(f'{where}: {{monster}} is one monster; write {{monsters}} for the plural: {text}')
     needs = set(tags.get('needs', []))
