@@ -7,13 +7,16 @@ exe's SHA-256. The zip's SHA-256 is filled in by hand when publishing. Publish i
 launcher's update check reads GitHub's latest release, which leaves pre-releases out. Lines marked "[if it lands: ...]"
 describe work still on its own branch: keep them only if it is merged before the tag, and drop the marker. Lines marked
 "[owner: ...]" are for the owner to fill in before publishing. Nothing here names the Easter eggs or the project's
-internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #224:
+internal vocabulary. Polished on 2026-11-14 (evening) for the launch, covering everything merged into 1.2 through #225:
 the raid flow and boss tactics from the sweep, the Darkness Falls raid AI, Legion, the raid plans for every realm's big
-bosses and the open-world bosses, the route blockers and the period research. The upstream boss fixes and the epic
-armor rule (#225) merged the same evening. The encounter counts are from docs/encounters/EPIC-ENCOUNTERS.md on
-integration/1.2 at #224. Owner's decision (2026-11-14): credit lightly, by project and username in the Credits section
-only, never per feature or per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The
-repository description, the tagline, the posts and the pitch are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
+bosses and the open-world bosses, the route blockers, the period research, the upstream boss fixes and the epic armor
+rule. Every figure was checked on 2026-11-14 against integration/1.2 at 1dc66b6 (#225): the encounter counts against
+docs/encounters/EPIC-ENCOUNTERS.md and epic-encounters.json, the lore and tale counts against the lore and chat files,
+the settings against their defaults, and "new in 1.2" against Beta 1.1.3. Lines marked "[owner: confirm ...]" are
+results from the owner's PC that the repository has no record of; confirm or drop them before publishing. Owner's
+decision (2026-11-14): credit lightly, by project and username in the Credits section only, never per feature or
+per piece of code; the licence notices stay in THIRD_PARTY.md and the changelog. The repository description, the
+tagline, the posts and the pitch are in [RELEASE-1.2-COPY.md](RELEASE-1.2-COPY.md).
 
 ---
 
@@ -28,7 +31,7 @@ comes line by line; a listener asks a question, and the next lines answer it. Th
 
 A line crosses the middle of your screen. A horn sounds. Midgard is calling its raid.
 
-A tell arrives: "forming for Gjalpinulva at Svasud Faste. want a spot?"
+A tell arrives: "forming for Gjalpinulva at West Skona. want a spot?"
 
 You say yes. When she hurls you high over her lair, you are not the only one in the air, and the healers turn to you
 first. Somewhere behind you, the casters are already running down her messengers.
@@ -39,12 +42,12 @@ to 1.1.4.
 ### What's new in 1.2
 
 - **Full-strength epics.** 15 of the bosses' original rules are back on. Throws, jails and glares now land on bots too.
-- **A raid plan for every big boss.** 111 encounters, 108 of them new or reworked in 1.2, from Legion to the Glacier
+- **A raid plan for every big boss.** 111 encounters, 109 of them new or reworked in 1.2, from Legion to the Glacier
   Giant.
 - **37 raids on the schedule.** 16 open-world giants now draw a realm raid of their own.
 - **Darkness Falls, with a battle plan.** High lords, princes, Legion, and the long walk out of Behemoth's hall.
-- **A story for every boss.** 578 bosses and 107 places, about 600,000 words, checked against 832 Camelot Herald
-  articles.
+- **A story for every boss.** 578 bosses and 107 places, more than a million words, checked against 832 Camelot
+  Herald articles.
 - **Bots that play with you.** They invite you, lead the group, and save you a raid spot.
 - **Bring your friends.** Host your bot world for a few friends, and take your character to theirs. Experimental.
 
@@ -55,8 +58,8 @@ For years the hardest bosses ran softened so that bot raids could win. Not anymo
 - **The old rules are back.** The horsemen heal when dragged from their rooms. Morbus hides behind his swarm. The
   Skeletal Sacristan walks his round and never stops. Soul Reckoner shrugs off damage while a soul lives. Aroon's Scaiths
   die in order or not at all. Beatha heals Xaga. Kvasir drinks cold. King Tuscar and Queen Kula heal each other.
-- **15 of 18 restored rules are on**, each a server setting of its own. Funus's class and weapon puzzle, the original
-  fire patches and Govannon's full 300,000 health stay off.
+- **15 of 20 restored rules are on**, each a server setting of its own. Funus's class and weapon puzzle, the original
+  fire patches, Govannon's full 300,000 health, his full heal at 50% and Easmarach's endless heal on the falls stay off.
 - **Bosses pick from the whole raid.** Throws, glares, debuffs and "random target" spells used to pick real players
   only. Now they pick you, your companions and the gamebots alike. With bots around you are one target among many,
   never chosen more often than before.
@@ -64,24 +67,26 @@ For years the hardest bosses ran softened so that bot raids could win. Not anymo
   raiders high over the lair, as high as the original. Xanxicar, Kula, Hakr, Hurika, the Glacier Giant,
   Krackenschtein, Sys'sro and others throw, port and jail bots as well.
 - **Thrown bots get back.** A thrown bot falls, takes the fall damage you would, and walks back to its party. When it
-  can't, it recalls after 5 seconds: in a long run, 4 in 5 did.
+  can't, it is back with its raid after a 5-second recall.
 - **No add floods.** A bot raid can outnumber a 2003 raid. Bosses that spawn adds or heal per raider count at most a
   period-sized raid, so a big bot raid faces what a full raid of players did.
-- **No zerg fests.** An epic's armor now wears down under bot attackers too, at half a player's strength,
-  and bots alone can never take it below 100%. Numbers help. A zerg still doesn't win.
+- **No zerg fests.** An epic's armor now wears down under bot attackers too, at half a player's strength, and bots
+  alone take off at most half of it: an epic boss goes from 160% to 100%, never to the 40% that players can reach.
+  Numbers help. A zerg still doesn't win.
 - **Your companions stay at the fight** when a boss throws you.
 
 ### A raid plan for every big boss
 
 You can't out-damage a puzzle. So the raids learned the fights, the way a 2003 raid leader would have called them.
 
-Every boss script in the game was read into one catalog: 214 scripts, 238 encounters, 865 rules, each checked by hand
-against its script. The plans were set against what the period wrote down: the raid guides on the VN Boards,
+Every boss script in the game was read into one catalog: 214 scripts, 238 encounters, 862 rules, each checked by hand
+against its script. Bot raids now fight 202 of those 238 encounters (the other 36 are not raid content), and 111 have
+a plan of their own. The plans were set against what the period wrote down: the raid guides on the VN Boards,
 FreddysHouse and Allakhazam threads, the Prima guide's maps and the Herald itself, much of it recovered from the web
 archive. Where the period and the script disagree, the bots play the script.
 
-**Darkness Falls.** On the owner's PC, before any of this existed, Midgard's bots killed 41 named and then Legion, in
-one attempt. Hibernia's lost to him twice. Now both realms go in with a plan.
+**Darkness Falls.** On the owner's PC (build e3b8238), before any of this existed, Midgard's bots killed 41 named and
+then Legion, in one attempt. Hibernia's lost to him twice. Now both realms go in with a plan.
 - **High Lord Oro** brings two copies that wear his name. The raid kills the real one, and his casters and healers stay
   out of his drain.
 - **High Lord Saeor** heals by every raider who dies near him, so the wounded step out of his reach and come back
@@ -95,17 +100,17 @@ one attempt. Hibernia's lost to him twice. Now both realms go in with a plan.
 **Legion.** A main tank holds him on his lair and six healers keep that tank standing. Casters, archers and healers
 form a line inside his reach and out of his soul blast. When a soul wave is too big for the casters, melee parties peel
 off for it. His room is cleared before the pull, and no bot puts a bladeturn up near him. A raider he throws into
-Behemoth's hall walks out the way players did, along the north wall and through the portal. Behemoth is never fought:
-the guides of 2003 called him invincible.
+Behemoth's hall walks out along the hall's north side, clear of Behemoth, and through the portal. Behemoth is never
+fought: the guides of 2003 called him invincible.
 
 **Albion.**
 - **Apocalypse** takes to the air and rains fire; the raid moves to a ring outside the rain, then kills the Harbingers
   first. The back lines spread so one rain hits one party.
-- **Caer Sidi's keylords:** Warlord Dorinakka's crypt knights cleared first, the Silencer hit by few enough raiders
-  that he never turns his resist on, Sanguis's blood mages shot down, Fate's Chosen before Bane of Hope, and the
+- **Caer Sidi's keylords:** Warlord Dorinakka's crypt knights cleared first, the Silencer hit by at most nine raiders,
+  so his resist chance stays at zero, Sanguis's blood mages shot down, Fate's Chosen before Bane of Hope, and the
   Spectral Provisioner ambushed on his loop. The Crypt Lord's court, the real Host and Lich Lord Ilron's dark lights
   each have their own plan.
-- **Krondon, all seven bosses:** Drihten's students, Deben's mages, Beran's barrels, the parts of Fuladl and
+- **Krondon:** Drihten's students, Deben's mages, Beran's barrels, the parts of Fuladl and
   Fulafeallan, Lurfos's splash, Ulor before Jehrog, and Scurceol Hyrde's orbs taken one at a time by the whole raid.
 - **Summoner's Hall:** the four summoners fought inside their leashes, Lossren's ghoul shot by every caster, and
   Govannon's demon fought from clear of his Shroud.
@@ -117,7 +122,8 @@ the guides of 2003 called him invincible.
   while one tank holds him.
 - **Galladoria:** the Water primal left alone in its pool, the Air primal shot from the room's middle, the
   Organic-Energy Mechanism fought from range, the Sporite Cluster fought in one tight crowd, each Earthmender taken by
-  the classes that can hurt it, and an /assist train on every one of Spindler Broodmother's newborns.
+  the classes that can hurt it, and add parties that take Spindler Broodmother's newborns off the healers and casters
+  first.
 - **Balor, Iarnvidiur and Nosdoden** each get a plan of their own.
 
 **The open-world giants.** Before 1.2, no bot ever fought an open-world big boss. Now every one has a plan, and 16 draw
@@ -146,8 +152,8 @@ What has been seen on a real install is under "How it was tested", and the fight
 - **No clock in the dungeon.** Caer Sidi used to be cut off at four hours with 12 named down. Now a raid ends when it
   wins, runs out of attempts, or goes an hour without progress.
 - **Wipe, regroup, go again.** Raiders release at their party's post outside the dungeon, not in town, and go back in
-  waves. The next pull waits for 70% of the living raid, counting the ones still walking back. A boss that resets while
-  the raid stands costs no attempt.
+  waves. The next pull waits for 70% of the living raid, counting the ones still walking back. The first two times a
+  boss resets while the raid still stands cost no attempt.
 - **Cleared stays cleared.** A dungeon's epics wait to respawn while its raid is inside. A boss standing on the way in
   is fought as an objective of its own, not walked into, and no muster lands inside another boss's reach.
 - **Raids keep moving.** The approach dungeon's monsters are cleared on the walk, a raider stuck in a pocket rejoins
@@ -159,16 +165,16 @@ What has been seen on a real install is under "How it was tested", and the fight
 
 Every dungeon, dragon and boss has a story, and you meet it everywhere.
 
-- **107 places, 578 bosses and 4 realm histories**, from the dragons down to the named of every zone: about 600,000
-  words, and more than 5,000 lines for the bosses to speak.
+- **107 places, 578 bosses and 4 realm histories**, from the dragons down to the zones' named: more than a million
+  words written for Living Server, nearly 4,900 lines for the bosses to yell and about 5,200 atmosphere lines.
 - **Mythic's word comes first.** 832 Camelot Herald articles, November 2001 to February 2005, were read from the web
   archive and checked against the lore. Where ours disagreed, Mythic's won: Dartmoor's history, Gjalpinulva's mother,
   the Legendary Afanc's return, Krondon's ogres. Where Mythic told no story, Living Server wrote one. Every compass
   direction was checked against the world.
 - **Loremasters** in each capital: Aldwin in Camelot's library, Sigrun at Jordheim's temple, Eithne by the bards of
   Tir na Nog. Ask them about the [places] of your realm.
-- **Lore books**, one per place, read a page at a time. The loremasters copy them for a silver, and now and then one
-  drops near the place it tells of, never crowding out real loot.
+- **Lore books**, one per place, read a page at a time. The loremasters copy them for a silver a volume, and now and
+  then one drops near the place it tells of, never crowding out real loot.
 - **The Bestiary**, a new Realm Records page: every boss of your realm, with what raid leaders say about it. Its full
   story opens once your realm brings it down. Raids won before 1.2 count.
 - **The Herald** closes each raid's record with a sentence from its boss's story.
@@ -178,7 +184,8 @@ Every dungeon, dragon and boss has a story, and you meet it everywhere.
   first. A switch in the Living Server tab turns them off.
 - **Bots know the stories.** The raid leader briefs the realm as the raid sets out. Ask a bot "whats in krondon?" and
   it answers from the lore.
-- **The storyteller** tells 15 tales across the realms. Ask in plain words ("tell the one about golestandt"), or rest
+- **The storyteller** tells 25 tales of 21 bosses across the realms, Legion and Govannon in each realm's own telling,
+  and every one has a short fireside version. Ask in plain words ("tell the one about golestandt"), or rest
   by the fire with a bot in your group and hear the short version. `/lore` works in either client.
 
 ### Bots that play with you
@@ -250,14 +257,10 @@ Your bot world has always been yours alone. Now a few friends can join it, from 
   collection quests take their item whatever the case of its name.
 - **Battleground rallies:** once the gates fall, each realm rallies in the breach and goes up to the keep lord
   together, with you counting double. It doesn't win yet: see Known issues.
-- **Two Darkness Falls exits work:** the one by Legion's hall and the one near the Midgard boss take you home. Nothing
-  is written to your world.
 - **New client (0.37c):** skills on the quickbar, Stealth in the Abilities list, and a SELL button at merchants,
   installed only over the released scripts; ROLLBACK.cmd puts them back.
 - **Boss scripts, hardened:** each boss's death runs once, patrols follow the navmesh, the dragons face
   their lairs, and bosses keep their own state. No boss was weakened.
-- **Setup retries a busy download server** (429, 500, 502, 503 or 504) after 30, 60, 120 and 240 seconds, keeping what
-  it already has.
 - **The loading screen says LIVING SERVER**, on upgrades from 1.1, 1.1.1 and 1.1.2 too.
 - **Level-50 bots from the launcher arrive trained** in their builds, instead of fighting their first raid with level-1
   skills.
@@ -273,7 +276,7 @@ Living Server is an add-on for Offline DAoC 0.37, the single-player Classic + Sh
 Social Expansion. Seven releases later, this is the whole of it: free, and each part of bot life on its own switch.
 
 **A server that talks like 2003.**
-- **About 34,000 lines and 393 /faction scenes**, written for the game from launch (9 October 2001) to patch 1.65
+- **About 35,000 lines and 418 /faction scenes**, written for the game from launch (9 October 2001) to patch 1.65
   (8 October 2003). A validator turns away anything later: no Atlantis, no master levels, no "toon". Five writing
   styles, typo-prone "*fixes" and all.
 - **The arguments never settle:** smite against rejuv, buffbots, zergs, relic panic, dragon raids, each realm in its own
@@ -284,7 +287,7 @@ Social Expansion. Seven releases later, this is the whole of it: free, and each 
   answers; tells carry on as conversations.
 - **Regulars.** A handful of talkative bots carry each evening, each with its own manner and running jokes. Some have
   history with each other that plays out over days, and you can get involved. Not every raid goes to plan.
-- **Names like a 2003 server**, from a study of about 700 real character names of 2001-2004.
+- **Names like a 2003 server**, from a study of about 700 real character names, about 300 of them from 2001-2004.
 
 **Bots with lives.**
 - **Personalities:** Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, with five traits that decide who
@@ -293,17 +296,17 @@ Social Expansion. Seven releases later, this is the whole of it: free, and each 
   pay dues, earn merit, buy guild buffs and form alliances. Gamebots in your own guild pay their dues too.
 - **Memory:** group with a bot and it remembers you, greets you hours later, asks to group again. Bots remember your
   rezzes, your insults and each other.
-- **Server life**, 17 parts: grats, server firsts, rez requests, frontier alarms, grudges against their killers, "brb"
+- **Server life**, 18 parts: grats, server firsts, rez requests, frontier alarms, grudges against their killers, "brb"
   breaks and linkdeads, a wave when you walk up, and the **Camelot Herald** printing your world's news.
-- **A real clock:** the evening crowd from 7 to 11 pm, a few hundred before dawn, busier weekends.
+- **A real clock:** the evening crowd from 7 to 11 pm, about one bot in eight before dawn, busier weekends.
 
 **An endgame that runs itself.**
 - **37 raids on the schedule:** each realm's dragon, its epic dungeon, Summoner's Hall, Darkness Falls, the raid
   dungeons from Krondon to Marfach Caverns, and 16 open-world giants. Each musters, travels, clears its way and goes for
   the final boss, with you or without you.
-- **Period-sized raids:** from 50 bots for Dodens Gruva and Tur Suil to 150 for Crystal Cave, each read from the forum
-  threads of 2002-2004. A win trims the next raid, a defeat adds more back, so each settles where it is won about two
-  times in three. The bosses are never weakened.
+- **Period-sized raids:** from 40 bots for Dodens Gruva and Tur Suil to 120 for Crystal Cave, each read from the forum
+  threads of 2002-2004, and each raid starts a quarter above its period size. A win trims the next raid, a defeat
+  adds more back, so each settles where it is won about two times in three. The bosses are never weakened.
 - **The Epic Special Forces:** up to 24 geared level 50s who answer a wiped raid, in a dungeon or at a dragon.
 - **Contested raids:** two realms race for one boss in Summoner's Hall or Darkness Falls, and only one gets the kill.
 - **Keep sieges with two sides:** warbands march, scouts report the army, defenders man the walls, and attackers break
@@ -353,12 +356,15 @@ only".
   - A raid leader's invite to Golestandt, accepted, and a seat in the raid (build 5).
   - The boss's tale, then the call with its horn, before a raid of the game's own (builds 3 and 4).
   - A tale asked for in plain words, with the storyteller silent about anything else until it ended (build 4).
-  - After a wipe, the raid regrouping and going back in waves; the next attempt waiting for 70% of the raid (build 3).
-  - Raids won: Golestandt (build 5, second attempt), Cuuldurach (build 5, a raid the game opened itself), Marfach
-    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5),
-    and Midgard's raid won Summoner's Hall, Grand Summoner Govannon included (build 3e64140, 11 November).
-  - Raids lost: Galladoria at the Organic-Energy Mechanism, Trollheim at Nosdoden, and Caer Sidi cut off by the old
+  - After a wipe, the raid going back in waves (build 3). On build e3b8238 the waves still fired, but raiders released
+    in town and took 20 to 30 minutes to get back, and the early pull counted only the raiders already inside (16 of
+    18 in a raid of 118). Both are reworked since (#213, tests only).
+  - [owner: confirm against the PC logs; PLAYED-CHECK-1.2.md lists these raids as "Not run" on the candidate line.]
+    Raids won: Golestandt (build 5, second attempt), Cuuldurach (build 5, a raid the game opened itself), Marfach
+    Caverns (builds 2, 4 and 5) and Dodens Gruva (build 5). Bots beat Spindler Broodmother for the first time (build 5).
+    Raids lost: Galladoria at the Organic-Energy Mechanism, Trollheim at Nosdoden, and Caer Sidi cut off by the old
     four-hour limit with 12 named down (build 5).
+  - Midgard's raid won Summoner's Hall, Grand Summoner Govannon included (build 3e64140, 11 November).
   - Bots buying dyes and lusters at the game's prices (build 6).
   - Play with friends: a second game client joined over the home network with the host password and made its account
     (build 7). A session played together has not been checked yet.
@@ -391,17 +397,20 @@ only".
   on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, RvR
   perception, the loremasters and books, a session played together with a friend, and a character passport trip
   between two PCs. Real play may still find cases the tests miss.
-- **Dragon fights can fall apart partway.** In the play tests a raid on Cuuldurach collapsed at 69% and one on
-  Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were beaten later.
+- **Dragon fights can fall apart partway.** In the play tests [owner: confirm the builds] a raid on Cuuldurach
+  collapsed at 69% and one on Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were
+  beaten later.
 - **Play with friends is experimental.** It needs the original client, and it has been tried on a home network only.
 - **Some fights are harder than before**, and a raid of bots may lose them for a while (see above).
-- **/faction can get too busy.** On an evening with about 600 bots a realm, it ran well above its ceiling, up to 20
-  lines a minute, with bursts of 10 to 16 reactions. Lower **How much they talk** in the Living Server tab if it is too
-  much.
-- **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, it stopped for
-  up to 6.2 seconds.
-- **Some gamebots wait a long time at frontier teleporters.** In one night, 368 times a gamebot stood 15 minutes waiting
-  for one before the server moved it on.
+- **/faction can get too busy.** On an evening with about 600 bots a realm (the 1.1.3 build), it ran well above its
+  ceiling, up to 20 lines a minute, with bursts of 10 to 16 reactions. Lower **How much they talk** in the Living
+  Server tab if it is too much.
+- **A very busy server can stall for a few seconds.** In an overnight run of development build 76600af7 it stopped for
+  4 to 6 seconds three times. The searches behind those stalls are capped since, which has not been timed on a real
+  install.
+- **Some gamebots wait a long time at frontier teleporters.** Before 1.1.3, in one night, 368 times a gamebot stood 15
+  minutes waiting for one before the server moved it on. Since 1.1.3 they go to the border keep first; that has not
+  been checked on a real install.
 - **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail, so the keeps
   don't change hands and the same bots die over and over.
 - **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The

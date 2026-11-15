@@ -53,13 +53,14 @@ rules, every big boss has a raid plan, and 578 bosses have a story. Free, always
 > 1.2 is Living Server's biggest update yet.
 >
 > **The epics fight by their own rules again.** For a long time the hardest bosses ran softened so bot raids could win.
-> 15 of their original rules are back on: the dragons' wing gust, Kula and Tuscar's twin heal, Kvasir's cold heal,
-> Morbus's swarm, Aroon's Scaiths in order. Throws, jails and glares now pick bots as well as you.
+> 15 of their original rules are back on, among them Kula and Tuscar's twin heal, Kvasir's cold heal and Aroon's
+> Scaiths in order, and the dragons' wing gust and Morbus's swarm are back too. Throws, jails and glares now pick bots
+> as well as you.
 >
-> **The raids learned the fights.** 111 encounters have a raid plan, 108 of them new or reworked in 1.2, built from
-> every boss script in the game and from the raid guides of 2002 and 2003. Darkness Falls' high lords and princes,
-> Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that now draw a realm raid
-> of their own.
+> **The raids learned the fights.** 111 encounters have a raid plan, 109 of them new or reworked in 1.2, built from
+> every boss script in the game and from the raid guides and forum threads of 2002 to 2006. Darkness Falls' high lords
+> and princes, Legion, Apocalypse, the Glacier's icelords, Galladoria's primals, and 16 open-world giants that now draw
+> a realm raid of their own.
 >
 > **Every boss has a story.** 578 bosses and 107 places, checked against 832 Camelot Herald articles. Loremasters in
 > each capital, lore books, a Bestiary, bosses that speak, and a storyteller who tells the boss's tale before the horn
@@ -94,7 +95,7 @@ win. Now the dragons throw raiders over their lairs, Kula and Tuscar heal each o
 bosses pick targets from the whole raid, bots included.
 
 So the raids learned. Every big boss has a plan, built from the scripts and the raid guides of
-2002-03: Legion gets a main tank, Saeor's wounded step out, Agmundr's raid spreads for his cold blast.
+2002-06: Legion gets a main tank, Saeor's wounded step out, Agmundr's raid spreads for his cold blast.
 
 Every boss also has a story: 578 of them, checked against 832 Herald articles. The storyteller tells it in /faction
 before the horn sounds.
