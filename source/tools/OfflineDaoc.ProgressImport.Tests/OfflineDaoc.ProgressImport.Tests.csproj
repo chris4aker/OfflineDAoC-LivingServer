@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The importer itself is a Windows Forms app; its engine has no UI and is compiled here on its own, so these tests run
+         on any OS. -->
+    <Compile Include="..\OfflineDaoc.ProgressImport\ImportEngine.cs" Link="ImportEngine.cs" />
+    <None Include="..\OfflineDaoc.ProgressImport\progress-policy.json" Link="progress-policy.json" CopyToOutputDirectory="PreserveNewest" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="NUnit" Version="4.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
+  </ItemGroup>
+</Project>

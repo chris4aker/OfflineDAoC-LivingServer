@@ -181,6 +181,15 @@ jobs:
           server=$(dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_PassportLock" 2>&1 || true)
           echo "::notice title=Passport lock and desk tests (server)::$(echo "$server" | grep -E "(Passed|Failed)!" | tail -n 1 || true)"
 
+      # Progress transfer (OfflineDaoc.ProgressImport): its engine's tests on synthetic saves (1.2: a play test sweep's
+      # guest record is never carried, so a transfer can't give GM back).
+      - name: Test the progress transfer engine
+        shell: bash
+        run: |
+          out=$(dotnet test source/tools/OfflineDaoc.ProgressImport.Tests/OfflineDaoc.ProgressImport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Progress transfer tests::failed"; exit 1; }
+          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
+          echo "::notice title=Progress transfer tests::${summary:-no summary line found}"
+
       # Only after every server test passed: the installable server build (docs/RELEASE-PLAN.md).
       - name: Package the server build
         id: package

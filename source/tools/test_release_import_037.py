@@ -27,6 +27,8 @@ import time
 from pathlib import Path
 
 SLUAGHBINDER = 63
+# A play test sweep's guest record (server: EpicPlaytestSweepGuestRecord.Param) is never carried: it would give GM back.
+SWEEP_GUEST_KEY = "LivingServer.EpicSweepGuest"
 
 
 def sha(path: Path) -> str:
@@ -90,6 +92,9 @@ def check_case(package: Path, env, policy, name: str, source: Path, edition: str
         sluagh_bots = con.execute(f"SELECT count(*) FROM offline_world_bots WHERE ClassId={SLUAGHBINDER}").fetchone()[0]
         sluagh_items = con.execute(f"SELECT count(*) FROM Inventory WHERE OwnerID IN (SELECT 'offlinebot:'||BotId "
                                    f"FROM offline_world_bots WHERE ClassId={SLUAGHBINDER})").fetchone()[0]
+        present = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        sweep_records = (con.execute("SELECT count(*) FROM AccountXCustomParam WHERE KeyName=?", (SWEEP_GUEST_KEY,)).fetchone()[0]
+                         if "AccountXCustomParam" in present else 0)
     result = {"source": str(source), "edition": edition, "expect": expect, "accounts": old_counts.get("Account"),
               "characters": old_counts.get("DOLCharacters"), "bots": old_counts.get("offline_world_bots"),
               "inventory": old_counts.get("Inventory"), "sluaghbinder_bots": sluagh_bots}
@@ -118,12 +123,16 @@ def check_case(package: Path, env, policy, name: str, source: Path, edition: str
             expected = count - sluagh_items
         if expect == "leave" and table == "ItemUnique":
             continue        # unique items carried only by the bots left behind are removed with them
+        if table == "AccountXCustomParam":
+            expected = count - sweep_records
         assert new_counts.get(table) == expected, f"{name}: {table} has {new_counts.get(table)} rows, expected {expected}"
     with ro(new_db) as con:
         assert con.execute("PRAGMA quick_check").fetchone()[0] == "ok"
         assert con.execute("SELECT count(*) FROM Account WHERE PrivLevel<>1").fetchone()[0] == 0
         assert con.execute("SELECT count(*) FROM offline_world_bots WHERE IsOnline<>0").fetchone()[0] == 0
         assert con.execute("SELECT Value FROM offline_local_options WHERE Key='MakeMeGM'").fetchone()[0] == "false"
+        assert con.execute("SELECT count(*) FROM AccountXCustomParam WHERE KeyName=?", (SWEEP_GUEST_KEY,)).fetchone()[0] == 0, \
+            f"{name}: a sweep guest record was carried (it would raise the account back to GM)"
         rates = dict(con.execute("SELECT `Key`,Value FROM ServerProperty WHERE lower(`Key`) IN ('xp_rate','bot_xp_rate')"))
         assert set(rates.values()) <= {"1"}, rates
         switch = con.execute("SELECT Value FROM ServerProperty WHERE `Key`='enable_sluaghbinder'").fetchone()[0]

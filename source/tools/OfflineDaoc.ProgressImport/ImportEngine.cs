@@ -52,6 +52,47 @@ public static class ImportEngine
         var builder = new SQLiteConnectionStringBuilder {DataSource=path,ReadOnly=readOnly,FailIfMissing=true,Pooling=false,DefaultTimeout=10};
         var c = new SQLiteConnection(builder.ConnectionString); c.Open(); return c;
     }
+    /// <summary>The key of the play test sweep's guest record (server: EpicPlaytestSweepGuestRecord.Param).</summary>
+    public const string SweepGuestRecordKey="LivingServer.EpicSweepGuest";
+
+    /// <summary>
+    /// Deletes the play test sweep's guest records (AccountXCustomParam rows keyed <see cref="SweepGuestRecordKey"/>).
+    /// A sweep the old server never ended left one: the account's GM level and the character's realm before the sweep,
+    /// which the server puts back at its next start. A transfer makes every account a player (GM off), so a carried
+    /// record would raise the imported account back to GM: it is not carried. The character's realm is still put back
+    /// here (the record's realm=N for its character=ID), so the guest is not left in a raid's realm. Returns how many
+    /// records were deleted (0 without the table).
+    /// </summary>
+    public static long ForgetSweepGuestRecords(SQLiteConnection c)
+    {
+        if(Scalar(c,"SELECT count(*) FROM main.sqlite_master WHERE type='table' AND name='AccountXCustomParam'")==0)return 0;
+        var records=new List<string>();
+        using(var read=c.CreateCommand())
+        {
+            read.CommandText="SELECT Value FROM main.AccountXCustomParam WHERE KeyName=@key";
+            read.Parameters.AddWithValue("@key",SweepGuestRecordKey);
+            using var rows=read.ExecuteReader();
+            while(rows.Read())records.Add(rows.IsDBNull(0)?"":rows.GetString(0));
+        }
+        bool characters=Scalar(c,"SELECT count(*) FROM main.sqlite_master WHERE type='table' AND name='DOLCharacters'")>0;
+        foreach(string record in records)
+        {
+            var fields=record.Split(';',StringSplitOptions.RemoveEmptyEntries|StringSplitOptions.TrimEntries)
+                .Select(part=>part.Split('=',2)).Where(pair=>pair.Length==2)
+                .GroupBy(pair=>pair[0],StringComparer.OrdinalIgnoreCase).ToDictionary(g=>g.Key,g=>g.First()[1],StringComparer.OrdinalIgnoreCase);
+            if(!characters||!fields.TryGetValue("character",out string? id)||string.IsNullOrEmpty(id)||
+               !fields.TryGetValue("realm",out string? realmText)||!int.TryParse(realmText,out int realm)||realm<1||realm>3)continue;
+            using var restore=c.CreateCommand();
+            restore.CommandText="UPDATE main.DOLCharacters SET Realm=@realm WHERE DOLCharacters_ID=@id";
+            restore.Parameters.AddWithValue("@realm",realm);restore.Parameters.AddWithValue("@id",id);
+            restore.ExecuteNonQuery();
+        }
+        using var delete=c.CreateCommand();
+        delete.CommandText="DELETE FROM main.AccountXCustomParam WHERE KeyName=@key";
+        delete.Parameters.AddWithValue("@key",SweepGuestRecordKey);
+        return delete.ExecuteNonQuery();
+    }
+
     static long Scalar(SQLiteConnection c,string sql)
     { using var q=c.CreateCommand();q.CommandText=sql;return Convert.ToInt64(q.ExecuteScalar()); }
     static void Exec(SQLiteConnection c,string sql)
@@ -335,6 +376,9 @@ public static class ImportEngine
                     if(set.ExecuteNonQuery()!=1)throw new InvalidDataException("Could not set the kept account's new password.");
                 }
                 Exec(c,"UPDATE Account SET PrivLevel=1; INSERT OR REPLACE INTO offline_local_options(Key,Value) VALUES('MakeMeGM','false'); UPDATE ServerProperty SET Value='1' WHERE lower(Key) IN ('xp_rate','bot_xp_rate'); UPDATE ServerProperty SET Value='' WHERE lower(Key) IN ('xp_rate_by_level','bot_xp_rate_by_level'); UPDATE offline_world_bots SET IsOnline=0;");
+                // GM is off after a transfer: a play test sweep's guest record would give it back at the server's next start.
+                long sweepRecords=ForgetSweepGuestRecords(c);
+                if(sweepRecords>0)notes.Add($"Not transferred: {sweepRecords} play test sweep guest record(s) (the guest's realm was put back; GM stays off, Make Me a GM turns it on).");
                 Exec(c,"UPDATE offline_population_settings SET Value=CAST((SELECT count(*) FROM offline_world_bots WHERE IsRetired=0) AS TEXT) WHERE Key='ActiveTarget'; UPDATE offline_population_settings SET Value='true' WHERE Key='PopulationEnabled';");
                 string Missing(string schema) => $"SELECT i.Inventory_ID FROM {schema}.Inventory i WHERE (COALESCE(i.UTemplate_Id,'')<>'' AND NOT EXISTS(SELECT 1 FROM {schema}.ItemUnique u WHERE u.Id_nb=i.UTemplate_Id)) OR (COALESCE(i.UTemplate_Id,'')='' AND COALESCE(i.ITemplate_Id,'')<>'' AND NOT EXISTS(SELECT 1 FROM {schema}.ItemTemplate t WHERE t.Id_nb=i.ITemplate_Id))";
                 existingMissing=Scalar(c,$"SELECT count(*) FROM ({Missing("old")})");

@@ -119,7 +119,8 @@ lost, and Albion's Summoner's Hall never reached). They pass automated tests; no
   a guest, and the GM account came back at player level ("No such command" for every GM command until Make Me a GM was
   turned off and on). The sweep now saves the guest's GM level and realm before it changes them; the next server start
   or login puts them back (`EPIC_SWEEP_GUEST_RESTORED` in the server log), and a normal stop ends the sweep first. Only a
-  level the account had before the sweep is restored, so no account gets GM it did not have. Tests only so far.
+  level the account had before the sweep is restored, so no account gets GM it did not have. A progress transfer does
+  not carry the record (a transfer turns GM off), but it puts the guest's realm back. Tests only so far.
 
 **The play test's sweep (GM only).** `/epictest sweep start [all|event,event] [guest]` runs every raid once, one after
 another, on the server alone: the 21 raid targets in the game's order, Darkness Falls last. Each raid runs at its period
