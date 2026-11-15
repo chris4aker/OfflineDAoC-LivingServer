@@ -221,7 +221,7 @@ namespace DOL.AI.Brain
         {
             if (IsUntargetableForMe(living)) return;
             if (!CompanionEngagementMode.Allows(Body, living)) return;
-            if (_autonomousWorldController?.IgnoresTarget(living) == true) return;
+            if (_autonomousWorldController?.IgnoresAggro(living, BotBody) == true) return;
             if (CompanionRaidSiege.Ignores(Body as GameBot, living)) return;
             if (living is DOL.GS.Keeps.GuardLord { ShieldedFromBots: true }) return;
             if (aggroAmount > 0)
@@ -287,6 +287,19 @@ namespace DOL.AI.Brain
         public virtual void RemoveFromAggroList(GameLiving living)
         {
             AggroList.TryRemove(living, out _);
+        }
+
+        /// <summary>Removes every aggro entry <paramref name="drop"/> says to drop; how many went.</summary>
+        public int RemoveFromAggroListWhere(Func<GameLiving, bool> drop)
+        {
+            int removed = 0;
+            foreach (GameLiving held in AggroList.Keys)
+                if (drop(held) && AggroList.TryRemove(held, out _))
+                    removed++;
+            if (removed > 0)
+                lock (((ICollection)OrderedAggroList).SyncRoot)
+                    OrderedAggroList.RemoveAll(entry => !AggroList.ContainsKey(entry.Item1));
+            return removed;
         }
 
         private void ForgetDepartedAggro()

@@ -531,7 +531,11 @@ namespace DOL.GS
                     }
                     ReportSiegeCombatAttendance(bot, nowTick);
                     // A battleground gatherer does not chase a fight away from its realm's staging point.
-                    if (DropBattlegroundGatherChase(brain, bot))
+                    bool droppedChase = DropBattlegroundGatherChase(brain, bot);
+                    // ...and a stormer with nothing it may fight goes on up to the lord (build ef76db3).
+                    if (StormerMarchesOn(brain, bot))
+                        return ExecuteBattleground(brain, bot);
+                    if (droppedChase)
                         return true;
                     // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).
                     if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && StepInOnSentinel(brain, bot, bot.TargetObject as GameLiving))
