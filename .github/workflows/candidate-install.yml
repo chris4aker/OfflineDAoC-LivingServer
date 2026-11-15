@@ -1,0 +1,150 @@
+# The 1.2 gate's Install rows as CI can run them (docs/PLAYED-CHECK-1.2.md, "Install"): the package build-and-test just
+# made for this commit goes into a Living Server Setup exe the way a release's does, then on Windows runners
+#   fresh      a new install as a player gets it (Offline DAoC 0.37 from Living Server's copy of shadowofze's releases, then
+#              this build), Setup's install paths, the installed server started and logged in to, and the class-off
+#              edition: classes / enable_sluaghbinder False, the classic game.dll, and the playtester's class-switch and
+#              login-save-restart scenarios against the installed server (tools/installer/test-installer.ps1 classoff)
+#   update114  Living Server 1.1.4's published Setup installs a game, a character, a roster and changed settings are
+#              seeded, this Setup updates it, and everything seeded is checked kept, also after the server's first start.
+# These are TESTS: they never close a row of the gate, which needs the owner's PC (docs/INSTALL-CHECKS-1.2.md).
+name: candidate-install
+
+on:
+  # build-and-test.yml calls it after its server job, with that run's package artifact.
+  workflow_call:
+    inputs:
+      package_artifact:
+        description: "Name of this run's package artifact (OfflineDAoC-LivingServer-<build>-<sha7>)"
+        type: string
+        required: true
+  # By hand: the package artifact of an earlier build-and-test run.
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "A build-and-test run whose package artifact to test"
+        required: true
+      package_artifact:
+        description: "Its package artifact's name (OfflineDAoC-LivingServer-<build>-<sha7>)"
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: The package (this run)
+        if: ${{ !inputs.run_id }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.package_artifact }}
+          path: candidate-package
+      - name: The package (run ${{ inputs.run_id }})
+        if: ${{ inputs.run_id }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.package_artifact }}
+          path: candidate-package
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+      # The same zip a release attaches (tools/release/publish_release.py write_zip), then Setup built around it
+      # (tools/installer/build.py --package), as release.yml builds a release's Setup.
+      - name: Zip the package as a release does, build Setup
+        shell: bash
+        run: |
+          set -euo pipefail
+          folder=$(ls -d candidate-package/LivingServer-* | head -n 1)
+          [ -f "$folder/BUILD-INFO.txt" ] || { echo "::error::no LivingServer-<build> folder in the artifact"; ls -R candidate-package | head; exit 1; }
+          build="${folder##*/LivingServer-}"
+          mkdir -p candidate-zip
+          python -c "import sys; sys.path.insert(0, 'tools/release'); import publish_release as p; p.write_zip(sys.argv[1], sys.argv[2])" "$folder" "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
+          python tools/installer/build.py --package "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
+          echo "::notice title=Candidate Setup::$build ($(grep '^Commit=' "$folder/BUILD-INFO.txt"))"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Candidate-Setup
+          path: |
+            tools/installer/dist/*.exe
+            tools/installer/payload/LivingServer.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  fresh:
+    needs: setup
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/download-artifact@v4
+        with:
+          name: Candidate-Setup
+          path: setup
+      - name: Build the playtester
+        run: dotnet build source/tools/OfflineDaoc.Playtester -c Release
+      - name: New install, Setup's paths, smoke, class-off edition
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
+          $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
+          $pt = (Resolve-Path source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll).Path
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Scenario fresh,smoke,classoff -Playtester '$pt'; exit `$LASTEXITCODE"
+          exit $LASTEXITCODE
+      - name: Put the playtester's report on the run page
+        if: always()
+        shell: pwsh
+        run: |
+          $md = 'D:\lstest\playtest-classoff\report.md'
+          if (Test-Path $md) { Get-Content $md | Select-Object -First 60 | Add-Content $env:GITHUB_STEP_SUMMARY }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-fresh-logs
+          path: |
+            D:\lstest\logs\
+            D:\lstest\playtest-classoff\report.*
+            D:\lstest\playtest-classoff\server-console-*.log
+            D:\lstest\smoke\console.log
+          if-no-files-found: warn
+
+  update114:
+    needs: setup
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Candidate-Setup
+          path: setup
+      - name: Living Server 1.1.4's published Setup
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download v1.1.4-beta --repo "${{ github.repository }}" --pattern 'LivingServer-Setup-1.1.4-beta.exe' --dir setup114
+      - name: 1.1.4 game, seeded, updated through Setup, kept
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
+          $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
+          $old = (Resolve-Path setup114/LivingServer-Setup-1.1.4-beta.exe).Path
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Scenario update114 -FromSetup '$old'; exit `$LASTEXITCODE"
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-update114-logs
+          path: |
+            D:\lstest\logs\
+            D:\lstest\update114-seed.json
+            D:\lstest\smoke-update114\console.log
+          if-no-files-found: warn

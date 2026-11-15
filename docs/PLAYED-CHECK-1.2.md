@@ -25,7 +25,8 @@ The builds on the candidate line, as the repo records them:
 The owner answered the roadmap review's 23 questions at 07:10. Where the owner asked for a recommendation, the
 recommendation is recorded as the decision, as the owner asked.
 
-1. **Beta 1.1.4 (main) is merged into 1.2** (a separate pull request). The two Install musts that use Setup wait for it.
+1. **Beta 1.1.4 (main) is merged into 1.2** (a separate pull request). Done in #245, so the two Install musts that use
+   Setup no longer wait for it.
 2. **Raid code is frozen.** Since #240 (`35d52b6f8`, 2026-11-15 06:49) raid code takes only fixes for bugs seen on the
    owner's PC. Raid code here is the raid AI, routes, musters, staging, encounter plans and raid settings. Each such fix
    re-arms a re-run of every raid it touches, and is listed under "Re-runs owed" below with the raids it re-arms and
@@ -246,9 +247,13 @@ A two-hour script that covers every row below and "A tale that starts by itself"
 
 ## Install
 
+The steps on the owner's PC for the first three rows, and what CI tests for them, are in
+[INSTALL-CHECKS-1.2.md](INSTALL-CHECKS-1.2.md). CI runs them on Windows runners (`candidate-install`, from
+`build-and-test`) and the playtester's `class-switch` scenario on Linux. They are tests only and close no row.
+
 | What | Must | Status |
 |---|---|---|
-| A 1.1.4 game updated to the 1.2 candidate through Setup, characters and settings kept | must | Not done. Waits for the 1.1.4 merge into 1.2 (owner decision 1) |
-| A new install of the 1.2 candidate (0.37 from Living Server's own downloads) | must | Not done (1.1.4's Setup did this in CI on 2026-11-12). Waits for the 1.1.4 merge |
-| A class-off smoke session on a copy of a 0.37 (class off) world: the server starts, character creation offers no Sluaghbinder, an hour of play, a raid starts (owner decision 8) | must | Not done. Every 1.2 result so far is from a 0.37b (class on) world |
+| A 1.1.4 game updated to the 1.2 candidate through Setup, characters and settings kept | must | Not done on the PC (row 1 of INSTALL-CHECKS-1.2.md). The 1.1.4 merge is in (#245). Tests only: CI's `update114` job installs 1.1.4 with its published Setup, seeds a character, a roster and settings, updates with the candidate's Setup and checks them kept |
+| A new install of the 1.2 candidate (0.37 from Living Server's own downloads) | must | Not done on the PC (row 2). Tests only: CI's `fresh` job does it with the candidate's Setup (1.1.4's Setup did it in CI on 2026-11-12) |
+| A class-off smoke session on a copy of a 0.37 (class off) world: the server starts, character creation offers no Sluaghbinder, an hour of play, a raid starts (owner decision 8) | must | Not done on the PC (row 3: a class-off copy `playable-v0.37-classoff` of the test world, made by `make_classoff_copy.py`). Every 1.2 result so far is from a 0.37b (class on) world. Tests only: CI's `fresh` job checks the new 0.37 install's switch, client and saves, and that its installed server refuses the Sluaghbinder at character creation (the playtester's `class-switch`, a protocol client, not the game's character screen) |
 | One overnight run without a stall or an error that stops play: 8 hours, no game-loop stall of 2.0 s or more, at most 5 stalls of 1.0 s or more in any hour (owner decision 9); checked with `source/tools/check_overnight_run.py` | must | Not done. The night of 2026-11-14/15 on `1dc66b6` was a GM sweep and was not checked against the threshold |

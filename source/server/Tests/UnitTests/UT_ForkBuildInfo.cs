@@ -24,6 +24,24 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void TheStartupLineNamesTheEdition()
+        {
+            // The class-off check on the owner's PC reads the edition from this line (docs/INSTALL-CHECKS-1.2.md).
+            bool was = Properties.ENABLE_SLUAGHBINDER;
+            try
+            {
+                Properties.ENABLE_SLUAGHBINDER = false;
+                Assert.That(ForkBuildInfo.Describe(), Does.EndWith(" sluaghbinder=off"));
+                Properties.ENABLE_SLUAGHBINDER = true;
+                Assert.That(ForkBuildInfo.Describe(), Does.EndWith(" sluaghbinder=on"));
+            }
+            finally
+            {
+                Properties.ENABLE_SLUAGHBINDER = was;
+            }
+        }
+
+        [Test]
         public void TheStartupLineNamesTheRaidSurpriseNeutrally()
         {
             // Players paste the FORK_BUILD line into public bug reports: it must not give the gag away.

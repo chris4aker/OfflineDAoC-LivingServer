@@ -68,6 +68,45 @@ public class WorldAndReportTests
         Assert.That(world.Bots(1), Is.Empty, "no bot table: no bots");
     }
 
+    [TestCase(null, true)]
+    [TestCase("True", true)]
+    [TestCase("true", true)]
+    [TestCase("False", false)]
+    [TestCase(" false ", false)]
+    [TestCase("garbage", true)]
+    public void TheClassSwitchReadsAsTheServerReadsIt(string? value, bool on)
+    {
+        Assert.That(TestWorld.CustomClassSetting(value), Is.EqualTo(on));
+    }
+
+    [Test]
+    public void TheClassSwitchScenarioReadsTheWorldsSwitchAndCharacters()
+    {
+        string path = MakeDb(marker: true);
+        var world = TestWorld.Open(path);
+        Assert.That(world.CustomClassEnabled, Is.True, "no ServerProperty table: the server's default, on");
+        Assert.That(world.CharactersOf("playtester", 3), Is.Empty, "no DOLCharacters table: none");
+        using (var con = new SQLiteConnection($"Data Source={path};Version=3;Pooling=False"))
+        {
+            con.Open();
+            foreach (string sql in new[]
+            {
+                "CREATE TABLE ServerProperty (Category TEXT, `Key` TEXT, Value TEXT)",
+                "INSERT INTO ServerProperty VALUES ('classes', 'enable_sluaghbinder', 'False')",
+                "CREATE TABLE DOLCharacters (Name TEXT, AccountName TEXT, Realm INT, Class INT)",
+                "INSERT INTO DOLCharacters VALUES ('Ptnatabc', 'Playtester', 3, 53), ('Ptarm', 'playtester', 1, 2), ('Other', 'someone', 3, 16)",
+            })
+            {
+                using var cmd = new SQLiteCommand(sql, con);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        Assert.That(world.CustomClassEnabled, Is.False);
+        Assert.That(world.CharactersOf("playtester", 3), Is.EqualTo(new[] { ("Ptnatabc", 53) }));
+        Assert.That(Runner.All.Select(s => s.Id), Does.Contain("class-switch"));
+        Assert.That(ClassSwitch.CustomClassIds, Is.EquivalentTo(new[] { 16, 62, 63 }));
+    }
+
     [Test]
     public void TheServerHostRefusesTheInstallsOwnWorld()
     {

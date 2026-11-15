@@ -31,7 +31,7 @@ class MinimalWorldTests(unittest.TestCase):
         con = sqlite3.connect(out)
         self.assertEqual(dict(con.execute(f"SELECT Key,Value FROM {mtw.MARKER_TABLE}"))["mode"], "minimal")
         self.assertEqual(dict(con.execute("SELECT Name,PrivLevel FROM Account")),
-                         {"playtester": 1, "playtester2": 1, "playtestergm": 3})
+                         {"playtester": 1, "playtester2": 1, "playtester3": 1, "playtestergm": 3})
         # the start is inside one of the zones (the playtester places its position updates by the Zones table)
         x, y, region = con.execute("SELECT XPos,YPos,Region FROM StartupLocation").fetchone()
         zones = con.execute("SELECT ZoneID FROM Zones WHERE RegionID=? AND ?>=OffsetX*8192 AND ?<(OffsetX+Width)*8192 "
@@ -40,6 +40,23 @@ class MinimalWorldTests(unittest.TestCase):
         self.assertEqual(con.execute("SELECT Value FROM ServerProperty WHERE `Key`='time_between_account_creation'").fetchone(), ("0",))
         con.close()
         self.assertEqual(report["startup_locations"], 1)
+
+    def test_class_off_sets_the_editions_switch_and_on_leaves_the_servers_default(self):
+        on = self.dir / "on.db"
+        self.assertEqual(mtw.build_minimal(on)["enable_sluaghbinder"], "on (no row)")
+        off = self.dir / "off.db"
+        report = mtw.build_minimal(off, class_off=True)
+        self.assertEqual(report["enable_sluaghbinder"], "off")
+        con = sqlite3.connect(off)
+        self.assertEqual(con.execute("SELECT Category, Value FROM ServerProperty WHERE `Key`='enable_sluaghbinder'").fetchone(),
+                         ("classes", "False"))
+        self.assertEqual(dict(con.execute(f"SELECT Key,Value FROM {mtw.MARKER_TABLE}"))["classes"], "off")
+        con.close()
+        out = self.dir / "cli.db"
+        self.assertEqual(mtw.main(["minimal", "--out", str(out), "--class-off"]), 0)
+        con = sqlite3.connect(out)
+        self.assertEqual(mtw.class_switch(con), "off")
+        con.close()
 
     def test_the_passwords_are_plain_so_the_server_hashes_them_at_first_login(self):
         out = self.dir / "minimal.db"
@@ -102,6 +119,44 @@ class FromReleaseTests(unittest.TestCase):
         con.execute("INSERT INTO ServerProperty VALUES ('startup_ramp_minutes', '15'), ('other', '15')")
         self.assertTrue(mtw.set_startup_ramp(con, 1))
         self.assertEqual(dict(con.execute("SELECT `Key`, Value FROM ServerProperty")), {"startup_ramp_minutes": "1", "other": "15"})
+
+    def test_a_class_off_release_world_stays_class_off(self):
+        """clean_world() sets the 0.37b switch (on); a 0.37 source (off) must come out off (CI run 43770926402 found it on)."""
+        from unittest import mock
+        sys.path.insert(0, str(Path(mtw.__file__).resolve().parent))
+        import build_release_037 as release
+
+        con = sqlite3.connect(self.world)
+        con.execute("CREATE TABLE offline_population_settings (Key TEXT PRIMARY KEY, Value TEXT NOT NULL)")
+        con.execute("INSERT INTO offline_population_settings VALUES ('ActiveTarget','0'), ('StartupRampMinutes','15')")
+        con.commit()
+        con.close()
+
+        def clean_like_a_release(database, policy, defaults):
+            c = sqlite3.connect(database)
+            release.set_edition(c, True)
+            c.commit()
+            c.close()
+            return {}
+
+        def edition(path):
+            c = sqlite3.connect(path)
+            try:
+                return mtw.class_switch(c)
+            finally:
+                c.close()
+
+        with mock.patch.object(release, "clean_world", clean_like_a_release):
+            on = mtw.build_from_release(self.world, self.dir / "on.db", 0)
+            self.assertEqual((on["source_edition"], edition(self.dir / "on.db")), ("on (no row)", "on"))
+            con = sqlite3.connect(self.world)
+            release.set_edition(con, False)
+            con.commit()
+            con.close()
+            off = mtw.build_from_release(self.world, self.dir / "off.db", 0)
+            self.assertEqual((off["source_edition"], off["enable_sluaghbinder"], edition(self.dir / "off.db")), ("off", "off", "off"))
+            forced = mtw.build_from_release(self.world, self.dir / "forced.db", 0, class_off=True)
+            self.assertEqual(forced["enable_sluaghbinder"], "off")
 
     def test_fixtures_and_bots_go_into_the_copy(self):
         out = self.dir / "copy.db"

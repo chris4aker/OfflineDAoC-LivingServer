@@ -84,6 +84,109 @@ internal sealed class LoginSaveRestart : Scenario
     }
 }
 
+/// <summary>
+/// Character creation follows the edition switch classes / enable_sluaghbinder (AGENTS.md, "Edition switch"): the 0.37b
+/// world (on) makes the Sluaghbinder novice from the client's Hibernian Mauler slot, the 0.37 world (off) refuses it and
+/// any direct request for the class, and both make the classic classes (CharacterCreateRequestHandler).
+/// </summary>
+internal sealed class ClassSwitch : Scenario
+{
+    public const string Account = "playtester3";
+    public const int Hibernia = 3;
+    public const int Celt = 9;
+    public const int Naturalist = 53;   // a classic Hibernian starting class, in every edition
+    public const int ClientSlot = 62;   // MaulerHib: the slot the 0.37b game.dll relabels "Sluaghbinder"
+    public const int Sluaghbinder = 63;
+    public const int Acolyte = 16;      // the Sluaghbinder novice (levels 1-4) is stored as Acolyte
+    public static readonly int[] CustomClassIds = { Acolyte, ClientSlot, Sluaghbinder };
+
+    public override string Id => "class-switch";
+    public override string Title => "Character creation follows the Sluaghbinder switch";
+    public override string Checks => "Reads classes / enable_sluaghbinder from the world (no row: on, the server's default). A player " +
+        "(playtester3, not a GM: the refusals apply to players) creates a Hibernian Celt Naturalist, a classic class every edition offers. Then it " +
+        "asks for the client's Sluaghbinder slot (class 62, the Hibernian Mauler slot). On: the server saves the Sluaghbinder novice " +
+        "(Acolyte, 16). Off: it is refused, and so are direct requests for the Sluaghbinder (63) and the Acolyte (16); the world then " +
+        "holds no Hibernian character of class 16, 62 or 63 on the account.";
+
+    /// <summary>A Hibernian Celt of the class, with a fresh name (another one when the server's name list refuses it).</summary>
+    private static async Task<CharacterSlot> Create(ScriptedPlayer player, ScenarioContext ctx, string prefix, int classId, Action<string>? named = null)
+    {
+        for (int attempt = 1; ; attempt++)
+        {
+            string name = Names.Fresh(prefix);
+            named?.Invoke(name);
+            try
+            {
+                return await player.CreateCharacterAsync(Hibernia, name, classId, Celt, false, ctx.Options.NetTimeout);
+            }
+            catch (PlaytestException e) when (attempt < 4 && e.Message.Contains("was refused (DupNameCheck"))
+            {
+                // a random name the server's invalid-names list rejects: try another
+            }
+        }
+    }
+
+    public override async Task RunAsync(ScenarioContext ctx)
+    {
+        string? value = ctx.World.Property("enable_sluaghbinder");
+        bool on = ctx.World.CustomClassEnabled;
+        ctx.Measure("enable_sluaghbinder", value ?? "(no row: on)");
+        ctx.Measure("edition", on ? "class on (0.37b)" : "class off (0.37)");
+        // An account of its own: an account that already has characters in another realm is held to that realm (unless the
+        // server allows all realms), and the other scenarios make Albion characters on playtester and playtester2.
+        var player = await ctx.LoginAsync("player", Account);
+        await ctx.Step("the account is a player's (the class refusals don't apply to GMs)", () =>
+        {
+            int plvl = ctx.World.AccountPrivLevel(Account);
+            ScenarioContext.Check(plvl == 1, $"{Account} has plvl {plvl}");
+            return Task.FromResult("plvl 1");
+        });
+        await ctx.Step("a classic class is offered: a Celt Naturalist is created", async () =>
+        {
+            var made = await Create(player, ctx, "Ptnat", Naturalist);
+            var saved = ctx.World.Character(made.Name) ?? throw new PlaytestException($"{made.Name} is listed but not in DOLCharacters");
+            ScenarioContext.Check(saved.Class == Naturalist, $"{made.Name} was saved as class {saved.Class}");
+            return $"{made.Name}, {made.ClassName} {made.RaceName}, saved as class {saved.Class}";
+        });
+        if (on)
+        {
+            await ctx.Step("on: the client's Sluaghbinder slot (62) makes the novice (Acolyte, 16)", async () =>
+            {
+                var made = await Create(player, ctx, "Ptslu", ClientSlot);
+                var saved = ctx.World.Character(made.Name) ?? throw new PlaytestException($"{made.Name} is listed but not in DOLCharacters");
+                ScenarioContext.Check(saved.Class == Acolyte, $"{made.Name} was saved as class {saved.Class}, not the Acolyte novice (16)");
+                return $"{made.Name} saved as class {saved.Class}, listed as {made.ClassName}";
+            });
+            return;
+        }
+        foreach (int classId in CustomClassIds)
+        {
+            string what = classId switch { ClientSlot => "the client's Sluaghbinder slot (62)", Sluaghbinder => "the Sluaghbinder (63)", _ => "the Acolyte novice (16)" };
+            await ctx.Step($"off: {what} is refused", async () =>
+            {
+                string name = "";
+                try
+                {
+                    var made = await Create(player, ctx, "Ptoff", classId, n => name = n);
+                    throw new PlaytestException($"the server created {made.Name} as {made.ClassName} (class {made.ClassId})");
+                }
+                catch (PlaytestException e) when (e.Message.Contains("was not in the character list"))
+                {
+                }
+                ScenarioContext.Check(ctx.World.Character(name) == null, $"{name} is in DOLCharacters");
+                return $"{name} not created";
+            });
+        }
+        await ctx.Step("off: the world holds no Sluaghbinder character on the account", () =>
+        {
+            var hib = ctx.World.CharactersOf(Account, Hibernia);
+            var custom = hib.Where(c => CustomClassIds.Contains(c.Class)).ToList();
+            ScenarioContext.Check(custom.Count == 0, "saved: " + string.Join(", ", custom.Select(c => $"{c.Name} ({c.Class})")));
+            return Task.FromResult($"{hib.Count} Hibernian character(s): " + string.Join(", ", hib.Select(c => $"{c.Name} ({c.Class})")));
+        });
+    }
+}
+
 /// <summary>Say and tells between two scripted players (needs no gamebots).</summary>
 internal sealed class ChatBetweenPlayers : Scenario
 {

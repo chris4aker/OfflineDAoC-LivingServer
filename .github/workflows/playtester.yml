@@ -1,7 +1,9 @@
 # The automated playtester (docs/PLAYTESTER.md) on a minimal world that needs no game files: builds the server, makes
 # the world with make_test_world.py, starts a server on it and runs the scenarios that need no gamebots or quests
-# (login/save/restart, chat and a group between two scripted players). Nightly, on demand, and on changes to the
-# playtester itself. The scenarios that need the real release world run on the owner's PC.
+# (login/save/restart, chat and a group between two scripted players, character creation under the Sluaghbinder switch).
+# It runs twice: on a world with the switch on (0.37b, the server's default) and on one with it off (0.37,
+# make_test_world.py --class-off). Nightly, on demand, and on changes to the playtester itself. The scenarios that need
+# the real release world run on the owner's PC.
 name: playtester
 
 on:
@@ -13,6 +15,7 @@ on:
       - "source/tools/OfflineDaoc.Playtester/**"
       - "source/tools/OfflineDaoc.Playtester.Tests/**"
       - "source/tools/make_test_world.py"
+      - "source/server/GameServer/packets/Client/168/CharacterCreateRequestHandler.cs"
       - "source/tools/tests/**"
       - ".github/workflows/playtester.yml"
 
@@ -41,22 +44,40 @@ jobs:
           cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
           dotnet build "source/server/Dawn of Light.sln" -c Release
 
-      - name: Make the minimal test world
-        run: python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
+      - name: Make the minimal test worlds (class on, class off)
+        run: |
+          python3 source/tools/make_test_world.py minimal --out "$RUNNER_TEMP/minimal.db"
+          python3 source/tools/make_test_world.py minimal --class-off --out "$RUNNER_TEMP/minimal-classoff.db"
 
       - name: Run the scenarios
         run: |
           dotnet build source/tools/OfflineDaoc.Playtester -c Release
           dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal.db" --server-dir source/server/Release \
-            --scenarios login-save-restart,chat-players,group-players --out "$RUNNER_TEMP/playtest"
+            --scenarios login-save-restart,chat-players,group-players,class-switch --out "$RUNNER_TEMP/playtest"
+
+      # The 0.37 edition (owner decision 8, 2026-11-15): the same server with classes / enable_sluaghbinder False
+      # refuses the Sluaghbinder at character creation and keeps a character over a restart. Tests only.
+      - name: Run the class-off scenarios
+        if: always()
+        run: |
+          set -o pipefail
+          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+            --world "$RUNNER_TEMP/minimal-classoff.db" --server-dir source/server/Release \
+            --scenarios class-switch,login-save-restart --out "$RUNNER_TEMP/playtest-classoff" | tee "$RUNNER_TEMP/classoff.txt"
+          grep -q "edition: class off" "$RUNNER_TEMP/classoff.txt" || { echo "::error::the class-off world did not run the class-off rules"; exit 1; }
+          grep -h "FORK_BUILD name=" "$RUNNER_TEMP"/playtest-classoff/server-console-*.log | head -n 1 | grep -q "sluaghbinder=off" \
+            || { echo "::error::the class-off server's FORK_BUILD line does not say sluaghbinder=off"; exit 1; }
 
       - name: Put the outcome on the run page
         if: always()
         run: |
-          if [ -f "$RUNNER_TEMP/playtest/report.md" ]; then
-            sed -n '1,/^## /p' "$RUNNER_TEMP/playtest/report.md" | head -n -1 >> "$GITHUB_STEP_SUMMARY"
-          fi
+          for r in playtest playtest-classoff; do
+            if [ -f "$RUNNER_TEMP/$r/report.md" ]; then
+              echo "### $r" >> "$GITHUB_STEP_SUMMARY"
+              sed -n '1,/^## /p' "$RUNNER_TEMP/$r/report.md" | head -n -1 >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -65,4 +86,6 @@ jobs:
           path: |
             ${{ runner.temp }}/playtest/report.*
             ${{ runner.temp }}/playtest/server-console-*.log
+            ${{ runner.temp }}/playtest-classoff/report.*
+            ${{ runner.temp }}/playtest-classoff/server-console-*.log
           if-no-files-found: warn

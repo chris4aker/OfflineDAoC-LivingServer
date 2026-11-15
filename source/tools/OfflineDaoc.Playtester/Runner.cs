@@ -8,7 +8,7 @@ internal static class Runner
 {
     public static IReadOnlyList<Scenario> All { get; } = new Scenario[]
     {
-        new LoginSaveRestart(), new ChatBetweenPlayers(), new GroupInvite(),
+        new LoginSaveRestart(), new ChatBetweenPlayers(), new GroupInvite(), new ClassSwitch(),
         new TellGamebot(), new FactionRate(), new KillQuestInBotGroup(), new DeliveryQuest(), new GuildDues(),
     };
 

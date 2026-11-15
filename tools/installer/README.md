@@ -88,6 +88,21 @@ releases:
 
 Not covered: a real player's PC (antivirus, SmartScreen, odd folders), and playing the game.
 
+**The release candidate (1.2 on).** `.github/workflows/candidate-install.yml` tests the package `build-and-test` just
+built, before any release exists. `build-and-test` calls it on pushes to `main`, `integration/1.2`, `release/*` and
+`ci/*`. It zips the package as a release does, builds Setup around it with `build.py --package`, and runs two more
+scenarios of `test-installer.ps1` beside `fresh` and `smoke`:
+- **classoff:** the new install is the 0.37 edition (`classes / enable_sluaghbinder` False, the 0.37 `game.dll`, no
+  Sluaghbinder saves; `source/tools/make_classoff_copy.py status`). Its installed server, on a playtester copy of its
+  world, refuses the Sluaghbinder at character creation and keeps a character over a restart (the playtester's
+  `class-switch` and `login-save-restart`, `-Playtester`).
+- **update114:** Living Server 1.1.4's published Setup (`-FromSetup`) installs a game. `seed_progress.py` seeds a
+  character with coin and an item, a gamebot roster and changed settings. This Setup updates the game, and everything
+  seeded must be kept, also after the updated server's first start.
+
+These are tests. The owner's PC steps that close the 1.2 gate's Install rows are in
+[docs/INSTALL-CHECKS-1.2.md](../../docs/INSTALL-CHECKS-1.2.md).
+
 `.github/workflows/release.yml` runs these same jobs for every published release, then attaches the tested exe and
 puts its SHA-256 in the release notes ("Releasing Living Server" in [docs/DEVELOPMENT.md](../../docs/DEVELOPMENT.md)).
 
