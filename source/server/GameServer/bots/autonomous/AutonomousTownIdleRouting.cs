@@ -410,15 +410,19 @@ namespace DOL.GS
             foreach (GamePlayer player in bot.GetPlayersInRadius(radius))
                 if (player.IsAlive && player.Realm == bot.Realm && !player.IsMoving)
                     standers.Add(new(player.X, player.Y));
+            // Crafting 2.0 WP4: a crafter gamebot (bot_crafters on) may wander to its craft's station in town.
+            List<GameStaticItem> stations = StationsForHangout(bot, town, zone, radius);
             Vector2 self = new(bot.X, bot.Y);
             bool crowd = AutonomousTownHangouts.TryFindCrowd(standers, self, out Vector2 crowdCenter, out _);
             AutonomousTownHangouts.Kind? chosen = AutonomousTownHangouts.Choose(banks.Count > 0, merchants.Count > 0,
-                trainers.Count > 0, crowd, Random.Shared.NextDouble());
+                trainers.Count > 0, crowd, stations.Count > 0, Random.Shared.NextDouble());
             if (chosen is not AutonomousTownHangouts.Kind picked)
                 return false;
             kind = picked;
-            GameNPC target = null;
-            if (picked != AutonomousTownHangouts.Kind.Crowd)
+            GameObject target = null;
+            if (picked == AutonomousTownHangouts.Kind.Station)
+                target = stations[Random.Shared.Next(stations.Count)];
+            else if (picked != AutonomousTownHangouts.Kind.Crowd)
             {
                 List<GameNPC> list = picked switch
                 {
@@ -444,6 +448,26 @@ namespace DOL.GS
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Crafting 2.0 WP4: the stations of a crafter gamebot's craft (forge, lathe or alchemy table) in this town, for the
+        /// station hangout. Empty for every other bot, and while bot_crafters is off.
+        /// </summary>
+        private static List<GameStaticItem> StationsForHangout(GameBot bot, IdleTown town, Zone zone, ushort radius)
+        {
+            var stations = new List<GameStaticItem>();
+            if (!AutonomousBotCrafting.IsCrafter(bot) || !AutonomousBotCrafting.IsTrained(bot))
+                return stations;
+            DOL.GS.Crafting.CraftStation wanted = BotCraftingRules.HangoutStationFor(
+                DOL.GS.CraftingEconomy.BotCraftingSkills.Primary(bot.PersistentRecord.SerializedCraftingSkills));
+            if (wanted == DOL.GS.Crafting.CraftStation.None)
+                return stations;
+            foreach (GameStaticItem item in bot.GetItemsInRadius(radius))
+                if (item != null && item.ObjectState == GameObject.eObjectState.Active && item.CurrentZone == zone &&
+                    BotCraftingRules.StationOf(item.Model, item.Name) == wanted && InsideTown(town, new(item.X, item.Y, item.Z)))
+                    stations.Add(item);
+            return stations;
         }
 
         private static bool InsideTown(IdleTown town, Vector3 point) =>

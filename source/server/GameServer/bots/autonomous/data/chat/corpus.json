@@ -338327,6 +338327,428 @@
    "id": "16d46530e1fa"
   },
   {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "wts {stock}, {quality}% quality, {price}",
+   "id": "d5a1080a9c13"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "wts {stock} {quality}%, {price}, pst",
+   "family": "41decea519",
+   "id": "b85eb954634d"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "wts {stock} {quality}%, {price}, send a tell",
+   "family": "41decea519",
+   "id": "1f4e870646e8"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "wts {stock} {quality}%, {price}",
+   "family": "41decea519",
+   "id": "ca0ea352beac"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "selling {stock} {quality}%, {price}, pst",
+   "family": "41decea519",
+   "id": "47450ec03c85"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "selling {stock} {quality}%, {price}, send a tell",
+   "family": "41decea519",
+   "id": "7c80f92c6010"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "invites": "trade",
+   "text": "selling {stock} {quality}%, {price}",
+   "family": "41decea519",
+   "id": "f4c810ed22fe"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "fresh off my bench: {stock}, {quality}%, asking {price}",
+   "id": "7d40eea595ad"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "made a {quality}% {stock} today, {price} if anyone wants it",
+   "id": "7dd5c00442aa"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "{stock} for sale, {quality}%, {price} obo",
+   "id": "d4f3d3984a87"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "anyone need {stock}? {quality}% and only {price}",
+   "id": "89228cb8aaab"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "got a {stock} at {quality}%, {price}, will post it at the broker otherwise",
+   "family": "81c0c6b9b5",
+   "id": "9699faf65a74"
+  },
+  {
+   "kind": "trade",
+   "topic": "crafted_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "has_craft_stock"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "have a {stock} at {quality}%, {price}, will post it at the broker otherwise",
+   "family": "81c0c6b9b5",
+   "id": "7cd3e0dd2fa2"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{title} at last",
+   "id": "bdad58840473"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally {title}!",
+   "family": "b917568934",
+   "id": "ec8f62552ce6"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "woo, {title}!",
+   "family": "b917568934",
+   "id": "f0dfb3ad8c38"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "just hit {skill}, {title} now",
+   "id": "3742ecd691b1"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{title}. my purse is lighter than my hammer",
+   "id": "50afe64f7f31"
+  },
+  {
+   "kind": "craft",
+   "topic": "title",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "crafter_title_up"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{title} today, all those failed combines paid off",
+   "id": "cb3319f10946"
+  },
+  {
    "kind": "deed",
    "topic": "named_solo",
    "who": [],

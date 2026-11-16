@@ -29,7 +29,9 @@ namespace DOL.GS.Tests
             // Deeds, storylines and gold spammers (AutonomousPlayerDeeds, AutonomousBotStorylines, AutonomousGoldSpammers)
             "nickname", "name_a", "name_b", "site",
             // Bonds (AutonomousBotBonds): the other gamebot and its class
-            "other", "other_class"];
+            "other", "other_class",
+            // Crafter gamebots (Crafting 2.0 WP4, BotCrafterVoice): the real piece it holds, its quality and price; a title and its skill
+            "stock", "quality", "price", "title", "skill"];
 
         private static readonly string[] OutOfEra =
             ["world of warcraft", "discord", "twitch", "youtube", "lmao", "covid", "smh", "tbh", "ngl", "yeet"];

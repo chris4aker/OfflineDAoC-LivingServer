@@ -54,7 +54,15 @@ public static class AutonomousBotPersonality
         }
     }
 
-    public static BotPersonalityType TypeFor(long botId)
+    /// <summary>
+    /// A bot's type. Crafting 2.0 WP4: a stored type wins (offline_bot_types, BotCrafterTypes), so changing the shares
+    /// never re-types a bot; with bot_crafters on, a bot created after the stored types began is typed by the share
+    /// table at its creation (7% Crafters); everyone else keeps <see cref="LegacyTypeFor"/>, exactly as before.
+    /// </summary>
+    public static BotPersonalityType TypeFor(long botId) => BotCrafterTypes.Resolve(botId, LegacyTypeFor(botId));
+
+    /// <summary>The type every bot had before Crafting 2.0: a fixed bucket of its id's hash on <see cref="TypeSharePercent"/>.</summary>
+    public static BotPersonalityType LegacyTypeFor(long botId)
     {
         int roll = (int)(Mix(botId, 1) % 100);
         for (int index = 0; index < TypeSharePercent.Length; index++)

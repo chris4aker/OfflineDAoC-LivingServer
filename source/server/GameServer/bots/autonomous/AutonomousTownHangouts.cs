@@ -16,7 +16,16 @@ namespace DOL.GS
     /// </summary>
     public static class AutonomousTownHangouts
     {
-        public enum Kind { Bank, Merchant, Trainer, Crowd }
+        /// <summary>Station (Crafting 2.0 WP4): a crafter gamebot's forge, lathe or alchemy table; chosen only by crafters.</summary>
+        public enum Kind { Bank, Merchant, Trainer, Crowd, Station }
+
+        /// <summary>
+        /// Crafting 2.0 WP4 (design doc §6, "the station as a place"): a crafter gamebot on a town break spends a share of
+        /// its wanders at its craft's station in town, so the capitals' forges, lathes and alchemy tables have crafters
+        /// standing at them. The station's weight among the other hangouts (bank 0.35, crowd 0.30, merchant 0.20, trainer
+        /// 0.15): about half a crafter's wanders when every kind is present.
+        /// </summary>
+        public const double StationWeight = 0.9;
 
         /// <summary>The first wander comes 20-90 seconds after the bot walked in; then one every 2-6 minutes.</summary>
         public const long FirstHopMinimumMs = 20_000;
@@ -62,11 +71,17 @@ namespace DOL.GS
         /// What the bot wanders over to, from a roll in [0, 1): the bank 35%, a crowd 30%, a merchant 20%, a trainer 15%,
         /// among the ones this town has. Null when it has none.
         /// </summary>
-        public static Kind? Choose(bool bank, bool merchant, bool trainer, bool crowd, double roll)
+        public static Kind? Choose(bool bank, bool merchant, bool trainer, bool crowd, double roll) =>
+            Choose(bank, merchant, trainer, crowd, false, roll);
+
+        /// <summary>As above, with a crafter's station (<see cref="StationWeight"/>) when <paramref name="station"/> is true
+        /// (only for a crafter gamebot near a station of its craft). Without a station the choice is exactly the one above.</summary>
+        public static Kind? Choose(bool bank, bool merchant, bool trainer, bool crowd, bool station, double roll)
         {
             (Kind Kind, double Weight, bool Present)[] options =
             [
                 (Kind.Bank, 0.35, bank), (Kind.Crowd, 0.30, crowd), (Kind.Merchant, 0.20, merchant), (Kind.Trainer, 0.15, trainer),
+                (Kind.Station, StationWeight, station),
             ];
             double total = 0;
             foreach (var option in options)
@@ -175,13 +190,14 @@ namespace DOL.GS
             Kind.Bank => "bank",
             Kind.Merchant => "merchants",
             Kind.Trainer => "trainers",
+            Kind.Station => "crafting station",
             _ => "crowd",
         };
 
         // ---- Counters -----------------------------------------------------------------------------------------------
 
         private static readonly DOL.Logging.Logger Log = DOL.Logging.LoggerManager.Create(typeof(AutonomousTownHangouts));
-        private static long _bank, _merchant, _trainer, _crowd, _none, _arrived, _nextReportTick;
+        private static long _bank, _merchant, _trainer, _crowd, _station, _none, _arrived, _nextReportTick;
         public const long ReportIntervalMs = 5 * 60_000;
 
         /// <summary>Counts a wander (null: none found); every 5 minutes with any, one AUTONOMOUS_TOWN_HANGOUT log line.</summary>
@@ -196,6 +212,7 @@ namespace DOL.GS
                     case Kind.Merchant: Interlocked.Increment(ref _merchant); break;
                     case Kind.Trainer: Interlocked.Increment(ref _trainer); break;
                     case Kind.Crowd: Interlocked.Increment(ref _crowd); break;
+                    case Kind.Station: Interlocked.Increment(ref _station); break;
                     default: Interlocked.Increment(ref _none); break;
                 }
             long now = GameLoop.GameLoopTime;
@@ -206,10 +223,11 @@ namespace DOL.GS
                 return; // the first call only starts the clock
             long bank = Interlocked.Exchange(ref _bank, 0), merchant = Interlocked.Exchange(ref _merchant, 0),
                 trainer = Interlocked.Exchange(ref _trainer, 0), crowd = Interlocked.Exchange(ref _crowd, 0),
-                none = Interlocked.Exchange(ref _none, 0), done = Interlocked.Exchange(ref _arrived, 0);
+                none = Interlocked.Exchange(ref _none, 0), done = Interlocked.Exchange(ref _arrived, 0),
+                station = Interlocked.Exchange(ref _station, 0);
             if (Log.IsInfoEnabled)
                 Log.Info($"AUTONOMOUS_TOWN_HANGOUT minutes={ReportIntervalMs / 60_000} bank={bank} merchants={merchant} " +
-                         $"trainers={trainer} crowd={crowd} noSpot={none} arrived={done}");
+                         $"trainers={trainer} crowd={crowd} stations={station} noSpot={none} arrived={done}");
         }
     }
 }
