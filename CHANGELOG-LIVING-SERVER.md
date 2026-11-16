@@ -271,6 +271,54 @@ Exchange. Everything happens at a natural task break.
   the price index, the quartermaster commissions, the Exchange tax, the reclaim of unsold work. Tests only: nothing here
   has been seen in game.
 
+### WP6 Demand and the gear pipeline (M3)
+
+**Off by default** (`bot_crafters`): with the switch off every gear decision is today's (`EquipmentValue`), no check
+runs at a task break, nothing is posted and no random number is drawn. Want-to-buy orders also need `bot_craft_orders`
+(off). Saved autonomous gamebots only: companions (`/bot`), Epic Special Force visitors, No Lifer buffbots and real
+players keep today's rules. The level 20 and 50 starter gear is unchanged.
+
+- **Template-aware valuation.** With `bot_crafters` on, a gamebot scores what it wears as one set: each bonus at its
+  class's weight (True165's: primary stat and acuity 4, secondary and Constitution 3, resists 3, trained skills 6,
+  unused stats 1) and only up to the set's item cap (stats 1.5 x level, hit points 4 x level, resists level/2 + 1,
+  skills level/5 + 1); a piece's level counts up to the bot's, its DPS or AF up to the bot's cap. At level 50 the six
+  armour slots also count their quality above 94% (6 a point): a capped spellcrafted set of 99-100% crafted pieces is
+  the template, and a 96% drop with odd lines loses to a 99% crafted piece with the right gems. Loot, vendor,
+  Exchange and crafted-piece upgrades all decide on this score.
+- **The no-undress guard.** A gamebot never puts on anything that lowers its set score and never leaves a worn slot
+  empty: every equip is checked last (`TryEquipOwnedUpgrade`, `TryEquipPurchasedUpgrade`). The upgrade rules decide on
+  the same score, so the guard should never refuse; a refusal is an `ECON_UNDRESS_GUARD event="blocked"` line, and
+  the hourly `ECON_UNDRESS_GUARD` line must read `blocked=0`. A property test runs 10,000 random loadouts (levels 1-50,
+  negative and over-cap bonuses, rings and bracers) through the real loot and merchant equip paths: no equip lowered a
+  set or emptied a slot and the guard refused nothing (tests only; the overnight check is still to do).
+- **A gear check at every task break.** The design's second shopping trigger, independent of the bag: a gamebot looks
+  at its six armour slots for a gap (a slot empty, a piece a full five-level band or more below it, or at 50 a slot
+  without a crafted 99%+ piece). When its realm's Exchange has a piece that fills a gap, raises its set score, costs
+  at most 80% of its purse and no more than the price index's bid, an ungrouped bot makes the town stop and buys and
+  wears it there (crafted and template pieces first), after any listing and before the ordinary purchase. The
+  full-bag visit is unchanged.
+- **Want-to-buy orders.** With no such piece on the Exchange, the bot posts a want-to-buy order for a crafted piece on
+  the order board (WP0's `ICraftOrderBoard`, which WP5 implements): its class's armour type at its level, the recipe
+  nearest its level that it could wear and that raises its set, 99% minimum for a template gap. The price is
+  DividedRealms' quote (materials plus a quarter, at least 100 copper) within half the purse; the board takes the
+  escrow, as DividedRealms' `Place` does, so WP6 moves no coin for an order. One open order a buyer; a refused or
+  unaffordable post waits 30 minutes. With no board registered nothing is posted and the hourly line counts it.
+- **ItemValue165 as the price index.** True165's value score (floor, fair, ask) is registered as `IPriceIndex` unless a
+  package already registered one; with `bot_crafters` off it answers today's numbers. Listing prices are not changed
+  by WP6 (WP5's price index and listing policy).
+- **Coin:** WP6 adds no coin move of its own (an Exchange purchase goes through `TryBuy`, an order's escrow through the
+  board). The vendor sale and vendor upgrade now name their ledger kind (`VendorSale`, `VendorGear`).
+- **Logs:** hourly `ECON_GEAR_CHECK event="hour"` (checks, gaps, empty, template, below, routed, bought,
+  template_bought, copper, wtb_posted, wtb_refused, wtb_open, wtb_unaffordable, wtb_no_recipe, wtb_no_board) and
+  `ECON_UNDRESS_GUARD event="hour"` (checked, blocked, blocked_since_start); `ECON_TEMPLATE_BUY` for each template
+  piece a level 50 buys; `ECON_GEAR_CHECK event="wtb"` for each order posted only with `econ_trade_lines`.
+- Ported: `ItemValue165` from shadowofze (32a88e0, 145bdee), via True165, GPL-3.0, with the two `Exchange165` factors
+  it reads copied in and without True165's 1.65 mode; `BotGearValue165` and `FitValue` from shadowofze (1edbcf5), via
+  True165, GPL-3.0 (its `UT_BotGearValue165` too), without the `WeaponSpecBonus`/`WastedFocus` terms of earlier True165
+  work. Ours: the set score and the template term, the no-undress guard, the gear check, the Exchange route and step,
+  the want-to-buy orders, the hourly lines. The `/lscraft wtb` answer (`BotGearPipeline.WtbLines`) is ready but not
+  registered: WP10's `CraftEconomyTestHooks` is not merged yet. Tests only: nothing here has been seen in game.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
