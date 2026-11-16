@@ -927,6 +927,7 @@ namespace DOL.GS
 				return;
 
 			(armor as GameInventoryItem)?.OnStruckByEnemy(this, ad.Attacker);
+			GameInventoryItem.OnBotItemUsed(this, armor); // Crafting 2.0 WP7: a gamebot's armor wears (bot_upkeep)
 			CheckArmorMagicalEffect(ad, armor);
 		}
 

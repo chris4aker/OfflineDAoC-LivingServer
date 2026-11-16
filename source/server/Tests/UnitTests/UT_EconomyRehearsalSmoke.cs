@@ -127,10 +127,11 @@ namespace DOL.GS.Tests
         [Test]
         public void ASettingNoModuleReadsIsReportedAsNotBuiltYet()
         {
-            // WP5 reads exchange_tax_percent now (its adapter); WP7's bot_upkeep is not built yet.
-            RehearsalScenario scenario = Day(RehearsalScenario.Upkeep(true)) with { Realms = 1, BotsPerRealm = 20, Minutes = 120 };
+            // WP5 reads exchange_tax_percent and WP7 bot_upkeep now (their adapters); WP9's launcher_level50_kit is read by no module.
+            RehearsalScenario scenario = Day(RehearsalScenario.Upkeep(true).With("launcher_level50_kit", "False")) with { Realms = 1, BotsPerRealm = 20, Minutes = 120 };
             RehearsalReport report = EconomyRehearsal.Run(scenario, build: "smoke");
-            Assert.That(report.NotBuilt, Has.Some.StartsWith("bot_upkeep=True (WP7"));
+            Assert.That(report.NotBuilt, Has.Some.StartsWith("launcher_level50_kit=False (WP9"));
+            Assert.That(report.NotBuilt, Has.None.StartsWith("bot_upkeep"));
             Assert.That(report.NotBuilt, Has.None.StartsWith("exchange_tax_percent"));
             Assert.That(RehearsalScenario.PlanScenarios().Select(s => s.Name).Distinct().Count(), Is.EqualTo(10));
         }

@@ -1354,6 +1354,10 @@ namespace DOL.GS.Spells
 			GamePlayer playerCaster = Caster as GamePlayer;
 			DbInventoryItem playerWeapon = null;
 
+			// Crafting 2.0 WP7 (from True165): a gamebot's staff wears from its harmful spells like a player's (bot_upkeep).
+			if (Caster is GameBot wearingBot && !HasPositiveEffect)
+				GameInventoryItem.OnBotItemUsed(wearingBot, wearingBot.ActiveWeapon);
+
 			if (playerCaster != null)
 			{
 				playerWeapon = playerCaster.ActiveWeapon;

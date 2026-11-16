@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using DOL.Database;
 using DOL.Events;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.Keeps;
 
 namespace DOL.GS
@@ -78,13 +79,93 @@ namespace DOL.GS
                 if (stack==null && item==null) return 0;
                 if (item!=null) item.Count=count;
                 long cost=checked(template.Price*count);
-                if (!AutonomousBotEconomy.TrySpend(bot.DatabaseID,cost)) return 0;
+                // Crafting 2.0 WP7: a siegecrafter gamebot of the realm may supply the kits below the merchant price.
+                if (!TryPaySupply(bot,cost,EconomyFlowKind.RepairKit,out SupplyPayment payment)) return 0;
                 bool added=stack!=null ? bot.Inventory.AddCountToStack(stack,count) : bot.Inventory.AddItem(slot,item);
-                if (!added) { AutonomousBotEconomy.AddMoney(bot.DatabaseID,cost); return 0; }
+                if (!added) { RefundSupply(bot,payment); return 0; }
                 AutonomousBotEconomy.MarkInventoryChanged(bot); bot.MarkAutonomousStateDirty(); AutonomousBotStatusPersistence.Queue(bot,true);
                 return count;
             }
         }
+
+        #region Crafting 2.0 WP7: siege supply (bot_siege_supply)
+
+        /// <summary>A siegecrafter gamebot supplies at this percent of the merchant price...</summary>
+        public const int SupplyPricePercent = 80;
+        /// <summary>...of which this percent of the merchant price is its materials (the realm's sink); the rest is its margin.</summary>
+        public const int SupplyMaterialsPercent = 50;
+        /// <summary>The siegecraft skill a supplier needs.</summary>
+        public const int SupplyMinSkill = 100;
+
+        /// <summary>How a siege purchase was paid: the buyer's coin, and the supplier's margin when a crafter gamebot sold it.</summary>
+        public readonly record struct SupplyPayment(long Paid, long SupplierId, long Margin, EconomyFlowKind Kind);
+
+        internal static readonly BotSinks.HourlySums Supplied = new();
+        internal static readonly BotSinks.HourlySums Margins = new();
+        private static readonly DOL.Logging.Logger SupplyLog = DOL.Logging.LoggerManager.Create(typeof(BotSiegeRuntime));
+
+        /// <summary>The siegecrafter gamebot that supplies a buyer (tests replace it): WP4's roster, a live crafter of the
+        /// realm with the skill, never the buyer itself.</summary>
+        public static Func<GameBot, CrafterState> FindSupplier = bot =>
+        {
+            CrafterState crafter = BotCrafters.Roster?.FindServiceCrafter(bot.Realm, eCraftingSkill.SiegeCrafting, SupplyMinSkill, Random.Shared);
+            return crafter == null || crafter.BotId == bot.DatabaseID ? null : crafter;
+        };
+
+        /// <summary>Pure: a siegecrafter's price for what the merchant sells at <paramref name="merchantCost"/> (at least 1).</summary>
+        public static long SupplyPrice(long merchantCost) => merchantCost <= 0 ? 0 : Math.Max(1, merchantCost * SupplyPricePercent / 100);
+
+        /// <summary>Pure: the supplier's margin (its price less its materials).</summary>
+        public static long SupplyMargin(long merchantCost) =>
+            Math.Max(0, SupplyPrice(merchantCost) - merchantCost * SupplyMaterialsPercent / 100);
+
+        /// <summary>
+        /// Pays for siege supplies the merchant sells at <paramref name="merchantCost"/>: with bot_siege_supply on (and
+        /// bot_crafters), an autonomous gamebot buys from a siegecrafter gamebot of its realm at 80% of the merchant price
+        /// and the supplier keeps the margin over its materials (half the merchant price); otherwise, or with no supplier,
+        /// the merchant's price as today. Every move names <paramref name="kind"/> (Siege or RepairKit).
+        /// </summary>
+        public static bool TryPaySupply(GameBot bot, long merchantCost, EconomyFlowKind kind, out SupplyPayment payment)
+        {
+            payment = default;
+            if (bot == null || merchantCost < 0)
+                return false;
+            CrafterState supplier = BotSinks.SiegeSupplyOn && BotSinks.IsGamebot(bot) && merchantCost > 0 ? FindSupplier(bot) : null;
+            if (supplier == null)
+            {
+                if (!BotSinks.Spend(bot.DatabaseID, merchantCost, kind))
+                    return false;
+                payment = new SupplyPayment(merchantCost, 0, 0, kind);
+                return true;
+            }
+            long price = SupplyPrice(merchantCost), margin = SupplyMargin(merchantCost);
+            if (!BotSinks.Spend(bot.DatabaseID, price, kind))
+                return false;
+            if (margin > 0 && !BotSinks.Pay(supplier.BotId, margin, kind))
+                margin = 0;
+            payment = new SupplyPayment(price, supplier.BotId, margin, kind);
+            Supplied.Add(bot.Realm, price);
+            if (margin > 0)
+                Margins.Add(bot.Realm, margin);
+            if (EconomyDiagnostics.TradeLines && SupplyLog.IsInfoEnabled)
+                SupplyLog.Info(EconomyLog.Line(EconomyLog.EconSiegeSupply, ("bot", bot.Name), ("id", bot.DatabaseID), ("realm", bot.Realm),
+                    ("kind", kind), ("merchantCopper", merchantCost), ("copper", price), ("supplier", supplier.Name),
+                    ("supplierId", supplier.BotId), ("margin", margin)));
+            return true;
+        }
+
+        /// <summary>A purchase that could not be put in the bag: the buyer gets its coin back and the supplier returns its
+        /// margin when it still has it (both moves of the purchase's kind, so the ledger stays balanced either way).</summary>
+        public static void RefundSupply(GameBot bot, SupplyPayment payment)
+        {
+            if (bot == null || payment.Paid <= 0)
+                return;
+            BotSinks.Pay(bot.DatabaseID, payment.Paid, payment.Kind);
+            if (payment.SupplierId > 0 && payment.Margin > 0)
+                BotSinks.Spend(payment.SupplierId, payment.Margin, payment.Kind);
+        }
+
+        #endregion
 
         public static bool Consume(GameBot bot, string id, int count)
         {

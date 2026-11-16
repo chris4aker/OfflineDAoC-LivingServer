@@ -354,6 +354,12 @@ namespace DOL.GS
         {
             GameLiving target = attackData.Target;
 
+            // Crafting 2.0 WP7 (from True165): a gamebot's weapon wears on every swing that connects or is defended, like a
+            // player's (bot_upkeep; GameInventoryItem.OnBotItemUsed does nothing for anyone else).
+            if (_owner is GameBot && attackData.AttackResult is eAttackResult.HitUnstyled or eAttackResult.HitStyle or eAttackResult.Blocked or
+                eAttackResult.Parried or eAttackResult.Missed or eAttackResult.Fumbled)
+                GameInventoryItem.OnBotItemUsed(_owner, attackData.Weapon);
+
             // Notify the target of our attack (sends damage messages, should be before damage).
             target.OnAttackedByEnemy(attackData);
 

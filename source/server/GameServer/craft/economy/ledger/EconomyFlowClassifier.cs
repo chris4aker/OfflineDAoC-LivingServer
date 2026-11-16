@@ -31,8 +31,6 @@ namespace DOL.GS.CraftingEconomy
                 [("AutonomousWorldBotController.cs", "HandleRealmRaidStableTravel")] = EconomyFlowKind.StableTicket,
                 [("AutonomousWorldBotController.cs", "TryBeginFasterStableRoute")] = EconomyFlowKind.StableTicket,
                 [("AutonomousWorldBotController.FrontierTransport.cs", "TryFrontierTransport")] = EconomyFlowKind.Medallion,
-                [("BotSiegeRuntime.cs", "TryRestockRepairKits")] = EconomyFlowKind.RepairKit,
-                [("AutonomousWorldBotController.Siege.cs", "SupplySiegeItem")] = EconomyFlowKind.Siege,
                 [("AutonomousBotCosmetics.cs", "TryRestyle")] = EconomyFlowKind.Dye,
                 // Beggars: a bot's gift to a beggar bot (both sides) and a player's coin dragged onto one.
                 [("AutonomousBeggars.cs", "TryBegBot")] = EconomyFlowKind.BeggarGift,
