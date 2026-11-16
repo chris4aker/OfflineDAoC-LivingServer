@@ -471,7 +471,7 @@ only its own row. "Tests only" means automated tests; nothing counts as working 
 | WP1 Crafting core and M0 fixes | Built on `craft/wp1-core`, into `integration/1.2`. Players: every craft number from `CraftRules`/`SpellcraftRules`; pace (`crafting_skill_rate` 1), classic quality and losses (off), repairs keep durability under light upkeep; upstream spellcraft and salvage fixes; the start-up recipe catalog and its `CRAFT_RECIPE_AUDIT`/`CRAFT_RECIPE_BROKEN`/`CRAFT_WORLD_AUDIT` lines. Tests only | Not yet: the audit lines in a start-up log, a craft at pace 2+, a refused fifth gem |
 | WP2 Economy ledger | Not started | — |
 | WP3 Player side (M1) | Not started | — |
-| WP4 Bot crafters (M2) | Not started | — |
+| WP4 Bot crafters (M2) | Built on `craft/wp4-bot-crafters`, into `integration/1.2`. Off by default (`bot_crafters`), and idle until WP1 registers its recipe catalog. Crafter-type gamebots join an order (realm weights), buy materials, craft at real stations by `CraftRules`, up to 3 sessions of 10 pieces a trip, gain at the bot pace, list the best of a session (enchanted by the realm's spellcrafter and alchemist bots); stored types (7% for new bots); station hangouts; titles, the Legendary first, true /trade adverts. Tests only | Not yet: needs WP1 and `bot_crafters` on |
 | WP5 Market | Not started | — |
 | WP6 Demand (M3) | Not started | — |
 | WP7 Sinks (M5) | Not started | — |

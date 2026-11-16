@@ -82,6 +82,57 @@ crafted with this build in game.
   (DividedRealms' `AUTONOMOUS_CRAFT_CATALOG` line is still written). Nothing reads the catalog yet; WP4's bot crafters
   will. From rambodolphin13 (93c25b69), via DividedRealms, GPL-3.0.
 
+### WP4 Bot crafters (M2)
+
+**Off by default** (`bot_crafters`): with the switch off no gamebot crafts, no type is stored and the server behaves as
+before. It also does nothing until WP1's recipe catalog is registered (with no catalog no trip starts). Autonomous
+gamebots only: companions (`/bot`), Epic Special Force visitors, beggars and real players never craft through it.
+
+- **Crafter gamebots craft for real.** At a natural task break an ungrouped Crafter-type gamebot (level 5+) may make a
+  craft trip, the break's new `C` letter: it joins an order at a real craft master of its realm, buys the recipe's
+  materials from a real merchant with its own coin, walks to a real forge, lathe or alchemy table and works there.
+  Every attempt rolls as a player's craft does (`CraftRules`: chance to make, the 1.87 quality roll, chance to gain
+  with the capital bonus, the crafting time with relics, keep bonuses and `crafting_speed`); a failure costs nothing,
+  a success takes the materials and makes a real item (`IsCrafted`, `Creator`). It wears an upgrade; the rest goes to
+  the inventory stop that ends the trip.
+- **Only the best of a session is posted.** A session's best piece (a masterpiece, else the highest quality) waits in
+  the bag for a Realm Exchange post and is worth a post whatever it fetches; the session's other pieces go to a vendor.
+  Only a crafter's own crafts' materials count as materials, so it no longer hoards every stack. The best piece may be
+  enchanted first by the realm's best spellcrafter and alchemist gamebots, paid a 10% fee, within the item's imbue
+  limit and the spellcrafter's skill (no overcharge, nothing explodes), with real tinctures.
+- **Orders by realm weights.** A new crafter joins the order furthest below its share of the realm's crafters
+  (armorcraft 24%, tailoring 22%, weaponcraft 18%, spellcraft 14%, alchemy 12%, fletching 8%, siegecraft 2%); within
+  half a crafter, DividedRealms' class rule decides (archers fletch, list casters tailor). An order with no master in
+  the realm is skipped and logged once (siegecraft has none in our world); one whose master stands only in another
+  town (Albion alchemy, Midgard spellcraft, Hibernian tailoring, M0 findings §2) is joined there.
+- **A pace that keeps up.** DividedRealms' night of 2026-11-04 left the median crafter at skill 8. A Crafter now makes
+  a trip at half its task breaks, and a trip works up to 3 sessions of up to 10 pieces in its first 15 minutes, cut to
+  the bag's room and the time left; with `bot_crafting_pace` `xp` (the default) a gain gives as many points as the bot
+  XP multiplier of the crafter's level band (whole points; `classic` gives one). On the pure rules DR's night comes out
+  at a median of 6, ours at about 60 at `bot_xp_rate` 1 and about 300 at 5 (tests only: a night is assumed to hold
+  three trips).
+- **Stored types; 7% for new bots.** The first start with `bot_crafters` on stores every bot's personality type as it
+  was (`offline_bot_types`), so no existing bot, beggar or voice changes type; a bot created after that is typed by
+  the share table with Crafters at `bot_crafter_share_percent` (7) and stored. A stored type never changes again.
+- **Titles and the Legendary first.** A crafter reaching a title (each hundred up to Legendary at 1000) logs it and
+  sometimes says it in /guild or /say; the first Legendary of an order in a realm claims "First Legendary <craft> of
+  <realm>" through the server firsts (with `bot_living_firsts` on), the same title a player can take.
+- **True /trade adverts.** Now and then after a session a crafter advertises the piece it really made and still holds,
+  with its real quality and the price it would ask; the stock is checked again when the line is said, and the realm's
+  /trade budget applies (`bot_crafter_chat_rate`, 0 is silent). New lines in `crafters.lines`.
+- **Station hangouts.** On a town break a crafter gamebot spends some of its wanders at its craft's station in town.
+- **Bounded work:** server-wide at most 4 session plans and 8 attempts a game-loop tick; a refused bot tries again on
+  its next turn. A skill gain holds a short per-bot lock (an enchanter gains from another bot's turn).
+- **Logs:** `CRAFT_ENROLL` (joined, skipped, typed, types_began), `CRAFT_SESSION_START`, `CRAFT_SESSION_END` (attempts,
+  made, masterpieces, best, seconds, enchant), `CRAFT_TITLE`, `CRAFT_FIRST`, `CRAFT_MADE` (only with
+  `craft_made_lines`); `AUTONOMOUS_TOWN_HANGOUT` counts `stations=`.
+- Ported: the crafting and the craft trip from rambodolphin13 (93c25b69, ceac061a, e37f8810), via DividedRealms,
+  GPL-3.0; "list only the best of a session", the siege kit tiers and the points per gain from shadowofze (b097caf,
+  75267dd, 00f9fbf), via True165, GPL-3.0; the enchanting from shadowofze (5f31c2b, a8c793e), via True165, GPL-3.0,
+  on our `SpellcraftRules`. Ours: the Crafter-only gate, stored types and the 7% share, realm weights, the pace and
+  sessions per trip, titles and the first, the adverts, station hangouts, the tick budgets. DividedRealms' quest runner
+  is not taken. Tests only: nothing here has been seen in game.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous

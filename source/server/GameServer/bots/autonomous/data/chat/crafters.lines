@@ -1,0 +1,29 @@
+# Crafter gamebots' own lines (Crafting 2.0 WP4, BotCrafterVoice). New writing (see docs/bot-voices).
+# The truth rule: a line that names stock needs the stock. Every advert here is said only for a piece the crafter
+# really made and still holds; {stock} is its name, {quality} its real quality and {price} the price it asks.
+
+@kind trade
+@topic crafted_stock
+@who Crafter
+@needs has_craft_stock
+@levels 1-50
+@invites trade
+wts {stock}, {quality}% quality, {price}
+[wts|selling] {stock} {quality}%, {price}[, pst|, send a tell|]
+fresh off my bench: {stock}, {quality}%, asking {price}
+made a {quality}% {stock} today, {price} if anyone wants it
+{stock} for sale, {quality}%, {price} obo
+@invites
+anyone need {stock}? {quality}% and only {price}
+[got|have] a {stock} at {quality}%, {price}, will post it at the broker otherwise
+
+@kind craft
+@topic title
+@who Crafter
+@needs crafter_title_up
+@levels 1-50
+{title} at last
+[finally|woo,] {title}[!|]
+just hit {skill}, {title} now
+{title}. my purse is lighter than my hammer
+{title} today, all those failed combines paid off
