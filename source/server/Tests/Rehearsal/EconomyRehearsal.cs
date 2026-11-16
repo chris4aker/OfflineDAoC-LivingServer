@@ -136,12 +136,20 @@ namespace DOL.GS.Tests.Rehearsal
         {
             var honoured = new HashSet<string>(world.Modules.SelectMany(module => module.ReadsSettings ?? Array.Empty<string>()),
                 StringComparer.OrdinalIgnoreCase);
-            foreach (string key in world.Scenario.ChangedSettings())
-                if (!honoured.Contains(key))
-                {
-                    string package = RehearsalScenario.Known.TryGetValue(key, out var known) ? known.Package : "no package";
-                    report.NotBuilt.Add($"{key}={world.Scenario.Text(key)} ({package}: not built yet; the run used today's behaviour)");
-                }
+            string Package(string key) => RehearsalScenario.Known.TryGetValue(key, out var known) ? known.Package : "no package";
+            var changed = new HashSet<string>(world.Scenario.ChangedSettings(), StringComparer.OrdinalIgnoreCase);
+            foreach (string key in changed.OrderBy(key => key, StringComparer.Ordinal))
+            {
+                // A gamebot switch set off plays the world without it, which is what a run without its module does.
+                if (honoured.Contains(key) || RehearsalScenario.BotSideSwitches.Contains(key) && !world.Scenario.Flag(key))
+                    continue;
+                report.NotBuilt.Add($"{key}={world.Scenario.Text(key)} ({Package(key)}: not built yet; the run used today's behaviour)");
+            }
+            // Since every gamebot switch defaults on (owner 2026-11-16), one left on that no running module plays is named too,
+            // so an "everything on" report never hides a part the rehearsal does not model.
+            foreach (string key in RehearsalScenario.BotSideSwitches)
+                if (!changed.Contains(key) && world.Scenario.Flag(key) && !honoured.Contains(key))
+                    report.NotBuilt.Add($"{key}=True ({Package(key)}: on, but no rehearsal module plays it; the run is without it)");
         }
 
         /// <summary>The plan's gates (3.2): asserted by the week scenarios; the smoke test asserts them on a day.</summary>

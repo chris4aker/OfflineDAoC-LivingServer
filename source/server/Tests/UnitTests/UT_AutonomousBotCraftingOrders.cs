@@ -544,12 +544,13 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheSwitchesAreOffByDefault()
+        public void TheSwitchesAreOnByDefault()
         {
+            // Owner 2026-11-16: every Living Server feature on by default (built off in WP5).
             Assert.That(typeof(CraftingEconomyProperties).GetField(nameof(CraftingEconomyProperties.BOT_CRAFT_ORDERS))
-                .GetCustomAttribute<ServerPropertyAttribute>().DefaultValue, Is.EqualTo(false));
+                .GetCustomAttribute<ServerPropertyAttribute>().DefaultValue, Is.EqualTo(true));
             Assert.That(typeof(CraftingEconomyProperties).GetField(nameof(CraftingEconomyProperties.BOT_CRAFTERS))
-                .GetCustomAttribute<ServerPropertyAttribute>().DefaultValue, Is.EqualTo(false));
+                .GetCustomAttribute<ServerPropertyAttribute>().DefaultValue, Is.EqualTo(true));
         }
 
         [Test]

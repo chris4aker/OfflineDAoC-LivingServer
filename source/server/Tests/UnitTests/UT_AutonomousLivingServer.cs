@@ -17,10 +17,11 @@ namespace DOL.GS.Tests
         #region Settings
 
         [Test]
-        public void TheChatPartsAreOnAndTheRestOffByDefault()
+        public void EveryPartIsOnByDefault()
         {
             var fields = typeof(Properties).GetFields();
-            // The talking update (Beta 1.1) turns on the chat-only parts: bot voices, bot memory and grats (below).
+            // The talking update (Beta 1.1) turned on the chat-only parts: bot voices, bot memory and grats (below); 1.2
+            // (owner 2026-11-16: "all our living server features should be in by default") the rest, and the real-clock schedule.
             foreach (string name in new[] { "BOT_VOICES_ENABLED", "BOT_LIVING_MEMORY", "BOT_LIVING_GRATS", "BOT_VOICES_TELLS" })
             {
                 var field = fields.Single(f => f.Name == name);
@@ -32,12 +33,12 @@ namespace DOL.GS.Tests
             {
                 var field = fields.Single(f => f.Name == name);
                 var attribute = (ServerPropertyAttribute)Attribute.GetCustomAttribute(field, typeof(ServerPropertyAttribute));
-                Assert.That(attribute.DefaultValue, Is.EqualTo(false), name);
+                Assert.That(attribute.DefaultValue, Is.EqualTo(true), name);
                 Assert.That(attribute.Category, Is.EqualTo("bots"), name);
             }
             var mode = (ServerPropertyAttribute)Attribute.GetCustomAttribute(fields.Single(f => f.Name == "BOT_SCHEDULE_MODE"), typeof(ServerPropertyAttribute));
-            Assert.That(mode.DefaultValue, Is.EqualTo("off"));
-            Assert.That(Schedule.Parse((string)mode.DefaultValue), Is.EqualTo(Schedule.Mode.Off));
+            Assert.That(mode.DefaultValue, Is.EqualTo("clock"));
+            Assert.That(Schedule.Parse((string)mode.DefaultValue), Is.EqualTo(Schedule.Mode.Clock));
         }
 
         [TestCase("off", Schedule.Mode.Off)]

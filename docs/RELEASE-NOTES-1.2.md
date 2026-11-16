@@ -221,6 +221,12 @@ Each is credited to its author.
   "Windows protected your PC" because the exe isn't code-signed: click More info, then Run anyway.
 - **Have 1.1 to 1.1.4:** run the Setup, or unzip `OfflineDAoC-LivingServer-1.2-beta.zip` into your game folder and run
   `INSTALL.cmd` with the game and server closed. Your characters, bots, guilds and settings stay.
+- **Every Living Server feature is on from the start** (owner, 2026-11-16). That covers bot guilds, bot personalities,
+  every Server life part, the real-clock bot schedule, bot crafters and their craft orders, the bots' upkeep, luxury
+  spending and siege supply, and crafter commerce and crafting social life. A world updated from 1.1.x turns on each
+  one it still had at the old default the server wrote; a switch you set in the Living Server tab stays as you set it.
+  Still off: the diagnostics lines, the classic rule options (power halving, secondary crafting caps, classic quality
+  and losses) and the epic encounter options kept off until a played check.
 - **To undo:** `ROLLBACK.cmd`. It puts every replaced file back; it never puts your database back, because that would
   undo your play since.
 

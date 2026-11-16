@@ -182,12 +182,28 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void CommerceIsOffByDefault()
+        public void CommerceIsOnByDefaultAndNeedsCrafters()
         {
-            Assert.That(CraftingEconomyProperties.BOT_CRAFTER_COMMERCE, Is.False);
-            Assert.That(CraftingEconomyProperties.BOT_CRAFTING_SOCIAL, Is.False);
-            Assert.That(CrafterCommerce.Enabled, Is.False);
-            Assert.That(CraftingDrama.On, Is.False);
+            // Owner 2026-11-16: every Living Server feature on by default (WP8 built both off).
+            bool crafters = CraftingEconomyProperties.BOT_CRAFTERS, commerce = CraftingEconomyProperties.BOT_CRAFTER_COMMERCE,
+                social = CraftingEconomyProperties.BOT_CRAFTING_SOCIAL;
+            try
+            {
+                foreach (string name in new[] { nameof(CraftingEconomyProperties.BOT_CRAFTER_COMMERCE), nameof(CraftingEconomyProperties.BOT_CRAFTING_SOCIAL) })
+                    Assert.That(typeof(CraftingEconomyProperties).GetField(name)
+                        .GetCustomAttributes(typeof(DOL.GS.ServerProperties.ServerPropertyAttribute), false)
+                        .Cast<DOL.GS.ServerProperties.ServerPropertyAttribute>().Single().DefaultValue, Is.EqualTo(true), name);
+                CraftingEconomyProperties.BOT_CRAFTERS = CraftingEconomyProperties.BOT_CRAFTER_COMMERCE = CraftingEconomyProperties.BOT_CRAFTING_SOCIAL = true;
+                Assert.That(CrafterCommerce.Enabled && CraftingDrama.On, Is.True);
+                CraftingEconomyProperties.BOT_CRAFTERS = false;
+                Assert.That(CrafterCommerce.Enabled || CraftingDrama.On, Is.False, "both need bot_crafters");
+            }
+            finally
+            {
+                CraftingEconomyProperties.BOT_CRAFTERS = crafters;
+                CraftingEconomyProperties.BOT_CRAFTER_COMMERCE = commerce;
+                CraftingEconomyProperties.BOT_CRAFTING_SOCIAL = social;
+            }
         }
     }
 

@@ -246,11 +246,11 @@ something (docs/bot-voices/DESIGN.md 3.7). The lines in `AutonomousBotGuildChatL
 - **Bot-to-bot memory and loyalty, and guild-based memory of you:** this comes with the bot-voices
   memory work (`docs/bot-voices/DESIGN.md`, step 3).
 
-### 3.11 Settings (all off until `bot_guilds_enabled`)
+### 3.11 Settings (all wait for `bot_guilds_enabled`, on by default since 1.2)
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `bot_guilds_enabled` | False | the master switch: formation, membership, invites and everything below. Off keeps every bot guildless and today's behavior. |
+| `bot_guilds_enabled` | True (since 1.2; False before) | the master switch: formation, membership, invites and everything below. Off keeps every bot guildless and today's behavior. |
 | `bot_guild_share` | 0.70 | share of eligible bots placed in bot guilds |
 | `bot_guild_min_level` | 5 | lowest level that joins a bot guild |
 | `bot_guild_social` | True | guild chat, greetings, replies, recruiting (phase 2) |

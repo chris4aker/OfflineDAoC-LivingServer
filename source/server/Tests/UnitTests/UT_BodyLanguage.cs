@@ -115,10 +115,10 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheSwitchIsOffByDefault() =>
+        public void TheSwitchIsOnByDefault() =>   // owner 2026-11-16: every Living Server feature on by default
             Assert.That(typeof(DOL.GS.ServerProperties.Properties).GetField("BOT_LIVING_BODY_LANGUAGE")
                 .GetCustomAttributes(typeof(DOL.GS.ServerProperties.ServerPropertyAttribute), false)
-                .Cast<DOL.GS.ServerProperties.ServerPropertyAttribute>().Single().DefaultValue, Is.EqualTo(false));
+                .Cast<DOL.GS.ServerProperties.ServerPropertyAttribute>().Single().DefaultValue, Is.EqualTo(true));
 
         [Test]
         public void ABotWaitingForAPartyOftenStandsBetweenPulls()

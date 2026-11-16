@@ -207,15 +207,19 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void Settings_DefaultBotSideSwitchesOff_AndTheTaxToZero()
+        public void Settings_DefaultBotSideSwitchesOn_AndTheTaxToZero()
         {
             Dictionary<string, object> defaults = typeof(CraftingEconomyProperties)
                 .GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Select(field => field.GetCustomAttribute<ServerPropertyAttribute>())
                 .Where(attribute => attribute != null)
                 .ToDictionary(attribute => attribute.Key, attribute => attribute.DefaultValue);
+            // Owner 2026-11-16: every Living Server feature on by default (WP0 and WP8 built them off); diagnostics and the
+            // classic rules stay off.
             foreach (string key in new[] { "bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply",
                          "bot_crafter_commerce", "bot_crafting_social" })
+                Assert.That(defaults[key], Is.EqualTo(true), key);
+            foreach (string key in new[] { "crafting_secondary_caps", "crafting_classic_quality", "crafting_classic_losses" })
                 Assert.That(defaults[key], Is.EqualTo(false), key);
             Assert.That(defaults["exchange_tax_percent"], Is.EqualTo(0), "owner 2026-11-15: 0 until the ledger shows a need");
             Assert.That(defaults["bot_crafter_share_percent"], Is.EqualTo(7));

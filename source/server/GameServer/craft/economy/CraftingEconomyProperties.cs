@@ -6,8 +6,9 @@ namespace DOL.GS.CraftingEconomy
     /// <summary>
     /// Every setting of Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md §1.5), declared once by WP0 so the launcher (WP9)
     /// and every package read the same keys. <b>WP0 reads none of them</b>: declaring a key changes nothing until the
-    /// package that reads it is merged. Owner rules: every bot-side switch defaults to off; a mode (pace, commissions)
-    /// keeps its proposed value but does nothing while <see cref="BOT_CRAFTERS"/> is off. Keys taken from a fork keep
+    /// package that reads it is merged. Owner rule (2026-11-16, replacing "every bot-side switch defaults to off"): every
+    /// Living Server feature is on by default; only diagnostics, the classic crafting rules and test-only switches stay off.
+    /// A mode (pace, commissions) does nothing while <see cref="BOT_CRAFTERS"/> is off. Keys taken from a fork keep
     /// the fork's name where it had one (True165's crafting_skill_rate; DividedRealms' bot_craft_orders), so a port
     /// changes only which class it reads.
     /// </summary>
@@ -39,12 +40,12 @@ namespace DOL.GS.CraftingEconomy
 
         // ---- Autonomous gamebots (WP4-WP8). Companions and players are never affected. ----
 
-        [ServerProperty("bots", "bot_crafters", "Master switch for gamebot crafters: Crafter-type gamebots join an order, buy real materials, work at real stations and sell what they make. Off: no gamebot crafts. Read from WP4 on.", false)]
-        public static bool BOT_CRAFTERS;
+        [ServerProperty("bots", "bot_crafters", "Master switch for gamebot crafters: Crafter-type gamebots join an order, buy real materials, work at real stations and sell what they make. On by default (owner 2026-11-16). Off: no gamebot crafts. Read from WP4 on.", true)]
+        public static bool BOT_CRAFTERS = true;
 
-        // DividedRealms' second switch (AutonomousBotCraftOrders, ceac061a), here off by default and only with bot_crafters.
-        [ServerProperty("bots", "bot_craft_orders", "Gamebots pay crafter gamebots of their realm to make an upgrade, with the coin held until delivery. Needs bot_crafters. Read from WP5 on.", false)]
-        public static bool BOT_CRAFT_ORDERS;
+        // DividedRealms' second switch (AutonomousBotCraftOrders, ceac061a), on by default (owner 2026-11-16), only with bot_crafters.
+        [ServerProperty("bots", "bot_craft_orders", "Gamebots pay crafter gamebots of their realm to make an upgrade, with the coin held until delivery. Needs bot_crafters. Read from WP5 on.", true)]
+        public static bool BOT_CRAFT_ORDERS = true;
 
         [ServerProperty("bots", "bot_crafter_share_percent", "Percent of NEW gamebots that are Crafters (existing bots keep their stored type). Read from WP4 on.", 7)]
         public static int BOT_CRAFTER_SHARE_PERCENT = 7;
@@ -59,14 +60,14 @@ namespace DOL.GS.CraftingEconomy
         [ServerProperty("bots", "exchange_tax_percent", "Realm Exchange tax in percent of a sale, taken from the seller's proceeds (0 = none; 5 is the documented option). Only a trade pays it. Read from WP5 on.", 0)]
         public static int EXCHANGE_TAX_PERCENT;
 
-        [ServerProperty("bots", "bot_upkeep", "Gamebots' gear wears like a player's and they pay for repairs, potions and poisons. Needs bot_crafters. Read from WP7 on.", false)]
-        public static bool BOT_UPKEEP;
+        [ServerProperty("bots", "bot_upkeep", "Gamebots' gear wears like a player's and they pay for repairs, potions and poisons. Needs bot_crafters. Read from WP7 on.", true)]
+        public static bool BOT_UPKEEP = true;
 
-        [ServerProperty("bots", "bot_luxury_spending", "Rich gamebots spend part of their surplus on real goods and services (the inflation sink). Needs bot_crafters. Read from WP7 on.", false)]
-        public static bool BOT_LUXURY_SPENDING;
+        [ServerProperty("bots", "bot_luxury_spending", "Rich gamebots spend part of their surplus on real goods and services (the inflation sink). Needs bot_crafters. Read from WP7 on.", true)]
+        public static bool BOT_LUXURY_SPENDING = true;
 
-        [ServerProperty("bots", "bot_siege_supply", "Siegecrafter gamebots supply siege engines and kits below the merchant price. Needs bot_crafters. Read from WP7 on.", false)]
-        public static bool BOT_SIEGE_SUPPLY;
+        [ServerProperty("bots", "bot_siege_supply", "Siegecrafter gamebots supply siege engines and kits below the merchant price. Needs bot_crafters. Read from WP7 on.", true)]
+        public static bool BOT_SIEGE_SUPPLY = true;
 
         [ServerProperty("bots", "bot_crafter_chat_rate", "Crafter gamebots' trade and station chat, as a multiple of normal (0 = silent). Read from WP4 on.", 1.0)]
         public static double BOT_CRAFTER_CHAT_RATE = 1.0;
@@ -77,11 +78,11 @@ namespace DOL.GS.CraftingEconomy
 
         // ---- Commerce and social (WP8; amended into WP0's settings by WP8) ----
 
-        [ServerProperty("bots", "bot_crafter_commerce", "Real players trade with crafter gamebots: ask by /tell or /trade what they make and sell, get a quote from their real skill and stock, haggle, commission a piece through the craft-order board, buy stock in a trade window. Needs bot_crafters. Read from WP8 on.", false)]
-        public static bool BOT_CRAFTER_COMMERCE;
+        [ServerProperty("bots", "bot_crafter_commerce", "Real players trade with crafter gamebots: ask by /tell or /trade what they make and sell, get a quote from their real skill and stock, haggle, commission a piece through the craft-order board, buy stock in a trade window. Needs bot_crafters. Read from WP8 on.", true)]
+        public static bool BOT_CRAFTER_COMMERCE = true;
 
-        [ServerProperty("bots", "bot_crafting_social", "Crafting in bot life: a price-war storyline between two real crafter gamebots of one order, guild crafters who make for guildmates at material cost (the bank pays their fee), no crafting-haste guild buff without a player crafter. Needs bot_crafters. Read from WP8 on.", false)]
-        public static bool BOT_CRAFTING_SOCIAL;
+        [ServerProperty("bots", "bot_crafting_social", "Crafting in bot life: a price-war storyline between two real crafter gamebots of one order, guild crafters who make for guildmates at material cost (the bank pays their fee), no crafting-haste guild buff without a player crafter. Needs bot_crafters. Read from WP8 on.", true)]
+        public static bool BOT_CRAFTING_SOCIAL = true;
 
         // ---- Launcher and instrumentation ----
 

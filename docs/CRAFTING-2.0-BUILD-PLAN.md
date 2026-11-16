@@ -7,7 +7,9 @@ milestones M0–M6, settings §12, decisions §13, build status §15). Release o
 §2.0 (the economy ledger is 2.0's first milestone). **Nothing here has been seen in game; every result is tests only.**
 
 **Owner decisions** are marked **[owner]**. Everything else follows §13's proposed defaults and the standing rules:
-every bot-side switch defaults off; crafters are our Crafter personality, 7% for new bots only (existing bots keep
+every Living Server feature switch defaults **on** (owner 2026-11-16: "They should be on by default - all our living
+server features should be in by default if someone downloads our installer"; this replaced the earlier rule that
+every bot-side switch defaults off); crafters are our Crafter personality, 7% for new bots only (existing bots keep
 their type); selling only at natural task breaks; gamebots start without armor and earn it; companions and real
 players are untouched by bot-side packages.
 
@@ -43,9 +45,9 @@ Re-check both just before WP4 starts; they move fast.
 | **WP2** Ledger | True165 `BotMoneyLedger165` (`a8c793e`, `df86f9f`) as the `IEconomyFlowSink` | Kind from the caller's explicit kind, else classified from `[CallerFilePath]`/`[CallerMemberName]` (no call-site edits); per realm; Exchange transfers and tax from `SaleCommitted`; hourly `ECON_SUPPLY` snapshot row in `offline_economy_ledger` with a residual |
 | **WP3** Player side | upstream `ad789ee4d` (drop Basic Crafting titles) with era start; upstream `7b0df1b12` (drop the post-era Legendary Grandmaster title) **[owner]** | Era start, secondary caps, upkeep cost and coin by band are ours |
 | **WP4** Bot crafters | DR `AutonomousBotCrafting.cs` + `AutonomousWorldBotController.Crafting.cs` (`93c25b69` → `ceac061a` → `e37f8810`); True165 `CrafterBots165` "list only the best of a session" and siege tiers (`b097caf`, `75267dd`); True165 `BotEnchant165` for spellcraft and alchemy (`5f31c2b` → `a8c793e`) | Gate by our Crafter type with stored types (`offline_bot_types`) and the 7% new-bot share instead of DR's "any bot of level 5+, 10%"; DR's `bot_crafting` → our `bot_crafters` (off); orders by our realm weights, DR's class rule as tie-break **[owner]**; bot pace added (True165's `Points` with the bot XP rate); enchanting uses `SpellcraftRules`, not True165's copy; trip hooks through `IBotBreakActivity` ('C') and the partial `RunBreakActivities`; material and own-work rules through `IBotItemPolicy`; DR's quest runner (same root commit) is **not** taken here **[owner]** |
-| **WP5** Market | DR `AutonomousBotCraftOrders.cs` (`ceac061a`, `e37f8810`, `24f8a2e7`); DR `RealmExchangeSaturation.cs` (`702ef108`); DR own-work listings (`ceac061a`); DR `AUTONOMOUS_EXCHANGE_SOLD … crafted=` line; True165 `CraftOrders165` milestone sets (`f6dbe48`) as a second order source | Orders on `ICraftOrderBoard`/`OfflineBotCraftOrderRecord`; `AtTaskBreak` through `IBotTaskBreakHook`; `IsHeldForOrder` through `IBotItemPolicy.IsReserved`; saturation through `BlocksListing`/`OnListed`; extra posts through `IExchangeListingPolicy` (`bot_crafter_exchange_listings` 6); the sale line from `SaleCommitted`; switches default off. Ours: price index, quartermaster commissions, Exchange tax (built, default **0**, 5% documented) |
+| **WP5** Market | DR `AutonomousBotCraftOrders.cs` (`ceac061a`, `e37f8810`, `24f8a2e7`); DR `RealmExchangeSaturation.cs` (`702ef108`); DR own-work listings (`ceac061a`); DR `AUTONOMOUS_EXCHANGE_SOLD … crafted=` line; True165 `CraftOrders165` milestone sets (`f6dbe48`) as a second order source | Orders on `ICraftOrderBoard`/`OfflineBotCraftOrderRecord`; `AtTaskBreak` through `IBotTaskBreakHook`; `IsHeldForOrder` through `IBotItemPolicy.IsReserved`; saturation through `BlocksListing`/`OnListed`; extra posts through `IExchangeListingPolicy` (`bot_crafter_exchange_listings` 6); the sale line from `SaleCommitted`; switches built off, on by default since 2026-11-16. Ours: price index, quartermaster commissions, Exchange tax (built, default **0**, 5% documented) |
 | **WP6** Demand | True165 `ItemValue165` (`32a88e0`, `145bdee`) as the `IPriceIndex` floor/fair/ask; True165 `BotGearValue165` (`1edbcf5`, cap-aware value) as the base of template-aware valuation | Outside True165's 1.65 Mode switch; the gear check at task breaks, the level-50 template and the no-undress guard are ours |
-| **WP7** Sinks | True165 `ItemWear165` (`36358de`; the survey had not located it: `mode165/ItemWear165.cs`); `TownErrands165` repair errand at 88% (`36358de`); `BotPotions165` (`2e4212e`) | Gated by `bot_upkeep` (off), not 1.65 Mode; autonomous gamebots only (True165 also wears hired companions'); the errand is an `IBotTownVisitNeed`, the repair a merchant `IBotServiceStep`; paid poisons, luxury sink and governor are ours |
+| **WP7** Sinks | True165 `ItemWear165` (`36358de`; the survey had not located it: `mode165/ItemWear165.cs`); `TownErrands165` repair errand at 88% (`36358de`); `BotPotions165` (`2e4212e`) | Gated by `bot_upkeep` (on by default since 2026-11-16), not 1.65 Mode; autonomous gamebots only (True165 also wears hired companions'); the errand is an `IBotTownVisitNeed`, the repair a merchant `IBotServiceStep`; paid poisons, luxury sink and governor are ours |
 | **WP8** Commerce | none (ideas only: mod-playerbots' per-pair discount, cmangos guild orders; no code) | — |
 | **WP9** Launcher, **WP10** Rehearsal | none | The rehearsal runs the ported pure parts (`CraftRules`, DR's `ChooseRecipe`, True165's `ItemValue165`) |
 
@@ -126,22 +128,25 @@ for these tables is WP9's.
 | `player_upkeep` (classic / light / free) | light | WP1, WP3 |
 | `player_coin_by_level` | True | WP3 |
 | `crafting_classic_quality`, `crafting_classic_losses` | False | WP1 |
-| `bot_crafters` (master switch) | **False** | WP4–WP8 |
-| `bot_craft_orders` (DR's second switch) | **False** | WP5 |
+| `bot_crafters` (master switch) | **True** (owner 2026-11-16; was False) | WP4–WP8 |
+| `bot_craft_orders` (DR's second switch) | **True** (owner 2026-11-16; was False) | WP5 |
 | `bot_crafter_share_percent` | 7 (new bots only) | WP4 |
 | `bot_crafting_pace` (xp / classic) | xp | WP4 |
 | `realm_commissions` (classic / doubled / off) | doubled | WP5 |
 | `exchange_tax_percent` | **0** (owner 2026-11-15: until the ledger shows a need; 5 is the documented option) | WP5 |
-| `bot_upkeep`, `bot_luxury_spending`, `bot_siege_supply` | **False** (the planner had "on with crafters") **[owner]** | WP7 |
+| `bot_upkeep`, `bot_luxury_spending`, `bot_siege_supply` | **True** (owner 2026-11-16; were False, decision 7) **[owner]** | WP7 |
 | `bot_crafter_chat_rate` | 1.0 | WP4, WP5, WP8 |
 | `bot_crafter_exchange_listings` | 6 (DR's 3 + 3) | WP5 |
 | `launcher_level50_kit` | True (today's launcher) | WP9 |
 | `economy_ledger_enabled` | True (logs and one row an hour; no amount changes) **[owner]** | WP2 |
-| `craft_made_lines`, `econ_trade_lines` (diagnostics) | False | WP4, WP5 |
-| `bot_crafter_commerce` (WP8, amended into WP0's settings) | **False** | WP8 |
-| `bot_crafting_social` (WP8b) | **False** | WP8 |
+| `craft_made_lines`, `econ_trade_lines` (diagnostics) | False (diagnostics stay off) | WP4, WP5 |
+| `bot_crafter_commerce` (WP8, amended into WP0's settings) | **True** (owner 2026-11-16; was False) | WP8 |
+| `bot_crafting_social` (WP8b) | **True** (owner 2026-11-16; was False) | WP8 |
 
-Modes (pace, commissions) keep their proposed values but do nothing while `bot_crafters` is off.
+Modes (pace, commissions) do nothing while `bot_crafters` is off. The classic options (`crafting_secondary_caps`,
+`crafting_classic_quality`, `crafting_classic_losses`) are rules for real players, not features, and stay off. Worlds that ran an earlier build
+move once where the row still holds the untouched old default (`LivingServerSettingsUpgrade` "1.2.0.1"), and release
+worlds ship every switch at these values (`source/tools/release-server-settings.json`).
 
 ### 2.5 Logs (`EconomyLog`: tags plus one formatter)
 
@@ -228,7 +233,8 @@ check on the owner's PC, reported apart from tests and the rehearsal.
 4. True165's recipe and merchant data (derived from the EA client's `tdl.irf`) as M0's era source.
 5. DR's quest runner (bundled in `93c25b69`): take it separately, or leave it.
 6. Drop the post-era Legendary Grandmaster title (upstream `7b0df1b12`).
-7. `bot_upkeep`, `bot_luxury_spending` and `bot_siege_supply` off by default even with crafters on (WP0 built them off).
+7. ~~`bot_upkeep`, `bot_luxury_spending` and `bot_siege_supply` off by default even with crafters on.~~ Settled
+   (owner 2026-11-16): on by default, like every Living Server feature.
 8. `economy_ledger_enabled` on by default (logs and one row an hour only).
 9. The design doc's §13 decisions 1–6 and 8–13 (two ladders, paces, coin by band, upkeep light, commissions, the 7%
    share, the level-50 kit, classic options, bots' gear wearing, release placement) stay as proposed until the owner
