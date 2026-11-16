@@ -388,7 +388,9 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
   a call half the time, 4 seconds later; the pet-class list above (Druids and Hunters out, the Sluaghbinder in) with a
   cap of 2; a median of 0.75 s just outside 1,000 units (normal).
 - **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
-  `UT_RvrPetCap`). It has not been played yet.
+  `UT_RvrPetCap`). Noticing was seen on the owner's PC on build `3d67b6f` (2026-11-15: bots noticed the owner's
+  character at 516-1,575 units, by chance and after a delay). The spotter call (`RVR_SPOT`) and the pet cap have not
+  been seen yet. Bots noticing enemy bots by the same rule is designed in [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md).
 
 ### Playing with friends: bots and companions (`companion_budget_total`, `companion_budget_per_player`)
 

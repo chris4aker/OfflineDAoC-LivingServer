@@ -340,9 +340,10 @@ Retrospective:
 
 ## Appendix: for the builders
 
-The evidence is in four working notes of 2026-11-16, not yet in Git: `ERA-RESEARCH.md`, `ARCHITECTURE.md`,
-`LANES-FINDINGS.md` and `CHECKSPOTS-FINDINGS.md`, with the drafts `rvr-lanes-draft.json` and
-`rvr-checkspots-draft.json`. The hook points, in short:
+The evidence is in four working notes of 2026-11-16 in [research/rvr-field-1.2](research/rvr-field-1.2/):
+`ERA-RESEARCH.md`, `ARCHITECTURE.md`, `LANES-FINDINGS.md` and `CHECKSPOTS-FINDINGS.md`. The draft catalogs
+(`rvr-lanes-draft.json`, `rvr-checkspots-draft.json`) came from a played world's static tables and are not in Git;
+WP5 and WP6 rebuild them from a clean release world. The hook points, in short:
 
 - **Scope.** One pure test, `RvrTacticsScope.Allows`, mirrors `AutonomousRvrPerception.MayAnswerCall`. Every hook
   checks it first. WP0 adds each hook line, calling stubs in `BotBrain.RvrTactics.cs`.
