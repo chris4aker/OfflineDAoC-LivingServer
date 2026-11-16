@@ -694,7 +694,14 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     (`source/tools/release-server-settings.json`, checked against the code defaults by
     `test_release_server_settings.py`) into both editions' worlds, whatever the developer's install had, and checks it.
   - The economy rehearsal's scenarios now start from these defaults (everything on); `today-aged` sets the gamebot
-    switches off to stay the pre-Crafting 2.0 baseline.
+    switches off to stay the pre-Crafting 2.0 baseline. A switch that is on but that no rehearsal module plays is now
+    named in the report (today: `bot_crafting_social`).
+  - **Rehearsal with everything on** (tests only, this branch, 3 realms of 1,000 bots): a day of each of the 10 plan
+    scenarios passes every gate except `tax-5`'s "0 undress events" (2 events); the same day with the earlier switches
+    (crafters on, the rest off) fails it too (1). A week: `fresh-7pct` passes every gate; `aged-legacy-12pct` **fails
+    "0 undress events"** (50 in 224,994 equips, from day 4, small armour value drops such as 907 -> 894), and the same
+    week fails it with the earlier switches too (41), with the sinks off (53), commerce off (47) or orders off (50). So
+    the failure is not from the new defaults; it is open for the gear pipeline (WP6) to look at.
 
 - **A bot listing on the Realm Exchange no longer stalls the server while the database writer is busy** (tests only;
   owner's PC, build 1dc66b6, overnight 2026-11-14/15). At 02:38:03 the game loop stopped for 5.6 s: Waffleironer

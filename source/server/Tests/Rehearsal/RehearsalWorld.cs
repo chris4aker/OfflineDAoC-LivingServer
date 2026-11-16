@@ -49,8 +49,8 @@ namespace DOL.GS.Tests.Rehearsal
                 ["bot_crafter_exchange_listings"] = ("6", "WP5"),
                 ["launcher_level50_kit"] = ("True", "WP9"),
                 ["economy_ledger_enabled"] = ("True", "WP2"),
-                ["bot_crafter_commerce"] = ("False", "WP8"),
-                ["bot_crafting_social"] = ("False", "WP8"),
+                ["bot_crafter_commerce"] = ("True", "WP8"),
+                ["bot_crafting_social"] = ("True", "WP8"),
             };
 
         public string Text(string key) =>
@@ -80,7 +80,8 @@ namespace DOL.GS.Tests.Rehearsal
 
         /// <summary>The gamebot switches "today" turns off (the economy before Crafting 2.0).</summary>
         public static readonly string[] BotSideSwitches =
-            ["bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply"];
+            ["bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply", "bot_crafter_commerce",
+             "bot_crafting_social"];
 
         // The plan's scenarios (3.2). "Today" is the economy before Crafting 2.0, every bot-side switch off (set here, since the
         // defaults are on from 2026-11-16); the others start from the shipped defaults, so they rehearse everything on.

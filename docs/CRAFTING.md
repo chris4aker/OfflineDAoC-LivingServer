@@ -131,7 +131,8 @@ and the kit as they are.
 Server keys: `bot_crafters`, `bot_crafter_share_percent`, `bot_crafting_pace` (xp / classic), `bot_craft_orders`,
 `realm_commissions` (classic / doubled / off), `bot_crafter_exchange_listings`, `bot_crafter_chat_rate`,
 `exchange_tax_percent`, `economy_ledger_enabled`, `launcher_level50_kit` (read by the launcher), `bot_upkeep`,
-`bot_luxury_spending`, `bot_siege_supply`. Diagnostics, off: `craft_made_lines`, `econ_trade_lines`.
+`bot_luxury_spending`, `bot_siege_supply`, `bot_crafter_commerce` and `bot_crafting_social` (WP8, server settings only, on).
+Diagnostics, off: `craft_made_lines`, `econ_trade_lines`.
 
 ## Updating a world from 1.1.4
 
@@ -153,15 +154,15 @@ Your world keeps every character's crafting. Exactly what you see:
   range), a monster drops ten times its coin for you. Switch Coin by level off in the tab for the old coin.
 - Secondary caps, classic quality and classic losses are off, and the crafting pace is 1, so crafting itself plays as
   before until you change them.
-- **Bot crafters, craft orders, bot upkeep, luxury spending and siege supply come on** at the first start of 1.2, and
+- **Bot crafters, craft orders, bot upkeep, luxury spending, siege supply, crafter commerce and crafting social life come on** at the first start of 1.2, and
   so do bot guilds, bot personalities, the Server life parts that were off and the real-clock bot schedule. The server
   changes only a setting the world still holds at the old default it wrote itself; one you set in the launcher's
   Living Server tab is kept. The log says `Living Server 1.2.0.1: <key> set to the new default ...` for each one.
 
 ## Buying from crafter gamebots
 
-> **Status: automated tests only.** Off by default: the server settings `bot_crafters` and `bot_crafter_commerce` must
-> both be on. Nothing here has been seen in game yet.
+> **Status: automated tests only.** On by default since 1.2 (owner 2026-11-16): it needs the server settings
+> `bot_crafters` and `bot_crafter_commerce`, both on unless you switch one off. Nothing here has been seen in game yet.
 
 Crafter gamebots of your realm answer you by `/send` (and a `wtb ...` in `/trade`) from their real skill and the crafted
 pieces in their bag:

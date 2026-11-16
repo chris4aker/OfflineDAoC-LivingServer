@@ -74,6 +74,8 @@ namespace DOL.GS.ServerProperties
 			new("1.2.0.1", "bot_upkeep", "False", "True"),
 			new("1.2.0.1", "bot_luxury_spending", "False", "True"),
 			new("1.2.0.1", "bot_siege_supply", "False", "True"),
+			new("1.2.0.1", "bot_crafter_commerce", "False", "True"),
+			new("1.2.0.1", "bot_crafting_social", "False", "True"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>

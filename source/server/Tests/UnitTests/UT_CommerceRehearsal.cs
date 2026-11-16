@@ -23,7 +23,10 @@ namespace DOL.GS.Tests
         [Test]
         public void CommerceRunsOnlyWithBothSwitches()
         {
-            Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy()).Select(m => m.Id), Does.Not.Contain(WP8Commerce.ModuleId));
+            // Owner 2026-11-16: both are on by default, so the aged world at its defaults runs commerce.
+            Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy()).Select(m => m.Id), Does.Contain(WP8Commerce.ModuleId));
+            Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy().With("bot_crafter_commerce", "False")).Select(m => m.Id),
+                Does.Not.Contain(WP8Commerce.ModuleId));
             Assert.That(RehearsalModules.For(RehearsalScenario.Today().With("bot_crafter_commerce", "True")).Select(m => m.Id),
                 Does.Not.Contain(WP8Commerce.ModuleId), "needs bot_crafters");
             Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy().With("bot_crafter_commerce", "True")).Select(m => m.Id),

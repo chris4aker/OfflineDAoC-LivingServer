@@ -24,6 +24,7 @@ namespace DOL.GS.Tests
             "bot_guilds_enabled", "bot_personalities_enabled", "bot_living_firsts", "bot_living_death", "bot_living_alarms",
             "bot_living_nemesis", "bot_living_breaks", "bot_living_body_language",
             "bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply",
+            "bot_crafter_commerce", "bot_crafting_social",
         ];
 
         /// <summary>Kept off, each for its reason (docs/CRAFTING.md, AGENTS.md).</summary>
@@ -70,6 +71,7 @@ namespace DOL.GS.Tests
             {
                 CraftingEconomyProperties.BOT_CRAFTERS, CraftingEconomyProperties.BOT_CRAFT_ORDERS, CraftingEconomyProperties.BOT_UPKEEP,
                 CraftingEconomyProperties.BOT_LUXURY_SPENDING, CraftingEconomyProperties.BOT_SIEGE_SUPPLY,
+                CraftingEconomyProperties.BOT_CRAFTER_COMMERCE, CraftingEconomyProperties.BOT_CRAFTING_SOCIAL,
             }.All(on => on), Is.True);
         }
 

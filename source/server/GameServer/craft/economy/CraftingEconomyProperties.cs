@@ -78,11 +78,11 @@ namespace DOL.GS.CraftingEconomy
 
         // ---- Commerce and social (WP8; amended into WP0's settings by WP8) ----
 
-        [ServerProperty("bots", "bot_crafter_commerce", "Real players trade with crafter gamebots: ask by /tell or /trade what they make and sell, get a quote from their real skill and stock, haggle, commission a piece through the craft-order board, buy stock in a trade window. Needs bot_crafters. Read from WP8 on.", false)]
-        public static bool BOT_CRAFTER_COMMERCE;
+        [ServerProperty("bots", "bot_crafter_commerce", "Real players trade with crafter gamebots: ask by /tell or /trade what they make and sell, get a quote from their real skill and stock, haggle, commission a piece through the craft-order board, buy stock in a trade window. Needs bot_crafters. Read from WP8 on.", true)]
+        public static bool BOT_CRAFTER_COMMERCE = true;
 
-        [ServerProperty("bots", "bot_crafting_social", "Crafting in bot life: a price-war storyline between two real crafter gamebots of one order, guild crafters who make for guildmates at material cost (the bank pays their fee), no crafting-haste guild buff without a player crafter. Needs bot_crafters. Read from WP8 on.", false)]
-        public static bool BOT_CRAFTING_SOCIAL;
+        [ServerProperty("bots", "bot_crafting_social", "Crafting in bot life: a price-war storyline between two real crafter gamebots of one order, guild crafters who make for guildmates at material cost (the bank pays their fee), no crafting-haste guild buff without a player crafter. Needs bot_crafters. Read from WP8 on.", true)]
+        public static bool BOT_CRAFTING_SOCIAL = true;
 
         // ---- Launcher and instrumentation ----
 

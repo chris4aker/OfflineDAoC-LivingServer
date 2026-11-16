@@ -98,7 +98,10 @@ namespace DOL.GS.Tests
             Assert.That(int.Parse(report.Metrics["wp0.points"]), Is.GreaterThan(0));
             Assert.That(report.Lines.Any(l => l.StartsWith(EconomyLog.CraftSessionStart + " ")));
             Assert.That(report.Lines.Any(l => l.StartsWith(EconomyLog.CraftSessionEnd + " ")));
-            Assert.That(report.NotBuilt, Is.Empty, "bot_crafters is read by the stand-in");
+            Assert.That(report.NotBuilt, Has.None.StartsWith("bot_crafters"), "bot_crafters is read by the stand-in");
+            // Every gamebot switch is on by default (owner 2026-11-16); the rehearsal has no module for WP8b's crafting social
+            // life, and says so.
+            Assert.That(report.NotBuilt, Is.EqualTo(new[] { "bot_crafting_social=True (WP8: on, but no rehearsal module plays it; the run is without it)" }));
         }
 
         [Test]
