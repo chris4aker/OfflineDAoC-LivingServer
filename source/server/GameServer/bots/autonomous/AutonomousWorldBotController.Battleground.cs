@@ -126,8 +126,13 @@ namespace DOL.GS
                 // guard in sight up to 5,000 away, alone (103 deaths "Fighting Armsman", 70 "Fighting Armswoman").
                 // A stormer helps against the guards only once it stands in the lord's fight; on the way up it fights only
                 // what is on it (AutonomousBattlegroundKeepRally.StormerMayEngage, build ef76db3).
-                if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step,
-                        _battlegroundStorming && AutonomousBattlegroundKeepRally.InLordFight(bot, lord)) &&
+                // In the lord's fight casters, archers and healers strike him and melee the guard on them, else him
+                // (AutonomousBattlegroundKeepRally.StrikesLordFirst; owner's PC, build 95af6fd: on her floor everyone took the
+                // guards hitting a realm-mate, and Lady Thidranki never went below 97%).
+                bool inLordFight = _battlegroundStorming && AutonomousBattlegroundKeepRally.InLordFight(bot, lord);
+                if (inLordFight && LordFightTarget(bot, central, lord, target) is { } pick)
+                    target = pick;
+                else if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step, inLordFight) &&
                     WaveAssistGuard(bot, central) is { } hitting)
                     target = hitting;
                 else if (target is GameKeepGuard guard && (_battlegroundStorming
@@ -212,6 +217,31 @@ namespace DOL.GS
                             return true;
                         }
                         else TraceStorm(this, bot, central, lord, gate, "gate-path-refused");
+                    }
+                    // The wave gathers at the foot of his tower and goes up his stair together (owner's PC, build 95af6fd: they
+                    // reached Lady Thidranki's floor one or two at a time, 30-60 s into the attempt, and died there;
+                    // AutonomousBattlegroundKeepRally.ClimbGoes).
+                    if (_battlegroundStorming && _battlegroundGatePassed && rally.Foot is { } foot && HoldsAtFoot(bot, lord, foot, rally))
+                    {
+                        if (Vector2.Distance(new(bot.X, bot.Y), new(foot.X, foot.Y)) > FootHoldRadius ||
+                            Math.Abs(bot.Z - foot.Z) > AutonomousBattlegroundKeepRally.FootRise)
+                        {
+                            if (IssuePath(bot, foot, retargetWhileMoving: true))
+                            {
+                                TraceStorm(this, bot, central, lord, gate, "to-foot");
+                                SetBattlegroundStatus(bot, bracket, "Storming the keep", $"{central.Name}: to the foot of {lord.Name}'s tower", lord.Name);
+                                return true;
+                            }
+                            TraceStorm(this, bot, central, lord, gate, "foot-path-refused");
+                        }
+                        else
+                        {
+                            bot.StopMovingOnPath();
+                            bot.StopMoving();
+                            TraceStorm(this, bot, central, lord, gate, "foot-hold");
+                            SetBattlegroundStatus(bot, bracket, "Storming the keep", $"{central.Name}: at the foot of the tower, waiting for the climb", lord.Name);
+                            return true;
+                        }
                     }
                     // Up his tower to his floor (the navmesh point on it, so a failed walk is never settled a floor below him).
                     Vector3 lordWalk = LordWalkTarget(bot, lord, out string lordWalkKind);
@@ -571,6 +601,18 @@ namespace DOL.GS
         private bool StormerMarchesOn(BotBrain brain, GameBot bot)
         {
             if (!BattlegroundStormHold(bot) || bot.IsCasting) return false;
+            // In the lord's fight the stormer's pick holds in its combat turns too (the brain otherwise takes its highest aggro:
+            // the guard or holder that hit it first).
+            if (_battlegroundStormLord is { IsAlive: true } stormLord && AutonomousBattlegroundKeepRally.InLordFight(bot, stormLord) &&
+                LordFightTarget(bot, StormKeep(), stormLord, bot.TargetObject as GameLiving) is { } pick &&
+                !ReferenceEquals(bot.TargetObject, pick))
+            {
+                bot.TargetObject = pick;
+                brain.AddToAggroList(pick, Math.Max(100, pick.EffectiveLevel * 12));
+                brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+                TraceStorm(this, bot, StormKeep(), stormLord, BrokenMainGate(bot, StormKeep()), "lord-fight-pick");
+                return false;
+            }
             if (bot.TargetObject is GameLiving target && target.IsAlive && target.Realm != bot.Realm &&
                 (target is GameKeepDoor || StormerMayEngage(bot, target) && StrikesFromHere(bot, target)))
             {
@@ -650,7 +692,58 @@ namespace DOL.GS
         // Set while this bot is one of its realm's stormers going up to the lord, and that lord.
         private bool _battlegroundStorming;
         private GameKeepGuard _battlegroundStormLord;
+        // The attempt (its start) in which this stormer went up the lord's stair: it climbs on, whatever the foot's climb.
+        private long _battlegroundClimbAttempt;
         public const int BattlegroundLordStrike = 900;
+        /// <summary>A stormer this near the foot of the lord's tower (flat) stops there and waits for the climb.</summary>
+        public const float FootHoldRadius = 150f;
+
+        /// <summary>
+        /// Whether this stormer waits at the foot of the lord's tower: not once it went up in this attempt, and not while the
+        /// climb is open (it goes up now) or when it already stands up the tower (resurrected, or up before the foot was set).
+        /// </summary>
+        private bool HoldsAtFoot(GameBot bot, GameKeepGuard lord, Vector3 foot, AutonomousBattlegroundKeepRally.Order rally)
+        {
+            if (_battlegroundClimbAttempt == rally.Attempt) return false;
+            bool upAlready = bot.Z > foot.Z + AutonomousBattlegroundKeepRally.FootRise &&
+                             Vector2.Distance(new(bot.X, bot.Y), new(lord.X, lord.Y)) <= AutonomousBattlegroundKeepRally.InTheFightRadius;
+            if (!rally.ClimbOpen && !upAlready) return true;
+            _battlegroundClimbAttempt = rally.Attempt;
+            return false;
+        }
+
+        /// <summary>
+        /// Whom a stormer in the lord's fight strikes (AutonomousBattlegroundKeepRally.StrikesLordFirst): the lord, within the
+        /// strike radius on his floor, for casters, archers and healers; for a melee bot the guard or defender on it, else the
+        /// lord. Null when the lord can't be struck from here (the old rule then stands: the guard hitting a realm-mate).
+        /// </summary>
+        private static GameLiving LordFightTarget(GameBot bot, AbstractGameKeep keep, GameKeepGuard lord, GameLiving candidate)
+        {
+            if (lord == null || !lord.IsAlive || !bot.IsWithinRadius(lord, BattlegroundLordStrike) ||
+                Math.Abs(bot.Z - lord.Z) > AutonomousBattlegroundKeepRally.StrikeFloorHeight ||
+                !GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
+                return null;
+            bool rangedOrHealer = AutonomousRvrDefense.IsRangedDefender(bot) || AutonomousGroupSupply.IsHealer(bot);
+            GameLiving onMe = rangedOrHealer ? null : EnemyOnMe(bot, keep, candidate);
+            return AutonomousBattlegroundKeepRally.StrikesLordFirst(rangedOrHealer, onMe != null) ? lord : onMe;
+        }
+
+        /// <summary>The nearest enemy on this bot, close and on its floor (StormerMayEngage's hit-back reach): a keep guard
+        /// other than the lord attacking it, or <paramref name="candidate"/> when that one has it targeted.</summary>
+        private static GameLiving EnemyOnMe(GameBot bot, AbstractGameKeep keep, GameLiving candidate)
+        {
+            bool OnMe(GameLiving enemy) => enemy != null && enemy is not GuardLord && enemy.IsAlive && enemy.Realm != bot.Realm &&
+                enemy.TargetObject == bot && bot.IsWithinRadius(enemy, (int)AutonomousBattlegroundKeepRally.StormerHitBackRadius) &&
+                Math.Abs(enemy.Z - bot.Z) <= AutonomousBattlegroundKeepRally.StormerHitBackHeight &&
+                GameServer.ServerRules.IsAllowedToAttack(bot, enemy, true);
+            GameLiving best = OnMe(candidate) ? candidate : null;
+            if (keep != null)
+                foreach (GameKeepGuard guard in keep.Guards.Values)
+                    if (OnMe(guard) && (guard.IsAttacking || guard.IsCasting) &&
+                        (best == null || bot.GetDistanceTo(guard) < bot.GetDistanceTo(best)))
+                        best = guard;
+            return best;
+        }
 
         /// <summary>A stormer keeps "through the gate" only while it stays by the same keep's lord. Pure.</summary>
         public static bool KeepsGatePassed(bool passed, bool nearLord, bool sameKeep) => passed && nearLord && sameKeep;

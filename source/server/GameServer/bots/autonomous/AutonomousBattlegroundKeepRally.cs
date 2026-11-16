@@ -83,6 +83,16 @@ namespace DOL.GS;
 /// 36133,38275 (apart=0). Midgard stormed three times with 8-16. Now the far ring (<see cref="FarStandOffs"/>) gives each
 /// realm a spot on its own side, a re-plan keeps a separated spot rather than take one on another rally or one that already
 /// gathered nobody (<see cref="KeepsSpot"/>), a moved rally gathers afresh, and BG_RALLY_CANDIDATES lists every spot tried.
+///
+/// Owner's PC, build 95af6fd (Thidranki 2026-11-15 22:37-23:00): 17 storms; the stormers reached Lady Thidranki's floor
+/// (bestToLord=0) but one or two at a time, 30-60 s into the attempt, and died there to her and her room's guards (her
+/// lowest 97%). 107 of the 122 that fell did so before her floor, every attempt ended "half the stormers fell" after
+/// 0.4-2.0 minutes, and 9 of the 17 storms were tails of 8-12 sent 0.0-0.6 minutes after the realm's last attempt because
+/// the other realm was still storming. Now the wave waits at the foot of her tower and climbs together
+/// (<see cref="TowerFootIndex"/>, <see cref="ClimbGoes"/>), an attempt with stormers up her tower or her health going
+/// down goes on (<see cref="AttemptOver"/>), the two realms go up together (<see cref="JoinsOtherStorm"/>,
+/// <see cref="HoldsForOtherRealm"/>), on her floor casters and healers strike her and melee the guard on them
+/// (<see cref="StrikesLordFirst"/>), and BG_RALLY_REGROUP says when each stormer reached her floor.
 /// </summary>
 public static class AutonomousBattlegroundKeepRally
 {
@@ -641,10 +651,23 @@ public static class AutonomousBattlegroundKeepRally
     public const long LapseMilliseconds = 60_000;
     public static bool IsLapsed(long lastAsked, long now) => lastAsked > 0 && now - lastAsked > LapseMilliseconds;
 
-    /// <summary>Why an attempt is over (null while it goes on). Pure.</summary>
-    public static string AttemptOver(int engaged, int alive, int lordPercent, int lowestLordPercent, long sinceProgressMilliseconds)
+    /// <summary>Half the stormers fallen ends an attempt only once the lord has lost nothing for this long.</summary>
+    public const long ProgressGraceMilliseconds = 30_000;
+
+    /// <summary>
+    /// Why an attempt is over (null while it goes on). Half the stormers fallen ends it only while none of them is up the
+    /// lord's tower (<paramref name="upTheTower"/>: climbing his stair or on his floor) and he has lost nothing for
+    /// <see cref="ProgressGraceMilliseconds"/>; the fallen come back as reinforcements meanwhile. Owner's PC, build 95af6fd
+    /// (Thidranki 2026-11-15 22:37-23:00): 15 attempts all ended "half the stormers fell" after 0.4-2.0 minutes; the two
+    /// that reached Lady Thidranki in numbers (lordFloor:7 and :3, her lowest 97%) ended 1.5-1.6 minutes in, while stormers were
+    /// still arriving on her floor, and their 13 and 9 still standing walked back out to the rally. Pure.
+    /// </summary>
+    public static string AttemptOver(int engaged, int alive, int lordPercent, int lowestLordPercent, long sinceProgressMilliseconds,
+        int upTheTower = 0)
     {
-        if (engaged > 0 && alive * 2 <= engaged) return "half the stormers fell";
+        if (engaged > 0 && alive == 0) return "every stormer fell";
+        if (engaged > 0 && alive * 2 <= engaged && upTheTower == 0 && sinceProgressMilliseconds >= ProgressGraceMilliseconds)
+            return "half the stormers fell";
         if (lowestLordPercent <= 85 && lordPercent >= 95) return "the lord healed back";
         if (sinceProgressMilliseconds >= NoProgressMilliseconds) return "no progress on the lord";
         return null;
@@ -652,9 +675,103 @@ public static class AutonomousBattlegroundKeepRally
 
     public enum Step { None, Rally, Storm }
 
-    public readonly record struct Order(Step Step, Vector3 Point, string Progress)
+    /// <summary>A bot's order: its step, the rally point, the progress text; for a stormer also the foot of the lord's tower
+    /// (<see cref="TowerFootIndex"/>, null with none), whether the climb from it is open, and the attempt it belongs to.</summary>
+    public readonly record struct Order(Step Step, Vector3 Point, string Progress, Vector3? Foot = null, bool ClimbOpen = true,
+        long Attempt = 0)
     {
         public bool Hold => Step == Step.Rally;
+    }
+
+    /// <summary>
+    /// The foot of the lord's tower: the last point of the walk from the breach to him that stands at least this far below
+    /// him (the ground floor; Thidranki Faste's ground is 864-872 under Lady Thidranki, her stair's first flights 539 and less).
+    /// </summary>
+    public const float FootDrop = 600f;
+    /// <summary>A stormer this near the foot (flat, and on its floor) waits there for the climb.</summary>
+    public const float FootRadius = 300f;
+    public const float FootRise = 150f;
+    /// <summary>The foot keeps this far (3D) from every guard's post on the way, stepping back along the walk if it must.</summary>
+    public const float FootGuardClearance = 600f;
+    /// <summary>The climb goes once this share of the standing stormers still on their way has reached the foot...</summary>
+    public const int FootShare = 70;
+    /// <summary>...or the first of them has waited this long.</summary>
+    public const long FootWaitMilliseconds = 25_000;
+    /// <summary>A climb, once called, stays open this long: everyone at the foot (and arriving) goes up in it.</summary>
+    public const long ClimbWindowMilliseconds = 10_000;
+
+    /// <summary>
+    /// Which point of the walk from the breach to the lord (<paramref name="path"/>, its corners in order) is the foot of his
+    /// tower: the last at least <see cref="FootDrop"/> below him, never the walk's end; stepped back along the walk while a
+    /// guard's post stands within <see cref="FootGuardClearance"/> of it (<paramref name="guardClearance"/>, 3D) and the point
+    /// before is still on the ground floor; with no clear point the first choice stays. -1 with none (a lord less than
+    /// <see cref="FootDrop"/> above the ground: the stormers walk straight at him, as before). Owner's PC, build 95af6fd
+    /// (Thidranki 2026-11-15 22:37-23:00): of 122 stormers fallen in 15 attempts, 107 fell before her floor; the 15 that fell
+    /// on it reached it one or two at a time, 30-60 s into the attempt. Pure.
+    /// </summary>
+    public static int TowerFootIndex(IReadOnlyList<Vector3> path, Vector3 lord, Func<Vector3, float> guardClearance)
+    {
+        if (path == null || path.Count < 2) return -1;
+        int foot = -1;
+        for (int i = 0; i < path.Count - 1; i++)
+            if (lord.Z - path[i].Z >= FootDrop) foot = i;
+        if (foot < 0) return -1;
+        int pick = foot;
+        while (pick > 0 && guardClearance(path[pick]) < FootGuardClearance && lord.Z - path[pick - 1].Z >= FootDrop) pick--;
+        return guardClearance(path[pick]) >= FootGuardClearance ? pick : foot;
+    }
+
+    /// <summary>
+    /// Whether the climb from the foot goes now: someone is there (<paramref name="atFoot"/>) and either nobody else is still on
+    /// the way (<paramref name="coming"/>), or <see cref="FootShare"/> of them are there, or the first has waited
+    /// <see cref="FootWaitMilliseconds"/>. The wave goes up the stair together, as players' zergs did. Pure.
+    /// </summary>
+    public static bool ClimbGoes(int atFoot, int coming, long firstWaitingMilliseconds) =>
+        atFoot > 0 && (coming <= 0 || atFoot * 100 >= FootShare * (atFoot + coming) || firstWaitingMilliseconds >= FootWaitMilliseconds);
+
+    /// <summary>
+    /// In the lord's fight, whom a stormer strikes: casters, archers and healers (<paramref name="rangedOrHealer"/>) the lord;
+    /// a melee bot the guard (or defender) on it (<paramref name="enemyOnMe"/>), else the lord. Before, everyone in his fight
+    /// took the nearest guard hitting a realm-mate first (95af6fd: on her floor the stormers fought her Scouts, Armsmen and
+    /// Albion's bots, and she never went below 97%). Pure.
+    /// </summary>
+    public static bool StrikesLordFirst(bool rangedOrHealer, bool enemyOnMe) => rangedOrHealer || !enemyOnMe;
+
+    /// <summary>The other attacking realm's storm is joined (with half of what is needed, <see cref="ShouldStorm"/>) only this
+    /// soon after it went up: its push, not its tail. On 95af6fd 9 of the 17 storms went 0.0-0.6 minutes after the realm's
+    /// previous attempt ended, with 8-12 of 12-16, because the other realm was still storming; together they put one
+    /// stormer on her floor.</summary>
+    public const long JoinWindowMilliseconds = 45_000;
+    public static bool JoinsOtherStorm(long? otherStormAgeMilliseconds) =>
+        otherStormAgeMilliseconds is { } age && age <= JoinWindowMilliseconds;
+
+    /// <summary>A rally ready to go waits up to this long for the other attacking realm's...</summary>
+    public const long PartnerWaitMilliseconds = 45_000;
+    /// <summary>...while that one gathers and has this share of what it needs (it then goes with half, as it would join a storm).</summary>
+    public const int PartnerReadyShare = 40;
+
+    /// <summary>
+    /// Whether a realm's ready rally holds for the other attacking realm's, so the two go up together and the holder's guards
+    /// and defenders split between them (95af6fd: the two storms that went together within 5 s, 22:46:45/50 and 22:51:53/54,
+    /// put 14 of the 15 stormers that fell on her floor there and took her to 97-98%). Only for
+    /// <see cref="PartnerWaitMilliseconds"/>, and only while the other gathers with <see cref="PartnerReadyShare"/> and is not
+    /// yet ready itself. Pure.
+    /// </summary>
+    public static bool HoldsForOtherRealm(long waitedMilliseconds, bool otherGathering, int otherRallied, int otherNeeded) =>
+        waitedMilliseconds < PartnerWaitMilliseconds && otherGathering && otherNeeded > 0 && otherRallied < otherNeeded &&
+        otherRallied * 100 >= PartnerReadyShare * otherNeeded;
+
+    /// <summary>
+    /// BG_RALLY_REGROUP's account of arrivals on the lord's floor: how many stormers reached it, the seconds into the attempt
+    /// each first stood there, the spread from first to last, when the climbs from the foot went, and the most that waited at
+    /// the foot at once: "floorArrivals=3 arrivalSeconds=35,40,40 arrivalSpread=5 climbs=30 footPeak=14". Pure.
+    /// </summary>
+    public static string SummariseArrivals(IReadOnlyList<int> arrivalSeconds, IReadOnlyList<int> climbSeconds, int footPeak)
+    {
+        int[] sorted = arrivalSeconds.OrderBy(second => second).ToArray();
+        return $"floorArrivals={sorted.Length} arrivalSeconds={(sorted.Length == 0 ? "-" : string.Join(",", sorted))} " +
+               $"arrivalSpread={(sorted.Length == 0 ? -1 : sorted[^1] - sorted[0])} " +
+               $"climbs={(climbSeconds.Count == 0 ? "-" : string.Join(",", climbSeconds))} footPeak={footPeak}";
     }
 
     private sealed class Rally
@@ -697,6 +814,17 @@ public static class AutonomousBattlegroundKeepRally
         public float BestToLord = float.MaxValue;
         /// <summary>The gamebots that went up. Each also holds a battleground-wave duty lease for this rally (docs/DUTY-LEASE.md).</summary>
         public readonly HashSet<long> Committed = new();
+        /// <summary>This attempt: the foot of the lord's tower (null with none), since when its first waiter waits, until when
+        /// the climb is open, the climbs' seconds into the attempt, the most at the foot at once, and each stormer's first
+        /// second on the lord's floor.</summary>
+        public Vector3? Foot;
+        public long FootFirstAt, ClimbOpenUntil;
+        public readonly List<int> Climbs = new();
+        public int FootPeak;
+        public readonly List<int> FloorArrivals = new();
+        public readonly HashSet<long> OnFloorSeen = new();
+        /// <summary>Since when the gathering rally has been ready to go (0 while not), for <see cref="HoldsForOtherRealm"/>.</summary>
+        public long ReadySince;
         public string LeaseOwner = string.Empty, KeepName = string.Empty;
     }
 
@@ -723,6 +851,42 @@ public static class AutonomousBattlegroundKeepRally
     private static bool OtherRealmStorming(ushort region, eRealm realm, eRealm holder, long now) =>
         StormingSeen.Any(pair => pair.Key.Region == region && pair.Key.Realm != realm && pair.Key.Realm != holder &&
                                  now - pair.Value <= StormSeenMilliseconds);
+
+    // When each realm's current attempt went up, per region (read without the rallies' locks, as StormingSeen).
+    private static readonly ConcurrentDictionary<(ushort Region, eRealm Realm), long> StormStartedAt = new();
+
+    /// <summary>How long ago the youngest storm of another attacking realm went up (null with none going).</summary>
+    private static long? OtherStormAge(ushort region, eRealm realm, eRealm holder, long now)
+    {
+        long? youngest = null;
+        foreach (var pair in StormStartedAt)
+        {
+            if (pair.Key.Region != region || pair.Key.Realm == realm || pair.Key.Realm == holder) continue;
+            if (!StormingSeen.TryGetValue(pair.Key, out long seen) || now - seen > StormSeenMilliseconds) continue;
+            long age = Math.Max(0, now - pair.Value);
+            if (youngest == null || age < youngest) youngest = age;
+        }
+        return youngest;
+    }
+
+    // Each realm's gathering state, per region, as last counted (read without the rallies' locks): what it has and needs,
+    // whether it gathers, and since when it has been ready (0 while not).
+    private readonly record struct Readiness(int Rallied, int Needed, bool Gathering, long ReadySince, long Seen);
+    private static readonly ConcurrentDictionary<(ushort Region, eRealm Realm), Readiness> Readinesses = new();
+    public const long ReadinessSeenMilliseconds = 15_000;
+
+    /// <summary>The other attacking realm's gathering state (the one nearest ready with several), null with none fresh.</summary>
+    private static Readiness? OtherReadiness(ushort region, eRealm realm, eRealm holder, long now)
+    {
+        Readiness? best = null;
+        foreach (var pair in Readinesses)
+        {
+            if (pair.Key.Region != region || pair.Key.Realm == realm || pair.Key.Realm == holder) continue;
+            if (now - pair.Value.Seen > ReadinessSeenMilliseconds) continue;
+            if (best is not { } held || pair.Value.Rallied * held.Needed > held.Rallied * pair.Value.Needed) best = pair.Value;
+        }
+        return best;
+    }
 
     // Each realm's rally point, per region, as last seen by Decide; read without the rallies' locks, as StormingSeen. A
     // point not asked about for LapseMilliseconds (the rally lapsed) no longer counts.
@@ -940,13 +1104,13 @@ public static class AutonomousBattlegroundKeepRally
             }
             if (rally.Storming) StormingSeen[(bracket.RegionId, bot.Realm)] = now;
             if (rally.Storming && rally.Committed.Contains(bot.DatabaseID))
-                return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
+                return StormOrder(rally, point, lord, now);
             if (rally.Storming && OnLordFloor(bot, lord))
             {
                 // Already beside him (resurrected there, or fought its way up): it stays in the fight.
                 CommitBot(rally, bot);
                 rally.Engaged++;
-                return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
+                return StormOrder(rally, point, lord, now);
             }
             bool atRally = AtRally(bot, point);
             if (rally.Storming)
@@ -957,31 +1121,85 @@ public static class AutonomousBattlegroundKeepRally
                     Log.Info($"BG_RALLY_REINFORCE battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
                              $"joined={joined} engaged={rally.Engaged} lord={lord.HealthPercent}%");
                     if (rally.Committed.Contains(bot.DatabaseID))
-                        return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
+                        return StormOrder(rally, point, lord, now);
                 }
                 return new Order(Step.Rally, point,
                     $"{rally.Rallied} rallied, the next group goes up at {ReinforcementBatch(rally.Needed)}");
             }
-            bool otherStorming = OtherRealmStorming(bracket.RegionId, bot.Realm, keep.Realm, now);
-            if (atRally && ShouldStorm(rally.Rallied, rally.Needed, now - rally.GatherSince, otherStorming))
+            // Both attacking realms go up together (95af6fd): another realm's storm is joined with half of what is needed only
+            // in its first JoinWindowMilliseconds, a realm that holds for this one (ready, waiting) is joined the same way, and
+            // a ready realm holds for the other while that one gathers and is near ready.
+            long? otherAge = OtherStormAge(bracket.RegionId, bot.Realm, keep.Realm, now);
+            Readiness? other = OtherReadiness(bracket.RegionId, bot.Realm, keep.Realm, now);
+            bool joining = JoinsOtherStorm(otherAge);
+            bool otherWaiting = other is { Gathering: true, ReadySince: > 0 };
+            bool ready = ShouldStorm(rally.Rallied, rally.Needed, now - rally.GatherSince, joining || otherWaiting);
+            if (!ready) rally.ReadySince = 0;
+            else if (rally.ReadySince == 0) rally.ReadySince = now;
+            bool holding = ready && !joining && !otherWaiting && other is { } otherRally &&
+                           HoldsForOtherRealm(now - rally.ReadySince, otherRally.Gathering, otherRally.Rallied, otherRally.Needed);
+            if (atRally && ready && !holding)
             {
+                long held = now - rally.ReadySince;
                 rally.Storming = true;
                 StormingSeen[(bracket.RegionId, bot.Realm)] = now;
+                StormStartedAt[(bracket.RegionId, bot.Realm)] = now;
                 rally.AttemptSince = rally.LastProgress = now;
                 rally.LowestPercent = lord.HealthPercent;
                 rally.Engaged = 0;
                 ClearAttemptRecord(rally);
+                rally.Foot = ResolveFoot(bracket, keep, gate, lord, bot.Realm);
                 int going = Commit(rally, bot.Realm, bracket.RegionId, point);
                 int players = rally.RalliedPlayers;
                 Log.Info($"BG_RALLY_STORM battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
                          $"going={going} players={players} needed={rally.Needed} modelled={rally.Modelled} inside={rally.Inside} " +
                          $"lordLevel={lord.Level} lord={lord.HealthPercent}% minutes={(now - rally.GatherSince) / 60_000.0:0.0} " +
-                         $"withOtherRealm={otherStorming} rally={point.X:0},{point.Y:0},{point.Z:0} gate={rally.GateId}");
+                         $"withOtherRealm={joining || otherWaiting} otherStormSeconds={(otherAge is { } age ? $"{age / 1000}" : "-")} " +
+                         $"otherWaiting={otherWaiting} heldSeconds={held / 1000} " +
+                         $"foot={(rally.Foot is { } f ? $"{f.X:0},{f.Y:0},{f.Z:0}" : "-")} rally={point.X:0},{point.Y:0},{point.Z:0} gate={rally.GateId}");
                 if (rally.Committed.Contains(bot.DatabaseID))
-                    return new Order(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}");
+                    return StormOrder(rally, point, lord, now);
             }
-            return new Order(Step.Rally, point, $"{rally.Rallied}/{rally.Needed} rallied");
+            return new Order(Step.Rally, point, holding
+                ? $"{rally.Rallied}/{rally.Needed} rallied, waiting for the other realm"
+                : $"{rally.Rallied}/{rally.Needed} rallied");
         }
+    }
+
+    /// <summary>A stormer's order: up for the lord, by way of the foot of his tower while its climb is shut.</summary>
+    private static Order StormOrder(Rally rally, Vector3 point, GameKeepGuard lord, long now) =>
+        new(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}", rally.Foot,
+            rally.Foot == null || now < rally.ClimbOpenUntil, rally.AttemptSince);
+
+    /// <summary>
+    /// The foot of the lord's tower for this attempt (<see cref="TowerFootIndex"/>) on the navmesh walk from the breach's
+    /// front to him, logged as BG_TOWER_FOOT; null without a navmesh, a walk or a foot.
+    /// </summary>
+    private static Vector3? ResolveFoot(BattlegroundBrackets.Bracket bracket, AbstractGameKeep keep, GameKeepDoor gate,
+        GameKeepGuard lord, eRealm realm)
+    {
+        Region here = WorldMgr.GetRegion(bracket.RegionId);
+        Zone zone = here?.GetZone(lord.X, lord.Y);
+        IPathfindingMgr nav = PathfindingProvider.Instance;
+        if (zone == null || here.GetZone(gate.X, gate.Y) != zone || !nav.IsAvailable || !nav.HasNavmesh(zone)) return null;
+        Vector3 gatePoint = new(gate.X, gate.Y, gate.Z), lordAt = new(lord.X, lord.Y, lord.Z);
+        Vector3 front = nav.GetClosestPoint(zone, BreachAnchor(gatePoint, RallyOutward(keep, gate), BreachFrontDistance), 120, 120, 256,
+            nav.DefaultFilters) ?? gatePoint;
+        var nodes = new WrappedPathfindingNode[512];
+        PathfindingResult result = nav.GetPathStraight(zone, front, lordAt, nav.DefaultFilters, nodes);
+        int count = Math.Min(result.NodeCount, nodes.Length);
+        Vector3[] path = nodes.Take(count).Select(node => node.Position).ToArray();
+        Vector3[] posts = keep.Guards.Values.Where(guard => guard is not GuardLord && guard.SpawnPoint != null)
+            .Select(guard => new Vector3(guard.SpawnPoint.X, guard.SpawnPoint.Y, guard.SpawnPoint.Z)).ToArray();
+        float Clearance(Vector3 at) => posts.Length == 0 ? float.MaxValue : posts.Min(post => Vector3.Distance(post, at));
+        int index = result.Status == PathfindingStatus.PathFound ? TowerFootIndex(path, lordAt, Clearance) : -1;
+        Log.Info($"BG_TOWER_FOOT battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
+                 $"status={result.Status} nodes={result.NodeCount} footIndex={index} " +
+                 $"foot={(index >= 0 ? $"{path[index].X:0},{path[index].Y:0},{path[index].Z:0}" : "-")} " +
+                 $"belowLord={(index >= 0 ? $"{lord.Z - path[index].Z:0}" : "-")} " +
+                 $"guardClear={(index >= 0 ? $"{Math.Min(Clearance(path[index]), 99_999f):0}" : "-")} " +
+                 $"path=\"{string.Join(" ", path.Select(at => $"{at.X:0},{at.Y:0},{at.Z:0}"))}\"");
+        return index >= 0 ? path[index] : null;
     }
 
     /// <summary>One line per realm with a rally in this battleground, for BG_KEEP_STATUS.</summary>
@@ -1002,7 +1220,9 @@ public static class AutonomousBattlegroundKeepRally
     private static void Reset(Rally rally, long now)
     {
         if (rally.Storming) StormingSeen.TryRemove((rally.Region, rally.Realm), out _);
+        StormStartedAt.TryRemove((rally.Region, rally.Realm), out _);
         rally.Storming = false;
+        rally.ReadySince = 0;
         rally.GatherSince = rally.BarrenSince = now;
         rally.PeakRallied = 0;
         rally.Committed.Clear();
@@ -1014,6 +1234,12 @@ public static class AutonomousBattlegroundKeepRally
 
     private static void ClearAttemptRecord(Rally rally)
     {
+        rally.Foot = null;
+        rally.FootFirstAt = rally.ClimbOpenUntil = 0;
+        rally.Climbs.Clear();
+        rally.FootPeak = 0;
+        rally.FloorArrivals.Clear();
+        rally.OnFloorSeen.Clear();
         rally.Fallen.Clear();
         rally.PassedGate.Clear();
         rally.BestToLord = float.MaxValue;
@@ -1088,6 +1314,19 @@ public static class AutonomousBattlegroundKeepRally
     private static bool OnLordFloor(GameLiving living, GameLiving lord) =>
         Math.Abs(living.Z - lord.Z) <= LordFloorHeight && living.IsWithinRadius(lord, (int)InTheFightRadius);
 
+    /// <summary>At the foot of the lord's tower: near it and on its floor.</summary>
+    private static bool AtFoot(GameLiving living, Vector3 foot) =>
+        Math.Abs(living.Z - foot.Z) <= FootRise &&
+        Vector2.DistanceSquared(new(living.X, living.Y), new(foot.X, foot.Y)) <= FootRadius * FootRadius;
+
+    /// <summary>Up the lord's tower: on his floor, or on his stair above its foot (without a foot, within
+    /// <see cref="FootDrop"/> of his height).</summary>
+    private static bool UpTheTower(GameLiving living, GameLiving lord, Vector3? foot) =>
+        OnLordFloor(living, lord) ||
+        living.CurrentRegionID == lord.CurrentRegionID &&
+        Vector2.DistanceSquared(new(living.X, living.Y), new(lord.X, lord.Y)) <= InTheFightRadius * InTheFightRadius &&
+        living.Z > (foot is { } f ? f.Z + FootRise : lord.Z - FootDrop) && living.Z <= lord.Z + LordFloorHeight;
+
     /// <summary>Every rallied bot of the realm joins the attempt.</summary>
     private static int Commit(Rally rally, eRealm realm, ushort region, Vector3 point)
     {
@@ -1138,7 +1377,31 @@ public static class AutonomousBattlegroundKeepRally
                 rally.LowestPercent = lord.HealthPercent;
                 rally.LastProgress = now;
             }
-            string over = AttemptOver(rally.Engaged, rally.Committed.Count, lord.HealthPercent, rally.LowestPercent, now - rally.LastProgress);
+            // Up his tower, at its foot, and still on the way; each stormer's first second on his floor; and the climb.
+            GameBot[] stormers = realmBots.Where(other => rally.Committed.Contains(other.DatabaseID)).ToArray();
+            int second = (int)((now - rally.AttemptSince) / 1000);
+            int upTheTower = 0, atFoot = 0;
+            foreach (GameBot stormer in stormers)
+            {
+                if (OnLordFloor(stormer, lord) && rally.OnFloorSeen.Add(stormer.DatabaseID)) rally.FloorArrivals.Add(second);
+                if (UpTheTower(stormer, lord, rally.Foot)) upTheTower++;
+                else if (rally.Foot is { } foot && AtFoot(stormer, foot)) atFoot++;
+            }
+            if (rally.Foot != null)
+            {
+                rally.FootPeak = Math.Max(rally.FootPeak, atFoot);
+                if (atFoot == 0) rally.FootFirstAt = 0;
+                else if (rally.FootFirstAt == 0) rally.FootFirstAt = now;
+                if (now >= rally.ClimbOpenUntil &&
+                    ClimbGoes(atFoot, stormers.Length - upTheTower - atFoot, rally.FootFirstAt == 0 ? 0 : now - rally.FootFirstAt))
+                {
+                    rally.ClimbOpenUntil = now + ClimbWindowMilliseconds;
+                    rally.Climbs.Add(second);
+                    rally.FootFirstAt = 0;
+                }
+            }
+            string over = AttemptOver(rally.Engaged, rally.Committed.Count, lord.HealthPercent, rally.LowestPercent, now - rally.LastProgress,
+                upTheTower);
             if (over != null)
             {
                 Log.Info($"BG_RALLY_REGROUP battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
@@ -1149,7 +1412,9 @@ public static class AutonomousBattlegroundKeepRally
                          $"{SummariseFallen(rally.Fallen)} passedGate={rally.PassedGate.Count} " +
                          $"bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
                          $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
-                         $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord}");
+                         $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
+                         // How together they reached her floor (95af6fd: one or two at a time, 30-60 s in).
+                         $"{SummariseArrivals(rally.FloorArrivals, rally.Climbs, rally.FootPeak)}");
                 Reset(rally, now);
             }
         }
@@ -1172,6 +1437,7 @@ public static class AutonomousBattlegroundKeepRally
             withLord.Length == 0 ? 0 : (int)Math.Round(withLord.Average(guard => (double)guard.Level)),
             withLord.Length == 0 ? 0 : (long)withLord.Average(guard => (double)guard.MaxHealth));
         rally.Needed = RallyNeeded(rally.Modelled, rally.Inside);
+        Readinesses[(bracket.RegionId, realm)] = new Readiness(rally.Rallied, rally.Needed, !rally.Storming, rally.ReadySince, now);
         if (now >= rally.NextStatusLog)
         {
             rally.NextStatusLog = now + StatusLogMilliseconds;
@@ -1189,6 +1455,8 @@ public static class AutonomousBattlegroundKeepRally
                      $"passedGate={rally.PassedGate.Count} bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
                      $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
                      $"peakRallied={rally.PeakRallied} plan={(rally.Joint ? "pair" : "alone")} " +
+                     $"readySeconds={(rally.ReadySince == 0 ? -1 : (now - rally.ReadySince) / 1000)} floorArrivals={rally.FloorArrivals.Count} " +
+                     $"climbs={rally.Climbs.Count} climbOpen={now < rally.ClimbOpenUntil} " +
                      $"lord={lord.HealthPercent}% diedToGuards={rally.DiedToGuards} diedOther={rally.DiedOther} " +
                      $"fightsRefused={rally.Refused} chasesDropped={rally.Dropped}");
             rally.DiedToGuards = rally.DiedOther = rally.Refused = rally.Dropped = 0;

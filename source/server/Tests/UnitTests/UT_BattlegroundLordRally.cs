@@ -590,5 +590,87 @@ namespace DOL.UnitTests
                 Assert.That(Rally.IsNearAny(HibC165, null, Rally.BarrenRadius), Is.False);
             });
         }
+
+        // Owner's PC, build 95af6fd (Thidranki 2026-11-15 22:37-23:00): a walk from the gate's front through keep door 252000302 and
+        // up Lady Thidranki's stair, as BG_LORD_PATH and the storm traces placed it (ground 3,720-3,728, her floor 4,592).
+        private static readonly Vector3 LadyThidranki = new(32296, 38267, 4592);
+        private static readonly Vector3[] TowerWalk =
+        {
+            new(34563, 38275, 3720), OuterGate, new(32654, 38180, 3720), new(32420, 38150, 3728),
+            new(32285, 38215, 4053), new(32250, 38300, 4380), LadyThidranki,
+        };
+
+        [Test]
+        public void TheFootOfTheTowerIsTheWalksLastPointOnTheGround()
+        {
+            float NoGuards(Vector3 _) => float.MaxValue;
+            float GuardAtTheStair(Vector3 at) => Vector3.Distance(at, new Vector3(32420, 38150, 3728));
+            float GuardsEverywhere(Vector3 _) => 100;
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, NoGuards), Is.EqualTo(3), "where the stair starts, 864 under her");
+                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, GuardAtTheStair), Is.EqualTo(1),
+                    "a guard at the stair: back along the walk to the first point clear of him (the keep door is 235 from him)");
+                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, GuardsEverywhere), Is.EqualTo(3), "nothing clear: the first choice");
+                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki + new Vector3(0, 0, -400), NoGuards), Is.EqualTo(-1),
+                    "a lord less than 600 up: no foot, the stormers walk straight at him");
+                Assert.That(Rally.TowerFootIndex(new[] { TowerWalk[0], TowerWalk[1] }, LadyThidranki, NoGuards), Is.EqualTo(0),
+                    "a walk cut short on the ground: its start, never its end");
+                Assert.That(Rally.TowerFootIndex(new[] { TowerWalk[3] }, LadyThidranki, NoGuards), Is.EqualTo(-1));
+            });
+        }
+
+        [TestCase(0, 12, 0L, false)]        // nobody there yet
+        [TestCase(5, 0, 0L, true)]          // everyone still standing is there
+        [TestCase(14, 6, 0L, true)]         // 70%
+        [TestCase(13, 7, 0L, false)]        // 65%: wait for the rest
+        [TestCase(13, 7, 25_000L, true)]    // ...but not longer than 25 s
+        [TestCase(1, 19, 24_999L, false)]
+        public void TheClimbGoesWhenTheWaveIsAtTheFoot(int atFoot, int coming, long waited, bool goes) =>
+            Assert.That(Rally.ClimbGoes(atFoot, coming, waited), Is.EqualTo(goes));
+
+        [TestCase(true, false, true)]   // a caster, archer or healer: the lord
+        [TestCase(true, true, true)]    // ...even with a guard on it
+        [TestCase(false, true, false)]  // a melee bot with a guard on it: the guard
+        [TestCase(false, false, true)]  // a melee bot with nothing on it: the lord
+        public void OnHerFloorCastersStrikeTheLordAndMeleeTakeTheGuardOnThem(bool rangedOrHealer, bool enemyOnMe, bool lord) =>
+            Assert.That(Rally.StrikesLordFirst(rangedOrHealer, enemyOnMe), Is.EqualTo(lord));
+
+        [Test]
+        public void AStormIsJoinedOnlyInItsPush()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.JoinsOtherStorm(null), Is.False);
+                Assert.That(Rally.JoinsOtherStorm(5_000), Is.True, "22:46:45/50 and 22:51:53/54: 1-5 s apart");
+                Assert.That(Rally.JoinsOtherStorm(Rally.JoinWindowMilliseconds), Is.True);
+                // 22:53:25: Midgard went with 12 of 16, 0.0 minutes after its regroup, on Hibernia's storm of 22:51:54.
+                Assert.That(Rally.JoinsOtherStorm(91_000), Is.False, "the other realm's tail, 91 s in");
+                Assert.That(Rally.ShouldStorm(12, 16, 0, Rally.JoinsOtherStorm(91_000)), Is.False, "it gathers on");
+                Assert.That(Rally.ShouldStorm(12, 16, 0, Rally.JoinsOtherStorm(20_000)), Is.True);
+            });
+        }
+
+        [TestCase(0L, true, 8, 18, true)]       // the other realm has 44% of its 18: wait for it
+        [TestCase(44_999L, true, 8, 18, true)]
+        [TestCase(45_000L, true, 8, 18, false)] // not longer than 45 s
+        [TestCase(0L, false, 8, 18, false)]     // it storms already: go (and join it)
+        [TestCase(0L, true, 18, 18, false)]     // it is ready itself: both go
+        [TestCase(0L, true, 7, 18, false)]      // 38%: too far off
+        [TestCase(0L, true, 0, 0, false)]
+        public void AReadyRallyHoldsBrieflyForTheOtherRealm(long waited, bool otherGathering, int otherRallied, int otherNeeded, bool holds) =>
+            Assert.That(Rally.HoldsForOtherRealm(waited, otherGathering, otherRallied, otherNeeded), Is.EqualTo(holds));
+
+        [Test]
+        public void TheRegroupSaysHowTogetherTheyReachedHerFloor()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.SummariseArrivals(new[] { 40, 35, 40 }, new[] { 30 }, 14),
+                    Is.EqualTo("floorArrivals=3 arrivalSeconds=35,40,40 arrivalSpread=5 climbs=30 footPeak=14"));
+                Assert.That(Rally.SummariseArrivals(new int[0], new int[0], 0),
+                    Is.EqualTo("floorArrivals=0 arrivalSeconds=- arrivalSpread=-1 climbs=- footPeak=0"));
+            });
+        }
     }
 }
