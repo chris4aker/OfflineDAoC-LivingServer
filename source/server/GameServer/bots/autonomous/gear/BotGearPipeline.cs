@@ -421,8 +421,8 @@ namespace DOL.GS
                 ("blocked_since_start", BotGearGuard.BlockedSinceStart));
 
         /// <summary>
-        /// What /lscraft wtb shows (WP10's CraftEconomyTestHooks handler, registered once WP10 is merged): the switches,
-        /// the board, this hour's counts and the guard.
+        /// What /lscraft wtb shows (registered as WP10's CraftEconomyTestHooks handler for "wtb"): the switches, the board,
+        /// this hour's counts and the guard.
         /// </summary>
         public static string[] WtbLines()
         {
@@ -460,6 +460,8 @@ namespace DOL.GS
             BotServiceSeams.Register(ExchangeStep.Instance);
             EconomyLifecycle.Register(Store.Instance);
             ItemValuePriceIndex.RegisterIfUnset();
+            // /lscraft wtb (WP10's GM window) answers from here.
+            DOL.GS.Commands.CraftEconomyTestHooks.Register("wtb", (_, _) => WtbLines());
         }
 
         /// <summary>Tests only: register again after the seams were reset.</summary>

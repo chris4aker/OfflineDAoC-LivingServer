@@ -57,6 +57,7 @@ namespace DOL.UnitTests
             PriceIndexes.Current = null;
             BotServiceSeams.ResetForTests();
             EconomyLifecycle.ResetForTests();
+            DOL.GS.Commands.CraftEconomyTestHooks.ResetForTests();
             CraftingEconomyProperties.BOT_CRAFTERS = _crafters;
             CraftingEconomyProperties.BOT_CRAFT_ORDERS = _orders;
             GameServer.LoadTestDouble(_previous);
@@ -277,6 +278,8 @@ namespace DOL.UnitTests
             Assert.That(BotServiceSeams.RegisteredCount, Is.EqualTo(3));
             Assert.That(EconomyLifecycle.Count, Is.EqualTo(1));
             Assert.That(PriceIndexes.Current, Is.SameAs(ItemValuePriceIndex.Instance));
+            Assert.That(DOL.GS.Commands.CraftEconomyTestHooks.TryGet("wtb", out DOL.GS.Commands.CraftEconomyTestHooks.Handler wtb), Is.True);
+            Assert.That(wtb(null, ["wtb"]).First(), Does.StartWith("Gear pipeline (WP6)"));
         }
 
         [Test]

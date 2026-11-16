@@ -316,8 +316,12 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
   it reads copied in and without True165's 1.65 mode; `BotGearValue165` and `FitValue` from shadowofze (1edbcf5), via
   True165, GPL-3.0 (its `UT_BotGearValue165` too), without the `WeaponSpecBonus`/`WastedFocus` terms of earlier True165
   work. Ours: the set score and the template term, the no-undress guard, the gear check, the Exchange route and step,
-  the want-to-buy orders, the hourly lines. The `/lscraft wtb` answer (`BotGearPipeline.WtbLines`) is ready but not
-  registered: WP10's `CraftEconomyTestHooks` is not merged yet. Tests only: nothing here has been seen in game.
+  the want-to-buy orders, the hourly lines.
+- **`/lscraft wtb`** now answers from WP6 (switches, board, this hour's counts, the guard), and the economy rehearsal
+  runs WP6's adapter (`WP6.Demand`, with `bot_crafters` on): the set score as the upgrade rule, the gear check and gap
+  purchases, want-to-buy demand counted (no board in the rehearsal yet), and `wp6.setScoreDrops`, which must be 0. A
+  simulated fresh-start day (1 realm, 200 bots) passed every gate with 520 gap purchases and no set score falling
+  (a rehearsal, not a game result). Tests only: nothing here has been seen in game.
 
 ## 1.2.1 (in development)
 
