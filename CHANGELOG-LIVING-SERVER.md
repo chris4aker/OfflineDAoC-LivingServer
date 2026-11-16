@@ -370,6 +370,60 @@ holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm in
   Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
   navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
+**Battleground stormers climb to the lord, and the two rallies are placed as a pair** (tests only; owner's PC, build
+`c165c90` = the zerg change above, Thidranki 2026-11-15 17:23-18:02: Albion holding Thidranki Faste with every door down.
+Midgard stormed five times: up to 11 past the gate, `bestToLord` 398-2,162, up to 2 beside the lord. Lady Thidranki stayed
+at 100% every time and nobody stood on her floor. Hibernia never stormed: its rally read 0-4 of 19-20 for 23 minutes.)
+
+- **Why nobody reached her floor.** The navmesh does reach it. On builds `0026378` and `d64d005` Hibernian bots died beside
+  her at 4,592 and on the tower's square stair at 4,423-4,524 (the stair winds round her column: 3,955 at the keep door
+  side, then 4,064, 4,157, 4,221, 4,284, 4,380, 4,465 and 4,524). Two things on `c165c90` stopped the stormers:
+  - **They were stopped every turn.** The controller's combat turn stopped a moving bot (and replotted its route) before
+    the stormer's "go on up" rule ran, on every turn its ten-second combat timer ran. Every `march-under-fire` sample read
+    `moving=False`, and the stormers crossed the courtyard to the keep door in 10-second steps of 150-600. That is why
+    they stood at 32591-32641,38213,3725, just inside keep door 252000302, under her.
+  - **A target above stopped the climb.** Conyff stood on the stair at 32285,38215,4053, 539 under her, with her as its
+    target, `attacking=False` and `moving=False`. Any target the stormer may fight, and the lord within the 900 strike
+    radius, stopped its walk, and neither a swing nor the brain's chase climbs a stair.
+- **Now a marching stormer keeps walking**: the "go on up" rule runs before the combat stop.
+- **A stormer fights from where it stands only what is on its floor** (within 150 of its height; the lord also within
+  900). A target above it, such as the lord upstairs or a scout a floor up, has its aggro dropped and is walked toward. Melee
+  bots close in on the same floor. Ranged bots and casters fire from where they stand on that floor: we have no
+  line-of-sight test for a bot's cast, so being on the same floor stands in for one.
+- **The walk goes to the navmesh point on the lord's floor** (within 96, then 256, of her and 150 of her height) when her own position
+  is off the mesh. Before, a failed walk could be settled by the mover's goal snap on a floor below her.
+- **Why Hibernia never stormed.** Both realms rally at the same breach, outer gate 252000301, and the realm that placed
+  first took its own side. Midgard placed 4 s before Hibernia and took -30, its own side, at 35892,37375. Hibernia arrives
+  at -128, from far behind the wall. The only candidate 2,250 from Midgard's rally was +60, at 35233,39834: the far side
+  of the gate. Hibernian bots walked round the keep past Midgard's rally and Albion's roaming holders, and 187 of them
+  died in 23 minutes (145 to bots). The `gate=252000302` in the Hibernian rally traces is just the door nearest the bot,
+  not the rally's gate: both realms' rallies use 252000301. On `0026378` Hibernia happened to place first.
+- **Now the two attacking realms' rallies are planned as a pair.** Each realm works out the same pair from its own side,
+  so the order they place in no longer matters:
+  - both spots clear of the guards' posts and 2,250 apart
+  - the pair whose worse side is nearest its realm's arrival comes first
+  - at Thidranki Faste that is Midgard +30 and Hibernia -60, 63 and 67 degrees off their arrivals
+  - a gathering rally that stands where the pair wants the other realm moves there on its next turn; a storming one stays
+    put, and the later realm is placed alone, away from it
+- **A rally that gathers nobody moves.** A gathering rally that never drew 8 in 5 minutes, with 8 or more of its realm in
+  the battleground, is re-placed. Both realms' plans then pass over that spot (up to four are remembered per keep and
+  holder), and `BG_RALLY_BARREN` logs the move.
+- **Logs.**
+  - `BG_LORD_PATH`, once per attempt for the first walk to the lord from inside the gate and once for the first stormer in
+    his tower below his floor. It gives: the walk target and its kind (`lord`, `lordFloor`, `lord-offmesh`); the path
+    queried as the mover queries it (status, nodes, last node, `lastZMinusLord`, `lastToLord`, `highestZ`); whether the
+    lord stands on the mesh, and the nearest floor to him; and the bot's goal snap, mover destination and state.
+  - `BG_RALLY_REGROUP` and `BG_RALLY_STATUS` add `bestBelowLord=`, the least height under the lord of a stormer within 400
+    of him.
+  - `BG_RALLY_STATUS` adds `peakRallied=` and `plan=pair|alone`.
+  - `BG_RALLY_PLACED` adds `arrivalBearing=`, `reason=` (`new`, `gate`, `yield`, `replan`, `barren`), `plan=`,
+    `generation=`, `barren=` and `partner=`.
+- **Unchanged:** the keep, its level, guards, lord, doors and respawns; the strength model, patience and attempt endings;
+  the stormers' rule of which enemies they may fight; rally holders, gatherers, companion bots and real players. No truce,
+  nobody made unhittable, nobody teleported.
+- **Not verified here:** whether the stormers now climb the stair in numbers and bring her down (the Thidranki navmesh
+  isn't in the build container), and whether casters on her floor really have line of sight.
+
 **Battleground and RvR kill quests count enemy gamebots** (tests only; owner's question 2026-11-15: "are there quests in the
 BG? Are those functioning correctly?").
 

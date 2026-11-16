@@ -136,6 +136,11 @@ namespace DOL.GS
                             AutonomousBattlegroundKeepRally.DisciplinedKeepFight(gatesShut, rally.Step), guard is GuardLord,
                             bot.GetDistanceTo(guard), FiringOnRealm(bot, guard))))
                     target = null;
+                // A stormer fights from where it stands only what is on its floor: the lord above it in his tower, or a
+                // scout on the stair over it, is walked toward instead (owner's PC, build c165c90: Conyff stood on the stair
+                // 539 under Lady Thidranki with her as its target, attacking=False and moving=False; StrikesFromHere).
+                if (_battlegroundStorming && target != null && !StrikesFromHere(bot, target))
+                    target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
                 if (target != null)
                 {
@@ -155,7 +160,9 @@ namespace DOL.GS
                 // is battered above (FindReachableEnemyDoor) as soon as the bot stands at it.
                 if (nearLord)
                 {
-                    if (!rally.Hold && bot.IsWithinRadius(lord, BattlegroundLordStrike) && GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
+                    if (!rally.Hold && bot.IsWithinRadius(lord, BattlegroundLordStrike) &&
+                        Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
+                        GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
                     {
                         bot.StopMovingOnPath();
                         bot.StopMoving();
@@ -206,7 +213,20 @@ namespace DOL.GS
                         }
                         else TraceStorm(this, bot, central, lord, gate, "gate-path-refused");
                     }
-                    if (IssuePath(bot, new Vector3(lord.X, lord.Y, lord.Z), retargetWhileMoving: true))
+                    // Up his tower to his floor (the navmesh point on it, so a failed walk is never settled a floor below him).
+                    Vector3 lordWalk = LordWalkTarget(bot, lord, out string lordWalkKind);
+                    if (_battlegroundStorming)
+                    {
+                        // Once per attempt each: the first walk to the lord from inside the gate, and the first stormer in his
+                        // tower below his floor (c165c90: nothing said where the walk ended; the nearest stood 539 under him).
+                        bool inTower = Vector2.Distance(new(bot.X, bot.Y), new(lord.X, lord.Y)) <= AutonomousBattlegroundKeepRally.TowerRadius &&
+                                       lord.Z - bot.Z > AutonomousBattlegroundKeepRally.StrikeFloorHeight;
+                        if (inTower && AutonomousBattlegroundKeepRally.ClaimLordPathLog(bot.CurrentRegionID, bot.Realm, tower: true))
+                            LogLordPath(bot, central, lord, lordWalk, lordWalkKind, "tower");
+                        else if (_battlegroundGatePassed && AutonomousBattlegroundKeepRally.ClaimLordPathLog(bot.CurrentRegionID, bot.Realm, tower: false))
+                            LogLordPath(bot, central, lord, lordWalk, lordWalkKind, "lord");
+                    }
+                    if (IssuePath(bot, lordWalk, retargetWhileMoving: true))
                     {
                         TraceStorm(this, bot, central, lord, gate, "lord");
                         SetBattlegroundStatus(bot, bracket, "Storming the keep", $"{central.Name}: heading for {lord.Name}", lord.Name);
@@ -394,6 +414,103 @@ namespace DOL.GS
             };
         }
 
+        /// <summary>Whether this stormer fights <paramref name="target"/> from where it stands (a door always), or walks on up
+        /// (AutonomousBattlegroundKeepRally.StrikesFromHere).</summary>
+        private static bool StrikesFromHere(GameBot bot, GameLiving target) =>
+            target is GameKeepDoor ||
+            AutonomousBattlegroundKeepRally.StrikesFromHere(target is GuardLord, bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z));
+
+        // Each lord's walk target, worked out at most every 30 s or when he moves (a navmesh query per stormer turn otherwise).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, (Vector3 Lord, Vector3 Walk, string Kind, long Until)> LordWalks = new();
+        public const long LordWalkMilliseconds = 30_000;
+        /// <summary>The flat half-extents searched, in order, for a navmesh floor at the lord's own height.</summary>
+        private static readonly float[] LordFloorSearch = [96f, 256f];
+
+        /// <summary>
+        /// Where a stormer walks to reach the lord: the navmesh point on his floor (within 96, then 256, of him and
+        /// AutonomousBattlegroundKeepRally.StrikeFloorHeight of his height, kind "lordFloor"), or his own position (kind
+        /// "lord", or "lord-offmesh" with no floor there: then the mover's goal snap may settle the walk on a floor below
+        /// him, which BG_LORD_PATH shows). Without a navmesh his position.
+        /// </summary>
+        private static Vector3 LordWalkTarget(GameBot bot, GameKeepGuard lord, out string kind)
+        {
+            Vector3 at = new(lord.X, lord.Y, lord.Z);
+            long now = GameLoop.GameLoopTime;
+            if (LordWalks.TryGetValue(lord.ObjectID, out var cached) && now < cached.Until &&
+                Vector3.DistanceSquared(cached.Lord, at) <= 16 * 16)
+            {
+                kind = cached.Kind;
+                return cached.Walk;
+            }
+            Zone zone = bot.CurrentRegion?.GetZone(lord.X, lord.Y);
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            Vector3 walk = at;
+            kind = "lord";
+            if (zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
+            {
+                if (AutonomousGoalSnap.IsOnMesh(nav, zone, at))
+                    kind = "lord";
+                else
+                {
+                    kind = "lord-offmesh";
+                    // The goal snap's own boxes reach 512-1,024 down (AutonomousGoalSnap.WideBoxes): only a floor at his
+                    // height is taken here, first right beside him, then across his room.
+                    foreach (float horizontal in LordFloorSearch)
+                        if (nav.GetClosestPoint(zone, at, horizontal, horizontal, AutonomousBattlegroundKeepRally.StrikeFloorHeight, nav.DefaultFilters) is { } floor &&
+                            Math.Abs(floor.Z - at.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight)
+                        {
+                            walk = floor;
+                            kind = "lordFloor";
+                            break;
+                        }
+                }
+            }
+            LordWalks[lord.ObjectID] = (at, walk, kind, now + LordWalkMilliseconds);
+            return walk;
+        }
+
+        /// <summary>
+        /// BG_LORD_PATH: the walk a stormer is given to the lord, queried as the mover queries it, and where it ends against
+        /// his height: status, nodes, the last node and its height under him, the highest node, whether his own position is
+        /// on the navmesh and the nearest floor to it (the widest box the goal snap uses), and the bot's own goal snap, mover
+        /// destination and state. Names the blocker on the owner's next run: a walk that ends under him (lastZMinusLord well
+        /// below 0 with status PathFound: his floor is not on the mesh), one cut short (PartialPathFound), or a complete walk
+        /// the stormers do not finish (look at the tower samples' moving= and phase=).
+        /// </summary>
+        private void LogLordPath(GameBot bot, AbstractGameKeep keep, GameKeepGuard lord, Vector3 walk, string kind, string sample)
+        {
+            Zone zone = bot.CurrentRegion?.GetZone(lord.X, lord.Y);
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            Vector3 lordAt = new(lord.X, lord.Y, lord.Z), start = new(bot.X, bot.Y, bot.Z);
+            bool meshed = zone != null && nav.IsAvailable && nav.HasNavmesh(zone);
+            string query = !meshed ? "query=no-navmesh" : "query=other-zone";
+            if (meshed && bot.CurrentZone == zone)
+            {
+                var nodes = new WrappedPathfindingNode[512];
+                PathfindingResult result = nav.GetPathStraight(zone, start, walk, nav.DefaultFilters, nodes);
+                int count = Math.Min(result.NodeCount, nodes.Length);
+                Vector3? last = count > 0 ? nodes[count - 1].Position : null;
+                float highest = count > 0 ? nodes.Take(count).Max(node => node.Position.Z) : float.NaN;
+                Vector3? near = nav.GetClosestPoint(zone, lordAt, AutonomousGoalSnap.WideBoxes[^1].Horizontal, AutonomousGoalSnap.WideBoxes[^1].Horizontal,
+                    AutonomousGoalSnap.WideBoxes[^1].Vertical, nav.DefaultFilters);
+                query = $"status={result.Status} nodes={result.NodeCount} " +
+                        $"last={(last is { } l ? $"{l.X:0},{l.Y:0},{l.Z:0}" : "-")} " +
+                        $"lastZMinusLord={(last is { } m ? $"{m.Z - lord.Z:0}" : "-")} " +
+                        $"lastToLord={(last is { } n ? $"{Vector3.Distance(n, lordAt):0}" : "-")} " +
+                        $"highestZ={(float.IsNaN(highest) ? "-" : $"{highest:0}")} " +
+                        $"lordOnMesh={AutonomousGoalSnap.IsOnMesh(nav, zone, lordAt)} " +
+                        $"floorNearLord={(near is { } f ? $"{f.X:0},{f.Y:0},{f.Z:0}" : "-")}";
+            }
+            var mover = bot.movementComponent;
+            Log.Info($"BG_LORD_PATH bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" sample={sample} " +
+                     $"at={bot.X},{bot.Y},{bot.Z} lordAt={lord.X},{lord.Y},{lord.Z} heightToLord={(int)(bot.Z - lord.Z)} " +
+                     $"walkTo={walk.X:0},{walk.Y:0},{walk.Z:0} walkKind={kind} {query} " +
+                     $"goalSnap={(_goalSnapActive ? $"{_goalSnapTo.X:0},{_goalSnapTo.Y:0},{_goalSnapTo.Z:0}" : "-")} " +
+                     $"moving={bot.IsMoving} path={mover?.LastPathfindingStatus} " +
+                     $"dest={(mover == null ? "-" : $"{mover.Destination.X:0},{mover.Destination.Y:0},{mover.Destination.Z:0}")} " +
+                     $"inCombat={bot.InCombat} target={bot.TargetObject?.Name} attempt={AutonomousBattlegroundKeepRally.AttemptState(bot.CurrentRegionID, bot.Realm)}");
+        }
+
         /// <summary>The keep's nearest broken (or open) main door, never a postern; null with none.</summary>
         private static GameKeepDoor BrokenMainGate(GameBot bot, AbstractGameKeep keep) =>
             keep?.Doors.Values
@@ -455,12 +572,14 @@ namespace DOL.GS
         {
             if (!BattlegroundStormHold(bot) || bot.IsCasting) return false;
             if (bot.TargetObject is GameLiving target && target.IsAlive && target.Realm != bot.Realm &&
-                (target is GameKeepDoor || StormerMayEngage(bot, target)))
+                (target is GameKeepDoor || StormerMayEngage(bot, target) && StrikesFromHere(bot, target)))
             {
                 TraceStorm(this, bot, StormKeep(), _battlegroundStormLord, BrokenMainGate(bot, StormKeep()), "fight");
                 return false;
             }
-            int dropped = brain.RemoveFromAggroListWhere(enemy => enemy.Realm != bot.Realm && enemy is not GameKeepDoor && !StormerMayEngage(bot, enemy));
+            // An enemy off its floor (the lord above it in his tower) stays out of this fight until the bot is up beside it.
+            int dropped = brain.RemoveFromAggroListWhere(enemy => enemy.Realm != bot.Realm && enemy is not GameKeepDoor &&
+                (!StormerMayEngage(bot, enemy) || !StrikesFromHere(bot, enemy)));
             if (brain.HasAggro) return false; // something it may fight is on its list: the fight goes on with that
             if (bot.TargetObject is GameLiving held && held.Realm != bot.Realm)
             {

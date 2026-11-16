@@ -349,5 +349,148 @@ namespace DOL.UnitTests
         [TestCase(2_250f, 200L, eRealm.Midgard, 100L, eRealm.Hibernia, false, false)]  // far enough
         public void TheLaterRallyMoves(float apart, long mine, eRealm realm, long other, eRealm otherRealm, bool avoided, bool moves) =>
             Assert.That(Rally.YieldsTo(apart, mine, realm, other, otherRealm, avoided), Is.EqualTo(moves));
+
+        // c165c90 (Thidranki 2026-11-15 17:37): Midgard placed 4 s before Hibernia (BG_RALLY_PLACED lines).
+        private static readonly Vector3 MidC165 = new(35892, 37375, 3411); // -30
+        private static readonly Vector3 HibC165 = new(35233, 39834, 3353); // +60, gate 252000301
+
+        private static float Flat(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
+
+        [Test]
+        public void BeforeTheFixTheRealmThatPlacedFirstLeftTheOtherTheFarSide()
+        {
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance);
+            // Midgard's rally as placed on the PC (-30 at 1,800: the nearer -30 candidates stand by guard posts this test lacks).
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, _ => true, PostClearance);
+            Assert.Multiple(() =>
+            {
+                Assert.That(mid.Bearing, Is.EqualTo(-30), "Midgard's own side");
+                Assert.That(Rally.ArrivalBearing(OuterGate, East, MidC165), Is.EqualTo(-30).Within(0.5f), "point=35892,37375");
+                Assert.That(hib.Bearing, Is.EqualTo(60), "the only candidate 2,250 from Midgard's");
+                Assert.That(Rally.ArrivalBearing(OuterGate, East, HibC165), Is.EqualTo(60).Within(0.5f), "point=35233,39834 apart=2546");
+                Assert.That(Flat(hib.Point!.Value, MidC165), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
+                Assert.That(Rally.BearingGap(hib.Bearing, Rally.ArrivalBearing(OuterGate, East, HibArrival)), Is.GreaterThan(170),
+                    "the far side of the gate from Hibernia's arrival");
+            });
+        }
+
+        [Test]
+        public void TheTwoRealmsPlanTheirRalliesAsAPairWhoeverPlacesFirst()
+        {
+            // Midgard first, Hibernia in the battleground: Midgard's half of the pair.
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
+                partnerArrival: HibArrival, partnerFirst: false);
+            // Hibernia next, with Midgard's rally standing: the same pair from its side.
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { mid.Point!.Value }, Anywhere, _ => true, PostClearance,
+                partnerArrival: MidArrival, partnerFirst: true);
+            // And the other order: Hibernia first.
+            Rally.RallyPlan hibFirst = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
+                partnerArrival: MidArrival, partnerFirst: true);
+            Assert.Multiple(() =>
+            {
+                Assert.That(mid.Bearing, Is.EqualTo(30), "Midgard 63 degrees off its arrival");
+                Assert.That(hib.Bearing, Is.EqualTo(-60), "Hibernia 67 degrees off its arrival, on its own side");
+                Assert.That(Flat(mid.Partner!.Value, hib.Point!.Value), Is.LessThan(1), "Midgard left Hibernia the spot Hibernia takes");
+                Assert.That(Flat(hib.Partner!.Value, mid.Point.Value), Is.LessThan(1), "and the other way round: no re-plan");
+                Assert.That(Flat(hibFirst.Point!.Value, hib.Point.Value), Is.LessThan(1), "the order makes no difference");
+                Assert.That(Flat(mid.Point.Value, hib.Point.Value), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
+                Assert.That(mid.Apart && hib.Apart, Is.True);
+                Assert.That(mid.GuardClear, Is.GreaterThanOrEqualTo(Rally.RallyGuardClearance));
+                Assert.That(hib.GuardClear, Is.GreaterThanOrEqualTo(Rally.RallyGuardClearance));
+                Assert.That(Flat(hib.Point.Value, HibC165), Is.GreaterThan(2_000), "not c165c90's far-side spot");
+            });
+        }
+
+        [Test]
+        public void APairIsOnlyTakenWhenBothHalvesCanWalkToTheGate()
+        {
+            // Hibernia's -60 candidates have no walk to the gate: the next pair (Midgard +60, Hibernia -30, 0026378's).
+            bool Reaches(Vector3 at) => Rally.ArrivalBearing(OuterGate, East, at) is var b && System.Math.Abs(b + 60) > 1;
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, Reaches, PostClearance,
+                partnerArrival: HibArrival);
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, Reaches, PostClearance,
+                partnerArrival: MidArrival, partnerFirst: true);
+            Assert.Multiple(() =>
+            {
+                Assert.That(mid.Bearing, Is.EqualTo(60));
+                Assert.That(hib.Bearing, Is.EqualTo(-30));
+                Assert.That(Flat(mid.Partner!.Value, hib.Point!.Value), Is.LessThan(1));
+            });
+        }
+
+        [Test]
+        public void ABarrenSpotIsPassedOverByBothRealmsPlans()
+        {
+            Rally.RallyPlan first = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
+                partnerArrival: MidArrival, partnerFirst: true);
+            Vector3[] barren = { first.Point!.Value };
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
+                partnerArrival: MidArrival, partnerFirst: true, barren: barren);
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
+                partnerArrival: HibArrival, partnerFirst: false, partnerBarren: barren);
+            Rally.RallyPlan alone = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, _ => true, PostClearance,
+                barren: new[] { HibC165 });
+            Assert.Multiple(() =>
+            {
+                Assert.That(Flat(hib.Point!.Value, first.Point.Value), Is.GreaterThan(Rally.BarrenRadius), "moved off the barren spot");
+                Assert.That(Flat(mid.Partner!.Value, hib.Point.Value), Is.LessThan(1), "Midgard's plan knows Hibernia's barren spot");
+                Assert.That(Flat(hib.Partner!.Value, mid.Point!.Value), Is.LessThan(1));
+                Assert.That(Flat(alone.Point!.Value, HibC165), Is.GreaterThan(Rally.BarrenRadius),
+                    "alone, nothing apart is left: the old straight-out fallback, never the barren spot again");
+            });
+        }
+
+        [Test]
+        public void RallyPairsAreTheSameFromBothSides()
+        {
+            var candidates = new Rally.RallyCandidate[]
+            {
+                new(0, 900, 1_500, float.MaxValue), new(30, 1_800, 1_500, float.MaxValue),
+                new(-60, 1_800, 1_500, float.MaxValue), new(60, 1_800, 1_200, float.MaxValue), // under a guard
+            };
+            var points = new Vector3[]
+            {
+                OuterGate + new Vector3(900, 0, 0), OuterGate + new Vector3(1_559, 900, 0),
+                OuterGate + new Vector3(900, -1_559, 0), OuterGate + new Vector3(900, 1_559, 0),
+            };
+            var mine = Rally.RallyPairs(candidates, points, -33, -127, partnerFirst: false);
+            var theirs = Rally.RallyPairs(candidates, points, -127, -33, partnerFirst: true);
+            Assert.Multiple(() =>
+            {
+                Assert.That(mine[0], Is.EqualTo((1, 2)));
+                Assert.That(theirs[0], Is.EqualTo((2, 1)));
+                Assert.That(mine, Has.None.Matches<(int Mine, int Partner)>(pair => pair.Mine == 3 || pair.Partner == 3), "never under a guard");
+                Assert.That(mine, Has.None.Matches<(int Mine, int Partner)>(pair => pair == (0, 2) || pair == (2, 0)), "1,800 apart is too near");
+                Assert.That(Rally.RallyPairs(candidates, points, -33, -127, false, new[] { false, true, false, false }),
+                    Has.None.Matches<(int Mine, int Partner)>(pair => pair.Mine == 1), "a barren spot is not taken");
+            });
+        }
+
+        [TestCase(5 * 60_000L, 4, 33, true)]   // c165c90 Hibernia: peak 4 of needed 19, 33 inside
+        [TestCase(5 * 60_000L - 1, 4, 33, false)]
+        [TestCase(10 * 60_000L, 8, 33, false)] // drew a wave's minimum: not barren
+        [TestCase(10 * 60_000L, 0, 5, false)]  // too few of the realm here to gather anyway
+        public void ARallyThatDrawsNobodyIsBarren(long gathering, int peak, int inside, bool barren) =>
+            Assert.That(Rally.IsBarren(gathering, peak, inside), Is.EqualTo(barren));
+
+        [TestCase(true, 541f, 539f, false)]  // c165c90 Conyff on the stair, 539 under Lady Thidranki
+        [TestCase(true, 1_274f, 867f, false)] // the ground floor inside the keep door, under her
+        [TestCase(true, 160f, 68f, true)]    // the last flight (4524) and her floor (4592)
+        [TestCase(true, 1_000f, 0f, false)]  // her floor, beyond the strike radius: walk on
+        [TestCase(false, 120f, 100f, true)]  // a scout on the next flight, on it
+        [TestCase(false, 300f, 308f, false)] // a guard a floor up
+        public void AStormerStrikesOnlyOnItsTargetsFloor(bool isLord, float distance, float height, bool strikes) =>
+            Assert.That(Rally.StrikesFromHere(isLord, distance, height), Is.EqualTo(strikes));
+
+        [Test]
+        public void ANearbyPointIsFoundWithinItsRadius()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.IsNearAny(HibC165, new[] { HibC165 + new Vector3(299, 0, 500) }, Rally.BarrenRadius), Is.True, "flat");
+                Assert.That(Rally.IsNearAny(HibC165, new[] { HibC165 + new Vector3(301, 0, 0) }, Rally.BarrenRadius), Is.False);
+                Assert.That(Rally.IsNearAny(HibC165, null, Rally.BarrenRadius), Is.False);
+            });
+        }
     }
 }
