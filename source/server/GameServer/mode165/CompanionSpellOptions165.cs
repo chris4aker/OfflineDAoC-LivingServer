@@ -1,4 +1,6 @@
-// From shadowofze's True 1.65 v0.7 (f68cc75), via True165, GPL-3.0.
+// From shadowofze's True 1.65 v0.7 (f68cc75), via True165, GPL-3.0. Living Server adds Blocks: one reader at the cast
+// itself (GameBot.CastSpell) for every AI Options row it offers, since 1.2's spell choice has no True 1.65 hooks to read
+// them in.
 
 namespace DOL.GS
 {
@@ -69,6 +71,47 @@ namespace DOL.GS
 
         /// <summary>An area damage spell: point blank, targeted area or cone.</summary>
         public static bool IsAreaSpell(Spell spell) => spell != null && (spell.Radius > 0 || spell.Target == eSpellTarget.CONE);
+
+        /// <summary>
+        /// Whether a hired companion's AI Options forbid this cast now (False for every other bot, always: their choices read
+        /// 0, Automatic). Read at the cast itself (GameBot.CastSpell), after the bot's own AI chose the spell:
+        /// Role "Melee and heal", Attack spells, Save power Strict, Bolts "Nukes only", Debuff before nuking "Never" and
+        /// the per-debuff Use / Skip, Life transfer and Amnesia Off, the Hunter's pet Off, charming Off and Crowd control Off.
+        /// </summary>
+        public static bool Blocks(GameBot bot, Spell spell)
+        {
+            if (spell == null || bot?.CharacterClass == null || !bot.IsHiredCompanion)
+                return false;
+            var cls = (eCharacterClass)bot.CharacterClass.ID;
+            if (MeleeHealRole(bot) && MeleeHealBlocks(spell))
+                return true;
+            if (IsCasterClass(cls) && AttackChoiceBlocks(CompanionOptions165.Choice(bot, "attackspells"), spell))
+                return true;
+            int savePower = CompanionOptions165.Choice(bot, "savepower");
+            if (savePower == SavePowerStrict)
+            {
+                int targetHealth = bot.TargetObject is GameLiving { MaxHealth: > 0 } target ? target.HealthPercent : 100;
+                if (StrictBlocks(spell, StrictSavesPower(savePower, bot.ManaPercent, targetHealth)))
+                    return true;
+            }
+            if (CompanionOptions165.Choice(bot, "bolts") == 1 && spell.SpellType == eSpellType.Bolt)
+                return true;
+            if (BotCasterPriority.IsDebuff(spell) || spell.SpellType == eSpellType.PetSpell && spell.SubSpellID > 0)
+            {
+                int master = CompanionOptions165.Choice(bot, "debuff");
+                int line = CompanionOptions165.DebuffLineChoice(bot, spell);
+                bool isDebuff = BotCasterPriority.IsDebuff(spell) || line != 0 || master != 0 && CompanionOptions165.IsChoosableDebuffSpell(spell);
+                if (isDebuff && !CompanionOptions165.DebuffAllowed(master, line, CompanionOptions165.PickedDebuffCount(bot) > 0))
+                    return true;
+            }
+            if (spell.SpellType == eSpellType.LifeTransfer && CompanionOptions165.Choice(bot, "lifetransfer") == 1 ||
+                spell.SpellType == eSpellType.Amnesia && CompanionOptions165.Choice(bot, "amnesia") == 1 ||
+                spell.SpellType == eSpellType.SummonHunterPet && CompanionOptions165.Choice(bot, "hunterpet") == 1 ||
+                spell.SpellType == eSpellType.Charm && !CompanionOptions165.CharmAllowed(bot) ||
+                spell.SpellType is eSpellType.Mesmerize or eSpellType.Mez or eSpellType.Stun && CompanionOptions165.Choice(bot, "cc") == 3)
+                return true;
+            return false;
+        }
 
         /// <summary>
         /// Pure: the "Attack spells" row. Area spells only: no single-target damage (instant, bolt or cast), area damage,

@@ -81,6 +81,7 @@ namespace DOL.UnitTests
         public void EveryOptionReaderIsAutomaticForOtherBots() => Assert.Multiple(() =>
         {
             Assert.That(CompanionOptions165.Choice(null, "stance"), Is.Zero);
+            Assert.That(CompanionSpellOptions165.Blocks(null, null), Is.False);
             Assert.That(CompanionOptions165.CharmAllowed(null), Is.True, "a gamebot charms as before");
             Assert.That(CompanionControls165.CrowdControl(null), Is.EqualTo(CompanionControls165.CcAutomatic));
         });
