@@ -23,9 +23,18 @@ namespace DOL.GS
                 if (actor is GameBot bot)
                 {
                     GamePlayer leader = bot.PlayerGroupLeader ?? bot.Owner;
-                    return bot.IsTemporaryGroupHelper && !bot.IsAutonomousWorldBot &&
-                        leader != null && bot.Group != null && bot.Group == leader.Group &&
-                        Modes.TryGetValue(leader, out Mode mode) && mode.Defensive ? leader : null;
+                    // a /spawn helper, or a hired companion (True 1.65): its own Stance choice first (1 aggressive,
+                    // 2 defensive), else its player's /aggressive or /defensive
+                    bool companion = bot.IsTemporaryGroupHelper && !bot.IsAutonomousWorldBot || bot.IsHiredCompanion;
+                    if (!companion || leader == null || bot.Group == null || bot.Group != leader.Group)
+                        return null;
+                    bool defensive = (bot.IsHiredCompanion ? CompanionOptions165.Choice(bot, "stance") : 0) switch
+                    {
+                        CompanionControls165.StanceAggressive => false,
+                        CompanionControls165.StanceDefensive => true,
+                        _ => Modes.TryGetValue(leader, out Mode mode) && mode.Defensive,
+                    };
+                    return defensive ? leader : null;
                 }
                 actor = (actor as GameNPC)?.Brain is IControlledBrain controlled ? controlled.Owner : null;
             }
