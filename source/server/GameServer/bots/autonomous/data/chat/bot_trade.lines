@@ -1,0 +1,78 @@
+# Gamebots in a trade window with a real player (Crafting 2.0 WP8, the full bot trade: BotTrades). New writing (see
+# docs/bot-voices). Every gamebot can trade, so these lines are for every personality. The truth rule: a fact in a line
+# is a slot the server fills from the bot's real state: {item} a real piece (its own for sale, or the slot it really
+# needs), {price} the price it really asks, {count} how many pieces it really has for sale. The numbers of a trade (what
+# is paid, what each piece is worth to it) are always said in the system window in the server's fixed words, never here:
+# these lines are only what the bot says to you while you trade, as a player of 2003 would in /say or by /send.
+
+@kind trade_reply
+@who *
+@levels 1-50
+
+@topic trade_busy_fight
+[in a fight|fighting], give me a [min|sec]
+[busy|one sec], [got adds|mobs on me]. [after this|after the pull]
+cant right now, [in combat|fighting]
+
+@topic trade_busy_duty
+on a raid [right now|atm], catch me after
+[cant|not now], raid is forming up. [after|later] ok?
+
+@topic trade_busy_trading
+[one trade at a time|sec], finish yours first
+[already trading|busy trading], hang on
+
+@topic trade_timeout
+[sorry|sry], gotta run. trade me again later
+[gtg|have to go], [trade me later|catch me later]
+
+@topic trade_come_closer
+come closer and ill open a trade
+[get closer|come over here], cant reach you from there
+
+@topic trade_nothing_for_sale
+nothing for sale [atm|right now], sorry
+[got nothing|nothing] to sell [atm|right now]
+
+@topic trade_for_sale
+got {count} things, {item} for {price} and more. trade me and have a look
+{count} pieces for sale, {item} is {price}. [open a trade|trade me] and see
+
+@topic trade_wants_gap
+always looking for a better {item}. trade me and show me
+[could use|need] a {item} [actually|really], trade me and ill have a look
+
+@topic trade_wants_maybe
+maybe, put it in a trade and ill tell you what its worth to me
+[depends|maybe], show me in a trade
+
+@topic trade_done_swap
+fair swap, [ty|thanks]
+[good trade|nice], [ty|thanks]
+
+@topic trade_done_bought
+[ty|thanks], just what i needed
+[sweet|nice], [ty|thanks]. been needing one
+
+@topic trade_done_sold
+[enjoy|wear it well], [ty|thanks]
+[ty|thanks], [enjoy|pleasure]
+
+@topic trade_done_job
+there ya go
+[done|all done], [enjoy|good as new]
+
+@topic trade_job_failed
+[sorry|bah], didnt take. no charge
+[argh|no luck], you keep your coin
+
+# A gamebot whose gear check found a gap posts a want-to-buy in /trade now and then (BotTrades.AdvertiseGap): {item} is
+# the real piece it lacks (its armour type, the slot, its level), {budget} the most it would really pay (its purse share).
+@kind trade
+@who *
+@levels 5-50
+@needs wants_gear
+wtb {item}, pst
+[lf|wtb] {item}, paying up to {budget}
+anyone selling {item}? [pst|send me a tell]
+[need|looking for] {item}, [pst|send me a tell] if you have one

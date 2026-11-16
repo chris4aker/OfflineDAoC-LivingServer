@@ -47,7 +47,9 @@ KINDS = {'ambient', 'reply', 'lfg', 'trade', 'rvr', 'greet', 'thanks', 'grudge',
          # Bonds (AutonomousBotBonds): a bot tells /faction about a friend, a reunion or a no-show, others react
          'bond', 'bond_reply',
          # Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md, WP0): a crafter's own lines and its answers to "can you make X"
-         'craft', 'craft_reply'}
+         'craft', 'craft_reply',
+         # The full bot trade (WP8, BotTrades): what any gamebot says to a player in a trade window
+         'trade_reply'}
 # Lines that start a conversation; each says what kind of answer it invites (@invites, or inferred below).
 OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild', 'news', 'tell'}
 # Kinds whose lines speak about the speaker's own here and now, so a place they name must be true (or @about).

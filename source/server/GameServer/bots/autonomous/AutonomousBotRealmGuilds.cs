@@ -366,7 +366,9 @@ public static class AutonomousBotRealmGuilds
 
         int placedNow = slots.Sum(slot => slot.Count);
         var unplaced = eligible.Where(record => !Members.ContainsKey(record.BotId))
-            .Select(record => new AutonomousBotGuildPlanner.Candidate(record.BotId, record.Level));
+            .Select(record => new AutonomousBotGuildPlanner.Candidate(record.BotId, record.Level,
+                // Crafting 2.0 WP8b (bot_crafting_social): Crafting-charter guilds take crafter gamebots first.
+                CraftingEconomy.CraftingDrama.On && BotCrafterRoster.Instance.IsCrafter(record.BotId)));
         foreach (AutonomousBotGuildPlanner.Placement placement in AutonomousBotGuildPlanner.Place(unplaced, slots, memberTarget - placedNow))
         {
             SetMembership(placement.BotId, placement.GuildId, AutonomousBotGuildPlanner.LowestRank, nowUtc);

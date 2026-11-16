@@ -336,6 +336,9 @@ public static class AutonomousBotCrafting
             !merchant.IsWithinRadius(bot, Properties.WORLD_PICKUP_DISTANCE))
             return false;
         DbItemTemplate template = TemplateOf(session.Recipe, purchase.Material);
+        // WP8b (bot_crafting_social): a Crafting-charter bot guild's bank gives its crafter the material's price first.
+        if (template != null)
+            BotGuildCommerce.FundMaterials(bot, purchase.Copper);
         if (template == null || !AutonomousBotEconomy.TrySpend(bot.DatabaseID, purchase.Copper, EconomyFlowKind.CraftMaterials))
             return false;
         if (!bot.Inventory.AddTemplate(GameInventoryItem.Create(template), purchase.Amount, eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack))

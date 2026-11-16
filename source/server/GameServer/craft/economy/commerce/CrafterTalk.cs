@@ -20,7 +20,11 @@ namespace DOL.GS.CraftingEconomy
 
         public sealed record CrafterFacts(string Name, eRealm Realm, string Skills, eCraftingSkill Primary, int Skill, string Title,
             IReadOnlyList<CraftRecipeInfo> Makeable, IReadOnlyList<StockPiece> Stock, double MinutesToBreak, bool AtBreak,
-            int SecondsPerPiece, string Zone, int Patience);
+            int SecondsPerPiece, string Zone, int Patience, bool FreeToTrade = false)
+        {
+            /// <summary>It may open a trade window for a stock piece now: at its break, or free to trade mid-task (the player asks).</summary>
+            public bool CanTradeNow => AtBreak || FreeToTrade;
+        }
 
         public sealed record CustomerFacts(string Id, string Name, CrafterCustomers.Standing Standing, int Discount, bool Guildmate,
             bool Near, long SpentCopper = 0)
@@ -200,7 +204,7 @@ namespace DOL.GS.CraftingEconomy
                 slots["item"] = slots["stock"];
                 slots["quality"] = piece.Quality.ToString();
                 slots["price"] = PriceText(ask);
-                string where = crafter.AtBreak && customer.Near ? "want it? say yes and ill open a trade"
+                string where = crafter.CanTradeNow && customer.Near ? "want it? say yes and ill open a trade"
                     : crafter.AtBreak ? $"im in {crafter.Zone} on a break, come find me and say yes"
                     : $"out hunting, catch me at my break in {CrafterQuotes.TimeText((int)Math.Ceiling(crafter.MinutesToBreak))}";
                 slots["terms"] = where;
@@ -254,7 +258,7 @@ namespace DOL.GS.CraftingEconomy
             slots["price"] = PriceText(open.Ask);
             if (open.Kind == DealKind.Stock)
             {
-                if (crafter.AtBreak && customer.Near)
+                if (crafter.CanTradeNow && customer.Near)
                     return new Reply($"ok, opening a trade. {slots["price"]} for the {slots["item"]}", Act.OpenTrade, open, "craft_trade_open", slots);
                 slots["terms"] = crafter.AtBreak ? $"im in {crafter.Zone}, come find me" : "catch me at my next break";
                 return new Reply($"sure, {slots["terms"]} and ill trade it to you", Act.Quote, open, "craft_stock_meet", slots);
