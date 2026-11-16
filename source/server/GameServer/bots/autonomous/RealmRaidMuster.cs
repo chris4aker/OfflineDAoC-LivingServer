@@ -97,8 +97,13 @@ public static class RealmRaidMuster
         new("openworld-albion-greenknight", "Snowdonia Station", 1, 3, 59, 45, new(523562,408847,4204)),
         new("openworld-albion-coliath", "Caer Diogel", 51, 56, 44, 58, new(403177,502596,4680)),
         new("openworld-albion-coliath", "Fort Gwyntell", 51, 53, 46, 46, new(426905,416817,5712)),
-        new("openworld-albion-emthoro", "Caer Diogel", 51, 56, 44, 58, new(403177,502596,4680)),
+        // Emthoro from Fort Gwyntell first (owner PC, 2026-11-16, ccba364). From Caer Diogel the raid walked west through
+        // Gwyddneau along y~473k, into the marooned viking camp (levels 52-60) at 308k,473k, and through the lammia camp in
+        // Aldland at 375k,495k: 240 deaths in 90 minutes (167 to the vikings), 8 of 40 arrived, a failed rally. The Fort
+        // Gwyntell walk (53>54>55>57) meets Gwyddneau only at its south edge (y 426-430k): 1 death that day within 2,500
+        // of it against 66 for the Caer Diogel walk. Caer Diogel stays as the fallback.
         new("openworld-albion-emthoro", "Fort Gwyntell", 51, 53, 46, 46, new(426905,416817,5712)),
+        new("openworld-albion-emthoro", "Caer Diogel", 51, 56, 44, 58, new(403177,502596,4680)),
         new("openworld-midgard-glaciergiant", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
         new("openworld-midgard-wreth-jotun", "Vindsaul Faste", 100, 102, 80, 90, new(703570,739494,5704)),
         new("openworld-midgard-wreth-jotun", "Svasud Faste", 100, 111, 88, 74, new(765706,668538,5736)),
