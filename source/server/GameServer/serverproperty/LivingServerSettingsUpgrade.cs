@@ -20,13 +20,21 @@ namespace DOL.GS.ServerProperties
 	///   (step 5 -> 10, largest 100 or 150 -> 200, smallest 60 -> 70), and a test copy kept the old step from its first
 	///   build. "1.1.2.1" because worlds that ran any 1.1.2 build have already recorded "1.1.2".
 	/// - 1.2 (owner 2026-11-12): a realm's automatic raids every 240 minutes instead of 150 (the tale, then the call).
+	/// - 1.2, every feature on (owner 2026-11-16: "all our living server features should be in by default if someone
+	///   downloads our installer"): bot guilds, personalities, the Server life parts that were off (firsts, death, alarms,
+	///   nemesis, breaks, body language), the real-clock bot schedule, and Crafting 2.0's gamebot side (crafters, craft
+	///   orders, upkeep, luxury spending, siege supply, commerce, crafting social life). "1.2.0.1" because worlds that ran
+	///   an earlier 1.2 build have already recorded "1.2". A player who had switched one of these on and back off in the
+	///   launcher, on a row the server wrote, can't be told from an untouched row (the launcher kept the server's
+	///   DefaultValue until 1.2): that row moves once, and the player's next choice in the tab is kept from then on, because
+	///   the launcher now clears DefaultValue on every save.
 	/// </summary>
 	public static class LivingServerSettingsUpgrade
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.2";
+		public const string Version = "1.2.0.1";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -50,6 +58,22 @@ namespace DOL.GS.ServerProperties
 			new("1.1.2.1", "realm_raid_smallest_size_percent", "60", "70"),
 			// 1.2 (owner 2026-11-12): every raid has its tale and its call, so a realm's raids come every four hours, not 2.5.
 			new("1.2", "realm_raid_schedule_minutes", "150", "240"),
+			// 1.2 (owner 2026-11-16): every Living Server feature on by default. Diagnostics, the classic crafting rules, the
+			// epic encounter options and the Sluaghbinder edition switch keep their values (docs/CRAFTING.md, AGENTS.md).
+			new("1.2.0.1", "bot_guilds_enabled", "False", "True"),
+			new("1.2.0.1", "bot_personalities_enabled", "False", "True"),
+			new("1.2.0.1", "bot_living_firsts", "False", "True"),
+			new("1.2.0.1", "bot_living_death", "False", "True"),
+			new("1.2.0.1", "bot_living_alarms", "False", "True"),
+			new("1.2.0.1", "bot_living_nemesis", "False", "True"),
+			new("1.2.0.1", "bot_living_breaks", "False", "True"),
+			new("1.2.0.1", "bot_living_body_language", "False", "True"),
+			new("1.2.0.1", "bot_schedule_mode", "off", "clock"),
+			new("1.2.0.1", "bot_crafters", "False", "True"),
+			new("1.2.0.1", "bot_craft_orders", "False", "True"),
+			new("1.2.0.1", "bot_upkeep", "False", "True"),
+			new("1.2.0.1", "bot_luxury_spending", "False", "True"),
+			new("1.2.0.1", "bot_siege_supply", "False", "True"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>

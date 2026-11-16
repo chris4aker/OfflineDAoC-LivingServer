@@ -29,6 +29,9 @@ darkness_falls_raid_event_mobs.json exactly (Princess Nahemah, High Lord Saeor a
 every quest kill target in set_quest_target_respawns.ledger.json respawns within 300 seconds, the relic pad needs 8,
 and the navmesh road, seam and pocket files are present. Every Crafting 2.0 table (EconomyTables.All, read from the
 server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships.
+Every Living Server switch ships at its release value (release-server-settings.json: every feature on, owner 2026-11-16;
+diagnostics, the classic crafting rules and the epic encounter options off), written as both Value and DefaultValue so a
+later changed default still reaches the row, and checked in both editions' worlds.
 """
 from __future__ import annotations
 
@@ -208,6 +211,36 @@ def verify_tables_empty(con: sqlite3.Connection, tables: list[str]) -> dict:
         assert rows == 0, f"{table} still has {rows} row(s): a played economy would ship"
         report[table] = 0
     return report
+
+
+def release_server_settings(repo: Path) -> dict:
+    """The Living Server switches every release world ships with (source/tools/release-server-settings.json)."""
+    settings = json.loads((repo / "source/tools/release-server-settings.json").read_text(encoding="utf-8"))["Settings"]
+    assert settings and all(isinstance(v, str) for v in settings.values()), "release-server-settings.json: Settings"
+    return settings
+
+
+def ship_server_settings(con: sqlite3.Connection, settings: dict) -> dict:
+    """Each switch's row gets its release value as Value and DefaultValue (the server's mark of an untouched default, so
+    LivingServerSettingsUpgrade can still move it in a later build), whatever the developer's install had: their own
+    choices, a diagnostics switch they turned on, or a launcher row (DefaultValue empty). A key without a row stays
+    without one: the server writes its code default (the same value, test_release_server_settings.py) at the first start."""
+    report = {}
+    for key, value in settings.items():
+        changed = con.execute("UPDATE ServerProperty SET Value=?, DefaultValue=? WHERE lower(`Key`)=lower(?)",
+                              (value, value, key)).rowcount
+        report[key] = value if changed else "no row (server default)"
+    con.commit()
+    return report
+
+
+def verify_server_settings(con: sqlite3.Connection, settings: dict) -> dict:
+    """Every switch row present holds its release value, untouched (Value and DefaultValue)."""
+    rows = {k.lower(): (v, d) for k, v, d in con.execute("SELECT `Key`, Value, DefaultValue FROM ServerProperty")}
+    wrong = {key: rows[key.lower()] for key, value in settings.items()
+             if key.lower() in rows and rows[key.lower()] != (value, value)}
+    assert not wrong, f"Living Server switches not at their release value (Value, DefaultValue): {wrong}"
+    return {"checked": sum(key.lower() in rows for key in settings), "without_row": sum(key.lower() not in rows for key in settings)}
 
 
 def set_edition(con: sqlite3.Connection, enabled: bool):
@@ -395,6 +428,8 @@ def main():
     # Crafting 2.0 (1.2): the economy's saved-progress tables must all be emptied (AGENTS.md, protect player data).
     economy = economy_tables(repo)
     check_policy_covers(policy, economy)
+    # Living Server 1.2 (owner 2026-11-16): every feature ships on, whatever the developer's install had.
+    server_settings = release_server_settings(repo)
 
     print("Copying the runtime (personal, diagnostic and run-state files excluded)...", flush=True)
     runtime = out / "runtime"
@@ -409,6 +444,8 @@ def main():
     world = clean_world(database, policy, defaults)
     with closing(sqlite3.connect(database)) as con:
         world["economy_tables"] = verify_tables_empty(con, economy)
+        world["server_settings"] = ship_server_settings(con, server_settings)
+        world["server_settings_check"] = verify_server_settings(con, server_settings)
     world_data = check_world_data(database, repo)
 
     set_auto_account_creation(runtime / "server/config/serverconfig.xml")
@@ -450,6 +487,7 @@ def main():
     no_class = no_custom_class_database(database, edition / "runtime/data/opendaoc.sqlite3.db")
     with closing(sqlite3.connect(edition / "runtime/data/opendaoc.sqlite3.db")) as con:
         no_class["economy_tables"] = verify_tables_empty(con, economy)
+        no_class["server_settings_check"] = verify_server_settings(con, server_settings)
     (edition / "runtime/client-opendaoc/app").mkdir(parents=True, exist_ok=True)
     shutil.copy2(args.edition_game_dll, edition / "runtime/client-opendaoc/app/game.dll")
 

@@ -670,6 +670,32 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **Every Living Server feature is on by default** (owner 2026-11-16: "They should be on by default - all our living
+  server features should be in by default if someone downloads our installer"; this replaces the rule that bot-side
+  switches default off). Tests only: nothing of this change has been seen on the owner's PC.
+  - Now on in the server code, the launcher's defaults and Setup's suggested settings: bot guilds
+    (`bot_guilds_enabled`), bot personalities, the Server life parts that were still off (`bot_living_firsts`, `_death`,
+    `_alarms`, `_nemesis`, `_breaks`, `_body_language`), the real-clock bot schedule (`bot_schedule_mode` = clock), and
+    Crafting 2.0's gamebot side: `bot_crafters`, `bot_craft_orders`, `bot_upkeep`, `bot_luxury_spending`,
+    `bot_siege_supply`, plus WP8's `bot_crafter_commerce` and `bot_crafting_social`. Setup's first install now turns
+    bot crafters and craft orders on too.
+  - Still off, and why: the diagnostics lines (`craft_made_lines`, `econ_trade_lines`); the classic rule options
+    (power halving below 50%, secondary crafting caps, classic quality, classic losses: rules, not features); the
+    five epic encounter options the owner set off until a played check (Funus's weapon puzzle, Galladoria's full fire
+    patches and Easmarach's endless heal, Govannon's full health and full heal); the owner-only
+    `allow_character_deletion`. The Exchange tax stays 0, and the XP-by-level ranges stay rates that Setup sets. The
+    Sluaghbinder edition switch stays per edition.
+  - **An existing world moves once.** At the first start of this build the server changes a switch only where the
+    row still holds the old default the server wrote itself (Value and DefaultValue both the old default; settings
+    version "1.2.0.1"), and logs `Living Server 1.2.0.1: <key> set to the new default`. A value set in the launcher's
+    Living Server tab is kept, and from this build every save in that tab marks its rows as the player's choice
+    (DefaultValue cleared), so a later default change never overrides it.
+  - **Release worlds ship them on.** `build_release_037.py` writes every Living Server switch at its release value
+    (`source/tools/release-server-settings.json`, checked against the code defaults by
+    `test_release_server_settings.py`) into both editions' worlds, whatever the developer's install had, and checks it.
+  - The economy rehearsal's scenarios now start from these defaults (everything on); `today-aged` sets the gamebot
+    switches off to stay the pre-Crafting 2.0 baseline.
+
 - **A bot listing on the Realm Exchange no longer stalls the server while the database writer is busy** (tests only;
   owner's PC, build 1dc66b6, overnight 2026-11-14/15). At 02:38:03 the game loop stopped for 5.6 s: Waffleironer
   (level 50 Midgard Spiritmaster, solo PvE, between tasks in a capital, full backpack) was listing Bodybender Cloth Pants,

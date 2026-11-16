@@ -15,7 +15,7 @@ public sealed record SocialExpansionSettings
     public const string SuggestedPlayerXp = "1-19:3;20-34:5;35-50:12";
     public const string SuggestedBotXp = "1-19:1.5;20-34:2.5;35-50:6";
 
-    public bool BotGuilds { get; init; }
+    public bool BotGuilds { get; init; } = true;
     public int GuildSharePercent { get; init; } = 70;
     public int GuildMinLevel { get; init; } = 5;
     public bool GuildSocial { get; init; } = true;
@@ -25,7 +25,7 @@ public sealed record SocialExpansionSettings
     public bool GuildAlliances { get; init; } = true;
     /// <summary>Gamebots you invite into your guild pay its dues and earn it merit (Living Server 1.1.2). On by default; works with bot guilds off.</summary>
     public bool PlayerGuildEconomy { get; init; } = true;
-    public bool Personalities { get; init; }
+    public bool Personalities { get; init; } = true;
     public bool Voices { get; init; } = true;
     public bool Debates { get; init; } = true;
     /// <summary>How much bots talk unprompted, 0 to 3 (bot_voices_chat_rate). 2 by default from Living Server 1.1.2 (owner
@@ -33,14 +33,14 @@ public sealed record SocialExpansionSettings
     public double ChatRate { get; init; } = 2.0;
     public bool LivingMemory { get; init; } = true;
     public bool LivingGrats { get; init; } = true;
-    public bool LivingFirsts { get; init; }
-    public bool LivingDeath { get; init; }
-    public bool LivingAlarms { get; init; }
-    public bool LivingNemesis { get; init; }
-    /// <summary>off, session or clock (AutonomousBotSchedule).</summary>
-    public string ScheduleMode { get; init; } = "off";
-    public bool LivingBreaks { get; init; }
-    public bool LivingBodyLanguage { get; init; }
+    public bool LivingFirsts { get; init; } = true;
+    public bool LivingDeath { get; init; } = true;
+    public bool LivingAlarms { get; init; } = true;
+    public bool LivingNemesis { get; init; } = true;
+    /// <summary>off, session or clock (AutonomousBotSchedule); clock by default since Living Server 1.2.</summary>
+    public string ScheduleMode { get; init; } = "clock";
+    public bool LivingBreaks { get; init; } = true;
+    public bool LivingBodyLanguage { get; init; } = true;
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
     public bool LivingBeggars { get; init; } = true;
     /// <summary>Some No Lifer bots run a level-50 buffbot that keeps them buffed (NoLiferBuffBots, Living Server 1.2). On by default.</summary>
@@ -90,14 +90,14 @@ public sealed record SocialExpansionSettings
     public bool CraftingClassicLosses { get; init; }
 
     // ---- Crafting 2.0, the gamebots' side and the economy (CraftingEconomyProperties; WP9). Defaults are the server's. ----
-    /// <summary>Crafter-type gamebots join an order, buy materials, craft at stations and sell what they make (bot_crafters). Off by default.</summary>
-    public bool BotCrafters { get; init; }
+    /// <summary>Crafter-type gamebots join an order, buy materials, craft at stations and sell what they make (bot_crafters). On by default since 1.2 (owner 2026-11-16).</summary>
+    public bool BotCrafters { get; init; } = true;
     /// <summary>Percent of NEW gamebots that are Crafters, 0-100 (bot_crafter_share_percent); existing bots keep their stored type.</summary>
     public int BotCrafterSharePercent { get; init; } = DefaultBotCrafterSharePercent;
     /// <summary>xp (the bot XP rate of the crafter's level) or classic (bot_crafting_pace).</summary>
     public string BotCraftingPace { get; init; } = "xp";
-    /// <summary>Gamebots pay crafter gamebots of their realm for an upgrade, coin held until delivery (bot_craft_orders). Off by default; needs bot crafters.</summary>
-    public bool BotCraftOrders { get; init; }
+    /// <summary>Gamebots pay crafter gamebots of their realm for an upgrade, coin held until delivery (bot_craft_orders). On by default since 1.2; needs bot crafters.</summary>
+    public bool BotCraftOrders { get; init; } = true;
     /// <summary>The realm quartermaster's commissions to crafter gamebots: classic, doubled (the default) or off (realm_commissions).</summary>
     public string RealmCommissions { get; init; } = "doubled";
     /// <summary>Realm Exchange posts a crafter gamebot may hold for its own work (bot_crafter_exchange_listings), 3 to 100.</summary>
@@ -138,14 +138,19 @@ public sealed record SocialExpansionSettings
 
     public const double DefaultManaRegenModifier = 1.5, MinManaRegenModifier = 0.25, MaxManaRegenModifier = 10;
 
-    /// <summary>The server's defaults: since Beta 1.1 (the talking update) bot voices, bot memory and grats on, the rest off.</summary>
+    /// <summary>
+    /// The server's defaults. Since Living Server 1.2 (owner 2026-11-16: "all our living server features should be in by
+    /// default if someone downloads our installer") every feature and Server life part is on, with the real-clock schedule;
+    /// off stay the classic rules (power halving, secondary caps, classic quality and losses) and both XP ranges (rates, not
+    /// switches: Setup's <see cref="Recommended"/> sets them).
+    /// </summary>
     public static SocialExpansionSettings Defaults { get; } = new();
 
     /// <summary>
     /// What Setup turns on for a first install (owner 2026-10-28: "every setting turned on and to our suggested level"):
     /// every feature and Server life part on, the suggested XP ranges, and the real-clock bot schedule. The guild share and
-    /// lowest level keep their defaults. Bot crafters and their craft orders stay off (Crafting 2.0's rule: every bot-side
-    /// switch defaults off until it is seen working on the owner's PC); turning them on for new installs is the owner's call.
+    /// lowest level keep their defaults. Bot crafters and their craft orders are on too (owner 2026-11-16, replacing Crafting
+    /// 2.0's earlier rule that every bot-side switch defaults off). Since 1.2 this is <see cref="Defaults"/> plus the XP ranges.
     /// </summary>
     public static SocialExpansionSettings Recommended { get; } = new()
     {
@@ -157,6 +162,7 @@ public sealed record SocialExpansionSettings
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
         LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
+        BotCrafters = true, BotCraftOrders = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -181,7 +187,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_death", "bots", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness."),
         ("bot_living_alarms", "bots", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes."),
         ("bot_living_nemesis", "bots", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted."),
-        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster (today's behavior); session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
+        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default since Living Server 1.2) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them)."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
@@ -679,11 +685,13 @@ public sealed record SocialExpansionSettings
                 var setting = Settings.Single(s => s.Key == key);
                 using var command = connection.CreateCommand();
                 command.Transaction = transaction;
-                // ServerProperty_ID is unique, so new rows use the key, as the server's own rows do.
+                // ServerProperty_ID is unique, so new rows use the key, as the server's own rows do. DefaultValue '' marks the
+                // row as the player's choice, on an update too (from 1.2), so the server's settings upgrade
+                // (LivingServerSettingsUpgrade) never moves it to a later changed default.
                 command.CommandText = """
                     INSERT INTO ServerProperty (Category, `Key`, Description, DefaultValue, Value, LastTimeRowUpdated, ServerProperty_ID)
                     VALUES (@category, @key, @description, '', @value, @updated, @key)
-                    ON CONFLICT(`Key`) DO UPDATE SET Value=excluded.Value, LastTimeRowUpdated=excluded.LastTimeRowUpdated
+                    ON CONFLICT(`Key`) DO UPDATE SET Value=excluded.Value, DefaultValue='', LastTimeRowUpdated=excluded.LastTimeRowUpdated
                     """;
                 command.Parameters.AddWithValue("@category", setting.Category);
                 command.Parameters.AddWithValue("@key", key);

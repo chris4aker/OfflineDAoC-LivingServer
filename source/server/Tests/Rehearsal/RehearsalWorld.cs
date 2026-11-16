@@ -22,7 +22,10 @@ namespace DOL.GS.Tests.Rehearsal
         public const int Day = 1_440;
         public const int Week = 10_080;
 
-        /// <summary>The plan's defaults (CRAFTING-2.0-BUILD-PLAN 2.4), and the package that first reads each one.</summary>
+        /// <summary>
+        /// The shipped defaults (CRAFTING-2.0-BUILD-PLAN 2.4; every gamebot switch on since the owner's 2026-11-16 rule), and the
+        /// package that first reads each one.
+        /// </summary>
         public static readonly IReadOnlyDictionary<string, (string Default, string Package)> Known =
             new Dictionary<string, (string, string)>(StringComparer.OrdinalIgnoreCase)
             {
@@ -33,15 +36,15 @@ namespace DOL.GS.Tests.Rehearsal
                 ["player_coin_by_level"] = ("True", "WP3"),
                 ["crafting_classic_quality"] = ("False", "WP1"),
                 ["crafting_classic_losses"] = ("False", "WP1"),
-                ["bot_crafters"] = ("False", "WP4"),
-                ["bot_craft_orders"] = ("False", "WP5"),
+                ["bot_crafters"] = ("True", "WP4"),
+                ["bot_craft_orders"] = ("True", "WP5"),
                 ["bot_crafter_share_percent"] = ("7", "WP4"),
                 ["bot_crafting_pace"] = ("xp", "WP4"),
                 ["realm_commissions"] = ("doubled", "WP5"),
                 ["exchange_tax_percent"] = ("0", "WP5"),
-                ["bot_upkeep"] = ("False", "WP7"),
-                ["bot_luxury_spending"] = ("False", "WP7"),
-                ["bot_siege_supply"] = ("False", "WP7"),
+                ["bot_upkeep"] = ("True", "WP7"),
+                ["bot_luxury_spending"] = ("True", "WP7"),
+                ["bot_siege_supply"] = ("True", "WP7"),
                 ["bot_crafter_chat_rate"] = ("1.0", "WP4"),
                 ["bot_crafter_exchange_listings"] = ("6", "WP5"),
                 ["launcher_level50_kit"] = ("True", "WP9"),
@@ -75,11 +78,17 @@ namespace DOL.GS.Tests.Rehearsal
 
         public RehearsalScenario Named(string name) => this with { Name = name };
 
-        // The plan's scenarios (3.2). "Today" is the economy as it is, every bot-side switch off.
-        public static RehearsalScenario Today(int realms = 3, int bots = 1000, int minutes = Week, int seed = 1) =>
-            new("today-aged", realms, bots, minutes, seed, Aged: true);
+        /// <summary>The gamebot switches "today" turns off (the economy before Crafting 2.0).</summary>
+        public static readonly string[] BotSideSwitches =
+            ["bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply"];
 
-        /// <summary>Fresh start: everyone level 1, crafters on with the 7% share at creation.</summary>
+        // The plan's scenarios (3.2). "Today" is the economy before Crafting 2.0, every bot-side switch off (set here, since the
+        // defaults are on from 2026-11-16); the others start from the shipped defaults, so they rehearse everything on.
+        public static RehearsalScenario Today(int realms = 3, int bots = 1000, int minutes = Week, int seed = 1) =>
+            BotSideSwitches.Aggregate(new RehearsalScenario("today-aged", realms, bots, minutes, seed, Aged: true),
+                (scenario, key) => scenario.With(key, "False"));
+
+        /// <summary>Fresh start: everyone level 1, every switch at its default (all on), the 7% share at creation.</summary>
         public static RehearsalScenario FreshStart(int realms = 3, int bots = 1000, int minutes = Week, int seed = 1) =>
             new RehearsalScenario("fresh-7pct", realms, bots, minutes, seed, Aged: false).With("bot_crafters", "True");
 
@@ -94,8 +103,13 @@ namespace DOL.GS.Tests.Rehearsal
             AgedLegacy(realms, bots, minutes, seed).With("exchange_tax_percent", percent.ToString(CultureInfo.InvariantCulture))
                 .Named($"tax-{percent}");
 
-        public static RehearsalScenario Upkeep(bool on, int realms = 3, int bots = 1000, int minutes = Week, int seed = 1) =>
-            AgedLegacy(realms, bots, minutes, seed).With("bot_upkeep", on ? "True" : "False").Named(on ? "upkeep-on" : "upkeep-off");
+        /// <summary>upkeep-on: the aged world with every WP7 switch on (the defaults); upkeep-off: every WP7 switch off.</summary>
+        public static RehearsalScenario Upkeep(bool on, int realms = 3, int bots = 1000, int minutes = Week, int seed = 1)
+        {
+            string value = on ? "True" : "False";
+            return AgedLegacy(realms, bots, minutes, seed).With("bot_upkeep", value).With("bot_luxury_spending", value)
+                .With("bot_siege_supply", value).Named(on ? "upkeep-on" : "upkeep-off");
+        }
 
         public static IEnumerable<RehearsalScenario> PlanScenarios(int realms = 3, int bots = 1000, int minutes = Week, int seed = 1)
         {

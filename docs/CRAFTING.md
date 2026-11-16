@@ -101,20 +101,25 @@ Server keys, for helper scripts: `crafting_era_start`, `crafting_skill_rate`, `p
 ## Bot crafters and the economy (launcher, Living Server tab)
 
 The card below the Crafting card. Like the rest of the tab, changes take effect at the next server start. Only
-autonomous gamebots craft and trade under these settings; your /spawn companions never do. **Tests only:** none of
-the bot side has been seen in game yet.
+autonomous gamebots craft and trade under these settings; your /spawn companions never do. Every bot-side switch is
+on by default since 1.2 (owner 2026-11-16: "all our living server features should be in by default if someone
+downloads our installer"); only the diagnostics lines (`craft_made_lines`, `econ_trade_lines`) stay off. **Tests
+only:** none of the bot side has been seen in game yet.
 
 | Setting | Default | What it does |
 |---|---|---|
-| Bot crafters | Off | Crafter gamebots join an order, buy real materials, work at the capital's stations and sell what they make. Off: no gamebot crafts |
+| Bot crafters | On | Crafter gamebots join an order, buy real materials, work at the capital's stations and sell what they make. Off: no gamebot crafts |
 | Crafters among new bots | 7% | Share of new gamebots that are Crafters; existing bots keep their type |
 | Bot crafting pace | Bot XP rate | Points per gain follow the bot XP multiplier of the crafter's level; Classic: one point |
-| Craft orders | Off | Gamebots pay a crafter of their realm for an upgrade, the coin held until the piece is handed over. Needs bot crafters |
+| Craft orders | On | Gamebots pay a crafter of their realm for an upgrade, the coin held until the piece is handed over. Needs bot crafters |
 | Realm commissions | Doubled | The quartermaster's orders to crafter bots: Classic 30 a realm an hour, Doubled 60, Off |
 | A crafter's Exchange posts | 6 | Realm Exchange posts a crafter bot may hold for its own work (3 to 100; other bots hold 3) |
 | Crafters' chat | 1× | Crafters' trade and station chat, 0 (silent) to 3 |
 | Realm Exchange tax | 0% | Kept from the seller's proceeds of each Exchange sale, yours and the bots' (0 to 50; 5 is the classic option) |
 | Economy ledger | On | Counts each realm's coin, faucets and sinks once an hour (log lines and one row an hour). Changes no amount |
+| Bot upkeep (server setting `bot_upkeep`, not in the tab) | On | Gamebots' gear wears like a player's and they pay for repairs, potions and poisons. Needs bot crafters |
+| Luxury spending (server setting `bot_luxury_spending`) | On | Rich gamebots spend part of their surplus on real goods and services. Needs bot crafters |
+| Siege supply (server setting `bot_siege_supply`) | On | Siegecrafter gamebots supply siege engines and kits below the merchant price. Needs bot crafters |
 | Level-50 kit and gold | On | "+ Lv.50" bots arrive with the quality-100 kit and 10,000 gold. Off (a fresh-start world): no kit, a 25-gold purse, and plain merchant gear for their level from the server at their first login |
 
 **ECONOMY PAGE** writes and opens `runtime\herald\economy.html`: each realm's money supply, the last 24 recorded hours
@@ -125,7 +130,8 @@ and the kit as they are.
 
 Server keys: `bot_crafters`, `bot_crafter_share_percent`, `bot_crafting_pace` (xp / classic), `bot_craft_orders`,
 `realm_commissions` (classic / doubled / off), `bot_crafter_exchange_listings`, `bot_crafter_chat_rate`,
-`exchange_tax_percent`, `economy_ledger_enabled`, `launcher_level50_kit` (read by the launcher).
+`exchange_tax_percent`, `economy_ledger_enabled`, `launcher_level50_kit` (read by the launcher), `bot_upkeep`,
+`bot_luxury_spending`, `bot_siege_supply`. Diagnostics, off: `craft_made_lines`, `econ_trade_lines`.
 
 ## Updating a world from 1.1.4
 
@@ -147,6 +153,10 @@ Your world keeps every character's crafting. Exactly what you see:
   range), a monster drops ten times its coin for you. Switch Coin by level off in the tab for the old coin.
 - Secondary caps, classic quality and classic losses are off, and the crafting pace is 1, so crafting itself plays as
   before until you change them.
+- **Bot crafters, craft orders, bot upkeep, luxury spending and siege supply come on** at the first start of 1.2, and
+  so do bot guilds, bot personalities, the Server life parts that were off and the real-clock bot schedule. The server
+  changes only a setting the world still holds at the old default it wrote itself; one you set in the launcher's
+  Living Server tab is kept. The log says `Living Server 1.2.0.1: <key> set to the new default ...` for each one.
 
 ## Buying from crafter gamebots
 

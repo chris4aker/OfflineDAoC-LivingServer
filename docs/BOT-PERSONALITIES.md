@@ -12,7 +12,7 @@ from the always-on changes listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 | Setting (`ServerProperty`, category `bots`) | Default | What it does |
 |---|---|---|
-| `bot_personalities_enabled` | False | Personality types and traits tilt how bots spend their time (section 2). |
+| `bot_personalities_enabled` | True (since 1.2; False before) | Personality types and traits tilt how bots spend their time (section 2). |
 | `bot_voices_enabled` | True (since Beta 1.1) | Bots say lines from the bot-voices corpus in their own writing style (section 3). |
 | `bot_voices_debates` | True | When voices are on, bots hold debates and long threads in /faction (section 4). |
 | `bot_voices_tells` | True | When voices and memory are on, a bot now and then starts a tell with you ([bot-voices/TALKING-UPDATE.md](bot-voices/TALKING-UPDATE.md)). |

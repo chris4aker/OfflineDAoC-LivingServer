@@ -245,14 +245,15 @@ namespace DOL.UnitTests
         });
 
         [Test]
-        public void EverySwitchIsOffByDefaultAndNeedsCrafters()
+        public void EverySwitchIsOnByDefaultAndNeedsCrafters()
         {
+            // Owner 2026-11-16: every Living Server feature on by default (WP7 built them off).
             Assert.That(typeof(CraftingEconomyProperties).GetField(nameof(CraftingEconomyProperties.BOT_UPKEEP))
-                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(false));
+                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(true));
             Assert.That(typeof(CraftingEconomyProperties).GetField(nameof(CraftingEconomyProperties.BOT_LUXURY_SPENDING))
-                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(false));
+                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(true));
             Assert.That(typeof(CraftingEconomyProperties).GetField(nameof(CraftingEconomyProperties.BOT_SIEGE_SUPPLY))
-                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(false));
+                .GetCustomAttribute<DOL.GS.ServerProperties.ServerPropertyAttribute>().DefaultValue, Is.EqualTo(true));
             CraftingEconomyProperties.BOT_CRAFTERS = false;
             CraftingEconomyProperties.BOT_UPKEEP = CraftingEconomyProperties.BOT_LUXURY_SPENDING = CraftingEconomyProperties.BOT_SIEGE_SUPPLY = true;
             Assert.That(BotSinks.UpkeepOn || BotSinks.LuxuryOn || BotSinks.SiegeSupplyOn, Is.False, "each needs bot_crafters");

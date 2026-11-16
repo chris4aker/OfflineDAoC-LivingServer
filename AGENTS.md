@@ -66,6 +66,18 @@ In a playable folder:
   - selling only at natural task breaks
   - gamebots start without armor and earn it
   - Darkness Falls is open to solo bots
+- **Living Server features are on by default.** Owner, 2026-11-16: "They should be on by default - all our living
+  server features should be in by default if someone downloads our installer". This replaces the earlier rule that
+  bot-side switches default off.
+  - A switch for a player-facing feature defaults on in the server code, in the launcher's
+    `SocialExpansionSettings.Defaults` and `Recommended`, and in `source/tools/release-server-settings.json` (what
+    `build_release_037.py` writes into the shipped world).
+  - When a default changes, add a `LivingServerSettingsUpgrade` line. Worlds that ran an earlier build then move once,
+    only where the row still holds the untouched old default.
+  - Only these stay off: diagnostics and verbose log switches, test-only switches, anything this file forbids
+    shipping, anything that changes the gameplay rules above, the classic rule options (power halving, secondary caps,
+    classic quality and losses) and the owner's epic encounter options. The Sluaghbinder edition switch stays
+    edition-specific.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**

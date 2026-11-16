@@ -45,7 +45,9 @@ namespace DOL.GS.Tests
         public void TheSinksRunOnlyWithCraftersAndASwitch()
         {
             Assert.That(RehearsalModules.For(RehearsalScenario.Today()).Select(m => m.Id), Does.Not.Contain(WP7Sinks.ModuleId));
-            Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy()).Select(m => m.Id), Does.Not.Contain(WP7Sinks.ModuleId),
+            Assert.That(RehearsalModules.For(RehearsalScenario.AgedLegacy()).Select(m => m.Id), Does.Contain(WP7Sinks.ModuleId),
+                "every switch at its default: crafters and every sink on (owner 2026-11-16)");
+            Assert.That(RehearsalModules.For(RehearsalScenario.Upkeep(false)).Select(m => m.Id), Does.Not.Contain(WP7Sinks.ModuleId),
                 "crafters on, every sink off");
             Assert.That(RehearsalModules.For(RehearsalScenario.Upkeep(true)).Select(m => m.Id), Does.Contain(WP7Sinks.ModuleId));
             Assert.That(RehearsalModules.For(RehearsalScenario.Today().With("bot_upkeep", "True")).Select(m => m.Id), Does.Not.Contain(WP7Sinks.ModuleId),

@@ -2477,7 +2477,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Autonomous gamebots form realm guilds, carry guild names and can be invited into a player's guild.
 		/// </summary>
-		[ServerProperty("guild", "bot_guilds_enabled", "Autonomous gamebots form and join realm guilds (see docs/BOT-GUILDS.md), and players can /ginvite them. False keeps every gamebot guildless; saved memberships are kept.", false)]
+		[ServerProperty("guild", "bot_guilds_enabled", "Autonomous gamebots form and join realm guilds (see docs/BOT-GUILDS.md), and players can /ginvite them. False keeps every gamebot guildless; saved memberships are kept. On by default since Living Server 1.2 (owner 2026-11-16).", true)]
 		public static bool BOT_GUILDS_ENABLED;
 
 		/// <summary>
@@ -2532,7 +2532,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Autonomous gamebots have personality types and traits that tilt how they spend their time.
 		/// </summary>
-		[ServerProperty("bots", "bot_personalities_enabled", "Autonomous gamebots get a personality (Leveler, Socialite, Daredevil, Explorer, Crafter, No-lifer) and traits, fixed from their id, that tilt town breaks, solo versus group goals, dungeon choice, camp choice and how often they talk (see docs/BOT-PERSONALITIES.md). Hard rules never change. False keeps today's behavior.", false)]
+		[ServerProperty("bots", "bot_personalities_enabled", "Autonomous gamebots get a personality (Leveler, Socialite, Daredevil, Explorer, Crafter, No-lifer) and traits, fixed from their id, that tilt town breaks, solo versus group goals, dungeon choice, camp choice and how often they talk (see docs/BOT-PERSONALITIES.md). Hard rules never change. On by default since Living Server 1.2 (owner 2026-11-16); False keeps the bots without personalities.", true)]
 		public static bool BOT_PERSONALITIES_ENABLED;
 
 		/// <summary>
@@ -2596,7 +2596,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", LIVING_SERVER_SETTINGS_VERSION_KEY, "Living Server: the build whose new defaults were last applied to this world's saved settings (set by the server; leave it alone).", "")]
 		public static string LIVING_SERVER_SETTINGS_VERSION;
 
-		// ---- Server life (docs/LIVING-SERVER.md). Every part is off by default. ----
+		// ---- Server life (docs/LIVING-SERVER.md). Every part is on by default since Living Server 1.2 (owner 2026-11-16: "all our
+		// living server features should be in by default if someone downloads our installer"); worlds that ran an earlier build
+		// move once where the row still holds the untouched old default (LivingServerSettingsUpgrade). ----
 
 		/// <summary>Bots remember the player: greetings by name, thanks for a rez or a group, gossip, grudges.</summary>
 		[ServerProperty("bots", "bot_living_memory", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. On by default since Beta 1.1. False keeps today's bots.", true)]
@@ -2607,31 +2609,31 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_LIVING_GRATS;
 
 		/// <summary>Realm-wide announcements of server firsts, recorded for the Herald.</summary>
-		[ServerProperty("bots", "bot_living_firsts", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald.", false)]
+		[ServerProperty("bots", "bot_living_firsts", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald.", true)]
 		public static bool BOT_LIVING_FIRSTS;
 
 		/// <summary>Rez requests and thanks, bots rezzing you, corpse runs and resurrection sickness chatter.</summary>
-		[ServerProperty("bots", "bot_living_death", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness.", false)]
+		[ServerProperty("bots", "bot_living_death", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness.", true)]
 		public static bool BOT_LIVING_DEATH;
 
 		/// <summary>Player-style enemy sightings in /faction from bots in the frontier.</summary>
-		[ServerProperty("bots", "bot_living_alarms", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes.", false)]
+		[ServerProperty("bots", "bot_living_alarms", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes.", true)]
 		public static bool BOT_LIVING_ALARMS;
 
 		/// <summary>Bots remember who killed them in RvR, call them out and celebrate revenge.</summary>
-		[ServerProperty("bots", "bot_living_nemesis", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted.", false)]
+		[ServerProperty("bots", "bot_living_nemesis", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted.", true)]
 		public static bool BOT_LIVING_NEMESIS;
 
 		/// <summary>When bots are online: the whole roster (off), shaped around your session, or by the real clock.</summary>
-		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off = the whole roster (today's behavior); session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "off")]
+		[ServerProperty("bots", "bot_schedule_mode", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default since Living Server 1.2) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight).", "clock")]
 		public static string BOT_SCHEDULE_MODE;
 
 		/// <summary>Bots take short breaks (brb) and now and then go linkdead and come back.</summary>
-		[ServerProperty("bots", "bot_living_breaks", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march.", false)]
+		[ServerProperty("bots", "bot_living_breaks", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march.", true)]
 		public static bool BOT_LIVING_BREAKS;
 
 		/// <summary>Idle bots look around, emote, shift their feet, wave at you and cheer a ding nearby.</summary>
-		[ServerProperty("bots", "bot_living_body_language", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them).", false)]
+		[ServerProperty("bots", "bot_living_body_language", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them).", true)]
 		public static bool BOT_LIVING_BODY_LANGUAGE;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>

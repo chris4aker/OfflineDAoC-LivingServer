@@ -24,13 +24,13 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 |---|---|---|
 | Bots remember you | `bot_living_memory` | True (since Beta 1.1) |
 | Grats | `bot_living_grats` | True (since Beta 1.1) |
-| Server firsts | `bot_living_firsts` | False |
-| Rezzes and corpse runs | `bot_living_death` | False |
-| Frontier alarms | `bot_living_alarms` | False |
-| Nemeses | `bot_living_nemesis` | False |
-| Bot schedule | `bot_schedule_mode` | `off` (also `session`, `clock`) |
-| Breaks and linkdeads | `bot_living_breaks` | False |
-| Body language | `bot_living_body_language` | False |
+| Server firsts | `bot_living_firsts` | True (since 1.2) |
+| Rezzes and corpse runs | `bot_living_death` | True (since 1.2) |
+| Frontier alarms | `bot_living_alarms` | True (since 1.2) |
+| Nemeses | `bot_living_nemesis` | True (since 1.2) |
+| Bot schedule | `bot_schedule_mode` | `clock` since 1.2 (also `off`, `session`) |
+| Breaks and linkdeads | `bot_living_breaks` | True (since 1.2) |
+| Body language | `bot_living_body_language` | True (since 1.2) |
 | Beggars | `bot_living_beggars` | True |
 | Deeds and reputation | `bot_living_deeds` | True |
 | Storylines | `bot_living_storylines` | True |
@@ -41,7 +41,10 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
 | Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 = the game's prices (1.2; server keys only, not in the launcher tab yet) |
 
-**ALL OFF** in the tab switches every part off, along with the other Living Server features.
+Every part is on by default since 1.2 (owner 2026-11-16: "all our living server features should be in by default if
+someone downloads our installer"). A world from an earlier build moves once, only where a row still holds the old
+default the server wrote; a value set in the tab is kept. **ALL OFF** in the tab switches every part off, along with
+the other Living Server features.
 
 ## What each part does
 
@@ -146,11 +149,11 @@ Each character gets at most one grats chain every 20 seconds. This is separate f
   with this switch on, one-kill rows older than a week are forgotten at server start.
 
 ### Bot schedule (`bot_schedule_mode`)
-- `off` (default): every bot stays online, as before.
+- `off`: every bot stays online (the default before 1.2).
 - `session`: each bot plays sessions of 1–4 hours, with 20 minutes to 2 hours away. Timing is
   counted from server start. About two-thirds of the roster is online at any time.
   - No-lifers play longer and are away less; Socialites play a little longer.
-- `clock`: follows your PC's clock like a 2002 North American server.
+- `clock` (the default since 1.2): follows your PC's clock like a 2002 North American server.
   - About 95% of the roster is online from 8 to 10 p.m.
   - About 20% at 4–5 a.m.
   - Weekends (from Friday 6 p.m.) are busier in the daytime.
@@ -485,7 +488,7 @@ replies counted apart. A tell to a bot, or a line naming one, is always answered
 
 Automated (no running world):
 - **Server, `UT_AutonomousLivingServer`:**
-  - defaults are off;
+  - every part is on by default (since 1.2), and the schedule is clock;
   - schedule parsing, session lengths and online share, and how often a bot's state changes;
   - the clock curve and that clock mode keeps the same bots online;
   - mood rules, alarm head counts, race and realm words, first claims;

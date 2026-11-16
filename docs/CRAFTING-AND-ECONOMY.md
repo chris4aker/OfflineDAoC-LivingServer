@@ -213,8 +213,9 @@ number is an assumption-driven model to be recalibrated from live logs (M0).
 
 Every facet, with the era rule, what exists, what is new for the player, what is new for the bots, and its switch.
 "Ledger" means a realm-level model (skills, coins, stock) with real items made only when someone equips, sells or
-receives them; "in world" means a bot visibly does it. Everything bot-side is off by default with a switch in the
-launcher's Living Server tab.
+receives them; "in world" means a bot visibly does it. Everything bot-side has a switch, and every switch is on by
+default since 2026-11-16 (owner: "all our living server features should be in by default if someone downloads our
+installer"; only the diagnostics lines and the classic rule options stay off).
 
 | # | Facet | Era rule | Exists today | New: player | New: bots | Switch |
 |---|---|---|---|---|---|---|
@@ -491,4 +492,5 @@ Corrections found while building WP0 (the sections above are left as written on 
 listings, not 1; the `Repair.cs` division and the `Salvage` type mutation are already fixed in our tree; the "19%
 broken recipes" is a case-sensitive audit (2 broken ignoring case, survey 2026-11-15); the Exchange tax is built
 with a default of 0, 5% as the documented option (owner 2026-11-15, decision 7); `bot_upkeep`, `bot_luxury_spending`
-and `bot_siege_supply` default off; the player pace key is True165's `crafting_skill_rate`.
+and `bot_siege_supply` default off (on since 2026-11-16, like every bot-side switch; the "Off by default" notes in the
+build table above are as each package was built); the player pace key is True165's `crafting_skill_rate`.
