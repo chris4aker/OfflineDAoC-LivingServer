@@ -120,7 +120,9 @@ code map confirmed every line below):
   `market_fee_percent` 20 (housing market only). **No skill-gain multiplier exists.** The random-drop rate is a
   **code constant** (`ROGMobGenerator.BASE_ROG_CHANCE = 14`, +10 solo), and the Exchange has **no fee setting**.
 - **The world data** (0.35 world, 2026-10-11): **8,479 `CraftedItem` recipes, 1,606 unusable** (a missing
-  ingredient or product row, about 19%). The database isn't in Git; per-skill counts need the PC.
+  ingredient or product row, about 19%). The database isn't in Git; per-skill counts need the PC. **Corrected by M0
+  (2026-11-15):** that was a case-sensitive count; the server ignores case and finds 2 broken recipes in the 0.37b
+  world ([CRAFTING-M0-FINDINGS.md](CRAFTING-M0-FINDINGS.md)), and both bugs below are fixed there (tests only).
 - **Two bugs to fix before anything else:** `RecipeDB.FindBy` calls `SetRecommendedProductPriceInDB` on a null
   recipe when `crafting_adjust_product_price` is on (`Recipe.cs:136-141`), so turning that setting on with 19%
   broken recipes will throw; and `Repair.IsAllowedToBeginWork` has an integer division that makes its skill gate
@@ -443,10 +445,42 @@ M1 is small enough to ship early (even in 1.2) if the owner wants crafting pace 
 
 ## 14. What this file does not know
 
-- The current recipe count and the broken rows on the 0.37 world (M0).
-- Whether housing zones and the consignment merchants exist in this world.
-- Real kill speed, coin per hour and how often live bots reach the Exchange (M0 measures).
+The M0 static audit (2026-11-15) answered the first three questions as far as data, code and logs can:
+**[CRAFTING-M0-FINDINGS.md](CRAFTING-M0-FINDINGS.md)**. In short: the "19% broken" of section 3.1 was a case-sensitive
+count (1,608); the server ignores case and finds **2** broken recipes, plus 38 statless products it now hides and 8
+products with the wrong realm (a proposed world update fixes 10 of these 48); housing regions, lots, deeds and Market
+Explorers are present (no consignment merchant is placed until a house owner places one); kill rates and Exchange
+purchase rates are measured, but no log line records coin flows. Still unknown:
+
+- Anything in game: crafting the fixed recipes, housing and consignment on 0.37b, the "cannot be made" message.
+- Real coin per hour and Exchange listings and sales (the logs have no coin or listing lines; M3 adds them).
 - Whether template-aware valuation can be added without bots undressing (a test, then an overnight run).
 - Whether the roster design (bot players with alts and a shared purse) is built; the crafter-as-alt rule depends
   on it.
 - Whether a crowd of crafters at a forge reads as a living city or as furniture: only play answers it.
+
+## 15. Build status
+
+The build plan is [CRAFTING-2.0-BUILD-PLAN.md](CRAFTING-2.0-BUILD-PLAN.md) (2026-11-15). It ports DividedRealms' bot
+crafting and craft orders and True165's ledger, valuation, wear and pace where they fit (its §1). Each package edits
+only its own row. "Tests only" means automated tests; nothing counts as working until seen in a log on the owner's PC.
+
+| Package | Status | Seen in game |
+|---|---|---|
+| WP0 Foundation (rules, contracts, seams, tables, settings, log format) | Built on `craft/wp0-foundation`, into `integration/2.0`. Changes no behaviour: every seam's default is today's code; no setting is read yet. Tests only | Nothing to see |
+| WP1 Crafting core and M0 fixes | Not started | — |
+| WP2 Economy ledger | Not started | — |
+| WP3 Player side (M1) | Not started | — |
+| WP4 Bot crafters (M2) | Not started | — |
+| WP5 Market | Not started | — |
+| WP6 Demand (M3) | Not started | — |
+| WP7 Sinks (M5) | Not started | — |
+| WP8 Commerce and social (M4, M6) | Not started | — |
+| WP9 Launcher | Not started | — |
+| WP10 Rehearsal | Not started | — |
+
+Corrections found while building WP0 (the sections above are left as written on 2026-10-30): a bot holds 3 Exchange
+listings, not 1; the `Repair.cs` division and the `Salvage` type mutation are already fixed in our tree; the "19%
+broken recipes" is a case-sensitive audit (2 broken ignoring case, survey 2026-11-15); the Exchange tax is built
+with a default of 0, 5% as the documented option (owner 2026-11-15, decision 7); `bot_upkeep`, `bot_luxury_spending`
+and `bot_siege_supply` default off; the player pace key is True165's `crafting_skill_rate`.

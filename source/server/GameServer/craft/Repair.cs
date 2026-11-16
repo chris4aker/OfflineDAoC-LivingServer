@@ -187,13 +187,24 @@ namespace DOL.GS
 			eCraftingSkill skill = CraftingMgr.GetSecondaryCraftingSkillToWorkOnItem(item);
 			if (skill == eCraftingSkill.NoCrafting) return 0;
 
-			int chancePercent = (int)((90 / (CraftingMgr.GetItemCraftLevel(item) * 0.5)) * player.GetCraftingSkillValue(skill)) - 80; // 50% = 10% chance, 100% = 100% chance
-			if (chancePercent > 100)
-				chancePercent = 100;
-			else if (chancePercent < 0)
-				chancePercent = 0;
+			return RepairChancePercent(player.GetCraftingSkillValue(skill), CraftingMgr.GetItemCraftLevel(item));
+		}
 
-			return chancePercent;
+		/// <summary>
+		/// The chance to repair an item: 10% at half its craft level, 100% at its craft level. 2026-11-15: the formula
+		/// divided by craftLevel * 0.5 in doubles, so a craft level of 0 or less (a level-0 weapon is -5) gave infinity or
+		/// a negative slope, and the cast to int of infinity or NaN is not a percent. Such an item is trivial: 100%.
+		/// </summary>
+		public static int RepairChancePercent(int skill, int craftLevel)
+		{
+			if (craftLevel <= 0)
+				return 100;
+
+			if (skill <= 0)
+				return 0;
+
+			double chance = 90.0 / (craftLevel * 0.5) * skill - 80; // 50% = 10% chance, 100% = 100% chance
+			return (int)Math.Clamp(chance, 0, 100);
 		}
 
 		public static bool ModifyConditionAndDurability(DbInventoryItem item)
@@ -323,14 +334,18 @@ namespace DOL.GS
 		/// </summary>
 		protected static int CalculateSuccessChances(GamePlayer player, GameSiegeWeapon siegeWeapon)
 		{
-			player.GetCraftingSkillValue(eCraftingSkill.WoodWorking);
-			int chancePercent = 90 - 50 / player.GetCraftingSkillValue(eCraftingSkill.WoodWorking);
+			return SiegeRepairChancePercent(player.GetCraftingSkillValue(eCraftingSkill.WoodWorking));
+		}
 
-			if (chancePercent > 100)
-				chancePercent = 100;
-			else if (chancePercent < 0)
-				chancePercent = 0;
-			return chancePercent;
+		/// <summary>
+		/// The chance to repair a siege weapon: 90 - 50 / woodworking, integer division as written (40% at 1, 65% at 2,
+		/// 90% from 51). 2026-11-15: a woodworking of 0 threw DivideByZeroException in the repair timer; an untrained skill
+		/// (-1) gave 140, clamped to 100. Both now count as 1, the lowest trained value.
+		/// </summary>
+		public static int SiegeRepairChancePercent(int woodworking)
+		{
+			int skill = Math.Max(1, woodworking);
+			return Math.Clamp(90 - 50 / skill, 0, 100);
 		}
 
 		#endregion

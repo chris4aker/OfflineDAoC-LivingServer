@@ -26,6 +26,29 @@ def processes():
     return data if isinstance(data, list) else [data]
 
 
+def log_tail(log, lines=40):
+    """The last lines of the server console log, so a failed start shows why in the CI output."""
+    try:
+        text = Path(log).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError as e:
+        return f"(no server log: {e})"
+    return "\n".join(text[-lines:]) if text else "(the server log is empty)"
+
+
+def wait_for_startup(server, log, timeout=600, poll=2):
+    """Waits for "GameServer startup completed" in the log. Raises RuntimeError with the log's tail if the server exits
+    or the time runs out."""
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if server.poll() is not None:
+            raise RuntimeError(f"Server exited during startup (exit code {server.returncode}); see {log}. "
+                               f"Its last lines:\n{log_tail(log)}")
+        if "GameServer startup completed" in Path(log).read_text(encoding="utf-8", errors="replace"):
+            return
+        time.sleep(poll)
+    raise RuntimeError(f"Startup timeout after {timeout} s; see {log}. Its last lines:\n{log_tail(log)}")
+
+
 def main():
     package, test = Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()
     edition = sys.argv[4] if len(sys.argv) > 4 and sys.argv[3] == "--edition" else "sluaghbinder"
@@ -62,15 +85,7 @@ def main():
         server = subprocess.Popen([str(test / "server/CoreServer.exe")], cwd=test / "server", env=env, stdin=subprocess.PIPE,
                                   stdout=output, stderr=subprocess.STDOUT, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
         try:
-            deadline = time.monotonic() + 600
-            while time.monotonic() < deadline:
-                if server.poll() is not None:
-                    raise RuntimeError("Server exited during startup; see " + str(log))
-                if "GameServer startup completed" in log.read_text(encoding="utf-8", errors="replace"):
-                    break
-                time.sleep(2)
-            else:
-                raise RuntimeError("Startup timeout")
+            wait_for_startup(server, log)
             print("PASS: server started with only the bundled .NET", flush=True)
             app = runtime / "client-opendaoc/app"
             before = {p["ProcessId"] for p in processes()}
@@ -89,7 +104,7 @@ def main():
                     break
                 time.sleep(2)
             else:
-                raise RuntimeError("ENTER REALM login did not create the account")
+                raise RuntimeError(f"ENTER REALM login did not create the account; the server log's last lines:\n{log_tail(log)}")
             print(f"PASS: ENTER REALM login created the fresh '{account}' account (player privilege); "
                   f"enable_sluaghbinder={edition_value[0] if edition_value else 'missing'}", flush=True)
         finally:

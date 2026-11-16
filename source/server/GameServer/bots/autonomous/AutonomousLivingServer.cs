@@ -70,6 +70,8 @@ public static partial class AutonomousLivingServer
         // Rows of characters that were deleted are forgotten too (audit 2026-10-17). Once, at start-up.
         if (MemoryOn && Memories.Count > 0 || NemesisOn && Nemeses.Count > 0)
             Load("rows of deleted characters", PruneDeletedCharacters);
+        // A seam (Crafting 2.0 WP0): the economy packages' stores load here (none registered by default).
+        DOL.GS.CraftingEconomy.EconomyLifecycle.LoadAll(Load);
         GameEventMgr.AddHandler(GamePlayerEvent.LevelUp, new DOLEventHandler(OnPlayerLevelUp));
         GameEventMgr.AddHandler(GamePlayerEvent.RRLevelUp, new DOLEventHandler(OnPlayerRealmRankUp));
         GameEventMgr.AddHandler(GameLivingEvent.Dying, new DOLEventHandler(OnLivingDying));
@@ -133,6 +135,7 @@ public static partial class AutonomousLivingServer
         Memories.Flush(wait);
         Nemeses.Flush(wait);
         Firsts.Flush(wait);
+        DOL.GS.CraftingEconomy.EconomyLifecycle.FlushAll(wait);
     }
 
     #region Pruning (start-up and the flush timer, never the game loop; deletes go through the batched writer)
@@ -218,6 +221,8 @@ public static partial class AutonomousLivingServer
             AutonomousTales.Pulse(now);
             // The play test's sweep (/epictest sweep): nothing unless a GM started one.
             EpicPlaytestSweep.Pulse(now);
+            // The economy packages' stores (Crafting 2.0 WP0 seam; none registered by default).
+            DOL.GS.CraftingEconomy.EconomyLifecycle.PulseAll(now);
         }
         catch (Exception exception)
         {

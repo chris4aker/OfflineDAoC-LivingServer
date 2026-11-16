@@ -59,6 +59,13 @@ public static class RealmExchangeExpiry
             using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
             {
                 if (!IsExpired(item, utcNow) || !AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out long id)) continue;
+                // A seam (Crafting 2.0 WP0): a package may take an expired listing back (unsold crafted stock returns
+                // to its crafter). Nothing does by default, so the listing is deleted as before.
+                if (CraftingEconomy.EconomySeams.Reclaim(item, id))
+                {
+                    AutonomousBotEconomy.MarkEconomyChanged(id);
+                    continue;
+                }
                 if (!GameServer.Database.DeleteObject(item)) continue;
                 MarketCache.RemoveItem(item);
                 AutonomousBotEconomy.MarkEconomyChanged(id);

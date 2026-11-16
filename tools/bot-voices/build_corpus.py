@@ -45,7 +45,9 @@ KINDS = {'ambient', 'reply', 'lfg', 'trade', 'rvr', 'greet', 'thanks', 'grudge',
          # True rumours (AutonomousRumours): a real rare spawn or an undefended keep, and reactions
          'rumour', 'rumour_reply',
          # Bonds (AutonomousBotBonds): a bot tells /faction about a friend, a reunion or a no-show, others react
-         'bond', 'bond_reply'}
+         'bond', 'bond_reply',
+         # Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md, WP0): a crafter's own lines and its answers to "can you make X"
+         'craft', 'craft_reply'}
 # Lines that start a conversation; each says what kind of answer it invites (@invites, or inferred below).
 OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild', 'news', 'tell'}
 # Kinds whose lines speak about the speaker's own here and now, so a place they name must be true (or @about).
@@ -96,7 +98,16 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'newbie', 'veteran',  # level 1-14, level 40+ (voices.json experience tiers)
          # Holiday chatter (AutonomousHolidays): the days around a holiday, and the day itself
          'holiday', 'holiday_today', 'holiday_halloween', 'holiday_thanksgiving', 'holiday_christmas', 'holiday_newyear',
-         'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer'}
+         'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer',
+         # Crafting 2.0 (WP0 registers them; WP4-WP8 set them): what is true of a crafter gamebot right now
+         'has_craft_stock',    # it holds crafted stock to sell ({stock}, {price})
+         'at_station',         # it stands at a forge, lathe or alchemy table
+         'crafter_title_up',   # its crafting title rose in the last hour ({title}, {skill})
+         'crafter_legendary',  # it is Legendary (1000) in its order
+         'has_open_order',     # it has posted an order it is waiting on ({order}, {budget})
+         'took_order',         # it is making an order for someone ({order}, {customer})
+         'wants_gear',         # its gear check found a gap it is shopping for ({item}, {budget})
+         'exploded_recent'}    # a spellcraft explosion of its own in the last hour
 # Places a line may claim the speaker is at, heading to, or either (@needs at:<place>, going:<place>, near:<place>).
 PLACE_NEED_RE = re.compile(r'(at|going|near):(.+)')
 
@@ -126,7 +137,9 @@ INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'tr
            # 0.36-se.4: short chat players type
            'thanks', 'congrats', 'ding', 'laugh', 'away', 'back', 'rez', 'alarm', 'classtalk', 'botcheck',
            # Beta 1.1.2: an in-character line from the player
-           'roleplay'}
+           'roleplay',
+           # Crafting 2.0 (WP0): wtb/wts, "can you make", "lf sc", price questions to a crafter
+           'crafting'}
 MOODS = {'friendly', 'neutral', 'cool', 'rival'}
 SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'count', 'camp', 'dungeon',
          'capital', 'enemy', 'keep', 'frontier', 'player', 'player_class', 'place', 'q',
@@ -141,7 +154,9 @@ SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'cou
          # Deeds: the player's earned nickname; storylines: the two protagonists; spammers: the fake site
          'nickname', 'name_a', 'name_b', 'site',
          # Bonds: the other gamebot and its class
-         'other', 'other_class'}
+         'other', 'other_class',
+         # Crafting 2.0 (WP0): a crafter's real stock, price, title, order, skill, quality, customer, recipe and a budget
+         'stock', 'price', 'title', 'order', 'skill', 'quality', 'customer', 'recipe', 'budget'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 

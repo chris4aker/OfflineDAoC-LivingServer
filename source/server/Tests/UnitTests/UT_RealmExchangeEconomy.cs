@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.Database;
 using DOL.GS;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.PacketHandler;
 using DOL.GS.PlayerClass;
 using DOL.GS.ServerRules;
@@ -156,6 +157,131 @@ namespace DOL.UnitTests
             market.Dispose();
             SetField(typeof(MarketCache), "_searchEngine", _previousMarket);
             GameServer.LoadTestDouble(_previousServer);
+            EconomySeams.ResetForTests();
+            EconomyFlows.Sink = null;
+        }
+
+        // ---- Crafting 2.0 WP0 seams, filled (UT_EconomySeamsDefaults checks them empty) ----
+
+        private sealed class OwnWorkCap : IExchangeListingPolicy
+        {
+            public int MaxListings(string ownerId) => 4;
+            public int ListingCap(string ownerId, DbInventoryItem item) => item?.IsCrafted == true ? 4 : 3;
+        }
+
+        [Test]
+        public void Seam_ListingCap_LetsOnlyTheItemItAllowsTakeAFourthPost()
+        {
+            EconomySeams.Listings = new OwnWorkCap();
+            ExchangeBot seller = Bot(120, 500);
+            string owner = AutonomousBotEconomy.GetOwnerId(seller.DatabaseID);
+            for (int i = 0; i < 3; i++)
+                MarketCache.AddItem(Listing(owner, 100, (int)eInventorySlot.Consignment_First + i));
+            DbInventoryItem loot = Item("loot");
+            DbInventoryItem ownWork = Item("own work");
+            ownWork.IsCrafted = true;
+            seller.Inventory.AddItem(eInventorySlot.FirstBackpack, loot);
+            seller.Inventory.AddItem(eInventorySlot.FirstBackpack + 1, ownWork);
+
+            Assert.That(AutonomousBotEconomy.CanListNow(seller, loot), Is.False);
+            Assert.That(AutonomousBotEconomy.TryList(seller, loot, 200), Is.False);
+            Assert.That(AutonomousBotEconomy.CanListNow(seller, ownWork), Is.True);
+            Assert.That(AutonomousBotEconomy.TryList(seller, ownWork, 200), Is.True);
+            Assert.That(AutonomousBotEconomy.CountListings(owner), Is.EqualTo(4));
+        }
+
+        private sealed class ReservePolicy : IBotItemPolicy
+        {
+            public string Name => "reserve";
+            public DbInventoryItem Reserved;
+            public int Listed;
+            public bool IsReserved(GameBot bot, DbInventoryItem item) => ReferenceEquals(item, Reserved);
+            public void OnListed(GameBot bot, DbInventoryItem item) => Listed++;
+        }
+
+        [Test]
+        public void Seam_ReservedItem_IsNeverListedSoldOrWorn()
+        {
+            var policy = new ReservePolicy();
+            EconomySeams.Register(policy);
+            ExchangeBot bot = Bot(121, 500);
+            List<DbInventoryItem> bag = FillBackpack(bot);
+            DbInventoryItem reserved = bag[0];
+            reserved.Price = 5000;
+            reserved.Level = 20;
+            policy.Reserved = reserved;
+
+            Assert.That(AutonomousBotEconomy.FindValuableListingCandidate(bot)?.Item, Is.Not.SameAs(reserved));
+            Assert.That(AutonomousBotEconomy.FindVendorTrashCandidate(bot), Is.Not.SameAs(reserved));
+            Assert.That(AutonomousBotEconomy.TryList(bot, reserved, 900), Is.False);
+            Assert.That(AutonomousBotEconomy.TryGetEquipmentUpgrade(bot, reserved, out _), Is.False);
+            Assert.That(bot.Inventory.AllItems, Does.Contain(reserved));
+            Assert.That(AutonomousBotEconomy.TryList(bot, bag[1], 900), Is.True);
+            Assert.That(policy.Listed, Is.EqualTo(1), "OnListed hears of the post");
+        }
+
+        [Test]
+        public void Seam_Tax_PaysTheSellerItsProceeds_AndTheSaleCarriesTheTaxAndCraftedFlag()
+        {
+            // WP5's tax at the documented 5% option: the buyer pays the price, the seller receives 95%.
+            EconomySeams.SellerProceeds = (price, _, _, _) => price - (long)Math.Round(price * 0.05);
+            var sales = new List<RealmExchangeSaleLedger.Sale>();
+            EconomySeams.SaleCommitted += sales.Add;
+            ExchangeBot buyer = Bot(122, 900);
+            ExchangeBot seller = Bot(123, 100);
+            DbInventoryItem listing = Listing(AutonomousBotEconomy.GetOwnerId(seller.DatabaseID), 400, (int)eInventorySlot.Consignment_First);
+            listing.IsCrafted = true;
+            MarketCache.AddItem(listing);
+
+            Assert.That(AutonomousBotEconomy.TryBuy(buyer, listing), Is.True);
+
+            Assert.That(buyer.PersistentRecord.MoneyCopper, Is.EqualTo(500));
+            Assert.That(seller.PersistentRecord.MoneyCopper, Is.EqualTo(100 + 380));
+            Assert.That(sales, Has.Count.EqualTo(1));
+            Assert.That(sales[0].PriceCopper, Is.EqualTo(400));
+            Assert.That(sales[0].TaxCopper, Is.EqualTo(20));
+            Assert.That(sales[0].Crafted, Is.True);
+            Assert.That(sales[0].BuyerId, Is.EqualTo(AutonomousBotEconomy.GetOwnerId(buyer.DatabaseID)));
+        }
+
+        [Test]
+        public void Seam_HumanSellerProceeds_AreTaxedTheSameWay()
+        {
+            EconomySeams.SellerProceeds = (price, _, _, _) => price - (long)Math.Round(price * 0.05);
+            _store.Character = new DbCoreCharacter { ObjectId = "human-object", Realm = (int)eRealm.Hibernia };
+            ExchangeBot buyer = Bot(124, 900);
+            DbInventoryItem listing = Listing("human-character", 400, (int)eInventorySlot.Consignment_First);
+            MarketCache.AddItem(listing);
+
+            Assert.That(AutonomousBotEconomy.TryBuy(buyer, listing), Is.True);
+            Assert.That(buyer.PersistentRecord.MoneyCopper, Is.EqualTo(500));
+            Assert.That(InvokeBroker<long>("GetPendingPlayerProceeds", "human-character", eRealm.Hibernia), Is.EqualTo(380));
+        }
+
+        private sealed class FlowCapture : IEconomyFlowSink
+        {
+            public readonly List<(long Bot, long Copper, EconomyFlowKind Kind, string File, string Member)> Moves = new();
+            public void Record(long botId, long signedCopper, EconomyFlowKind kind, string callerFile, string callerMember) =>
+                Moves.Add((botId, signedCopper, kind, callerFile, callerMember));
+        }
+
+        [Test]
+        public void Seam_FlowSink_HearsEveryCoinMoveWithItsCaller_AndNoAmountChanges()
+        {
+            var sink = new FlowCapture();
+            EconomyFlows.Sink = sink;
+            ExchangeBot bot = Bot(125, 100);
+
+            Assert.That(AutonomousBotEconomy.AddMoney(bot.DatabaseID, 50), Is.True);
+            Assert.That(AutonomousBotEconomy.TrySpend(bot.DatabaseID, 20, EconomyFlowKind.Repair), Is.True);
+            Assert.That(AutonomousBotEconomy.TrySpend(bot.DatabaseID, 10_000), Is.False, "a refused spend is no flow");
+
+            Assert.That(bot.PersistentRecord.MoneyCopper, Is.EqualTo(130));
+            Assert.That(sink.Moves, Has.Count.EqualTo(2));
+            Assert.That(sink.Moves[0], Is.EqualTo((125L, 50L, EconomyFlowKind.Unattributed, "UT_RealmExchangeEconomy.cs",
+                nameof(Seam_FlowSink_HearsEveryCoinMoveWithItsCaller_AndNoAmountChanges))));
+            Assert.That(sink.Moves[1].Copper, Is.EqualTo(-20));
+            Assert.That(sink.Moves[1].Kind, Is.EqualTo(EconomyFlowKind.Repair));
         }
 
         [Test]
