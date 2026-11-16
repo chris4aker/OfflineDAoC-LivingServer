@@ -585,14 +585,14 @@ public class SocialExpansionSettingsTests
         var save = Field<Button>("_save");
         Color muted = Color.FromArgb(166, 154, 128), parchment = Color.FromArgb(215, 199, 157);
         // Since 1.2 bot guilds are on by default, so their parts start bright and dim when bot guilds are switched off.
+        // Since Beta 1.1 voices are on by default, so debates start bright and dim when voices are switched off.
         Assert.That(guilds.Checked, Is.True, "bot guilds are on by default");
         Assert.That(claims.ForeColor, Is.EqualTo(parchment));
-        guilds.Checked = false;
-        Assert.That(claims.ForeColor, Is.EqualTo(muted), "guild parts are dimmed until bot guilds are on");
-        // Since Beta 1.1 voices are on by default, so debates start bright and dim when voices are switched off.
         Assert.That(voices.Checked, Is.True, "bot voices are on by default");
         Assert.That(debates.ForeColor, Is.EqualTo(parchment));
         Assert.That(save.Enabled, Is.False, "nothing to save yet");
+        guilds.Checked = false;
+        Assert.That(claims.ForeColor, Is.EqualTo(muted), "guild parts are dimmed until bot guilds are on");
         voices.Checked = false;
         Assert.That(debates.ForeColor, Is.EqualTo(muted), "debates are dimmed until voices are on");
 
