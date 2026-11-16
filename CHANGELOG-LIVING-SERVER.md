@@ -153,6 +153,32 @@ coming in or going out (M0); this makes coin per hour measurable. Guide: [docs/E
 - Setting `economy_ledger_enabled` (on; logs and one row an hour per realm only).
 - Ported: the money ledger from shadowofze (a8c793e, df86f9f), via True165, GPL-3.0; its test adapted. Ours: the
   classifier, per-realm and per-band sums, the supply snapshot, the residual, the Exchange counters, the table rows.
+### WP10 Economy rehearsal and diagnostics
+
+Test and GM tooling only: **nothing a player or a bot does changes**. Written new (no fork code).
+
+- **The economy rehearsal** (`source/server/Tests/Rehearsal`): plays 1–3 realms of gamebots (1,000 a realm by
+  default) in one-minute steps, a week in 10,080, on the server's own pure code: today's equipment value, listing
+  price, vendor appraisal, listing cap and Exchange seams, and the registered price index. Hunting, drops, shopping
+  and listing follow M0's measured rates (`fixtures/calibration.json`, every assumed number marked); recipes are the
+  0.37b world's 8,479 (`fixtures/recipes.json`, made by `source/tools/export_recipe_fixture.py` from a read-only copy
+  of the world tables only, never player data). Selling, listing and buying happen only at the natural task break.
+  Each package adds its own adapter (`Tests/Rehearsal/Adapters/WPn*.cs`, found by reflection); until WP4 a stand-in
+  crafts with `CraftRules` at player pace when `bot_crafters` is on in a scenario. A setting no adapter reads yet is
+  reported as "not built yet" and the run uses today's behaviour.
+- **The plan's gates**: no negative purse; the flows equal the change in supply every hour, exactly; Bid < Ask in every
+  band; supply growth within a band; no undress; the median order wait (not applicable until WP5). Crafter against
+  hunter wealth is reported, not asserted. `UT_EconomyRehearsalSmoke` runs one day in CI; the week scenarios
+  (`UT_EconomyRehearsalWeek`, `[Explicit]`, `ECON_REHEARSAL_OUT`) write a readable ledger per scenario: markdown,
+  CSV and a log of the server's `ECON_SUPPLY` / `ECON_FLOWS` / `CRAFT_*` / `ECON_REHEARSAL` lines.
+- **`source/tools/econ_timeline_report.py`** summarizes those lines from a server log or a rehearsal ledger: supply and
+  its residual per realm, flows by kind, crafting sessions, titles and firsts, gates, and an optional direction check
+  against a `persona_sim.py` result.
+- **`/lscraft craft | wtb | commission | ledger | index | crafter <name>`** (GM): the switches, what each part has
+  registered, the online gamebots' coin by realm, the price index's floor/fair/ask/bid for the first backpack item,
+  and a gamebot's type, crafting skills and purse. Parts not merged answer "not built yet (WPn …)"; a package that
+  lands registers its own answer (`CraftEconomyTestHooks`). `/lstest craft | wtb | commission` delegates to it.
+- Rehearsal results are tests, not in-game results; every ledger names its build (`ECON_REHEARSAL_BUILD`).
 
 ## 1.2.1 (in development)
 

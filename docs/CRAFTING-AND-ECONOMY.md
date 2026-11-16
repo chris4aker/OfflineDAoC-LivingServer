@@ -477,7 +477,7 @@ only its own row. "Tests only" means automated tests; nothing counts as working 
 | WP7 Sinks (M5) | Not started | — |
 | WP8 Commerce and social (M4, M6) | Not started | — |
 | WP9 Launcher | Not started | — |
-| WP10 Rehearsal | Not started | — |
+| WP10 Rehearsal | Built on `craft/wp10-rehearsal`, into `integration/1.2`: the rehearsal (today's economy plus a crafter stand-in on `CraftRules` until WP4), its gates, the readable ledger, `/lscraft`, `econ_timeline_report.py`. Changes no behaviour. Tests only | `/lscraft` answers on the owner's PC: not yet seen |
 
 Corrections found while building WP0 (the sections above are left as written on 2026-10-30): a bot holds 3 Exchange
 listings, not 1; the `Repair.cs` division and the `Salvage` type mutation are already fixed in our tree; the "19%

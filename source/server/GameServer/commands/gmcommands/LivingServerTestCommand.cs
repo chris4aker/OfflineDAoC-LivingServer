@@ -26,7 +26,8 @@ namespace DOL.GS.Commands;
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
     "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)",
     "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
-    "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)")]
+    "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)",
+    "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -154,6 +155,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                     : $"No {GlobalConstants.RealmToName(raidRealm)} raid: {why}.");
                 return;
             }
+            case "craft" or "wtb" or "commission": CraftEconomyTestCommandHandler.Run(client, args[1..]); return; // Crafting 2.0 (WP10)
             case "lore":
                 Say(client, LoreAtmosphere.TestHere(gm));
                 return;
