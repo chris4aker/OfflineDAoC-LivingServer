@@ -1,0 +1,2168 @@
+{
+ "version": 1,
+ "schema": "rvr-checkspots/1",
+ "about": "Old-frontier check spots and patrol circuits for roaming RvR groups. Static geometry only: spot and standing points from world spawn, door and zone-point positions and the zone road graph; proven on the navmeshes by UT_RvrCheckSpotCatalog (tests only). Coordinates are region world units.",
+ "proof_hash": "sha256:4fb2fa6152bf120b8b7e3860581398fd4e85d6a28de554e4a0702ff729681158",
+ "frontiers": [
+  {
+   "region": 1,
+   "name": "Albion frontier",
+   "zones": [
+    {
+     "id": 11,
+     "x": 565248,
+     "y": 417792,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 12,
+     "x": 499712,
+     "y": 303104,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 14,
+     "x": 565248,
+     "y": 352256,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 15,
+     "x": 598016,
+     "y": 286720,
+     "width": 65536,
+     "height": 65536
+    }
+   ],
+   "entries": [
+    {
+     "realm": "Midgard",
+     "name": "Midgard Portal Keep",
+     "x": 655200,
+     "y": 293217,
+     "z": 4879
+    },
+    {
+     "realm": "Hibernia",
+     "name": "Hibernia Portal Keep",
+     "x": 605743,
+     "y": 293676,
+     "z": 4839
+    }
+   ],
+   "spots": [
+    {
+     "id": "hw-benowyc-north-camps",
+     "type": "camp",
+     "label": "Benowyc north camps",
+     "x": 647056,
+     "y": 331769,
+     "z": 4201,
+     "stand": {
+      "x": 646301,
+      "y": 332702,
+      "z": 4201
+     },
+     "radius": 1050,
+     "levels": [
+      33,
+      39
+     ]
+    },
+    {
+     "id": "hw-benowyc-nw-camps",
+     "type": "camp",
+     "label": "Benowyc north-west camps",
+     "x": 645517,
+     "y": 341931,
+     "z": 4763,
+     "stand": {
+      "x": 646516,
+      "y": 341886,
+      "z": 5340
+     },
+     "radius": 950,
+     "levels": [
+      40,
+      51
+     ]
+    },
+    {
+     "id": "hw-benowyc-west-camps",
+     "type": "camp",
+     "label": "Benowyc west camps",
+     "x": 637955,
+     "y": 341472,
+     "z": 5526,
+     "stand": {
+      "x": 637768,
+      "y": 342657,
+      "z": 5244
+     },
+     "radius": 1250,
+     "levels": [
+      42,
+      56
+     ]
+    },
+    {
+     "id": "hw-hmg",
+     "type": "chokepoint",
+     "label": "HMG, Hadrian's Wall",
+     "x": 610032,
+     "y": 319468,
+     "z": 3872,
+     "stand": {
+      "x": 610032,
+      "y": 319468,
+      "z": 3875
+     },
+     "radius": 700
+    },
+    {
+     "id": "hw-hpk-south-camps",
+     "type": "camp",
+     "label": "HPK south camps",
+     "x": 606716,
+     "y": 329393,
+     "z": 4200,
+     "stand": {
+      "x": 605739,
+      "y": 329177,
+      "z": 4201
+     },
+     "radius": 1250,
+     "levels": [
+      50,
+      50
+     ]
+    },
+    {
+     "id": "hw-middle-camps",
+     "type": "camp",
+     "label": "Hadrian's middle camps",
+     "x": 619943,
+     "y": 339145,
+     "z": 4489,
+     "stand": {
+      "x": 619987,
+      "y": 340144,
+      "z": 4525
+     },
+     "radius": 1400,
+     "levels": [
+      32,
+      37
+     ]
+    },
+    {
+     "id": "hw-mmg",
+     "type": "chokepoint",
+     "label": "MMG, Hadrian's Wall",
+     "x": 652209,
+     "y": 320672,
+     "z": 4312,
+     "stand": {
+      "x": 652209,
+      "y": 320672,
+      "z": 4313
+     },
+     "radius": 700
+    },
+    {
+     "id": "hw-mpk-south-camps",
+     "type": "camp",
+     "label": "MPK south camps",
+     "x": 656106,
+     "y": 312095,
+     "z": 2912,
+     "stand": {
+      "x": 655524,
+      "y": 310821,
+      "z": 2915
+     },
+     "radius": 1300,
+     "levels": [
+      50,
+      50
+     ]
+    },
+    {
+     "id": "hw-mpk-sw-camps",
+     "type": "camp",
+     "label": "MPK south-west camps",
+     "x": 640606,
+     "y": 310488,
+     "z": 2915,
+     "stand": {
+      "x": 640650,
+      "y": 311487,
+      "z": 2942
+     },
+     "radius": 1400,
+     "levels": [
+      48,
+      56
+     ]
+    },
+    {
+     "id": "hw-pennine-crossing",
+     "type": "chokepoint",
+     "label": "Pennine crossing",
+     "x": 618752,
+     "y": 350464,
+     "z": 4608,
+     "stand": {
+      "x": 618752,
+      "y": 350464,
+      "z": 4608
+     },
+     "radius": 1200
+    },
+    {
+     "id": "hw-wall-hastener",
+     "type": "chokepoint",
+     "label": "Wall road hastener",
+     "x": 629767,
+     "y": 342311,
+     "z": 4200,
+     "stand": {
+      "x": 629767,
+      "y": 342311,
+      "z": 4203
+     },
+     "radius": 900
+    },
+    {
+     "id": "pennine-berkstead-hastener",
+     "type": "chokepoint",
+     "label": "Berkstead hastener",
+     "x": 594771,
+     "y": 391338,
+     "z": 4824,
+     "stand": {
+      "x": 594771,
+      "y": 391338,
+      "z": 4826
+     },
+     "radius": 900
+    },
+    {
+     "id": "pennine-berkstead-nw-camps",
+     "type": "camp",
+     "label": "Berkstead north-west camps",
+     "x": 574178,
+     "y": 385316,
+     "z": 5916,
+     "stand": {
+      "x": 574410,
+      "y": 386696,
+      "z": 6146
+     },
+     "radius": 1250,
+     "levels": [
+      47,
+      56
+     ]
+    },
+    {
+     "id": "pennine-berkstead-west-camps",
+     "type": "camp",
+     "label": "Berkstead west camps",
+     "x": 571167,
+     "y": 389552,
+     "z": 3454,
+     "stand": {
+      "x": 570980,
+      "y": 390737,
+      "z": 3882
+     },
+     "radius": 950,
+     "levels": [
+      50,
+      50
+     ]
+    },
+    {
+     "id": "pennine-boldiam-north-camp",
+     "type": "camp",
+     "label": "Boldiam north camp",
+     "x": 624313,
+     "y": 398650,
+     "z": 4854,
+     "stand": {
+      "x": 624545,
+      "y": 400030,
+      "z": 5080
+     },
+     "radius": 1450,
+     "levels": [
+      46,
+      48
+     ]
+    },
+    {
+     "id": "pennine-boldiam-west-woods",
+     "type": "camp",
+     "label": "Boldiam west woods",
+     "x": 606740,
+     "y": 409621,
+     "z": 2737,
+     "stand": {
+      "x": 607101,
+      "y": 411179,
+      "z": 3390
+     },
+     "radius": 1450,
+     "levels": [
+      45,
+      49
+     ]
+    },
+    {
+     "id": "pennine-draco-magnificens",
+     "type": "named",
+     "label": "Draco Magnificens",
+     "x": 605913,
+     "y": 381264,
+     "z": 4408,
+     "stand": {
+      "x": 606469,
+      "y": 381839,
+      "z": 4316
+     },
+     "radius": 700,
+     "levels": [
+      61,
+      61
+     ]
+    },
+    {
+     "id": "pennine-erasleigh-giants",
+     "type": "named",
+     "label": "Erasleigh giants",
+     "x": 617271,
+     "y": 377356,
+     "z": 6221,
+     "stand": {
+      "x": 617639,
+      "y": 377512,
+      "z": 6222
+     },
+     "radius": 1350,
+     "levels": [
+      58,
+      64
+     ]
+    },
+    {
+     "id": "pennine-erasleigh-north-woods",
+     "type": "camp",
+     "label": "Erasleigh north woods",
+     "x": 619034,
+     "y": 356263,
+     "z": 4338,
+     "stand": {
+      "x": 618544,
+      "y": 357574,
+      "z": 4307
+     },
+     "radius": 1400,
+     "levels": [
+      43,
+      49
+     ]
+    },
+    {
+     "id": "pennine-erasleigh-road",
+     "type": "chokepoint",
+     "label": "Erasleigh north road",
+     "x": 620698,
+     "y": 358554,
+     "z": 5580,
+     "stand": {
+      "x": 620698,
+      "y": 358554,
+      "z": 5579
+     },
+     "radius": 1200
+    },
+    {
+     "id": "pennine-erasleigh-west-camps",
+     "type": "camp",
+     "label": "Erasleigh west camps",
+     "x": 611644,
+     "y": 373415,
+     "z": 4515,
+     "stand": {
+      "x": 612643,
+      "y": 373370,
+      "z": 3973
+     },
+     "radius": 1250,
+     "levels": [
+      45,
+      47
+     ]
+    },
+    {
+     "id": "pennine-excalibur-cliffs",
+     "type": "camp",
+     "label": "Excalibur north cliffs",
+     "x": 603501,
+     "y": 415111,
+     "z": 6481,
+     "stand": {
+      "x": 603869,
+      "y": 415267,
+      "z": 6270
+     },
+     "radius": 1450,
+     "levels": [
+      42,
+      45
+     ]
+    },
+    {
+     "id": "pennine-hall-of-the-corrupt",
+     "type": "dungeon door",
+     "label": "Hall of the Corrupt door",
+     "x": 598581,
+     "y": 361828,
+     "z": 3605,
+     "stand": {
+      "x": 598581,
+      "y": 361828,
+      "z": 3606
+     },
+     "radius": 700
+    },
+    {
+     "id": "pennine-north-hastener",
+     "type": "chokepoint",
+     "label": "Pennine north hastener",
+     "x": 608541,
+     "y": 352355,
+     "z": 4312,
+     "stand": {
+      "x": 608541,
+      "y": 352355,
+      "z": 4315
+     },
+     "radius": 900
+    },
+    {
+     "id": "pennine-north-hills",
+     "type": "camp",
+     "label": "Pennine north hills",
+     "x": 611446,
+     "y": 353259,
+     "z": 4662,
+     "stand": {
+      "x": 611401,
+      "y": 352265,
+      "z": 4409
+     },
+     "radius": 1350,
+     "levels": [
+      39,
+      41
+     ]
+    },
+    {
+     "id": "pennine-sursbrooke-east-camps",
+     "type": "camp",
+     "label": "Sursbrooke east camps",
+     "x": 601373,
+     "y": 358872,
+     "z": 4480,
+     "stand": {
+      "x": 601803,
+      "y": 359992,
+      "z": 4475
+     },
+     "radius": 1150,
+     "levels": [
+      35,
+      38
+     ]
+    },
+    {
+     "id": "pennine-sursbrooke-ne-camps",
+     "type": "camp",
+     "label": "Sursbrooke north-east camps",
+     "x": 596132,
+     "y": 359056,
+     "z": 5812,
+     "stand": {
+      "x": 596447,
+      "y": 359302,
+      "z": 5515
+     },
+     "radius": 1350,
+     "levels": [
+      45,
+      49
+     ]
+    },
+    {
+     "id": "pennine-sursbrooke-nw-camps",
+     "type": "camp",
+     "label": "Sursbrooke north-west camps",
+     "x": 572016,
+     "y": 356768,
+     "z": 4992,
+     "stand": {
+      "x": 572384,
+      "y": 356924,
+      "z": 5057
+     },
+     "radius": 1400,
+     "levels": [
+      39,
+      42
+     ]
+    },
+    {
+     "id": "pennine-sursbrooke-sw-hills",
+     "type": "camp",
+     "label": "Sursbrooke south-west hills",
+     "x": 569857,
+     "y": 374148,
+     "z": 5780,
+     "stand": {
+      "x": 568923,
+      "y": 373393,
+      "z": 6355
+     },
+     "radius": 1100,
+     "levels": [
+      39,
+      41
+     ]
+    },
+    {
+     "id": "sauvage-green-knight",
+     "type": "named",
+     "label": "Green Knight",
+     "x": 592359,
+     "y": 418245,
+     "z": 4988,
+     "stand": {
+      "x": 592915,
+      "y": 418820,
+      "z": 5013
+     },
+     "radius": 700,
+     "levels": [
+      79,
+      79
+     ]
+    },
+    {
+     "id": "sauvage-renaris-south-woods",
+     "type": "fringe",
+     "label": "Renaris south woods",
+     "x": 579673,
+     "y": 454812,
+     "z": 2949,
+     "stand": {
+      "x": 580626,
+      "y": 454510,
+      "z": 3076
+     },
+     "radius": 1400,
+     "levels": [
+      31,
+      31
+     ]
+    },
+    {
+     "id": "sauvage-rob-ria",
+     "type": "named",
+     "label": "Rob Ria",
+     "x": 625315,
+     "y": 447716,
+     "z": 3158,
+     "stand": {
+      "x": 625871,
+      "y": 448291,
+      "z": 2981
+     },
+     "radius": 700,
+     "levels": [
+      40,
+      40
+     ]
+    },
+    {
+     "id": "snowdonia-hurbury-ne-camps",
+     "type": "fringe",
+     "label": "Hurbury north-east camps",
+     "x": 558333,
+     "y": 319657,
+     "z": 2865,
+     "stand": {
+      "x": 558377,
+      "y": 320656,
+      "z": 2835
+     },
+     "radius": 1300,
+     "levels": [
+      41,
+      41
+     ]
+    },
+    {
+     "id": "snowdonia-hurbury-sw-camps",
+     "type": "fringe",
+     "label": "Hurbury south-west camps",
+     "x": 520803,
+     "y": 349019,
+     "z": 2479,
+     "stand": {
+      "x": 520847,
+      "y": 350018,
+      "z": 2510
+     },
+     "radius": 1050,
+     "levels": [
+      41,
+      42
+     ]
+    }
+   ],
+   "circuits": [
+    {
+     "id": "alb-mid-1-east-wall",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "hw-mmg",
+      "hw-benowyc-north-camps",
+      "hw-benowyc-west-camps",
+      "hw-wall-hastener"
+     ]
+    },
+    {
+     "id": "alb-mid-2-pennine-pass",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "hw-wall-hastener",
+      "hw-pennine-crossing",
+      "pennine-erasleigh-north-woods",
+      "pennine-erasleigh-west-camps",
+      "pennine-north-hills"
+     ]
+    },
+    {
+     "id": "alb-mid-3-deep-pennine",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "pennine-north-hills",
+      "pennine-sursbrooke-ne-camps",
+      "pennine-hall-of-the-corrupt",
+      "pennine-draco-magnificens",
+      "pennine-erasleigh-west-camps",
+      "pennine-erasleigh-north-woods"
+     ]
+    },
+    {
+     "id": "alb-hib-1-west-wall",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "hw-hmg",
+      "hw-hpk-south-camps",
+      "pennine-north-hills",
+      "hw-pennine-crossing",
+      "hw-wall-hastener"
+     ]
+    },
+    {
+     "id": "alb-hib-2-west-pennine",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "pennine-north-hills",
+      "pennine-sursbrooke-ne-camps",
+      "pennine-hall-of-the-corrupt",
+      "pennine-draco-magnificens",
+      "pennine-erasleigh-west-camps"
+     ]
+    },
+    {
+     "id": "alb-hib-3-south-fringe",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "pennine-hall-of-the-corrupt",
+      "pennine-draco-magnificens",
+      "pennine-excalibur-cliffs",
+      "sauvage-green-knight",
+      "pennine-sursbrooke-ne-camps"
+     ]
+    }
+   ]
+  },
+  {
+   "region": 100,
+   "name": "Midgard frontier",
+   "zones": [
+    {
+     "id": 111,
+     "x": 720896,
+     "y": 606208,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 112,
+     "x": 655360,
+     "y": 671744,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 113,
+     "x": 655360,
+     "y": 606208,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 115,
+     "x": 589824,
+     "y": 573440,
+     "width": 65536,
+     "height": 65536
+    }
+   ],
+   "entries": [
+    {
+     "realm": "Albion",
+     "name": "Albion Portal Keep",
+     "x": 596364,
+     "y": 631509,
+     "z": 5971
+    },
+    {
+     "realm": "Hibernia",
+     "name": "Hibernia Portal Keep",
+     "x": 596055,
+     "y": 581400,
+     "z": 6031
+    }
+   ],
+   "spots": [
+    {
+     "id": "jamt-blendrake-north-camps",
+     "type": "camp",
+     "label": "Blendrake north camps",
+     "x": 706365,
+     "y": 614784,
+     "z": 5195,
+     "stand": {
+      "x": 706310,
+      "y": 616383,
+      "z": 4838
+     },
+     "radius": 1400,
+     "levels": [
+      49,
+      51
+     ]
+    },
+    {
+     "id": "jamt-blendrake-se-camps",
+     "type": "camp",
+     "label": "Blendrake south-east camps",
+     "x": 714730,
+     "y": 635032,
+     "z": 4558,
+     "stand": {
+      "x": 714962,
+      "y": 636412,
+      "z": 4788
+     },
+     "radius": 1450,
+     "levels": [
+      41,
+      46
+     ]
+    },
+    {
+     "id": "jamt-dodens-gruva",
+     "type": "dungeon door",
+     "label": "Dodens Gruva door",
+     "x": 718392,
+     "y": 654864,
+     "z": 6386,
+     "stand": {
+      "x": 718392,
+      "y": 654864,
+      "z": 6387
+     },
+     "radius": 700
+    },
+    {
+     "id": "jamt-east-camps",
+     "type": "camp",
+     "label": "Jamtland east camps",
+     "x": 715345,
+     "y": 640152,
+     "z": 4659,
+     "stand": {
+      "x": 714914,
+      "y": 639032,
+      "z": 4429
+     },
+     "radius": 1450,
+     "levels": [
+      44,
+      48
+     ]
+    },
+    {
+     "id": "jamt-glenlock-sw-camps",
+     "type": "camp",
+     "label": "Glenlock south-west camps",
+     "x": 696049,
+     "y": 663730,
+     "z": 4070,
+     "stand": {
+      "x": 696479,
+      "y": 664850,
+      "z": 4042
+     },
+     "radius": 1450,
+     "levels": [
+      35,
+      44
+     ]
+    },
+    {
+     "id": "jamt-hlidskialf-hastener",
+     "type": "chokepoint",
+     "label": "Hlidskialf hastener",
+     "x": 686691,
+     "y": 644115,
+     "z": 3984,
+     "stand": {
+      "x": 686691,
+      "y": 644115,
+      "z": 3987
+     },
+     "radius": 900
+    },
+    {
+     "id": "jamt-nottmoor-hastener",
+     "type": "chokepoint",
+     "label": "Nottmoor west hastener",
+     "x": 657220,
+     "y": 628357,
+     "z": 5368,
+     "stand": {
+      "x": 657220,
+      "y": 628357,
+      "z": 5369
+     },
+     "radius": 900
+    },
+    {
+     "id": "jamt-nottmoor-liches",
+     "type": "named",
+     "label": "Nottmoor liches",
+     "x": 659485,
+     "y": 628916,
+     "z": 5369,
+     "stand": {
+      "x": 660022,
+      "y": 629759,
+      "z": 5301
+     },
+     "radius": 1450,
+     "levels": [
+      56,
+      62
+     ]
+    },
+    {
+     "id": "jamt-nottmoor-se-heights",
+     "type": "named",
+     "label": "Nottmoor south-east heights",
+     "x": 688489,
+     "y": 637424,
+     "z": 5474,
+     "stand": {
+      "x": 689682,
+      "y": 637297,
+      "z": 4688
+     },
+     "radius": 1600,
+     "levels": [
+      54,
+      58
+     ]
+    },
+    {
+     "id": "jamt-nottmoor-south-camps",
+     "type": "camp",
+     "label": "Nottmoor south camps",
+     "x": 679310,
+     "y": 640238,
+     "z": 3940,
+     "stand": {
+      "x": 680263,
+      "y": 639936,
+      "z": 3890
+     },
+     "radius": 1400,
+     "levels": [
+      32,
+      34
+     ]
+    },
+    {
+     "id": "jamt-nottmoor-sw-camps",
+     "type": "camp",
+     "label": "Nottmoor south-west camps",
+     "x": 669738,
+     "y": 633370,
+     "z": 4006,
+     "stand": {
+      "x": 669250,
+      "y": 634466,
+      "z": 3987
+     },
+     "radius": 1400,
+     "levels": [
+      40,
+      44
+     ]
+    },
+    {
+     "id": "jamt-nottmoor-west-camps",
+     "type": "camp",
+     "label": "Nottmoor west camps",
+     "x": 665733,
+     "y": 622635,
+     "z": 4080,
+     "stand": {
+      "x": 667006,
+      "y": 622053,
+      "z": 4250
+     },
+     "radius": 1400,
+     "levels": [
+      31,
+      34
+     ]
+    },
+    {
+     "id": "jamt-south-crossing",
+     "type": "chokepoint",
+     "label": "Jamtland south crossing",
+     "x": 653568,
+     "y": 610150,
+     "z": 8511,
+     "stand": {
+      "x": 653568,
+      "y": 610150,
+      "z": 8511
+     },
+     "radius": 1200
+    },
+    {
+     "id": "og-amg",
+     "type": "chokepoint",
+     "label": "AMG, Odin's Gate",
+     "x": 622052,
+     "y": 626565,
+     "z": 5027,
+     "stand": {
+      "x": 622052,
+      "y": 626565,
+      "z": 5030
+     },
+     "radius": 700
+    },
+    {
+     "id": "og-amg-camps",
+     "type": "camp",
+     "label": "AMG east camps",
+     "x": 618874,
+     "y": 626213,
+     "z": 4571,
+     "stand": {
+      "x": 617480,
+      "y": 626079,
+      "z": 4348
+     },
+     "radius": 1350,
+     "levels": [
+      41,
+      48
+     ]
+    },
+    {
+     "id": "og-apk-camps",
+     "type": "camp",
+     "label": "APK east camps",
+     "x": 610138,
+     "y": 628658,
+     "z": 4236,
+     "stand": {
+      "x": 610370,
+      "y": 630038,
+      "z": 4137
+     },
+     "radius": 1450,
+     "levels": [
+      41,
+      45
+     ]
+    },
+    {
+     "id": "og-bledmeer-camps",
+     "type": "camp",
+     "label": "Bledmeer camps",
+     "x": 641732,
+     "y": 593993,
+     "z": 7722,
+     "stand": {
+      "x": 640201,
+      "y": 593526,
+      "z": 7436
+     },
+     "radius": 1450,
+     "levels": [
+      44,
+      50
+     ]
+    },
+    {
+     "id": "og-bledmeer-near-camps",
+     "type": "camp",
+     "label": "Bledmeer near camps",
+     "x": 643618,
+     "y": 589717,
+     "z": 7092,
+     "stand": {
+      "x": 643850,
+      "y": 591097,
+      "z": 6544
+     },
+     "radius": 1450,
+     "levels": [
+      44,
+      51
+     ]
+    },
+    {
+     "id": "og-bledmeer-road",
+     "type": "chokepoint",
+     "label": "Bledmeer road",
+     "x": 647424,
+     "y": 589875,
+     "z": 6070,
+     "stand": {
+      "x": 647424,
+      "y": 589875,
+      "z": 6069
+     },
+     "radius": 1200
+    },
+    {
+     "id": "og-bledmeer-west-camps",
+     "type": "camp",
+     "label": "Bledmeer west camps",
+     "x": 632933,
+     "y": 578866,
+     "z": 5541,
+     "stand": {
+      "x": 632395,
+      "y": 578022,
+      "z": 5910
+     },
+     "radius": 1350,
+     "levels": [
+      50,
+      50
+     ]
+    },
+    {
+     "id": "og-east-hills",
+     "type": "camp",
+     "label": "Odin's Gate east hills",
+     "x": 652975,
+     "y": 622759,
+     "z": 7345,
+     "stand": {
+      "x": 653019,
+      "y": 623758,
+      "z": 6941
+     },
+     "radius": 1400,
+     "levels": [
+      36,
+      36
+     ]
+    },
+    {
+     "id": "og-glacier-giant",
+     "type": "named",
+     "label": "Glacier Giant",
+     "x": 651972,
+     "y": 626960,
+     "z": 5468,
+     "stand": {
+      "x": 652340,
+      "y": 627116,
+      "z": 5466
+     },
+     "radius": 700,
+     "levels": [
+      86,
+      86
+     ]
+    },
+    {
+     "id": "og-hpk-camps",
+     "type": "camp",
+     "label": "HPK south-east camps",
+     "x": 606924,
+     "y": 595587,
+     "z": 4071,
+     "stand": {
+      "x": 606436,
+      "y": 596683,
+      "z": 4163
+     },
+     "radius": 1300,
+     "levels": [
+      41,
+      45
+     ]
+    },
+    {
+     "id": "og-middle-camps",
+     "type": "camp",
+     "label": "Odin's Gate middle camps",
+     "x": 635989,
+     "y": 613329,
+     "z": 5408,
+     "stand": {
+      "x": 636419,
+      "y": 614449,
+      "z": 5467
+     },
+     "radius": 1150,
+     "levels": [
+      45,
+      50
+     ]
+    },
+    {
+     "id": "og-road-hastener",
+     "type": "chokepoint",
+     "label": "Odin's Gate road hastener",
+     "x": 636279,
+     "y": 601930,
+     "z": 5484,
+     "stand": {
+      "x": 636279,
+      "y": 601930,
+      "z": 5488
+     },
+     "radius": 900
+    },
+    {
+     "id": "uppland-crossing-camps",
+     "type": "camp",
+     "label": "Uppland crossing camps",
+     "x": 721478,
+     "y": 644011,
+     "z": 6267,
+     "stand": {
+      "x": 721779,
+      "y": 644964,
+      "z": 6178
+     },
+     "radius": 1400,
+     "levels": [
+      31,
+      33
+     ]
+    },
+    {
+     "id": "uppland-fensalir-road",
+     "type": "chokepoint",
+     "label": "Fensalir road",
+     "x": 731391,
+     "y": 651520,
+     "z": 6198,
+     "stand": {
+      "x": 731391,
+      "y": 651520,
+      "z": 6198
+     },
+     "radius": 1200
+    },
+    {
+     "id": "uppland-fensalir-se-camps",
+     "type": "camp",
+     "label": "Fensalir south-east camps",
+     "x": 745055,
+     "y": 660986,
+     "z": 5762,
+     "stand": {
+      "x": 743697,
+      "y": 660139,
+      "z": 5731
+     },
+     "radius": 1350,
+     "levels": [
+      25,
+      34
+     ]
+    },
+    {
+     "id": "uppland-fensalir-west-camps",
+     "type": "camp",
+     "label": "Fensalir west camps",
+     "x": 724679,
+     "y": 660568,
+     "z": 5751,
+     "stand": {
+      "x": 726404,
+      "y": 660055,
+      "z": 5871
+     },
+     "radius": 1350,
+     "levels": [
+      43,
+      48
+     ]
+    },
+    {
+     "id": "uppland-south-camps",
+     "type": "camp",
+     "label": "Uppland south camps",
+     "x": 725428,
+     "y": 620080,
+     "z": 5715,
+     "stand": {
+      "x": 725660,
+      "y": 621460,
+      "z": 5847
+     },
+     "radius": 1100,
+     "levels": [
+      43,
+      50
+     ]
+    },
+    {
+     "id": "uppland-south-hills",
+     "type": "camp",
+     "label": "Uppland south hills",
+     "x": 732652,
+     "y": 617398,
+     "z": 8150,
+     "stand": {
+      "x": 731118,
+      "y": 618340,
+      "z": 8131
+     },
+     "radius": 1450,
+     "levels": [
+      40,
+      51
+     ]
+    },
+    {
+     "id": "yggdra-arvakr-east-camps",
+     "type": "fringe",
+     "label": "Arvakr east camps",
+     "x": 706881,
+     "y": 677028,
+     "z": 5817,
+     "stand": {
+      "x": 707311,
+      "y": 678148,
+      "z": 5793
+     },
+     "radius": 1450,
+     "levels": [
+      43,
+      46
+     ]
+    },
+    {
+     "id": "yggdra-arvakr-hills",
+     "type": "fringe",
+     "label": "Arvakr hills",
+     "x": 699662,
+     "y": 691610,
+     "z": 5999,
+     "stand": {
+      "x": 699894,
+      "y": 692990,
+      "z": 6430
+     },
+     "radius": 1450,
+     "levels": [
+      29,
+      32
+     ]
+    },
+    {
+     "id": "yggdra-arvakr-se-camps",
+     "type": "fringe",
+     "label": "Arvakr south-east heights",
+     "x": 712605,
+     "y": 691752,
+     "z": 9627,
+     "stand": {
+      "x": 712471,
+      "y": 693145,
+      "z": 10027
+     },
+     "radius": 1400,
+     "levels": [
+      39,
+      42
+     ]
+    },
+    {
+     "id": "yggdra-grallarhorn-sw-camps",
+     "type": "fringe",
+     "label": "Grallarhorn south-west camps",
+     "x": 665166,
+     "y": 727060,
+     "z": 6512,
+     "stand": {
+      "x": 663854,
+      "y": 726570,
+      "z": 6508
+     },
+     "radius": 1450,
+     "levels": [
+      41,
+      48
+     ]
+    }
+   ],
+   "circuits": [
+    {
+     "id": "mid-alb-1-milegate",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [],
+     "spots": [
+      "og-amg",
+      "og-middle-camps",
+      "og-glacier-giant",
+      "jamt-nottmoor-hastener"
+     ]
+    },
+    {
+     "id": "mid-alb-2-bledmeer",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [],
+     "spots": [
+      "og-middle-camps",
+      "og-road-hastener",
+      "og-bledmeer-camps",
+      "og-bledmeer-road"
+     ]
+    },
+    {
+     "id": "mid-alb-3-jamtland",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [],
+     "spots": [
+      "jamt-nottmoor-hastener",
+      "jamt-nottmoor-west-camps",
+      "jamt-nottmoor-south-camps",
+      "jamt-blendrake-north-camps",
+      "uppland-south-camps",
+      "uppland-crossing-camps",
+      "jamt-dodens-gruva"
+     ]
+    },
+    {
+     "id": "mid-hib-1-north",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "og-hpk-camps",
+      "og-road-hastener",
+      "og-bledmeer-camps",
+      "og-bledmeer-road"
+     ]
+    },
+    {
+     "id": "mid-hib-2-gate",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "og-road-hastener",
+      "og-middle-camps",
+      "og-glacier-giant",
+      "jamt-nottmoor-hastener",
+      "jamt-nottmoor-west-camps"
+     ]
+    },
+    {
+     "id": "mid-hib-3-jamtland",
+     "realm": "Hibernia",
+     "start": "Hibernia Portal Keep",
+     "approach": [],
+     "spots": [
+      "jamt-nottmoor-hastener",
+      "jamt-nottmoor-west-camps",
+      "jamt-nottmoor-south-camps",
+      "jamt-blendrake-north-camps",
+      "uppland-south-camps",
+      "uppland-crossing-camps",
+      "jamt-dodens-gruva"
+     ]
+    }
+   ]
+  },
+  {
+   "region": 200,
+   "name": "Hibernia frontier",
+   "zones": [
+    {
+     "id": 210,
+     "x": 385024,
+     "y": 417792,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 211,
+     "x": 319488,
+     "y": 352256,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 212,
+     "x": 385024,
+     "y": 352256,
+     "width": 65536,
+     "height": 65536
+    },
+    {
+     "id": 214,
+     "x": 417792,
+     "y": 286720,
+     "width": 65536,
+     "height": 65536
+    }
+   ],
+   "entries": [
+    {
+     "realm": "Albion",
+     "name": "Albion Portal Keep",
+     "x": 475835,
+     "y": 343661,
+     "z": 4080
+    },
+    {
+     "realm": "Midgard",
+     "name": "Midgard Portal Keep",
+     "x": 474107,
+     "y": 295199,
+     "z": 3871
+    }
+   ],
+   "spots": [
+    {
+     "id": "breifine-bolg-hastener",
+     "type": "chokepoint",
+     "label": "Bolg hastener",
+     "x": 415233,
+     "y": 372550,
+     "z": 1788,
+     "stand": {
+      "x": 415233,
+      "y": 372550,
+      "z": 1792
+     },
+     "radius": 900
+    },
+    {
+     "id": "breifine-bolg-ne-camps",
+     "type": "camp",
+     "label": "Bolg north-east camps",
+     "x": 418240,
+     "y": 358570,
+     "z": 4857,
+     "stand": {
+      "x": 419319,
+      "y": 357678,
+      "z": 5181
+     },
+     "radius": 1050,
+     "levels": [
+      50,
+      53
+     ]
+    },
+    {
+     "id": "breifine-crimthain-hastener",
+     "type": "chokepoint",
+     "label": "Crimthain hastener",
+     "x": 435815,
+     "y": 358546,
+     "z": 2463,
+     "stand": {
+      "x": 435815,
+      "y": 358546,
+      "z": 2469
+     },
+     "radius": 900
+    },
+    {
+     "id": "breifine-dabehnn-sw-camps",
+     "type": "fringe",
+     "label": "Da Behnn south-west camps",
+     "x": 415463,
+     "y": 413300,
+     "z": 2677,
+     "stand": {
+      "x": 416000,
+      "y": 414143,
+      "z": 2968
+     },
+     "radius": 1250,
+     "levels": [
+      43,
+      46
+     ]
+    },
+    {
+     "id": "breifine-dabehnn-sw-hills",
+     "type": "fringe",
+     "label": "Da Behnn south-west hills",
+     "x": 422513,
+     "y": 413517,
+     "z": 4065,
+     "stand": {
+      "x": 422881,
+      "y": 413673,
+      "z": 4113
+     },
+     "radius": 1400,
+     "levels": [
+      43,
+      47
+     ]
+    },
+    {
+     "id": "breifine-evern",
+     "type": "named",
+     "label": "Evern",
+     "x": 429883,
+     "y": 380409,
+     "z": 2328,
+     "stand": {
+      "x": 429869,
+      "y": 381208,
+      "z": 2330
+     },
+     "radius": 700,
+     "levels": [
+      76,
+      76
+     ]
+    },
+    {
+     "id": "breifine-marfach-caverns",
+     "type": "dungeon door",
+     "label": "Marfach Caverns door",
+     "x": 445881,
+     "y": 392547,
+     "z": 6411,
+     "stand": {
+      "x": 445881,
+      "y": 392547,
+      "z": 6412
+     },
+     "radius": 700
+    },
+    {
+     "id": "breifine-middle-hastener",
+     "type": "chokepoint",
+     "label": "Breifine middle hastener",
+     "x": 418625,
+     "y": 382454,
+     "z": 1954,
+     "stand": {
+      "x": 418625,
+      "y": 382454,
+      "z": 1958
+     },
+     "radius": 900
+    },
+    {
+     "id": "collory-scathaig-nw-camps",
+     "type": "fringe",
+     "label": "Scathaig north-west camps",
+     "x": 401751,
+     "y": 431994,
+     "z": 2208,
+     "stand": {
+      "x": 401289,
+      "y": 432881,
+      "z": 2291
+     },
+     "radius": 1350,
+     "levels": [
+      35,
+      38
+     ]
+    },
+    {
+     "id": "collory-scathaig-se-camps",
+     "type": "fringe",
+     "label": "Scathaig south-east camps",
+     "x": 436364,
+     "y": 455810,
+     "z": 3188,
+     "stand": {
+      "x": 435090,
+      "y": 456391,
+      "z": 3278
+     },
+     "radius": 1100,
+     "levels": [
+      39,
+      44
+     ]
+    },
+    {
+     "id": "cruachan-ailinne-hastener",
+     "type": "chokepoint",
+     "label": "Ailinne hastener",
+     "x": 354485,
+     "y": 400640,
+     "z": 3947,
+     "stand": {
+      "x": 354485,
+      "y": 400640,
+      "z": 3952
+     },
+     "radius": 900,
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "breifine-crimthain-hastener",
+       "breifine-middle-hastener"
+      ]
+     }
+    },
+    {
+     "id": "cruachan-ailinne-nw-camps",
+     "type": "fringe",
+     "label": "Ailinne north-west camps",
+     "x": 354652,
+     "y": 388844,
+     "z": 1981,
+     "stand": {
+      "x": 355189,
+      "y": 389687,
+      "z": 1917
+     },
+     "radius": 1450,
+     "levels": [
+      36,
+      36
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "breifine-crimthain-hastener",
+       "breifine-middle-hastener"
+      ]
+     }
+    },
+    {
+     "id": "cruachan-ailinne-sw-camps",
+     "type": "fringe",
+     "label": "Ailinne south-west camps",
+     "x": 353988,
+     "y": 404556,
+     "z": 3563,
+     "stand": {
+      "x": 352988,
+      "y": 404600,
+      "z": 3487
+     },
+     "radius": 1150,
+     "levels": [
+      40,
+      43
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "breifine-crimthain-hastener",
+       "breifine-middle-hastener"
+      ]
+     }
+    },
+    {
+     "id": "emain-amg",
+     "type": "chokepoint",
+     "label": "AMG",
+     "x": 448817,
+     "y": 340604,
+     "z": 3456,
+     "stand": {
+      "x": 448817,
+      "y": 340604,
+      "z": 3459
+     },
+     "radius": 700
+    },
+    {
+     "id": "emain-amg-camps",
+     "type": "camp",
+     "label": "AMG camps",
+     "x": 455477,
+     "y": 343485,
+     "z": 4215,
+     "stand": {
+      "x": 455015,
+      "y": 344372,
+      "z": 4418
+     },
+     "radius": 900,
+     "levels": [
+      48,
+      50
+     ]
+    },
+    {
+     "id": "emain-amg-road",
+     "type": "chokepoint",
+     "label": "AMG road",
+     "x": 442522,
+     "y": 325888,
+     "z": 3602,
+     "stand": {
+      "x": 442522,
+      "y": 325888,
+      "z": 3602
+     },
+     "radius": 1200,
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener"
+      ]
+     }
+    },
+    {
+     "id": "emain-apk-nw-camps",
+     "type": "camp",
+     "label": "APK north-west camps",
+     "x": 462707,
+     "y": 335417,
+     "z": 3722,
+     "stand": {
+      "x": 463022,
+      "y": 335663,
+      "z": 3786
+     },
+     "radius": 600,
+     "levels": [
+      46,
+      46
+     ]
+    },
+    {
+     "id": "emain-crauchon-east-camps",
+     "type": "camp",
+     "label": "Crauchon east camps",
+     "x": 442311,
+     "y": 324012,
+     "z": 3574,
+     "stand": {
+      "x": 441334,
+      "y": 323796,
+      "z": 3963
+     },
+     "radius": 1350,
+     "levels": [
+      30,
+      32
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener"
+      ]
+     }
+    },
+    {
+     "id": "emain-crauchon-ne-field",
+     "type": "named",
+     "label": "Crauchon north-east field",
+     "x": 434872,
+     "y": 297616,
+     "z": 4348,
+     "stand": {
+      "x": 435409,
+      "y": 298459,
+      "z": 4350
+     },
+     "radius": 1800,
+     "levels": [
+      58,
+      63
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads"
+      ]
+     }
+    },
+    {
+     "id": "emain-crauchon-north-field",
+     "type": "named",
+     "label": "Crauchon north field",
+     "x": 426980,
+     "y": 301561,
+     "z": 4348,
+     "stand": {
+      "x": 427517,
+      "y": 302404,
+      "z": 4348
+     },
+     "radius": 1250,
+     "levels": [
+      60,
+      60
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads",
+       "emain-crauchon-road"
+      ]
+     }
+    },
+    {
+     "id": "emain-crauchon-plain",
+     "type": "camp",
+     "label": "Crauchon plain",
+     "x": 438187,
+     "y": 320948,
+     "z": 4945,
+     "stand": {
+      "x": 438555,
+      "y": 321104,
+      "z": 4937
+     },
+     "radius": 1150,
+     "levels": [
+      46,
+      48
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads"
+      ]
+     }
+    },
+    {
+     "id": "emain-crauchon-road",
+     "type": "chokepoint",
+     "label": "Crauchon road",
+     "x": 434227,
+     "y": 317594,
+     "z": 3760,
+     "stand": {
+      "x": 434227,
+      "y": 317594,
+      "z": 3760
+     },
+     "radius": 1200,
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads"
+      ]
+     }
+    },
+    {
+     "id": "emain-crauchon-se-camps",
+     "type": "camp",
+     "label": "Crauchon south-east camps",
+     "x": 441757,
+     "y": 327892,
+     "z": 4737,
+     "stand": {
+      "x": 441801,
+      "y": 328891,
+      "z": 4993
+     },
+     "radius": 1350,
+     "levels": [
+      32,
+      36
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener"
+      ]
+     }
+    },
+    {
+     "id": "emain-crossroads",
+     "type": "chokepoint",
+     "label": "Emain crossroads",
+     "x": 442522,
+     "y": 319744,
+     "z": 3521,
+     "stand": {
+      "x": 442522,
+      "y": 319744,
+      "z": 3520
+     },
+     "radius": 1200,
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener"
+      ]
+     }
+    },
+    {
+     "id": "emain-lane-hastener",
+     "type": "chokepoint",
+     "label": "AMG lane hastener",
+     "x": 440789,
+     "y": 337516,
+     "z": 3962,
+     "stand": {
+      "x": 440789,
+      "y": 337516,
+      "z": 3965
+     },
+     "radius": 900
+    },
+    {
+     "id": "emain-mmg",
+     "type": "chokepoint",
+     "label": "MMG",
+     "x": 448810,
+     "y": 298626,
+     "z": 4256,
+     "stand": {
+      "x": 448810,
+      "y": 298626,
+      "z": 4259
+     },
+     "radius": 700,
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads"
+      ]
+     }
+    },
+    {
+     "id": "emain-mpk-south-camps",
+     "type": "camp",
+     "label": "MPK south camps",
+     "x": 469073,
+     "y": 310649,
+     "z": 3187,
+     "stand": {
+      "x": 468753,
+      "y": 310889,
+      "z": 3223
+     },
+     "radius": 1200,
+     "levels": [
+      36,
+      42
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads",
+       "emain-mmg"
+      ]
+     }
+    },
+    {
+     "id": "emain-mpk-sw-camps",
+     "type": "camp",
+     "label": "MPK south-west camps",
+     "x": 462955,
+     "y": 300388,
+     "z": 3778,
+     "stand": {
+      "x": 464266,
+      "y": 300877,
+      "z": 3637
+     },
+     "radius": 1450,
+     "levels": [
+      32,
+      39
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads",
+       "emain-mmg"
+      ]
+     }
+    },
+    {
+     "id": "emain-north-plain",
+     "type": "camp",
+     "label": "Emain north plain",
+     "x": 443506,
+     "y": 292038,
+     "z": 6489,
+     "stand": {
+      "x": 443874,
+      "y": 292194,
+      "z": 6296
+     },
+     "radius": 1450,
+     "levels": [
+      46,
+      47
+     ],
+     "via": {
+      "Albion": [
+       "emain-amg",
+       "emain-lane-hastener",
+       "emain-crossroads"
+      ]
+     }
+    }
+   ],
+   "circuits": [
+    {
+     "id": "hib-alb-1-amg",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [],
+     "spots": [
+      "emain-amg",
+      "emain-lane-hastener",
+      "emain-crauchon-se-camps",
+      "emain-crossroads"
+     ]
+    },
+    {
+     "id": "hib-alb-2-crauchon",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [
+      "emain-amg",
+      "emain-lane-hastener"
+     ],
+     "spots": [
+      "emain-crossroads",
+      "emain-crauchon-plain",
+      "emain-crauchon-road",
+      "emain-crauchon-se-camps"
+     ]
+    },
+    {
+     "id": "hib-alb-3-breifine",
+     "realm": "Albion",
+     "start": "Albion Portal Keep",
+     "approach": [],
+     "spots": [
+      "emain-lane-hastener",
+      "breifine-crimthain-hastener",
+      "breifine-bolg-ne-camps",
+      "breifine-evern",
+      "breifine-marfach-caverns"
+     ]
+    },
+    {
+     "id": "hib-mid-1-mmg",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "emain-mmg",
+      "emain-crauchon-ne-field",
+      "emain-crauchon-road",
+      "emain-crauchon-plain",
+      "emain-crossroads"
+     ]
+    },
+    {
+     "id": "hib-mid-2-crossroads",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "emain-crossroads",
+      "emain-crauchon-se-camps",
+      "emain-lane-hastener",
+      "emain-crauchon-plain"
+     ]
+    },
+    {
+     "id": "hib-mid-3-breifine",
+     "realm": "Midgard",
+     "start": "Midgard Portal Keep",
+     "approach": [],
+     "spots": [
+      "emain-lane-hastener",
+      "breifine-crimthain-hastener",
+      "breifine-bolg-ne-camps",
+      "breifine-evern",
+      "breifine-marfach-caverns"
+     ]
+    }
+   ]
+  }
+ ]
+}
