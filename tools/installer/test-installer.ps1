@@ -50,6 +50,17 @@ function Check([bool]$ok, [string]$what) {
     else { Write-Host "  FAIL  $what" -ForegroundColor Red; $failures.Add($what) }
 }
 
+# Runs a console program and returns all it printed, stdout and stderr, as text; $LASTEXITCODE stays its exit code.
+# With $ErrorActionPreference = 'Stop', Windows PowerShell turns the first stderr line of a native program run with 2>&1
+# (a Python traceback, say) into a terminating NativeCommandError: the whole test then stopped and showed only
+# "python.exe : Traceback (most recent call last):" (e2e-resume on PR #270). Here that text is kept and shown instead.
+function Run-Native([string]$file, [object[]]$argList) {
+    $saved = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try { return (& $file @argList 2>&1 | ForEach-Object { "$_" } | Out-String) }
+    finally { $ErrorActionPreference = $saved }
+}
+
 function Sha([string]$p) { (Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash.ToLowerInvariant() }
 
 # BUILD-INFO.txt of the package the exe embeds
@@ -123,8 +134,10 @@ function Assert-LivingServer([string]$game, [string]$what) {
 function Smoke-Game([string]$game, [string]$test, [string]$label) {
     Write-Host ''
     Write-Host "== $label : start the installed server and log in ($game)" -ForegroundColor Cyan
-    $out = & python (Join-Path $PSScriptRoot '..\..\source\tools\smoke_release_037.py') $game $test 2>&1 | Out-String
+    $out = Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\smoke_release_037.py'), $game, $test)
+    $code = $LASTEXITCODE
     Write-Host $out
+    Check ($code -eq 0) "$label : smoke_release_037.py finished (exit $code)"
     Check ($out -match 'PASS: server started') "$label : the installed server starts"
     $fork = Get-ChildItem $test -Recurse -File -Include *.log -ErrorAction SilentlyContinue | Select-String -Pattern "FORK_BUILD name=$([regex]::Escape($info['BuildName']))" -List | Select-Object -First 1
     Check ($null -ne $fork) "$label : its log says FORK_BUILD name=$($info['BuildName'])"
@@ -135,7 +148,7 @@ function Smoke-Game([string]$game, [string]$test, [string]$label) {
 
 # The edition line of make_classoff_copy.py status: "EDITION enable_sluaghbinder=<value> game.dll=<classic|sluaghbinder|...>"
 function Edition([string]$game) {
-    return (& python (Join-Path $PSScriptRoot '..\..\source\tools\make_classoff_copy.py') status --game $game 2>&1 | Out-String).Trim()
+    return (Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\make_classoff_copy.py'), 'status', '--game', $game)).Trim()
 }
 
 function Latest-InstallRecord([string]$game) {
@@ -430,12 +443,12 @@ if ($Scenario -contains 'classoff') {
     $report = Join-Path $Work 'playtest-classoff'
     if (Test-Path $world) { Remove-Item -Force $world }
     # A playtester copy of the installed world: its saves emptied as a release's are, the edition's own switch kept.
-    $made = & python (Join-Path $PSScriptRoot '..\..\source\tools\make_test_world.py') from-release --world (Join-Path $game 'runtime\data\opendaoc.sqlite3.db') --out $world --bots-per-realm 0 2>&1 | Out-String
+    $made = Run-Native 'python' @((Join-Path $PSScriptRoot '..\..\source\tools\make_test_world.py'), 'from-release', '--world', (Join-Path $game 'runtime\data\opendaoc.sqlite3.db'), '--out', $world, '--bots-per-realm', '0')
     Check ($LASTEXITCODE -eq 0 -and $made -match '"enable_sluaghbinder": "off"') 'classoff: a playtester copy of the installed world, switch still off'
     if (!$Playtester -or !(Test-Path $Playtester)) {
         Check $false "classoff: the playtester is built (-Playtester '$Playtester')"
     } else {
-        $pt = & dotnet $Playtester run --world $world --server-dir (Join-Path $game 'runtime\server') --scenarios 'class-switch,login-save-restart' --out $report 2>&1 | Out-String
+        $pt = Run-Native 'dotnet' @($Playtester, 'run', '--world', $world, '--server-dir', (Join-Path $game 'runtime\server'), '--scenarios', 'class-switch,login-save-restart', '--out', $report)
         $code = $LASTEXITCODE
         Write-Host $pt
         Check ($code -eq 0) "classoff: the playtester's class-switch and login-save-restart passed on the installed server (exit $code)"
@@ -459,7 +472,7 @@ if ($Scenario -contains 'update114') {
         Check ($r.Code -eq 0) 'update114: 1.1.4''s Setup installed a new game'
         $before = Latest-InstallRecord $game
         Check ($before -and $before.BuildName -eq '1.1.4-beta') "update114: the game has Living Server 1.1.4 ($($before.BuildName))"
-        $seeded = & python $seedTool seed --game $game --record $record 2>&1 | Out-String
+        $seeded = Run-Native 'python' @($seedTool, 'seed', '--game', $game, '--record', $record)
         Write-Host "   $($seeded.Trim())"
         Check ($LASTEXITCODE -eq 0) 'update114: a character, a gamebot roster and changed settings seeded'
         $r = Setup 'scan-114' @('--scan', '--game', $game)
@@ -469,13 +482,13 @@ if ($Scenario -contains 'update114') {
         Check ($r.Code -eq 0) 'update114: Setup updated the game'
         Assert-LivingServer $game 'update114'
         Check ($r.Log -notmatch 'Recommended settings: exit') 'update114: the player''s own settings were not replaced by the suggested ones'
-        $kept = & python $seedTool check --game $game --record $record 2>&1 | Out-String
+        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record)
         Write-Host $kept
         Check ($LASTEXITCODE -eq 0) 'update114: the character, its item, the roster, the settings and the files were kept'
 
         $smokeDir = Join-Path $Work 'smoke-update114'
         $null = Smoke-Game $game $smokeDir 'update114'
-        $kept = & python $seedTool check --game $game --record $record --db (Join-Path $smokeDir 'data\opendaoc.sqlite3.db') 2>&1 | Out-String
+        $kept = Run-Native 'python' @($seedTool, 'check', '--game', $game, '--record', $record, '--db', (Join-Path $smokeDir 'data\opendaoc.sqlite3.db'))
         Write-Host $kept
         Check ($LASTEXITCODE -eq 0) 'update114: kept after the updated server''s first start (the smoke copy of the world)'
     }
