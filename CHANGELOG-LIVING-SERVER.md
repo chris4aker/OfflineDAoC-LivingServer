@@ -179,6 +179,40 @@ Test and GM tooling only: **nothing a player or a bot does changes**. Written ne
   and a gamebot's type, crafting skills and purse. Parts not merged answer "not built yet (WPn …)"; a package that
   lands registers its own answer (`CraftEconomyTestHooks`). `/lstest craft | wtb | commission` delegates to it.
 - Rehearsal results are tests, not in-game results; every ledger names its build (`ECON_REHEARSAL_BUILD`).
+### WP3 The player's side (M1)
+
+For real players only; gamebots and /bot companions craft nothing and are unchanged (a companion's kill only counts
+for its player's coin). Automated tests only; nothing here has been played. Player guide: [docs/CRAFTING.md](docs/CRAFTING.md)
+(crafting works in the original client only for now).
+
+- **Era start** (`crafting_era_start`, on): a new character joins a crafting order at a master, as in 1.65, instead of
+  starting with Basic Crafting and every skill at 1. Only a crafting record created from now on (an account's first
+  character in a realm) starts without an order; **an existing record keeps every skill and its order**, whatever the
+  setting. With era start on, the Basic Crafters Master and siegecraft take no new members (not orders in 1.65) and
+  say where to go; every one of the six orders has a working master in both capitals of each realm.
+- **The masters M0 counted as decorations work.** 56 of M0's 57 "decoration-only" masters (ClassType `GameNPC`) are
+  made into the master of their title by the guild-script rule (`use_npcguildscripts`, on by default and in the shipped
+  world), among them Camelot's alchemist, Aegir's Landing's spellcrafter and Domnann's tailor; M0's audit read the
+  ClassType column only. The one left is Domnann's Siegecrafters Master (no class has that title). No world data is
+  changed; the server log warns at start-up if era start is on and the guild-script rule is off.
+- **Fixes the era start needed:** joining an order never added its skills (`AddCraftingSkill` tested the wrong way and
+  would have thrown for a held skill; no character lacked one before), a gain in a skill never trained threw
+  `KeyNotFoundException`, and crafting a recipe of an untrained skill now says so. A record with skills but no primary
+  plays as Basic Crafting instead of losing its skills on the next save.
+- **Secondary caps** (`crafting_secondary_caps`, off): another order's craft stops at 75% or 40% of the primary, from
+  the masters' own descriptions and a 2002 player report; material skills are never capped and no skill is lowered.
+- **Repair upkeep** (`player_upkeep`, light): the smith's price, half (rounded up) under light, nothing under free, the
+  old price under classic; WP1 already makes light and free repairs spend no durability.
+- **Coin by level band** (`player_coin_by_level`, on): a real player's monster coin (bags and chests) is multiplied by
+  their XP rate for their level when that is above 1, so a level is worth the classic coin at 10x XP; never lowered.
+- **Titles**: no Legendary Grandmaster (1000 and above is Legendary) and no Basic Crafting title. From Baptiste Marie
+  (bm01), upstream OpenDAoC `7b0df1b12` and `ad789ee4d`, GPL (the commit's dead `CRAFTER_TITLE_PREFIX` and its
+  `SiegeCrafting` refactor are in WP1's files and not taken here).
+- **Launcher:** a Crafting card in the Living Server tab for era start, crafting pace (`crafting_skill_rate`, 1-10),
+  repair upkeep, coin by level, secondary caps, classic quality and classic losses, saved and read like the tab's other
+  rows (the pace and the two classic options are WP1's rules; this adds their rows).
+- Log lines `CRAFT_ERA_JOIN` (a record started without an order, an order joined) and `CRAFT_PLAYER_TITLE` (every
+  hundred to 1000). Tests: `UT_PlayerCraftingRules`, `SocialExpansionSettingsTests.CraftingRowsAreSavedReadAndChecked`.
 
 ## 1.2.1 (in development)
 

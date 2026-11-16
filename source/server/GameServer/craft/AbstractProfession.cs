@@ -24,6 +24,8 @@ namespace DOL.GS
     /// <summary>
     /// Tradeskills that earn the crafter a title.
     /// <author>Aredhel</author>
+    /// Crafting 2.0 (WP3): from Baptiste Marie (bm01), upstream OpenDAoC 7b0df1b12 and ad789ee4d, GPL: no Legendary
+    /// Grandmaster rung (post-era; 1000 and above is Legendary) and no Basic Crafting title.
     /// </summary>
     public abstract class AbstractProfession : AbstractCraftingSkill
     {
@@ -33,33 +35,34 @@ namespace DOL.GS
 
         public static String GetTitleFormat(int skillLevel)
         {
-            if (skillLevel < 0)
-                throw new ArgumentOutOfRangeException("skillLevel");
+            ArgumentOutOfRangeException.ThrowIfNegative(skillLevel);
 
-
-            switch (skillLevel / 100)
+            return (skillLevel / 100) switch
             {
-                case 0: return "CraftersTitle.Helper";
-                case 1: return "CraftersTitle.JuniorApprentice";
-                case 2: return "CraftersTitle.Apprentice";
-                case 3: return "CraftersTitle.Neophyte";
-                case 4: return "CraftersTitle.Assistant";
-                case 5: return "CraftersTitle.Junior";
-                case 6: return "CraftersTitle.Journeyman";
-                case 7: return "CraftersTitle.Senior";
-                case 8: return "CraftersTitle.Master";
-                case 9: return "CraftersTitle.Grandmaster";
-                case 10: return "CraftersTitle.Legendary";
-                default: return "CraftersTitle.LegendaryGrandmaster";
-            }
+                0 => "CraftersTitle.Helper",
+                1 => "CraftersTitle.JuniorApprentice",
+                2 => "CraftersTitle.Apprentice",
+                3 => "CraftersTitle.Neophyte",
+                4 => "CraftersTitle.Assistant",
+                5 => "CraftersTitle.Junior",
+                6 => "CraftersTitle.Journeyman",
+                7 => "CraftersTitle.Senior",
+                8 => "CraftersTitle.Master",
+                9 => "CraftersTitle.Grandmaster",
+                _ => "CraftersTitle.Legendary"
+            };
         }
 
-        public String GetTitle(GamePlayer player, int skillLevel)
+        public virtual String GetTitle(GamePlayer player, int skillLevel)
         {
-        	string profession = LanguageMgr.TryTranslateOrDefault(player, "!Profession!", Profession);
+            // Upstream ad789ee4d overrides this in BasicCrafting; the check lives here so BasicCrafting.cs (WP1's) is untouched.
+            if (eSkill == eCraftingSkill.BasicCrafting)
+                return string.Empty;
+
+            string profession = LanguageMgr.TryTranslateOrDefault(player, "!Profession!", Profession);
             try
             {
-            	return LanguageMgr.TryTranslateOrDefault(player, "!None {0}!", GetTitleFormat(skillLevel), profession);
+                return LanguageMgr.TryTranslateOrDefault(player, "!None {0}!", GetTitleFormat(skillLevel), profession);
             }
             catch
             {

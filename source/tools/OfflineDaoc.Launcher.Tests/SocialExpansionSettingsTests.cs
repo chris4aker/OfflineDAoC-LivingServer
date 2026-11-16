@@ -81,8 +81,15 @@ public class SocialExpansionSettingsTests
         // Setup applies these on a first install (owner 2026-10-28): every switch on, the suggested XP ranges. The power
         // regeneration halving is a classic rule, not a feature: off, as the 1.1.2 default (owner 2026-11-03).
         var r = SocialExpansionSettings.Recommended;
+        // Crafting 2.0: the classic crafting options (secondary caps, classic quality, classic losses) are rules, off by
+        // default like the halving (design decision 11).
+        string[] classicRules =
+        [
+            nameof(SocialExpansionSettings.ManaHalvedBelowHalf), nameof(SocialExpansionSettings.CraftingSecondaryCaps),
+            nameof(SocialExpansionSettings.CraftingClassicQuality), nameof(SocialExpansionSettings.CraftingClassicLosses),
+        ];
         var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && p.Name != nameof(SocialExpansionSettings.ManaHalvedBelowHalf)).ToArray();
+            .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && !classicRules.Contains(p.Name)).ToArray();
         Assert.That(switches.Length, Is.GreaterThanOrEqualTo(24));
         Assert.That(switches.Where(p => !(bool)p.GetValue(r)!).Select(p => p.Name), Is.Empty);
         Assert.That(r.PlayerXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedPlayerXp));
@@ -335,6 +342,84 @@ public class SocialExpansionSettingsTests
             Is.EqualTo(("True", "2", "False")));
     }
 
+    /// <summary>
+    /// Crafting 2.0, the player's side (WP3): era start, secondary caps, crafting pace, repair upkeep, coin by level and the
+    /// two classic options are saved as the server reads them, loaded back, checked, kept by ALL OFF, and shown and saved
+    /// by the tab.
+    /// </summary>
+    [Test] public void CraftingRowsAreSavedReadAndChecked()
+    {
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That((d.CraftingEraStart, d.CraftingSecondaryCaps, d.CraftingPace, d.PlayerUpkeep, d.PlayerCoinByLevel, d.CraftingClassicQuality, d.CraftingClassicLosses),
+            Is.EqualTo((true, false, 1.0, "light", true, false, false)));
+        var classic = d with
+        {
+            CraftingEraStart = false, CraftingSecondaryCaps = true, CraftingPace = 3, PlayerUpkeep = "classic",
+            PlayerCoinByLevel = false, CraftingClassicQuality = true, CraftingClassicLosses = true,
+        };
+        Assert.That(classic.Validate(), Is.Null);
+        classic.Save(_database, d, () => _stopped);
+        var rows = Rows();
+        Assert.That((rows["crafting_era_start"], rows["crafting_secondary_caps"], rows["crafting_skill_rate"], rows["player_upkeep"],
+                rows["player_coin_by_level"], rows["crafting_classic_quality"], rows["crafting_classic_losses"]),
+            Is.EqualTo(("False", "True", "3", "classic", "False", "True", "True")));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(classic));
+        Assert.That(problems, Is.Empty);
+        var off = classic.AllOff();
+        Assert.That((off.CraftingEraStart, off.CraftingSecondaryCaps, off.CraftingPace, off.PlayerUpkeep, off.CraftingClassicLosses),
+            Is.EqualTo((false, true, 3.0, "classic", true)), "ALL OFF leaves the crafting rules alone");
+
+        // Only what changed is written.
+        (classic with { PlayerUpkeep = "free" }).Save(_database, classic, () => _stopped);
+        Assert.That(Rows()["player_upkeep"], Is.EqualTo("free"));
+
+        Assert.That((d with { CraftingPace = 0 }).Validate(), Does.Contain("crafting pace"));
+        Assert.That((d with { CraftingPace = 11 }).Validate(), Does.Contain("crafting pace"));
+        Assert.That((d with { CraftingPace = 1.5 }).Validate(), Does.Contain("whole number"));
+        Assert.That((d with { PlayerUpkeep = "cheap" }).Validate(), Does.Contain("classic, light or free"));
+
+        // Unreadable rows: reported, shown as what the server then uses, and repaired by a save.
+        Exec("""
+            UPDATE ServerProperty SET Value='maybe' WHERE `Key`='crafting_era_start';
+            UPDATE ServerProperty SET Value='fast' WHERE `Key`='crafting_skill_rate';
+            UPDATE ServerProperty SET Value='Expensive' WHERE `Key`='player_upkeep';
+            """);
+        var keys = new HashSet<string>();
+        problems.Clear();
+        var bad = SocialExpansionSettings.Load(_database, problems, keys);
+        Assert.That(keys, Is.EquivalentTo(new[] { "crafting_era_start", "crafting_skill_rate", "player_upkeep" }));
+        Assert.That((bad.CraftingEraStart, bad.CraftingPace, bad.PlayerUpkeep), Is.EqualTo((true, 1.0, "light")),
+            "the server keeps its defaults (era start on, pace 1) and reads an unknown upkeep as light");
+        Exec("UPDATE ServerProperty SET Value='25' WHERE `Key`='crafting_skill_rate'; UPDATE ServerProperty SET Value=' FREE ' WHERE `Key`='player_upkeep'");
+        problems.Clear();
+        var clamped = SocialExpansionSettings.Load(_database, problems);
+        Assert.That((clamped.CraftingPace, clamped.PlayerUpkeep), Is.EqualTo((10.0, "free")));
+        Assert.That(problems, Has.Count.EqualTo(2), "the pace out of range, era start still unreadable");
+
+        // The tab shows and saves them.
+        Exec("""
+            UPDATE ServerProperty SET Value='True' WHERE `Key`='crafting_era_start';
+            UPDATE ServerProperty SET Value='2' WHERE `Key`='crafting_skill_rate';
+            UPDATE ServerProperty SET Value='free' WHERE `Key`='player_upkeep';
+            """);
+        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
+        T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
+        Assert.That((Field<CheckBox>("_craftEraStart").Checked, Field<NumericUpDown>("_craftPace").Value, Field<ComboBox>("_upkeep").SelectedIndex,
+                Field<CheckBox>("_craftSecondaryCaps").Checked, Field<CheckBox>("_coinByLevel").Checked),
+            Is.EqualTo((true, 2m, 2, true, false)));
+        Field<CheckBox>("_craftEraStart").Checked = false;
+        Field<NumericUpDown>("_craftPace").Value = 4m;
+        Field<ComboBox>("_upkeep").SelectedIndex = 1;
+        Field<CheckBox>("_coinByLevel").Checked = true;
+        Field<CheckBox>("_classicQuality").Checked = false;
+        type.GetMethod("SaveSettings", Hidden)!.Invoke(panel, null);
+        rows = Rows();
+        Assert.That((rows["crafting_era_start"], rows["crafting_skill_rate"], rows["player_upkeep"], rows["player_coin_by_level"], rows["crafting_classic_quality"]),
+            Is.EqualTo(("False", "4", "light", "True", "False")));
+    }
+
     /// <summary>The keys and defaults here must be the server's (ServerProperties.cs), or the tab would show the wrong state.</summary>
     [Test] public void KeysAndDefaultsMatchTheServer()
     {
@@ -342,7 +427,9 @@ public class SocialExpansionSettingsTests
         while (dir != null && !File.Exists(Path.Combine(dir, "source/server/GameServer/serverproperty/ServerProperties.cs")))
             dir = Path.GetDirectoryName(dir);
         if (dir == null) Assert.Ignore("Server source not found beside the tests.");
-        string source = File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/serverproperty/ServerProperties.cs"));
+        // Crafting 2.0's settings are declared in CraftingEconomyProperties (WP0), in the same attribute form.
+        string source = File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/serverproperty/ServerProperties.cs")) +
+                        File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/craft/economy/CraftingEconomyProperties.cs"));
         var defaults = SocialExpansionSettings.Defaults.ToStoredValues();
         foreach (var (key, category, _) in typeof(SocialExpansionSettings)
                      .GetField("Settings", BindingFlags.Static | BindingFlags.NonPublic)!

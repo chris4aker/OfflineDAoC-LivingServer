@@ -18,6 +18,8 @@
  */
 using System.Collections;
 using System.Reflection;
+using DOL.GS.Crafting;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.PacketHandler;
 using DOL.Language;
 
@@ -34,6 +36,17 @@ namespace DOL.GS
 		public abstract eCraftingSkill TheCraftingSkill { get; }
 
 		public abstract string InitialEntersentence { get; }
+
+		/// <summary>
+		/// Crafting 2.0 (WP3): whether this Master admits new members. With crafting_era_start on only the six orders of
+		/// 1.65 do (PlayerCraftingRules.EraOrders); the Basic Crafting and Siegecraft Masters then point the way to them.
+		/// A member of the order (skill 1 or more) is always welcome to make it the primary again.
+		/// </summary>
+		public virtual bool AdmitsNewMembers => PlayerCraftingRules.IsOpenOrder(TheCraftingSkill, CraftingEconomyProperties.CRAFTING_ERA_START);
+
+		/// <summary>What a closed order's Master says to a character who is not a member (era start on).</summary>
+		public virtual string ClosedOrderSentence =>
+			"Our order takes no new apprentices. To learn a craft, speak to the master of the order you wish to join: the Weaponcrafters, Armorcrafters, Tailors, Fletchers, Alchemists or Spellcrafters.";
 
 		public override bool Interact(GamePlayer player)
 		{
@@ -54,6 +67,12 @@ namespace DOL.GS
 				return true;
 			}
 			
+			if (!AdmitsNewMembers)
+			{
+				SayTo(player, eChatLoc.CL_PopupWindow, ClosedOrderSentence);
+				return true;
+			}
+
 			// Dunnerholl : Basic Crafting Master does not give the option to rejoin this craft
 			if (InitialEntersentence != null)
 			{
@@ -76,6 +95,11 @@ namespace DOL.GS
 			
 			if (playerSkills >= 1 && text == GUILD_ORDER)
 				return false;
+            if(text == GUILD_ORDER && !AdmitsNewMembers)
+			{
+				SayTo(player, eChatLoc.CL_PopupWindow, ClosedOrderSentence);
+				return true;
+			}
             if(text == GUILD_ORDER)
 			{
 				player.Out.SendCustomDialog(LanguageMgr.GetTranslation(player.Client.Account.Language, "CraftNPC.WhisperReceive.WishToJoin", ACCEPTED_BY_ORDER_NAME), new CustomDialogResponse(CraftNpcDialogResponse));
@@ -88,6 +112,11 @@ namespace DOL.GS
 			if (response != 0x01)
 				return; //declined
 
+			// The setting may have changed while the dialog was open; a member re-joining is handled by Interact.
+			if (!AdmitsNewMembers && player.GetCraftingSkillValue(TheCraftingSkill) < 1)
+				return;
+
+			bool firstOrder = player.CraftingPrimarySkill == eCraftingSkill.NoCrafting;
 			player.CraftingPrimarySkill = TheCraftingSkill;
 
 			player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "CraftNPC.CraftNpcDialogResponse.Accepted", ACCEPTED_BY_ORDER_NAME), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
@@ -96,6 +125,7 @@ namespace DOL.GS
 			{
 				player.AddCraftingSkill(skill, 1);
 			}
+			PlayerCraftingRules.LogEraJoin(player, firstOrder ? "join" : "join_another", TheCraftingSkill);
 			player.Out.SendUpdatePlayer();
 			player.Out.SendUpdateCraftingSkills();
 			
