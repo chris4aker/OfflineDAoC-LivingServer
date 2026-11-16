@@ -181,7 +181,8 @@ namespace DOL.GS.Tests.Rehearsal
             }
 
             report.Gates.Add(new RehearsalGate(NoUndress, world.UndressEvents == 0 ? GateStatus.Pass : GateStatus.Fail,
-                $"{world.UndressEvents} undress events in {world.Counters.GetValueOrDefault("equipped") + world.Counters.GetValueOrDefault("equipped_crafted")} equips"));
+                $"{world.UndressEvents} undress events in {world.Counters.GetValueOrDefault("equipped") + world.Counters.GetValueOrDefault("equipped_crafted")} equips, on the {world.UndressScale}" +
+                (world.SlotValueTradeoffs > 0 ? $"; {world.SlotValueTradeoffs} raised the set score with a lower slot value" : string.Empty)));
 
             if (world.OrderWaitMinutes.Count == 0)
                 report.Gates.Add(new RehearsalGate(OrderWait, GateStatus.NotApplicable,

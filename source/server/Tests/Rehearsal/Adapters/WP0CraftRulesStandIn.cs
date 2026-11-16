@@ -157,7 +157,7 @@ namespace DOL.GS.Tests.Rehearsal.Adapters
             int slot = RehearsalAgent.SlotIndexOf(item.Item_Type);
             if (slot >= 0 && item.Level <= agent.Level && item.Object_Type != 0 && world.IsUpgrade(agent, agent.Worn[slot], item))
             {
-                world.Equip(agent, slot, item);
+                world.Equip(agent, slot, item, "crafted");
                 _stats.Worn++;
                 return 0;
             }

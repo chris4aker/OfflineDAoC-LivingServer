@@ -318,7 +318,7 @@ namespace DOL.GS.Tests.Rehearsal
                 if (slot < 0 || item.Level > agent.Level || !world.IsUpgrade(agent, agent.Worn[slot], item))
                     continue;
                 agent.Bag.Remove(item);
-                world.Equip(agent, slot, item);
+                world.Equip(agent, slot, item, item.IsROG ? "loot" : "bag");
                 world.Count(item.IsROG ? "loot_upgrades" : "bag_upgrades");
             }
         }
@@ -373,7 +373,7 @@ namespace DOL.GS.Tests.Rehearsal
                 }
             }
             if (best != null && world.TryBuy(agent, best))
-                world.Equip(agent, RehearsalAgent.SlotIndexOf(best.Item.Item_Type), best.Item);
+                world.Equip(agent, RehearsalAgent.SlotIndexOf(best.Item.Item_Type), best.Item, "exchange");
         }
 
         /// <summary>Buys merchant gear at the highest level merchants sell up to the bot's, for its weakest slot, if an upgrade.</summary>
@@ -387,7 +387,7 @@ namespace DOL.GS.Tests.Rehearsal
             DbInventoryItem item = RehearsalItems.Merchant(agent, weakest, level, price);
             if (!world.IsUpgrade(agent, agent.Worn[weakest], item) || !world.Pay(agent, price, EconomyFlowKind.VendorGear))
                 return;
-            world.Equip(agent, weakest, item);
+            world.Equip(agent, weakest, item, "vendor");
             world.Count("vendor_buys");
         }
     }

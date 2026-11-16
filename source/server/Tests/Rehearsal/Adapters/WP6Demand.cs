@@ -64,7 +64,26 @@ namespace DOL.GS.Tests.Rehearsal.Adapters
             return worn == null ? gain > 0 : gain > 8;
         }
 
-        public override void Attach(RehearsalWorld world) => world.IsUpgrade = IsUpgrade;
+        /// <summary>
+        /// The server's no-undress rule with bot_crafters on (BotGearGuard.Allows, the last check of every equip): the move
+        /// undresses the agent when it lowers the set score or empties a worn slot. The world's default rule, the slot's
+        /// own EquipmentValue, is not the server's rule here: the set score may rightly take a piece whose EquipmentValue
+        /// is a little lower, e.g. a higher-quality armour piece at 50 (6 a quality point above 94 against EquipmentValue's
+        /// 1), and the world counts each such trade separately (SlotValueTradeoffs) so it stays visible.
+        /// </summary>
+        public static bool IsUndress(RehearsalAgent agent, int slotIndex, DbInventoryItem item, out long before, out long after)
+        {
+            DbInventoryItem[] worn = Loadout(agent);
+            DbInventoryItem[] next = BotGearSet.With(worn, RehearsalAgent.SlotOf(slotIndex), item);
+            return !BotGearGuard.Allows(ContextFor(agent), worn, next, out before, out after);
+        }
+
+        public override void Attach(RehearsalWorld world)
+        {
+            world.IsUpgrade = IsUpgrade;
+            world.IsUndress = IsUndress;
+            world.UndressScale = "set score";
+        }
 
         public override void OnTaskBreak(RehearsalWorld world, RehearsalAgent agent)
         {
@@ -124,7 +143,7 @@ namespace DOL.GS.Tests.Rehearsal.Adapters
             }
             if (best == null || !world.TryBuy(agent, best))
                 return false;
-            world.Equip(agent, RehearsalAgent.SlotIndexOf(best.Item.Item_Type), best.Item);
+            world.Equip(agent, RehearsalAgent.SlotIndexOf(best.Item.Item_Type), best.Item, "gap-buy");
             _bought++;
             _boughtCopper += best.Price;
             world.Count("wp6_gap_buys");
@@ -192,6 +211,7 @@ namespace DOL.GS.Tests.Rehearsal.Adapters
             report.Metric("wp6.wtbWanted", _wtbWanted);
             report.Metric("wp6.wtbAffordable", _wtbAffordable);
             report.Metric("wp6.setScoreDrops", _scoreDrops);
+            report.Metric("wp6.slotValueTradeoffs", world.SlotValueTradeoffs);
             int worn = world.Agents.Sum(agent => agent.Worn.Count(item => item != null));
             int crafted = world.Agents.Sum(agent => agent.Worn.Count(item => item?.IsCrafted == true));
             report.Metric("wp6.craftedWornPercent", worn == 0 ? 0 : Math.Round(crafted * 100.0 / worn, 2));
