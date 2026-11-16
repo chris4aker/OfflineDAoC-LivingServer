@@ -1540,6 +1540,9 @@ public static class AutonomousBotChatCoordinator
             return;
         if (AutonomousBeggars.OnPlayerTell(player, bot, message))
             return;
+        // Crafting 2.0 WP8: trade with a crafter gamebot (bot_crafter_commerce, off by default).
+        if (AutonomousLivingServer.OnCommerceTell(player, bot, message))
+            return;
         lock (Sync)
         {
             string key = player.Name + "|" + bot.Name;

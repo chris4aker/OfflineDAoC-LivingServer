@@ -159,5 +159,9 @@ namespace DOL.GS.CraftingEconomy
         [DataElement(AllowDbNull = false)] public int Deals { get; set; }
         [DataElement(AllowDbNull = false)] public int Stiffed { get; set; }
         [DataElement(AllowDbNull = false)] public string LastUtc { get; set; } = string.Empty;
+        // WP8: what the customer has paid this crafter in all, and a refund owed to a player who was offline when an
+        // order lapsed (paid at their next login; outside the money supply until then, as escrow is).
+        [DataElement(AllowDbNull = false)] public long SpentCopper { get; set; }
+        [DataElement(AllowDbNull = false)] public long OwedCopper { get; set; }
     }
 }

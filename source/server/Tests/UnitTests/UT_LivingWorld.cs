@@ -98,7 +98,7 @@ namespace DOL.GS.Tests
         public void EveryArcHasFourEpisodesAndBothEndings()
         {
             var arcs = AutonomousBotStorylines.Arcs(Corpus.Scenes);
-            Assert.That(arcs.Keys, Is.EquivalentTo(new[] { "killsteal", "guildsplit", "romance", "ninjaloot" }));
+            Assert.That(arcs.Keys, Is.EquivalentTo(new[] { "killsteal", "guildsplit", "romance", "ninjaloot", "pricewar" }));
             foreach (var (arc, episodes) in arcs)
             {
                 Assert.That(episodes.Length - 1, Is.EqualTo(4), arc);

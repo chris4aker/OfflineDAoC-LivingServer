@@ -12,6 +12,7 @@ namespace DOL.GS.CraftingEconomy
     /// <code>
     /// supply   = bot purses + player wallets + unclaimed Exchange proceeds + guild banks
     /// flows    = net of every faucet and sink kind (AddMoney/TrySpend) - Exchange tax + coin of new bots - coin of removed bots
+    ///            + players' coin out of craft-order escrow - players' coin into it (WP8)
     /// residual = (supply now - supply before) - flows
     /// </code>
     /// The residual is what the ledger does not see. On a normal server it is not zero: every player-side coin move
@@ -59,7 +60,7 @@ namespace DOL.GS.CraftingEconomy
             public int GoneBots { get; init; }
             /// <summary>Bots in both snapshots whose purse changed by more or less than their recorded moves.</summary>
             public int UnexplainedBots { get; init; }
-            /// <summary>flows = FlowNet - Tax + RosterIn - RosterOut.</summary>
+            /// <summary>flows = FlowNet - Tax + RosterIn - RosterOut + the players' escrow net (WP8).</summary>
             public long Flows { get; init; }
             public long Residual { get; init; }
             public long BotFlows { get; init; }
@@ -163,7 +164,9 @@ namespace DOL.GS.CraftingEconomy
                 string taxKey = EconomyFlowClassifier.KeyName(EconomyFlowKind.ExchangeTax);
                 sinks[taxKey] = sinks.GetValueOrDefault(taxKey) + tax;
             }
-            long flows = flowNet - tax + rosterIn - rosterOut;
+            // WP8: a player's coin into a craft order's escrow leaves the supply (and comes back on a refund); no bot moved it.
+            long escrow = slots.Sum(window.PlayerEscrow);
+            long flows = flowNet - tax + rosterIn - rosterOut + escrow;
             long botFlows = purseNet + slots.Sum(window.BotReceived) - slots.Sum(window.BotPaid) + rosterIn - rosterOut;
 
             long deltaSupply = prior == null ? 0 : supply.Total - prior.Total;

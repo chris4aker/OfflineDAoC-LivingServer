@@ -40,6 +40,9 @@ namespace DOL.GS.CraftingEconomy
         Luxury,
         Refund,
         LauncherGrant,
+        // WP8: coin between a real player and a gamebot (a sale in a trade window, a commission paid on delivery, change
+        // given back). Both sides are in the money supply, so it is a transfer (EconomyFlowClassifier.IsTransfer).
+        PlayerTrade,
     }
 
     /// <summary>Receives every gamebot coin move (WP2's ledger). Called outside the money lock; must be cheap and thread-safe.</summary>
@@ -47,6 +50,13 @@ namespace DOL.GS.CraftingEconomy
     {
         /// <param name="signedCopper">Positive for coin received, negative for coin paid.</param>
         void Record(long botId, long signedCopper, EconomyFlowKind kind, string callerFile, string callerMember);
+
+        /// <summary>
+        /// WP8: coin a real player paid into a craft order's escrow (negative), or got back from it (positive). Escrow is
+        /// outside the money supply, as for a gamebot's order; this is the player's side of it, so the realm's flows match
+        /// the change in supply. The default records nothing.
+        /// </summary>
+        void RecordPlayerEscrow(int realm, long signedCopper) { }
     }
 
     /// <summary>
@@ -70,6 +80,16 @@ namespace DOL.GS.CraftingEconomy
             if (sink == null || signedCopper == 0)
                 return;
             try { sink.Record(botId, signedCopper, kind, FileName(callerFile), callerMember ?? string.Empty); }
+            catch { } // diagnostics never break a coin move
+        }
+
+        /// <summary>WP8: a player's coin into (negative) or out of (positive) a craft order's escrow.</summary>
+        public static void RecordPlayerEscrow(eRealm realm, long signedCopper)
+        {
+            IEconomyFlowSink sink = _sink;
+            if (sink == null || signedCopper == 0)
+                return;
+            try { sink.RecordPlayerEscrow((int)realm, signedCopper); }
             catch { } // diagnostics never break a coin move
         }
 

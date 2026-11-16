@@ -138,6 +138,8 @@ for these tables is WP9's.
 | `launcher_level50_kit` | True (today's launcher) | WP9 |
 | `economy_ledger_enabled` | True (logs and one row an hour; no amount changes) **[owner]** | WP2 |
 | `craft_made_lines`, `econ_trade_lines` (diagnostics) | False | WP4, WP5 |
+| `bot_crafter_commerce` (WP8, amended into WP0's settings) | **False** | WP8 |
+| `bot_crafting_social` (WP8b) | **False** | WP8 |
 
 Modes (pace, commissions) keep their proposed values but do nothing while `bot_crafters` is off.
 

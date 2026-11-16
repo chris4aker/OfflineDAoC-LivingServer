@@ -233,7 +233,11 @@ public static class AutonomousBotGuildEconomy
         {
             if (guild.BonusType != Guild.eBonusType.None || guild.MeritPoints < BuffMeritCost)
                 return false;
-            Guild.eBonusType buff = BuffFor(charter, Properties.GUILD_BUFF_XP > 0, Properties.GUILD_BUFF_RP > 0, Properties.GUILD_BUFF_CRAFTING > 0);
+            // Crafting 2.0 WP8 (bot_crafting_social): the crafting-haste buff speeds a player's combines only (gamebots'
+            // crafting ignores guild buffs), so a guild buys it only with a real player crafter online.
+            bool haste = Properties.GUILD_BUFF_CRAFTING > 0 &&
+                         (!CraftingEconomy.CraftingDrama.On || HasPlayerCrafterOnline(guild));
+            Guild.eBonusType buff = BuffFor(charter, Properties.GUILD_BUFF_XP > 0, Properties.GUILD_BUFF_RP > 0, haste);
             if (buff == Guild.eBonusType.None)
                 return false;
             guild.BonusType = buff;
@@ -247,6 +251,55 @@ public static class AutonomousBotGuildEconomy
         if (Log.IsInfoEnabled)
             Log.Info($"BOT_GUILD_BUFF guild=\"{guild.Name}\" buff={guild.BonusType} leader=\"{leader.Name}\"");
         return true;
+    }
+
+    /// <summary>Crafting 2.0 WP8: a real player of the guild who crafts is online.</summary>
+    public static bool HasPlayerCrafterOnline(Guild guild)
+    {
+        try
+        {
+            return guild != null && guild.GetListOfOnlineMembers().Any(member => member?.Client != null &&
+                member.CraftingPrimarySkill != eCraftingSkill.NoCrafting && member.CraftingPrimarySkill != eCraftingSkill.BasicCrafting);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>Crafting 2.0 WP8: whether a guild is a bot guild of the Crafting charter (its bank pays guild crafters' fees).</summary>
+    public static bool IsCraftingBotGuild(Guild guild) =>
+        guild != null && AutonomousBotRealmGuilds.TryGetBotGuild(guild.GuildID, out AutonomousBotRealmGuilds.BotGuildInfo info) &&
+        info.Charter == BotGuildCharter.Crafting;
+
+    /// <summary>
+    /// Crafting 2.0 WP8 (bot_crafting_social): a Crafting-charter bot guild's bank pays its crafter gamebot the fee it waived
+    /// on a guildmate's piece (<see cref="CraftingEconomy.CraftingDrama.BankFee"/>): out of the bank, into the crafter's
+    /// purse (EconomyFlowKind.Guild, a transfer within the money supply), back to the bank if the purse cannot take it.
+    /// Logs ECON_GUILD_SPEND. Returns the copper paid (0 for any other guild, a short bank or the switch off).
+    /// </summary>
+    public static long PayGuildCrafterFee(Guild guild, GameBot crafter, long materials, string forWhom)
+    {
+        if (!CraftingEconomy.CraftingDrama.On || guild == null || crafter == null || crafter.DatabaseID <= 0 || !IsCraftingBotGuild(guild))
+            return 0;
+        long fee;
+        lock (guild)
+        {
+            fee = CraftingEconomy.CraftingDrama.BankFee(materials, guild.GetGuildBank(), true);
+            if (fee <= 0 || !guild.AddToBank(-fee, false))
+                return 0;
+        }
+        if (!AutonomousBotEconomy.AddMoney(crafter.DatabaseID, fee, CraftingEconomy.EconomyFlowKind.Guild))
+        {
+            lock (guild)
+                guild.AddToBank(fee, false);
+            return 0;
+        }
+        if (Log.IsInfoEnabled)
+            Log.Info(CraftingEconomy.EconomyLog.Line(CraftingEconomy.EconomyLog.EconGuildSpend, ("guild", guild.Name), ("realm", crafter.Realm),
+                ("what", "crafter_fee"), ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID), ("for", forWhom ?? string.Empty),
+                ("copper", fee), ("bank", (long)guild.GetGuildBank())));
+        return fee;
     }
 
     #endregion

@@ -146,6 +146,17 @@ namespace DOL.GS
                     yield return bot;
         }
 
+        /// <summary>
+        /// Crafting 2.0 WP8: the guild a crafter gamebot makes pieces for at material cost: the player's guild it was
+        /// invited into, else its own bot guild. Null for a companion (a /bot helper crafts for nobody).
+        /// </summary>
+        public static Guild CraftingGuildOf(GameBot bot) =>
+            bot == null || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper ? null : GuildOf(bot.DatabaseID) ?? bot.Guild;
+
+        /// <summary>WP8: the real player is in the crafter gamebot's guild (guild crafter access: materials only).</summary>
+        public static bool IsGuildmate(GameBot crafter, GamePlayer player) =>
+            player?.Guild != null && ReferenceEquals(CraftingGuildOf(crafter), player.Guild);
+
         /// <summary>A member of <paramref name="guild"/> by name (for /gc remove).</summary>
         public static OfflineWorldBotGuildRecord FindMember(Guild guild, string name) =>
             guild == null || string.IsNullOrWhiteSpace(name) ? null :
@@ -359,6 +370,13 @@ namespace DOL.GS
             if (LastGuildReply.TryGetValue(guild.GuildID, out long last) && now - last < 10_000) return;
             LastGuildReply[guild.GuildID] = now;
             GameBot[] talkers = OnlineMembers(guild).Where(CanTalk).ToArray();
+            // Crafting 2.0 WP8 (bot_crafting_social): "anyone craft?" is answered by the guild's best real crafter gamebot.
+            if (CraftingEconomy.CraftingDrama.On && CraftingEconomy.CraftingDrama.AsksWhoCrafts(message) &&
+                CraftingEconomy.CrafterCommerce.GuildCrafterReply(talkers, guild, Random.Shared) is { } crafterReply)
+            {
+                ScheduleReply(crafterReply.Bot, guild, crafterReply.Text, 1_600 + Random.Shared.Next(1_500));
+                return;
+            }
             GameBot named = talkers.FirstOrDefault(bot => AutonomousBotChatCoordinator.ContainsMention(message, bot.Name));
             if (named != null)
             {

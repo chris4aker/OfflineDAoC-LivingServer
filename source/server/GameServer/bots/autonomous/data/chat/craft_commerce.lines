@@ -1,0 +1,113 @@
+# Crafter gamebots answering a real player by tell (Crafting 2.0 WP8, CrafterCommerce and CrafterTalk). New writing (see
+# docs/bot-voices). The truth rule: every fact in these lines is a slot the server fills from the crafter's real state:
+# {title} and {skill} its crafting title and skill, {recipe} its craft, {item} the piece (or the pieces it really makes),
+# {level} a real product level, {price} the price it really asks, {when} when the piece will really be ready, {terms} how it
+# is paid ("coin up front", "pay when i hand it over", "materials only for guild"), {stock} what it really holds, {quality}
+# that piece's real quality, {zone} where it really is. A caveat (a quality it cannot promise, a set it cannot finish) is
+# always said in the server's fixed words, never by these lines. No line here invents a price, a piece or a time.
+
+@kind craft_reply
+@who Crafter
+@levels 1-50
+
+@topic craft_summary
+{title}, {skill} {recipe}. i can do {item}, up to lvl {level}. {stock}
+im {skill} {recipe}. best i do is {item}, lvl {level} tops. {stock}
+{recipe} {skill}, so {item} up to lvl {level}. {stock}
+
+@topic craft_summary_stock
+{title} here, {skill} {recipe}. i make {item} up to lvl {level}. {stock}
+{skill} {recipe}, i can do {item} up to lvl {level}. {stock}, pst if you want any
+
+@topic craft_quote
+[can do|i can make] the {item} (lvl {level}) for {price}, ready in {when}, {terms}. [deal?|want it?]
+{item} lvl {level}, {price}. ready in {when}, {terms}. deal?
+sure, {item} for {price}. ill have it in {when}, {terms}. ok?
+
+@topic craft_quote_set
+{item} lvl {level}, {count} pieces for {price} all in. ready in {when}, {terms}. deal?
+can do the {item} (lvl {level}), {price} for the lot, ready in {when}, {terms}. want it?
+
+@topic craft_stock
+[got|have] a {stock} at {quality}%, {price}. {terms}
+{stock}, {quality}% quality, {price}. {terms}
+
+@topic craft_stock_meet
+sure, {terms} and ill trade it to you
+
+@topic craft_cant
+cant make that, my {recipe} is {skill}
+[nah|sorry], cant do that one. {recipe} is only {skill}
+
+@topic craft_cant_level
+my {recipe} is only {skill}, lvl {level} is the best i do right now
+not that high yet, {skill} {recipe}. lvl {level} is my limit
+
+@topic craft_not_mine
+not my trade, i do {recipe}
+[i only do|im] {recipe}, try someone else for that
+
+@topic craft_ask_what
+sure, what do you need made?
+yep, what are you after?
+whatcha need?
+
+@topic craft_deal
+deal. ill make the {item} at my next break, ready in {when}. pay when i hand it over
+[ok|cool], deal. {item} in {when}, pay me when i hand it over
+
+@topic craft_deposit
+deal, {price} up front. drop the coin on me when youre near and ill start at my next break
+ok, {price} first. hand it over when you find me and its on my list
+
+@topic craft_paid
+got it, the {item} will be ready in {when}
+[ty|thanks], {item} in {when}
+
+@topic craft_haggle_accept
+ok, {price} for the {item}. deal?
+[fine|alright], {price}. deal?
+
+@topic craft_haggle_counter
+{price}, lowest i go
+[meet me at|how about] {price}?
+
+@topic craft_haggle_refuse
+cant go that low, {price}
+[nah|no], materials alone cost more than that. {price}
+
+@topic craft_haggle_walk
+done haggling, its {price} or nothing
+{price}, take it or leave it
+
+@topic craft_declined
+np, let me know
+ok, ill be around
+
+@topic craft_status
+not yet, ill make the {item} at my next break, about {when}
+still on my list, the {item} should be done in {when}
+
+@topic craft_ready
+your {item} is done, ill be in town at my break in {when}
+{item} is ready, catch me at my break in {when}
+
+@topic craft_ready_tell
+your {item} is done, im in {zone} for a bit, come by and say ready
+{item} is ready! in {zone} on a break, come get it and say ready
+
+@topic craft_delivered
+here you go, your {item}. enjoy
+there, {item} is yours. wear it well
+
+@topic craft_handover_trade
+here's your {item}, {price} in the trade window
+{item} is in the trade window, {price}
+
+@topic craft_cancelled
+ok, cancelled the {item}
+np, the {item} is off my list
+
+@topic craft_refuse
+not dealing with you, sorry
+no thanks, find another crafter

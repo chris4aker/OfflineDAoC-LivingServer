@@ -53,6 +53,8 @@ namespace DOL.GS.CraftingEconomy
             internal readonly long[] BotReceived = new long[RealmSlots];
             internal readonly long[] PlayerPaid = new long[RealmSlots];
             internal readonly long[] PlayerReceived = new long[RealmSlots];
+            // WP8: players' coin into (negative) and out of (positive) craft-order escrow, per realm.
+            internal readonly long[] PlayerEscrow = new long[RealmSlots];
             internal readonly ConcurrentDictionary<string, long[]> Unattributed = new(StringComparer.Ordinal);
             // Each bot's net (every kind and its Exchange trades), so a bot met mid-hour brings only the purse it had.
             internal readonly ConcurrentDictionary<long, long> BotNet = new();
@@ -79,6 +81,8 @@ namespace DOL.GS.CraftingEconomy
             public long BotReceived(int realm) => Sums.BotReceived[realm];
             public long PlayerPaid(int realm) => Sums.PlayerPaid[realm];
             public long PlayerReceived(int realm) => Sums.PlayerReceived[realm];
+            /// <summary>WP8: the net of players' coin into and out of craft-order escrow (outside the supply).</summary>
+            public long PlayerEscrow(int realm) => Sums.PlayerEscrow[realm];
             /// <summary>What a bot's purse gained (or lost) through recorded moves and Exchange trades in the window.</summary>
             public long BotNet(long botId) => Sums.BotNet.TryGetValue(botId, out long net) ? net : 0;
 
@@ -115,7 +119,7 @@ namespace DOL.GS.CraftingEconomy
                 return moves;
             }
 
-            public bool IsEmpty(int realm) => Moves(realm) == 0 && Sales(realm) == 0;
+            public bool IsEmpty(int realm) => Moves(realm) == 0 && Sales(realm) == 0 && PlayerEscrow(realm) == 0;
         }
 
         private static int Index(int realm, EconomyFlowKind kind)
@@ -201,6 +205,14 @@ namespace DOL.GS.CraftingEconomy
             }
             else
                 Interlocked.Add(ref sums.PlayerReceived[realm], proceeds);
+        }
+
+        /// <summary>WP8: a player's coin into (negative) or out of (positive) a craft order's escrow.</summary>
+        public void RecordPlayerEscrow(int realm, long signedCopper)
+        {
+            if (signedCopper == 0 || !Enabled())
+                return;
+            Interlocked.Add(ref Volatile.Read(ref _current).PlayerEscrow[Math.Clamp(realm, 0, RealmSlots - 1)], signedCopper);
         }
 
         private static void AddBotNet(Counters sums, long botId, long copper) =>

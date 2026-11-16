@@ -31,7 +31,9 @@ namespace DOL.GS.Tests
             // Bonds (AutonomousBotBonds): the other gamebot and its class
             "other", "other_class",
             // Crafter gamebots (Crafting 2.0 WP4, BotCrafterVoice): the real piece it holds, its quality and price; a title and its skill
-            "stock", "quality", "price", "title", "skill"];
+            "stock", "quality", "price", "title", "skill",
+            // Crafter commerce and the price-war storyline (Crafting 2.0 WP8): the crafter's craft, when a piece is ready, how it is paid
+            "recipe", "when", "terms"];
 
         private static readonly string[] OutOfEra =
             ["world of warcraft", "discord", "twitch", "youtube", "lmao", "covid", "smh", "tbh", "ngl", "yeet"];
@@ -197,6 +199,9 @@ namespace DOL.GS.Tests
             Dictionary<string, string> slots = FullSlots();
             // A storyline episode also gets its two protagonists' names and, for an ending, the player who took a side.
             var story = new Dictionary<string, string>(slots) { ["name_a"] = "Aelwyn", ["name_b"] = "Brannoc", ["player"] = "Kaelith" };
+            // Crafting 2.0 WP8: the price-war arc also gets its pair's real craft and the first one's title (CraftingDrama.AddSlots).
+            story["recipe"] = "armorcraft";
+            story["title"] = "Master Armorer";
             // A tale gets its storyteller's name ({name_b}) and the asker's (AutonomousTales).
             Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story : slots))
                 .Select(scene => scene.Id), Is.Empty);

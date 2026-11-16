@@ -33,6 +33,9 @@ public enum eAutonomousChatIntent
     BotCheck,
     // Beta 1.1.2: an in-character line, answered in kind
     Roleplay,
+    // Crafting 2.0 WP8: a request to a crafter ("can you make", "wtb ... set", "lf sc", "what do you make"); only
+    // PredictForCrafter returns it, so every other reader of Predict is unchanged
+    Crafting,
 }
 
 /// <summary>
@@ -258,6 +261,26 @@ public static partial class AutonomousChatIntentModel
                    eAutonomousChatIntent.Laugh or eAutonomousChatIntent.BotCheck
             ? eAutonomousChatIntent.Unknown : bestIntent;
     }
+
+    private static readonly Regex CraftRequestRegex = new(
+        @"\b((can|could|would|will) (you|u|ya|ye) (make|craft|forge|tailor|fletch|sc|spellcraft|imbue)(?! it\b| it to\b| the raid\b| time\b| sure\b)|" +
+        @"(make|craft) me (a|an|some|the)\b|(need|lf|looking for|anyone) (a )?(crafter|smith|armorcrafter|weaponcrafter|tailor|fletcher|spellcrafter|alchemist|sc)\b|" +
+        @"\blf sc\b|what (do|can) (you|u|ya) (make|craft)|(are|r) (you|u) (a )?crafter|do (you|u) craft|wtb .*\b(set|helm|helmet|gloves|boots|hauberk|jerkin|vest|leggings|sleeves|robe|sword|axe|hammer|bow|staff|shield)\b)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    /// <summary>
+    /// Crafting 2.0 WP8: a line asking a crafter for its work ("can you make a studded helm?", "make me a chain set",
+    /// "lf sc", "what can you craft?", "wtb leather gloves lvl 15"). "can you make it to the raid?" is not one. Pure.
+    /// </summary>
+    public static bool IsCraftRequest(string text) => !string.IsNullOrWhiteSpace(text) && CraftRequestRegex.IsMatch(text);
+
+    /// <summary>
+    /// Predict for a line said to a crafter gamebot (WP8's commerce): a craft request is <see cref="eAutonomousChatIntent.Crafting"/>,
+    /// anything else what <see cref="Predict"/> says. Predict itself never returns Crafting, so the chat paths keyed on
+    /// Trading keep today's behaviour. Pure.
+    /// </summary>
+    public static eAutonomousChatIntent PredictForCrafter(string text) =>
+        IsCraftRequest(text) ? eAutonomousChatIntent.Crafting : Predict(text);
 
     private static Model Train()
     {

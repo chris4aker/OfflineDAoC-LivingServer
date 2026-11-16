@@ -114,7 +114,7 @@ namespace DOL.GS.CraftingEconomy
         /// by the sign of its net.
         /// </summary>
         public static bool IsTransfer(EconomyFlowKind kind) =>
-            kind is EconomyFlowKind.ExchangeSale or EconomyFlowKind.BeggarGift or EconomyFlowKind.Guild;
+            kind is EconomyFlowKind.ExchangeSale or EconomyFlowKind.BeggarGift or EconomyFlowKind.Guild or EconomyFlowKind.PlayerTrade;
 
         /// <summary>The kind's name in a line: lower case, as True165 wrote it (in_lootcoin, out_repair).</summary>
         public static string KeyName(EconomyFlowKind kind) => KindNames[Math.Clamp((int)kind, 0, KindNames.Length - 1)];
