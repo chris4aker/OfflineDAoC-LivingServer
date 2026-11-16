@@ -37,7 +37,7 @@ namespace DOL.GS
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.ClothWorking) < subSkillCap)
                 {
-                    player.GainCraftingSkill(eCraftingSkill.ClothWorking, 1);
+                    GainRatedPoints(player, eCraftingSkill.ClothWorking, subSkillCap);
                     player.Out.SendUpdateCraftingSkills();
                 }
 			}

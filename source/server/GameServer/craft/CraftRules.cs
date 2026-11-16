@@ -35,12 +35,12 @@ namespace DOL.GS.Crafting
 
     /// <summary>
     /// The craft's numbers as pure functions of a skill value, so players and gamebots roll by the same rules (design
-    /// docs/CRAFTING-AND-ECONOMY.md facet C). WP0 (Crafting 2.0 foundation): each body is copied <b>verbatim</b> from
-    /// today's <c>AbstractCraftingSkill</c> (and the professions' secondary-skill rules); UT_CraftRulesParity checks them
-    /// against the originals. Nothing calls these yet; WP1 rewires AbstractCraftingSkill to delegate here and adds the
-    /// optional rules (classic quality, losses, pace). The same split as rambodolphin13's DividedRealms refactor
-    /// (ChanceToMakeAt, BaseChanceToGainAt, QualityAt, CraftingTimeAt in 93c25b69), here as static functions so the
-    /// rehearsal can run them without a server. Thread-safe: no state.
+    /// docs/CRAFTING-AND-ECONOMY.md facet C). WP0 (Crafting 2.0 foundation) copied each body <b>verbatim</b> from
+    /// <c>AbstractCraftingSkill</c> (and the professions' secondary-skill rules); UT_CraftRulesParity checks them. WP1:
+    /// AbstractCraftingSkill, the professions, CraftAction, Salvage and Repair now delegate every number here, and the
+    /// optional rules live here too (classic quality, classic losses, the player pace). The same split as
+    /// rambodolphin13's DividedRealms refactor (ChanceToMakeAt, BaseChanceToGainAt, QualityAt, CraftingTimeAt in
+    /// 93c25b69), here as static functions so the rehearsal can run them without a server. Thread-safe: no state.
     /// </summary>
     public static class CraftRules
     {
@@ -286,6 +286,131 @@ namespace DOL.GS.Crafting
             }
 
             return 96;
+        }
+
+        /// <summary>The masterpiece chance of <see cref="RollClassicQuality"/> below skill 1000 on a coloured recipe.</summary>
+        public const int ClassicMasterpiecePercent = 1;
+
+        /// <summary>
+        /// The quality roll the server is set to: <see cref="RollClassicQuality"/> with crafting_classic_quality on,
+        /// otherwise <see cref="RollQuality(int, int, Random)"/> (the 1.87 rules, the default).
+        /// </summary>
+        public static int RollQuality(int skill, int recipeLevel, Random random, bool classic) =>
+            classic ? RollClassicQuality(skill, recipeLevel, random) : RollQuality(skill, recipeLevel, random);
+
+        /// <summary>
+        /// The optional classic quality (crafting_classic_quality, off by default; WP1): 94-99% as before patch 1.87, with
+        /// a small masterpiece chance at every skill. At skill 1000 or on a grey recipe: 2% masterpiece, otherwise 94-99
+        /// evenly (the "1:6 chance to get 94-99%" the 1.87 code's comment keeps). Otherwise: <see
+        /// cref="ClassicMasterpiecePercent"/>% masterpiece, then the same roulette as the 1.87 rule over six fields
+        /// 94-99, so a harder recipe leans to 94. A purple recipe cannot be made, so it never rolls. The era's exact odds
+        /// are from memory of the live game, not a dated source (design doc 3.1).
+        /// </summary>
+        public static int RollClassicQuality(int skill, int recipeLevel, Random random)
+        {
+            random ??= Random.Shared;
+            bool Chance(int percent) => percent > random.Next(100);
+            int Roll(int max) => random.Next(0, max + 1);
+
+            int delta = (int)Con(skill, recipeLevel);
+            if (skill >= 1000 || delta < -2)
+            {
+                if (Chance(2))
+                    return 100;
+                return 94 + Roll(5);
+            }
+
+            if (Chance(ClassicMasterpiecePercent))
+                return 100;
+
+            delta = delta * 100;
+
+            int[] chancePart = new int[6]; // index 0 = 94% to 5 = 99%
+            int sum = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                chancePart[i] = Math.Max((6 - i) * 100 - delta, 0);
+                sum += chancePart[i];
+            }
+
+            int rand = Roll(sum);
+            for (int i = 5; i >= 0; i--)
+            {
+                if (rand < chancePart[i])
+                    return 94 + i;
+                rand -= chancePart[i];
+            }
+
+            return 94;
+        }
+
+        /// <summary>
+        /// Whether a failed craft costs its materials: never by default (the 1.87 rule, "you lose no materials");
+        /// all of them with crafting_classic_losses on (WP1, the era's rule).
+        /// </summary>
+        public static bool FailureCostsMaterials(bool classicLosses) => classicLosses;
+
+        /// <summary>
+        /// Whether a spellcraft explosion destroys the item: no by default (the Luhz 1.87 rule, only the gems are lost);
+        /// yes with crafting_classic_losses on (WP1, the era's rule). The gems are lost either way.
+        /// </summary>
+        public static bool ExplosionDestroysItem(bool classicLosses) => classicLosses;
+
+        // ---- Player pace (True165's CraftingRate165, 00f9fbf) ----
+
+        /// <summary>
+        /// The points one won skill gain adds to a skill at <paramref name="current"/> at a pace of
+        /// <paramref name="rate"/> points per gain, never past <paramref name="cap"/> (CraftingRate165.Points; the
+        /// gain chance, the grey rule and the caps are unchanged).
+        /// </summary>
+        public static int PointsPerGain(int current, double rate, int cap = int.MaxValue) => CraftingRate165.Points(current, rate, cap);
+
+        // ---- Salvage and repair (moved from Salvage.cs and Repair.cs; bots repair and salvage by the same rules) ----
+
+        /// <summary>
+        /// The secondary skill as a percent of an item's craft level for salvage (Salvage.GetYieldPenalty), 100 from 99%
+        /// up. 2026-11-15 (WP1): a craft level of 0 or less (an item type with no craft level) divided by zero; it counts
+        /// as 100%. A skill below 0 (untrained) is 0%.
+        /// </summary>
+        public static int SalvageSkillPercent(int skill, int craftLevel)
+        {
+            if (craftLevel <= 0)
+                return 100;
+            int percent = (int)Math.Clamp((long)skill * 100 / craftLevel, 0, 100);
+            return percent > 99 ? 100 : percent;
+        }
+
+        /// <summary>
+        /// The materials a salvage gives after the skill penalty: the count times the skill percent, at least 1
+        /// (OpenDAoC 5302c79e9's GetYieldPenalty; the old dead multiplier gave the same results).
+        /// </summary>
+        public static int SalvageYield(int skill, int craftLevel, int salvageCount) =>
+            Math.Max(1, salvageCount * SalvageSkillPercent(skill, craftLevel) / 100);
+
+        /// <summary>Whether a crafting skill is enough to repair an item (Repair.HasSkillToRepair, 2026-10-30).</summary>
+        public static bool HasSkillToRepair(int skill, int craftLevel, int percentNeeded) =>
+            (long)skill * 100 >= (long)craftLevel * percentNeeded;
+
+        /// <summary>The chance to repair an item (Repair.RepairChancePercent, M0 2026-11-15): 10% at half its craft level,
+        /// 100% at its craft level; a craft level of 0 or less is 100%, an untrained skill 0%.</summary>
+        public static int RepairChancePercent(int skill, int craftLevel)
+        {
+            if (craftLevel <= 0)
+                return 100;
+
+            if (skill <= 0)
+                return 0;
+
+            double chance = 90.0 / (craftLevel * 0.5) * skill - 80; // 50% = 10% chance, 100% = 100% chance
+            return (int)Math.Clamp(chance, 0, 100);
+        }
+
+        /// <summary>The chance to repair a siege weapon (Repair.SiegeRepairChancePercent, M0): 90 - 50 / woodworking,
+        /// integer division, a woodworking below 1 counting as 1.</summary>
+        public static int SiegeRepairChancePercent(int woodworking)
+        {
+            int skill = Math.Max(1, woodworking);
+            return Math.Clamp(90 - 50 / skill, 0, 100);
         }
 
         /// <summary>

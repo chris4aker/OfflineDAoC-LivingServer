@@ -27,10 +27,10 @@ namespace DOL.GS
 		{
 			if (Util.Chance( CalculateChanceToGainPoint(player, recipe.Level)))
 			{
-				player.GainCraftingSkill(eCraftingSkill.Alchemy, 1);
+				GainRatedPoints(player, eCraftingSkill.Alchemy);
 
 				if (player.GetCraftingSkillValue(eCraftingSkill.HerbalCrafting) < subSkillCap)
-					player.GainCraftingSkill(eCraftingSkill.HerbalCrafting, 1);
+					GainRatedPoints(player, eCraftingSkill.HerbalCrafting, subSkillCap);
 
 				player.Out.SendUpdateCraftingSkills();
 			}

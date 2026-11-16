@@ -43,7 +43,7 @@ namespace DOL.GS
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.LeatherCrafting) < subSkillCap)
                 {
-                    player.GainCraftingSkill(eCraftingSkill.LeatherCrafting, 1);
+                    GainRatedPoints(player, eCraftingSkill.LeatherCrafting, subSkillCap);
                 }
 				player.Out.SendUpdateCraftingSkills();
 			}

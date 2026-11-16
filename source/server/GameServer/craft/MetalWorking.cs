@@ -55,7 +55,7 @@ namespace DOL.GS
 			if (Util.Chance(CalculateChanceToGainPoint(player, recipe.Level)))
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.MetalWorking) < subSkillCap)
-                    player.GainCraftingSkill(eCraftingSkill.MetalWorking, 1);
+                    GainRatedPoints(player, eCraftingSkill.MetalWorking, subSkillCap);
 
 				player.Out.SendUpdateCraftingSkills();
 			}

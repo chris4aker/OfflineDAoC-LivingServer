@@ -41,7 +41,7 @@ namespace DOL.GS
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.GemCutting) < subSkillCap)
                 {
-                    player.GainCraftingSkill(eCraftingSkill.GemCutting, 1);
+                    GainRatedPoints(player, eCraftingSkill.GemCutting, subSkillCap);
                     player.Out.SendUpdateCraftingSkills();
                 }
 			}
