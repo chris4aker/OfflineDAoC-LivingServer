@@ -93,6 +93,18 @@ namespace DOL.GS;
 /// down goes on (<see cref="AttemptOver"/>), the two realms go up together (<see cref="JoinsOtherStorm"/>,
 /// <see cref="HoldsForOtherRealm"/>), on her floor casters and healers strike her and melee the guard on them
 /// (<see cref="StrikesLordFirst"/>), and BG_RALLY_REGROUP says when each stormer reached her floor.
+///
+/// Owner's PC, builds 4d48f42 and c3cd93c (Thidranki and Murdaigean 2026-11-16 05:39-08:25): 111 attempts, the lord never
+/// below 96%, no battleground keep changed hands. The storms went with about half the realm (going 8-17, median 10, of
+/// 11-26 inside), all but one attempt ended "half the stormers fell" or "no progress" after a median 1.2 minutes, and the
+/// stormers died before or at the gate (outside 315, gate 215, inside 174, lordFloor 14 of 718), mostly to the keep's guards
+/// (471), each alone against a GuardFighter at the gate, the march strung out over 1,500-2,700. A Thidranki zerg went with
+/// everyone, pulled the gate's guards and killed them together, healers behind, and then poured in. Now a rally waits for the
+/// full muster (<see cref="MusterSharePercent"/>), the storm marches as a pack (<see cref="MarchHolds"/>), clears the gate's
+/// guards one called guard at a time (<see cref="CallGateGuard"/>, <see cref="ClearAction"/>, <see cref="ClearHolds"/>),
+/// storming healers heal the stormers (BotBrain), and a storm that kills guards goes on (<see cref="AttemptOver"/>).
+/// BG_GATE_CLEAR logs each clear; BG_RALLY_STORM adds share= and rule=; BG_RALLY_REGROUP adds the strength, the guards
+/// killed, the clear, the march holds, the heals and the guards that killed stormers by kind.
 /// </summary>
 public static class AutonomousBattlegroundKeepRally
 {
@@ -125,13 +137,27 @@ public static class AutonomousBattlegroundKeepRally
     public const float InTheFightRadius = 900f;
 
     public const long CountMilliseconds = 5_000;
-    /// <summary>After this long gathering, a rally goes up with half of what it needs (owner, 2026-11-04: the first cut of
-    /// 5 minutes and 60% was too cautious).</summary>
-    public const long RallyPatienceMilliseconds = 3 * 60_000;
-    public const int PatientSharePercent = 50;
-    /// <summary>After this long, a rally goes up with whoever is there (at least <see cref="MinimumRally"/>): the owner wants
-    /// failures to come from the fight, not from the gathering (RealmRaidRecruitmentPolicy).</summary>
-    public const long RallyLastCallMilliseconds = 6 * 60_000;
+    /// <summary>After this long gathering, a rally goes up with <see cref="PatientSharePercent"/> of what it needs.</summary>
+    public const long RallyPatienceMilliseconds = 4 * 60_000;
+    /// <summary>
+    /// The share of what it needs a rally goes up with after <see cref="RallyPatienceMilliseconds"/>, or at once to go with
+    /// the other attacking realm's storm. Was 50 (of a need that was itself 60% of the realm): on the owner's PC (build
+    /// 4d48f42, 2026-11-16 05:39-07:56) the 107 storms went with 8-17 of 11-26 inside (going median 10), about half the
+    /// realm, against 19-27 guards of level 28-33, and none ever took the lord below 96%.
+    /// </summary>
+    public const int PatientSharePercent = 80;
+    /// <summary>After this long, a rally goes up with <see cref="LastCallSharePercent"/> of what it needs (at least
+    /// <see cref="MinimumRally"/>): the owner wants failures to come from the fight, not from the gathering
+    /// (RealmRaidRecruitmentPolicy). Was whoever was there after 6 minutes.</summary>
+    public const long RallyLastCallMilliseconds = 7 * 60_000;
+    public const int LastCallSharePercent = 60;
+    /// <summary>
+    /// A rally waits for this share of the realm's gamebots in the battleground: essentially everyone, as a Thidranki or
+    /// Murdaigean zerg went (owner, 2026-11-16: "storm with essentially everyone the realm has in the battleground"). The rest
+    /// are the stragglers still walking in from a release; <see cref="PatientSharePercent"/> and
+    /// <see cref="LastCallSharePercent"/> stop the rally waiting on them for ever.
+    /// </summary>
+    public const int MusterSharePercent = 85;
     public const int MinimumRally = AutonomousBattlegroundWave.MinimumWave;
     public const int MaximumRally = 60;
     /// <summary>An attempt in which the lord lost nothing for this long is over.</summary>
@@ -203,19 +229,34 @@ public static class AutonomousBattlegroundKeepRally
     /// whoever is there (at least <see cref="MinimumRally"/>) at the last call. Pure.
     /// </summary>
     public static bool ShouldStorm(int rallied, int needed, long gatheringMilliseconds, bool otherRealmStorming = false) =>
-        rallied >= needed ||
-        (gatheringMilliseconds >= RallyPatienceMilliseconds || otherRealmStorming) &&
-        rallied >= Math.Max(MinimumRally, (needed * PatientSharePercent + 99) / 100) ||
-        gatheringMilliseconds >= RallyLastCallMilliseconds && rallied >= MinimumRally;
+        StormRule(rallied, needed, gatheringMilliseconds, otherRealmStorming) != null;
 
     /// <summary>
-    /// What a rally waits for: the strength model's number (<see cref="NeededAttackers"/>), but never more than a wave of
-    /// the realm's bots inside (AutonomousBattlegroundWave.WaveSize, 60%). On 3b808b4 the model asked 31-34 of 30-46 bots,
-    /// with each of them dying about every four minutes: that many never stand in one place. The owner takes more failed
-    /// attempts over none (2026-11-04). Pure.
+    /// Which rule sends a gathering rally up (BG_RALLY_STORM's rule=): "full" (everything it needs is there), "joined" (the
+    /// other attacking realm storms or waits for it, with <see cref="PatientSharePercent"/>), "patient" (the same share after
+    /// <see cref="RallyPatienceMilliseconds"/>) or "lastcall" (<see cref="LastCallSharePercent"/> after
+    /// <see cref="RallyLastCallMilliseconds"/>); null while it gathers on. Never fewer than <see cref="MinimumRally"/>. Pure.
+    /// </summary>
+    public static string StormRule(int rallied, int needed, long gatheringMilliseconds, bool otherRealmStorming = false)
+    {
+        if (rallied >= needed) return "full";
+        bool share(int percent) => rallied >= Math.Max(MinimumRally, (needed * percent + 99) / 100);
+        if (otherRealmStorming && share(PatientSharePercent)) return "joined";
+        if (gatheringMilliseconds >= RallyPatienceMilliseconds && share(PatientSharePercent)) return "patient";
+        if (gatheringMilliseconds >= RallyLastCallMilliseconds && share(LastCallSharePercent)) return "lastcall";
+        return null;
+    }
+
+    /// <summary>
+    /// What a rally waits for: <see cref="MusterSharePercent"/> of the realm's gamebots in the battleground, the full muster
+    /// (at least <see cref="MinimumRally"/>). Was the strength model's number capped at a wave of the realm (60%), so a rally
+    /// went with about half the realm (owner's PC, build 4d48f42: going median 10 of about 20 inside; BG_WAVE_STATUS
+    /// needed=9-14 of inside=15-24), and the gate's guards killed them before or at the gate (fell outside 298, gate 204,
+    /// inside 173, lordFloor 14 of 689; guards 447 of the killers). The model (<paramref name="modelled"/>, 18-30 there) is
+    /// still worked out and logged, but it no longer lowers the muster: the realm goes in with everyone it has. Pure.
     /// </summary>
     public static int RallyNeeded(int modelled, int realmInside) =>
-        Math.Clamp(Math.Min(modelled, AutonomousBattlegroundWave.WaveSize(Math.Max(0, realmInside))), MinimumRally, MaximumRally);
+        Math.Clamp((Math.Max(0, realmInside) * MusterSharePercent + 99) / 100, MinimumRally, MaximumRally);
 
     /// <summary>
     /// The breach a realm rallies at: a broken (or open) main door, never a postern; the lowest door number first (the
@@ -543,10 +584,12 @@ public static class AutonomousBattlegroundKeepRally
     /// guard) is fought only when it is on this bot: the realms stay enemies, but a stormer beside the lord takes the keep's
     /// side first. Owner's PC, build 4d48f42 (2026-11-16 05:39-06:27): with both realms storming together (19 of 28 storms
     /// withOtherRealm=True) 32 of the 154 stormers that fell were killed by the other attacking realm. Pure.
+    /// The gate guard the storm has called (<paramref name="calledGuard"/>, <see cref="CallGateGuard"/>) is fought too: the
+    /// storm clears the gate before it pours in.
     /// </summary>
     public static bool StormerMayEngage(bool isLord, bool inLordFight, bool onThisBot, float targetToBot, float heightGap,
-        bool otherAttacker = false) =>
-        isLord || inLordFight && (!otherAttacker || onThisBot) ||
+        bool otherAttacker = false, bool calledGuard = false) =>
+        isLord || calledGuard || inLordFight && (!otherAttacker || onThisBot) ||
         onThisBot && targetToBot <= StormerHitBackRadius && heightGap <= StormerHitBackHeight;
 
     /// <summary>Beside the lord and on his floor: in his fight (a rally right under his room is not). Pure.</summary>
@@ -666,25 +709,133 @@ public static class AutonomousBattlegroundKeepRally
     /// <see cref="ProgressGraceMilliseconds"/>; the fallen come back as reinforcements meanwhile. Owner's PC, build 95af6fd
     /// (Thidranki 2026-11-15 22:37-23:00): 15 attempts all ended "half the stormers fell" after 0.4-2.0 minutes; the two
     /// that reached Lady Thidranki in numbers (lordFloor:7 and :3, her lowest 97%) ended 1.5-1.6 minutes in, while stormers were
-    /// still arriving on her floor, and their 13 and 9 still standing walked back out to the rally. Pure.
+    /// still arriving on her floor, and their 13 and 9 still standing walked back out to the rally.
+    /// A storm that is killing the keep's guards is working too (<paramref name="sinceGuardKillMilliseconds"/>: since a guard of
+    /// the keep last fell): half fallen ends it only <see cref="GuardProgressGraceMilliseconds"/> after the last guard kill, and
+    /// a guard kill counts as progress against "no progress". Owner's PC, build 4d48f42 (2026-11-16 05:39-07:56): 105 of 106
+    /// attempts ended "half the stormers fell" after a median 1.2 minutes (at most 3.2) while the gate's guards stood at
+    /// 14-19 of 19 (Thidranki) and 17-27 of 27 (Murdaigean); the 5 of c3cd93c ended so after 0.8-3.1 minutes with
+    /// passedGate 0-2. Guards stay dead 5-25 minutes (guard_respawn 15 +/- 10), so a storm that kills them makes the next
+    /// one easier. Pure.
     /// </summary>
     public static string AttemptOver(int engaged, int alive, int lordPercent, int lowestLordPercent, long sinceProgressMilliseconds,
-        int upTheTower = 0)
+        int upTheTower = 0, long sinceGuardKillMilliseconds = long.MaxValue)
     {
         if (engaged > 0 && alive == 0) return "every stormer fell";
-        if (engaged > 0 && alive * 2 <= engaged && upTheTower == 0 && sinceProgressMilliseconds >= ProgressGraceMilliseconds)
+        if (engaged > 0 && alive * 2 <= engaged && upTheTower == 0 && sinceProgressMilliseconds >= ProgressGraceMilliseconds &&
+            sinceGuardKillMilliseconds >= GuardProgressGraceMilliseconds)
             return "half the stormers fell";
         if (lowestLordPercent <= 85 && lordPercent >= 95) return "the lord healed back";
-        if (sinceProgressMilliseconds >= NoProgressMilliseconds) return "no progress on the lord";
+        if (Math.Min(sinceProgressMilliseconds, sinceGuardKillMilliseconds) >= NoProgressMilliseconds) return "no progress on the lord";
         return null;
     }
+
+    /// <summary>Half the stormers fallen ends an attempt only once no guard of the keep has fallen for this long.</summary>
+    public const long GuardProgressGraceMilliseconds = 45_000;
+
+    // ---- Clearing the gate (owner, 2026-11-16: "make the attack work the way a real Thidranki/Murdaigean zerg did") ----
+    // Players pulled the gate's guards from outside and killed them one at a time, every one of them on the same guard, the
+    // healers behind and the casters at range, and only then poured in. Owner's PC, build 4d48f42: in all 140 stormer fight
+    // samples a GuardFighter (128) or GuardCommander (11) was on the bot, 62-75 from it, 218-798 from the gate (median 485),
+    // with the bot alone against it; the march samples at seconds 0-49 of the attempt stood 1,514-2,697 from the gate, so
+    // the stormers came to the gate strung out, ran past the live guards and fought them one by one.
+
+    /// <summary>A keep guard this near the breach (flat) and on its floor stands at the gate: the storm clears it first.</summary>
+    public const float GateGuardRadius = 1_100f;
+    /// <summary>...on the gate's floor: not a guard up on the wall or the tower above it.</summary>
+    public const float GateGuardHeight = 250f;
+
+    /// <summary>A guard at the gate (<see cref="GateGuardRadius"/>, <see cref="GateGuardHeight"/>); never the lord. Pure.</summary>
+    public static bool IsGateGuard(bool isLord, float flatToGate, float heightToGate) =>
+        !isLord && flatToGate <= GateGuardRadius && Math.Abs(heightToGate) <= GateGuardHeight;
+
+    /// <summary>A gate guard as <see cref="CallGateGuard"/> sees it: its id, its flat distance to the breach, and whether it
+    /// is fighting one of the storm's own.</summary>
+    public readonly record struct GateGuardFact(int Id, float ToGate, bool OnStormer);
+
+    /// <summary>
+    /// The gate guard the whole storm fights (index into <paramref name="guards"/>, -1 with none): the one already called
+    /// while it stands, else the one on a stormer nearest the gate, else the nearest the gate. Everyone on one guard, as a
+    /// zerg's assist train did. Pure.
+    /// </summary>
+    public static int CallGateGuard(IReadOnlyList<GateGuardFact> guards, int current)
+    {
+        int best = -1;
+        for (int i = 0; i < guards.Count; i++)
+        {
+            if (current != 0 && guards[i].Id == current) return i;
+            bool better = best < 0 ||
+                          (guards[i].OnStormer != guards[best].OnStormer
+                              ? guards[i].OnStormer
+                              : guards[i].ToGate < guards[best].ToGate);
+            if (better) best = i;
+        }
+        return best;
+    }
+
+    /// <summary>A stormer this near the breach (flat), not yet through it, is at the gate: it clears it with the others.</summary>
+    public const float ClearZoneRadius = 1_600f;
+    /// <summary>A clear that killed no gate guard for this long (since it began or since the last kill) is given up: the
+    /// storm goes on in, as before.</summary>
+    public const long ClearStallMilliseconds = 45_000;
+
+    /// <summary>Whether the clear still holds the storm at the gate: a gate guard stands and the clear has not stalled. Pure.</summary>
+    public static bool ClearHolds(int gateGuardsAlive, long sinceClearProgressMilliseconds) =>
+        gateGuardsAlive > 0 && sinceClearProgressMilliseconds < ClearStallMilliseconds;
+
+    /// <summary>Whether a stormer is at the gate for the clear: not through it, and within <see cref="ClearZoneRadius"/>. Pure.</summary>
+    public static bool InClearZone(float flatToGate, bool gatePassed) => !gatePassed && flatToGate <= ClearZoneRadius;
+
+    /// <summary>What a stormer does in the clear: strike the called guard, walk nearer to it, or stand back (a healer).</summary>
+    public enum ClearStep { Strike, Approach, StandBack }
+
+    /// <summary>A caster or archer strikes the called guard from this far (a level-20 bolt or bow reaches 1,500).</summary>
+    public const float ClearRangedReach = 1_350f;
+    /// <summary>A healer stands back from the called guard but within this of it (a heal reaches 2,000 on the gate's floor).</summary>
+    public const float ClearHealerReach = 1_200f;
+
+    /// <summary>
+    /// Each role's step in the clear: melee bots strike the called guard (walking to it in the fight), casters and archers
+    /// strike it from where they stand once within <see cref="ClearRangedReach"/>, healers stand back within
+    /// <see cref="ClearHealerReach"/> and heal the stormers (BotBrain's battleground heal). Pure.
+    /// </summary>
+    public static ClearStep ClearAction(bool healer, bool ranged, float toGuard) =>
+        healer ? toGuard > ClearHealerReach ? ClearStep.Approach : ClearStep.StandBack
+        : ranged && toGuard > ClearRangedReach ? ClearStep.Approach
+        : ClearStep.Strike;
+
+    /// <summary>A stormer this much nearer the gate than the middle of its pack waits for the pack on the march...</summary>
+    public const float MarchSpread = 450f;
+    /// <summary>...only in the attempt's first this long (nothing waits for ever on a straggler).</summary>
+    public const long MarchWindowMilliseconds = 75_000;
+
+    /// <summary>
+    /// Whether a stormer on the march from the rally waits for its pack: it is more than <see cref="MarchSpread"/> ahead of
+    /// the pack's median distance to the gate (<paramref name="packToGate"/>, -1 with none), still outside the gate's zone,
+    /// not in a fight, and the attempt is young. The pack reaches the gate's guards together instead of one by one. Pure.
+    /// </summary>
+    public static bool MarchHolds(float toGate, float packToGate, bool inFight, long attemptMilliseconds) =>
+        !inFight && attemptMilliseconds < MarchWindowMilliseconds && packToGate > 0 && toGate > ClearZoneRadius &&
+        packToGate - toGate > MarchSpread;
+
+    /// <summary>The median of <paramref name="values"/> (-1 with none). Pure.</summary>
+    public static float Median(IReadOnlyCollection<float> values)
+    {
+        if (values.Count == 0) return -1;
+        float[] sorted = values.OrderBy(v => v).ToArray();
+        return sorted[sorted.Length / 2];
+    }
+
+    /// <summary>A healer storming heals a fellow stormer of its realm below this health, within this range.</summary>
+    public const int StormerHealBelowPercent = 85;
+    public const float StormerHealRadius = 2_000f;
 
     public enum Step { None, Rally, Storm }
 
     /// <summary>A bot's order: its step, the rally point, the progress text; for a stormer also the foot of the lord's tower
     /// (<see cref="TowerFootIndex"/>, null with none), whether the climb from it is open, and the attempt it belongs to.</summary>
     public readonly record struct Order(Step Step, Vector3 Point, string Progress, Vector3? Foot = null, bool ClimbOpen = true,
-        long Attempt = 0)
+        long Attempt = 0, Vector3? Gate = null, float PackToGate = -1)
     {
         public bool Hold => Step == Step.Rally;
     }
@@ -788,9 +939,11 @@ public static class AutonomousBattlegroundKeepRally
     public static bool JoinsOtherStorm(long? otherStormAgeMilliseconds) =>
         otherStormAgeMilliseconds is { } age && age <= JoinWindowMilliseconds;
 
-    /// <summary>A rally ready to go waits up to this long for the other attacking realm's...</summary>
-    public const long PartnerWaitMilliseconds = 45_000;
-    /// <summary>...while that one gathers and has this share of what it needs (it then goes with half, as it would join a storm).</summary>
+    /// <summary>A rally ready to go waits up to this long for the other attacking realm's (was 45 s: the other realm now
+    /// joins with <see cref="PatientSharePercent"/> of its need, not half, and needs longer to get there)...</summary>
+    public const long PartnerWaitMilliseconds = 90_000;
+    /// <summary>...while that one gathers and has this share of what it needs (it then goes with <see cref="PatientSharePercent"/>,
+    /// as it would join a storm).</summary>
     public const int PartnerReadyShare = 40;
 
     /// <summary>
@@ -868,6 +1021,17 @@ public static class AutonomousBattlegroundKeepRally
         public readonly HashSet<long> OnFloorSeen = new();
         /// <summary>Since when the gathering rally has been ready to go (0 while not), for <see cref="HoldsForOtherRealm"/>.</summary>
         public long ReadySince;
+        /// <summary>This attempt's clear of the gate: the gate guards standing (at the first count, and now), how many fell,
+        /// since when a stormer stood at the gate (0 before), the last gate-guard kill, whether the clear is over (and why),
+        /// the guard called, the peak of stormers at the gate; the keep's guards as last counted and since when none fell; the
+        /// pack's median distance to the gate on the march; the march holds and heals on stormers; and what killed stormers
+        /// among the guards (their kinds).</summary>
+        public int GateGuardsAtStart = -1, GateGuardsAlive, GateGuardsKilled, CalledGuard, ClearPeak, GuardsAlivePrev = -1, GuardsKilled,
+            MarchHoldTurns, HealPicks, GoingAtStorm, InsideAtStorm;
+        public long ClearSince, LastClearProgress, LastGuardKill;
+        public string ClearEnded;
+        public float PackToGate = -1;
+        public readonly Dictionary<string, int> GuardKillerKinds = new();
         public string LeaseOwner = string.Empty, KeepName = string.Empty;
     }
 
@@ -989,6 +1153,13 @@ public static class AutonomousBattlegroundKeepRally
             eRealm killerRealm = (killer as GameLiving)?.Realm ?? eRealm.None;
             rally.Fallen.Add(new FallenStormer(DeathPlace(toGate, toLord, gateToLord, Math.Abs(bot.Z - lord.Z)),
                 KillerOf(guard, killer is GuardLord, killerRealm, rally.KeepRealm, bot.Realm), toGate, toLord));
+            // Which of the keep's guards kill the stormers (4d48f42: guard 447 of 689, but nothing said whether wall archers
+            // or the gate's fighters).
+            if (guard && killer is not GuardLord)
+            {
+                string kind = killer.GetType().Name;
+                rally.GuardKillerKinds[kind] = rally.GuardKillerKinds.GetValueOrDefault(kind) + 1;
+            }
         }
     }
 
@@ -1176,7 +1347,8 @@ public static class AutonomousBattlegroundKeepRally
             Readiness? other = OtherReadiness(bracket.RegionId, bot.Realm, keep.Realm, now);
             bool joining = JoinsOtherStorm(otherAge);
             bool otherWaiting = other is { Gathering: true, ReadySince: > 0 };
-            bool ready = ShouldStorm(rally.Rallied, rally.Needed, now - rally.GatherSince, joining || otherWaiting);
+            string rule = StormRule(rally.Rallied, rally.Needed, now - rally.GatherSince, joining || otherWaiting);
+            bool ready = rule != null;
             if (!ready) rally.ReadySince = 0;
             else if (rally.ReadySince == 0) rally.ReadySince = now;
             bool holding = ready && !joining && !otherWaiting && other is { } otherRally &&
@@ -1194,8 +1366,12 @@ public static class AutonomousBattlegroundKeepRally
                 rally.Foot = ResolveFoot(bracket, keep, gate, lord, bot.Realm);
                 int going = Commit(rally, bot.Realm, bracket.RegionId, point);
                 int players = rally.RalliedPlayers;
+                rally.GoingAtStorm = going;
+                rally.InsideAtStorm = rally.Inside;
                 Log.Info($"BG_RALLY_STORM battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
                          $"going={going} players={players} needed={rally.Needed} modelled={rally.Modelled} inside={rally.Inside} " +
+                         // How much of the realm went, and by which rule (4d48f42: about half of it, every time).
+                         $"share={(rally.Inside == 0 ? 0 : going * 100 / rally.Inside)}% rule={rule} " +
                          $"lordLevel={lord.Level} lord={lord.HealthPercent}% minutes={(now - rally.GatherSince) / 60_000.0:0.0} " +
                          $"withOtherRealm={joining || otherWaiting} otherStormSeconds={(otherAge is { } age ? $"{age / 1000}" : "-")} " +
                          $"otherWaiting={otherWaiting} heldSeconds={held / 1000} " +
@@ -1212,7 +1388,7 @@ public static class AutonomousBattlegroundKeepRally
     /// <summary>A stormer's order: up for the lord, by way of the foot of his tower while its climb is shut.</summary>
     private static Order StormOrder(Rally rally, Vector3 point, GameKeepGuard lord, long now) =>
         new(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}", rally.Foot,
-            rally.Foot == null || rally.Climb.IsOpen(now), rally.AttemptSince);
+            rally.Foot == null || rally.Climb.IsOpen(now), rally.AttemptSince, rally.GatePoint, rally.PackToGate);
 
     /// <summary>
     /// The foot of the lord's tower for this attempt (<see cref="TowerFootIndex"/>) on the navmesh walk from the breach's
@@ -1288,6 +1464,14 @@ public static class AutonomousBattlegroundKeepRally
         rally.BestToLord = float.MaxValue;
         rally.BestBelowLord = float.MaxValue;
         rally.LordPathLogged = rally.TowerPathLogged = false;
+        rally.GateGuardsAtStart = -1;
+        rally.GateGuardsAlive = rally.GateGuardsKilled = rally.CalledGuard = rally.ClearPeak = rally.GuardsKilled = 0;
+        rally.MarchHoldTurns = rally.HealPicks = 0;
+        rally.GuardsAlivePrev = -1;
+        rally.ClearSince = rally.LastClearProgress = rally.LastGuardKill = 0;
+        rally.ClearEnded = null;
+        rally.PackToGate = -1;
+        rally.GuardKillerKinds.Clear();
     }
 
     /// <summary>
@@ -1449,8 +1633,9 @@ public static class AutonomousBattlegroundKeepRally
                              $"climb={rally.Climbs.Count} lord={lord.HealthPercent}%");
                 }
             }
+            CountGate(rally, bracket, keep, lord, realm, stormers, now);
             string over = AttemptOver(rally.Engaged, rally.Committed.Count, lord.HealthPercent, rally.LowestPercent, now - rally.LastProgress,
-                upTheTower);
+                upTheTower, rally.LastGuardKill == 0 ? long.MaxValue : now - rally.LastGuardKill);
             if (over != null)
             {
                 Log.Info($"BG_RALLY_REGROUP battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
@@ -1463,7 +1648,9 @@ public static class AutonomousBattlegroundKeepRally
                          $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
                          $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
                          // How together they reached her floor (95af6fd: one or two at a time, 30-60 s in).
-                         $"{SummariseArrivals(rally.FloorArrivals, rally.Climbs, rally.FootPeak)}");
+                         $"{SummariseArrivals(rally.FloorArrivals, rally.Climbs, rally.FootPeak)} " +
+                         // How much of the realm went, what the storm killed and how the clear of the gate went.
+                         $"{SummariseClear(rally, now)}");
                 Reset(rally, now);
             }
         }
@@ -1506,10 +1693,146 @@ public static class AutonomousBattlegroundKeepRally
                      $"peakRallied={rally.PeakRallied} plan={(rally.Joint ? "pair" : "alone")} " +
                      $"readySeconds={(rally.ReadySince == 0 ? -1 : (now - rally.ReadySince) / 1000)} floorArrivals={rally.FloorArrivals.Count} " +
                      $"climbs={rally.Climbs.Count} climbOpen={rally.Climb.IsOpen(now)} " +
+                     $"musterNeeded={rally.Needed} share={(rally.Inside == 0 ? 0 : rally.Rallied * 100 / rally.Inside)}% " +
+                     $"gateGuards={(rally.Storming ? rally.GateGuardsAlive.ToString() : "-")} clear={(rally.Storming ? rally.ClearEnded ?? (rally.ClearSince > 0 ? "on" : "march") : "-")} " +
                      $"lord={lord.HealthPercent}% diedToGuards={rally.DiedToGuards} diedOther={rally.DiedOther} " +
                      $"fightsRefused={rally.Refused} chasesDropped={rally.Dropped}");
             rally.DiedToGuards = rally.DiedOther = rally.Refused = rally.Dropped = 0;
         }
+    }
+
+    /// <summary>
+    /// One count of the attempt's gate (under the rally's lock): the keep's guards (a fall in their number is a kill, for
+    /// <see cref="AttemptOver"/>), the guards at the gate by their posts (<see cref="IsGateGuard"/>) and the one the storm
+    /// fights (<see cref="CallGateGuard"/>), the pack's median distance to the gate (<see cref="MarchHolds"/>), and when the
+    /// clear is over (<see cref="ClearHolds"/>, logged as BG_GATE_CLEAR).
+    /// </summary>
+    private static void CountGate(Rally rally, BattlegroundBrackets.Bracket bracket, AbstractGameKeep keep, GameKeepGuard lord,
+        eRealm realm, GameBot[] stormers, long now)
+    {
+        if (rally.GatePoint is not { } gate) return;
+        Vector2 gateFlat = new(gate.X, gate.Y);
+        float gateToLord = Vector2.Distance(gateFlat, new(lord.X, lord.Y));
+        int alive = 0;
+        var facts = new List<GateGuardFact>();
+        foreach (GameKeepGuard guard in keep.Guards.Values)
+        {
+            if (guard is GuardLord || !guard.IsAlive || guard.CurrentRegionID != lord.CurrentRegionID) continue;
+            alive++;
+            if (!IsGateGuardOf(guard, gate)) continue;
+            bool onStormer = guard.TargetObject is GameBot victim && victim.Realm == realm && rally.Committed.Contains(victim.DatabaseID);
+            facts.Add(new GateGuardFact(guard.ObjectID, Vector2.Distance(gateFlat, new(guard.X, guard.Y)), onStormer));
+        }
+        if (rally.GuardsAlivePrev >= 0 && alive < rally.GuardsAlivePrev)
+        {
+            rally.GuardsKilled += rally.GuardsAlivePrev - alive;
+            rally.LastGuardKill = now;
+        }
+        rally.GuardsAlivePrev = alive;
+        if (rally.GateGuardsAtStart < 0) rally.GateGuardsAtStart = facts.Count;
+        else if (facts.Count < rally.GateGuardsAlive)
+        {
+            rally.GateGuardsKilled += rally.GateGuardsAlive - facts.Count;
+            rally.LastClearProgress = now;
+        }
+        rally.GateGuardsAlive = facts.Count;
+        float[] outside = stormers
+            .Where(stormer => !ThroughTheGate(Vector2.Distance(new(stormer.X, stormer.Y), new(lord.X, lord.Y)), gateToLord))
+            .Select(stormer => Vector2.Distance(new(stormer.X, stormer.Y), gateFlat)).ToArray();
+        rally.PackToGate = Median(outside);
+        int atGate = outside.Count(toGate => toGate <= ClearZoneRadius);
+        rally.ClearPeak = Math.Max(rally.ClearPeak, atGate);
+        if (rally.ClearEnded == null)
+        {
+            if (rally.ClearSince == 0 && atGate > 0) rally.ClearSince = now;
+            long since = now - Math.Max(rally.ClearSince, rally.LastClearProgress);
+            if (facts.Count == 0 || rally.ClearSince > 0 && !ClearHolds(facts.Count, since))
+            {
+                rally.ClearEnded = facts.Count > 0 ? "stalled" : rally.GateGuardsAtStart > 0 ? "cleared" : "none";
+                Log.Info($"BG_GATE_CLEAR battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
+                         $"result={rally.ClearEnded} second={(now - rally.AttemptSince) / 1000} " +
+                         $"clearSeconds={(rally.ClearSince == 0 ? 0 : (now - rally.ClearSince) / 1000)} " +
+                         $"gateGuardsAtStart={rally.GateGuardsAtStart} gateGuardsKilled={rally.GateGuardsKilled} gateGuardsLeft={facts.Count} " +
+                         $"guardsKilled={rally.GuardsKilled} atGate={atGate} clearPeak={rally.ClearPeak} standing={stormers.Length} " +
+                         $"engaged={rally.Engaged} lord={lord.HealthPercent}%");
+            }
+        }
+        int called = rally.ClearEnded == null ? CallGateGuard(facts, rally.CalledGuard) : -1;
+        rally.CalledGuard = called >= 0 ? facts[called].Id : 0;
+    }
+
+    /// <summary>A guard posted at the gate (<see cref="IsGateGuard"/> by its post, so one chasing a stormer out stays one).</summary>
+    private static bool IsGateGuardOf(GameKeepGuard guard, Vector3 gate)
+    {
+        float x = guard.SpawnPoint?.X ?? guard.X, y = guard.SpawnPoint?.Y ?? guard.Y, z = guard.SpawnPoint?.Z ?? guard.Z;
+        return IsGateGuard(guard is GuardLord, Vector2.Distance(new(gate.X, gate.Y), new(x, y)), z - gate.Z);
+    }
+
+    /// <summary>BG_RALLY_REGROUP's account of the strength and the clear: how many went of how many inside, the keep's guards
+    /// the attempt saw fall, the gate's guards at the start and at the end, how the clear went and for how long, the most at
+    /// the gate at once, the turns stormers waited for their pack, heals picked on stormers, and the guards that killed
+    /// stormers by kind. Under the rally's lock.</summary>
+    private static string SummariseClear(Rally rally, long now) =>
+        $"going={rally.GoingAtStorm} insideAtStorm={rally.InsideAtStorm} " +
+        $"goneShare={(rally.InsideAtStorm == 0 ? 0 : rally.Engaged * 100 / rally.InsideAtStorm)}% " +
+        $"guardsKilled={rally.GuardsKilled} gateGuards={Math.Max(0, rally.GateGuardsAtStart)}->{rally.GateGuardsAlive} " +
+        $"gateGuardsKilled={rally.GateGuardsKilled} clear={rally.ClearEnded ?? (rally.ClearSince > 0 ? "on" : "not-reached")} " +
+        $"clearSeconds={(rally.ClearSince == 0 ? 0 : (now - rally.ClearSince) / 1000)} clearPeak={rally.ClearPeak} " +
+        $"marchHoldTurns={rally.MarchHoldTurns} healPicks={rally.HealPicks} " +
+        $"guardKillers={(rally.GuardKillerKinds.Count == 0 ? "-" : string.Join(",", rally.GuardKillerKinds.OrderByDescending(kind => kind.Value).Select(kind => $"{kind.Key}:{kind.Value}")))}";
+
+    /// <summary>
+    /// The gate guard this realm's storm fights now (<paramref name="called"/>), true while the clear holds the storm at the
+    /// gate. A called guard that fell is replaced at once by the gate guard nearest the gate (the count every 5 s then
+    /// prefers one that is on a stormer), so the storm never waits for the next count with nothing to hit.
+    /// </summary>
+    public static bool GateClear(ushort region, eRealm realm, AbstractGameKeep keep, out GameKeepGuard called)
+    {
+        called = null;
+        if (keep == null || !Rallies.TryGetValue((region, realm), out Rally rally)) return false;
+        lock (rally)
+        {
+            if (!rally.Storming || rally.ClearEnded != null || rally.GatePoint is not { } gate ||
+                IsLapsed(rally.LastAsked, GameLoop.GameLoopTime)) return false;
+            GameKeepGuard nearest = null;
+            float nearestToGate = float.MaxValue;
+            foreach (GameKeepGuard guard in keep.Guards.Values)
+            {
+                if (guard is GuardLord || !guard.IsAlive || guard.CurrentRegionID != region || !IsGateGuardOf(guard, gate)) continue;
+                if (guard.ObjectID == rally.CalledGuard)
+                {
+                    called = guard;
+                    return true;
+                }
+                float toGate = Vector2.Distance(new(gate.X, gate.Y), new(guard.X, guard.Y));
+                if (toGate < nearestToGate) (nearest, nearestToGate) = (guard, toGate);
+            }
+            rally.CalledGuard = nearest?.ObjectID ?? 0;
+            called = nearest;
+            return nearest != null;
+        }
+    }
+
+    /// <summary>This guard is the one the realm's storm has called at the gate (it is fought: <see cref="StormerMayEngage"/>).</summary>
+    public static bool IsCalledGuard(ushort region, eRealm realm, int objectId)
+    {
+        if (objectId == 0 || !Rallies.TryGetValue((region, realm), out Rally rally)) return false;
+        lock (rally)
+            return rally.Storming && rally.ClearEnded == null && rally.CalledGuard == objectId;
+    }
+
+    /// <summary>Counts a turn a stormer waited for its pack on the march (BG_RALLY_REGROUP's marchHoldTurns=).</summary>
+    public static void NoteMarchHold(ushort region, eRealm realm)
+    {
+        if (!Rallies.TryGetValue((region, realm), out Rally rally)) return;
+        lock (rally) rally.MarchHoldTurns++;
+    }
+
+    /// <summary>Counts a heal a storming healer picked on a fellow stormer (BG_RALLY_REGROUP's healPicks=).</summary>
+    public static void NoteStormerHeal(ushort region, eRealm realm)
+    {
+        if (!Rallies.TryGetValue((region, realm), out Rally rally)) return;
+        lock (rally) rally.HealPicks++;
     }
 
     /// <summary>Living real players of the realm standing at the rally (any privilege level, so a tester's GM character counts).</summary>

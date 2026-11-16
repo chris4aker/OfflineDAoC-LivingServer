@@ -88,28 +88,35 @@ namespace DOL.UnitTests
             });
         }
 
-        [TestCase(32, 40, 24)] // 3b808b4: the model asked 31-34 of 30-46 inside; a wave of 40 is 24
-        [TestCase(33, 30, 18)]
-        [TestCase(12, 40, 12)] // the model's own number when it is the smaller
+        // The full muster (owner 2026-11-16): 85% of the realm's gamebots inside, whatever the model says. Build 4d48f42 went
+        // with the model capped at a wave (60%): needed 8-15 of 11-26 inside, and the storms of 8-17 died at the gate.
+        [TestCase(19, 22, 19)] // 4d48f42 05:57:08 Midgard: modelled 19, inside 22, needed was 13
+        [TestCase(30, 17, 15)] // 06:01:02 Hibernia at Murdaigean: modelled 30, inside 17, needed was 10
+        [TestCase(12, 40, 34)] // the model no longer lowers the muster
         [TestCase(20, 5, Rally.MinimumRally)]
         [TestCase(20, 0, Rally.MinimumRally)]
         [TestCase(60, 200, Rally.MaximumRally)]
-        public void EnoughIsNeverMoreThanAWaveOfTheRealm(int modelled, int inside, int needed) =>
+        public void TheRallyWaitsForTheFullMuster(int modelled, int inside, int needed) =>
             Assert.That(Rally.RallyNeeded(modelled, inside), Is.EqualTo(needed));
 
         [Test]
-        public void TheRallyWaitsForNoMoreThanTheRealmCanGather()
+        public void TheMusterIsEssentiallyTheWholeRealmButNeverMoreThanIsThere()
         {
-            // A wave is 60% of the realm inside: the most #247's waves ever asked of it.
-            for (int inside = 0; inside <= 120; inside++)
-                Assert.That(Rally.RallyNeeded(Rally.MaximumRally, inside), Is.LessThanOrEqualTo(System.Math.Max(Rally.MinimumRally, Wave.WaveSize(inside))));
+            for (int inside = Rally.MinimumRally; inside <= Rally.MaximumRally; inside++)
+            {
+                int needed = Rally.RallyNeeded(0, inside);
+                Assert.That(needed, Is.LessThanOrEqualTo(inside), $"inside {inside}");
+                Assert.That(needed * 100, Is.GreaterThanOrEqualTo(inside * Rally.MusterSharePercent), $"inside {inside}");
+                Assert.That(needed, Is.GreaterThanOrEqualTo(Wave.WaveSize(inside)), "at least the old wave");
+            }
         }
 
-        [TestCase(12, 24, 0, true, true)]    // the other realm storms: half of enough goes at once
-        [TestCase(12, 24, 0, false, false)]  // alone, not yet patient
-        [TestCase(11, 24, 0, true, false)]   // half of 24 is 12
-        [TestCase(7, 12, 0, true, false)]    // half of 12 is 6, but never fewer than 8
-        [TestCase(8, 12, 0, true, true)]
+        [TestCase(20, 24, 0, true, true)]    // the other realm storms: 80% of enough goes at once
+        [TestCase(12, 24, 0, true, false)]   // half was enough before (4d48f42: storms of 8-12 with the other realm's)
+        [TestCase(20, 24, 0, false, false)]  // alone, not yet patient
+        [TestCase(19, 24, 0, true, false)]   // 80% of 24 is 20
+        [TestCase(7, 8, 0, true, false)]     // 80% of 8 is 7, but never fewer than 8
+        [TestCase(8, 9, 0, true, true)]
         [TestCase(24, 24, 0, false, true)]
         public void TheTwoAttackingRealmsCueEachOther(int rallied, int needed, long gathering, bool otherStorming, bool goes) =>
             Assert.That(Rally.ShouldStorm(rallied, needed, gathering, otherStorming), Is.EqualTo(goes));
@@ -647,14 +654,15 @@ namespace DOL.UnitTests
                 Assert.That(Rally.JoinsOtherStorm(Rally.JoinWindowMilliseconds), Is.True);
                 // 22:53:25: Midgard went with 12 of 16, 0.0 minutes after its regroup, on Hibernia's storm of 22:51:54.
                 Assert.That(Rally.JoinsOtherStorm(91_000), Is.False, "the other realm's tail, 91 s in");
-                Assert.That(Rally.ShouldStorm(12, 16, 0, Rally.JoinsOtherStorm(91_000)), Is.False, "it gathers on");
-                Assert.That(Rally.ShouldStorm(12, 16, 0, Rally.JoinsOtherStorm(20_000)), Is.True);
+                Assert.That(Rally.ShouldStorm(13, 16, 0, Rally.JoinsOtherStorm(91_000)), Is.False, "it gathers on");
+                Assert.That(Rally.ShouldStorm(13, 16, 0, Rally.JoinsOtherStorm(20_000)), Is.True, "80% of 16 is 13");
+                Assert.That(Rally.ShouldStorm(12, 16, 0, Rally.JoinsOtherStorm(20_000)), Is.False, "the 12 of 16 of 95af6fd no longer go");
             });
         }
 
         [TestCase(0L, true, 8, 18, true)]       // the other realm has 44% of its 18: wait for it
-        [TestCase(44_999L, true, 8, 18, true)]
-        [TestCase(45_000L, true, 8, 18, false)] // not longer than 45 s
+        [TestCase(89_999L, true, 8, 18, true)]  // 90 s now: the other realm joins with 80% of its need, not half
+        [TestCase(90_000L, true, 8, 18, false)] // not longer than 90 s
         [TestCase(0L, false, 8, 18, false)]     // it storms already: go (and join it)
         [TestCase(0L, true, 18, 18, false)]     // it is ready itself: both go
         [TestCase(0L, true, 7, 18, false)]      // 38%: too far off

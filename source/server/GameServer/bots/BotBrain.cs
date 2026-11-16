@@ -5629,6 +5629,31 @@ namespace DOL.AI.Brain
                 }
             }
 
+            // A storming battleground healer heals its fellow stormers. Ungrouped (as gamebots on a battleground tour are), it
+            // healed only itself: the RvR block above is for the frontier objective. Owner, 2026-11-16: the zerg's healers
+            // stood behind and kept its fighters up while they killed the gate's guards. The same range and line-of-sight
+            // checks as the RvR block; companions and players' groups are untouched (only autonomous stormers qualify).
+            if (BotBody.IsAutonomousWorldBot && BattlegroundBrackets.IsBattlegroundRegion(Body.CurrentRegionID) &&
+                AutonomousBattlegroundKeepRally.IsStorming(Body.CurrentRegionID, Body.Realm, BotBody.DatabaseID))
+            {
+                GameLiving stormer = Body.GetNPCsInRadius((ushort)AutonomousBattlegroundKeepRally.StormerHealRadius).OfType<GameBot>()
+                    .Where(other => other != Body && other.IsAlive && other.Realm == Body.Realm &&
+                        other.HealthPercent < AutonomousBattlegroundKeepRally.StormerHealBelowPercent)
+                    .OrderBy(other => other.HealthPercent)
+                    .Take(4)
+                    .FirstOrDefault(other => AutonomousBattlegroundKeepRally.IsStorming(Body.CurrentRegionID, Body.Realm, other.DatabaseID) &&
+                        PathfindingProvider.Instance.HasLineOfSight(Body.CurrentZone, new(Body.X, Body.Y, Body.Z),
+                            new(other.X, other.Y, other.Z), PathfindingProvider.Instance.DefaultFilters));
+                if (stormer != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || stormer.HealthPercent < spellTarget.HealthPercent))
+                {
+                    spellTarget = stormer;
+                    amountToHeal = Math.Max(amountToHeal, stormer.MaxHealth - stormer.Health);
+                    numNeedHealing = Math.Max(1, numNeedHealing);
+                    if (stormer.HealthPercent < 40) numEmergency = Math.Max(1, numEmergency);
+                    AutonomousBattlegroundKeepRally.NoteStormerHeal(Body.CurrentRegionID, Body.Realm);
+                }
+            }
+
             if (AutonomousRealmRaid.HasSharedSupport(BotBody))
             {
                 // Lowest-health raid member or pet in range, without sorting the whole roster.

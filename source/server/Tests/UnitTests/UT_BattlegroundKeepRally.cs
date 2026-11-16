@@ -86,12 +86,15 @@ namespace DOL.UnitTests
 
         [TestCase(14, 14, 0, true)]                 // all there
         [TestCase(13, 14, 2 * 60_000, false)]       // one short, not yet patient
-        [TestCase(13, 26, 3 * 60_000, true)]        // patient after 3 minutes: half of 26 is 13
-        [TestCase(12, 26, 3 * 60_000, false)]
-        [TestCase(8, 14, 3 * 60_000, true)]         // half of 14 is 7, but never fewer than 8
-        [TestCase(8, 30, 6 * 60_000, true)]         // last call after 6 minutes: whoever is there, at least 8
-        [TestCase(8, 30, 6 * 60_000 - 1, false)]
-        [TestCase(7, 30, 30 * 60_000, false)]       // never a handful
+        [TestCase(21, 26, 4 * 60_000, true)]        // patient after 4 minutes: 80% of 26 is 21
+        [TestCase(20, 26, 4 * 60_000, false)]
+        [TestCase(21, 26, 4 * 60_000 - 1, false)]
+        [TestCase(8, 9, 4 * 60_000, true)]          // 80% of 9 is 8
+        [TestCase(16, 26, 7 * 60_000, true)]        // last call after 7 minutes: 60% of 26 is 16
+        [TestCase(15, 26, 7 * 60_000, false)]
+        [TestCase(16, 26, 7 * 60_000 - 1, false)]
+        [TestCase(8, 30, 30 * 60_000, false)]       // a handful never goes for a realm of 35 (it was 8 of 30 after 6 minutes)
+        [TestCase(7, 10, 30 * 60_000, false)]       // never fewer than 8
         [TestCase(9, 9, 0, true)]
         public void TheRallyGoesUpWithEnough(int rallied, int needed, long gathering, bool goes) =>
             Assert.That(Rally.ShouldStorm(rallied, needed, gathering), Is.EqualTo(goes));
