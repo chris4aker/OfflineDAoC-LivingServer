@@ -56,6 +56,19 @@ namespace DOL.GS
             (!RespawnedSinceRouteStart(spawnTick, routeStartTick) || OnWalkBack(walkBack, at, aggroRange));
 
         /// <summary>
+        /// The route is in its first-hour trash clear (pure): an epic dungeon route (no neutral objectives) that has begun and
+        /// is less than <see cref="EpicTrashPhaseMilliseconds"/> old. Owner's PC, 2026-11-16 (build 88b6ab3, sweep): Tur Suil's
+        /// raid cleared trash from 10:47 to 11:47 (114 kills, no raider lost, no named targeted yet) and the 60-minute stall clock,
+        /// started at the same moment, ended it at 11:47:56 just as the clear finished. Owner's decision (2026-11-16, lifting the
+        /// raid-code freeze for this): the clear counts as progress, so the stall clock starts when it ends.
+        /// </summary>
+        public static bool InTrashPhase(long now, long routeStartTick, bool hasObjectives) =>
+            !hasObjectives && routeStartTick > 0 && now - routeStartTick < EpicTrashPhaseMilliseconds;
+
+        /// <summary>This route is in its first-hour trash clear now (<see cref="InTrashPhase"/>).</summary>
+        public bool ClearingTrash(long now) => InTrashPhase(now, _routeStartTick, _objectives != null);
+
+        /// <summary>
         /// A monster at <paramref name="at"/> stands on the walk (within <see cref="RealmRaidRouteGate.Margin"/> of it, on its
         /// floor) or within its <paramref name="aggroRange"/> of it (pure; <see cref="RealmRaidRouteGate.Blocks"/>). A monster
         /// that does not aggro counts only when it stands on the walk.
