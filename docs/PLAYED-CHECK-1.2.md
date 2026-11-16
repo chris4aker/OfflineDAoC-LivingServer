@@ -90,11 +90,11 @@ again** on a candidate with the fix. On build `1dc66b6` (2026-11-15) all three b
 stalled behind Easmarach's falls (#230), our Spiritmasters' pets healed Kvasir in Tuscaran Glacier (#235), and Caer
 Sidi's plans at Dorinakka and the Crypt Lord were wrong (#236). Each is to be re-run on the final candidate.
 
-**Where the bar stands** (2026-11-15, from the rows below):
+**Where the bar stands** (2026-11-16, from the rows below):
 - **Albion: met on the candidate line.** Golestandt won on test build 5; Hall of the Corrupt and Krondon won on
   `1dc66b6`. Both dungeons' raid code changed after their wins (#229 for Aidon, #239 for Krondon), before the freeze.
-- **Midgard: not met.** Dodens Gruva won on test build 5. Gjalpinulva and a second dungeon have no win on the
-  candidate line.
+- **Midgard: met on the candidate line.** Gjalpinulva and Iarnvidiur's Lair won on `88b6ab3`; Dodens Gruva won on
+  test build 5 (and lost on `1dc66b6`).
 - **Hibernia: not met.** Cuuldurach won on test build 5 and Marfach Caverns on builds 2, 4 and 5. A second dungeon has
   no win on the candidate line.
 
@@ -110,23 +110,23 @@ which give one build for the three losses on their l.246-247.
 | Realm | Raid | History on 3e64140 | On the candidate line |
 |---|---|---|---|
 | Albion | Golestandt (dragon) | Lost three times (best 9%) | **Won on test build 5** (second attempt; a raid leader's invite seated the player). Not run since |
-| Albion | Caer Sidi | Lost twice; run 3 ended on a wrongly counted second wipe (fixed in #193, tests only) | Lost on test build 5: cut off by the old four-hour limit with 12 named down. Lost on `e3b8238` (sweep, 2026-11-14): 18 named down, the 4-hour sweep cap ended it before the archlich; Crypt Lord 85 of 87 dead, Host walked into the archlich. Reworked in #213/#214 (tests only). **Lost on `1dc66b6`** (sweep, bots only, the GM in the raid, 2026-11-15 02:09-03:04): Lich Lord Ilron killed (02:43), one wipe at Warlord Dorinakka and his 12 crypt knights (02:50, his lowest 96%), then two at the Crypt Lord (03:00 and 03:04, 99%; raid-wide deaths to his court and patrol); 54 minutes, 10 named. Plans fixed in #236 (tests only). **Re-run owed** |
+| Albion | Caer Sidi | Lost twice; run 3 ended on a wrongly counted second wipe (fixed in #193, tests only) | Lost on test build 5: cut off by the old four-hour limit with 12 named down. Lost on `e3b8238` (sweep, 2026-11-14): 18 named down, the 4-hour sweep cap ended it before the archlich; Crypt Lord 85 of 87 dead, Host walked into the archlich. Reworked in #213/#214 (tests only). **Lost on `1dc66b6`** (sweep, bots only, the GM in the raid, 2026-11-15 02:09-03:04): Lich Lord Ilron killed (02:43), one wipe at Warlord Dorinakka and his 12 crypt knights (02:50, his lowest 96%), then two at the Crypt Lord (03:00 and 03:04, 99%; raid-wide deaths to his court and patrol); 54 minutes, 10 named. Plans fixed in #236 (tests only). **Re-run owed** **Lost on `88b6ab3`** (sweep, bots only, 2026-11-16 10:31-12:45), carrying #236: two wipes at the Crypt Lord, 130 minutes, 11 named (Lich Lord Ilron among them), 24 Epic Special Forces joined. Queued again in sweep 2 on `ccba364`, whose Caer Sidi code is unchanged |
 | Albion | Krondon | Stalled three times at Scurceol Hyrde's room | **Won on `1dc66b6`** (sweep, forced at the game's size, the GM in the raid, 2026-11-15 04:03): Drihten Elreden, Lurfos the Herald and Orylle, no wipe, 54 minutes, 63 raiders. A slow re-clear of respawning ogres after Drihten (13 minutes) is changed in #239 (tests only) |
 | Albion | Avalon City | Won once (run 2) | Not run |
 | Albion | Crystal Cave (Xanxicar) | Won once (run 2, second attempt) | Not run |
 | Albion | Hall of the Corrupt | Stopped twice: Aidon's illusions (fixed in #191, tests only) | **Won on `1dc66b6`** (a raid the game opened itself, its tale first, the GM in the raid, 2026-11-15 00:44): Aidon in one attempt, 71 minutes, 5 named, no wipe. A second raid there (05:41) held Aidon out of his tether, immune at 100% for 35 minutes and more: the lead-home bug, fixed in #229 after `1dc66b6` (tests only) |
-| Albion | Summoner's Hall | No finished run | Never reached on `e3b8238` (sweep, 2026-11-14): the route through Hall of the Corrupt walked into a respawned Aidon, 182 deaths in 50 minutes; skipped by the GM. Route bosses are fought as objectives since #213 (tests only). **Lost on `1dc66b6`** (sweep, bots only, 2026-11-14 22:40-23:31): the raid mustered for Aidon on its way in and lost to him twice in 58 minutes. Its healers dragged him past his tether and he healed 58% to 100% (#229); raiders walking through the Pennine Mountains were killed by RvR gamebots (92 deaths; #240). Both fixes are tests only. **Re-run owed** |
+| Albion | Summoner's Hall | No finished run | Never reached on `e3b8238` (sweep, 2026-11-14): the route through Hall of the Corrupt walked into a respawned Aidon, 182 deaths in 50 minutes; skipped by the GM. Route bosses are fought as objectives since #213 (tests only). **Lost on `1dc66b6`** (sweep, bots only, 2026-11-14 22:40-23:31): the raid mustered for Aidon on its way in and lost to him twice in 58 minutes. Its healers dragged him past his tether and he healed 58% to 100% (#229); raiders walking through the Pennine Mountains were killed by RvR gamebots (92 deaths; #240). Both fixes are tests only. **Re-run owed** **Lost on `88b6ab3`** (sweep, bots only, 2026-11-16 12:49-13:40), carrying #229 and #240: two wipes at Aidon, 50 minutes, 24 Epic Special Forces joined. Queued again in sweep 2 on `ccba364`, whose Aidon code is unchanged |
 | Albion | Darkness Falls | No finished run (24 named in run 3) | Not run |
-| Midgard | Gjalpinulva (dragon) | Won twice (runs 1 and 2, second attempt both times) | Not run |
-| Midgard | Tuscaran Glacier | Lost three times (run 3: four of the Council down, Icelord Agmundr at 38%) | Lost on `e3b8238` (sweep, 2026-11-14): 22 named down, stalled after 219 minutes; Agmundr wiped the raid twice (81 of 81 in 2.7 minutes; then a muster placed 76 from him). Reworked in #213/#214 (tests only). **Stopped on `1dc66b6`** (sweep, bots only, 2026-11-15 00:35-02:06): Icelord Agmundr killed (01:30, 10.3 minutes), then Icelord Kvasir held at 81-99% for half an hour: our Spiritmasters' pets' cold damage healed him (on screen: "thank you spirit champion for healing me"). Skipped by the GM. Fixed in #235 (tests only). **Re-run owed** |
+| Midgard | Gjalpinulva (dragon) | Won twice (runs 1 and 2, second attempt both times) | **Won on `88b6ab3`** (sweep, bots only, 2026-11-16 10:31-11:24): 52 minutes, no wipe, 72 raiders. Left out of later sweeps |
+| Midgard | Tuscaran Glacier | Lost three times (run 3: four of the Council down, Icelord Agmundr at 38%) | Lost on `e3b8238` (sweep, 2026-11-14): 22 named down, stalled after 219 minutes; Agmundr wiped the raid twice (81 of 81 in 2.7 minutes; then a muster placed 76 from him). Reworked in #213/#214 (tests only). **Stopped on `1dc66b6`** (sweep, bots only, 2026-11-15 00:35-02:06): Icelord Agmundr killed (01:30, 10.3 minutes), then Icelord Kvasir held at 81-99% for half an hour: our Spiritmasters' pets' cold damage healed him (on screen: "thank you spirit champion for healing me"). Skipped by the GM. Fixed in #235 (tests only). **Re-run owed** Started on `88b6ab3` (sweep, 13:39) and cut short when the server was stopped at 13:59 to install `ccba364`: no result. In sweep 2 |
 | Midgard | Trollheim | Lost (run 3 reached Nosdoden; nobody regrouped) | Lost at Nosdoden on test build 5. **Stopped by the owner on `1dc66b6`** (sweep, 2026-11-15 05:23-06:28) after 78 minutes, before Nosdoden, to test battlegrounds on a new build: no wipe, Fostra Orm killed, 131 targets down. No result; not finished on the candidate line |
-| Midgard | Iarnvidiur's Lair | Won once (run 2) | Not run |
+| Midgard | Iarnvidiur's Lair | Won once (run 2) | **Won on `88b6ab3`** (sweep, bots only, 2026-11-16, ended 13:36): 127 minutes, 10 named, no wipe, 64 raiders. Left out of later sweeps |
 | Midgard | Dodens Gruva | Won twice | **Won on test build 5.** **Lost on `1dc66b6`** (a raid the game opened itself, 2026-11-15, bots only): two wipes at Aros the Spiritmaster, 103 minutes, the Epic Special Forces joined; the defeat line was seen in the client (01:24) |
 | Midgard | Summoner's Hall | Won once (run 2) | **Lost on `1dc66b6`** (a raid the game opened itself, 2026-11-14 23:16-23:44, bots only): the client showed "driven out of Summoner's Hall by Summoner Roesia". Before #229 that line named the raid's final boss rather than the one that beat it, so where it was lost is not certain |
 | Midgard | Darkness Falls | No finished run | Won on `e3b8238` (a raid the game opened itself, 2026-11-14): 41 named and Legion in one attempt (9 minutes), 132 minutes, no wipe. Before the Darkness Falls raid AI work |
 | Hibernia | Cuuldurach (dragon) | Lost run 1, won run 2 (second attempt) | **Won on test build 5** (a raid the game opened itself). Not run since |
-| Hibernia | Galladoria | Lost three times at Spindler Broodmother (curers' post in #190, tests only) | Spindler Broodmother killed, then lost at the Organic-Energy Mechanism, on test build 5. Lost on `e3b8238` (sweep, 2026-11-14): two wipes at the Broodmother (15% and 22%), mesmerize caught 23 to 78 of about 104, up to 44 newborns. Reworked in #214 (tests only). **Stalled on `1dc66b6`** (sweep, bots only, 2026-11-14 23:49 to 11-15 00:32): Spindler Broodmother killed in 12.7 minutes with #214's party posts (00:16), then the final muster was placed behind Easmarach's falls while he lived and the raiders bounced off them 165 times for 15 minutes. Skipped by the GM. Fixed in #230 (tests only). **Re-run owed** |
-| Hibernia | Tur Suil | Won twice (runs 1 and 3) | Not run |
+| Hibernia | Galladoria | Lost three times at Spindler Broodmother (curers' post in #190, tests only) | Spindler Broodmother killed, then lost at the Organic-Energy Mechanism, on test build 5. Lost on `e3b8238` (sweep, 2026-11-14): two wipes at the Broodmother (15% and 22%), mesmerize caught 23 to 78 of about 104, up to 44 newborns. Reworked in #214 (tests only). **Stalled on `1dc66b6`** (sweep, bots only, 2026-11-14 23:49 to 11-15 00:32): Spindler Broodmother killed in 12.7 minutes with #214's party posts (00:16), then the final muster was placed behind Easmarach's falls while he lived and the raiders bounced off them 165 times for 15 minutes. Skipped by the GM. Fixed in #230 (tests only). **Re-run owed** **Lost on `88b6ab3`** (sweep, bots only, 2026-11-16 11:51-12:50), carrying #230: two wipes at Spindler Broodmother, 57 minutes, 8 named, 24 Epic Special Forces joined. Queued again in sweep 2 on `ccba364`, whose Galladoria code is unchanged |
+| Hibernia | Tur Suil | Won twice (runs 1 and 3) | **Stalled on `88b6ab3`** (sweep, bots only, 2026-11-16 10:31-11:48): ended after 75 minutes with no named kill and no wipe, because the stall clock ran while the raid cleared the first hour of trash. Fixed in #291 (the owner lifted the raid freeze for this fix, 2026-11-16; tests only). **Re-run owed**: in sweep 2 on `ccba364` |
 | Hibernia | Marfach Caverns | Won twice | **Won on test builds 2, 4 and 5** |
 | Hibernia | Summoner's Hall | Lost three times at Summoner Roesia | **Lost on `1dc66b6`** (sweep, bots only, 2026-11-15, lost at 05:05): two wipes at Summoner Lossren (lowest 63%, then 20%), 57 minutes, 24 Epic Special Forces joined. Her tortured souls killed 98 of 170 raiders: she called a new wave whenever none lived. Fixed in #237 (keep one soul alive and mesmerized; tests only). **Re-run owed** |
 | Hibernia | Darkness Falls | No finished run | Lost on `e3b8238` (a raid the game opened itself, 2026-11-14): 59 named, then Legion twice (lowest 92% and 60%), 382 minutes. On `1dc66b6` a raid the game opened itself (01:39, 136 raiders) was still running at 05:21 with 69 targets down and no wipe; its end is not recorded |
@@ -149,7 +149,7 @@ muster, no wipe); the overnight sweep runs it again ([OVERNIGHT-SWEEP-1.2.md](OV
 | Realm | Raid | On the candidate line |
 |---|---|---|
 | Albion | Coliath | **Won on `1dc66b6`** (a raid the game opened itself, the GM in the raid, 2026-11-15): called 04:03, Coliath killed 04:57, Albion's first kill of him, on screen. 27 raiders died to the monsters in Aldland on the way |
-| Albion | Green Knight | Not run |
+| Albion | Green Knight | Started on `88b6ab3` (sweep, 13:43) and cut short when the server was stopped at 13:59: no result. In sweep 2 |
 | Albion | Spirit of Lord Emthoro | Not run |
 | Midgard | Glacier Giant | Not run |
 | Midgard | Wretch of Winter (jotun) | Not run |
@@ -160,9 +160,9 @@ muster, no wipe); the overnight sweep runs it again ([OVERNIGHT-SWEEP-1.2.md](OV
 | Midgard | Raumarik Revenant | Not run |
 | Midgard | Mortufoghus | Not run |
 | Hibernia | Evern | Not run |
-| Hibernia | Juggernaut | Not run |
-| Hibernia | Curengkur | Not run |
-| Hibernia | Marfoirwort | Not run |
+| Hibernia | Juggernaut | **Won on `88b6ab3`** (sweep, bots only, 2026-11-16, ended 13:13): 19 minutes, no wipe, 40 raiders. Left out of later sweeps |
+| Hibernia | Curengkur | Not started on `88b6ab3` (sweep, 2026-11-16 13:16): "No complete connected hub-to-encounter route was found", so no party was sent. No fix yet; in sweep 2 to see whether it repeats |
+| Hibernia | Marfoirwort | Started on `88b6ab3` (sweep, 13:16) and cut short when the server was stopped at 13:59: no result. In sweep 2 |
 | Hibernia | Mollunero | Not run |
 
 ### Re-runs owed
@@ -178,6 +178,30 @@ is added here, with the build that carries it, before it is merged.
 | Summoner's Hall (Albion) | Lost at Aidon after he was dragged out of his tether; frontier walk (`1dc66b6`) | #229, #240 | `3d67b6f` and later |
 | Summoner's Hall (Hibernia) | Lost to Lossren's endless waves (`1dc66b6`) | #237 | `3d67b6f` and later |
 | Trollheim | Stopped by the owner before Nosdoden (`1dc66b6`); not finished on the candidate line | none | |
+| Tur Suil | Stalled while clearing its first hour of trash (`88b6ab3`) | #291 | `ccba364` and later |
+
+### Won on the owner's PC: left out of later sweeps
+
+Owner, 2026-11-16: "Each time you do an install I don't need us repeating the same exact encounters". A raid won on
+the owner's PC at the game's own size stays out of later sweeps, after a new install too. It goes back in only when a
+change alters that boss's own fight, and then only after asking the owner. The release notes report each one by the
+build it was won on.
+
+| Raid | Won on | Changed since the win |
+|---|---|---|
+| Golestandt (Albion dragon) | test build 5 | Nothing known |
+| Krondon | `1dc66b6` | #239: the re-clear of respawning ogres after Drihten (the route, not a boss) |
+| Hall of the Corrupt | `1dc66b6` | #229: Aidon's lead-home. Aidon is fought again on the way into Albion's Summoner's Hall |
+| Coliath | `1dc66b6` | Nothing known |
+| Cuuldurach (Hibernia dragon) | test build 5 | Nothing known |
+| Marfach Caverns | test builds 2, 4 and 5 | Nothing known |
+| Gjalpinulva (Midgard dragon) | `88b6ab3` | Nothing |
+| Iarnvidiur's Lair | `88b6ab3` | Nothing |
+| Juggernaut | `88b6ab3` | Nothing |
+| Darkness Falls (Midgard) | `e3b8238` | The Darkness Falls raid AI work came after this win. **Ask the owner** whether it goes back in |
+
+Not in sweeps 1 or 2 and with no standing win: Dodens Gruva (won on test build 5, lost on `1dc66b6`) and Darkness Falls
+for Albion and Hibernia.
 
 ## Raid behaviour (test build 2)
 
