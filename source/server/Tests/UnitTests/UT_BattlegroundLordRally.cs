@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using DOL.GS;
 using NUnit.Framework;
@@ -356,65 +357,113 @@ namespace DOL.UnitTests
 
         private static float Flat(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
 
+        // Build 0acc99b (Thidranki 2026-11-15 20:43-21:02) gave both realms' plans as a pair Midgard +60 and Hibernia -30, the
+        // only two spots of the near ring 2,250 apart: -60 at 1,800 stands by the wall's south-east corner. A post on that corner
+        // (the walls are 1,244 round the centre, as the gate) reproduces it.
+        private static readonly Vector2 Centre = new(33089, 38271);
+        private static readonly Vector2 SouthEastCorner = new(34333, 37027);
+        private static float PcClearance(Vector3 at) =>
+            System.Math.Min(PostClearance(at), Vector2.Distance(SouthEastCorner, new(at.X, at.Y)));
+        private static bool NearRingOnly(Vector3 at) => Flat(at, OuterGate) <= Rally.BreachStandOffs[^1] + 1;
+
+        private static float MidGap(Rally.RallyPlan plan) =>
+            Rally.BearingGap(plan.Bearing, Rally.ArrivalBearing(OuterGate, East, MidArrival));
+        private static float HibGap(Rally.RallyPlan plan) =>
+            Rally.BearingGap(plan.Bearing, Rally.ArrivalBearing(OuterGate, East, HibArrival));
+
         [Test]
-        public void BeforeTheFixTheRealmThatPlacedFirstLeftTheOtherTheFarSide()
+        public void InTheNearRingOnlyThePairPutsOneRealmAcrossTheGateFront()
         {
-            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance);
-            // Midgard's rally as placed on the PC (-30 at 1,800: the nearer -30 candidates stand by guard posts this test lacks).
-            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, _ => true, PostClearance);
+            // As on the PC at 20:43 (and c165c90's +60 for Hibernia): one realm 93-187 degrees off its arrival.
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, NearRingOnly, PcClearance,
+                partnerArrival: HibArrival, centre: Centre);
             Assert.Multiple(() =>
             {
-                Assert.That(mid.Bearing, Is.EqualTo(-30), "Midgard's own side");
-                Assert.That(Rally.ArrivalBearing(OuterGate, East, MidC165), Is.EqualTo(-30).Within(0.5f), "point=35892,37375");
-                Assert.That(hib.Bearing, Is.EqualTo(60), "the only candidate 2,250 from Midgard's");
-                Assert.That(Rally.ArrivalBearing(OuterGate, East, HibC165), Is.EqualTo(60).Within(0.5f), "point=35233,39834 apart=2546");
-                Assert.That(Flat(hib.Point!.Value, MidC165), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
-                Assert.That(Rally.BearingGap(hib.Bearing, Rally.ArrivalBearing(OuterGate, East, HibArrival)), Is.GreaterThan(170),
-                    "the far side of the gate from Hibernia's arrival");
+                Assert.That(mid.Bearing, Is.EqualTo(60), "Midgard +60, the PC's 20:43 placement");
+                Assert.That(Rally.ArrivalBearing(OuterGate, East, mid.Partner!.Value), Is.EqualTo(-30).Within(0.5f), "Hibernia -30");
+                Assert.That(MidGap(mid), Is.GreaterThan(Rally.FarSide));
+                Assert.That(mid.Candidates, Does.Contain("-60/1800=952x"), "BG_RALLY_CANDIDATES names the corner post");
             });
         }
 
         [Test]
-        public void TheTwoRealmsPlanTheirRalliesAsAPairWhoeverPlacesFirst()
+        public void WithTheFarRingBothRealmsRallyOnTheirOwnSideWhoeverPlacesFirst()
         {
-            // Midgard first, Hibernia in the battleground: Midgard's half of the pair.
-            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
-                partnerArrival: HibArrival, partnerFirst: false);
-            // Hibernia next, with Midgard's rally standing: the same pair from its side.
-            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { mid.Point!.Value }, Anywhere, _ => true, PostClearance,
-                partnerArrival: MidArrival, partnerFirst: true);
-            // And the other order: Hibernia first.
-            Rally.RallyPlan hibFirst = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
-                partnerArrival: MidArrival, partnerFirst: true);
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PcClearance,
+                partnerArrival: HibArrival, partnerFirst: false, centre: Centre);
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { mid.Point!.Value }, Anywhere, _ => true, PcClearance,
+                partnerArrival: MidArrival, partnerFirst: true, centre: Centre);
+            Rally.RallyPlan hibFirst = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PcClearance,
+                partnerArrival: MidArrival, partnerFirst: true, centre: Centre);
             Assert.Multiple(() =>
             {
-                Assert.That(mid.Bearing, Is.EqualTo(30), "Midgard 63 degrees off its arrival");
-                Assert.That(hib.Bearing, Is.EqualTo(-60), "Hibernia 67 degrees off its arrival, on its own side");
-                Assert.That(Flat(mid.Partner!.Value, hib.Point!.Value), Is.LessThan(1), "Midgard left Hibernia the spot Hibernia takes");
-                Assert.That(Flat(hib.Partner!.Value, mid.Point.Value), Is.LessThan(1), "and the other way round: no re-plan");
+                Assert.That(Flat(mid.Point.Value, MidC165), Is.LessThan(1), "Midgard -30 at 1,800 (35892,37375), its PC spot");
+                Assert.That(hib.Bearing, Is.EqualTo(-90), "Hibernia round the corner, past the south wall's line");
+                Assert.That(Flat(hib.Point!.Value, OuterGate), Is.EqualTo(2_700).Within(1));
+                Assert.That(MidGap(mid), Is.LessThan(5));
+                Assert.That(HibGap(hib), Is.LessThan(40), "37 degrees off its arrival (c165c90/0acc99b: 97-187)");
+                Assert.That(Flat(mid.Partner!.Value, hib.Point.Value), Is.LessThan(1), "Midgard left Hibernia the spot Hibernia takes");
+                Assert.That(Flat(hib.Partner!.Value, mid.Point.Value), Is.LessThan(1));
                 Assert.That(Flat(hibFirst.Point!.Value, hib.Point.Value), Is.LessThan(1), "the order makes no difference");
-                Assert.That(Flat(mid.Point.Value, hib.Point.Value), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
                 Assert.That(mid.Apart && hib.Apart, Is.True);
-                Assert.That(mid.GuardClear, Is.GreaterThanOrEqualTo(Rally.RallyGuardClearance));
-                Assert.That(hib.GuardClear, Is.GreaterThanOrEqualTo(Rally.RallyGuardClearance));
-                Assert.That(Flat(hib.Point.Value, HibC165), Is.GreaterThan(2_000), "not c165c90's far-side spot");
+                Assert.That(Flat(mid.Point.Value, hib.Point.Value), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
+                Assert.That(PcClearance(hib.Point.Value), Is.GreaterThanOrEqualTo(Rally.RallyGuardClearance));
+                Assert.That(Vector2.Distance(new(hib.Point.Value.X, hib.Point.Value.Y), Centre),
+                    Is.GreaterThan(Vector2.Distance(new(OuterGate.X, OuterGate.Y), Centre) + Rally.FarWallClearance), "outside the walls");
+                Assert.That(mid.UsedBarren || hib.UsedBarren, Is.False);
+            });
+        }
+
+        [Test]
+        public void TheFarRingStandsOnlyWellOutsideTheWalls()
+        {
+            // Without the centre every far candidate is tried; with it, the walls' line near the corner is not.
+            Rally.RallyPlan with = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, _ => float.MaxValue,
+                centre: Centre);
+            Assert.Multiple(() =>
+            {
+                Assert.That(with.Candidates, Does.Contain("-90/2700"));
+                Assert.That(with.Candidates, Does.Contain("-90/2100"), "2,100 round the wall: 2,437 from the centre");
+                Assert.That(Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, _ => float.MaxValue,
+                    centre: new(OuterGate.X - 4_000, OuterGate.Y)).Candidates, Does.Not.Contain("-90/2100"), "a bigger keep's wall line");
+                Assert.That(with.Bearing, Is.EqualTo(-60), "alone, the near ring comes first while it is on the realm's side");
+                Assert.That(with.Candidates, Does.Not.Contain("90/900"), "the near ring stops at 60 degrees");
+            });
+        }
+
+        [Test]
+        public void AloneWithMidgardOnItsSideHiberniaNoLongerTakesTheFarSide()
+        {
+            // c165c90: Midgard at -30 first, Hibernia alone got +60, 187 degrees off its arrival.
+            Rally.RallyPlan near = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, NearRingOnly, PcClearance,
+                centre: Centre);
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, _ => true, PcClearance,
+                centre: Centre);
+            Assert.Multiple(() =>
+            {
+                Assert.That(near.Bearing, Is.EqualTo(60), "the near ring alone: as on c165c90");
+                Assert.That(hib.Bearing, Is.EqualTo(-90));
+                Assert.That(HibGap(hib), Is.LessThan(40));
+                Assert.That(hib.Apart, Is.True);
             });
         }
 
         [Test]
         public void APairIsOnlyTakenWhenBothHalvesCanWalkToTheGate()
         {
-            // Hibernia's -60 candidates have no walk to the gate: the next pair (Midgard +60, Hibernia -30, 0026378's).
-            bool Reaches(Vector3 at) => Rally.ArrivalBearing(OuterGate, East, at) is var b && System.Math.Abs(b + 60) > 1;
-            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, Reaches, PostClearance,
-                partnerArrival: HibArrival);
-            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, Reaches, PostClearance,
-                partnerArrival: MidArrival, partnerFirst: true);
+            // Hibernia's -90 spots have no walk to the gate: the next pair down.
+            bool Reaches(Vector3 at) => System.Math.Abs(Rally.ArrivalBearing(OuterGate, East, at) + 90) > 1;
+            Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, Reaches, PcClearance,
+                partnerArrival: HibArrival, centre: Centre);
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, Reaches, PcClearance,
+                partnerArrival: MidArrival, partnerFirst: true, centre: Centre);
             Assert.Multiple(() =>
             {
-                Assert.That(mid.Bearing, Is.EqualTo(60));
-                Assert.That(hib.Bearing, Is.EqualTo(-30));
+                Assert.That(hib.Bearing, Is.Not.EqualTo(-90));
                 Assert.That(Flat(mid.Partner!.Value, hib.Point!.Value), Is.LessThan(1));
+                Assert.That(Flat(hib.Partner!.Value, mid.Point!.Value), Is.LessThan(1));
+                Assert.That(Flat(mid.Point.Value, hib.Point.Value), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
+                Assert.That(System.Math.Max(MidGap(mid), HibGap(hib)), Is.LessThanOrEqualTo(Rally.FarSide), "still both on their own side");
             });
         }
 
@@ -422,23 +471,53 @@ namespace DOL.UnitTests
         public void ABarrenSpotIsPassedOverByBothRealmsPlans()
         {
             Rally.RallyPlan first = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
-                partnerArrival: MidArrival, partnerFirst: true);
+                partnerArrival: MidArrival, partnerFirst: true, centre: Centre);
             Vector3[] barren = { first.Point!.Value };
             Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
-                partnerArrival: MidArrival, partnerFirst: true, barren: barren);
+                partnerArrival: MidArrival, partnerFirst: true, barren: barren, centre: Centre);
             Rally.RallyPlan mid = Rally.PlanRally(OuterGate, East, MidArrival, new Vector3[0], Anywhere, _ => true, PostClearance,
-                partnerArrival: HibArrival, partnerFirst: false, partnerBarren: barren);
-            Rally.RallyPlan alone = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, _ => true, PostClearance,
-                barren: new[] { HibC165 });
+                partnerArrival: HibArrival, partnerFirst: false, partnerBarren: barren, centre: Centre);
             Assert.Multiple(() =>
             {
                 Assert.That(Flat(hib.Point!.Value, first.Point.Value), Is.GreaterThan(Rally.BarrenRadius), "moved off the barren spot");
+                Assert.That(hib.UsedBarren, Is.False);
                 Assert.That(Flat(mid.Partner!.Value, hib.Point.Value), Is.LessThan(1), "Midgard's plan knows Hibernia's barren spot");
                 Assert.That(Flat(hib.Partner!.Value, mid.Point!.Value), Is.LessThan(1));
-                Assert.That(Flat(alone.Point!.Value, HibC165), Is.GreaterThan(Rally.BarrenRadius),
-                    "alone, nothing apart is left: the old straight-out fallback, never the barren spot again");
             });
         }
+
+        [Test]
+        public void WhenEverySeparatedSpotIsBarrenTheRallyKeepsApartInsteadOfSharingOne()
+        {
+            // 0acc99b with the near ring only: Midgard +60 barren (20:48), the swap, then Hibernia +60 barren too (20:53). The
+            // re-plan then gave Hibernia 36133,38275 (apart=932) and Midgard the same spot (apart=0).
+            Vector3[] farSide = { OuterGate + new Vector3(750, 1_299, 0), OuterGate + new Vector3(900, 1_559, 0) }; // +60 at 1,500 and 1,800
+            Vector3[] midBarren = farSide, hibBarren = farSide;
+            Rally.RallyPlan hib = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, NearRingOnly, PcClearance,
+                partnerArrival: MidArrival, partnerFirst: true, barren: hibBarren, partnerBarren: midBarren, centre: Centre);
+            Rally.RallyPlan alone = Rally.PlanRally(OuterGate, East, HibArrival, new[] { MidC165 }, Anywhere, NearRingOnly, PcClearance,
+                barren: hibBarren, centre: Centre);
+            Assert.Multiple(() =>
+            {
+                Assert.That(hib.Partner, Is.Not.Null, "a pair is still found, barren spots and all");
+                Assert.That(hib.Apart, Is.True);
+                Assert.That(hib.UsedBarren, Is.True);
+                Assert.That(Flat(hib.Point!.Value, hib.Partner!.Value), Is.GreaterThanOrEqualTo(Rally.RallySeparation));
+                Assert.That(alone.Apart, Is.True, "alone: the barren spot apart, not the straight-out spot on Midgard's");
+                Assert.That(alone.UsedBarren, Is.True);
+                Assert.That(Flat(alone.Point!.Value, SharedPoint), Is.GreaterThan(1));
+                // ...and the gathering rally keeps the spot it has rather than take either.
+                Assert.That(Rally.KeepsSpot(2_546, hib.Apart, hib.UsedBarren), Is.True);
+            });
+        }
+
+        [TestCase(2_546f, false, false, true)]  // 0acc99b 20:53: apart=932 planned, the rally stood 2,546 from Midgard's
+        [TestCase(2_546f, true, true, true)]    // only a barren spot left: no trading spots every five minutes
+        [TestCase(2_546f, true, false, false)]  // a better spot apart: it moves
+        [TestCase(932f, false, false, false)]   // already on top of the other rally: nothing to keep
+        [TestCase(932f, true, true, false)]
+        public void AReplanKeepsASeparatedSpotRatherThanTakeAWorseOne(float fromOthers, bool apart, bool barren, bool keeps) =>
+            Assert.That(Rally.KeepsSpot(fromOthers, apart, barren), Is.EqualTo(keeps));
 
         [Test]
         public void RallyPairsAreTheSameFromBothSides()
@@ -455,14 +534,33 @@ namespace DOL.UnitTests
             };
             var mine = Rally.RallyPairs(candidates, points, -33, -127, partnerFirst: false);
             var theirs = Rally.RallyPairs(candidates, points, -127, -33, partnerFirst: true);
+            var barren = Rally.RallyPairs(candidates, points, -33, -127, false, new[] { false, true, false, false });
             Assert.Multiple(() =>
             {
                 Assert.That(mine[0], Is.EqualTo((1, 2)));
                 Assert.That(theirs[0], Is.EqualTo((2, 1)));
                 Assert.That(mine, Has.None.Matches<(int Mine, int Partner)>(pair => pair.Mine == 3 || pair.Partner == 3), "never under a guard");
                 Assert.That(mine, Has.None.Matches<(int Mine, int Partner)>(pair => pair == (0, 2) || pair == (2, 0)), "1,800 apart is too near");
-                Assert.That(Rally.RallyPairs(candidates, points, -33, -127, false, new[] { false, true, false, false }),
-                    Has.None.Matches<(int Mine, int Partner)>(pair => pair.Mine == 1), "a barren spot is not taken");
+                Assert.That(barren[0], Is.EqualTo((2, 1)), "a barren spot is taken only after every pair without one");
+                Assert.That(barren, Has.Some.Matches<(int Mine, int Partner)>(pair => pair.Mine == 1), "...but it is not dropped");
+            });
+        }
+
+        [Test]
+        public void TheNearRingComesFirstForARealmAlone()
+        {
+            var candidates = new Rally.RallyCandidate[]
+            {
+                new(-60, 1_800, 1_500, float.MaxValue),
+                new(-90, 2_700, 1_500, float.MaxValue, Far: true),
+                new(60, 1_800, 1_500, float.MaxValue),
+                new(-90, 2_100, 1_500, 1_000, Far: true), // on the other realm's rally
+            };
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.RallyPreference(candidates, -127), Is.EqualTo(new[] { 0, 1, 2 }), "on its side: near, then far; then the far side");
+                Assert.That(Rally.RallyPreference(candidates.Skip(1).ToArray(), -127), Is.EqualTo(new[] { 0, 1 }),
+                    "the far ring on its side before the near ring across the gate");
             });
         }
 

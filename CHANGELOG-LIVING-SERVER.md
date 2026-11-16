@@ -516,6 +516,43 @@ holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm in
   Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
   navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
+**Battleground rallies stay on each realm's own side and never share a spot** (tests only; owner's PC, build `0acc99b` =
+the change below, Thidranki 2026-11-15 20:43-21:02. `BG_LORD_PATH` showed the walk to Lady Thidranki reaching her floor:
+`status=PathFound`, last point her own, `lastZMinusLord=0`, `lordOnMesh=True`. Only Midgard stormed, three times with 8-16,
+and nobody got near her.)
+
+- **Why.** Thidranki Faste has one way in, outer gate 252000301 on the east side. Keep door 252000302 stands inside the
+  walls, behind that gate, and the other four doors are not attackable (posterns, always shut). So there is no second gate
+  for Hibernia to rally at. Both attacking realms arrive on the gate's south side: Midgard 33 degrees off straight out,
+  Hibernia 127 degrees. In the rally spots tried until now (900-1,800 out, up to 60 degrees round), the only two 2,250
+  apart were +60 and -30. -60 at 1,800 stands by the wall's corner. So the pair put one realm across the gate front:
+  - Midgard at +60 drew 5 in 5 minutes (needed 14).
+  - The barren rule swapped the two rallies, and Hibernia at +60 drew 5 (needed 18).
+  - That re-plan left out both barren spots, found nothing 2,250 apart, and put both realms on 36133,38275 (`apart=0`), as
+    on `d64d005`.
+- **Why the storms were small.** A rally that moved kept its old gathering clock: Midgard went up with 9 of 13, 56 s after
+  its rally moved, on the six-minute last call of the spot it had left. Its third storm went with 8 of 15 from the spot it
+  shared with Hibernia. The stormers fought back as before: `#271`'s floor rule only applies above 150, which the hit-back
+  rule already had.
+- **Now:**
+  - Rally spots are also tried farther out (2,100, 2,400 and 2,700, up to 90 degrees round), but only well outside the walls
+    (600 farther from the keep's centre than the gate). At Thidranki Faste that gives Midgard -30 at 1,800 (its spot on the
+    PC) and Hibernia -90 at 2,700, south of the wall's corner, 3 and 37 degrees off their arrivals.
+  - A realm planning alone takes a spot on its own side (within 90 degrees) first, the near spots before the far ones.
+  - A spot that gathered nobody is taken only after every other separated spot, never dropped for one on top of another
+    rally.
+  - A re-planned rally keeps its spot if it is still apart and the new plan is not, or the new plan only found a barren spot
+    (`BG_RALLY_KEPT`).
+  - A rally that moves starts its patience and last call again.
+- **Logs:** `BG_RALLY_CANDIDATES` after each placement lists every spot tried: bearing/stand-off, guard clearance, `x`
+  under a guard, `+`/`-` walk checked, `b`/`p` barren for the realm/partner, `*` taken, `^` left to the partner.
+  `BG_RALLY_PLACED` adds `usedBarren=` and `restartedGathering=`.
+- **Unchanged:** the keep, guards, lord, doors and respawns; which gate is the breach; the strength model, patience lengths
+  and attempt endings; the stormers' fighting rules. No truce, nobody made unhittable, nobody teleported.
+- **Not verified here:** whether -90 at 2,700 is walkable and clear of the corner's guards on the real navmesh (the
+  Thidranki navmesh isn't in the build container: `BG_RALLY_CANDIDATES` will say), and whether the bigger storms bring her
+  down.
+
 **Battleground stormers climb to the lord, and the two rallies are placed as a pair** (tests only; owner's PC, build
 `c165c90` = the zerg change above, Thidranki 2026-11-15 17:23-18:02: Albion holding Thidranki Faste with every door down.
 Midgard stormed five times: up to 11 past the gate, `bestToLord` 398-2,162, up to 2 beside the lord. Lady Thidranki stayed
