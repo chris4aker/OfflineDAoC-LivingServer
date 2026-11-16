@@ -37,6 +37,17 @@ namespace DOL.GS
 		}
 		#endregion Examine Messages
 
+		/// <summary>The hire dialog's links (HireDialog165), whispered back by the client.</summary>
+		public override bool WhisperReceive(GameLiving source, string text)
+		{
+			if (source is GamePlayer player && player.IsWithinRadius(this, HireText165Reach) &&
+			    HireDialog165.HealerWhisper(player, this, text))
+				return true;
+			return base.WhisperReceive(source, text);
+		}
+
+		private const int HireText165Reach = DOL.GS.Commands.HireText165.HealerReach;
+
 		#region Interact Messages
 		public override bool Interact(GamePlayer player)
 		{
@@ -44,6 +55,11 @@ namespace DOL.GS
 				return false; // Prevent interact
 
 			TurnTo(player, 5000); // Face the player upon interact
+
+			// Hired companions (from True 1.65): any healer of the realm brings a dead companion back, free (owner 2026-10-30),
+			// and offers hiring with a [companions] link (HireDialog165; Living Server has no traveler's inns yet)
+			HiredCompanions165.OfferHealer(player, this);
+			HireDialog165.HealerGreeting(player, this);
 			
 			// Check for ambient trigger messages for the NPC in the 'MobXAmbientBehaviour' table
 			var triggers = GameServer.Instance.NpcManager.AmbientBehaviour[base.Name];

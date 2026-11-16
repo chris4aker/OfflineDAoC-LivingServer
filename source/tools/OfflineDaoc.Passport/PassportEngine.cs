@@ -123,6 +123,9 @@ public static class PassportTables
         ["offline_exchange_index"] = new(PassportDecision.StaysInWorld, "That world's Realm Exchange prices."),
         ["offline_economy_ledger"] = new(PassportDecision.StaysInWorld, "That world's hourly money supply."),
         ["offline_crafter_customers"] = new(PassportDecision.StaysInWorld, "What that world's crafter gamebots remember of their customers, by name.", true),
+        // Hired companions (from True 1.65): a character's companions are bot rows of that world (offline_world_bots), so
+        // they wait for the character there, as its /bot companions do.
+        ["offline_hired_companions"] = new(PassportDecision.StaysInWorld, "The companions a character hired in that world; they are that world's bots and wait for the character at home.", true),
     };
 
     /// <summary>

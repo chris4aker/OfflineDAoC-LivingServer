@@ -73,6 +73,11 @@ public class Blacksmith : GameNPC
         SayTo(player, eChatLoc.CL_PopupWindow,
             $"If you're in a hurry, I can also [repair all] your items for an additional {REPAIR_ALL_TAX * 100}% fee.");
 
+        // Hired companions (from True 1.65): the companions with you get their worn gear repaired in one go (owner
+        // 2026-10-30: never taking each piece off a companion), at the smith's price under player_upkeep.
+        if (HiredCompanionsMode.IsOn && CompanionWindows165.WithPlayer(player) is { Count: > 0 } companions)
+            CompanionWindows165.OfferRepair(player, companions);
+
         return true;
     }
 

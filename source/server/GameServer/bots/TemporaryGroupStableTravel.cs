@@ -209,13 +209,13 @@ public static class TemporaryGroupStableTravel
             return;
 
         // Owner 2026-10-31: companions that followed the horse on foot (too far to board, or a ride that failed) died on
-        // the way. Every companion of the player's group (/spawn helpers, at any
+        // the way. Every companion of the player's group (/spawn helpers and hired companions, at any
         // distance) is now put away while the player rides: gone from view, untouchable, idle. They come back beside the
         // player when the player gets off, at the end of the route or by jumping off early.
         DateTime started = DateTime.UtcNow;
         GameBot[] companions = player.Group.GetMembersInTheGroup()
             .OfType<GameBot>()
-            .Where(bot => bot.IsTemporaryGroupHelper &&
+            .Where(bot => (bot.IsTemporaryGroupHelper || bot.IsHiredCompanion) &&   // hired companions too (True 1.65)
                           bot.IsAlive && bot.ObjectState is GameObject.eObjectState.Active &&
                           bot.Group == player.Group && bot.PlayerGroupLeader == player)
             .ToArray();
