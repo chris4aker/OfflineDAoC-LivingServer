@@ -330,6 +330,45 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
   ungrouped crafter whose break is within 45 minutes (or that is on a craft trip), the least busy first, and the trip
   works every open commission it can pay for (up to three sessions, a failed attempt tried again at the station), handed
   over at the end of the break. The same 12 days: 63-75 minutes without WP6, 64-75 with it. The server is unchanged.
+### WP9 Launcher and release plumbing
+
+Launcher and release tools only; no server file changed. Automated tests only: nothing here has been seen on the owner's
+PC. Every default is the server's own (`CraftingEconomyProperties`, `ServerProperties`).
+
+- **Bot crafters and the economy**, a new card in the Living Server tab below the Crafting card: bot crafters
+  (`bot_crafters`, off), crafters among new bots (`bot_crafter_share_percent`, 7%), bot crafting pace
+  (`bot_crafting_pace`, xp), craft orders (`bot_craft_orders`, off), realm commissions (`realm_commissions`, doubled),
+  a crafter's Exchange posts (`bot_crafter_exchange_listings`, 6, 3-100), crafters' chat (`bot_crafter_chat_rate`, 1,
+  0-3), the Realm Exchange tax (`exchange_tax_percent`, 0, 0-50), the economy ledger (`economy_ledger_enabled`, on), the
+  level-50 kit (`launcher_level50_kit`, on) and an ECONOMY PAGE button. The crafter rows are dimmed while bot crafters
+  are off. ALL OFF switches bot crafters and craft orders off and leaves the tax, the ledger, the kit and the shares as
+  they are. A first install (Setup's suggested settings) keeps bot crafters and orders off: turning them on for new
+  installs is the owner's call.
+- **No Lifer buffbots:** two rows under the buffbot switch, the share of No Lifers with one
+  (`bot_nolifer_buffbot_percent`, 30) and the 2003 concentration range (`bot_nolifer_buffbot_era_conc_range`, on).
+- **The level-50 kit setting.** With `launcher_level50_kit` off, "+ Lv.50" bots arrive without the quality-100 kit and
+  10,000 gold: a purse of the level squared in silver (25 gold), and the server's plain merchant gear for their level at
+  their first login (AutonomousStarterGear), as "+ Lv.20" bots get. On (the default) is as before.
+- **The economy page** (`runtime\herald\economy.html`, from the ECONOMY PAGE button and beside the Herald): the economy
+  as the ledger records it, read-only from `offline_economy_ledger` and `offline_exchange_index`: each realm's money
+  supply at the last recorded hour (bots, players, guild banks, the Exchange's listed goods, bots and crafters), the last
+  24 hours with faucets, sinks, **the Exchange tax** and the residual, the top sinks, flows by kind per realm, and the
+  price index's ten bands with the most stock per realm. It says when the ledger is off or has no hour yet.
+- **The Herald's Master Crafters:** the top five of each of the six orders, players (per account and realm, named by the
+  account's highest-level character there) and gamebots alike, with the title their skill gives; and a link to the
+  economy page.
+- **Deleting bots** (the bot list, server stopped) now also deletes the bots' rows in the Crafting 2.0 tables: their
+  stored types (the "types began" marker stays), crafter rows, customers' memories and the craft orders they placed.
+  An order a deleted bot was to make stays, so its buyer is refunded when it expires; a player's or the quartermaster's
+  order is never deleted. The world's price index and ledger stay. A running server is still sent a Delete command
+  (that path does not clean these tables yet; see the follow-ups).
+- **Release plumbing.** `build_release_037.py` reads `EconomyTables.All` from the server source, stops if a table is
+  missing from `progress-policy.json`, and checks every one empty in both editions' worlds (`economy_tables` in the
+  build report). `make_patch.py` and `find_changes_since_release.py` now skip the optional progress tables as well as
+  the progress tables, so a world update never carries or removes a saved row (it still creates a new table empty).
+- Tests: `CraftingEconomyLauncherTests` (economy page, purge, kit), `SocialExpansionSettingsTests.EconomyRowsAreSavedReadAndChecked`,
+  `HeraldPageTests.TheHeraldListsTheTopCraftersOfEachOrder` (CI's Living Server tab step), and
+  `source/tools/tests/test_release_economy_tables.py`.
 
 ## 1.2.1 (in development)
 

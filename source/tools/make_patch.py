@@ -86,7 +86,8 @@ def table_info(con, table):
 
 def world_update(base_db: Path, target_db: Path, policy: dict, version: str) -> dict:
     """The rows a released world gains, changes and loses between two clean builds, per world table."""
-    skip = set(policy["ProgressTables"]) | set(policy["ClearTables"]) | {"FactionAggroLevel", "offline_patch_log"} | LIVE_TABLES
+    skip = (set(policy["ProgressTables"]) | set(policy.get("OptionalProgressTables", [])) | set(policy["ClearTables"]) |
+            {"FactionAggroLevel", "offline_patch_log"} | LIVE_TABLES)
     ro = lambda p: sqlite3.connect(p.resolve().as_uri() + "?mode=ro", uri=True)
     base, target = ro(base_db), ro(target_db)
     master = lambda con: {r[0]: r[1] for r in con.execute("SELECT name, sql FROM sqlite_master WHERE type='table'")

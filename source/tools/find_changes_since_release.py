@@ -117,7 +117,8 @@ def table_rows(con: sqlite3.Connection, table: str) -> tuple[list[str], dict]:
 
 
 def compare_world(baseline_db: Path, current_db: Path, policy: dict) -> dict:
-    skip = set(policy["ProgressTables"]) | set(policy["ClearTables"]) | {"FactionAggroLevel"} | LIVE_STATE_TABLES
+    skip = (set(policy["ProgressTables"]) | set(policy.get("OptionalProgressTables", [])) | set(policy["ClearTables"]) |
+            {"FactionAggroLevel"} | LIVE_STATE_TABLES)
     ro = lambda p: sqlite3.connect(p.resolve().as_uri() + "?mode=ro", uri=True)
     with ro(baseline_db) as base, ro(current_db) as cur:
         tables = {r[0] for r in base.execute("SELECT name FROM sqlite_master WHERE type='table'")}

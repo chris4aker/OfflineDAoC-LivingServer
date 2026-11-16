@@ -2302,6 +2302,8 @@ internal sealed partial class MainForm : Form
         }
 
         bool allowSluaghbinder = SluaghbinderEnabled(connection, transaction);
+        // Crafting 2.0 (WP9): "+ Lv.50" bots get the quality-100 kit and 10,000 gold only with launcher_level50_kit on.
+        bool level50Kit = Level50Kit.IsOn(connection, transaction);
         // The server's own bracket for that battleground: a Battleground table row replaces the period levels.
         if (battleground != null)
             battleground = LiveBattlegroundBracket(connection, transaction, battleground);
@@ -2340,7 +2342,7 @@ internal sealed partial class MainForm : Form
             insert.Parameters.AddWithValue("@xp", BattlegroundBotLevels.ExperienceForLevel(botLevel));
             insert.Parameters.AddWithValue("@money", battleground != null
                 ? BattlegroundBotLevels.PurseCopper(botLevel)
-                : botLevel == 50 ? 100000000L : 0L);
+                : botLevel == 50 ? Level50Kit.PurseCopper(level50Kit) : 0L);
             insert.Parameters.AddWithValue("@realm", identity.Realm);
             insert.Parameters.AddWithValue("@classId", identity.ClassId);
             insert.Parameters.AddWithValue("@className", identity.ClassName);
@@ -2359,9 +2361,10 @@ internal sealed partial class MainForm : Form
             insert.Parameters.AddWithValue("@placement",
                 $"Launcher assigned a realm/race/class-valid random start in region {start.RegionId} before server startup");
             insert.ExecuteNonQuery();
-            // Only "+ Lv.50" gets its gear set here. A "+ Lv.20" bot gets plain merchant gear for its level from the server at
-            // its first login (AutonomousStarterGear; owner 2026-11-15, "Arrive with starter gear"); "+ Lv.1" bots earn theirs.
-            if (battleground == null && botLevel == 50)
+            // Only "+ Lv.50" gets its gear set here, with the level-50 kit on. A "+ Lv.20" bot (and a "+ Lv.50" bot with the
+            // kit off) gets plain merchant gear for its level from the server at its first login (AutonomousStarterGear; owner
+            // 2026-11-15, "Arrive with starter gear"); "+ Lv.1" bots earn theirs.
+            if (battleground == null && botLevel == 50 && level50Kit)
             {
                 long botId = connection.LastInsertRowId;
                 using var gear = connection.CreateCommand();
@@ -2666,21 +2669,8 @@ internal sealed partial class MainForm : Form
         }
         else
         {
-            foreach (string sql in new[]
-            {
-                "DELETE FROM Inventory WHERE OwnerID LIKE 'offlinebot:%'",
-                "DELETE FROM offline_auction_escrow WHERE BidderBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_auction_ledger WHERE SellerBotId IN (SELECT BotId FROM offline_world_bots) OR BuyerBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_auction_listings WHERE SellerBotId IN (SELECT BotId FROM offline_world_bots) OR HighBidderBotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_bot_commands WHERE BotId IN (SELECT BotId FROM offline_world_bots)",
-                "DELETE FROM offline_world_bots",
-            })
-            {
-                using var command = connection.CreateCommand();
-                command.Transaction = transaction;
-                command.CommandText = sql;
-                command.ExecuteNonQuery();
-            }
+            // The bots' rows in every table, the Crafting 2.0 tables included (BotPurge, WP9).
+            BotPurge.DeleteAllBots(connection, transaction);
         }
 
         UpdatePopulationTarget(connection, transaction);
@@ -2688,27 +2678,9 @@ internal sealed partial class MainForm : Form
         return serverRunning;
     }
 
-    private static void PurgeBotData(SQLiteConnection connection, SQLiteTransaction transaction, long botId)
-    {
-        string owner = $"offlinebot:{botId}";
-        foreach (string sql in new[]
-        {
-            "DELETE FROM Inventory WHERE OwnerID=@owner",
-            "DELETE FROM offline_auction_escrow WHERE BidderBotId=@id",
-            "DELETE FROM offline_auction_ledger WHERE SellerBotId=@id OR BuyerBotId=@id",
-            "DELETE FROM offline_auction_listings WHERE SellerBotId=@id OR HighBidderBotId=@id",
-            "DELETE FROM offline_bot_commands WHERE BotId=@id",
-            "DELETE FROM offline_world_bots WHERE BotId=@id",
-        })
-        {
-            using var command = connection.CreateCommand();
-            command.Transaction = transaction;
-            command.CommandText = sql;
-            command.Parameters.AddWithValue("@id", botId);
-            command.Parameters.AddWithValue("@owner", owner);
-            command.ExecuteNonQuery();
-        }
-    }
+    // The bot's rows in every table, the Crafting 2.0 tables included (BotPurge, WP9).
+    private static void PurgeBotData(SQLiteConnection connection, SQLiteTransaction transaction, long botId) =>
+        BotPurge.DeleteBot(connection, transaction, botId);
 
     private static void UpdatePopulationTarget(SQLiteConnection connection, SQLiteTransaction transaction)
     {

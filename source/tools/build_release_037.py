@@ -27,7 +27,8 @@ patch_classic_warmap_client.py and patch_quest_journal_button_client.py applied,
 World data checks (the release fails if one is off): the Darkness Falls raid spawns match
 darkness_falls_raid_event_mobs.json exactly (Princess Nahemah, High Lord Saeor and High Lord Oro moved off their daises),
 every quest kill target in set_quest_target_respawns.ledger.json respawns within 300 seconds, the relic pad needs 8,
-and the navmesh road, seam and pocket files are present.
+and the navmesh road, seam and pocket files are present. Every Crafting 2.0 table (EconomyTables.All, read from the
+server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships.
 """
 from __future__ import annotations
 
@@ -39,6 +40,7 @@ import re
 import shutil
 import sqlite3
 import xml.etree.ElementTree as ET
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -171,6 +173,40 @@ def clean_world(database: Path, policy: dict, defaults: dict) -> dict:
     con.commit()
     report = verify_clean(con, policy, defaults)
     con.close()
+    return report
+
+
+def economy_tables(repo: Path) -> list[str]:
+    """EconomyTables.All, read from the server's own declaration (craft/economy/EconomyTables.cs): the saved-progress
+    tables of Crafting 2.0 (bot types, crafters, craft orders, the price index, the economy ledger, crafters' customers)."""
+    source = (repo / "source/server/GameServer/craft/economy/EconomyTables.cs").read_text(encoding="utf-8")
+    constants = dict(re.findall(r'public const string (\w+) = "(\w+)";', source))
+    names = re.search(r"string\[\] All = \[([^\]]*)\]", source)
+    assert names, "EconomyTables.All not found in EconomyTables.cs"
+    tables = [constants[name.strip()] for name in names.group(1).split(",") if name.strip()]
+    assert tables, "EconomyTables.All is empty"
+    return tables
+
+
+def check_policy_covers(policy: dict, tables: list[str]):
+    """Every saved-progress table the server declares is emptied by clean_world (it reads progress-policy.json), so no
+    played economy ships: a table missing from the policy stops the build before anything is copied."""
+    emptied = set(policy["ProgressTables"]) | set(policy.get("OptionalProgressTables", [])) | set(policy["ClearTables"])
+    missing = [table for table in tables if table not in emptied]
+    assert not missing, f"saved-progress tables not in progress-policy.json, so a played world would ship them: {missing}"
+
+
+def verify_tables_empty(con: sqlite3.Connection, tables: list[str]) -> dict:
+    """Each table holds no row (a table the world does not have yet holds none either); the counts go in the report."""
+    present = {row[0] for row in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    report = {}
+    for table in tables:
+        if table not in present:
+            report[table] = "absent"
+            continue
+        rows = con.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0]
+        assert rows == 0, f"{table} still has {rows} row(s): a played economy would ship"
+        report[table] = 0
     return report
 
 
@@ -356,6 +392,9 @@ def main():
         raise SystemExit("The snapshot client is not the Sluaghbinder client this release expects")
     policy = json.loads((repo / "source/tools/OfflineDaoc.ProgressImport/progress-policy.json").read_text())
     defaults = json.loads((repo / "source/tools/release-world-defaults.json").read_text(encoding="utf-8"))
+    # Crafting 2.0 (1.2): the economy's saved-progress tables must all be emptied (AGENTS.md, protect player data).
+    economy = economy_tables(repo)
+    check_policy_covers(policy, economy)
 
     print("Copying the runtime (personal, diagnostic and run-state files excluded)...", flush=True)
     runtime = out / "runtime"
@@ -368,6 +407,8 @@ def main():
             sqlite3.connect(database) as dst:
         src.backup(dst)
     world = clean_world(database, policy, defaults)
+    with closing(sqlite3.connect(database)) as con:
+        world["economy_tables"] = verify_tables_empty(con, economy)
     world_data = check_world_data(database, repo)
 
     set_auto_account_creation(runtime / "server/config/serverconfig.xml")
@@ -407,6 +448,8 @@ def main():
     print("Building the 0.37 no-custom-class edition files...", flush=True)
     edition = out / "editions/0.37-no-custom-class"
     no_class = no_custom_class_database(database, edition / "runtime/data/opendaoc.sqlite3.db")
+    with closing(sqlite3.connect(edition / "runtime/data/opendaoc.sqlite3.db")) as con:
+        no_class["economy_tables"] = verify_tables_empty(con, economy)
     (edition / "runtime/client-opendaoc/app").mkdir(parents=True, exist_ok=True)
     shutil.copy2(args.edition_game_dll, edition / "runtime/client-opendaoc/app/game.dll")
 
