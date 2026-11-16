@@ -3333,6 +3333,7 @@ namespace DOL.AI.Brain
             // previous pull and used to make archers/casters repeatedly switch
             // away from the fight their pet had already started.
             Body.TargetObject = protectionTarget ?? directAttacker ?? activePetTarget ?? CalculateNextAttackTarget();
+            if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
             RedirectPetFromControlledTarget(Body.TargetObject as GameLiving);
             MaintainTankPeel();
             // A tethered boss outside its tether is immune: stop hitting it and lead it home (AutonomousTetherReset).
@@ -3373,6 +3374,7 @@ namespace DOL.AI.Brain
                     Body.PathTo(new Point3D(lord.X, lord.Y, lord.Z), Body.MaxSpeed);
                     return;
                 }
+                if (Body.TargetObject is GameLiving rvrFightTarget && TryRvrTacticsMove(rvrFightTarget)) return;
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
                     return;
                 // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
@@ -3939,6 +3941,7 @@ namespace DOL.AI.Brain
             if (CompanionFollowPolicy.SendsDruidPet(BotBody))
                 TryCommandCompanionDruidPet(CalculateNextAttackTarget());
             HoldSupportCombat();
+            if (TryRvrTacticsSupport()) return;
             if (!CheckHeals() && !TryPvpCrowdControl() && !TryPveAddControl() && !TryGroupCelerity())
                 CheckSpells(eCheckSpellType.Defensive);
             if (BotBody.IsPlayerLedGroup)
@@ -4027,6 +4030,7 @@ namespace DOL.AI.Brain
 
         private GameLiving FindProtectionTarget()
         {
+            if (RvrTacticsProtectionTarget(out GameLiving rvrProtect)) return rvrProtect;
             if (!IsTankClass || Body?.Group == null)
                 return null;
 

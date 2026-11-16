@@ -79,6 +79,10 @@ namespace DOL.GS
 
         // The frontier threat scan of an RvR bot.
         FrontierThreatScan,
+        // Open-field RvR tactics (docs/RVR-FIELD-1.2.md, work package 0): building a group's fight board (its one
+        // area search included), and the tactics hooks' own work once the later packages fill them.
+        RvrFightBoard,
+        RvrTactics,
 
         // Combat AI in BotBrain.
         CombatSpells,
@@ -243,6 +247,8 @@ namespace DOL.GS
             AiSystem.NavClosestPoint => "nav.closest_point",
             AiSystem.NavOther => "nav.other",
             AiSystem.FrontierThreatScan => "frontier.threat_scan",
+            AiSystem.RvrFightBoard => "frontier.rvr_fight_board",
+            AiSystem.RvrTactics => "frontier.rvr_tactics",
             AiSystem.CombatSpells => "combat.spells",
             AiSystem.CombatHeals => "combat.heals",
             AiSystem.CombatStyle => "combat.style",

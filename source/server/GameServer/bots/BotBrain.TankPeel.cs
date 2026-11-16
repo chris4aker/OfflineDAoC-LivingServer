@@ -18,6 +18,7 @@ namespace DOL.AI.Brain
 
         private void MaintainTankPeel()
         {
+            if (RvrTacticsPeel()) return;
             GameBot bot = BotBody;
             long now = GameLoop.GameLoopTime;
             if (bot?.Group == null || bot.Group.MemberCount < 2 || !bot.IsAlive || bot.IsIncapacitated || now < _nextTankPeelTick)

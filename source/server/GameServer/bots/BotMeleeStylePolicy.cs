@@ -111,7 +111,7 @@ namespace DOL.GS
                 ? bot.Inventory.GetItem(eInventorySlot.LeftHandWeapon) : bot.ActiveWeapon;
 
         public static bool Usable(GameBot bot, Style style, AttackData lastAttack) =>
-            IsEligible(style) && style.Level <= bot.Level &&
+            (IsEligible(style) || DOL.AI.Brain.BotBrain.RvrTacticsAllowsStealthOpener(bot, style)) && style.Level <= bot.Level &&
             MatchesWeapon(style, bot.ActiveWeapon, bot.Inventory.GetItem(eInventorySlot.LeftHandWeapon), bot.ActiveWeaponSlot) &&
             StyleProcessor.CheckEnduranceCost(bot, Weapon(bot, style), style) &&
             bot.CheckStyleStun(style) &&

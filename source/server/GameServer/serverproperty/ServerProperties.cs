@@ -2560,6 +2560,102 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_SPOTTERS;
 
 		/// <summary>
+		/// Open-field RvR overhaul for 1.2 (owner 2026-11-16; docs/RVR-FIELD-1.2.md): the master switch of the bot groups' open-field tactics.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_field_tactics", "The master switch of the open-field RvR tactics for autonomous gamebots (docs/RVR-FIELD-1.2.md): a bot-only group, or a solo gamebot, away from keeps shares one fight plan. It never applies to realm raids, battleground keep assaults, keep defenders and siege fighters, siege engine operators, relic carriers, companions, or any group you lead or are in. False turns every rvr_bot_*, rvr_march_* and rvr_roam_* tactics switch below off at once. In this build it changes nothing by itself: the tactics arrive with 1.2 work packages 1 to 6, each behind its own switch.", true)]
+		public static bool RVR_BOT_FIELD_TACTICS;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 1 (eyes): bots notice enemy bots by the player rule.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_perception_bots", "Does nothing yet: reserved for 1.2 work package 1. When built: autonomous gamebots notice enemy gamebots and their pets the way they notice you (rvr_bot_perception: by chance, after a reaction delay), instead of at once at 5,000 units. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_PERCEPTION_BOTS;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 1 (eyes): two lookers per group.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_group_lookers", "Does nothing yet: reserved for 1.2 work package 1. When built: two members of a bot group take turns looking for enemies and the others take their target from the group's plan; soloers look for themselves. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_GROUP_LOOKERS;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 2 (assist): a main assist and a called target.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_assist", "Does nothing yet: reserved for 1.2 work package 2. When built: one fighter of a bot group is the main assist and calls the group's target in the 2003 kill order; the others switch to it after their own delay, and some tunnel. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_ASSIST;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 2 (assist): the group's crowd-control plan.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_cc_plan", "Does nothing yet: reserved for 1.2 work package 2. When built: a bot group's crowd controller opens on the charge, the kill target is never mezzed and a resisted mez is cast again. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_CC_PLAN;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 2 (assist): interrupt duty.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_interrupts", "Does nothing yet: reserved for 1.2 work package 2. When built: each enemy healer or caster that is not the kill target gets one bot of the group assigned to keep it from casting. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_INTERRUPTS;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 3 (protect): tanks guard their healers against players and bots.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_peel", "Does nothing yet: reserved for 1.2 work package 3. When built: a bot group's shield tanks guard a named healer or caster and peel attackers off it when the attacker is a player or a bot, not only a monster. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_PEEL;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 3 (protect): backline, spread and kiting.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_positioning", "Does nothing yet: reserved for 1.2 work package 3. When built: in an open-field fight casters and healers stand behind the tanks, members keep apart so one mez cannot catch two healers, and healers kite. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_POSITIONING;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 4 (stances): watch and size up before engaging.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_size_up", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group that sees an enemy group, or a fight between the other two realms, watches first and counts heads, healers, levels, health and power. A bot that is hit always fights back. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_SIZE_UP;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 4 (stances): kite and retreat from bad odds.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_disengage", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group facing bad odds or losing a fight kites or retreats, raggedly, as people do. It uses the group retreat, so bot_veteran_retreat off also turns it off. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_DISENGAGE;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 4 (stances): regroup after a retreat or a wipe.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_regroup", "Does nothing yet: reserved for 1.2 work package 4. When built: after a retreat or a wipe a bot group meets at a rally point, rests, re-forms and goes back out, and remembers its recent wipes. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_REGROUP;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
+		/// </summary>
+		[ServerProperty("bots", "rvr_march_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: the groups of a marching force split 50/25/25 across the main lane and up to two proven alternates from the milegate; with no proven lane everyone takes today's route. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_MARCH_LANES;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 5 (lanes): roamers use the proven lanes.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: roaming warbands travel on the proven lanes instead of one line. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_ROAM_LANES;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 6 (roamers): role-built eight-man groups.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roaming_parties", "Does nothing yet: reserved for 1.2 work package 6. When built: RvR groups that gamebots form are built by role, each realm's 2003 eight, and some of them roam the fringes as eight-man groups. Groups you lead or join are never changed. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_ROAMING_PARTIES;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 6 (roamers): circuits and check spots.
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_checks", "Does nothing yet: reserved for 1.2 work package 6. When built: a roaming bot group walks a patrol circuit and checks milegates, levelling camps, dungeon doors and named monsters for 30 to 60 seconds each, then moves on. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_ROAM_CHECKS;
+
+		/// <summary>
+		/// Reserved for 1.2 work package 6 (roamers): stealth openers.
+		/// </summary>
+		[ServerProperty("bots", "rvr_bot_stealth_openers", "Does nothing yet: reserved for 1.2 work package 6. When built: a bot stealther opens a fight from stealth with its opening style, and a soloer opens only when the odds allow it. Needs rvr_bot_field_tactics.", true)]
+		public static bool RVR_BOT_STEALTH_OPENERS;
+
+		/// <summary>
 		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.
 		/// </summary>
 		[ServerProperty("bots", "rvr_group_pet_cap", "When gamebots form an RvR group (a roaming warband or a siege party), at most this many pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five or more, and half as many (at least 1) a group of four or fewer. The others wait for the next group. Groups you lead or join are never changed. 0 turns the cap off.", 2)]
