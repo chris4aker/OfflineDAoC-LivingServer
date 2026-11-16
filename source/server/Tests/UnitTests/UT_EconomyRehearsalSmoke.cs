@@ -89,8 +89,8 @@ namespace DOL.GS.Tests
         {
             RehearsalReport report = EconomyRehearsal.Run(Day(RehearsalScenario.FreshStart()), build: "smoke");
             TestContext.Out.WriteLine(string.Join(Environment.NewLine, report.Metrics.Where(m => m.Key.StartsWith("wp0.")).Select(m => $"{m.Key}={m.Value}")));
-            // WP5's market (index, tax, commissions) runs beside the stand-in whenever bot_crafters is on.
-            Assert.That(report.Modules.Select(m => m.Id), Is.EqualTo(new[] { WP0CraftRulesStandIn.StandInId, WP5Market.ModuleId }));
+            // WP5's market and WP6's demand modules run beside the stand-in when bot_crafters is on.
+            Assert.That(report.Modules.Select(m => m.Id), Does.Contain(WP0CraftRulesStandIn.StandInId)); // WP6: other packages' modules run too
             Assert.That(report.GatesPass, string.Join("; ", report.Gates.Select(g => $"{g.Name}: {g.Status} {g.Detail}")));
             int crafters = int.Parse(report.Metrics["crafters"]);
             Assert.That(crafters, Is.InRange(3 * 120 * 3 / 100, 3 * 120 * 12 / 100), "about 7% of new bots");

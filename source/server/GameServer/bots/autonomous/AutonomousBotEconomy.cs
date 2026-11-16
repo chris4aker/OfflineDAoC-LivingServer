@@ -206,10 +206,23 @@ namespace DOL.GS;
                         equipSlot, true, isPlayerListing);
                 return null;
             }
-            if (equipped == null)
-                improvement += 250;
-            if (improvement > 8)
-                return new PurchaseCandidate(item, 1_000 + improvement + playerPreference, equipSlot, true, isPlayerListing);
+            // Crafting 2.0 WP6 (bot_crafters on): the template-aware set score decides, and an empty slot is filled only by
+            // a piece that raises it, so nothing bought here is refused by the no-undress guard when it is put on.
+            if (UsesGearValuation(bot))
+            {
+                long gain = GearImprovement(bot, item, equipSlot);
+                if (gain > 0 && (equipped == null || gain > MinimumEquipmentUpgrade))
+                    return new PurchaseCandidate(item,
+                        1_000 + (int)Math.Clamp(gain, 1, 1_000_000) + (equipped == null ? 250 : 0) + playerPreference,
+                        equipSlot, true, isPlayerListing);
+            }
+            else
+            {
+                if (equipped == null)
+                    improvement += 250;
+                if (improvement > 8)
+                    return new PurchaseCandidate(item, 1_000 + improvement + playerPreference, equipSlot, true, isPlayerListing);
+            }
         }
 
         // Stackable world goods are the server's practical crafting-material
@@ -230,6 +243,39 @@ namespace DOL.GS;
                       Math.Abs(item.Bonus7) + Math.Abs(item.Bonus8) + Math.Abs(item.Bonus9) + Math.Abs(item.Bonus10);
         return Math.Max(1, item.Level) * 10 + Math.Max(1, item.Quality) + Math.Max(0, item.DPS_AF) * 2 + utility * 3;
     }
+
+        /// <summary>
+        /// From shadowofze (1edbcf5), via True165, GPL-3.0: EquipmentValue with each typed bonus weighed for the bot's class
+        /// and counted only up to its cap, and level and DPS/AF only up to what the bot can use (BotGearValue165). True165
+        /// also added WeaponSpecBonus and WastedFocus (earlier True165 work, not ported). EquipmentValue itself is unchanged
+        /// (logs, listing and the vendor-trash order still read it). Read only while <see cref="UsesGearValuation"/>.
+        /// </summary>
+        public static int FitValue(GameBot bot, DbInventoryItem item, eInventorySlot slot)
+        {
+            if (item == null)
+                return 0;
+            int equipment = EquipmentValue(item);
+            // EquipmentValue is 0 for a melee weapon without working stats: nothing to adjust
+            if (equipment == 0 || bot?.Inventory == null)
+                return equipment;
+            DbInventoryItem current = slot == eInventorySlot.Invalid ? null : bot.Inventory.GetItem(slot);
+            return equipment + BotGearValue165.Adjustment(bot, item.Level, item.DPS_AF, item.Object_Type, BotGearValue165.Bonuses(item), current);
+        }
+
+        /// <summary>
+        /// Crafting 2.0 WP6: whether this gamebot's gear decisions use the template-aware set score (BotGearSet) and the
+        /// no-undress guard. Only with bot_crafters on, and only for an autonomous gamebot that is saved (not a companion,
+        /// an Epic Special Forces bot or a No Lifer buffbot) and has a class. Off: today's EquipmentValue rules, unchanged.
+        /// </summary>
+        public static bool UsesGearValuation(GameBot bot) =>
+            CraftingEconomyProperties.BOT_CRAFTERS && bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
+            !bot.IsInMemoryOnly && bot.CharacterClass != null && bot.Inventory != null;
+
+        /// <summary>How much wearing the item in that slot raises the bot's set score (BotGearSet.Delta; negative when it
+        /// lowers it).</summary>
+        public static long GearImprovement(GameBot bot, DbInventoryItem item, eInventorySlot slot) =>
+            item == null || !BotGearSet.IsScoredSlot(slot) ? 0
+                : BotGearSet.Delta(BotGearSet.For(bot), BotGearSet.Worn(bot), slot, item);
 
         public static bool IsPlayerListing(string ownerId) =>
             !string.IsNullOrWhiteSpace(ownerId) && !TryParseOwnerId(ownerId, out _);
@@ -253,9 +299,18 @@ namespace DOL.GS;
             DbInventoryItem equipped = bot.Inventory.GetItem(equipSlot);
             if (DisplacesOffhandWeapon(item, equipped))
                 return false;
+            bool gearValuation = UsesGearValuation(bot);
             if (bot.CharacterClass?.ID == (int)eCharacterClass.Savage &&
                 BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type))
-                return SavageBotWeaponPolicy.IsUpgrade(bot, item, equipSlot);
+                return SavageBotWeaponPolicy.IsUpgrade(bot, item, equipSlot) &&
+                       (!gearValuation || !BotGearSet.IsScoredSlot(equipSlot) || GearImprovement(bot, item, equipSlot) >= 0);
+            // Crafting 2.0 WP6 (bot_crafters on): the template-aware set score decides. A piece must raise it (an empty
+            // slot) or raise it by more than the usual margin (a worn slot), so the no-undress guard never has to refuse.
+            if (gearValuation && BotGearSet.IsScoredSlot(equipSlot))
+            {
+                long gain = GearImprovement(bot, item, equipSlot);
+                return equipped == null ? gain > 0 : gain > MinimumEquipmentUpgrade;
+            }
             int improvement = EquipmentValue(item) - EquipmentValue(equipped);
             return equipped == null || improvement > MinimumEquipmentUpgrade;
         }
@@ -302,6 +357,9 @@ namespace DOL.GS;
 
             eInventorySlot backpackSlot = (eInventorySlot)item.SlotPosition;
             DbInventoryItem replaced = bot.Inventory.GetItem(equipSlot);
+            // Crafting 2.0 WP6: the no-undress guard (bot_crafters on; always passes otherwise).
+            if (!BotGearGuard.Allows(bot, item, equipSlot, source))
+                return false;
             if (!bot.Inventory.MoveItem(backpackSlot, equipSlot, Math.Max(1, item.Count)))
                 return false;
 
@@ -689,7 +747,7 @@ namespace DOL.GS;
                 return false;
             }
 
-            if (!AddMoney(bot.DatabaseID, copper))
+            if (!AddMoney(bot.DatabaseID, copper, EconomyFlowKind.VendorSale))
             {
                 // A failed durable credit must not destroy the item; restoring the exact slot
                 // preserves the finite inventory invariant and makes the sale retryable.
@@ -773,11 +831,11 @@ namespace DOL.GS;
             copper = template.Price;
             eInventorySlot backpackSlot = bot.Inventory.FindFirstEmptySlot(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack);
             purchased = GameInventoryItem.Create(template);
-            bool spent = purchased != null && TrySpend(bot.DatabaseID, copper);
+            bool spent = purchased != null && TrySpend(bot.DatabaseID, copper, EconomyFlowKind.VendorGear);
             if (!spent || !bot.Inventory.AddItem(backpackSlot, purchased))
             {
                 if (spent && bot.Inventory.GetItem(backpackSlot) != purchased)
-                    AddMoney(bot.DatabaseID, copper);
+                    AddMoney(bot.DatabaseID, copper, EconomyFlowKind.VendorGear);
                 purchased = null;
                 copper = 0;
                 return false;
@@ -1139,7 +1197,10 @@ namespace DOL.GS;
 
         eInventorySlot backpackSlot = (eInventorySlot)purchase.Item.SlotPosition;
         DbInventoryItem replaced = bot.Inventory.GetItem(purchase.EquipSlot);
+        // Crafting 2.0 WP6: the no-undress guard (bot_crafters on; always passes otherwise). A refused piece stays in
+        // the backpack, bought and real, as an invalid purchase does above.
         if (backpackSlot is < eInventorySlot.FirstBackpack or > eInventorySlot.LastBackpack ||
+            !BotGearGuard.Allows(bot, purchase.Item, purchase.EquipSlot, "realm_exchange") ||
             !bot.Inventory.MoveItem(backpackSlot, purchase.EquipSlot, purchase.Item.Count))
             return false;
 
