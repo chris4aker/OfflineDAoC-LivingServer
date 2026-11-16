@@ -102,5 +102,5 @@ public static class BattlegroundBotLevels
         "in it with that level's experience and a small purse (its level squared in silver), and starts in its capital.\n" +
         "At its first login the server gives it plain merchant armour and weapons for its level, free (\"+ Lv.1\" bots still earn theirs).\n" +
         "Shift-click makes 10, Ctrl-click 100.\n" +
-        "They go to the battleground only for the share Bot Goals Setting gives Levels 20–49 as Battlegrounds % (0% by default).";
+        "They go to the battleground only for the share Bot Goals Setting gives Levels 20–49 as Battlegrounds % (15% by default).";
 }
