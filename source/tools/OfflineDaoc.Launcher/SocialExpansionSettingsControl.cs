@@ -57,6 +57,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _botRaidInvites = Switch("Raid leaders invite you");
     private readonly ComboBox _joinMode = Choice("When you join a bot's group", "Follow", "Lead");
     private readonly NumericUpDown _lootWeight = Number(SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight, "Your loot share");
+    // Crafting 2.0, the player's side (docs/CRAFTING.md).
+    private readonly CheckBox _craftEraStart = Switch("Era start");
+    private readonly CheckBox _craftSecondaryCaps = Switch("Secondary skill caps");
+    private readonly NumericUpDown _craftPace = Number((int)SocialExpansionSettings.MinCraftingPace, (int)SocialExpansionSettings.MaxCraftingPace, "Crafting pace");
+    private readonly ComboBox _upkeep = Choice("Repair upkeep", "Classic", "Light", "Free");
+    private readonly CheckBox _coinByLevel = Switch("Coin by level");
+    private readonly CheckBox _classicQuality = Switch("Classic quality");
+    private readonly CheckBox _classicLosses = Switch("Classic losses");
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
     private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
     private readonly Label _status = new()
@@ -158,6 +166,24 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Captioned(Caption("WHEN YOU JOIN A BOT'S GROUP", part: false), Add(groups, null, _joinMode,
             "Follow: the bot leads and you follow (/lead takes over). Lead: saying yes makes you the leader at once (/lead bot hands it back)."));
 
+        var crafting = Card("CRAFTING (YOUR CHARACTERS)", DaocTheme.Gold, 8);
+        Add(crafting, _craftEraStart, null, "New characters join an order at a crafting master, as in 1.65 (off: they start with Basic Crafting). Characters who already craft keep their skills.");
+        Captioned(Caption("CRAFTING PACE", part: false), Add(crafting, null, WithUnit(_craftPace, "per gain"),
+            "Skill points each time a craft raises your skill. 1 is classic; a grey recipe still gives nothing."));
+        Captioned(Caption("REPAIR UPKEEP", part: false), Add(crafting, null, _upkeep,
+            "What the smith charges. Classic: full price, and the item loses durability. Light (default): half price, no durability lost. Free."));
+        Add(crafting, _coinByLevel, null, "Monster coin follows your XP rate for your level, so a level pays the classic coin at faster XP. Bots' coin is unchanged.");
+        Add(crafting, _craftSecondaryCaps, null, "Another order's craft stops at 75% or 40% of your primary skill, as the masters describe it. A classic option.");
+        Add(crafting, _classicQuality, null, "94–99% quality with a small chance of a masterpiece at any skill (off: 96–99%, masterpieces only at 1000).");
+        Add(crafting, _classicLosses, null, "A failed craft costs its materials, and a spellcraft explosion destroys the item. A classic option.");
+        var craftNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "Crafting works in the original game client only for now (see docs/CRAFTING.md). ALL OFF leaves these as they are.",
+        };
+        crafting.Grid.Controls.Add(craftNote, 0, crafting.Grid.RowCount - 1);
+        crafting.Grid.SetColumnSpan(craftNote, 3);
+
         var xp = Card("XP BY LEVEL RANGE", DaocTheme.Gold, 5);
         xp = xp with { Height = TitleRow + 2 * (XpRow.Height + XpRow.ErrorHeight) + Row + CardPadding };
         _playerXp.AddTo(xp.Grid);
@@ -193,6 +219,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             (living.Panel, living.Height),
             (power.Panel, power.Height),
             (groups.Panel, groups.Height),
+            (crafting.Panel, crafting.Height),
             (xp.Panel, xp.Height),
         ];
         page.RowCount = parts.Length;
@@ -212,11 +239,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         scroller.BringToFront();   // docked last, so it fills what the footer leaves
 
         foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
+                     _craftEraStart, _craftSecondaryCaps, _coinByLevel, _classicQuality, _classicLosses,
                      _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
             box.CheckedChanged += (_, _) => Edited();
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _joinMode.SelectedIndexChanged += (_, _) => Edited();
+        _upkeep.SelectedIndexChanged += (_, _) => Edited();
+        _craftPace.ValueChanged += (_, _) => Edited();
         _share.ValueChanged += (_, _) => Edited();
         _chatRate.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
@@ -298,6 +328,13 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BotRaidInvites = _botRaidInvites.Checked,
         PlayerLootWeight = (int)_lootWeight.Value,
         JoinMode = SocialExpansionSettings.JoinModes[Math.Max(0, _joinMode.SelectedIndex)],
+        CraftingEraStart = _craftEraStart.Checked,
+        CraftingSecondaryCaps = _craftSecondaryCaps.Checked,
+        CraftingPace = (double)_craftPace.Value,
+        PlayerUpkeep = SocialExpansionSettings.UpkeepModes[Math.Max(0, _upkeep.SelectedIndex)],
+        PlayerCoinByLevel = _coinByLevel.Checked,
+        CraftingClassicQuality = _classicQuality.Checked,
+        CraftingClassicLosses = _classicLosses.Checked,
     };
 
     private void SetValues(SocialExpansionSettings settings)
@@ -318,6 +355,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _botGroupInvites.Checked = settings.BotGroupInvites;
         _botRaidInvites.Checked = settings.BotRaidInvites;
         _lootWeight.Value = Math.Clamp(settings.PlayerLootWeight, SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight);
+        _craftEraStart.Checked = settings.CraftingEraStart;
+        _craftSecondaryCaps.Checked = settings.CraftingSecondaryCaps;
+        _craftPace.Value = (decimal)Math.Clamp(double.IsNaN(settings.CraftingPace) ? SocialExpansionSettings.DefaultCraftingPace : Math.Round(settings.CraftingPace),
+            SocialExpansionSettings.MinCraftingPace, SocialExpansionSettings.MaxCraftingPace);
+        _upkeep.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.UpkeepModes, settings.PlayerUpkeep));
+        _coinByLevel.Checked = settings.PlayerCoinByLevel;
+        _classicQuality.Checked = settings.CraftingClassicQuality;
+        _classicLosses.Checked = settings.CraftingClassicLosses;
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
         _debates.Checked = settings.Debates;

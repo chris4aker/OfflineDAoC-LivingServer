@@ -73,6 +73,26 @@ public sealed record SocialExpansionSettings
     /// <summary>A forming raid's leader may invite you at level 50 (bot_raid_invite_player, Living Server 1.2). On by default.</summary>
     public bool BotRaidInvites { get; init; } = true;
 
+    // ---- Crafting 2.0, the player's side (docs/CRAFTING.md; CraftingEconomyProperties on the server) ----
+    /// <summary>A new character joins a crafting order at a Master instead of starting with Basic Crafting (crafting_era_start). On by default.</summary>
+    public bool CraftingEraStart { get; init; } = true;
+    /// <summary>Another order's craft stops at 75% or 40% of the primary (crafting_secondary_caps). Off by default.</summary>
+    public bool CraftingSecondaryCaps { get; init; }
+    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate, True165's key).</summary>
+    public double CraftingPace { get; init; } = DefaultCraftingPace;
+    /// <summary>The smith's repairs: classic, light (the default) or free (player_upkeep).</summary>
+    public string PlayerUpkeep { get; init; } = "light";
+    /// <summary>Monster coin follows your XP rate for your level (player_coin_by_level). On by default.</summary>
+    public bool PlayerCoinByLevel { get; init; } = true;
+    /// <summary>94-99% quality with a masterpiece chance at every skill (crafting_classic_quality). Off by default.</summary>
+    public bool CraftingClassicQuality { get; init; }
+    /// <summary>Failed crafts cost materials and explosions destroy the item (crafting_classic_losses). Off by default.</summary>
+    public bool CraftingClassicLosses { get; init; }
+
+    public static readonly string[] UpkeepModes = ["classic", "light", "free"];
+
+    public const double DefaultCraftingPace = 1, MinCraftingPace = 1, MaxCraftingPace = 10;
+
     public static readonly string[] JoinModes = ["follow", "lead"];
 
     public const int DefaultPlayerLootWeight = 2, MinPlayerLootWeight = 1, MaxPlayerLootWeight = 8;
@@ -137,6 +157,13 @@ public sealed record SocialExpansionSettings
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
         ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
         ("bot_raid_invite_player", "bots", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too."),
+        ("crafting_era_start", "crafting", "Era start: a new character joins a crafting order at a Master (1.65) instead of starting with Basic Crafting. Existing crafting rows are untouched. Set in the launcher's Living Server tab."),
+        ("crafting_secondary_caps", "crafting", "Secondary crafting skills capped at 75% (the order's own secondary) and 40% (the others) of the primary, as a 2002 player reported. Set in the launcher's Living Server tab."),
+        ("crafting_skill_rate", "crafting", "Player crafting pace: skill points per gain (1 = classic). A gain still needs the normal chance, so a grey recipe gives nothing. Set in the launcher's Living Server tab."),
+        ("player_upkeep", "crafting", "Player repair upkeep: classic (smith's price and durability), light (half price, no durability loss) or free. Set in the launcher's Living Server tab."),
+        ("player_coin_by_level", "crafting", "A real player's monster coin follows the XP-by-level multiplier of their band (bots' coin unchanged). Set in the launcher's Living Server tab."),
+        ("crafting_classic_quality", "crafting", "Classic quality: 94-99% with a small masterpiece chance at every skill (off = the 1.87 rules, 96-99% and masterpieces only at 1000 or grey). Set in the launcher's Living Server tab."),
+        ("crafting_classic_losses", "crafting", "Classic losses: a failed craft costs its materials and a spellcraft explosion destroys the item. Set in the launcher's Living Server tab."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
@@ -189,6 +216,13 @@ public sealed record SocialExpansionSettings
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
         ["bot_led_group_join_mode"] = JoinMode,
         ["bot_raid_invite_player"] = Bool(BotRaidInvites),
+        ["crafting_era_start"] = Bool(CraftingEraStart),
+        ["crafting_secondary_caps"] = Bool(CraftingSecondaryCaps),
+        ["crafting_skill_rate"] = CraftingPace.ToString("0.##", CultureInfo.InvariantCulture),
+        ["player_upkeep"] = PlayerUpkeep,
+        ["player_coin_by_level"] = Bool(PlayerCoinByLevel),
+        ["crafting_classic_quality"] = Bool(CraftingClassicQuality),
+        ["crafting_classic_losses"] = Bool(CraftingClassicLosses),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -305,6 +339,42 @@ public sealed record SocialExpansionSettings
                 joinMode = "follow";
             }
         }
+        // The crafting rows (Crafting 2.0): an unreadable value leaves the server on its default (the field keeps it), so
+        // the tab shows that default, unlike the older rows whose server fields read as False or 0.
+        bool ReadCraftingBool(string key, bool fallback)
+        {
+            if (!stored.TryGetValue(key, out string? text) || string.IsNullOrWhiteSpace(text)) return fallback;
+            if (bool.TryParse(text.Trim(), out bool value)) return value;
+            Problem(key, $"{key} = \"{text}\" is not True or False, so the server keeps its default ({Bool(fallback)}).");
+            return fallback;
+        }
+        double pace = d.CraftingPace;
+        if (stored.TryGetValue("crafting_skill_rate", out string? paceText) && !string.IsNullOrWhiteSpace(paceText))
+        {
+            if (!double.TryParse(paceText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate) || double.IsNaN(rate))
+            {
+                Problem("crafting_skill_rate", $"crafting_skill_rate = \"{paceText}\" is not a number, so the server keeps its default (1).");
+                pace = DefaultCraftingPace;
+            }
+            else if (rate < MinCraftingPace || rate > MaxCraftingPace || rate != Math.Floor(rate))
+            {
+                Problem("crafting_skill_rate", $"crafting_skill_rate = \"{paceText}\" is not a whole number from {MinCraftingPace} to {MaxCraftingPace}.");
+                pace = Math.Clamp(Math.Round(rate, MidpointRounding.AwayFromZero), MinCraftingPace, MaxCraftingPace);
+            }
+            else
+                pace = rate;
+        }
+        string upkeep = d.PlayerUpkeep;
+        if (stored.TryGetValue("player_upkeep", out string? upkeepText) && !string.IsNullOrWhiteSpace(upkeepText))
+        {
+            upkeep = upkeepText.Trim().ToLowerInvariant();
+            if (!UpkeepModes.Contains(upkeep))
+            {
+                // CraftingEconomyProperties.ParseUpkeep: anything unknown is light.
+                Problem("player_upkeep", $"player_upkeep = \"{upkeepText}\" is not classic, light or free, so the server reads it as light.");
+                upkeep = "light";
+            }
+        }
         string schedule = d.ScheduleMode;
         if (stored.TryGetValue("bot_schedule_mode", out string? scheduleText) && !string.IsNullOrWhiteSpace(scheduleText))
         {
@@ -357,6 +427,13 @@ public sealed record SocialExpansionSettings
             PlayerLootWeight = lootWeight,
             JoinMode = joinMode,
             BotRaidInvites = ReadBool("bot_raid_invite_player", d.BotRaidInvites),
+            CraftingEraStart = ReadCraftingBool("crafting_era_start", d.CraftingEraStart),
+            CraftingSecondaryCaps = ReadCraftingBool("crafting_secondary_caps", d.CraftingSecondaryCaps),
+            CraftingPace = pace,
+            PlayerUpkeep = upkeep,
+            PlayerCoinByLevel = ReadCraftingBool("player_coin_by_level", d.PlayerCoinByLevel),
+            CraftingClassicQuality = ReadCraftingBool("crafting_classic_quality", d.CraftingClassicQuality),
+            CraftingClassicLosses = ReadCraftingBool("crafting_classic_losses", d.CraftingClassicLosses),
         };
     }
 
@@ -372,7 +449,8 @@ public sealed record SocialExpansionSettings
     /// <summary>
     /// "All off": the three features, every Living Server part, bot leaders' invites and both XP ranges off. The share, lowest level
     /// and each part keep their values, so turning a feature back on later restores the player's own choices. Power regeneration and
-    /// the loot share are rates, not features, and keep their values too.
+    /// the loot share are rates, not features, and keep their values too, as do the crafting rules (they are the game's rules
+    /// for your characters, not Living Server features).
     /// </summary>
     public SocialExpansionSettings AllOff() => this with
     {
@@ -397,6 +475,9 @@ public sealed record SocialExpansionSettings
             return $"Your loot share must be {MinPlayerLootWeight} to {MaxPlayerLootWeight} members.";
         if (double.IsNaN(ManaRegenModifier) || ManaRegenModifier < MinManaRegenModifier || ManaRegenModifier > MaxManaRegenModifier)
             return $"The power regeneration rate must be {MinManaRegenModifier.ToString(CultureInfo.InvariantCulture)} to {MaxManaRegenModifier.ToString(CultureInfo.InvariantCulture)}.";
+        if (double.IsNaN(CraftingPace) || CraftingPace < MinCraftingPace || CraftingPace > MaxCraftingPace || CraftingPace != Math.Floor(CraftingPace))
+            return $"The crafting pace must be a whole number of points from {MinCraftingPace} to {MaxCraftingPace}.";
+        if (!UpkeepModes.Contains(PlayerUpkeep)) return "Repair upkeep must be classic, light or free.";
         return XpError("Your XP by level", PlayerXpByLevel) ?? XpError("Bot XP by level", BotXpByLevel);
     }
 

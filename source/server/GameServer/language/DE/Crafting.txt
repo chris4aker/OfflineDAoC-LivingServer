@@ -96,7 +96,6 @@ CraftersTitle.Senior:					Innungs-{0}
 CraftersTitle.Master:					{0}-Meister
 CraftersTitle.Grandmaster:				{0}-Großmeister
 CraftersTitle.Legendary:				Legendärer {0}-Meister
-CraftersTitle.LegendaryGrandmaster:			Legendärer {0}-Großmeister
 
 # /CraftingMaster
 TailorsMaster.AcceptedByOrderName:			Schneider

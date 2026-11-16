@@ -25,8 +25,9 @@ namespace DOL.GS.PlayerTitles
 		/// <returns>The title value.</returns>
 		public override string GetValue(GamePlayer source, GamePlayer player)
 		{
+			// From Baptiste Marie (bm01), upstream OpenDAoC ad789ee4d, GPL: no order means no crafting title (was "Basic Crafting").
 			if (player.CraftingPrimarySkill == eCraftingSkill.NoCrafting || !player.CraftingSkills.TryGetValue(player.CraftingPrimarySkill, out int craftingLevel))
-				return string.Format(LanguageMgr.TryTranslateOrDefault(source, "!BasicCrafting!", "Crafting.Name.BasicCrafting"));
+				return string.Empty;
 
 			AbstractCraftingSkill craftingSkill = CraftingMgr.getSkillbyEnum(player.CraftingPrimarySkill);
 			return craftingSkill is AbstractProfession profession ? profession.GetTitle(source, craftingLevel) : craftingSkill.Name;
@@ -39,7 +40,8 @@ namespace DOL.GS.PlayerTitles
 		/// <returns>true if the player is suitable for this title.</returns>
 		public override bool IsSuitable(GamePlayer player)
 		{
-			if (player.CraftingPrimarySkill != eCraftingSkill.NoCrafting)
+			// Crafting 2.0 (WP3): Basic Crafting has no title any more (above), so it is not offered as an empty one.
+			if (player.CraftingPrimarySkill != eCraftingSkill.NoCrafting && player.CraftingPrimarySkill != eCraftingSkill.BasicCrafting)
 			{
 				return true;
 			}

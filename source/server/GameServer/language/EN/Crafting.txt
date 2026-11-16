@@ -28,7 +28,6 @@ CraftersTitle.Senior:						Senior {0}
 CraftersTitle.Master:						Master {0}
 CraftersTitle.Grandmaster:					Grandmaster {0}
 CraftersTitle.Legendary:					Legendary {0}
-CraftersTitle.LegendaryGrandmaster:			Legendary Grandmaster {0}
 
 ## Crafting Professions
 CraftersProfession.Alchemist:				Alchemist

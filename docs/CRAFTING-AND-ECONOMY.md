@@ -472,6 +472,9 @@ only its own row. "Tests only" means automated tests; nothing counts as working 
 | WP2 Economy ledger | Built on `craft/wp2-ledger`, into `integration/1.2`. Instrumentation only (no amount changes): hourly `ECON_SUPPLY`/`ECON_FLOWS` per realm, one `offline_economy_ledger` row per realm and hour, residual = Δsupply − Σflows ([ECONOMY-LEDGER.md](ECONOMY-LEDGER.md)). True165's money ledger ported. Tests only | Not yet: the first owner's-PC log with `ECON_SUPPLY` lines |
 | WP3 Player side (M1) | Not started | — |
 | WP4 Bot crafters (M2) | Built on `craft/wp4-bot-crafters`, into `integration/1.2`. Off by default (`bot_crafters`), and idle until WP1 registers its recipe catalog. Crafter-type gamebots join an order (realm weights), buy materials, craft at real stations by `CraftRules`, up to 3 sessions of 10 pieces a trip, gain at the bot pace, list the best of a session (enchanted by the realm's spellcrafter and alchemist bots); stored types (7% for new bots); station hangouts; titles, the Legendary first, true /trade adverts. Tests only | Not yet: needs WP1 and `bot_crafters` on |
+| WP2 Economy ledger | Not started | — |
+| WP3 Player side (M1) | Built on `craft/wp3-player`, into `integration/1.2`: era start (new crafting records only; existing ones keep skills and order), secondary caps, smith upkeep, coin by level band, the two title ports, the launcher's Crafting card, [CRAFTING.md](CRAFTING.md). Found that 56 of M0's 57 "decoration" masters work through their guild title (`use_npcguildscripts`), so every order has a master in both capitals of each realm. Tests only | Nothing yet |
+| WP4 Bot crafters (M2) | Not started | — |
 | WP5 Market | Not started | — |
 | WP6 Demand (M3) | Not started | — |
 | WP7 Sinks (M5) | Not started | — |

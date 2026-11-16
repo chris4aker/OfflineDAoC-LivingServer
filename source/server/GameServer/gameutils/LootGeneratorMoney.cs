@@ -44,6 +44,9 @@ namespace DOL.GS
 
 			long moneyCount = minLoot + Util.Random(minLoot >> 1);
 			moneyCount = (long)((double)moneyCount * ServerProperties.Properties.MONEY_DROP);
+			// Crafting 2.0 (WP3), player_coin_by_level: a real player's kill pays coin at their XP rate for their level,
+			// so a level is worth the classic coin at 10x XP. Gamebots' coin is unchanged.
+			moneyCount = DOL.GS.Crafting.PlayerCraftingRules.CoinForKiller(moneyCount, killer);
 
 			DbItemTemplate money = new DbItemTemplate();
 			money.Model = 488;
