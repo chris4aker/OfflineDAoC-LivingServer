@@ -955,6 +955,83 @@ holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm in
   Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
   navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
+**Battleground storms go with the whole realm and clear the gate first** (tests only; not yet seen on the owner's PC. Owner,
+2026-11-16: the bots should "successfully coordinate BG-appropriate attacks and defense, and ... the keep changes hands".
+Owner's PC, builds `4d48f42` (05:39-07:56) and `c3cd93c` (07:59-08:25), Thidranki and Murdaigean: 111 attempts, the lord
+never below 96%, no battleground keep changed hands; frontier keeps changed hands three times.)
+
+- **What the logs showed:**
+  - **The storms were half the realm.** The 107 `BG_RALLY_STORM`s of `4d48f42` went with 8-17 (median 10) of 11-26 inside.
+    The rally waited for the strength model capped at a wave (60% of the realm), then went with half of that after 3
+    minutes or at once beside the other realm's storm. `BG_RALLY_STATUS` never saw more than 72% of a realm gathered.
+  - **They died before or at the gate.** Of the 718 stormers that fell: outside 315, gate 215, inside 174, lordFloor 14.
+    Killers: the keep's guards 471, the other attacking realm 132, the holder's bots 88, the lord 15. The fallen's median
+    distance to the gate was 797-1,825 (quartiles).
+  - **One against one, strung out.** All 140 stormer `fight` samples were one bot with a GuardFighter (128) or
+    GuardCommander (11) on it, 62-75 away, 218-798 from the gate. Not one was casting. The `gate` (march) samples of seconds
+    0-49 stood 1,514-2,697 from the gate. The stormers reached the gate's guards one at a time, ran past the live ones and
+    fought each guard alone.
+  - **Healers did not heal the stormers.** An ungrouped gamebot healer (as stormers are) healed only itself: the realm-mate
+    heal is for the frontier objective only. And the storm's turn returned before the brain's own heal check.
+  - **The doors were already down:** Thidranki's outer gate 252000301 (the keep door 252000302 stands open), and both of
+    Dun Murdaigean's doors. There was no door left to batter. The guards stood at 14-19 of 19 (Thidranki) and 17-27 of 27
+    (Murdaigean) in every `BG_KEEP_STATUS`. Guards respawn after 15 minutes, give or take 10 (`guard_respawn`,
+    `guard_respawn_variance`, unchanged in the owner's world), so a cleared guard stays dead 5-25 minutes.
+  - **Every attempt ended within 1-3 minutes.** On `4d48f42`, 105 of 106 ended "half the stormers fell", after a median 1.2
+    minutes (at most 3.2). All 5 of `c3cd93c`: `passedGate` 0-2, `climbs=-`, `footPeak=0`. #284's climb was never reached.
+  - **Defence:** a third of the holder's bots hold the walls and the rest roam around the keep (`near=` 1-9 Albion). Those
+    roamers killed 88 of the stormers.
+- **Now:**
+  - **The full muster.** A rally waits for 85% of its realm's gamebots in the battleground. After 4 minutes it goes with 80%
+    of that, and after 7 minutes with 60%, never fewer than 8. The strength model is still logged (`modelled=`) but no longer
+    lowers the muster.
+  - **Joint storms stay (#280).** Joining the other realm's storm, or going with a realm that waits for this one, now takes
+    80% of the muster, not half. A ready rally holds up to 90 s for the other realm (was 45 s).
+  - **The march goes as a pack.** In the attempt's first 75 s, a stormer more than 450 ahead of its pack's median distance
+    to the gate waits for the pack. This applies only outside the gate zone and never while it fights.
+  - **The gate is cleared first.** Within 1,600 of the breach, before passing it, the whole storm fights one called gate
+    guard at a time. A gate guard is a keep guard posted within 1,100 of the gate on its floor, never the lord and never a
+    guard on the wall. The called guard is the one on a stormer nearest the gate, otherwise the nearest the gate; when it
+    falls, the next is called.
+    - Melee bots go at the called guard.
+    - Casters and archers strike it from up to 1,350, closing in when farther.
+    - Healers stand back within 1,200 and heal.
+    - The storm goes in once the gate guards are down, or when none has fallen for 45 s (stalled; then in as before).
+    - Hit-back on the way is unchanged.
+  - **Storming healers heal the stormers.** They heal fellow stormers of their realm within 2,000 that are below 85%, with
+    the same line-of-sight check as the frontier heal, and the storm turn runs the heal check first. Companions and
+    players' groups are unaffected.
+  - **A storm that kills guards goes on.** "Half the stormers fell" ends an attempt only 45 s after the last keep guard
+    fell, and a guard kill counts as progress against "no progress on the lord" (3 minutes). A wipe still ends it.
+- **Logs:**
+  - `BG_RALLY_STORM` adds `share=` (going as a share of inside) and `rule=` (`full`, `joined`, `patient`, `lastcall`).
+  - `BG_RALLY_STATUS` adds `musterNeeded=`, `share=`, `gateGuards=` and `clear=`.
+  - `BG_GATE_CLEAR` (new) is written once per attempt when the clear ends. It gives `result=` (`cleared`, `stalled`,
+    `none`), `second=`, `clearSeconds=`, `gateGuardsAtStart=`, `gateGuardsKilled=`, `gateGuardsLeft=`, `guardsKilled=`,
+    `atGate=` and `clearPeak=`.
+  - `BG_RALLY_REGROUP` adds:
+    - strength: `going=`, `insideAtStorm=`, `goneShare=`
+    - guards and the clear: `guardsKilled=`, `gateGuards=start->end`, `gateGuardsKilled=`, `clear=`, `clearSeconds=`,
+      `clearPeak=`
+    - the march and heals: `marchHoldTurns=`, `healPicks=`
+    - `guardKillers=` (the stormers' guard killers by kind, to say whether wall archers or the gate's fighters kill them)
+  - Storm traces add the phases `march-hold`, `clear`, `clear-approach` and `clear-heal`, and the fields `calledTarget=` and
+    `role=`.
+- **Unchanged:**
+  - the keep, its level, guards, lord, doors and respawns
+  - the holder's defence
+  - the raid code and the navmeshes
+  - the rally spots, the foot and the climb (#284)
+  - reinforcements, leases and the waves while a gate stands
+  - companion bots and real players
+  - no truce, nobody made unhittable, nobody teleported
+- **Not verified here:**
+  - whether the full muster gathers in time
+  - whether the gate guards come out to the clear or stay at their posts
+  - whether wall archers (aggro 2,100) kill the pack at the gate (`guardKillers=` will say)
+  - whether casters cast once given the guard (no fight sample on `4d48f42` showed a cast)
+  - whether the keep changes hands
+
 **Battleground storms: the climb from the tower's foot goes** (tests only; owner's PC, build `4d48f42` = the change below,
 Thidranki and Murdaigean 2026-11-16 05:39-06:27. 25 storms; the lord stayed at 100% at both keeps; nobody reached her floor.)
 

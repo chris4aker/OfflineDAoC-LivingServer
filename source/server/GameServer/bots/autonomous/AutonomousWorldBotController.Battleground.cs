@@ -106,6 +106,9 @@ namespace DOL.GS
                 _battlegroundRallyHold = rally.Hold ? rally.Point : null;
                 _battlegroundStorming = rally.Step == AutonomousBattlegroundKeepRally.Step.Storm;
                 _battlegroundStormLord = _battlegroundStorming ? lord : null;
+                // A storming healer heals the stormers before anything else (BotBrain's battleground heal): the controller's
+                // storm turn returned before the brain's own heal check, and ungrouped it healed only itself.
+                if (_battlegroundStorming && AutonomousGroupSupply.IsHealer(bot) && brain.CheckHeals()) return true;
                 bool nearLord = lordHere && (bot.IsWithinRadius(lord, BattlegroundLordReach) || rally.Step != AutonomousBattlegroundKeepRally.Step.None);
                 // Away from the lord (a new life after a release, or chased out) the bot comes in through a gate again. The
                 // old reset sat inside the near-lord branch where it could never be true, so a bot that once passed the gate
@@ -139,6 +142,11 @@ namespace DOL.GS
                 // (AutonomousBattlegroundKeepRally.StrikesLordFirst; owner's PC, build 95af6fd: on her floor everyone took the
                 // guards hitting a realm-mate, and Lady Thidranki never went below 97%).
                 bool inLordFight = _battlegroundStorming && AutonomousBattlegroundKeepRally.InLordFight(bot, lord);
+                // The storm marches on the gate as a pack and clears the gate's guards together before it pours in (owner,
+                // 2026-11-16). Build 4d48f42: every one of the 140 stormer fight samples was one bot against a GuardFighter or
+                // GuardCommander at the gate (218-798 from it), and the march samples of seconds 0-49 stood 1,514-2,697 out.
+                if (_battlegroundStorming && lordHere && !inLordFight && RunGateClear(brain, bot, bracket, central, lord, rally) is { } cleared)
+                    return cleared;
                 if (inLordFight && LordFightTarget(bot, central, lord, target) is { } pick)
                     target = pick;
                 else if (AutonomousBattlegroundKeepRally.AssistsAgainstGuards(gatesShut, rally.Step, inLordFight) &&
@@ -334,6 +342,63 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>
+        /// The storm's march and its clear of the gate (AutonomousBattlegroundKeepRally.MarchHolds, GateClear, ClearAction): on
+        /// the march a stormer ahead of its pack waits for it; at the gate (ClearZoneRadius) every stormer fights the one gate
+        /// guard the storm has called, melee at it, casters and archers from range, healers standing back to heal; once the
+        /// gate's guards are down (or the clear stalls) the storm goes in as before. Null when none of it applies (the storm's
+        /// own steps then run); otherwise ExecuteBattleground's return value.
+        /// </summary>
+        private bool? RunGateClear(BotBrain brain, GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep central,
+            GameKeepGuard lord, AutonomousBattlegroundKeepRally.Order rally)
+        {
+            if (rally.Gate is not { } gatePoint || _battlegroundGatePassed) return null;
+            float toGate = Vector2.Distance(new(bot.X, bot.Y), new(gatePoint.X, gatePoint.Y));
+            if (!AutonomousBattlegroundKeepRally.InClearZone(toGate, _battlegroundGatePassed))
+            {
+                if (!AutonomousBattlegroundKeepRally.MarchHolds(toGate, rally.PackToGate, bot.InCombat || brain.HasAggro,
+                        GameLoop.GameLoopTime - rally.Attempt))
+                    return null;
+                bot.StopMovingOnPath();
+                bot.StopMoving();
+                AutonomousBattlegroundKeepRally.NoteMarchHold(bot.CurrentRegionID, bot.Realm);
+                TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "march-hold");
+                SetBattlegroundStatus(bot, bracket, "Storming the keep", $"{central.Name}: waiting for the others on the march", lord.Name);
+                return true;
+            }
+            if (!AutonomousBattlegroundKeepRally.GateClear(bot.CurrentRegionID, bot.Realm, central, out GameKeepGuard called) ||
+                !GameServer.ServerRules.IsAllowedToAttack(bot, called, true))
+                return null;
+            bool healer = AutonomousGroupSupply.IsHealer(bot);
+            bool ranged = AutonomousRvrDefense.IsRangedDefender(bot);
+            switch (AutonomousBattlegroundKeepRally.ClearAction(healer, ranged, bot.GetDistanceTo(called)))
+            {
+                case AutonomousBattlegroundKeepRally.ClearStep.Approach:
+                    if (!IssuePath(bot, new Vector3(called.X, called.Y, called.Z), retargetWhileMoving: true)) return null;
+                    TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "clear-approach");
+                    SetBattlegroundStatus(bot, bracket, "Clearing the keep gate", $"{central.Name}: closing on {called.Name}", called.Name);
+                    return true;
+                case AutonomousBattlegroundKeepRally.ClearStep.StandBack:
+                    bot.StopMovingOnPath();
+                    bot.StopMoving();
+                    TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "clear-heal");
+                    SetBattlegroundStatus(bot, bracket, "Clearing the keep gate", $"{central.Name}: healing the storm at the gate", called.Name);
+                    return true;
+                default:
+                    if (!ranged || bot.IsWithinRadius(called, (int)AutonomousBattlegroundKeepRally.ClearRangedReach))
+                    {
+                        bot.StopMovingOnPath();
+                        bot.StopMoving();
+                    }
+                    bot.TargetObject = called;
+                    brain.AddToAggroList(called, Math.Max(100, called.EffectiveLevel * 12));
+                    brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+                    TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "clear");
+                    SetBattlegroundStatus(bot, bracket, "Clearing the keep gate", $"{central.Name}: everyone on {called.Name}", called.Name);
+                    return false;
+            }
+        }
+
         /// <summary>Roam points near an enemy keep stay this far (less the 900 random spread) from its centre.</summary>
         public const float BattlegroundRoamKeepDistance = 2_500f;
 
@@ -420,7 +485,10 @@ namespace DOL.GS
                 $"hasAggro={(bot.Brain as BotBrain)?.HasAggro} attacking={bot.IsAttacking} casting={bot.IsCasting} health={bot.HealthPercent}% " +
                 // Why an order it was given does not move it (4d48f42: Rormur, Weeturnip, Oisoinnan and Ivargeildrik stood 10 s
                 // and more under fire, re-ordered every 1.5 s, path=PathFound): mesmerized or stunned, or a speed of 0 (rooted).
-                $"cc={(bot.IsMezzed ? "mez" : bot.IsStunned ? "stun" : "-")} speed={bot.MaxSpeed} ";
+                $"cc={(bot.IsMezzed ? "mez" : bot.IsStunned ? "stun" : "-")} speed={bot.MaxSpeed} " +
+                // The clear of the gate: whether the target is the guard the storm called, the bot's role in it.
+                $"calledTarget={(target is GameKeepGuard && AutonomousBattlegroundKeepRally.IsCalledGuard(bot.CurrentRegionID, bot.Realm, target.ObjectID))} " +
+                $"role={(AutonomousGroupSupply.IsHealer(bot) ? "healer" : AutonomousRvrDefense.IsRangedDefender(bot) ? "ranged" : "melee")} ";
             // pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are
             // still those of the previous order (build ea882e6: "dest" next to the bot was the staging hold, not the route).
             Log.Info($"BG_STORM_TRACE bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
@@ -603,7 +671,9 @@ namespace DOL.GS
                 lord != null && lord.IsAlive && AutonomousBattlegroundKeepRally.InLordFight(bot, lord),
                 target.TargetObject == bot, // it has this bot targeted (a caster's IsCasting drops between casts)
                 bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z),
-                IsOtherAttacker(bot, target, lord?.Realm ?? eRealm.None));
+                IsOtherAttacker(bot, target, lord?.Realm ?? eRealm.None),
+                // The gate guard the storm called is fought by everyone (AutonomousBattlegroundKeepRally.GateClear).
+                target is GameKeepGuard && AutonomousBattlegroundKeepRally.IsCalledGuard(bot.CurrentRegionID, bot.Realm, target.ObjectID));
         }
 
         /// <summary>An enemy of neither this bot's realm nor the keep holder's (the other attacking realm's bot, player or pet);
