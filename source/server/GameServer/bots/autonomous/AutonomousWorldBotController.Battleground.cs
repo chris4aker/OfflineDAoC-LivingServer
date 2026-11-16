@@ -114,6 +114,15 @@ namespace DOL.GS
                 // through the gate first too.
                 _battlegroundGatePassed = KeepsGatePassed(_battlegroundGatePassed, nearLord, _battlegroundGateKeep == central.KeepID);
                 _battlegroundGateKeep = central.KeepID;
+                // A new attempt comes in through the gate again unless the bot already stands within the walls: on 4d48f42 bots
+                // that reached the rally as it went up (or came back from a release) kept the last attempt's gatePassed=True and
+                // took the walk to the foot straight from the rally (Crandira 06:13:58, Svaetiah 06:17:56, Ivargeildrik 06:26:38).
+                if (_battlegroundStorming && rally.Attempt != _battlegroundGateAttempt)
+                {
+                    _battlegroundGateAttempt = rally.Attempt;
+                    _battlegroundGatePassed = GatePassedAtNewAttempt(_battlegroundGatePassed,
+                        AutonomousKeepGateGoals.IsWithinWalls(central, bot.X, bot.Y));
+                }
                 GameLiving target = FindRvrTarget(bot);
                 // While the gates stand the wave marches on the gate together and fights the guards that come at it,
                 // instead of each bot running at its own nearest guard (AutonomousBattlegroundWave.WaveTakesGuard).
@@ -220,7 +229,8 @@ namespace DOL.GS
                     }
                     // The wave gathers at the foot of his tower and goes up his stair together (owner's PC, build 95af6fd: they
                     // reached Lady Thidranki's floor one or two at a time, 30-60 s into the attempt, and died there;
-                    // AutonomousBattlegroundKeepRally.ClimbGoes).
+                    // AutonomousBattlegroundKeepRally.ClimbGoes). The climb waits only for the stormers inside the walls, 12 s
+                    // at most, and stays open while it works (4d48f42: it waited on everyone standing and never went).
                     if (_battlegroundStorming && _battlegroundGatePassed && rally.Foot is { } foot && HoldsAtFoot(bot, lord, foot, rally))
                     {
                         if (Vector2.Distance(new(bot.X, bot.Y), new(foot.X, foot.Y)) > FootHoldRadius ||
@@ -407,7 +417,10 @@ namespace DOL.GS
                 $"targetHeight={(target == null ? 0 : (int)(target.Z - bot.Z))} " +
                 $"targetOnMe={target?.TargetObject == bot} " +
                 $"mayFight={(target == null || target.Realm == bot.Realm ? "-" : controller.StormerMayEngage(bot, target).ToString())} " +
-                $"hasAggro={(bot.Brain as BotBrain)?.HasAggro} attacking={bot.IsAttacking} casting={bot.IsCasting} health={bot.HealthPercent}% ";
+                $"hasAggro={(bot.Brain as BotBrain)?.HasAggro} attacking={bot.IsAttacking} casting={bot.IsCasting} health={bot.HealthPercent}% " +
+                // Why an order it was given does not move it (4d48f42: Rormur, Weeturnip, Oisoinnan and Ivargeildrik stood 10 s
+                // and more under fire, re-ordered every 1.5 s, path=PathFound): mesmerized or stunned, or a speed of 0 (rooted).
+                $"cc={(bot.IsMezzed ? "mez" : bot.IsStunned ? "stun" : "-")} speed={bot.MaxSpeed} ";
             // pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are
             // still those of the previous order (build ea882e6: "dest" next to the bot was the staging hold, not the route).
             Log.Info($"BG_STORM_TRACE bot={bot.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
@@ -589,8 +602,17 @@ namespace DOL.GS
             return AutonomousBattlegroundKeepRally.StormerMayEngage(target is GuardLord,
                 lord != null && lord.IsAlive && AutonomousBattlegroundKeepRally.InLordFight(bot, lord),
                 target.TargetObject == bot, // it has this bot targeted (a caster's IsCasting drops between casts)
-                bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z));
+                bot.GetDistanceTo(target), Math.Abs(target.Z - bot.Z),
+                IsOtherAttacker(bot, target, lord?.Realm ?? eRealm.None));
         }
+
+        /// <summary>An enemy of neither this bot's realm nor the keep holder's (the other attacking realm's bot, player or pet);
+        /// never a keep guard or door. Pure.</summary>
+        public static bool IsOtherAttacker(eRealm mine, eRealm target, eRealm holder, bool keepPiece) =>
+            !keepPiece && target != mine && target != holder && target != eRealm.None;
+
+        private static bool IsOtherAttacker(GameBot bot, GameLiving target, eRealm holder) =>
+            IsOtherAttacker(bot.Realm, target.Realm, holder, target is GameKeepGuard or GameKeepDoor);
 
         /// <summary>
         /// A stormer in its fight turn with nothing it may fight (only its ten-second combat timer, or the hits of a wall
@@ -747,6 +769,12 @@ namespace DOL.GS
 
         /// <summary>A stormer keeps "through the gate" only while it stays by the same keep's lord. Pure.</summary>
         public static bool KeepsGatePassed(bool passed, bool nearLord, bool sameKeep) => passed && nearLord && sameKeep;
+
+        // The attempt (its start) this stormer's gatePassed belongs to.
+        private long _battlegroundGateAttempt;
+
+        /// <summary>At the start of an attempt a stormer keeps "through the gate" only when it stands within the keep's walls. Pure.</summary>
+        public static bool GatePassedAtNewAttempt(bool passed, bool withinWalls) => passed && withinWalls;
 
         private static string Holder(AbstractGameKeep keep) =>
             keep.Realm == eRealm.None ? "its neutral guards" : GlobalConstants.RealmToName(keep.Realm);

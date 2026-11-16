@@ -611,7 +611,8 @@ namespace DOL.UnitTests
                 Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, NoGuards), Is.EqualTo(3), "where the stair starts, 864 under her");
                 Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, GuardAtTheStair), Is.EqualTo(1),
                     "a guard at the stair: back along the walk to the first point clear of him (the keep door is 235 from him)");
-                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, GuardsEverywhere), Is.EqualTo(3), "nothing clear: the first choice");
+                Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki, GuardsEverywhere), Is.EqualTo(-1),
+                    "nothing clear: no foot, the stormers walk straight at her (4d48f42: Dun Murdaigean's foot stood 188 from a post)");
                 Assert.That(Rally.TowerFootIndex(TowerWalk, LadyThidranki + new Vector3(0, 0, -400), NoGuards), Is.EqualTo(-1),
                     "a lord less than 600 up: no foot, the stormers walk straight at him");
                 Assert.That(Rally.TowerFootIndex(new[] { TowerWalk[0], TowerWalk[1] }, LadyThidranki, NoGuards), Is.EqualTo(0),
@@ -624,8 +625,8 @@ namespace DOL.UnitTests
         [TestCase(5, 0, 0L, true)]          // everyone still standing is there
         [TestCase(14, 6, 0L, true)]         // 70%
         [TestCase(13, 7, 0L, false)]        // 65%: wait for the rest
-        [TestCase(13, 7, 25_000L, true)]    // ...but not longer than 25 s
-        [TestCase(1, 19, 24_999L, false)]
+        [TestCase(13, 7, 12_000L, true)]    // ...but not longer than 12 s after the first reached the foot
+        [TestCase(1, 19, 11_999L, false)]
         public void TheClimbGoesWhenTheWaveIsAtTheFoot(int atFoot, int coming, long waited, bool goes) =>
             Assert.That(Rally.ClimbGoes(atFoot, coming, waited), Is.EqualTo(goes));
 
@@ -672,5 +673,119 @@ namespace DOL.UnitTests
                     Is.EqualTo("floorArrivals=0 arrivalSeconds=- arrivalSpread=-1 climbs=- footPeak=0"));
             });
         }
+
+        // Owner's PC, build 4d48f42 (2026-11-16 05:39-06:27): 25 storms at Thidranki and Murdaigean, the lord at 100% at both all
+        // run, floorArrivals=0 and climbs=- in every BG_RALLY_REGROUP, footPeak 0-2, and not one BG_STORM_TRACE phase=lord sample
+        // (25 on 95af6fd): nobody was ever sent up her stair. The foot of Lady Thidranki's tower (BG_TOWER_FOOT foot=32278,38202,3750,
+        // belowLord=842) was reached (foot-hold: Fergelan 05:57:51 at 32302,38202, Oisoinnan 06:22:56 at 32321,38203) and held.
+
+        [Test]
+        public void DunMurdaigeansWalkHasNoFootClearOfTheGuards()
+        {
+            // BG_TOWER_FOOT battleground=Murdaigean footIndex=34 foot=34214,38752,4314 belowLord=623 guardClear=188: the step back
+            // along the walk found no point 600 from every guard's post, and the first choice stood beside one.
+            Vector3 lordMurdaigean = new(33901, 38869, 4937);
+            Vector3[] walk =
+            {
+                new(32189, 37228, 3731), new(32337, 37404, 3724), new(32768, 37990, 3722), new(33382, 38912, 3722),
+                new(33453, 39110, 3738), new(33507, 39200, 4138), new(33901, 39213, 4173), new(34186, 39098, 4237),
+                new(34250, 38864, 4288), new(34214, 38752, 4314), new(34131, 38656, 4339), new(33898, 38592, 4387), lordMurdaigean,
+            };
+            float PostsAllAlong(Vector3 _) => 188;
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.TowerFootIndex(walk, lordMurdaigean, PostsAllAlong), Is.EqualTo(-1),
+                    "no foot: the stormers walk straight at the lord, as before #280");
+                Assert.That(Rally.TowerFootIndex(walk, lordMurdaigean, _ => 634), Is.EqualTo(9), "a clear walk keeps its foot");
+            });
+        }
+
+        [Test]
+        public void TheClimbWaitsOnlyForTheStormersInsideTheWalls()
+        {
+            Assert.Multiple(() =>
+            {
+                // Oisoinnan, 06:22:56 (attempt 8/8/25s/1): the one stormer through the gate, at the foot. Every standing stormer
+                // counted as coming on 4d48f42 (1 of 8: 12%) and he stood; now nobody else is inside, so he goes.
+                Assert.That(Rally.ClimbGoes(1, 0, 0), Is.True, "nobody else inside: up");
+                // Fergelan, 05:57:51 (attempt 9/7/32s/3): one at the foot, two more through the gate.
+                Assert.That(Rally.ClimbGoes(1, 2, 5_000), Is.False, "two more inside: wait for them...");
+                Assert.That(Rally.ClimbGoes(1, 2, Rally.FootWaitMilliseconds), Is.True, "...for 12 s at most");
+                // Gantend, 06:10:02 (attempt 12/7/40s/3): two at the foot (footPeak=2), one more inside.
+                Assert.That(Rally.ClimbGoes(2, 1, 0), Is.False, "67%");
+                Assert.That(Rally.ClimbGoes(3, 1, 0), Is.True, "75%: the wave is there");
+                Assert.That(Rally.ThroughTheGate(1_900, 2_037), Is.True, "nearer her than the outer gate is");
+                Assert.That(Rally.ThroughTheGate(2_215, 2_037), Is.False, "standing in the outer gate: still outside");
+            });
+        }
+
+        [Test]
+        public void TheFootClockKeepsRunningWhenItsFirstWaiterFalls()
+        {
+            // 4d48f42: the foot's clock went back to 0 at every count that found it empty, and its one or two waiters under the
+            // keep's guards (634 from the nearest post) fell or were pulled off it before 25 s: no climb in 25 attempts.
+            var climb = new Rally.FootClimb(0, 0, false);
+            climb = Rally.NextClimb(climb, atFoot: 1, comingInside: 3, upTheTower: 0, now: 30_000, out bool went);
+            Assert.That(went, Is.False, "one of four inside: wait");
+            climb = Rally.NextClimb(climb, 0, 3, 0, 35_000, out went);
+            Assert.That((went, climb.FootFirstAt), Is.EqualTo((false, 30_000L)), "the waiter fell: the clock goes on");
+            climb = Rally.NextClimb(climb, 1, 3, 0, 40_000, out went);
+            Assert.That(went, Is.False);
+            climb = Rally.NextClimb(climb, 1, 3, 0, 42_000, out went);
+            Assert.That((went, climb.IsOpen(42_000), climb.Climbed), Is.EqualTo((true, true, true)),
+                "12 s after the first reached the foot: up, whoever is there");
+            Assert.That(climb.FootFirstAt, Is.Zero, "the next climb starts its own clock");
+        }
+
+        [Test]
+        public void AClimbThatIsWorkingStaysOpenForTheOnesArriving()
+        {
+            // 4d48f42 shut the foot 10 s after a climb went, and stormers arriving later stood below the ones fighting up her
+            // tower. Now it stays open while anyone of it is up the tower, and shuts once they are gone.
+            var climb = Rally.NextClimb(default, atFoot: 3, comingInside: 0, upTheTower: 0, now: 40_000, out bool went);
+            Assert.That(went, Is.True);
+            climb = Rally.NextClimb(climb, 0, 2, upTheTower: 3, now: 60_000, out went);
+            Assert.That((went, climb.IsOpen(60_000)), Is.EqualTo((false, true)), "20 s on, three up her stair: open");
+            climb = Rally.NextClimb(climb, 0, 2, upTheTower: 1, now: 85_000, out went);
+            Assert.That(climb.IsOpen(85_000), Is.True, "45 s on, one still up: open");
+            climb = Rally.NextClimb(climb, 1, 1, upTheTower: 0, now: 100_000, out went);
+            Assert.That((went, climb.IsOpen(100_000)), Is.EqualTo((false, false)), "all up there fell: the foot gathers again");
+            Assert.That(climb.FootFirstAt, Is.EqualTo(100_000L));
+        }
+
+        [Test]
+        public void AClimbThatNeverWentKeepsNoFootOpen() =>
+            Assert.That(Rally.NextClimb(default, 0, 5, upTheTower: 2, now: 10_000, out bool went).IsOpen(10_000) || went, Is.False,
+                "up the tower without a climb (resurrected there): the foot stays shut for the rest");
+
+        [TestCase(false, false, false)] // 4d48f42: bots at the rally as it went up kept gatePassed=True from the last attempt
+        [TestCase(true, false, false)]  // Crandira 06:13:58, Ivargeildrik 06:26:38: at the rally, to-foot at second 0
+        [TestCase(true, true, true)]    // within the walls (resurrected inside, or still in): no walk back out to the gate
+        public void ANewAttemptComesInThroughTheGateAgain(bool passed, bool withinWalls, bool keeps) =>
+            Assert.That(AutonomousWorldBotController.GatePassedAtNewAttempt(passed, withinWalls), Is.EqualTo(keeps));
+
+        [TestCase(false, false, true)]  // a guard or the holder's bot in the lord's fight: as before
+        [TestCase(true, false, false)]  // the other attacking realm, not on this bot: the keep first
+        [TestCase(true, true, true)]    // ...on this bot: it is fought (the realms stay enemies)
+        public void BesideTheLordTheOtherAttackingRealmIsFoughtOnlyWhenItIsOnTheBot(bool otherAttacker, bool onThisBot, bool engages) =>
+            Assert.That(Rally.StormerMayEngage(false, true, onThisBot, 400, 0, otherAttacker), Is.EqualTo(engages));
+
+        [Test]
+        public void OnTheWayUpTheOtherAttackingRealmIsTreatedAsBefore()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Rally.StormerMayEngage(false, false, true, 300, 0, otherAttacker: true), Is.True, "on it, near: hit back");
+                Assert.That(Rally.StormerMayEngage(false, false, false, 300, 0, otherAttacker: true), Is.False, "passing: run past");
+            });
+        }
+
+        [TestCase(eRealm.Midgard, eRealm.Hibernia, eRealm.Albion, false, true)]  // Hibernia's bot, to a Midgard stormer at Albion's keep
+        [TestCase(eRealm.Midgard, eRealm.Albion, eRealm.Albion, false, false)]   // the holder's
+        [TestCase(eRealm.Midgard, eRealm.Hibernia, eRealm.Albion, true, false)]  // a guard or door is the keep's
+        [TestCase(eRealm.Midgard, eRealm.None, eRealm.Albion, false, false)]     // a monster
+        [TestCase(eRealm.Midgard, eRealm.Hibernia, eRealm.None, false, true)]    // a neutral keep: both others attack
+        public void TheOtherAttackingRealm(eRealm mine, eRealm target, eRealm holder, bool keepPiece, bool other) =>
+            Assert.That(AutonomousWorldBotController.IsOtherAttacker(mine, target, holder, keepPiece), Is.EqualTo(other));
     }
 }
