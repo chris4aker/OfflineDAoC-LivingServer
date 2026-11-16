@@ -75,6 +75,14 @@ namespace DOL.GS.CraftingEconomy
         [ServerProperty("bots", "bot_crafter_exchange_listings", "Realm Exchange posts a crafter gamebot may hold for its own work (other bots hold 3). Read from WP5 on.", 6)]
         public static int BOT_CRAFTER_EXCHANGE_LISTINGS = 6;
 
+        // ---- Commerce and social (WP8; amended into WP0's settings by WP8) ----
+
+        [ServerProperty("bots", "bot_crafter_commerce", "Real players trade with crafter gamebots: ask by /tell or /trade what they make and sell, get a quote from their real skill and stock, haggle, commission a piece through the craft-order board, buy stock in a trade window. Needs bot_crafters. Read from WP8 on.", false)]
+        public static bool BOT_CRAFTER_COMMERCE;
+
+        [ServerProperty("bots", "bot_crafting_social", "Crafting in bot life: a price-war storyline between two real crafter gamebots of one order, guild crafters who make for guildmates at material cost (the bank pays their fee), no crafting-haste guild buff without a player crafter. Needs bot_crafters. Read from WP8 on.", false)]
+        public static bool BOT_CRAFTING_SOCIAL;
+
         // ---- Launcher and instrumentation ----
 
         [ServerProperty("bots", "launcher_level50_kit", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world). Read by the launcher from WP9 on.", true)]

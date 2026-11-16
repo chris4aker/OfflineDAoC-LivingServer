@@ -214,14 +214,15 @@ namespace DOL.UnitTests
                 .Select(field => field.GetCustomAttribute<ServerPropertyAttribute>())
                 .Where(attribute => attribute != null)
                 .ToDictionary(attribute => attribute.Key, attribute => attribute.DefaultValue);
-            foreach (string key in new[] { "bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply" })
+            foreach (string key in new[] { "bot_crafters", "bot_craft_orders", "bot_upkeep", "bot_luxury_spending", "bot_siege_supply",
+                         "bot_crafter_commerce", "bot_crafting_social" })
                 Assert.That(defaults[key], Is.EqualTo(false), key);
             Assert.That(defaults["exchange_tax_percent"], Is.EqualTo(0), "owner 2026-11-15: 0 until the ledger shows a need");
             Assert.That(defaults["bot_crafter_share_percent"], Is.EqualTo(7));
             Assert.That(defaults["crafting_skill_rate"], Is.EqualTo(1.0), "classic player pace");
             Assert.That(defaults["player_upkeep"], Is.EqualTo("light"));
             Assert.That(defaults["launcher_level50_kit"], Is.EqualTo(true), "today's launcher behaviour");
-            Assert.That(defaults, Has.Count.EqualTo(20));
+            Assert.That(defaults, Has.Count.EqualTo(22), "WP0's 20 and WP8's two switches");
 
             // The static fields start at their attribute defaults, so nothing differs before the database is read.
             foreach (FieldInfo field in typeof(CraftingEconomyProperties).GetFields(BindingFlags.Public | BindingFlags.Static))

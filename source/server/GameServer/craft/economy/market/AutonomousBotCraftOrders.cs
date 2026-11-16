@@ -89,6 +89,30 @@ public static class AutonomousBotCraftOrders
     public static Func<eRealm, IEnumerable<GameBot>> CraftersOf = DefaultCraftersOf;
     /// <summary>A live gamebot's purse (AutonomousBotEconomy.GetMoney; tests replace it).</summary>
     public static Func<long, long> CoinOf = AutonomousBotEconomy.GetMoney;
+
+    /// <summary>
+    /// WP8's seam for a real player's order (<see cref="CraftOrderSource.Player"/>): the hand-over at the crafter's break
+    /// (true when the piece reached the player and the order is closed), and the player's escrow when an order ends
+    /// without a delivery (refund, outcome). The defaults keep a player's order on the board until it lapses, unpaid.
+    /// </summary>
+    public static Func<GameBot, CraftOrder, DbInventoryItem, bool> DeliverToPlayer = (_, _, _) => false;
+    public static Action<CraftOrder, bool, string> PlayerOrderClosed = (_, _, _) => { };
+
+    /// <summary>WP8: a player's open order (nothing made yet) is withdrawn; a made one stays to be handed over or to lapse.</summary>
+    public static bool TryCancelOpen(string orderId, string reason)
+    {
+        if (!Orders.TryGet(orderId, out OfflineBotCraftOrderRecord row) || row.State != OpenState || !Claimed.TryAdd(orderId, 0))
+            return false;
+        try
+        {
+            Close(ToOrder(row), refund: true, reason, "cancelled");
+            return true;
+        }
+        finally
+        {
+            Claimed.TryRemove(orderId, out _);
+        }
+    }
     /// <summary>Whether a recipe's materials are on sale to this realm (AutonomousBotCrafting.OnSale; tests replace it).</summary>
     public static Func<CraftRecipeInfo, eRealm, bool> OnSale = AutonomousBotCrafting.OnSale;
 
@@ -495,6 +519,9 @@ public static class AutonomousBotCraftOrders
         }
         if (order.Source == CraftOrderSource.Quartermaster)
             return QuartermasterCommissions.Deliver(crafter, order, piece);
+        // A real player's order (WP8): handed over in person at the crafter's break, never into an absent player's bag.
+        if (order.Source == CraftOrderSource.Player)
+            return DeliverToPlayer?.Invoke(crafter, order, piece) == true;
         GameBot buyer = FindLive(order.BuyerBotId);
         if (buyer?.Inventory == null || buyer.Realm != crafter.Realm)
             return false;
@@ -568,6 +595,9 @@ public static class AutonomousBotCraftOrders
         bool refunded = refund && escrowed && PayCoin(order.BuyerBotId, order.EscrowCopper, EconomyFlowKind.CraftOrder);
         if (order.Source == CraftOrderSource.Quartermaster)
             QuartermasterCommissions.NoteExpired(order);
+        // A real player's escrow goes back to the player (WP8; BuyerBotId is 0, so the refund above never pays it).
+        if (order.Source == CraftOrderSource.Player)
+            PlayerOrderClosed?.Invoke(order, refund, outcome);
         if (Log.IsInfoEnabled)
             Log.Info(EconomyLog.Line(EconomyLog.EconOrder, ("outcome", outcome), ("source", SourceText(order.Source)),
                 ("order", order.OrderId), ("realm", order.Realm), ("buyer", order.BuyerName), ("buyerId", order.BuyerId),
@@ -684,5 +714,7 @@ public static class AutonomousBotCraftOrders
         CraftersOf = DefaultCraftersOf;
         CoinOf = AutonomousBotEconomy.GetMoney;
         OnSale = AutonomousBotCrafting.OnSale;
+        DeliverToPlayer = (_, _, _) => false;
+        PlayerOrderClosed = (_, _, _) => { };
     }
 }

@@ -46,6 +46,8 @@ namespace DOL.GS.Tests.Rehearsal
                 ["bot_crafter_exchange_listings"] = ("6", "WP5"),
                 ["launcher_level50_kit"] = ("True", "WP9"),
                 ["economy_ledger_enabled"] = ("True", "WP2"),
+                ["bot_crafter_commerce"] = ("False", "WP8"),
+                ["bot_crafting_social"] = ("False", "WP8"),
             };
 
         public string Text(string key) =>
