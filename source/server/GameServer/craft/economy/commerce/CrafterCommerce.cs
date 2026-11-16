@@ -90,6 +90,7 @@ namespace DOL.GS.CraftingEconomy
             if (System.Threading.Interlocked.Exchange(ref _registered, 1) != 0)
                 return;
             RegisterSeams();
+            BotTrades.Register();
             EconomyLifecycle.Register(CustomerStore.Instance);
             GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, new DOLEventHandler(OnPlayerEntered));
         }
@@ -99,7 +100,11 @@ namespace DOL.GS.CraftingEconomy
         {
             AutonomousBotCraftOrders.DeliverToPlayer = DeliverToPlayer;
             AutonomousBotCraftOrders.PlayerOrderClosed = OnPlayerOrderClosed;
-            BotCommerceSeams.TryReceiveMoney = TryReceiveMoney;
+            // Coin dropped on a bot: a deposit for a deal first (WP8), else a trade window with the coin in (the full bot trade).
+            BotCommerceSeams.TryReceiveMoney = (bot, player, copper) =>
+                TryReceiveMoney(bot, player, copper) || BotTrades.TryReceiveMoney(bot, player, copper);
+            // An item dropped on a bot: a trade window with it in the player's side (sell, swap, a repair or spellcraft job).
+            BotCommerceSeams.TryReceiveItem = BotTrades.TryReceiveItem;
         }
 
         private sealed class CustomerStore : IEconomyStore
@@ -187,7 +192,8 @@ namespace DOL.GS.CraftingEconomy
             }
             catch { } // tests without a world: a minute a piece
             return new CrafterTalk.CrafterFacts(bot.Name, bot.Realm, skills, facts.Primary, facts.Skill, facts.Title, makeable, StockOf(bot),
-                toBreak, atBreak, seconds, AutonomousLivingServer.PlaceOf(bot), AutonomousBotPersonality.For(bot).Traits.Patience);
+                toBreak, atBreak, seconds, AutonomousLivingServer.PlaceOf(bot), AutonomousBotPersonality.For(bot).Traits.Patience,
+                FreeToTrade: FreeToTrade(bot));
         }
 
         /// <summary>Minutes to the end of the bot's task (its next natural break); an hour while grouped or unknown. Pure.</summary>
@@ -239,11 +245,12 @@ namespace DOL.GS.CraftingEconomy
             try
             {
                 using var aiProfile = AiProfile.Scope(AiSystem.CraftCommerce); // AI_PROFILE: measures only
+                // The full bot trade: any gamebot answers "what are you selling", "trade me", "buy 2" (BotTrades.OnTell).
                 if (!AutonomousBotCrafting.IsCrafter(bot) || !AutonomousBotCrafting.IsTrained(bot))
-                    return Refer(player, bot, message);
+                    return BotTrades.OnTell(player, bot, message) || Refer(player, bot, message);
                 CrafterTalk.Reply reply = Handle(player, bot, message);
                 if (reply == null)
-                    return false;
+                    return BotTrades.OnTell(player, bot, message);
                 Say(bot, player, reply, 1_500 + Math.Min(4_000, message.Length * 30));
                 return true;
             }
@@ -647,10 +654,20 @@ namespace DOL.GS.CraftingEconomy
                     ("quality", piece?.Quality ?? 0), ("copper", copper), ("pay", pay), ("paid", paid), ("guildFee", bankFee)));
         }
 
-        /// <summary>A stock piece the player agreed to buy: a trade window with the piece at its price (at a break, the player near).</summary>
+        /// <summary>
+        /// The full bot trade's busy rule (BotTrades): a crafter not fighting, casting, dead or on raid duty may trade a
+        /// piece of its stock with a player who asks, mid-task (the player's action); its own selling stays at its breaks.
+        /// </summary>
+        public static bool FreeToTrade(GameBot bot)
+        {
+            try { return BotTrades.BusyOf(bot) == BotTrades.Busy.Free; }
+            catch { return false; }
+        }
+
+        /// <summary>A stock piece the player agreed to buy: a trade window with the piece at its price (the player near, the bot free).</summary>
         public static BotTradeWindow OpenStockTrade(GameBot crafter, GamePlayer player, CrafterTalk.Deal deal)
         {
-            if (!Enabled || deal?.Piece == null || crafter?.Inventory == null || !AtBreak(crafter) || !IsNear(crafter, player))
+            if (!Enabled || deal?.Piece == null || crafter?.Inventory == null || !AtBreak(crafter) && !FreeToTrade(crafter) || !IsNear(crafter, player))
                 return null;
             DbInventoryItem piece = crafter.Inventory.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
                 .FirstOrDefault(item => item != null && item.ObjectId == deal.Piece.ObjectId);

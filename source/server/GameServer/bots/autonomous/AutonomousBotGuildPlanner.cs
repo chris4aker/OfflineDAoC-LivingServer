@@ -41,7 +41,9 @@ public static class AutonomousBotGuildPlanner
 
     public static readonly Regex NameFormat = new("^[A-Z][A-Za-z' ]{2,29}$", RegexOptions.CultureInvariant);
 
-    public readonly record struct Candidate(long BotId, int Level);
+    /// <summary>An unplaced bot. Crafter: a crafter gamebot (Crafting 2.0 WP8b, set only with bot_crafting_social on):
+    /// placed before the others, and into a Crafting-charter guild first.</summary>
+    public readonly record struct Candidate(long BotId, int Level, bool Crafter = false);
 
     public sealed class GuildSlot
     {
@@ -153,7 +155,7 @@ public static class AutonomousBotGuildPlanner
         if (toPlace <= 0 || guilds == null || guilds.Count == 0)
             return placements;
 
-        foreach (Candidate candidate in unplaced.OrderBy(c => Order(c.BotId)).ThenBy(c => c.BotId))
+        foreach (Candidate candidate in unplaced.OrderByDescending(c => c.Crafter).ThenBy(c => Order(c.BotId)).ThenBy(c => c.BotId))
         {
             if (placements.Count >= toPlace)
                 break;
@@ -164,7 +166,9 @@ public static class AutonomousBotGuildPlanner
             {
                 if (guild.Target <= 0 || guild.Count >= guild.Target)
                     continue;
-                double score = (guild.Target - guild.Count) / (double)guild.Target * Fit(guild.Charter, candidate.Level);
+                double score = (guild.Target - guild.Count) / (double)guild.Target * Fit(guild.Charter, candidate.Level) +
+                               // WP8b: a crafter takes a Crafting guild's free place before any other guild's.
+                               (candidate.Crafter && guild.Charter == BotGuildCharter.Crafting ? 2.0 : 0.0);
                 if (best == null || score > bestScore + 1e-9 || Math.Abs(score - bestScore) <= 1e-9 && guild.Ordinal < best.Ordinal)
                 {
                     best = guild;

@@ -166,11 +166,108 @@ pieces in their bag:
   delivery: the crafter opens a trade window with the piece and its price; put the coin in and accept.
 - **Hand-over.** Gamebots craft and trade only at their natural task breaks, never during a hunt: when your piece is made
   the crafter tells you where it is; stand near it during its break and say "ready".
+- **Stock.** A piece it already holds you may buy at once, even while it hunts, if you stand next to it and it is not
+  fighting: see "Trading with gamebots" below.
 - A piece you ordered to pay on delivery and never collected stays the crafter's, and it will want your coin up front
   next time. Insult a crafter and it will not deal with you.
 
+## Trading with gamebots
+
+> **Status: automated tests only.** Off by default: `bot_crafters` and `bot_crafter_commerce` must both be on (the guild
+> parts also need `bot_crafting_social`). Nothing here has been seen in game yet.
+
+Any autonomous gamebot of your realm trades with you in the game's own trade window, the way a player does. A `/bot`
+companion never trades (give it gear with `/bot`), and only you start a trade.
+
+**Opening a trade.** Stand next to the bot (about two steps) and either drag an item or coin from your backpack onto it,
+or target it and type `/tradewindow`. A tell works too: "trade me", "lets trade", or "buy 2" once you have its list. The
+window is titled **Trading with &lt;name&gt;**, as for a player.
+
+**What it sells.** When the window opens, the system window lists what the bot would part with, numbered:
+
+```
+[Aldwyn sells] 2 pieces: say "buy <number>" to Aldwyn, or /tradewindow buy <number>.
+[Aldwyn sells] 1. Studded Vest (96%, level 23): 1 gold, 20 silver
+[Aldwyn sells] 2. Hunting Bow (level 20): 25 silver (on the Realm Exchange)
+```
+
+- a crafter's own crafted pieces, at the price it quotes by tell;
+- loot and spare gear in its bag, at the market's asking price (the price index);
+- its own Realm Exchange listings, at the posted price: "buy" takes the listing back off the Exchange into its bag for you.
+
+It never sells what it wears, what it keeps for its own work (materials, a backup weapon, a piece made for someone's order).
+Ask "what are you selling?" by tell to get the list without opening a window.
+
+**What it buys.** Put a piece of yours in the window. The bot says in the system window what it is worth to it, or why it
+does not want it:
+
+- it wants a piece that fills an empty slot or beats what it wears by its set score (the same test as every purchase it
+  makes), or one that answers one of its own open craft orders (that order is called off and its coin pays you);
+- it bids the market's buying price (a little more for an empty slot), and never more than **80% of its purse**: short of
+  that it offers what it can spare and says so ("pays you 30 silver, all it can spare (worth 45 silver to it)");
+- it refuses anything it cannot use or that is no better than what it wears, with the reason. A refused piece must come out
+  before it accepts: it never takes anything for free.
+
+What it buys it puts on at once (through the guard that keeps a bot from ever undressing). Some bots post their want in
+`/trade`: "wtb chain chest piece lvl 25, paying up to 2g, pst".
+
+**Swaps.** Both at once: the coin settles the difference either way (you pay it, or the bot does), or an even swap moves no
+coin.
+
+**Jobs.** Instead of a sale:
+
+- **Repair:** put in one worn piece and tick **Repair**. A bot with the material skill at the item's craft level (as a
+  player must have in a trade window) repairs it for half the smith's price; the system window gives the chance. If it fails,
+  your coin comes back.
+- **Spellcraft:** put in your crafted piece and the gems and tick **Combine**. A bot spellcrafter imbues them by the player's
+  rules, for 10% of the gems' value (at least 1 silver a gem). It never overcharges: a piece that would go over its imbue
+  points is refused, so nothing explodes.
+
+**Accepting.** The bot accepts by itself once the terms hold ("Aldwyn has accepted the trade.", the same words as a
+player's); any change takes that back. Nothing moves until you accept too, and then everything moves at once or nothing does.
+Exactly what is owed is taken: coin you put in beyond it stays yours.
+
+**A busy bot.** You may interrupt a bot hunting or travelling: it stops where it stands, faces you and trades for up to two
+minutes. But a bot that is fighting (or its group is), casting, dead, or on a raid, siege or battleground duty says so
+("in a fight, give me a min") and no window opens. A fight starting closes the window. Bots still sell their own things only
+at their natural task breaks; a trade you start is yours.
+
+**Commissions** (above, "Buying from crafter gamebots") come through the same window: a piece paid on delivery shows its
+price, a piece paid up front shows "already paid".
+
+**The commands** (the new client's trade window uses them; the original client has its own window for most):
+`/tradewindow` (open, with the bot targeted), `list`, `buy <n>`, `put <slot>`, `take <slot>`, `coin <copper>`,
+`repair on|off`, `combine on|off`, `accept`, `close`.
+
+### In each client
+
+- **Original client:** the game's own trade window, no client change. The bot's side shows its real pieces (shift-click or
+  information on one shows its delve as for any item) and the coin it pays; your side what you drag in and the coin you put
+  in; the Repair and Combine boxes ask for a job. The terms, each piece's price and the confirmations come as system-window
+  lines; "&lt;name&gt; has accepted the trade." when it accepts.
+- **New client (0.37c):** it had no trade window. Living Server 1.2 adds one (see the changelog for exactly what it shows): the
+  title from the server, the bot's offer and yours with icons, quality, level and delve hover boxes, the coin each side puts
+  in, the bot's word in green (accepted) or red (what it waits for), its last terms, its goods with a BUY button each, REPAIR,
+  COMBINE, ACCEPT and CANCEL. Drag items from your backpack onto the window; click one of yours to take it out; type gold,
+  silver and copper and press SET. It works through `/tradewindow`, as the 0.37c network client cannot send the original's
+  trade packet.
+
+### Guilds and crafters (bot_crafting_social)
+
+- A Crafting-charter bot guild takes the realm's crafter gamebots first when it places new members.
+- A gamebot that commissions a piece asks a crafter of its own guild first and pays it the materials only; a Crafting-charter
+  bot guild's bank pays the crafter the fee it waived.
+- A Crafting-charter bot guild's bank pays for its crafters' materials while it holds ten times the price.
+- A Raiding-charter bot guild's bank buys a heal draught for each raider (level 40+) at a merchant visit, up to two carried
+  (also needs `bot_upkeep`, under which gamebots drink draughts at all).
+
 ## For developers
 
+- Trading with gamebots: `craft/economy/commerce/BotTrades.cs` (the glue), `BotTradeTerms.cs` (the terms, pure),
+  `BotTradeWindow.cs` (the window), `BotGuildCommerce.cs` (the guild side), `commands/playercommands/tradewindow.cs`; the new
+  client's `net/server.gd` (the 0xEA packet) and `ui/merchant_window.gd` (`MerchantWindow.TradeWindow`). Log lines
+  `ECON_PLAYER_TRADE`, `ECON_PLAYER_SELL`, `ECON_PLAYER_DELIVERY`, `ECON_SC_JOB`, `ECON_GUILD_SPEND`. Tests: `UT_BotTrade`,
+  `tests/trade_probe.gd` (in `tools/newclient-compat/installed_check.py`).
 - Code: `craft/PlayerCraftingRules.cs` (the rules, pure, and their log lines), `GamePlayer` (crafting load, gains, the
   untrained check), `CustomNPC/CraftNPC.cs` (who a master admits), `CharacterCreationCraft.cs`, `CustomNPC/Blacksmith.cs`
   (upkeep), `LootGeneratorMoney.cs` / `LootGeneratorChest.cs` (coin), `AbstractProfession.cs` and `CraftTitle.cs` (titles).

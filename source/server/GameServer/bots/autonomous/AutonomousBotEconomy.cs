@@ -674,6 +674,32 @@ namespace DOL.GS;
             .FirstOrDefault();
         }
 
+        /// <summary>
+        /// Crafting 2.0 WP8, the full bot trade (BotTrades): the backpack items a gamebot would part with in a trade window
+        /// with a real player. Its tradable, unlisted backpack items, less what it keeps for itself as at a merchant: its
+        /// operational loadout (a backup weapon, an instrument, a relic, siege supply), an upgrade it would wear, its
+        /// crafting materials, and what a package holds back (a piece made for an order, a kept draught). Worn gear is
+        /// never in the backpack, so a bot never sells what it wears. Dearest first.
+        /// </summary>
+        public static IReadOnlyList<DbInventoryItem> FindPlayerTradeGoods(GameBot bot)
+        {
+            if (bot?.Inventory == null || bot.DatabaseID <= 0)
+                return [];
+            bool trainedCrafter = !string.IsNullOrWhiteSpace(bot.PersistentRecord?.SerializedCraftingSkills);
+            HashSet<DbInventoryItem> operationalLoadout = FindOperationalLoadoutItems(bot);
+            return bot.Inventory.AllItems
+                .Where(item => item != null && item.IsTradable && item.IsDropable && !string.IsNullOrWhiteSpace(item.Name) &&
+                               item.OwnerLot == 0 && item.SlotPosition >= (int)eInventorySlot.FirstBackpack &&
+                               item.SlotPosition <= (int)eInventorySlot.LastBackpack &&
+                               item is not GameInventoryRelic && !BotSiegeRuntime.IsSupply(item.Id_nb) &&
+                               !operationalLoadout.Contains(item) && !TryGetEquipmentUpgrade(bot, item, out _) &&
+                               !(item.IsStackable && item.Count > 0 && EconomySeams.IsMaterialFor(bot, item, trainedCrafter)) &&
+                               !EconomySeams.IsReserved(bot, item) && !EconomySeams.KeepFromVendor(bot, item))
+                .OrderByDescending(item => RecommendListingPrice(item))
+                .ThenBy(item => item.SlotPosition)
+                .ToArray();
+        }
+
         public static DbInventoryItem FindVendorTrashCandidate(GameBot bot)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.EconomyValuation); // AI_PROFILE: measures only

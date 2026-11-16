@@ -44,6 +44,9 @@ namespace DOL.GS.Tests
             Assert.That(int.Parse(report.Metrics["wp8.playerOrdersPlaced"]), Is.GreaterThan(0), "an aged world's crafters take orders");
             Assert.That(int.Parse(report.Metrics["wp8.playerOrdersDelivered"]), Is.GreaterThan(0));
             Assert.That(report.NotBuilt, Has.None.StartsWith("bot_crafter_commerce"));
+            // The full bot trade: players sell gamebots pieces for empty slots and buy loot from their bags, at the index.
+            Assert.That(int.Parse(report.Metrics["wp8.tradeSoldToBots"]), Is.GreaterThan(0));
+            Assert.That(int.Parse(report.Metrics["wp8.tradeBoughtFromBags"]), Is.GreaterThan(0));
         }
     }
 }

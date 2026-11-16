@@ -134,6 +134,7 @@ func build() -> void:
 	_page_label.size = Vector2(70, 12)
 	_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(_page_label)
+	_add_trade_window.call_deferred()                  # Living Server 1.2: the trade window (below)
 
 
 ## Where the shop opens: at the top, centred (owner 2026-10-14: not in the top right corner), the whole window on the
@@ -377,4 +378,271 @@ class ShopRow extends Control:
 			PlayerData.delve_id = item_id
 			PlayerData.selected_slot = -1
 			PlayerData.summary.emit(ItemDb.item(item_id))
+			accept_event()
+
+
+## Living Server 1.2: the trade window lives beside the merchant window (GameUI builds the merchant window; this
+## script ships as a content patch and the installer cannot add a new script, so the trade window is its inner class).
+var trade_window: TradeWindow
+
+
+func _add_trade_window() -> void:
+	if trade_window != null or get_parent() == null:
+		return
+	trade_window = TradeWindow.new()
+	trade_window.build_in(get_parent())
+
+
+## The trade window (Living Server 1.2, trading with gamebots): what the original client's trade window shows, in the
+## granite style of the companion windows. The title as the server sends it ("TRADING WITH ALDRIC"); the partner's side
+## (its pieces with their icons, the coin it pays) and yours (the pieces you drag in from your backpack, the coin you
+## put in, click a piece to take it out); the partner's word on the terms in green when it has accepted, in red when it
+## waits; the lines of its terms; its goods for sale with a BUY button each; REPAIR and COMBINE (a job on your piece);
+## ACCEPT and CANCEL. Every button is a /tradewindow command (Server.trade_command): the 0.37c network client has no
+## ModifyTrade packet.
+class TradeWindow extends ClassicWindow:
+	const SIZE := Vector2(440, 338)
+	const ROW_H := 17.0
+	const SIDE_ROWS := 6
+	const GOODS_ROWS := 5
+	var _title: Label
+	var _their_head: Label
+	var _their_rows: Array = []
+	var _their_coin: Label
+	var _my_rows: Array = []
+	var _my_coin: Label
+	var _gold: LineEdit
+	var _silver: LineEdit
+	var _copper: LineEdit
+	var _status: Label
+	var _terms: Label
+	var _goods_head: Label
+	var _goods_rows: Array = []
+	var _goods_offset := 0
+	var _repair: Button
+	var _combine: Button
+	var _accept: Button
+	var _closing := false
+
+	func build_in(parent: Control) -> void:
+		closable = true
+		_title = CompanionUi.frame(self, "trade", SIZE, Vector2(180, 90), "TRADE")
+		parent.add_child(self)
+		visible = false
+		_their_head = CompanionUi.text(self, "THEY OFFER", Vector2(12, 20), Vector2(200, 12), 8, UiArt.GOLD)
+		CompanionUi.text(self, "YOUR OFFER", Vector2(228, 20), Vector2(200, 12), 8, UiArt.GOLD)
+		CompanionUi.inset(self, Vector2(10, 33), Vector2(204, SIDE_ROWS * ROW_H + 4))
+		CompanionUi.inset(self, Vector2(226, 33), Vector2(204, SIDE_ROWS * ROW_H + 4))
+		for i in SIDE_ROWS:
+			_their_rows.append(_row(Vector2(12, 35 + i * ROW_H), false))
+			_my_rows.append(_row(Vector2(228, 35 + i * ROW_H), true))
+		var below := 35 + SIDE_ROWS * ROW_H + 6
+		_their_coin = CompanionUi.text(self, "", Vector2(12, below), Vector2(200, 12), 8, UiArt.CREAM)
+		_my_coin = CompanionUi.text(self, "", Vector2(228, below), Vector2(90, 12), 8, UiArt.CREAM)
+		_gold = CompanionUi.field(self, Vector2(318, below - 2), Vector2(34, 14), "G")
+		_silver = CompanionUi.field(self, Vector2(354, below - 2), Vector2(26, 14), "S")
+		_copper = CompanionUi.field(self, Vector2(382, below - 2), Vector2(26, 14), "C")
+		CompanionUi.button(self, "SET", Vector2(410, below - 2), Vector2(22, 14), _set_coin, 7)
+		for e in [_gold, _silver, _copper]:
+			(e as LineEdit).text_submitted.connect(func(_t): _set_coin())
+		_status = CompanionUi.text(self, "", Vector2(12, below + 16), Vector2(SIZE.x - 24, 12), 9, UiArt.GOLD_HI)
+		_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_terms = CompanionUi.text(self, "", Vector2(12, below + 30), Vector2(SIZE.x - 24, 40), 8, UiArt.CREAM, true)
+		var goods_y := below + 72
+		_goods_head = CompanionUi.text(self, "FOR SALE", Vector2(12, goods_y), Vector2(300, 12), 8, UiArt.GOLD)
+		CompanionUi.button(self, "LIST", Vector2(SIZE.x - 52, goods_y - 2), Vector2(40, 14), func(): Server.trade_command("list"), 8)
+		CompanionUi.inset(self, Vector2(10, goods_y + 13), Vector2(SIZE.x - 20, GOODS_ROWS * ROW_H + 4))
+		for i in GOODS_ROWS:
+			_goods_rows.append(_goods_row(Vector2(12, goods_y + 15 + i * ROW_H)))
+		var bar := SIZE.y - 20
+		_repair = CompanionUi.button(self, "REPAIR", Vector2(12, bar), Vector2(64, 15), func(): _toggle("repair", _repair), 8)
+		_repair.toggle_mode = true
+		_repair.tooltip_text = "Ask for a repair of the one piece you put in"
+		_combine = CompanionUi.button(self, "COMBINE", Vector2(80, bar), Vector2(64, 15), func(): _toggle("combine", _combine), 8)
+		_combine.toggle_mode = true
+		_combine.tooltip_text = "Ask a spellcrafter to imbue the gems you put in into your piece"
+		_accept = CompanionUi.button(self, "ACCEPT", Vector2(SIZE.x - 152, bar), Vector2(68, 15), func(): Server.trade_command("accept"), 9)
+		CompanionUi.button(self, "CANCEL", Vector2(SIZE.x - 80, bar), Vector2(68, 15), func(): hide_window(), 9)
+		closed.connect(_on_closed)
+		Server.trade_changed.connect(_refresh)
+		Server.trade_closed.connect(func():
+			_closing = true
+			if visible:
+				hide_window()
+			_closing = false)
+		PlayerData.changed.connect(func(): if visible: _refresh())
+
+	func _on_closed() -> void:
+		if not _closing and not Server.trade.is_empty():
+			Server.trade_command("close")
+
+	func _row(pos: Vector2, mine: bool) -> TradeRow:
+		var r := TradeRow.new()
+		r.mine = mine
+		r.position = pos
+		r.size = Vector2(200, ROW_H)
+		add_child(r)
+		return r
+
+	func _goods_row(pos: Vector2) -> GoodsRow:
+		var r := GoodsRow.new()
+		r.position = pos
+		r.size = Vector2(SIZE.x - 24, ROW_H)
+		add_child(r)
+		return r
+
+	func _toggle(what: String, b: Button) -> void:
+		Server.trade_command("%s %s" % [what, "on" if b.button_pressed else "off"])
+
+	func _set_coin() -> void:
+		var c := int(_gold.text) * 10000 + clampi(int(_silver.text), 0, 99) * 100 + clampi(int(_copper.text), 0, 99)
+		Server.trade_command("coin %d" % maxi(c, 0))
+
+	func _refresh() -> void:
+		var t: Dictionary = Server.trade
+		if t.is_empty():
+			return
+		if not visible:
+			show_window()
+		var partner := String(t.get("partner", ""))
+		_title.text = String(t.get("title", "TRADE")).to_upper()
+		_their_head.text = ("%s OFFERS" % partner).to_upper() if partner != "" else "THEY OFFER"
+		var theirs: Array = t.get("their_items", [])
+		for i in SIDE_ROWS:
+			_their_rows[i].show_item(String(theirs[i]) if i < theirs.size() else "", i, -1)
+		var slots: Array = t.get("my_slots", [])
+		for i in SIDE_ROWS:
+			var slot := int(slots[i]) if i < slots.size() else -1
+			var id := String(PlayerData.entry(slot).get("id", "")) if slot >= 0 else ""
+			_my_rows[i].show_item(id, i, slot)
+		var pays := int(t.get("their_money", 0))
+		_their_coin.text = ("PAYS " + PlayerData.money_string(pays)).to_upper() if pays > 0 else ""
+		var mine := int(t.get("my_money", 0))
+		_my_coin.text = ("COIN " + PlayerData.money_string(mine)).to_upper() if mine > 0 else "COIN"
+		_repair.set_pressed_no_signal(bool(t.get("repair", false)))
+		_combine.set_pressed_no_signal(bool(t.get("combine", false)))
+		var status := Server.trade_status
+		_status.text = status.to_upper() if status != "" else ("%s IS LOOKING" % partner).to_upper()
+		_status.add_theme_color_override("font_color", CompanionUi.GREEN if Server.trade_accepted else (CompanionUi.RED if status != "" else UiArt.GOLD_HI))
+		var lines: Array = Server.trade_lines.slice(maxi(0, Server.trade_lines.size() - 3))
+		_terms.text = "\n".join(lines)
+		_goods_head.text = ("%s SELLS" % partner).to_upper() if partner != "" else "FOR SALE"
+		var goods: Array = Server.trade_goods
+		_goods_offset = clampi(_goods_offset, 0, maxi(goods.size() - GOODS_ROWS, 0))
+		for i in GOODS_ROWS:
+			var k := _goods_offset + i
+			_goods_rows[i].show_good(goods[k] if k < goods.size() else {})
+		_accept.disabled = not Server.trade_accepted
+
+	func scroll_goods(rows: int) -> void:
+		_goods_offset += rows
+		_refresh()
+
+	func _can_drop_data(_pos: Vector2, data: Variant) -> bool:
+		return InventorySheet.is_item(data) and PlayerData.is_backpack(int(data.slot))
+
+	func _drop_data(_pos: Vector2, data: Variant) -> void:
+		Server.trade_command("put %d" % int(data.slot))
+
+
+## One piece on a side of the trade window: its icon, its name, its quality and level; the hover box is its delve
+## (the partner's asked of the server as a trade window item, object type 7); a click on yours takes it out.
+class TradeRow extends Control:
+	var mine := false
+	var item_id := ""
+	var slot := -1
+	var index := 0
+	var _icon: TextureRect
+	var _name: Label
+	var _info: Label
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		_icon = TextureRect.new()
+		_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_icon.stretch_mode = TextureRect.STRETCH_SCALE
+		_icon.position = Vector2(1, 0)
+		_icon.size = Vector2(16, 16)
+		_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_icon)
+		_name = UiArt.label("", 8, UiArt.CREAM)
+		_name.position = Vector2(20, 2)
+		_name.size = Vector2(124, 14)
+		_name.clip_text = true
+		add_child(_name)
+		_info = UiArt.label("", 8, UiArt.DIM)
+		_info.position = Vector2(140, 2)
+		_info.size = Vector2(58, 14)
+		_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		add_child(_info)
+
+	func show_item(id: String, i: int, from_slot: int) -> void:
+		item_id = id
+		index = i
+		slot = from_slot
+		var it := ItemDb.item(id) if id != "" else {}
+		_icon.texture = ItemDb.icon(int(it.get("icon", 0))) if not it.is_empty() else null
+		_name.text = String(it.get("name", "")).to_upper()
+		var q := int(it.get("quality", 0))
+		var lvl := int(it.get("level", 0))
+		var info := ""
+		if not it.is_empty():
+			if q > 0:
+				info += "%d%% " % q
+			if lvl > 0:
+				info += "L%d" % lvl
+		_info.text = info
+		tooltip_text = String(it.get("name", "")).to_upper() if not it.is_empty() else ""
+		if not it.is_empty() and Server.active:
+			if mine and slot >= 0:
+				Server.prefetch_item(slot)
+			elif not mine:
+				Server.prefetch_detail("t:%d" % index, Server.TRADE_DETAIL, index)
+
+	func _make_custom_tooltip(_for_text: String) -> Object:
+		return ItemTooltip.make(ItemDb.item(item_id)) if item_id != "" else null
+
+	func _gui_input(event: InputEvent) -> void:
+		if not (event is InputEventMouseButton and event.pressed) or item_id == "":
+			return
+		if event.button_index == MOUSE_BUTTON_LEFT and mine and slot >= 0:
+			Server.trade_command("take %d" % slot)
+			accept_event()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			PlayerData.delve_id = item_id
+			PlayerData.selected_slot = slot if mine else -1
+			PlayerData.summary.emit(ItemDb.item(item_id))
+			accept_event()
+
+
+## One of the partner's goods ("1. Studded Vest (96%, level 23): 1 gold, 20 silver") and its BUY button.
+class GoodsRow extends Control:
+	var number := 0
+	var _text: Label
+	var _buy: Button
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_PASS
+		_text = UiArt.label("", 8, UiArt.CREAM)
+		_text.position = Vector2(2, 2)
+		_text.size = Vector2(362, 14)
+		_text.clip_text = true
+		add_child(_text)
+		_buy = UiArt.button("BUY", Vector2(40, 14), 8)
+		_buy.position = Vector2(372, 1)
+		_buy.pressed.connect(func(): if number > 0: Server.trade_command("buy %d" % number))
+		add_child(_buy)
+
+	func show_good(g: Dictionary) -> void:
+		number = int(g.get("number", 0))
+		_text.text = ("%d. %s" % [number, String(g.get("text", ""))]).to_upper() if number > 0 else ""
+		_text.tooltip_text = _text.text
+		_buy.visible = number > 0
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.pressed and (event.button_index == MOUSE_BUTTON_WHEEL_UP
+				or event.button_index == MOUSE_BUTTON_WHEEL_DOWN):
+			var w := get_parent()
+			if w and w.has_method("scroll_goods"):
+				w.scroll_goods(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
 			accept_event()

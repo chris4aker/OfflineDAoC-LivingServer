@@ -11,6 +11,7 @@ tools/fork-build/content-patches.json applied, run in Godot. No 0.37c download i
    its result must be the script in source/new-client (a changed script without a new patch fails here).
 4. tests/load_check.gd compiles every script with the autoloads present, and tests/issue34_probe.gd checks issue #34
    (skills onto the quickbar, Stealth, the merchant's SELL) with the real interface and a stand-in network client.
+   tests/trade_probe.gd checks Living Server 1.2's trade window (trading with gamebots) the same way.
 
 --released-only skips step 3: the probe then shows what the released 0.37c scripts do.
 The plain Godot build is enough: the scripts are GDScript, and the probe replaces the C# network client.
@@ -30,7 +31,7 @@ MANIFEST = REPO / 'source/tools/release-baselines/0.37/0.37c-new-client.sha256'
 PATCHES = REPO / 'tools/fork-build/content-patches.json'
 # shadowofze's "Release 0.37 / 0.37b / 0.37c" commit (tag v0.37 upstream; on Living Server's branches too)
 TAG = 'ab4df02a1ad26192357477dbc912756c6703fb66'
-TESTS = ['load_check.gd', 'issue34_probe.gd']
+TESTS = ['load_check.gd', 'issue34_probe.gd', 'trade_probe.gd']
 
 
 def sha(b: bytes) -> str:
@@ -128,6 +129,13 @@ def main(argv) -> int:
     if r.returncode != 0:
         print('\n'.join(l for l in (r.stdout + r.stderr).splitlines() if 'ERROR' in l)[:6000])
     failed = len(bad) + (len(scripts) - len(good) - len(bad)) + (1 if r.returncode != 0 or not lines else 0)
+    # Living Server 1.2: the trade window (trading with gamebots) with the real interface and a stand-in network client.
+    r = godot(exe, project, '-s', 'res://tests/trade_probe.gd')
+    lines = [l for l in r.stdout.splitlines() if l.startswith('[trade]')]
+    print('\n'.join(lines))
+    if r.returncode != 0:
+        print('\n'.join(l for l in (r.stdout + r.stderr).splitlines() if 'ERROR' in l)[:6000])
+    failed += 1 if r.returncode != 0 or not lines else 0
     print('installed_check: ' + ('ok' if failed == 0 else 'FAILED'))
     return 0 if failed == 0 else 1
 

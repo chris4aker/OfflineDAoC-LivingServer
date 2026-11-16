@@ -122,7 +122,7 @@ public static class BotCrafterVoice
     }
 
     /// <summary>A line in the bot's realm /trade channel, formatted and counted as the chat coordinator's own /trade lines.</summary>
-    private static void SendTrade(GameBot bot, string text)
+    internal static void SendTrade(GameBot bot, string text)
     {
         string safe = VC.ForNow((text ?? string.Empty).Trim());
         if (safe.Length == 0)

@@ -2065,6 +2065,8 @@ namespace DOL.GS.PacketHandler
 					}
 					if (m_gameClient.Player.TradeWindow is SelfCraftWindow)
 						pak.WritePascalString("Combining for " + m_gameClient.Player.Name);
+					else if (m_gameClient.Player.TradeWindow is DOL.GS.CraftingEconomy.IBotTradeWindow botTrade) // Crafting 2.0 WP8: a gamebot (no Partner)
+						pak.WritePascalString("Trading with " + botTrade.BotName);
 					else
 						pak.WritePascalString("Trading with " + m_gameClient.Player.TradeWindow.Partner.Name); // transaction with ...
 					SendTCP(pak);

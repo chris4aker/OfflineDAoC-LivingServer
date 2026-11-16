@@ -50,6 +50,8 @@ namespace DOL.GS.CraftingEconomy
         public const string EconPlayerDelivery = "ECON_PLAYER_DELIVERY";
         public const string EconPlayerSell = "ECON_PLAYER_SELL";
         public const string EconScJob = "ECON_SC_JOB";
+        /// <summary>WP8, the full bot trade: a trade window with a gamebot opened, refused, closed or done.</summary>
+        public const string EconPlayerTrade = "ECON_PLAYER_TRADE";
         public const string EconHaggle = "ECON_HAGGLE";
         public const string EconGuildSpend = "ECON_GUILD_SPEND";
         public const string EconRehearsal = "ECON_REHEARSAL";
@@ -66,7 +68,7 @@ namespace DOL.GS.CraftingEconomy
             EconSupply, EconFlows, EconOrder, EconCommission, EconList, EconSale, EconReclaim, EconIndex, EconGearCheck,
             EconTemplateBuy, EconUndressGuard, EconWear, EconRepair, EconConsumable, EconLuxury, EconSiegeSupply,
             EconGovernor, EconPlayerOrder, EconPlayerDelivery, EconPlayerSell, EconScJob, EconHaggle, EconGuildSpend,
-            EconRehearsal,
+            EconRehearsal, EconPlayerTrade,
         ];
 
         /// <summary>

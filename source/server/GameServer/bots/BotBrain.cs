@@ -1359,6 +1359,10 @@ namespace DOL.AI.Brain
                     BotBody.StopMoving();
                 return;
             }
+            // Crafting 2.0 WP8 (the full bot trade): a gamebot in a trade window with a real player stands still and faces
+            // the player until the window closes (at most two minutes; a fight ends it at once). Off with bot_crafter_commerce.
+            if (DOL.GS.CraftingEconomy.BotTrades.HoldsStill(BotBody))
+                return;
             // Beggars (bot_living_beggars): a few Crafters live on a corner of their capital and do nothing else.
             if (AutonomousBeggars.Think(this))
                 return;

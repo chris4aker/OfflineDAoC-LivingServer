@@ -135,6 +135,8 @@ func _on_raw(code: int, data: PackedByteArray) -> void:
 		_friends_packet(code == 0xC5, data)
 	elif code == 0xF3 and data.size() >= 4:              # TimerWindow (PacketLib168 2505): crafting, salvage, repair
 		_timer_packet(data)
+	elif code == 0xEA:                                   # TradeWindow (PacketLib1109): trading with a gamebot (below)
+		_trade_packet(data)
 	elif code == 0x92 and data.size() >= 14:             # Weather (PacketLib168): the region's storm
 		weather = {"x": _be32(data, 0), "width": _be32(data, 4),
 				"fog": _be16(data, 8), "speed": _be16(data, 10), "intensity": _be16(data, 12),
@@ -592,6 +594,7 @@ func _on_world_inner(kind: String, d: Dictionary) -> void:
 					_quiet_delves -= 1                       # a GM's debug line for a hover's request (the old client
 					return                                   # asked only on a right-click, where it still shows)
 				_exchange_text(String(d.get("text", "")))
+				_trade_text(String(d.get("text", "")))
 			if not playing:
 				_backlog.append([kind, d])
 				return
@@ -1716,3 +1719,169 @@ func use(id: String) -> bool:
 	if in_view and w is ServerWorld and (w as ServerWorld).target and is_instance_valid((w as ServerWorld).target):
 		in_view = (w as ServerWorld).target_in_view(v.player.global_position)
 	return use_entry(id, v.player, current_zone_id(), in_view)
+
+
+# ---------------------------------------------------------------- the trade window (Living Server 1.2)
+
+## Trading with gamebots (Living Server 1.2, Crafting 2.0 WP8: buy, sell, swap, repairs, spellcraft, commissions). The
+## server's TradeWindow packet (0xEA, PacketLib1109.SendTradeWindow) is not decoded by the 0.37c network client, so it
+## comes here raw (_on_raw): your side's backpack slots and coin, the partner's coin, the partner's items (item data as
+## InventoryUpdate's), the Repair and Combine boxes and the title ("Trading with <name>"); 40 zero bytes close it. The
+## 0.37c client cannot send the original's ModifyTrade packet either, so the trade window (MerchantWindow.TradeWindow)
+## acts through the server's /tradewindow command (BotTrades.Command): put, take, coin, repair, combine, buy, accept,
+## close. The partner's terms and its list of goods come as system lines, read here (_trade_text).
+signal trade_changed                     # Server.trade opened or changed
+signal trade_closed
+const TRADE_DETAIL := 7                  # DetailRequest object type of a trade window item (DetailDisplayHandler)
+var trade := {}                          # {title, partner, my_slots, my_money, their_money, their_items: [runtime ids], repair, combine}
+var trade_goods: Array = []              # the partner's goods: [{number, text}] ("[<name> sells] 1. ...")
+var trade_status := ""                   # the partner's last word on the terms ("<name> has accepted the trade.", "... waits: ...")
+var trade_accepted := false
+var trade_lines: Array = []              # the terms' lines, newest last (at most 8)
+
+
+func _trade_packet(data: PackedByteArray) -> void:
+	var closed := true
+	for b in data:
+		if b != 0:
+			closed = false
+			break
+	if closed or data.size() <= 40:
+		if not trade.is_empty():
+			trade = {}
+			trade_accepted = false
+			trade_status = ""
+			trade_closed.emit()
+		return
+	var slots := []
+	for i in 10:
+		if int(data[i]) != 0:
+			slots.append(int(data[i]))
+	var p := 12
+	var mine := _trade_money(data, p)
+	p += 12
+	var theirs := _trade_money(data, p)
+	p += 12
+	var count := int(data[p])
+	p += 2
+	var repair := int(data[p]) != 0
+	var combine := int(data[p + 1]) != 0
+	p += 2
+	var items := []
+	var r := {"at": p}
+	for i in count:
+		if int(r.at) >= data.size():
+			break
+		var it := _trade_item(data, r)
+		var id := "srvt:%d" % i
+		ItemDb.add_runtime(id, _server_item(id, it, "t:%d" % i))
+		items.append(id)
+	_forget_details("t:")
+	var title := ""
+	if int(r.at) < data.size():
+		var n := int(data[int(r.at)])
+		title = data.slice(int(r.at) + 1, int(r.at) + 1 + n).get_string_from_ascii()
+	var partner := title.trim_prefix("Trading with ") if title.begins_with("Trading with ") else title
+	if trade.is_empty() or String(trade.get("partner", "")) != partner:
+		trade_lines = []
+		trade_status = ""
+		trade_accepted = false
+		if String(trade.get("partner", "")) != partner:
+			trade_goods = trade_goods if _goods_of == partner else []
+	trade = {"title": title, "partner": partner, "my_slots": slots, "my_money": mine, "their_money": theirs,
+			"their_items": items, "repair": repair, "combine": combine}
+	trade_changed.emit()
+
+
+## Five big-endian shorts (mithril, platinum, gold, silver, copper) after a zero short: copper.
+static func _trade_money(d: PackedByteArray, at: int) -> int:
+	var v := 0
+	for k in 5:
+		v = v * (1000 if k < 3 else 100) + _be16(d, at + k * 2)
+	return v
+
+
+## One item of the partner's side (the network client's ReadItem, PacketLib1124.WriteItemData after its slot byte).
+static func _trade_item(d: PackedByteArray, r: Dictionary) -> Dictionary:
+	var p := int(r.at)
+	var it := {}
+	it["slot"] = int(d[p]); p += 1
+	p += 2                                               # unique id
+	it["level"] = int(d[p]); p += 1
+	it["value1"] = int(d[p]); p += 1
+	it["value2"] = int(d[p]); p += 1
+	it["hand"] = int(d[p]) >> 6; p += 1
+	var type := int(d[p]); p += 1
+	it["type_damage"] = type >> 6
+	it["object_type"] = type & 0x3F
+	p += 1
+	it["weight"] = _be16(d, p); p += 2
+	it["condition"] = int(d[p]); p += 1
+	it["durability"] = int(d[p]); p += 1
+	it["quality"] = int(d[p]); p += 1
+	it["bonus"] = int(d[p]); p += 1
+	it["bonus_level"] = int(d[p]); p += 1
+	it["model"] = _be16(d, p); p += 2
+	it["extension"] = int(d[p]); p += 1
+	var tex := _be16(d, p); p += 2
+	var flag := int(d[p]); p += 1
+	if tex > 0xFF:
+		it["emblem"] = tex | (0x10000 if (flag & 0x01) != 0 else 0)
+	else:
+		it["color"] = tex
+	if (flag & 0x08) != 0:
+		p += 2
+		p += 1 + int(d[p])
+	if (flag & 0x10) != 0:
+		p += 2
+		p += 1 + int(d[p])
+	it["effect"] = _be16(d, p); p += 2
+	var n := int(d[p]) if p < d.size() else 0
+	it["name"] = d.slice(p + 1, p + 1 + n).get_string_from_ascii()
+	p += 1 + n
+	r["at"] = p
+	return it
+
+
+var _goods_of := ""                      # whose list trade_goods holds
+
+
+## The system lines about a trade: the partner's list of goods, its terms and its word ("has accepted").
+func _trade_text(text: String) -> void:
+	var m := RegEx.create_from_string("^\\[(.+?) sells\\] (.*)$").search(text)
+	if m:
+		var who := m.get_string(1)
+		var rest := m.get_string(2)
+		if who != _goods_of:
+			trade_goods = []
+			_goods_of = who
+		var num := RegEx.create_from_string("^(\\d+)\\. (.*)$").search(rest)
+		if num:
+			var n := int(num.get_string(1))
+			if n == 1:
+				trade_goods = []
+			trade_goods.append({"number": n, "text": num.get_string(2)})
+		elif rest.begins_with("nothing"):
+			trade_goods = []
+		trade_changed.emit()
+		return
+	if trade.is_empty():
+		return
+	var partner := String(trade.get("partner", ""))
+	if partner == "" or not text.begins_with(partner) and not text.begins_with("You "):
+		return
+	if text == partner + " has accepted the trade.":
+		trade_accepted = true
+		trade_status = text
+	elif text.begins_with(partner + " waits: ") or text.begins_with(partner + " has not accepted"):
+		trade_accepted = false
+		trade_status = text
+	trade_lines.append(text)
+	while trade_lines.size() > 8:
+		trade_lines.pop_front()
+	trade_changed.emit()
+
+
+## /tradewindow on the server (BotTrades.Command): the trade window's buttons.
+func trade_command(args: String) -> void:
+	command("/tradewindow " + args)

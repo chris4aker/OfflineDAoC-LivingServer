@@ -97,6 +97,12 @@ public static class AutonomousBotCraftOrders
     /// </summary>
     public static Func<GameBot, CraftOrder, DbInventoryItem, bool> DeliverToPlayer = (_, _, _) => false;
     public static Action<CraftOrder, bool, string> PlayerOrderClosed = (_, _, _) => { };
+    /// <summary>WP8b (bot-to-bot guild orders): a crafter the buyer prefers (its guildmate). Default: none.</summary>
+    public static Func<GameBot, long, bool> PreferCrafter = (_, _) => false;
+    /// <summary>WP8b: the price a buyer pays this crafter (a guildmate: the materials only); null for the board's quote.</summary>
+    public static Func<GameBot, GameBot, CraftRecipeInfo, long?> GuildPrice = (_, _, _) => null;
+    /// <summary>WP8b: a bot's order handed over and paid (a Crafting guild's bank then pays the waived fee).</summary>
+    public static Action<GameBot, GameBot, CraftOrder> BotOrderDelivered = (_, _, _) => { };
 
     /// <summary>WP8: a player's open order (nothing made yet) is withdrawn; a made one stays to be handed over or to lapse.</summary>
     public static bool TryCancelOpen(string orderId, string reason)
@@ -266,7 +272,9 @@ public static class AutonomousBotCraftOrders
             .Where(crafter => IsAbleCrafter(crafter) && crafter.DatabaseID != buyerBotId && crafter.Realm == realm &&
                               CanFill(crafter.PersistentRecord.SerializedCraftingSkills, recipe) &&
                               OpenFor(crafter.DatabaseID) < MaximumOpenPerCrafter && NextCraftBreak(crafter) <= latest)
-            .OrderBy(crafter => OpenFor(crafter.DatabaseID))
+            // WP8b: a crafter of the buyer's own guild first (bot_crafting_social; nobody is preferred otherwise).
+            .OrderByDescending(crafter => PreferCrafter(crafter, buyerBotId))
+            .ThenBy(crafter => OpenFor(crafter.DatabaseID))
             .ThenBy(crafter => NextCraftBreak(crafter))
             .ThenByDescending(crafter => BotCraftingSkills.Value(crafter.PersistentRecord.SerializedCraftingSkills, recipe.Skill))
             .ThenBy(crafter => crafter.DatabaseID)
@@ -378,7 +386,9 @@ public static class AutonomousBotCraftOrders
         if (crafter == null)
             return null;
         MarketPriceIndex.Instance.ObserveDemand(MarketPriceIndex.BandOf(buyer.Realm, recipe));
-        return Place(buyer, crafter, recipe);
+        // WP8b: a guildmate crafter is paid the materials only.
+        long? guildPrice = GuildPrice(buyer, crafter, recipe);
+        return Place(buyer, crafter, recipe, guildPrice, guildPrice != null ? "guild" : "bot");
     }
 
     /// <summary>Takes the price from the buyer's purse into a new order for the crafter (DR). Null when the buyer cannot pay.</summary>
@@ -537,6 +547,8 @@ public static class AutonomousBotCraftOrders
             AutonomousBotStatusPersistence.Queue(bot, true);
         }
         bool worn = AutonomousBotEconomy.TryEquipOwnedUpgrade(buyer, piece, "craft-order");
+        try { BotOrderDelivered(crafter, buyer, order); }
+        catch { } // another package's failure never stops a hand-over
         if (Log.IsInfoEnabled)
             Log.Info(EconomyLog.Line(EconomyLog.EconOrder, ("outcome", "delivered"), ("source", SourceText(order.Source)),
                 ("order", order.OrderId), ("realm", crafter.Realm), ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID),
@@ -716,5 +728,8 @@ public static class AutonomousBotCraftOrders
         OnSale = AutonomousBotCrafting.OnSale;
         DeliverToPlayer = (_, _, _) => false;
         PlayerOrderClosed = (_, _, _) => { };
+        PreferCrafter = (_, _) => false;
+        GuildPrice = (_, _, _) => null;
+        BotOrderDelivered = (_, _, _) => { };
     }
 }

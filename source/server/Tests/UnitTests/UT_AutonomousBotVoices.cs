@@ -33,7 +33,9 @@ namespace DOL.GS.Tests
             // Crafter gamebots (Crafting 2.0 WP4, BotCrafterVoice): the real piece it holds, its quality and price; a title and its skill
             "stock", "quality", "price", "title", "skill",
             // Crafter commerce and the price-war storyline (Crafting 2.0 WP8): the crafter's craft, when a piece is ready, how it is paid
-            "recipe", "when", "terms"];
+            "recipe", "when", "terms",
+            // The full bot trade (WP8, BotTrades): a gamebot's want-to-buy in /trade names the most it would pay
+            "budget"];
 
         private static readonly string[] OutOfEra =
             ["world of warcraft", "discord", "twitch", "youtube", "lmao", "covid", "smh", "tbh", "ngl", "yeet"];

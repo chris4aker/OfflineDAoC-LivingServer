@@ -322225,6 +322225,1611 @@
    "id": "37c14ee514e9"
   },
   {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "in a fight, give me a min",
+   "family": "7c88cf2937",
+   "id": "f5c820920363"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "in a fight, give me a sec",
+   "family": "7c88cf2937",
+   "id": "520f1d0322e5"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "fighting, give me a min",
+   "family": "7c88cf2937",
+   "id": "6e6b50841e61"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "fighting, give me a sec",
+   "family": "7c88cf2937",
+   "id": "25b2f4b93521"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "busy, got adds. after this",
+   "family": "44f17f9ddb",
+   "id": "1d2e1d3a8b0e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "busy, got adds. after the pull",
+   "family": "44f17f9ddb",
+   "id": "c8071548db60"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "busy, mobs on me. after this",
+   "family": "44f17f9ddb",
+   "id": "3486a5df9e9e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "busy, mobs on me. after the pull",
+   "family": "44f17f9ddb",
+   "id": "71d27a7d7290"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "one sec, got adds. after this",
+   "family": "44f17f9ddb",
+   "id": "a602ce5da961"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "one sec, got adds. after the pull",
+   "family": "44f17f9ddb",
+   "id": "461105d8c2d9"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "one sec, mobs on me. after this",
+   "family": "44f17f9ddb",
+   "id": "6f15582763d1"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "one sec, mobs on me. after the pull",
+   "family": "44f17f9ddb",
+   "id": "34561af01853"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "cant right now, in combat",
+   "family": "cc0043e224",
+   "id": "dbf09b2a507b"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_fight",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "cant right now, fighting",
+   "family": "cc0043e224",
+   "id": "ba6836f035ef"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "on a raid right now, catch me after",
+   "family": "c7763c3ee4",
+   "id": "a8e8aad57046"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "on a raid atm, catch me after",
+   "family": "c7763c3ee4",
+   "id": "562e151901f4"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "cant, raid is forming up. after ok?",
+   "family": "3a352c7e0d",
+   "id": "2b27267c08ec"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "cant, raid is forming up. later ok?",
+   "family": "3a352c7e0d",
+   "id": "b3afc687da33"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "not now, raid is forming up. after ok?",
+   "family": "3a352c7e0d",
+   "id": "5d1ab3440043"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_duty",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "not now, raid is forming up. later ok?",
+   "family": "3a352c7e0d",
+   "id": "11863346831f"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_trading",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "one trade at a time, finish yours first",
+   "family": "d3eadf4ff6",
+   "id": "6b70c130921e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_trading",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "sec, finish yours first",
+   "family": "d3eadf4ff6",
+   "id": "e726ccf9cd05"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_trading",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "already trading, hang on",
+   "family": "6a9bbb1a3c",
+   "id": "396e38fad187"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_busy_trading",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "busy trading, hang on",
+   "family": "6a9bbb1a3c",
+   "id": "f6332d16a15a"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "sorry, gotta run. trade me again later",
+   "family": "d6a3fb1335",
+   "id": "fd304eae5865"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "sry, gotta run. trade me again later",
+   "family": "d6a3fb1335",
+   "id": "3e446a3ca06d"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "gtg, trade me later",
+   "family": "1a95586244",
+   "id": "93d86771978b"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "gtg, catch me later",
+   "family": "1a95586244",
+   "id": "f8103bb5ba88"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "have to go, trade me later",
+   "family": "1a95586244",
+   "id": "ecfdf7619b97"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_timeout",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "have to go, catch me later",
+   "family": "1a95586244",
+   "id": "9fbbaefa3023"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_come_closer",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "come closer and ill open a trade",
+   "id": "4bb8c684fa1b"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_come_closer",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "get closer, cant reach you from there",
+   "family": "a29823ac36",
+   "id": "ad052317c3d3"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_come_closer",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "come over here, cant reach you from there",
+   "family": "a29823ac36",
+   "id": "3912c39d1c2a"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nothing for sale atm, sorry",
+   "family": "ca31f8c70f",
+   "id": "93a46e052d21"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nothing for sale right now, sorry",
+   "family": "ca31f8c70f",
+   "id": "ddc009ab1b17"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "got nothing to sell atm",
+   "family": "60e63030b6",
+   "id": "9a856a96de5f"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "got nothing to sell right now",
+   "family": "60e63030b6",
+   "id": "d799b40a51b2"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nothing to sell atm",
+   "family": "60e63030b6",
+   "id": "31142d5f0cc4"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_nothing_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nothing to sell right now",
+   "family": "60e63030b6",
+   "id": "099e78b35021"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "got {count} things, {item} for {price} and more. trade me and have a look",
+   "id": "30607fe10e06"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count} pieces for sale, {item} is {price}. open a trade and see",
+   "family": "383754bd41",
+   "id": "b1c3f05248fa"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_for_sale",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count} pieces for sale, {item} is {price}. trade me and see",
+   "family": "383754bd41",
+   "id": "ed89ebfec3a5"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_gap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "always looking for a better {item}. trade me and show me",
+   "id": "8c94ce135040"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_gap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "could use a {item} actually, trade me and ill have a look",
+   "family": "52e4631023",
+   "id": "2f1677917908"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_gap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "could use a {item} really, trade me and ill have a look",
+   "family": "52e4631023",
+   "id": "7ecb47e4fe5e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_gap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "need a {item} actually, trade me and ill have a look",
+   "family": "52e4631023",
+   "id": "fcba4ba66cbb"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_gap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "need a {item} really, trade me and ill have a look",
+   "family": "52e4631023",
+   "id": "8463c2ed0df0"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_maybe",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "maybe, put it in a trade and ill tell you what its worth to me",
+   "id": "3e45d605977e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_maybe",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "depends, show me in a trade",
+   "family": "fbc9e94279",
+   "id": "9a9f2e6631fc"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_wants_maybe",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "maybe, show me in a trade",
+   "family": "fbc9e94279",
+   "id": "c17d4d476c18"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "fair swap, ty",
+   "family": "931e3c5db5",
+   "id": "fccc7e22a5e8"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "fair swap, thanks",
+   "family": "931e3c5db5",
+   "id": "618490112cd5"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "good trade, ty",
+   "family": "5133ddeb01",
+   "id": "bd5ce039b9d3"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "good trade, thanks",
+   "family": "5133ddeb01",
+   "id": "52a8565fe90f"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nice, ty",
+   "family": "5133ddeb01",
+   "id": "a7f63775b316"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_swap",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nice, thanks",
+   "family": "5133ddeb01",
+   "id": "67cb33fd367d"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "ty, just what i needed",
+   "family": "c5313bf4d7",
+   "id": "60fe38a1de15"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "thanks, just what i needed",
+   "family": "c5313bf4d7",
+   "id": "6b0341a103e4"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "sweet, ty. been needing one",
+   "family": "70cb62520a",
+   "id": "390c29b43c7e"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "sweet, thanks. been needing one",
+   "family": "70cb62520a",
+   "id": "637a21fa6035"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nice, ty. been needing one",
+   "family": "70cb62520a",
+   "id": "a72ac98b3052"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_bought",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nice, thanks. been needing one",
+   "family": "70cb62520a",
+   "id": "2702c9e9cc36"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "enjoy, ty",
+   "family": "5055f2e81d",
+   "id": "ebc19720dbb7"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "enjoy, thanks",
+   "family": "5055f2e81d",
+   "id": "de89bbdf3081"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "wear it well, ty",
+   "family": "5055f2e81d",
+   "id": "f155a4c731fc"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "wear it well, thanks",
+   "family": "5055f2e81d",
+   "id": "8278221c9e96"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "ty, enjoy",
+   "family": "8eacd3f69a",
+   "id": "e142559555cb"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "ty, pleasure",
+   "family": "8eacd3f69a",
+   "id": "4ebb95985705"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "thanks, enjoy",
+   "family": "8eacd3f69a",
+   "id": "42eb9830e0d5"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_sold",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "thanks, pleasure",
+   "family": "8eacd3f69a",
+   "id": "e78493cc9ac4"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_job",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "there ya go",
+   "id": "40957123f712"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_job",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "done, enjoy",
+   "family": "40acc49c70",
+   "id": "10905055e97b"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_job",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "done, good as new",
+   "family": "40acc49c70",
+   "id": "589566065558"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_job",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "all done, enjoy",
+   "family": "40acc49c70",
+   "id": "dd6a8403759d"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_done_job",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "all done, good as new",
+   "family": "40acc49c70",
+   "id": "6d3c80908975"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_job_failed",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "sorry, didnt take. no charge",
+   "family": "5f25df3b46",
+   "id": "2feee8fb4bde"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_job_failed",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "bah, didnt take. no charge",
+   "family": "5f25df3b46",
+   "id": "059f244e78c3"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_job_failed",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "argh, you keep your coin",
+   "family": "0bf4548283",
+   "id": "e5fd9c520779"
+  },
+  {
+   "kind": "trade_reply",
+   "topic": "trade_job_failed",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "no luck, you keep your coin",
+   "family": "0bf4548283",
+   "id": "551e050bcbc6"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "trade",
+   "text": "wtb {item}, pst",
+   "id": "ecc0ed10010d"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "lf {item}, paying up to {budget}",
+   "family": "4c190247af",
+   "id": "8ccf63f13753"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "wtb {item}, paying up to {budget}",
+   "family": "4c190247af",
+   "id": "bb64a1e1e532"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "anyone selling {item}? pst",
+   "family": "d67c9fadf3",
+   "id": "34b66f7313ba"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "trade",
+   "text": "anyone selling {item}? send me a tell",
+   "family": "d67c9fadf3",
+   "id": "3fe4ecd2f88a"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "trade",
+   "text": "need {item}, pst if you have one",
+   "family": "0d0303149e",
+   "id": "697511a5b775"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "trade",
+   "text": "need {item}, send me a tell if you have one",
+   "family": "0d0303149e",
+   "id": "f44c22b91130"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "trade",
+   "text": "looking for {item}, pst if you have one",
+   "family": "0d0303149e",
+   "id": "35fd9013b54c"
+  },
+  {
+   "kind": "trade",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    5,
+    50
+   ],
+   "needs": [
+    "wants_gear"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "trade",
+   "text": "looking for {item}, send me a tell if you have one",
+   "family": "0d0303149e",
+   "id": "14d4317b5062"
+  },
+  {
    "kind": "camp",
    "topic": "spawn",
    "who": [],

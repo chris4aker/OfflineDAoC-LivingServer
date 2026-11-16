@@ -501,11 +501,97 @@ sells or hands over moves during its task: only at its natural task break.
 - **Rehearsal:** `Tests/Rehearsal/Adapters/WP8Commerce.cs` (a stand-in player per realm commissions crafter agents and
   buys their stock on WP8's pure code). An aged realm of 300 bots for a day: 23 player orders, 22 delivered, 3.8 gold paid
   for 2.9 gold of materials; every gate passed, residual 0 (tests only: a rehearsal, not a game).
-- Not built (later): drag-to-sell to a WTB bot and spellcraft or repair jobs (`BotCommerceSeams.TryReceiveItem` still
-  takes nothing), Crafting-charter guilds taking crafter bots first (guild placement is not WP8's file), a bot guild's
-  bank buying materials and raid potions, bot-to-bot guild orders.
+- Not built in WP8 itself, all built since in "WP8 The full bot trade" below: drag-to-sell to a WTB bot, spellcraft and
+  repair jobs, Crafting-charter guilds taking crafter bots first, a bot guild's bank buying materials and raid potions,
+  bot-to-bot guild orders.
 - Ported: nothing (the forks had no player commerce; the per-pair discount is an idea from mod-playerbots, no code
   taken). Tests only: nothing here has been seen in game.
+
+### WP8 The full bot trade (owner 2026-11-16: "It should be built out fully, look pretty and have functionality to the fullest")
+
+The design doc said "No trade windows with bots"; WP8 built player trade with crafter gamebots anyway, and asked whether to
+keep it the owner chose to build it out. **Off by default** with WP8's own switches (`bot_crafters` and
+`bot_crafter_commerce`; the guild parts also `bot_crafting_social`); no new setting. Only autonomous gamebots trade (a `/bot`
+companion never does: a drop on it falls through to its own handling), only real players start a trade. Tests only: nothing
+here has been seen in game.
+
+- **Any gamebot trades, both ways, in the client's own window** (`craft/economy/commerce/BotTrades.cs`, the pure terms in
+  `BotTradeTerms.cs`, the window `BotTradeWindow.cs`, rewritten from WP8's one-way one). Open it as with a player: drop an
+  item or coin on the bot, `/tradewindow` with it targeted, or "trade me" / "buy 2" by tell. Titled "Trading with <bot>".
+  - **Buy:** the bot lists what it would part with, numbered, in the system window ("[Aldwyn sells] 1. Studded Vest (96%,
+    level 23): 1 gold, 20 silver"): a crafter's own stock at its tell quote, spare loot and gear in its bag
+    (`AutonomousBotEconomy.FindPlayerTradeGoods`: never worn gear, its operational loadout, an upgrade it would wear, its
+    materials or a reserved piece) at the price index's ask, and its own Realm Exchange listings at their posted price
+    ("buy" takes the listing back off the Exchange into its bag, `ECON_RECLAIM`). "buy <n>" puts the piece on its side.
+  - **Sell:** the bot wants a piece that fills a gap or beats what it wears (`AutonomousBotEconomy.TryGetEquipmentUpgrade`,
+    WP6's set score: the same test as every purchase), the best one per slot; it bids the price index's bid (the keen mood for
+    an empty slot) and never more than its purse share (WP6's Exchange budget, 80% of its purse); short of that it offers what
+    it can spare and says so. A piece for one of its own open craft orders (it is the buyer, not made yet) calls the order off:
+    the escrow comes back to its purse (`CraftOrder`) and pays the player. It refuses anything else with the reason, and a
+    refused piece keeps it from accepting (nothing is taken for free). What it buys it wears at once through the no-undress
+    guard (`TryEquipOwnedUpgrade`).
+  - **Swap:** both at once, the coin settles the difference either way; an even swap moves no coin.
+  - **Jobs:** the window's Repair box with one piece (the material skill at the item's craft level, the trade window's 100%
+    rule as for a player; half the smith's price under the Repair upkeep setting; refunded when the roll fails) and the Combine
+    box with the player's crafted piece and gems (a bot spellcrafter, `SpellcraftRules.CheckImbue` with its skill; never past
+    the item's imbue points, so nothing explodes; 10% of the gems' value, at least 1 silver a gem). The item stays in the
+    player's bag.
+  - **Commissions** (WP8) come through the same window: a piece paid up front shows "already paid", one paid on delivery its
+    price.
+  - The bot accepts by itself when the terms hold ("<bot> has accepted the trade.", a player's words); any change takes it
+    back; everything moves at once when the player accepts, or nothing does. Exactly what is owed is taken, never more.
+- **A busy bot** (decided here): dead, fighting (or its group is), casting, or on a raid, siege or battleground duty, it says
+  so in its own voice and no window opens. Anything else (between pulls, travelling, a break) is the player's to interrupt:
+  the bot stops, faces the player and trades for up to two minutes (`BotBrain`: `BotTrades.HoldsStill`, closed on the game
+  loop); a fight, the player walking off or the two minutes close the window. The bots' own selling stays at natural task
+  breaks; a crafter's stock is now offered mid-task too when the player asks (`CrafterTalk.CrafterFacts.FreeToTrade`).
+- **Want-to-buy in /trade:** a gamebot whose gear check finds a gap now and then posts it at a task break ("wtb chain chest
+  piece lvl 25, paying up to 2g, pst"), with a real player in the realm, at most one a realm in 8 minutes, scaled by
+  `bot_crafter_chat_rate`. (WP6's own want-to-buy orders never reach the board: `BotGearPipeline` posts them with no
+  crafter and WP5's `TryAdd` refuses that, so they count as `wtb_refused`; the gap is the demand here. Left for WP6's owner.)
+- **The voice:** `bot_trade.lines` (new kind `trade_reply` for every personality, and the want-to-buy adverts as kind
+  `trade` with `@needs wants_gear`); every number is said in the system window in fixed words, never by a line.
+  `corpus.json` rebuilt with `build_corpus.py`.
+- **The original client:** its own trade window, no client change. The bot's side shows its real pieces (their delve as any
+  item) and the coin it pays (`PartnerTradeMoney`); the system window has each piece's price or the bot's reason, the total,
+  what the bot waits for and its acceptance. PacketLib168 names a bot partner too (it read `Partner.Name`, null for a bot).
+- **The new client (0.37c) had no trade window; it has one now**, as content patches of two shipped scripts (the installer
+  cannot add a script or a global class): `net/server.gd` reads the TradeWindow packet (0xEA, which the 0.37c network
+  client leaves undecoded) and the trade's system lines, and `ui/merchant_window.gd` holds the window as an inner class,
+  built beside the merchant window. A granite window like the companion windows, titled as the server says ("TRADING WITH
+  ALDWYN"); the bot's offer and yours, six rows each with icon, name, quality and level and the delve as the hover box
+  (trade window items, DetailRequest 7); the coin the bot pays and yours, with gold / silver / copper fields and SET; the
+  bot's word in green when it has accepted, red when it waits; its last three terms lines; its goods with a BUY button each
+  (wheel scrolls); REPAIR and COMBINE toggles; ACCEPT (on only when the bot has accepted) and CANCEL. Drag items from the
+  backpack onto it; click one of yours to take it out. Every button is a `/tradewindow` command (the 0.37c network client has
+  no ModifyTrade packet). `tests/trade_probe.gd` checks it with the real interface (20 checks), run by
+  `tools/newclient-compat/installed_check.py` (CI job `new-client`); run here on Godot 4.7.2: 95 scripts compile, all checks
+  pass (tests only: placeholder art).
+- **Guilds (8b, `bot_crafting_social`):** Crafting-charter bot guilds take crafter gamebots first when placing members
+  (`AutonomousBotGuildPlanner.Candidate.Crafter`); a gamebot commissioning a piece asks a crafter of its own guild first
+  (WP5 `PickCrafter`) and pays it the materials only, and a Crafting-charter bank pays the waived fee at the hand-over
+  (`CraftingDrama.BankFee`); a Crafting-charter bank pays its crafters' materials while it holds ten times the price
+  (`AutonomousBotCrafting.TryBuy`); a Raiding-charter bank buys a heal draught for each raider of level 40+ at a merchant
+  visit, up to two carried (also needs WP7's `bot_upkeep`). A player's guild bank is never spent. All in
+  `BotGuildCommerce.cs`.
+- **Every coin move names its kind:** coin between player and bot in the window `PlayerTrade` (a transfer within the
+  supply); an order's escrow back to the bot `CraftOrder`; bank to member `Guild` (a transfer), then member to merchant
+  `CraftMaterials` or `Potion`. Residual 0 on every path in the tests.
+- **Logs:** `ECON_PLAYER_TRADE` (new: outcome=open|refused|closed|done, the coin each way, pieces, job), `ECON_PLAYER_SELL`
+  (a piece a bot bought, its order if any), `ECON_PLAYER_DELIVERY` (a piece a bot sold, source=stock|bag|listing),
+  `ECON_SC_JOB` (job=repair|spellcraft, result), `ECON_GUILD_SPEND` (what=crafter_fee|materials|raid_potion).
+- **Seams in other packages' files (small):** WP0 `EconomyLog` (the new tag); WP5 `AutonomousBotCraftOrders` (`PreferCrafter`,
+  `GuildPrice`, `BotOrderDelivered`); WP4 `AutonomousBotCrafting.TryBuy` (the bank's materials); WP4 `BotCrafterVoice.SendTrade`
+  internal; WP6 `AutonomousBotEconomy.FindPlayerTradeGoods`; the guild planner and `AutonomousBotRealmGuilds` (crafters
+  first); `BotBrain` (the hold); `PacketLib168` (the title).
+- **Rehearsal:** `WP8Commerce.cs` now also trades with any agent on the pure terms: the stand-in player sells a piece for a
+  gap (empty, or a band behind) at the eager bid within the purse share, and buys loot from bags at the ask. The aged realm of
+  300 bots for a day: 18 pieces sold to bots (13.5 gold), 5 bought from bags (7.5 gold); every gate passed, residual 0 (a
+  rehearsal, not a game).
+- **Tests:** `UT_BotTrade` (32: the terms, buy, sell, purse share, swap, refusals, the busy rule and the hold, a companion,
+  the switch, repairs, spellcraft, a bot's own order filled, a commission through the window, the command, the corpus, the
+  want-to-buy text, stock mid-task, a scripted session end to end, the guild placement, guild orders and banks), plus
+  `UT_CommerceRehearsal`'s new metrics. Ported: nothing. Tests only.
 
 ## 1.2.1 (in development)
 
