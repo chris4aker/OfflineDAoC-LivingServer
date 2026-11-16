@@ -268,11 +268,7 @@ namespace DOL.GS
                 if (ConditionPercent > 70 && Util.Chance(ServerProperties.Properties.ITEM_CONDITION_LOSS_CHANCE))
                 {
                     int oldPercent = ConditionPercent;
-                    int con = GameObject.GetConLevel(player.Level, Level);
-                    int sub = con + 4;
-
-                    if (oldPercent < 91)
-                        sub *= 2;
+                    int sub = ConditionLoss(player.Level, Level, oldPercent);
 
                     // Subtract condition
                     Condition -= sub;
@@ -309,11 +305,7 @@ namespace DOL.GS
                 if (ConditionPercent > 70 && Util.Chance(ServerProperties.Properties.ITEM_CONDITION_LOSS_CHANCE))
                 {
                     int oldPercent = ConditionPercent;
-                    int con = GameObject.GetConLevel(player.Level, Level);
-                    int sub = con + 4;
-
-                    if (oldPercent < 91)
-                        sub *= 2;
+                    int sub = ConditionLoss(player.Level, Level, oldPercent);
 
                     // Subtract condition
                     Condition -= sub;
@@ -334,6 +326,30 @@ namespace DOL.GS
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// The condition a weapon or armor piece loses on one wear roll, the player rule of OnStrikeTarget and
+        /// OnStruckByEnemy: the con of the item's level to its wearer's, plus 4, doubled below 91%. Crafting 2.0 WP7
+        /// wears autonomous gamebots' gear by the same rule (CraftingEconomy.BotGearWear).
+        /// </summary>
+        public static int ConditionLoss(int wearerLevel, int itemLevel, int conditionPercent)
+        {
+            // ConLevels directly (what GameObject.GetConLevel calls), so the pure rule runs without a server (the rehearsal).
+            int sub = ConLevels.GetConLevel(wearerLevel, itemLevel) + 4;
+            return conditionPercent < 91 ? sub * 2 : sub;
+        }
+
+        /// <summary>
+        /// Crafting 2.0 WP7: a gamebot's weapon or armor piece was used (a swing, a hit taken, a harmful spell cast).
+        /// A bot's saved items load as plain inventory rows, so OnStrikeTarget and OnStruckByEnemy never reach them;
+        /// this wears them by the player rule while bot_upkeep is on. Autonomous gamebots only: companions and real
+        /// players are never touched here (a player's own gear keeps wearing through the instance methods above).
+        /// </summary>
+        public static void OnBotItemUsed(GameLiving owner, DbInventoryItem item)
+        {
+            if (owner is GameBot bot && item != null)
+                CraftingEconomy.BotGearWear.Wear(bot, item);
         }
 
         /// <summary>

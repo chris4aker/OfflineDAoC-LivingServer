@@ -369,6 +369,64 @@ PC. Every default is the server's own (`CraftingEconomyProperties`, `ServerPrope
 - Tests: `CraftingEconomyLauncherTests` (economy page, purge, kit), `SocialExpansionSettingsTests.EconomyRowsAreSavedReadAndChecked`,
   `HeraldPageTests.TheHeraldListsTheTopCraftersOfEachOrder` (CI's Living Server tab step), and
   `source/tools/tests/test_release_economy_tables.py`.
+### WP7 Sinks (wear, repairs, potions, poisons, siege supply, luxury, the governor)
+
+**Off by default**: `bot_upkeep`, `bot_luxury_spending` and `bot_siege_supply` are all off (owner, plan 5.7), and each
+needs `bot_crafters` too, as its setting says; with them off the server behaves as before. Autonomous gamebots only:
+companions (/bot), Epic Special Force visitors and real players are never touched (players keep WP3's `player_upkeep`).
+Buying and repairing happen only at a natural task break, at the merchant the break already visits.
+
+- **Gear wears** (`bot_upkeep`). A gamebot's weapon wears on its swings and harmful spells and its armor on the hits it
+  takes, exactly as a player's: the 5% roll (`item_condition_loss_chance`), the con-based amount (now one shared
+  formula, `GameInventoryItem.ConditionLoss`; the player's code calls it and is otherwise unchanged), doubled below 91%,
+  never below 70%. Three one-line hooks in shared files call it (`GameLiving.OnArmorHit`, `WeaponAction.MakeAttack`,
+  `SpellHandler.FinishSpellCast`), because a bot's saved items load as plain rows that the player hooks never reach.
+- **The repair errand.** Below 88% a gamebot that can pay goes to a merchant at its next task break (a town-visit need);
+  there everything below 90% is repaired, worst first: with its own crafting skill first (a crafter), then at the nearer
+  of a smith or a crafter gamebot of its realm that repairs the piece every time (the crafter is paid). The price and the
+  durability follow the player's upkeep mode (light by default: half the smith's price, no durability lost), so a bot
+  repairs as a player does on this server. One errand every 30 minutes.
+- **Potions.** A gamebot drinks the draughts it carries (heal at 35% when hit and not casting or swinging; after a kill
+  with an add on it, heal at 50%, power or endurance at 20%), with the item's shared timer and charges. A rich gamebot of
+  level 20+ keeps one heal draught (two when very rich), bought from a real merchant near its merchant. Two one-line
+  hooks in `GameBot` (attacked, enemy killed).
+- **Paid poisons.** An assassin gamebot's coat now comes out of a real vial in its bag, one vial a coat; vials of its
+  best damage and debuff coats are bought below 20 up to 60, at a real poison merchant near it, at the merchant's pack
+  price per vial. No vial, no coat, as for a player. Companions, and everything with the switch off, keep the free coat.
+  The draughts and vials it bought are never sold, listed or cleared from a full bag.
+- **Siege supply** (`bot_siege_supply`). Siege engines and field repair kits a gamebot buys are supplied by a siegecrafter
+  gamebot of its realm (skill 100+) when there is one, at 80% of the merchant price; the crafter keeps the margin over
+  its materials (half the merchant price). Otherwise the merchant, as before. The engine purchase in
+  `AutonomousWorldBotController.Siege.cs` calls it (a two-line change).
+- **The luxury sink** (`bot_luxury_spending`). A rich gamebot (above 100 gold a level) spends at a task break up to 2% of
+  its surplus, times its realm's governor intensity, at least 1 gold: first on fine draughts it drinks (up to two more
+  than the upkeep keeps), then on the town's services (board, drink and a bard; the coin leaves the world).
+- **The money-supply governor** (with `bot_luxury_spending`). Every hour it reads WP2's ledger row of each realm (the
+  bots' coin and every faucet and sink of the hour, so it treats the sinks as a whole: dye, which the owner's PC ledger
+  showed as by far the biggest sink, counts like any other) and keeps the supply's growth inside the band the
+  rehearsal's gates use (400% a week aged, 100 gold a bot-hour fresh), aiming at half of it. Its levers: the luxury
+  intensity per realm (0-1, starting at 0, at most 0.2 a step) and, while a realm is over the limit, WP5's commission
+  multiplier (halved). Off: the multiplier goes back to 1.
+- **Every coin move names its kind** (Repair, Potion, Poison, Siege, RepairKit, Luxury), so the ledger stays balanced.
+- **Logs** (hourly per realm unless noted): `ECON_WEAR` (wear rolls, condition lost, pieces gone below 88%, pieces
+  repaired, repair copper, paid to crafters), `ECON_REPAIR` (one per errand, with True165's BOT_REPAIRED_165 keys
+  own_skill, paid, copper, by), `ECON_CONSUMABLE` (draughts bought and drunk, vials bought, coats, coat checks without a
+  vial), `ECON_LUXURY`, `ECON_SIEGE_SUPPLY`, `ECON_GOVERNOR` (one per realm and hour: ratio, smoothed, luxury,
+  commissions). Per-purchase lines with `econ_trade_lines`.
+- **The rehearsal** runs the wear, the repairs, the draughts, the vials, the luxury and the governor on WP7's code
+  (`Tests/Rehearsal/Adapters/WP7Sinks.cs`; siege supply is not rehearsed, the rehearsal has no sieges). An aged world of
+  3 realms and 1,000 bots each, a week, with every WP7 switch on, against the same world with them off (WP7 on
+  integration/1.2 at 928005396): repairs 4,099 pieces for 414 gold (the period wear is slow: a worn piece lost about 11%
+  condition in the week), 30,081 heal draughts for 69,779 gold, 914,297 poison vials for 33,849 gold (118,722 coats went
+  without a vial), luxury 6,366 gold. The money supply ended at 45,009,888 gold with the sinks on against 45,052,925 off
+  (83.7% against 83.9% a week; gate 400%), so the governor, aiming at half the gates' wide band, kept the luxury at
+  about 0; with a tight band (2% a week) a day's growth fell from 64.6% to 3.9% a week. Every gate passed but WP6's
+  no-undress gate, which failed with the sinks off too (41 off, 47 on). Tests only: a rehearsal, not a game.
+- Ported: the gear wear and the repair from shadowofze (ItemWear165, 36358de and 2e4212e), via True165, GPL-3.0; the
+  repair errand at 88% from shadowofze (TownErrands165, 36358de), via True165, GPL-3.0; the potions from shadowofze
+  (BotPotions165, e7f6f8d and 2e4212e), via True165, GPL-3.0, with its unit tests (UT_BotPotions165, UT_RepairErrand165).
+  Ours: autonomous gamebots only behind `bot_upkeep`, the seams, the player's upkeep price for bots, the paid poisons,
+  the siege supply, the luxury sink and the governor. Tests only: nothing here has been seen in game.
 
 ## 1.2.1 (in development)
 

@@ -1916,6 +1916,7 @@ namespace DOL.GS
             base.EnemyKilled(enemy);
             if (IsAutonomousWorldBot)
                 AutonomousLivingServer.OnBotKilled(this, enemy);
+            DOL.GS.CraftingEconomy.BotPotions.AfterKill(this); // Crafting 2.0 WP7: a draught with an add still on (bot_upkeep)
         }
 
         public override void GainExperience(GainedExperienceEventArgs arguments, bool notify = true)
@@ -3333,6 +3334,8 @@ namespace DOL.GS
             BotBrain.NotifyNearbyGroupBots(this, ad);
             AutonomousBotSchedule.OnAttacked(this);
             base.OnAttackedByEnemy(ad);
+            if (HealthPercent <= DOL.GS.CraftingEconomy.BotPotions.HealWhenHitPercent)
+                DOL.GS.CraftingEconomy.BotPotions.OnAttacked(this); // Crafting 2.0 WP7: an emergency heal draught (bot_upkeep)
         }
 
         #endregion
