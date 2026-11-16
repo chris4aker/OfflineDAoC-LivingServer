@@ -1,0 +1,106 @@
+{
+  "about": "The economy rehearsal's calibration (Crafting 2.0 WP10). Measured numbers are docs/CRAFTING-M0-FINDINGS.md section 4 (the owner's 0.37b test world: database snapshots of 2026-11-09/11 and the PC logs of 2026-11-14/15, about 3,080 bots); every other number is marked assumed with where it came from. Aggregates only; no player data. Copper throughout (1 gold = 10,000 copper).",
+  "source": "CRAFTING-M0-FINDINGS.md 4 (integration/2.0 @ c58ea66e1 code, 0.37b test world); assumptions as marked",
+  "bands": [
+    { "name": "1-20",  "minLevel": 1,  "maxLevel": 20, "soloKillsPerHour": 34.7, "groupKillsPerHour": 19.8, "measured": false, "note": "assumed: the 21-30 rates (M0 has no sample below 21)" },
+    { "name": "21-30", "minLevel": 21, "maxLevel": 30, "soloKillsPerHour": 34.7, "groupKillsPerHour": 19.8, "measured": true,  "note": "M0 4: median kills/hour, 45 solo and 75 group bots" },
+    { "name": "31-40", "minLevel": 31, "maxLevel": 40, "soloKillsPerHour": 44.9, "groupKillsPerHour": 21.0, "measured": true,  "note": "M0 4: 113 solo, 53 group bots" },
+    { "name": "41-49", "minLevel": 41, "maxLevel": 49, "soloKillsPerHour": 61.9, "groupKillsPerHour": 21.0, "measured": true,  "note": "M0 4: 24 solo bots; group had one bot, the 31-40 group rate is used (assumed)" },
+    { "name": "50",    "minLevel": 50, "maxLevel": 50, "soloKillsPerHour": 31.8, "groupKillsPerHour": 25.4, "measured": true,  "note": "M0 4: 525 solo, 475 group bots" }
+  ],
+  "coin": {
+    "formula": "2 + (L+1)^3/8 copper, plus up to half again, x money_drop (LootGeneratorMoney; M0 4)",
+    "base": 2,
+    "cubeDivisor": 8,
+    "extraUpTo": 0.5,
+    "moneyDrop": 1.0,
+    "monsterLevelOverBot": 0,
+    "monsterLevelAt50": 52,
+    "measured": true,
+    "grossGoldPerHourSolo": { "21-30": 9.5, "31-40": 33, "41-49": 94, "50": 74 },
+    "grossNote": "M0 4, the two rows above multiplied; the rehearsal reports its own gross rate per band against these"
+  },
+  "groups": {
+    "shareOfTasksGrouped": 0.45,
+    "groupSize": 3,
+    "measured": false,
+    "note": "assumed: M0 4 sampled 528 group and 707 solo PvE bots (about 0.43 grouped); the group size is a guess. A group kill's coin is split between the members."
+  },
+  "loot": {
+    "rogSoloChance": 0.24,
+    "rogGroupChance": { "upTo27": 0.14, "upTo40": 0.11, "over40": 0.08 },
+    "rogNote": "measured in code: AtlasMobLoot 14% + 10% solo bonus; group per member 14% minus 3 above 27 and 3 more above 40 (persona_sim data check 2026-10-11)",
+    "rogQualityMin": 85,
+    "rogQualityMax": 100,
+    "rogUtilityPerLevel": 0.9,
+    "rogUtilityFloor": 15,
+    "rogUtilityNote": "assumed from CapUtility: about (level - 7) x 0.8-1.05, floor 15 (persona_sim)",
+    "trashVendorShareOfCoin": 0.10,
+    "trashNote": "assumed: plain loot sold to a vendor at a task break, as a share of the kill coin (persona_sim's vendor_loot was about 0.12 of hunting income)",
+    "bagSlots": 40
+  },
+  "shopping": {
+    "exchangeAttemptsPerBotHour": { "1-49": 0.0036, "50": 0.081 },
+    "vendorAttemptsPerBotHour": 0.0175,
+    "servicePurchasesPerBotHour": 0.0029,
+    "measured": true,
+    "note": "M0 4: per hour 99 Exchange buys (93% by level 50s), 54 vendor buys, 9 merchant-service buys for about 3,080 bots, of which about 37% are level 50 (database sample). In the rehearsal these are attempts; a bot buys only an affordable upgrade, so its realized rates are reported against the observed ones.",
+    "servicePriceCopper": 2000,
+    "servicePriceNote": "assumed: a dye or similar service (AutonomousBotCosmetics buys real dye templates; 20 silver is a guess)",
+    "listingDispositionMin": -0.35,
+    "listingDispositionMax": 0.50,
+    "listingHours": 24,
+    "listingNote": "measured in code: RollListingPrice -0.35..+0.50; an unsold bot listing is deleted after 24 h (RealmExchangeExpiry, the WP0 seam's default)"
+  },
+  "travel": {
+    "ticketsPerTaskBreak": 0.25,
+    "ticketPriceCopper": 500,
+    "measured": false,
+    "note": "assumed: a stable ticket on a quarter of task breaks at 5 silver (not logged; M0 4 'not measurable')"
+  },
+  "time": {
+    "taskMinutesMin": 30,
+    "taskMinutesMax": 90,
+    "townBreakMinutesMin": 15,
+    "townBreakMinutesMax": 30,
+    "measured": false,
+    "note": "town breaks 15-30 minutes x the personality's length factor and chance (AutonomousBotPersonality, in code); task length assumed"
+  },
+  "leveling": {
+    "hoursToLevelBase": 0.045,
+    "hoursToLevelGrowth": 1.135,
+    "groupXpFactor": 1.15,
+    "measured": false,
+    "note": "assumed: living_world_sim.py's hours_to_level(L) = 0.045 x 1.135^L at bot_xp 1.0 (living-world/trade-sim), about 186 hours from 1 to 50"
+  },
+  "agedWorld": {
+    "levelShares": [
+      { "minLevel": 1,  "maxLevel": 20, "share": 0.15, "medianPurseGold": 20,    "measured": false },
+      { "minLevel": 21, "maxLevel": 30, "share": 0.10, "medianPurseGold": 119,   "measured": true },
+      { "minLevel": 31, "maxLevel": 40, "share": 0.13, "medianPurseGold": 262,   "measured": true },
+      { "minLevel": 41, "maxLevel": 49, "share": 0.02, "medianPurseGold": 1246,  "measured": true },
+      { "minLevel": 50, "maxLevel": 50, "share": 0.60, "medianPurseGold": 11521, "measured": true }
+    ],
+    "purseSpread": 0.6,
+    "note": "M0 4: purses at the 11-09 snapshot (the level 50 median includes the launcher's 10,000 gold); level shares from the kill-speed sample counts, 1-20 assumed; the spread (lognormal sigma) is assumed"
+  },
+  "observed": {
+    "lootUpgradesPerBotHour": 0.080,
+    "netPurseGoldPer56h": { "21-30": 21, "31-40": 42, "41-49": 359, "50": 129 },
+    "note": "M0 4, for comparison only: 245 loot upgrades an hour for about 3,080 bots; the median net purse change over 56 wall-clock hours (server uptime unknown, so it is a lower bound on any hourly rate)"
+  },
+  "crafting": {
+    "capitalGainBonus": 0,
+    "sellRatioPercent": 50,
+    "reinvestShareOfPurse": 0.5,
+    "legendarySkill": 1000,
+    "titleEvery": 100,
+    "note": "the WP0 rules stand-in (Adapters/WP0CraftRulesStandIn.cs): player pace, a session per town break; the capital bonus (GamePlayer.CraftingSkillBonus) is assumed 0; item_sell_ratio is the server default 50"
+  },
+  "gates": {
+    "supplyGrowthWeekPercentMax": 400,
+    "supplyGrowthPerBotHourGoldMax": 100,
+    "orderWaitMedianMinutesMax": 120,
+    "note": "the plan's gates (CRAFTING-2.0-BUILD-PLAN 3.2 of the planner's plan). Supply growth: an aged world may grow by at most this percent in a week; a fresh world (supply near 0) by at most this much gold per bot-hour. Both are wide on purpose until WP2's soak measures the real net rate; tighten them then."
+  }
+}
