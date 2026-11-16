@@ -468,7 +468,7 @@ only its own row. "Tests only" means automated tests; nothing counts as working 
 | Package | Status | Seen in game |
 |---|---|---|
 | WP0 Foundation (rules, contracts, seams, tables, settings, log format) | Built on `craft/wp0-foundation`, into `integration/2.0`. Changes no behaviour: every seam's default is today's code; no setting is read yet. Tests only | Nothing to see |
-| WP1 Crafting core and M0 fixes | Not started | — |
+| WP1 Crafting core and M0 fixes | Built on `craft/wp1-core`, into `integration/1.2`. Players: every craft number from `CraftRules`/`SpellcraftRules`; pace (`crafting_skill_rate` 1), classic quality and losses (off), repairs keep durability under light upkeep; upstream spellcraft and salvage fixes; the start-up recipe catalog and its `CRAFT_RECIPE_AUDIT`/`CRAFT_RECIPE_BROKEN`/`CRAFT_WORLD_AUDIT` lines. Tests only | Not yet: the audit lines in a start-up log, a craft at pace 2+, a refused fifth gem |
 | WP2 Economy ledger | Not started | — |
 | WP3 Player side (M1) | Not started | — |
 | WP4 Bot crafters (M2) | Not started | — |

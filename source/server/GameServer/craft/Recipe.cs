@@ -130,6 +130,8 @@ namespace DOL.GS
         SkillType,
         /// <summary>A weapon or armor slot product with the generic object type: a statless shell nobody can repair.</summary>
         ProductUnusable,
+        /// <summary>The recipe id is not a 16-bit number, so the client can never ask for it (RecipeCatalog, WP1).</summary>
+        RecipeIdInvalid,
     }
 
     public class RecipeDB

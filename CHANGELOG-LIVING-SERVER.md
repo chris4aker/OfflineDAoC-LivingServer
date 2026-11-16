@@ -42,6 +42,46 @@ seam's default is today's code, and the new tables are created empty.
   (93c25b69, ceac061a), via DividedRealms, GPL-3.0; the coin-flow kinds and the `crafting_skill_rate` key from
   shadowofze (a8c793e, 00f9fbf), via True165, GPL-3.0.
 
+### WP1 Crafting core and the M0 fixes
+
+For **real players** on the original client; gamebots and companions craft nothing yet (WP4). Tests only: nobody has
+crafted with this build in game.
+
+- **One set of crafting rules.** Every number of a craft (con, chance to make, chance to gain with the capital bonus,
+  crafting time, quality, secondary skills and their required levels, salvage yield, repair chance) now comes from `CraftRules` and
+  `SpellcraftRules`, which WP0 copied from the old code; the old methods are one-line delegations, so a gamebot crafter
+  will roll exactly as a player does. DividedRealms' `ChanceToMakeAt`, `BaseChanceToGainAt`, `QualityAt` and
+  `CraftingTimeAt` stay as delegations, so its bot crafting ports unchanged.
+- **Player crafting pace** (`crafting_skill_rate`, default 1 = classic): a won skill gain gives that many points to the
+  trade and its secondary skills, never past a cap (secondaries stop at 1,300); the gain chance and the grey rule are
+  unchanged, and a gain of several points no longer steps over a crafting title (announced from the crafts' gain code,
+  not `GamePlayer`, which is WP3's). From shadowofze (00f9fbf), via True165, GPL-3.0.
+- **Classic options, both off by default.** `crafting_classic_quality`: 94-99% with a 1% masterpiece chance at any skill
+  (2% at 1000 or on a grey recipe), the pre-1.87 roll; the odds are from memory of the live game, not a dated source.
+  `crafting_classic_losses`: a failed craft uses up its materials, and a spellcraft explosion destroys the item as well
+  as the gems.
+- **Repairs and the upkeep setting** (`player_upkeep`, default light, the design's decision 5): only the classic upkeep
+  spends durability on a repair; light and free restore the condition without wearing the item out. **This is the one
+  default a player can notice**: with the default, repairs stop spending durability. `player_upkeep classic` keeps the
+  old rule. The smith's price is WP3's.
+- **Spellcraft fixes from upstream OpenDAoC.** An item can no longer take a fifth bonus (the count check let one through),
+  and focus gems go on staves only. From Baptiste Marie (b62885a86, aa8b5232b), via rambodolphin13's DividedRealms
+  (a3f3e4b8, 60d3a4fb), GPL-3.0. The combine check is now `SpellcraftRules.CheckImbue`, the same for players and bots.
+- **Salvage fixes from upstream OpenDAoC.** Null checks in the salvage timer, siege weapon salvage on a 10-second timer
+  that the weapon must survive, materials topped up into partial stacks; merged by hand with our own fix that a magical
+  item counts as cloth only for the calculation (c7ee233d0). Ours on top: a salvage whose materials do not fit in the
+  backpack drops the rest on the ground (the item is already gone), and an item with no craft level no longer divides
+  by zero. From Baptiste Marie (5302c79e9), via OpenDAoC, GPL-3.0.
+- **Crafting answers instead of failing silently.** Another realm's recipe says why it cannot be made (rambodolphin13,
+  abe7b327, via DividedRealms, GPL-3.0); an unknown recipe says so (fc6d2a95 via DividedRealms, from shadowofze's
+  4bf3b8f3e via True165, GPL-3.0; M0 had already made the lookup safe).
+- **The recipe catalog.** At start-up every recipe is loaded once in the background, ids matched without case as the
+  server matches them, each hidden by the server's own rule (M0's `RecipeDB.FindProblem`), then indexed with the
+  masters, forges, lathes, alchemy tables and the merchants of each material. The log gets one `CRAFT_RECIPE_AUDIT` line
+  per craft plus a total, a `CRAFT_RECIPE_BROKEN` line per hidden recipe and `CRAFT_WORLD_AUDIT` lines per realm
+  (DividedRealms' `AUTONOMOUS_CRAFT_CATALOG` line is still written). Nothing reads the catalog yet; WP4's bot crafters
+  will. From rambodolphin13 (93c25b69), via DividedRealms, GPL-3.0.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous

@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using DOL.GS.Crafting;
+using DOL.GS.CraftingEconomy;
 using DOL.GS.PacketHandler;
 using DOL.Language;
 
@@ -102,6 +104,12 @@ namespace DOL.GS
                 _owner.TempProperties.SetProperty(CRAFT_QUEUE_REMAINING_PROPERTY, --remainingToCraft);
                 skill.BuildCraftedItem(_owner, recipe);
                 skill.GainCraftingSkillPoints(_owner, recipe);
+            }
+            else if (CraftRules.FailureCostsMaterials(CraftingEconomyProperties.CRAFTING_CLASSIC_LOSSES) && skill.RemoveUsedMaterials(_owner, recipe))
+            {
+                // crafting_classic_losses (off by default; Crafting 2.0 WP1): the era's failure used up the materials.
+                _owner.Out.SendMessage(AbstractCraftingSkill.Text(_owner, "AbstractCraftingSkill.MakeItem.LoseMaterials", "You fail to make the {0}, and lose your materials!", recipe.Product.Name), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                _owner.Out.SendPlaySound(eSoundType.Craft, 0x02);
             }
             else
             {

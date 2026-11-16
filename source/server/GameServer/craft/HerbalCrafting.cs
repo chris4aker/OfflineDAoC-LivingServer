@@ -42,7 +42,7 @@ namespace DOL.GS
 			{
                 if (player.GetCraftingSkillValue(eCraftingSkill.HerbalCrafting) < subSkillCap)
                 {
-                    player.GainCraftingSkill(eCraftingSkill.HerbalCrafting, 1);
+                    GainRatedPoints(player, eCraftingSkill.HerbalCrafting, subSkillCap);
                 }
 				player.Out.SendUpdateCraftingSkills();
 			}
