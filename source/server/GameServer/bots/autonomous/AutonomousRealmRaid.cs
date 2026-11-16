@@ -1071,6 +1071,8 @@ namespace DOL.GS
             raid.ProgressNamed = named;
             raid.ProgressWipes = wipes;
             raid.ProgressTarget = name;
+            // The first-hour trash clear is progress (owner, 2026-11-16): the stall clock starts when it ends.
+            if (raid.DungeonRoute?.ClearingTrash(now) == true) raid.LastProgressTick = now;
             return RealmRaidRecruitmentPolicy.Stalled(!raid.Clocked, now, raid.LastProgressTick);
         }
 
