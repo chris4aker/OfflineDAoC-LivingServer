@@ -338327,6 +338327,1223 @@
    "id": "16d46530e1fa"
   },
   {
+   "kind": "craft_reply",
+   "topic": "craft_summary",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{title}, {skill} {recipe}. i can do {item}, up to lvl {level}. {stock}",
+   "id": "957b9150e1b7"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_summary",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "im {skill} {recipe}. best i do is {item}, lvl {level} tops. {stock}",
+   "id": "214b544eab12"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_summary",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{recipe} {skill}, so {item} up to lvl {level}. {stock}",
+   "id": "95f0afc6ddc2"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_summary_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{title} here, {skill} {recipe}. i make {item} up to lvl {level}. {stock}",
+   "id": "a319d94e47f0"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_summary_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{skill} {recipe}, i can do {item} up to lvl {level}. {stock}, pst if you want any",
+   "id": "16a04f166411"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "can do the {item} (lvl {level}) for {price}, ready in {when}, {terms}. deal?",
+   "family": "862072a700",
+   "id": "cb8cf4e277c7"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "can do the {item} (lvl {level}) for {price}, ready in {when}, {terms}. want it?",
+   "family": "862072a700",
+   "id": "b0b307d646a3"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "i can make the {item} (lvl {level}) for {price}, ready in {when}, {terms}. deal?",
+   "family": "862072a700",
+   "id": "56737dbbe0d9"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "i can make the {item} (lvl {level}) for {price}, ready in {when}, {terms}. want it?",
+   "family": "862072a700",
+   "id": "278536d91826"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} lvl {level}, {price}. ready in {when}, {terms}. deal?",
+   "id": "731712553151"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sure, {item} for {price}. ill have it in {when}, {terms}. ok?",
+   "id": "be160f6b4813"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote_set",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} lvl {level}, {count} pieces for {price} all in. ready in {when}, {terms}. deal?",
+   "id": "d339b177e19f"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_quote_set",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "can do the {item} (lvl {level}), {price} for the lot, ready in {when}, {terms}. want it?",
+   "id": "2c156ad9f567"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "got a {stock} at {quality}%, {price}. {terms}",
+   "family": "27a796665e",
+   "id": "74c8bece055a"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "have a {stock} at {quality}%, {price}. {terms}",
+   "family": "27a796665e",
+   "id": "6df55a089f23"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{stock}, {quality}% quality, {price}. {terms}",
+   "id": "cf901b98eb83"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock_meet",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sure, {terms} and ill trade it to you",
+   "id": "09a5e2a3d34b"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cant make that, my {recipe} is {skill}",
+   "id": "92e45cda326b"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nah, cant do that one. {recipe} is only {skill}",
+   "family": "1e61051bde",
+   "id": "4231939e605f"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "sorry, cant do that one. {recipe} is only {skill}",
+   "family": "1e61051bde",
+   "id": "c9b9055fcfe6"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant_level",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "my {recipe} is only {skill}, lvl {level} is the best i do right now",
+   "id": "2c8e355c9253"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant_level",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not that high yet, {skill} {recipe}. lvl {level} is my limit",
+   "id": "33970fd1550c"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_not_mine",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not my trade, i do {recipe}",
+   "id": "36bd94ee294d"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_not_mine",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "i only do {recipe}, try someone else for that",
+   "family": "a86f57f1f7",
+   "id": "2cf52bcce9f1"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_not_mine",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "im {recipe}, try someone else for that",
+   "family": "a86f57f1f7",
+   "id": "834f1ab4cce9"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ask_what",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sure, what do you need made?",
+   "id": "157d15631494"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ask_what",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "yep, what are you after?",
+   "id": "c0ac45e17345"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ask_what",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "whatcha need?",
+   "id": "2fad9d1b7148"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deal",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "deal. ill make the {item} at my next break, ready in {when}. pay when i hand it over",
+   "id": "d0b6f17e1680"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deal",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "ok, deal. {item} in {when}, pay me when i hand it over",
+   "family": "d43d4a9b26",
+   "id": "5aa685e09e9f"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deal",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "cool, deal. {item} in {when}, pay me when i hand it over",
+   "family": "d43d4a9b26",
+   "id": "f0313bc42816"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deposit",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "deal, {price} up front. drop the coin on me when youre near and ill start at my next break",
+   "id": "45d4adb4f1d7"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deposit",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, {price} first. hand it over when you find me and its on my list",
+   "id": "76ad38bcdffb"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_paid",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "got it, the {item} will be ready in {when}",
+   "id": "1737bfa0e344"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_paid",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "ty, {item} in {when}",
+   "family": "0841068f42",
+   "id": "6dc43932b940"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_paid",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "thanks, {item} in {when}",
+   "family": "0841068f42",
+   "id": "e92ca82108f5"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_accept",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, {price} for the {item}. deal?",
+   "id": "b25389978dc1"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_accept",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "fine, {price}. deal?",
+   "family": "9a522bdba3",
+   "id": "7ad346b50fc3"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_accept",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "alright, {price}. deal?",
+   "family": "9a522bdba3",
+   "id": "f9e8618f6948"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_counter",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price}, lowest i go",
+   "id": "1d2e990dbfd9"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_counter",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "meet me at {price}?",
+   "family": "19bbe2490e",
+   "id": "e1a8f227de26"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_counter",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "how about {price}?",
+   "family": "19bbe2490e",
+   "id": "6e30a6bd7f34"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cant go that low, {price}",
+   "id": "e5c144a03a62"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nah, materials alone cost more than that. {price}",
+   "family": "f14a064692",
+   "id": "41e81cfbeb62"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "no, materials alone cost more than that. {price}",
+   "family": "f14a064692",
+   "id": "c96f3a3011d8"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_walk",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "done haggling, its {price} or nothing",
+   "id": "20224a419f30"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_walk",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price}, take it or leave it",
+   "id": "1bfbe67da0da"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_declined",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "np, let me know",
+   "id": "40572d49210c"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_declined",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, ill be around",
+   "id": "e7cda8813f94"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_status",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not yet, ill make the {item} at my next break, about {when}",
+   "id": "b70798c16964"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_status",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "still on my list, the {item} should be done in {when}",
+   "id": "a23d9fed0694"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "your {item} is done, ill be in town at my break in {when}",
+   "id": "eb809c8f78de"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is ready, catch me at my break in {when}",
+   "id": "1d318597f4a5"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready_tell",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "your {item} is done, im in {zone} for a bit, come by and say ready",
+   "id": "49422a0e6c62"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready_tell",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is ready! in {zone} on a break, come get it and say ready",
+   "id": "58e9f58b4098"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_delivered",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "here you go, your {item}. enjoy",
+   "id": "45cb3feb8740"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_delivered",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "there, {item} is yours. wear it well",
+   "id": "0e84da4d9807"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_handover_trade",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "here's your {item}, {price} in the trade window",
+   "id": "838123a0136d"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_handover_trade",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is in the trade window, {price}",
+   "id": "e515b6ac2a38"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, cancelled the {item}",
+   "id": "a5b4dfb12928"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "np, the {item} is off my list",
+   "id": "da41cb26fac2"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not dealing with you, sorry",
+   "id": "e435e40cfc82"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no thanks, find another crafter",
+   "id": "20330886bcad"
+  },
+  {
    "kind": "trade",
    "topic": "crafted_stock",
    "who": [
@@ -682904,6 +684121,948 @@
      "variants": [
       "ty {name_b}. i will be nicer to the trees",
       "thanks {name_b}, nobody does the old ones like you"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_1",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "Socialite"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "ok who keeps undercutting my {recipe} at the broker. every time i post, someone posts lower an hour later",
+     "variants": [
+      "ok who keeps undercutting my {recipe} at the broker. every time i post, someone posts lower an hour later",
+      "someone keeps posting {recipe} right under mine at the broker. every single time"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "free market {name_a}. people like a better price",
+     "variants": [
+      "free market {name_a}. people like a better price",
+      "thats called competition {name_a}. look it up"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{name_b}. of course it was you",
+     "variants": [
+      "{name_b}. of course it was you",
+      "i should have known it was {name_b}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "crafter fight in faction, grabbing a snack",
+     "variants": [
+      "crafter fight in faction, grabbing a snack",
+      "ooh, crafter drama"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "im just selling my work. not my fault mine moves faster",
+     "variants": [
+      "im just selling my work. not my fault mine moves faster",
+      "my stuff sells. yours sits. thats not on me"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "yours moves because youre selling at cost. thats not a business, thats charity",
+     "variants": [
+      "yours moves because youre selling at cost. thats not a business, thats charity",
+      "you're barely covering the materials {name_b}. that's not selling, that's giving it away"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "wait, so {recipe} is getting cheaper? sounds great for the rest of us",
+     "variants": [
+      "wait, so {recipe} is getting cheaper? sounds great for the rest of us",
+      "cheaper gear for everyone? keep fighting"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "im {title} grade work at a fair price. {name_a} just doesnt like it",
+     "variants": [
+      "im {title} grade work at a fair price. {name_a} just doesnt like it",
+      "some of us price fair. {name_a} prices like a city merchant"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "i'm the {title} here, {name_b}. go practice on some more cloaks",
+     "variants": [
+      "i'm the {title} here, {name_b}. go practice on some more cloaks",
+      "i'm {title}. you're still doing practice pieces"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "{name_a} and {name_b} were friends last week i swear",
+     "variants": [
+      "{name_a} and {name_b} were friends last week i swear",
+      "werent you two sharing a forge like yesterday"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "we were. then {name_a} told half the realm my seams were crooked",
+     "variants": [
+      "we were. then {name_a} told half the realm my seams were crooked",
+      "until {name_a} told everyone my work falls apart"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "they ARE crooked",
+     "variants": [
+      "they ARE crooked",
+      "i stand by it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "this is the best thing in faction all week",
+     "variants": [
+      "this is the best thing in faction all week",
+      "someone write this down"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "fine. next time you post, i go lower again",
+     "variants": [
+      "fine. next time you post, i go lower again",
+      "watch the broker tomorrow {name_a}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "bring it",
+     "variants": [
+      "bring it",
+      "go ahead, see who runs out of coin first"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_2",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [
+      "Leveler"
+     ],
+     "class": []
+    },
+    "E": {
+     "type": [],
+     "class": []
+    },
+    "F": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "so {name_b} is buying up the materials now. merchant was out of everything i needed",
+     "variants": [
+      "so {name_b} is buying up the materials now. merchant was out of everything i needed",
+      "the merchant was cleaned out this morning. guess who bought it all"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "i needed materials. so did you, i guess. early bird",
+     "variants": [
+      "i needed materials. so did you, i guess. early bird",
+      "i got there first {name_a}. shop opens to everyone"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "round two lol",
+     "variants": [
+      "round two lol",
+      "the {recipe} war continues"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "you bought three times what you need just so i couldnt work",
+     "variants": [
+      "you bought three times what you need just so i couldnt work",
+      "nobody needs that many materials, {name_b}. you did it on purpose"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "i'm making a lot. people keep asking me instead of you",
+     "variants": [
+      "i'm making a lot. people keep asking me instead of you",
+      "i have orders. lots of them. from your old customers"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "i just want a helm that isnt held together with string, whoever makes it",
+     "variants": [
+      "i just want a helm that isnt held together with string, whoever makes it",
+      "can one of you just make me something decent please"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "ill make you one {name_b} cant",
+     "variants": [
+      "ill make you one {name_b} cant",
+      "send me a tell, i'll do it right"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "ill make it better and sooner",
+     "variants": [
+      "ill make it better and sooner",
+      "i'll have it done before {name_a} finds a hammer"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "this is how prices crash, by the way. two crafters and a grudge",
+     "variants": [
+      "this is how prices crash, by the way. two crafters and a grudge",
+      "two crafters fighting is great for the rest of us honestly"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "you know what {name_b}, the realm can decide. whose work is better",
+     "variants": [
+      "you know what {name_b}, the realm can decide. whose work is better",
+      "let the realm pick, {name_b}. who makes the better piece"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "fine by me. anyone who's worn both, speak up",
+     "variants": [
+      "fine by me. anyone who's worn both, speak up",
+      "deal. people, who's work do you wear"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "i'm wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
+     "variants": [
+      "i'm wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
+      "honestly i can't tell the difference"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "thats because you're not a crafter",
+     "variants": [
+      "thats because you're not a crafter",
+      "to the untrained eye, maybe"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "thats because there IS no difference, {name_a} just charges more",
+     "variants": [
+      "thats because there IS no difference, {name_a} just charges more",
+      "see? same work. one of us just costs more"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_3",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "Socialite"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "B",
+     "text": "{name_a} is telling people i use cheap materials now. real mature",
+     "variants": [
+      "{name_a} is telling people i use cheap materials now. real mature",
+      "heard {name_a} is going around saying my {recipe} falls apart"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "i said your prices are too low to be using the good stuff. thats just math",
+     "variants": [
+      "i said your prices are too low to be using the good stuff. thats just math",
+      "i said nothing about your materials. i said your prices dont add up"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "they're still at it lol",
+     "variants": [
+      "they're still at it lol",
+      "day three of the {recipe} war"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "same materials as you, same merchant. ask anyone",
+     "variants": [
+      "same materials as you, same merchant. ask anyone",
+      "we buy from the same merchant {name_a}. same bars, same everything"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "so the only difference is the price and the attitude",
+     "variants": [
+      "so the only difference is the price and the attitude",
+      "sounds like the same work with a different price tag"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "the difference is a {title} made it",
+     "variants": [
+      "the difference is a {title} made it",
+      "the difference is who made it, and thats me"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "ok but can you two just say sorry and split the customers",
+     "variants": [
+      "ok but can you two just say sorry and split the customers",
+      "honestly the realm has enough people for both of you"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "i'll split when {name_a} stops trash talking my work",
+     "variants": [
+      "i'll split when {name_a} stops trash talking my work",
+      "when {name_a} admits my work is fine, sure"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "when {name_b} stops selling at a loss to steal mine",
+     "variants": [
+      "when {name_b} stops selling at a loss to steal mine",
+      "when {name_b} stops working for free, sure"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "so never then",
+     "variants": [
+      "so never then",
+      "see you all tomorrow for round four"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_4",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [
+      "NoLifer"
+     ],
+     "class": []
+    },
+    "F": {
+     "type": [],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "ok {name_b}. we both lost money this week. i checked",
+     "variants": [
+      "ok {name_b}. we both lost money this week. i checked",
+      "i did the math {name_b}. we both worked at a loss all week"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "...yeah. me too. my purse is a joke right now",
+     "variants": [
+      "...yeah. me too. my purse is a joke right now",
+      "yeah. i noticed. i'm broke"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "the crafter war ends in mutual poverty, who saw that coming",
+     "variants": [
+      "the crafter war ends in mutual poverty, who saw that coming",
+      "everyone saw this coming"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "the only people who won are the merchants selling us materials",
+     "variants": [
+      "the only people who won are the merchants selling us materials",
+      "the material merchants are the only winners here"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "so. truce? we price fair, nobody undercuts",
+     "variants": [
+      "so. truce? we price fair, nobody undercuts",
+      "truce. fair prices, no more sniping at the broker"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "aww",
+     "variants": [
+      "aww",
+      "the realm loses its cheap gear, but ok"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "truce. and your seams are fine. mostly",
+     "variants": [
+      "truce. and your seams are fine. mostly",
+      "truce. your seams are fine, i was mad"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and you're a real {title}. i was just sore about it",
+     "variants": [
+      "and you're a real {title}. i was just sore about it",
+      "your work is good {name_a}, i just hated losing customers"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "back to normal prices then. rip the bargain week",
+     "variants": [
+      "back to normal prices then. rip the bargain week",
+      "the great {recipe} sale is over, folks"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "until one of them hits the next title and it starts again",
+     "variants": [
+      "until one of them hits the next title and it starts again",
+      "see you in the next round"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_4a",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Socialite"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "A",
+     "text": "{name_b}, give it up. {player} picked my work and told the whole realm",
+     "variants": [
+      "{name_b}, give it up. {player} picked my work and told the whole realm",
+      "{player} backed me, {name_b}. everyone saw it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "one customer. big deal",
+     "variants": [
+      "one customer. big deal",
+      "{player} is one person {name_a}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "one customer who talks. my orders doubled after that",
+     "variants": [
+      "one customer who talks. my orders doubled after that",
+      "the best kind of customer. and they talk"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "{player} started a run on {name_a}'s forge lol",
+     "variants": [
+      "{player} started a run on {name_a}'s forge lol",
+      "everyone wants a {name_a} piece now"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "fine. you win this one. i'm going back to fair prices, i can't afford the war anymore",
+     "variants": [
+      "fine. you win this one. i'm going back to fair prices, i can't afford the war anymore",
+      "ok, ok. i'm done undercutting. my purse can't take it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "and you're welcome to ask me for tips. {title} to apprentice",
+     "variants": [
+      "and you're welcome to ask me for tips. {title} to apprentice",
+      "i'll even show you how to do the seams right {name_b}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "dont push it {name_a}",
+     "variants": [
+      "dont push it {name_a}",
+      "careful {name_a}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "{player} ended a crafter war, put that on the herald",
+     "variants": [
+      "{player} ended a crafter war, put that on the herald",
+      "peace in our time, thanks to {player}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "so is {name_b} still undercutting or not",
+     "variants": [
+      "so is {name_b} still undercutting or not",
+      "wait, does this mean prices go back up"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "{name_a}, make {player} something nice, they earned it",
+     "variants": [
+      "{name_a}, make {player} something nice, they earned it",
+      "{player} deserves a discount for this"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{player} has one, for life",
+     "variants": [
+      "{player} has one, for life",
+      "already on it. {player} pays materials from now on"
+     ],
+     "optional": false
+    }
+   ],
+   "needs": []
+  },
+  {
+   "id": "story_pricewar_4b",
+   "topic": "story_pricewar",
+   "realm": "*",
+   "levels": [
+    5,
+    50
+   ],
+   "roles": {
+    "A": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "B": {
+     "type": [
+      "Crafter"
+     ],
+     "class": [],
+     "levels": [
+      5,
+      50
+     ]
+    },
+    "C": {
+     "type": [],
+     "class": []
+    },
+    "D": {
+     "type": [],
+     "class": []
+    },
+    "E": {
+     "type": [],
+     "class": []
+    },
+    "F": {
+     "type": [
+      "Socialite"
+     ],
+     "class": []
+    }
+   },
+   "beats": [
+    {
+     "role": "B",
+     "text": "{name_a}, {player} went with me. said my work is just as good and fairer priced",
+     "variants": [
+      "{name_a}, {player} went with me. said my work is just as good and fairer priced",
+      "{player} picked me, {name_a}. fair price, same quality"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "{player} just doesnt know good {recipe}",
+     "variants": [
+      "{player} just doesnt know good {recipe}",
+      "with respect, {player} doesn't know {recipe}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "ooh {name_a} is being a sore {title}",
+     "variants": [
+      "ooh {name_a} is being a sore {title}",
+      "{name_a} losing gracefully as always"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "{player} knows a fair price. so does the rest of the realm now",
+     "variants": [
+      "{player} knows a fair price. so does the rest of the realm now",
+      "the realm is with me and {player}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "fine. fine. i'll drop my prices. happy?",
+     "variants": [
+      "fine. fine. i'll drop my prices. happy?",
+      "ok. i'll price fair. you win {name_b}"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "cheap gear for everyone, thanks {player}",
+     "variants": [
+      "cheap gear for everyone, thanks {player}",
+      "{player} for realm treasurer"
+     ],
+     "optional": false
+    },
+    {
+     "role": "E",
+     "text": "{name_a} coming down in price, never thought i'd see it",
+     "variants": [
+      "{name_a} coming down in price, never thought i'd see it",
+      "{name_a} lowering prices, the world is ending"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and {name_a}, your work is good. i never said it wasnt. just priced like a castle",
+     "variants": [
+      "and {name_a}, your work is good. i never said it wasnt. just priced like a castle",
+      "your work is fine, {name_a}. it was the price"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "...ty. truce then",
+     "variants": [
+      "...ty. truce then",
+      "truce. dont tell anyone i said ty"
+     ],
+     "optional": false
+    },
+    {
+     "role": "F",
+     "text": "{player} ended a crafter war, someone tell the herald",
+     "variants": [
+      "{player} ended a crafter war, someone tell the herald",
+      "crafter peace, sponsored by {player}"
      ],
      "optional": false
     }

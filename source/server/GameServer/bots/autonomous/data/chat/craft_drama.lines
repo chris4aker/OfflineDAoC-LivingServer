@@ -1,0 +1,141 @@
+# Crafting storyline (Crafting 2.0 WP8b, AutonomousBotStorylines + CraftingDrama): a price war between two crafter gamebots
+# of the same order in the same realm. The server casts roles A and B only from two real crafters that share an order
+# (bot_crafting_social and bot_crafters on), and fills {recipe} with their real craft and {title} with A's real crafting
+# title at the time of the episode. Four episodes, hours apart, played in /faction like the other storylines; a player
+# who backs one of them in /faction gets the ending _4a (A) or _4b (B), and {player} is that player. No line names a price,
+# a piece in stock or a sale: the drama is talk, the numbers stay in the trade channel where they are true. New writing.
+
+@kind debate
+@realm *
+
+# ==== pricewar: two crafters of one order undercut each other until the realm takes notice ==========================
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_1
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=*
+@role E type=Socialite
+@role F type=*
+A: ok who keeps undercutting my {recipe} at the broker. every time i post, someone posts lower an hour later | someone keeps posting {recipe} right under mine at the broker. every single time
+B: free market {name_a}. people like a better price | thats called competition {name_a}. look it up
+A: {name_b}. of course it was you | i should have known it was {name_b}
+C: crafter fight in faction, grabbing a snack | ooh, crafter drama
+B: im just selling my work. not my fault mine moves faster | my stuff sells. yours sits. thats not on me
+A: yours moves because youre selling at cost. thats not a business, thats charity | you're barely covering the materials {name_b}. that's not selling, that's giving it away
+D: wait, so {recipe} is getting cheaper? sounds great for the rest of us | cheaper gear for everyone? keep fighting
+B: im {title} grade work at a fair price. {name_a} just doesnt like it | some of us price fair. {name_a} prices like a city merchant
+A: i'm the {title} here, {name_b}. go practice on some more cloaks | i'm {title}. you're still doing practice pieces
+E: {name_a} and {name_b} were friends last week i swear | werent you two sharing a forge like yesterday
+B: we were. then {name_a} told half the realm my seams were crooked | until {name_a} told everyone my work falls apart
+A: they ARE crooked | i stand by it
+F: this is the best thing in faction all week | someone write this down
+B: fine. next time you post, i go lower again | watch the broker tomorrow {name_a}
+A: bring it | go ahead, see who runs out of coin first
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_2
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=Leveler
+@role E type=*
+@role F type=*
+A: so {name_b} is buying up the materials now. merchant was out of everything i needed | the merchant was cleaned out this morning. guess who bought it all
+B: i needed materials. so did you, i guess. early bird | i got there first {name_a}. shop opens to everyone
+C: round two lol | the {recipe} war continues
+A: you bought three times what you need just so i couldnt work | nobody needs that many materials, {name_b}. you did it on purpose
+B: i'm making a lot. people keep asking me instead of you | i have orders. lots of them. from your old customers
+D: i just want a helm that isnt held together with string, whoever makes it | can one of you just make me something decent please
+A: ill make you one {name_b} cant | send me a tell, i'll do it right
+B: ill make it better and sooner | i'll have it done before {name_a} finds a hammer
+E: this is how prices crash, by the way. two crafters and a grudge | two crafters fighting is great for the rest of us honestly
+A: you know what {name_b}, the realm can decide. whose work is better | let the realm pick, {name_b}. who makes the better piece
+B: fine by me. anyone who's worn both, speak up | deal. people, who's work do you wear
+F: i'm wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol | honestly i can't tell the difference
+A: thats because you're not a crafter | to the untrained eye, maybe
+B: thats because there IS no difference, {name_a} just charges more | see? same work. one of us just costs more
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_3
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=*
+@role E type=Socialite
+@role F type=*
+B: {name_a} is telling people i use cheap materials now. real mature | heard {name_a} is going around saying my {recipe} falls apart
+A: i said your prices are too low to be using the good stuff. thats just math | i said nothing about your materials. i said your prices dont add up
+C: they're still at it lol | day three of the {recipe} war
+B: same materials as you, same merchant. ask anyone | we buy from the same merchant {name_a}. same bars, same everything
+D: so the only difference is the price and the attitude | sounds like the same work with a different price tag
+A: the difference is a {title} made it | the difference is who made it, and thats me
+E: ok but can you two just say sorry and split the customers | honestly the realm has enough people for both of you
+B: i'll split when {name_a} stops trash talking my work | when {name_a} admits my work is fine, sure
+A: when {name_b} stops selling at a loss to steal mine | when {name_b} stops working for free, sure
+F: so never then | see you all tomorrow for round four
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_4
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=*
+@role E type=NoLifer
+@role F type=*
+A: ok {name_b}. we both lost money this week. i checked | i did the math {name_b}. we both worked at a loss all week
+B: ...yeah. me too. my purse is a joke right now | yeah. i noticed. i'm broke
+C: the crafter war ends in mutual poverty, who saw that coming | everyone saw this coming
+A: the only people who won are the merchants selling us materials | the material merchants are the only winners here
+B: so. truce? we price fair, nobody undercuts | truce. fair prices, no more sniping at the broker
+D: aww | the realm loses its cheap gear, but ok
+A: truce. and your seams are fine. mostly | truce. your seams are fine, i was mad
+B: and you're a real {title}. i was just sore about it | your work is good {name_a}, i just hated losing customers
+E: back to normal prices then. rip the bargain week | the great {recipe} sale is over, folks
+F: until one of them hits the next title and it starts again | see you in the next round
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_4a
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=Socialite
+A: {name_b}, give it up. {player} picked my work and told the whole realm | {player} backed me, {name_b}. everyone saw it
+B: one customer. big deal | {player} is one person {name_a}
+A: one customer who talks. my orders doubled after that | the best kind of customer. and they talk
+C: {player} started a run on {name_a}'s forge lol | everyone wants a {name_a} piece now
+B: fine. you win this one. i'm going back to fair prices, i can't afford the war anymore | ok, ok. i'm done undercutting. my purse can't take it
+A: and you're welcome to ask me for tips. {title} to apprentice | i'll even show you how to do the seams right {name_b}
+B: dont push it {name_a} | careful {name_a}
+D: {player} ended a crafter war, put that on the herald | peace in our time, thanks to {player}
+E: so is {name_b} still undercutting or not | wait, does this mean prices go back up
+F: {name_a}, make {player} something nice, they earned it | {player} deserves a discount for this
+A: {player} has one, for life | already on it. {player} pays materials from now on
+
+@topic story_pricewar
+@levels 5-50
+@scene story_pricewar_4b
+@role A type=Crafter levels=5-50
+@role B type=Crafter levels=5-50
+@role C type=*
+@role D type=*
+@role E type=*
+@role F type=Socialite
+B: {name_a}, {player} went with me. said my work is just as good and fairer priced | {player} picked me, {name_a}. fair price, same quality
+A: {player} just doesnt know good {recipe} | with respect, {player} doesn't know {recipe}
+C: ooh {name_a} is being a sore {title} | {name_a} losing gracefully as always
+B: {player} knows a fair price. so does the rest of the realm now | the realm is with me and {player}
+A: fine. fine. i'll drop my prices. happy? | ok. i'll price fair. you win {name_b}
+D: cheap gear for everyone, thanks {player} | {player} for realm treasurer
+E: {name_a} coming down in price, never thought i'd see it | {name_a} lowering prices, the world is ending
+B: and {name_a}, your work is good. i never said it wasnt. just priced like a castle | your work is fine, {name_a}. it was the price
+A: ...ty. truce then | truce. dont tell anyone i said ty
+F: {player} ended a crafter war, someone tell the herald | crafter peace, sponsored by {player}

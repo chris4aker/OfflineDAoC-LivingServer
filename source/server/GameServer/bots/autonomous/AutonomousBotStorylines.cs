@@ -220,6 +220,10 @@ public static class AutonomousBotStorylines
         bool Free(long id) => online.Any(bot => bot.DatabaseID == id);
         foreach (var (arc, episodes) in arcs.OrderBy(_ => random.Next()))
         {
+            // Crafting 2.0 WP8: a crafting arc plays only with bot_crafting_social and bot_crafters on, between real crafters.
+            bool craftArc = CraftingEconomy.CraftingDrama.IsCraftArc(arc);
+            if (craftArc && !CraftingEconomy.CraftingDrama.On)
+                continue;
             string key = KeyOf(realm, arc);
             Stories.TryGet(key, out OfflineBotStorylineRecord row);
             if (row != null && !string.IsNullOrEmpty(row.DoneUtc))
@@ -241,7 +245,7 @@ public static class AutonomousBotStorylines
                 // A new arc (or one whose first episode never played): only every few hours per realm.
                 if (NextNewArcUtc.TryGetValue(realm, out DateTime newAt) && nowUtc < newAt)
                     continue;
-                (long a, long b) = CastPair(episodes[1].Neutral, online, random);
+                (long a, long b) = CastPair(episodes[1].Neutral, online, random, craftArc ? CraftPair : null);
                 if (a == 0)
                     continue;
                 row = Stories.Change(key, () => new OfflineBotStorylineRecord { StoryKey = key, Realm = (int)realm, Arc = arc }, r =>
@@ -271,12 +275,34 @@ public static class AutonomousBotStorylines
             };
             if (!string.IsNullOrEmpty(row.SidePlayer))
                 slots["player"] = row.SidePlayer;
+            if (craftArc)
+            {
+                // The pair's real craft and the first one's real title, read now (a title may have risen since the last episode).
+                CraftingEconomy.CraftingDrama.CraftFacts facts = CraftingEconomy.CraftingDrama.FactsOf(byId[row.BotA].PersistentRecord?.SerializedCraftingSkills);
+                if (!CraftingEconomy.CraftingDrama.FitsPriceWar(facts,
+                        CraftingEconomy.CraftingDrama.FactsOf(byId[row.BotB].PersistentRecord?.SerializedCraftingSkills)))
+                {
+                    Abandon(key, "its pair no longer shares an order");
+                    continue;
+                }
+                CraftingEconomy.CraftingDrama.AddSlots(slots, facts);
+                if (Log.IsInfoEnabled)
+                    Log.Info(CraftingEconomy.EconomyLog.Line(CraftingEconomy.EconomyLog.CraftStory, ("arc", arc), ("episode", row.Episode),
+                        ("realm", realm), ("a", byId[row.BotA].Name), ("b", byId[row.BotB].Name), ("craft", facts.Primary),
+                        ("title", facts.Title), ("side", row.Side ?? string.Empty)));
+            }
             return new Next(key, scene, row.BotA, row.BotB, slots);
         }
         return null;
     }
 
-    private static (long A, long B) CastPair(VC.Scene scene, GameBot[] online, Random random)
+    /// <summary>Crafting 2.0 WP8: a price-war pair, two real crafter gamebots of the same gear order.</summary>
+    private static bool CraftPair(GameBot a, GameBot b) =>
+        AutonomousBotCrafting.IsCrafter(a) && AutonomousBotCrafting.IsCrafter(b) &&
+        CraftingEconomy.CraftingDrama.FitsPriceWar(CraftingEconomy.CraftingDrama.FactsOf(a.PersistentRecord?.SerializedCraftingSkills),
+            CraftingEconomy.CraftingDrama.FactsOf(b.PersistentRecord?.SerializedCraftingSkills));
+
+    private static (long A, long B) CastPair(VC.Scene scene, GameBot[] online, Random random, Func<GameBot, GameBot, bool> pairFits = null)
     {
         scene.Roles.TryGetValue("A", out VC.RoleSpec specA);
         scene.Roles.TryGetValue("B", out VC.RoleSpec specB);
@@ -284,6 +310,19 @@ public static class AutonomousBotStorylines
             .Select(bot => new AutonomousBotDebates.Candidate(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type,
                 bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty, bot.Level))
             .OrderBy(_ => random.Next()).ToArray();
+        if (pairFits != null)
+        {
+            // A pair that must fit together (a crafting arc): every A in turn, the first B that fits with it.
+            var bots = online.GroupBy(bot => (long)bot.DatabaseID).ToDictionary(g => g.Key, g => g.First());
+            foreach (var first in pool.Where(c => AutonomousBotDebates.Fits(specA, c)))
+            {
+                var second = pool.FirstOrDefault(c => c.Id != first.Id && AutonomousBotDebates.Fits(specB, c) &&
+                                                      pairFits(bots[first.Id], bots[c.Id]));
+                if (second.Id != 0)
+                    return (first.Id, second.Id);
+            }
+            return (0, 0);
+        }
         var a = pool.FirstOrDefault(c => AutonomousBotDebates.Fits(specA, c));
         if (a.Id == 0)
             return (0, 0);

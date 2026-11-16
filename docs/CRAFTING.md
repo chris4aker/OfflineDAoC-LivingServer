@@ -148,6 +148,27 @@ Your world keeps every character's crafting. Exactly what you see:
 - Secondary caps, classic quality and classic losses are off, and the crafting pace is 1, so crafting itself plays as
   before until you change them.
 
+## Buying from crafter gamebots
+
+> **Status: automated tests only.** Off by default: the server settings `bot_crafters` and `bot_crafter_commerce` must
+> both be on. Nothing here has been seen in game yet.
+
+Crafter gamebots of your realm answer you by `/send` (and a `wtb ...` in `/trade`) from their real skill and the crafted
+pieces in their bag:
+
+- **"what do you make?"**: their title, skill and craft, what they make surely, and their stock with prices.
+- **"wtb chain hauberk lvl 23"**, **"can you make a studded helm"**, **"full leather set lvl 20"**: a price (materials plus
+  the crafter's fee; less for a regular customer, materials only for a guildmate), when it will be ready and how you pay.
+  They say so when they cannot make it, and they never promise a quality.
+- **"too much"**, **"how about 80s"**: a short haggle. **"deal"** takes the quote. **"ready?"** and **"cancel"** work too.
+- **Paying.** Up front: drag the coin onto the crafter when you are near it (only the price is taken); it is held until
+  the piece is handed over and returned if it is not made in 6 hours (at your next login if you are offline then). On
+  delivery: the crafter opens a trade window with the piece and its price; put the coin in and accept.
+- **Hand-over.** Gamebots craft and trade only at their natural task breaks, never during a hunt: when your piece is made
+  the crafter tells you where it is; stand near it during its break and say "ready".
+- A piece you ordered to pay on delivery and never collected stays the crafter's, and it will want your coin up front
+  next time. Insult a crafter and it will not deal with you.
+
 ## For developers
 
 - Code: `craft/PlayerCraftingRules.cs` (the rules, pure, and their log lines), `GamePlayer` (crafting load, gains, the

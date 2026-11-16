@@ -428,6 +428,70 @@ Buying and repairing happen only at a natural task break, at the merchant the br
   Ours: autonomous gamebots only behind `bot_upkeep`, the seams, the player's upkeep price for bots, the paid poisons,
   the siege supply, the luxury sink and the governor. Tests only: nothing here has been seen in game.
 
+### WP8 Commerce and social (M4, M6)
+
+**Off by default**: player commerce needs `bot_crafters` and the new `bot_crafter_commerce`; the social layer needs
+`bot_crafters` and the new `bot_crafting_social`. All three are off, so the server behaves as before. Real players start
+every trade; only autonomous gamebots answer (a `/bot` companion never trades, crafts or is asked). Nothing a gamebot
+sells or hands over moves during its task: only at its natural task break.
+
+- **Ask a crafter by /tell.** "what do you make?" gets its real title, skill and craft, a few pieces it makes surely
+  (the craft-order board's 84% chance) up to its highest level, and the crafted stock in its bag with prices. "wtb chain
+  hauberk lvl 23", "can you make a studded helm", "full leather set lvl 20" get a quote: the piece (or the six set
+  pieces it makes) at the board's price (materials at the merchant's price plus the crafter's fee: what a gamebot buyer
+  pays), when it will be ready (its next break and the work, three pieces a trip) and how it is paid. It says honestly
+  what it cannot make ("cant make lvl 45 yet, my armorcraft is only 310"), that it cannot promise a quality, or that it is
+  not its trade. A gamebot that does not craft says so and names one of the realm that makes it.
+- **/trade WTB.** A player's "wtb ..." in /trade is answered by tell, a few seconds later, by the realm's best crafter
+  gamebot that holds it or can make it (once per player in two minutes).
+- **Haggling and memory.** "too much", "how about 80s": at most three counters, never below materials plus half the fee,
+  further for a regular or friend; a lowball ends it. Each crafter remembers each player (`offline_crafter_customers`:
+  deals, coin spent, pieces not collected, refunds owed): 5% off the fee after a deal, 10% for a friend (three deals or a
+  friend in the bot's memory), 15% after 10 gold. A player the bot is cool towards (an insult) or who left two pieces
+  uncollected gets no deal.
+- **Orders through the craft-order board.** "deal" puts the pieces on WP5's board as the player's orders (source
+  Player, one order a piece, 6 hours to deliver); the crafter makes them on its next craft trip like any order. A stranger
+  pays up front if the crafter is impatient (and anyone who left a piece uncollected): the coin is dragged onto the
+  crafter and held in the order's escrow. Regulars, friends and guildmates pay on delivery.
+- **Hand-over at the break, trade window.** At the crafter's task break, with the player within about a /say's reach, a
+  piece paid up front is handed straight over (the escrow then pays the crafter); a piece to pay on delivery comes in the
+  client's own trade window, titled "Trading with <bot>", the bot's pieces on its side and its price; the bot accepts
+  once the coin is in, and nothing moves until the player accepts. Crafted stock is sold the same way. A player who is
+  not near gets a tell once per break: done, where it is, come and say "ready". "ready?" and "cancel" work by tell (an
+  order not yet made is cancelled and refunded).
+- **Lapsed orders.** Not delivered in 6 hours: an up-front player is refunded (at once, or at their next login when
+  offline); a made pay-on-delivery piece that was never collected stays the crafter's own work and counts against the
+  player.
+- **Guild crafters (8b).** A guild's crafter gamebots (a bot guild's, or bots a player invited into his guild) make for
+  guildmates at material cost; a Crafting-charter bot guild's bank pays its crafter the fee it waived (only while the
+  bank holds twice that; a player's guild bank is never spent). "anyone craft?" in a player's guild chat is answered by
+  the guild's best real crafter with its title, skill and craft. A guild no longer buys the crafting-haste buff without
+  a real player crafter online (gamebots' crafting ignores guild buffs).
+- **The price-war storyline (8b).** A fourth storyline arc, "pricewar", four episodes in /faction with a side ending: two
+  crafter gamebots of the same gear order and realm undercut each other at the broker. The pair is cast only from bots
+  that really share an order, and the scenes name their real craft and the first one's real title; a pair that no longer
+  shares an order is dropped.
+- **Every coin move names its kind**, so WP2's ledger residual stays 0: the player's coin into and out of escrow
+  (`EconomyFlows.RecordPlayerEscrow`, new, counted in the snapshot's flows), the escrow to the crafter (`CraftOrder`),
+  coin in a trade window (`PlayerTrade`, new kind, a transfer within the supply), the guild bank's fee (`Guild`).
+- **Logs:** `ECON_PLAYER_ORDER` (placed; expired or cancelled, with `_refund` when escrow is owed back; uncollected; owed_paid when the refund reaches the player),
+  `ECON_PLAYER_DELIVERY` (source order or stock, pay upfront/delivery/trade, guild fee), `ECON_HAGGLE`, `ECON_GUILD_SPEND`
+  (what=crafter_fee), `CRAFT_STORY` (each price-war episode: arc, episode, pair, craft, title, side). AI_PROFILE scope
+  `craft.commerce`.
+- **Seams in other packages' files (small):** WP0: the two settings, the `PlayerTrade` kind, `RecordPlayerEscrow` on the
+  flow sink, `SpentCopper` and `OwedCopper` on the customers' table (WP8's table). WP2: `PlayerTrade` is a transfer, the
+  players' escrow counts in the hour's flows. WP5: the board hands a player's made piece and a player's lapsed escrow to
+  WP8 (`DeliverToPlayer`, `PlayerOrderClosed`) and can cancel an open order (`TryCancelOpen`); the chat coordinator's
+  tell handler asks WP8 first after the beggars. Packets 1.109/1.72: the trade window names a gamebot partner.
+- **Rehearsal:** `Tests/Rehearsal/Adapters/WP8Commerce.cs` (a stand-in player per realm commissions crafter agents and
+  buys their stock on WP8's pure code). An aged realm of 300 bots for a day: 23 player orders, 22 delivered, 3.8 gold paid
+  for 2.9 gold of materials; every gate passed, residual 0 (tests only: a rehearsal, not a game).
+- Not built (later): drag-to-sell to a WTB bot and spellcraft or repair jobs (`BotCommerceSeams.TryReceiveItem` still
+  takes nothing), Crafting-charter guilds taking crafter bots first (guild placement is not WP8's file), a bot guild's
+  bank buying materials and raid potions, bot-to-bot guild orders.
+- Ported: nothing (the forks had no player commerce; the per-pair discount is an idea from mod-playerbots, no code
+  taken). Tests only: nothing here has been seen in game.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous

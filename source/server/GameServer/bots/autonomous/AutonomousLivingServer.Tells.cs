@@ -58,6 +58,16 @@ public static partial class AutonomousLivingServer
 
     public static bool TellsOn => AutonomousBotVoices.Enabled && Properties.BOT_VOICES_TELLS;
 
+    /// <summary>
+    /// Crafting 2.0 WP8: a real player's tell about trade with an autonomous gamebot ("what do you make?", "wtb a studded
+    /// helm", "can you make a chain set lvl 20", "deal", "80s?", "ready?") is answered by the crafter commerce
+    /// (CraftingEconomy.CrafterCommerce) from the bot's real skill, stock and orders; a bot that does not craft names one
+    /// that does. Needs bot_crafters and bot_crafter_commerce (both off), not bot voices: commerce answers even with voices
+    /// off, in fixed words. False leaves the tell to the ordinary reply. Never a /bot companion.
+    /// </summary>
+    public static bool OnCommerceTell(GamePlayer player, GameBot bot, string message) =>
+        CraftingEconomy.CrafterCommerce.OnPlayerTell(player, bot, message);
+
     /// <summary>When the next bot tell to a player may come: a few minutes after they log in, then 25-45 minutes apart.</summary>
     public static long NextTellGap(bool first, Random random) => first
         ? TellFirstMinMs + (long)(random.NextDouble() * TellFirstSpreadMs)

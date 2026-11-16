@@ -156,7 +156,9 @@ SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'cou
          # Bonds: the other gamebot and its class
          'other', 'other_class',
          # Crafting 2.0 (WP0): a crafter's real stock, price, title, order, skill, quality, customer, recipe and a budget
-         'stock', 'price', 'title', 'order', 'skill', 'quality', 'customer', 'recipe', 'budget'}
+         'stock', 'price', 'title', 'order', 'skill', 'quality', 'customer', 'recipe', 'budget',
+         # WP8: when a commissioned piece will be ready ("about 40 min") and how it is paid ("pay when i hand it over")
+         'when', 'terms'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 
