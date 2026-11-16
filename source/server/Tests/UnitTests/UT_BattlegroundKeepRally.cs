@@ -139,8 +139,10 @@ namespace DOL.UnitTests
             {
                 Assert.That(Rally.AttemptOver(14, 14, 100, 100, 60_000), Is.Null, "on the way up");
                 Assert.That(Rally.AttemptOver(14, 8, 40, 40, 10_000), Is.Null, "fighting, lord going down");
-                Assert.That(Rally.AttemptOver(14, 7, 40, 40, 10_000), Is.EqualTo("half the stormers fell"));
-                Assert.That(Rally.AttemptOver(14, 0, 100, 100, 0), Is.EqualTo("half the stormers fell"), "a wipe");
+                Assert.That(Rally.AttemptOver(14, 7, 40, 40, 10_000), Is.Null, "half fell, but the lord is going down (95af6fd)");
+                Assert.That(Rally.AttemptOver(14, 7, 40, 40, Rally.ProgressGraceMilliseconds), Is.EqualTo("half the stormers fell"));
+                Assert.That(Rally.AttemptOver(14, 7, 100, 100, 60_000, upTheTower: 2), Is.Null, "half fell, two still up his tower");
+                Assert.That(Rally.AttemptOver(14, 0, 100, 100, 0), Is.EqualTo("every stormer fell"), "a wipe");
                 Assert.That(Rally.AttemptOver(14, 12, 96, 80, 10_000), Is.EqualTo("the lord healed back"));
                 Assert.That(Rally.AttemptOver(14, 12, 90, 80, 10_000), Is.Null);
                 Assert.That(Rally.AttemptOver(14, 14, 100, 100, Rally.NoProgressMilliseconds), Is.EqualTo("no progress on the lord"));

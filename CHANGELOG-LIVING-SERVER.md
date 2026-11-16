@@ -633,6 +633,48 @@ holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm in
   Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
   navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
+**Battleground storms reach the lord together** (tests only; owner's PC, build `95af6fd` = the change below, Thidranki
+2026-11-15 22:37-23:00. The rallies were right: Hibernia at -90, Midgard at -30, 2,381 apart. There were 17 storms, and the
+stormers reached Lady Thidranki's floor (`bestToLord=0`), but she never went below 97%.)
+
+- **What the log showed:**
+  - Of the 122 stormers that fell in 15 attempts, 107 fell before her floor (57 outside, 27 at the gate, 23 inside). Guards
+    killed 57, Albion's bots 30 and the other attacking realm 23.
+  - The 15 that fell on her floor reached it one or two at a time, 30-60 s into the attempt. Storm samples on her floor:
+    4 at 30-44 s, 2 at 45-59 s, 1 at 60-74 s.
+  - Every attempt ended "half the stormers fell" after 0.4-2.0 minutes. The two that reached her in numbers (`lordFloor:7`
+    and `:3`, her lowest 97%) ended 1.5-1.6 minutes in. Their 13 and 9 still standing walked back out to the rally.
+  - 9 of the 17 storms were tails: 8-12 bots sent 0.0-0.6 minutes after the realm's last attempt, because the other realm
+    was still storming. Together they put one stormer on her floor.
+  - The two storms that went with the other realm's, within 1-5 s (22:46:45/50 and 22:51:53/54), put 14 of the 15 that fell
+    on her floor there.
+  - On her floor everyone took the guard hitting a realm-mate first, and she only lost 2-3%.
+- **Now:**
+  - **The wave climbs together.** Each attempt finds the foot of her tower: the last ground-floor point (600 or more below
+    her) of the navmesh walk from the gate to her, kept 600 from guard posts. The stormers walk there and wait. The climb
+    goes once 70% of those still on the way are there, or after 25 s. It stays open 10 s, and a stormer that has started up
+    goes on. `BG_TOWER_FOOT` logs the walk and the foot.
+  - **An attempt goes on** while stormers are up her tower, or she lost health in the last 30 s, even with half fallen. The
+    fallen come back in the reinforcement groups. A wipe ends it ("every stormer fell"); the healed-back and no-progress
+    ends are unchanged.
+  - **The two realms go up together.**
+    - The other realm's storm is joined with half of what is needed only in its first 45 s: its push, not its tail.
+    - A ready rally holds up to 45 s while the other realm gathers with 40% or more of its need. The other realm then
+      goes with half, as it would to join a storm.
+  - **On her floor**, within 900 and on her height, casters, archers and healers strike her. Melee bots take the guard or
+    defender on them, else her. The pick holds in their combat turns too.
+- **Logs:**
+  - `BG_RALLY_REGROUP` adds `floorArrivals=`, `arrivalSeconds=` (each stormer's first second on her floor),
+    `arrivalSpread=`, `climbs=` and `footPeak=`.
+  - `BG_RALLY_STORM` adds `otherStormSeconds=`, `otherWaiting=`, `heldSeconds=` and `foot=`.
+  - `BG_RALLY_STATUS` adds `readySeconds=`, `floorArrivals=`, `climbs=` and `climbOpen=`.
+  - Storm traces add the phases `to-foot`, `foot-hold`, `foot-path-refused` and `lord-fight-pick`.
+- **Unchanged:** the keep, its level, guards, lord, doors and respawns; the strength model and patience lengths; the rally
+  spots. No truce, nobody made unhittable, nobody teleported.
+- **Not verified here:** where the foot falls on the real navmesh, whether guards reach it, and whether the waves bring her
+  down. The Thidranki navmesh isn't in the build container; `BG_TOWER_FOOT` and the new `BG_RALLY_REGROUP` fields will
+  tell.
+
 **Battleground rallies stay on each realm's own side and never share a spot** (tests only; owner's PC, build `0acc99b` =
 the change below, Thidranki 2026-11-15 20:43-21:02. `BG_LORD_PATH` showed the walk to Lady Thidranki reaching her floor:
 `status=PathFound`, last point her own, `lastZMinusLord=0`, `lordOnMesh=True`. Only Midgard stormed, three times with 8-16,
