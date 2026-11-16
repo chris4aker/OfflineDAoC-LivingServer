@@ -476,6 +476,7 @@ only its own row. "Tests only" means automated tests; nothing counts as working 
 | WP3 Player side (M1) | Built on `craft/wp3-player`, into `integration/1.2`: era start (new crafting records only; existing ones keep skills and order), secondary caps, smith upkeep, coin by level band, the two title ports, the launcher's Crafting card, [CRAFTING.md](CRAFTING.md). Found that 56 of M0's 57 "decoration" masters work through their guild title (`use_npcguildscripts`), so every order has a master in both capitals of each realm. Tests only | Nothing yet |
 | WP4 Bot crafters (M2) | Not started | — |
 | WP5 Market | Not started | — |
+| WP5 Market | Built on `craft/wp5-market`, into `integration/1.2`. Off by default (`bot_crafters`, `bot_craft_orders`). DividedRealms' craft orders with escrow (made on the crafter's trip, handed over at its break, refunded after 3 h), True165's milestone sets at 20/30/40 on the same board, realm quartermaster commissions (`realm_commissions` doubled: 60 a realm an hour, sized to the crafter's skill, paid for time as a `commission` faucet, governor multiplier for WP7), DR's flood cap (25 bot posts per kind) and own-work posts (`bot_crafter_exchange_listings` 6), unsold work back to its crafter, the price index per band (no buy-sell loop makes coin), the Exchange tax built at 0 (5% documented). Tests only | Not yet: needs `bot_crafters` and `bot_craft_orders` on |
 | WP6 Demand (M3) | Not started | — |
 | WP7 Sinks (M5) | Not started | — |
 | WP8 Commerce and social (M4, M6) | Not started | — |

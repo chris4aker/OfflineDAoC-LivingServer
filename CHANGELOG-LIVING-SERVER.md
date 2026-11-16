@@ -214,6 +214,63 @@ for its player's coin). Automated tests only; nothing here has been played. Play
 - Log lines `CRAFT_ERA_JOIN` (a record started without an order, an order joined) and `CRAFT_PLAYER_TITLE` (every
   hundred to 1000). Tests: `UT_PlayerCraftingRules`, `SocialExpansionSettingsTests.CraftingRowsAreSavedReadAndChecked`.
 
+### WP5 Market (orders, price index, Exchange, tax, commissions)
+
+**Off by default**: the bots' own orders need `bot_crafters` and `bot_craft_orders`, the realm commissions, the flood
+cap, the crafters' extra posts and the reclaim need `bot_crafters`; all are off, so the server behaves as before. The
+Exchange tax is built at **0** (`exchange_tax_percent`; owner 2026-11-15: 5% is the documented option, only once the
+ledger shows a need). Autonomous gamebots only, except the tax, which a real player pays only when they sell on the
+Exchange. Everything happens at a natural task break.
+
+- **Craft orders between gamebots.** At a task break a gamebot that a crafted armor or weapon piece would upgrade (up to
+  20 levels below it, within half its coin) pays a Crafter gamebot of its realm who makes the recipe at orange or
+  better and whose task ends within 45 minutes (or who is on its craft trip): the least busy, then the soonest, then the
+  most skilled, at most 2 orders each. The price is the materials and a fee of 25% (at least 1 silver). The coin is held
+  by the saved order (`offline_bot_craft_orders`); the crafter makes the piece first on its next craft trip with
+  materials it buys, and at the end of that break hands the real item into the buyer's bag and takes the coin. A piece
+  waiting for its buyer is never worn, listed or sold by its maker. Not delivered in 3 hours: the buyer is refunded
+  and a piece already made stays with its maker.
+- **Milestone sets.** At levels 20, 30 and 40 a gamebot works out once the crafted set it would wear (the heaviest
+  armour of each body slot near the milestone, its main weapon), leaves out slots already as good, and orders the rest
+  on the same board once its coin covers the whole set above its reserve.
+- **Realm commissions** (`realm_commissions`: classic 30 a realm an hour, **doubled 60**, off). Each realm's
+  quartermaster orders guards' armor and weapons from its crafters above skill 50, sized to the crafter: the hardest
+  recipe of its own order it makes at orange or better, so an Apprentice gets apprentice work. The crafter makes it on
+  its craft trip and hands it to the realm at the end of the break (the piece leaves the world); the realm pays the
+  materials and a wage for the crafting time at the crafter's skill, at least three times the materials. That pay is
+  new coin, recorded as a `commission` faucet in the economy ledger. `QuartermasterCommissions.GovernorMultiplier`
+  (0-2, 1 until WP7's governor sets it) scales the rate. Work goes round: the crafter asked longest ago first.
+- **Crafters' own posts.** A crafter's own work may hold `bot_crafter_exchange_listings` (6) Realm Exchange posts;
+  everything else keeps every bot's 3.
+- **Flood cap.** A gamebot no longer posts an item when its realm already has 25 bot listings of the same type and
+  slot in the same five-level band; a vendor takes it. Player listings are never counted or limited.
+- **Unsold work comes back.** A crafter's own piece that expires unsold on the Exchange goes back into its bag (when it
+  is in the world with room) and to a vendor at its next break, instead of being deleted.
+- **Price index** (offline_exchange_index). Per band (realm, type, slot, five-level band, quality tier): today's
+  valuation, moved by stock against demand (0.8-1.25) and, after 3 sales, toward what the band sold for; never below
+  what a merchant pays, never above three times the materials. A bot's bid is below every ask by at least the vendor
+  spread, so no buy-and-sell loop makes coin. It answers `PriceIndexes.Current`; nothing prices by it until WP6.
+- **The Exchange tax** is kept from the seller's proceeds of a sale (gamebot or player), never charged to the buyer,
+  and recorded with the sale for the ledger. At 0 nothing changes.
+- **Logs:** `ECON_ORDER` (placed, made, delivered, refunded, expired, set; source bot, milestone or quartermaster),
+  `ECON_COMMISSION` (hourly per realm: posted, delivered, expired, paid; one line per commission with
+  `econ_trade_lines`), `ECON_INDEX` (hourly per realm: bands, stock, demand, sales, flooded, starved), `ECON_RECLAIM`,
+  `ECON_LIST` (with `econ_trade_lines`), and DividedRealms' `AUTONOMOUS_EXCHANGE_SOLD ... crafted=1|0 tax=` per sale
+  while `bot_crafters` or `econ_trade_lines` is on. `EconomyLog` now writes realms by name (`realm=Albion`; it wrote
+  `realm=_FirstPlayerRealm`).
+- **/lscraft and the rehearsal.** `/lscraft commission` shows the mode, the governor, the tax, each realm's open orders
+  and escrow and the hour's counts; `/lscraft index` shows the first backpack item's band, stock, demand, sales and its
+  floor, fair, ask and bid. WP10's rehearsal runs the index, the tax, the commissions and the reclaim on WP5's code
+  (`Tests/Rehearsal/Adapters/WP5Market.cs`): an aged realm of 300 bots for a day at doubled commissions posted 808,
+  delivered 674 (56 lapsed), paid crafters 395 gold for 132 gold of materials; every gate passed (tests only: a
+  rehearsal, not a game).
+- Ported: the craft orders with escrow from rambodolphin13 (ceac061a, e37f8810, 24f8a2e7), via DividedRealms, GPL-3.0;
+  the Exchange flood cap from rambodolphin13 (702ef108), via DividedRealms, GPL-3.0; the crafters' extra posts for their
+  own work and the crafted sale line from rambodolphin13 (ceac061a), via DividedRealms, GPL-3.0; the milestone crafted
+  sets from shadowofze (f6dbe48), via True165, GPL-3.0, as a second source on DividedRealms' board at its price. Ours:
+  the price index, the quartermaster commissions, the Exchange tax, the reclaim of unsold work. Tests only: nothing here
+  has been seen in game.
+
 ## 1.2.1 (in development)
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
