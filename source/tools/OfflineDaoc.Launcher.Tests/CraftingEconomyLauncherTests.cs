@@ -232,6 +232,41 @@ public class CraftingEconomyLauncherTests
         Assert.That(BotPurge.AllBotsStatements(tables).Last(), Is.EqualTo("DELETE FROM offline_world_bots"));
     }
 
+    // ---- hired companions (from True 1.65): a player's companions are never deleted with the gamebots ----
+
+    private const string HiredSchema = """
+        CREATE TABLE DOLCharacters (DOLCharacters_ID TEXT, Name TEXT);
+        CREATE TABLE offline_hired_companions (BotId INTEGER PRIMARY KEY, OwnerCharacterID TEXT);
+        INSERT INTO DOLCharacters VALUES ('char-1', 'Chris');
+        INSERT INTO offline_hired_companions VALUES (2, 'char-1'), (3, 'deleted-character');
+        """;
+
+    [Test] public void DeletingEveryBotKeepsPlayersHiredCompanionsAndDeletesOrphans()
+    {
+        Exec(BotSchema + EconomySchema + HiredSchema);
+        Purge(BotPurge.DeleteAllBots);
+        Assert.That(Count("SELECT COUNT(*) FROM offline_world_bots"), Is.EqualTo(1), "Buyer is Chris's companion");
+        Assert.That(Count("SELECT COUNT(*) FROM offline_world_bots WHERE BotId=2"), Is.EqualTo(1));
+        Assert.That(Count("SELECT COUNT(*) FROM Inventory WHERE OwnerID='offlinebot:2'"), Is.EqualTo(1), "its items stay with it");
+        Assert.That(Count("SELECT COUNT(*) FROM Inventory WHERE OwnerID='offlinebot:1'"), Is.Zero);
+        Assert.That(Count("SELECT COUNT(*) FROM offline_hired_companions"), Is.EqualTo(1), "the orphan's hire row goes with it");
+        Assert.That(Count("SELECT COUNT(*) FROM offline_bot_craft_orders WHERE OrderId='o1'"), Is.EqualTo(1), "the companion's own order stays");
+        Assert.That(Count("SELECT COUNT(*) FROM offline_bot_craft_orders WHERE OrderId='o2'"), Is.Zero, "a gamebot's order goes");
+    }
+
+    [Test] public void DeletingOnePlayersHiredCompanionIsRefused()
+    {
+        Exec(BotSchema + EconomySchema + HiredSchema);
+        Assert.That(() => Purge((c, t) => BotPurge.DeleteBot(c, t, 2)),
+            Throws.InvalidOperationException.With.Message.Contains("hired companion"));
+        Assert.That(Count("SELECT COUNT(*) FROM offline_world_bots WHERE BotId=2"), Is.EqualTo(1));
+        Purge((c, t) => BotPurge.DeleteBot(c, t, 3));   // an orphan: deleted like any bot, with its hire row
+        Assert.That(Count("SELECT COUNT(*) FROM offline_world_bots WHERE BotId=3") + Count("SELECT COUNT(*) FROM offline_hired_companions WHERE BotId=3"), Is.Zero);
+    }
+
+    [Test] public void TheCompanionHireKindHasAName() =>
+        Assert.That(EconomyPage.KindName("companionhire"), Is.EqualTo("Companion hires"));
+
     // ---- the level-50 kit ----
 
     [Test] public void TheLevel50KitIsOnUnlessSwitchedOff()

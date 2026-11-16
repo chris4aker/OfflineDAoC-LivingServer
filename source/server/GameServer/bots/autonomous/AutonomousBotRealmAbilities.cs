@@ -266,6 +266,13 @@ public static class AutonomousBotRealmAbilities
         return gained;
     }
 
+    /// <summary>Hired companions (True 1.65): the actives its player bought are used, not only granted.</summary>
+    public static void RefreshActives(GameBot bot)
+    {
+        if (bot == null) return;
+        States.GetOrCreateValue(bot).Actives = UsableActives.Select(key => bot.GetAbility(key) as TimedRealmAbility).Where(a => a != null).ToArray();
+    }
+
     /// <summary>Uses a bought active when the situation calls for it. Checked at most once a second.</summary>
     public static void UseActives(GameBot bot)
     {

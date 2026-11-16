@@ -50,3 +50,22 @@ and will run a play-test sweep himself.
    `--with-corrections` (the owner's decision: True 1.65's Prima monster levels, aggression and speed).
 3. `make_patch.py` as usual; the world update then carries the rows.
 4. A play check of a few encounters (Talvor's Spirit, Cuinn's seedlings, the Unseelie Envoy's convoy) before release.
+
+## Hired companions (branch `feat/hired-companions`, 2026-11-16)
+
+True 1.65's hired companions are ported as code (`source/server/GameServer/mode165/`, the `hired_companions` switch).
+Living Server has no traveler's inns, so hiring is reached with `/hire` or a healer's **[companions]** link beside any
+healer of the player's realm; no world row is added. A later base-game world update can add True 1.65's inn people from
+`runtime/true165/add-inns165.json` (table `Mob`, 60 rows, three inns):
+
+| Realm | Region | Innkeeper (`DOL.GS.Innkeeper165`) | Healer (`DOL.GS.GameHealer`) |
+|---|---|---|---|
+| Albion | 1 (Avalon Marsh) | Gwenllian 462122, 649820, 1816 | Edric 462433, 649885, 1816 |
+| Midgard | 100 (West Svealand, by Huginfell) | Halvar 705691, 790857, 4541 | Bjarni 705946, 791802, 4540 |
+| Hibernia | 200 (Shannon Estuary) | Muireann 314694, 634017, 4866 | Fiachra 314766, 634391, 4864 |
+
+With them come 24 `GameGuard`, 6 `GameMerchant`, 3 `RealmExchangeBroker`, 3 `HornHandler165`, 9 `Adventurer165` and 9
+`Traveler165` rows. For Living Server take the innkeepers, healers, guards and merchants only: the brokers would move the
+Realm Exchange (owner rule: they stay where they are), and the Horn of Rallying, adventurers and travelers are classes
+not ported. `Innkeeper165` is in the code already; True 1.65's inn preview spots go in `Hire165.PreviewSpots`.
+

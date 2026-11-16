@@ -1387,6 +1387,8 @@ public static class AutonomousBotChatCoordinator
         using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message) || player.CurrentRegion == null)
             return;
+        // a player's hired companions near them answer as companions (CompanionChat165, from True 1.65)
+        CompanionChat165.OnPlayerSay(player, message);
         BotChatTranscript.Player("say", player, message);
         // The screen first: a scam draws nothing, not even from a beggar (round 3).
         if (Screened(player, message, "say"))
@@ -3181,6 +3183,7 @@ public static class AutonomousBotChatCoordinator
     }
 
     private static bool Eligible(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
+        !bot.IsHiredCompanion &&   // hired companions never join the world's talk (CompanionChat165, from True 1.65)
         bot.IsAlive && bot.ObjectState == GameObject.eObjectState.Active && !bot.InCombat && !bot.IsCasting &&
         !bot.IsOnStableMasterRoute && !bot.IsOnHorse && !AutonomousBeggars.Is(bot);   // beggars talk only on their corner
 

@@ -8,6 +8,44 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Hired companions (branch `feat/hired-companions`, not in 1.2 until seen on the owner's PC)
+
+Ported from shadowofze's Offline DAoC True 1.65 (v0.7, `f68cc75`; github.com/zomboden/OfflineDAoC-True165), GPL-3.0, via
+True165. **Tests only: nothing here has been played on the owner's PC.** Setting: `bots / hired_companions`, **on** by
+default (owner 2026-11-16: Living Server features default on for installer users); off, nobody can hire and no hired
+companion is summoned, and the rows stay.
+
+- **Hire up to seven companions of your own** beside a healer of your realm (every capital and major town has one): talk
+  to the healer and click **[companions]**, or type `/hire`. Slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first
+  companion is free, the others cost 20 s, 60 s, 2 g, 6 g, 15 g and 30 g (True 1.65's prices). You pick its race, class,
+  sex, classic look, hair colour, height and name; a figure only you see shows the look. It joins your group at level 5
+  with a training weapon and nothing else.
+- **It is yours.** It levels only beside you, at your XP rate, and never passes your level. Its gear, bag (10 slots),
+  coin and realm points are its own and saved. You train its specs and buy its realm abilities; respec is free. It leaves
+  with you when you log out and comes back when you log in; dismiss it, summon it again beside a healer, or release it for
+  good (it leaves with everything it carries). Dead, its body waits five minutes for a raise, then fades; any healer of
+  your realm brings it back free.
+- **The original client's own windows**, all server side (True 1.65's original-client overlay was never published): the
+  healer's and the companion's dialog links, the stock text window for the roster, stats, specs, realm abilities and AI
+  options, the house-vault window to hand it gear (drag from your backpack, or off it to take items back), and the
+  champion trainer window for its specs. Right-click your companion for its links; `/hire help` lists the typed words.
+- **AI Options** (`/hire options <n>`, `/hire option <n> <row> <choice>`): Role "Melee and heal" (healers), Attack spells
+  and Save power Strict (casters and hybrids), Bolts "Nukes only", Debuff before nuking "Never" and each debuff Use or
+  Skip, Life transfer, Amnesia, the Hunter's pet, charming, Crowd control Off, and a Stance of its own (or your
+  /aggressive and /defensive). Read where the companion casts and where its stance is decided; every other bot reads
+  Automatic. True 1.65's other rows steer AI that 1.2 does not have and are not offered.
+- **Repairs:** a smith repairs the gear of the companions with you in one go, at the smith's price under `player_upkeep`
+  (True 1.65: free). **The economy ledger names both new coin moves:** the hire cost (`companionhire`, a sink; the
+  launcher's economy page calls it "Companion hires") and a companion's repairs (`repair`), so the residual stays 0.
+- **Kept apart from the world's bots.** A hired companion is never in the gamebot population count, the planners'
+  roster, raids, guild groups or world chat; the population never logs one in or out; the stuck watchdog never moves
+  one. `/spawn` and `/raid` are unchanged. The launcher's DELETE never deletes a player's companion (DELETE ALL keeps
+  them and deletes only orphans whose character is gone); a release build empties `offline_hired_companions`
+  (progress-policy.json, checked by build_release_037.py); the Passport keeps them in their world.
+- Not yet: True 1.65's traveler's inns and innkeepers (they need a base-game world update), the courier, the Horn of
+  Rallying, its 1.65 mode rules. The hire window's DebugMode 'H' protocol is kept byte for byte, but sent only to a
+  client that asks for it (`/companionui protocol`); no client does yet, so nobody gets 'H' packets.
+
 ## 2.0: crafting and the economy
 
 In development on `integration/2.0`. The plan is [docs/CRAFTING-2.0-BUILD-PLAN.md](docs/CRAFTING-2.0-BUILD-PLAN.md);

@@ -144,12 +144,20 @@ namespace DOL.GS.CraftingEconomy
                     moves += window.InCount(slot, kind) + window.OutCount(slot, kind);
                 }
                 purseNet += net;
+                // Hired companions: a player's named coin to the world (a hire, a companion's repairs) is a faucet or a
+                // sink of the supply like a bot's, but no bot purse moved, so it stays out of purseNet (the bots' flows).
+                long playerNet = 0;
+                foreach (int slot in slots)
+                    playerNet += window.PlayerNet(slot, kind);
                 if (EconomyFlowClassifier.IsTransfer(kind))
                 {
                     transfersIn += gin;
                     transfersOut += gout;
+                    net = playerNet;
                 }
-                else if (net > 0)
+                else
+                    net += playerNet;
+                if (net > 0)
                     faucets[EconomyFlowClassifier.KeyName(kind)] = net;
                 else if (net < 0)
                     sinks[EconomyFlowClassifier.KeyName(kind)] = -net;
@@ -311,6 +319,10 @@ namespace DOL.GS.CraftingEconomy
                 string name = EconomyFlowClassifier.KeyName(kind);
                 if (gin > 0) pairs.Add(($"in_{name}", new CopperCount(gin, cin)));
                 if (gout > 0) pairs.Add(($"out_{name}", new CopperCount(gout, cout)));
+                // hired companions: what players paid or got for this kind (player_in_companionhire=copper)
+                long pin = slots.Sum(slot => window.PlayerIn(slot, kind)), pout = slots.Sum(slot => window.PlayerOut(slot, kind));
+                if (pin > 0) pairs.Add(($"player_in_{name}", pin));
+                if (pout > 0) pairs.Add(($"player_out_{name}", pout));
             }
             for (int band = 0; band < 6; band++)
             {

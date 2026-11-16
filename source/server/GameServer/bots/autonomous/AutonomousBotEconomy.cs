@@ -333,6 +333,102 @@ namespace DOL.GS;
               !GameServer.ServerRules.CheckAbilityToUseItem(bot, item.Template));
 
         /// <summary>
+        /// Whether the bot can wear this item at all (class, level, weapon proficiency and its slots), and where. From
+        /// shadowofze's True 1.65 v0.7 (f68cc75), via True165, GPL-3.0: hired companions wear what their player hands them,
+        /// upgrade or not. A player can put on an item above his level (it only works fully once he reaches it), so a
+        /// hired companion can too; a gamebot buying for itself still waits.
+        /// </summary>
+        public static bool CanWear(GameBot bot, DbInventoryItem item, out eInventorySlot equipSlot)
+        {
+            equipSlot = eInventorySlot.Invalid;
+            if (bot?.Inventory == null || item?.Template == null ||
+                (eObjectType)item.Object_Type == eObjectType.GenericItem ||
+                item.LevelRequirement > bot.Level && !bot.IsHiredCompanion ||
+                (BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
+                 (!BotWeaponStats.IsConfiguredMeleeWeapon(bot, item.Template) ||
+                  !BotWeaponStats.HasConfiguredWeaponProficiency(bot, item.Template))) ||
+                (BotRangedCombat.IsRangedWeaponType((eObjectType)item.Object_Type) && !BotRangedCombat.IsUsableWeapon(item)) ||
+                (!BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type) &&
+                 !GameServer.ServerRules.CheckAbilityToUseItem(bot, item.Template)))
+                return false;
+            equipSlot = ResolveEquipmentSlot(bot, item);
+            return equipSlot != eInventorySlot.Invalid;
+        }
+
+        /// <summary>
+        /// Whether an item the bot can wear (CanWear passed) may go in the slot the player dropped it on (True 1.65). The
+        /// same slot rules as a player's own equipment (GamePlayerInventory): the main hand takes a one-handed weapon of
+        /// either hand, never a shield; the left hand only an either-hand item - a shield, or a weapon for a class that
+        /// fights with a left-hand weapon; the two-hand slot a two-hander or an instrument; the ranged slot a ranged weapon
+        /// or an instrument; rings and bracers either side; armour only its own slot.
+        /// </summary>
+        public static bool FitsChosenSlot(GameBot bot, DbInventoryItem item, int wanted)
+        {
+            if (bot == null || item == null || wanted < (int)eInventorySlot.MinEquipable || wanted > (int)eInventorySlot.MaxEquipable)
+                return false;
+            var slot = (eInventorySlot)wanted;
+            var own = (eInventorySlot)item.Item_Type;
+            var type = (eObjectType)item.Object_Type;
+            bool fits = slot switch
+            {
+                eInventorySlot.RightHandWeapon => type != eObjectType.Shield && own is eInventorySlot.RightHandWeapon or eInventorySlot.LeftHandWeapon,
+                eInventorySlot.LeftHandWeapon => own == eInventorySlot.LeftHandWeapon && (type == eObjectType.Shield || LeftHandWeaponAllowed(bot, item)),
+                eInventorySlot.TwoHandWeapon => type != eObjectType.Shield && (own == eInventorySlot.TwoHandWeapon || type == eObjectType.Instrument),
+                eInventorySlot.DistanceWeapon => own == eInventorySlot.DistanceWeapon || type == eObjectType.Instrument,
+                eInventorySlot.LeftRing or eInventorySlot.RightRing => own is eInventorySlot.LeftRing or eInventorySlot.RightRing,
+                eInventorySlot.LeftBracer or eInventorySlot.RightBracer => own is eInventorySlot.LeftBracer or eInventorySlot.RightBracer,
+                _ => own == slot,
+            };
+            if (!fits)
+                return false;
+            // a melee weapon also has to be one the bot can fight with in that hand (skill, level, condition)
+            return !BotWeaponStats.IsMeleeWeapon(type) || BotWeaponStats.FitsConfiguredSlot(bot, item, slot);
+        }
+
+        /// <summary>Whether the bot's class fights with a weapon in its left hand (dual wield, celtic dual, left axe,
+        /// hand to hand): the same class flag that decides it for a player (True 1.65).</summary>
+        public static bool CanUseOffhandWeapon(GameBot bot) => bot?.CharacterClass?.CanUseLefthandedWeapon == true;
+
+        /// <summary>Whether this weapon can be the bot's left-hand weapon (True 1.65): its class fights left-handed, with the
+        /// left-hand line's weapons - Left Axe (Berserker, Shadowblade) only axes, Hand to Hand (Savage) only hand-to-hand
+        /// weapons; Dual Wield and Celtic Dual any either-hand weapon.</summary>
+        public static bool LeftHandWeaponAllowed(GameBot bot, DbInventoryItem item)
+        {
+            if (item == null || !CanUseOffhandWeapon(bot) || (eInventorySlot)item.Item_Type != eInventorySlot.LeftHandWeapon)
+                return false;
+            var type = (eObjectType)item.Object_Type;
+            return bot.CharacterClass.ID switch
+            {
+                (int)eCharacterClass.Berserker or (int)eCharacterClass.Shadowblade => type is eObjectType.Axe or eObjectType.LeftAxe,
+                (int)eCharacterClass.Savage => type == eObjectType.HandToHand,
+                _ => true,
+            };
+        }
+
+        /// <summary>
+        /// A hired companion's melee weapon left in the left hand of a class that can't use it moves to the empty main hand,
+        /// so it fights with it (True 1.65). True when it moved. Only hired companions: a gamebot's hands are unchanged.
+        /// </summary>
+        public static bool MoveStrayOffhandWeapon(GameBot bot)
+        {
+            if (bot?.Inventory == null || !bot.IsHiredCompanion || CanUseOffhandWeapon(bot))
+                return false;
+            DbInventoryItem left = bot.Inventory.GetItem(eInventorySlot.LeftHandWeapon);
+            if (left == null || !BotWeaponStats.IsMeleeWeapon((eObjectType)left.Object_Type) ||
+                left.Item_Type == Slot.TWOHAND || left.Hand == 1 ||
+                bot.Inventory.GetItem(eInventorySlot.RightHandWeapon) != null)
+                return false;
+            if (!bot.Inventory.MoveItem(eInventorySlot.LeftHandWeapon, eInventorySlot.RightHandWeapon, 1))
+                return false;
+            bot.RefreshItemBonuses();
+            if (!bot.IsAttacking && bot.ActiveWeaponSlot == eActiveWeaponSlot.Standard)
+                bot.SwitchWeapon(eActiveWeaponSlot.Standard);
+            bot.MarkAutonomousStateDirty();
+            AutonomousBotStatusPersistence.Queue(bot, true);
+            return true;
+        }
+
+        /// <summary>
         /// Compares against what the move actually displaces (the idea behind the
         /// stefanrows/OfflineDAoC fork's shield/two-hander loop fix, 0b76744). A shield is
         /// never an upgrade over a weapon the build wields in its left hand: Savages swapped a
@@ -621,6 +717,11 @@ namespace DOL.GS;
                 item.Object_Type is (int)eObjectType.Axe or (int)eObjectType.LeftAxe &&
                 item.Object_Type != (int)bot.BotSpec.WeaponOneType && item.Item_Type != Slot.TWOHAND && item.Hand != 1)
                 requested = eInventorySlot.LeftHandWeapon;
+            // A hired companion is placed like a player's auto-equip (True 1.65): an either-hand weapon goes to the main
+            // hand when that hand is empty, or when its class can't fight with it in the left hand.
+            if (requested == eInventorySlot.LeftHandWeapon && bot.IsHiredCompanion &&
+                (bot.Inventory.GetItem(eInventorySlot.RightHandWeapon) == null || !LeftHandWeaponAllowed(bot, item)))
+                requested = eInventorySlot.RightHandWeapon;
             if (!BotWeaponStats.FitsConfiguredSlot(bot, item, requested)) return eInventorySlot.Invalid;
         }
         if (requested is eInventorySlot.LeftRing or eInventorySlot.RightRing)
