@@ -320,8 +320,16 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
 - **`/lscraft wtb`** now answers from WP6 (switches, board, this hour's counts, the guard), and the economy rehearsal
   runs WP6's adapter (`WP6.Demand`, with `bot_crafters` on): the set score as the upgrade rule, the gear check and gap
   purchases, want-to-buy demand counted (no board in the rehearsal yet), and `wp6.setScoreDrops`, which must be 0. A
-  simulated fresh-start day (1 realm, 200 bots) passed every gate with 520 gap purchases and no set score falling
+  simulated fresh-start day (1 realm, 200 bots) passed every gate with 528 gap purchases and no set score falling
   (a rehearsal, not a game result). Tests only: nothing here has been seen in game.
+- **The rehearsal's commissions now follow the server (a rehearsal-only fix).** WP5's adapter posted a commission to
+  any crafter of skill 50, grouped or not and however far its break was, and made one a break, a failure waiting a
+  whole task; the median wait sat at the 120-minute limit with or without WP6 (12 fresh-start days without WP6:
+  118-124 minutes, 9 of 12 over the limit; with WP6: 120-128, 11 of 12 over; gap purchases only reshuffle the realm's
+  random numbers). As `QuartermasterCommissions.Candidates` and the craft trip do, the adapter now asks only an
+  ungrouped crafter whose break is within 45 minutes (or that is on a craft trip), the least busy first, and the trip
+  works every open commission it can pay for (up to three sessions, a failed attempt tried again at the station), handed
+  over at the end of the break. The same 12 days: 63-75 minutes without WP6, 64-75 with it. The server is unchanged.
 
 ## 1.2.1 (in development)
 
