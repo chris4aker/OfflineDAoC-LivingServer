@@ -234,6 +234,7 @@ public static class EconomyPage
         "consumable" => "Consumables",
         "luxury" => "Luxuries",
         "refund" => "Refunds",
+        "playertrade" => "Trades with players",
         "launchergrant" => "Launcher grants",
         "unattributed" => "Not yet named",
         _ => kind,
