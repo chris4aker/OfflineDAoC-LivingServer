@@ -330,6 +330,21 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
   ungrouped crafter whose break is within 45 minutes (or that is on a craft trip), the least busy first, and the trip
   works every open commission it can pay for (up to three sessions, a failed attempt tried again at the station), handed
   over at the end of the break. The same 12 days: 63-75 minutes without WP6, 64-75 with it. The server is unchanged.
+- **The rehearsal's no-undress gate now checks the server's guard (a rehearsal-only fix).** The week of the aged world
+  with crafters on (`aged-legacy-12pct`, 3 x 1,000 bots, seed 1) failed the gate with 41 "undress events". All 41 were
+  level 50 bots taking a looted armour drop of higher quality (2-14 points) with a few fewer bonus points: the set
+  score rose by 9-29 (6 a quality point above 94) while the old per-slot `EquipmentValue` (1 a quality point) fell by
+  1-24. The server makes the same swap with `bot_crafters` on and `BotGearGuard` allows it; in game the piece's armour
+  factor is scaled by its quality. The world's gate had kept the `EquipmentValue` rule of `bot_crafters` off. It now
+  asks the rule the server enforces: today's `EquipmentValue` with the switch off, and with WP6 the guard itself
+  (`BotGearGuard.Allows`: the set score falls or a worn slot is emptied). A swap that raises the set score with a lower
+  slot value is not an undress, but it is still counted (`wp6.slotValueTradeoffs`, in the gate's detail) and logged as
+  an `ECON_UNDRESS_GUARD event="tradeoff"` line. Every undress line now names the path (`loot`, `bag`, `exchange`,
+  `vendor`, `gap-buy`, `crafted`), the bot's level, both scores and both pieces. The same week now passes every gate:
+  0 undress events in 225,807 equips, the same 41 swaps counted as trades, and the rest of the log unchanged; with
+  WP7's three switches on (rebased on WP7, 39d78c3fe) 0 in 225,559 equips and 47 trades of the same kind (a rehearsal,
+  tests only). The server is unchanged.
+
 ### WP9 Launcher and release plumbing
 
 Launcher and release tools only; no server file changed. Automated tests only: nothing here has been seen on the owner's

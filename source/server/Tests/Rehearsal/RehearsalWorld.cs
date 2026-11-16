@@ -504,6 +504,29 @@ namespace DOL.GS.Tests.Rehearsal
             worn == null ? AutonomousBotEconomy.EquipmentValue(candidate) > 0
                 : AutonomousBotEconomy.EquipmentValue(candidate) - AutonomousBotEconomy.EquipmentValue(worn) > 8;
 
+        /// <summary>The no-undress rule an equip is checked against (agent, slot index, item; the value of the gear before
+        /// and after the move, on the rule's own scale). True when the move undresses the agent.</summary>
+        public delegate bool UndressRule(RehearsalAgent agent, int slotIndex, DbInventoryItem item, out long before, out long after);
+
+        /// <summary>
+        /// The no-undress rule of the server's active upgrade rule. Today's (bot_crafters off): the slot's
+        /// AutonomousBotEconomy.EquipmentValue falls, or the slot is emptied; TryGetEquipmentUpgrade only takes a piece
+        /// better by more than 8, so no equip may lower it. WP6's adapter replaces it with the server's own guard
+        /// (BotGearGuard.Allows on the set score), the rule the server enforces with bot_crafters on.
+        /// </summary>
+        public UndressRule IsUndress { get; set; } = SlotValueUndress;
+
+        /// <summary>The scale <see cref="IsUndress"/> measures on, for the gate and the log ("slot value" or "set score").</summary>
+        public string UndressScale { get; set; } = "slot value";
+
+        public static bool SlotValueUndress(RehearsalAgent agent, int slotIndex, DbInventoryItem item, out long before, out long after)
+        {
+            DbInventoryItem worn = agent.Worn[slotIndex];
+            before = AutonomousBotEconomy.EquipmentValue(worn);
+            after = AutonomousBotEconomy.EquipmentValue(item);
+            return item == null || worn != null && after < before;
+        }
+
         /// <summary>The price index (PriceIndexes.Current: today's vendor appraisal and listing valuation until WP5/WP6).</summary>
         public IPriceIndex PriceIndex { get; set; } = PriceIndexes.Current;
 
@@ -520,6 +543,10 @@ namespace DOL.GS.Tests.Rehearsal
 
         public int NegativePurseEvents { get; private set; }
         public int UndressEvents { get; private set; }
+        /// <summary>Equips that the undress rule allowed although the slot's own EquipmentValue fell (only possible when
+        /// the rule is the set score: a piece of higher quality at 50, or one whose bonuses the set needs). Not undresses:
+        /// counted and logged so that every such trade is visible.</summary>
+        public int SlotValueTradeoffs { get; private set; }
         public int BidAskViolations { get; private set; }
         public Dictionary<string, (int Quotes, long MaxBid, long MinAsk)> BandQuotes { get; } = new(StringComparer.Ordinal);
         /// <summary>Minutes from posting to collection of every collected order (WP5 adds them).</summary>
@@ -653,23 +680,34 @@ namespace DOL.GS.Tests.Rehearsal
 
         // ---- gear ----
 
-        /// <summary>Wears an item in its slot (what was worn goes to the bag). Counts an undress when the slot's
-        /// equipment value drops, which no policy may do (the no-undress gate).</summary>
-        public void Equip(RehearsalAgent agent, int slotIndex, DbInventoryItem item)
+        /// <summary>Wears an item in its slot (what was worn goes to the bag). Counts an undress when the move breaks
+        /// <see cref="IsUndress"/>, which no policy may do (the no-undress gate); <paramref name="source"/> names the path
+        /// that made the move (loot, bag, exchange, vendor, gap-buy, crafted).</summary>
+        public void Equip(RehearsalAgent agent, int slotIndex, DbInventoryItem item, string source = "other")
         {
             DbInventoryItem worn = agent.Worn[slotIndex];
-            if (item == null || worn != null && AutonomousBotEconomy.EquipmentValue(item) < AutonomousBotEconomy.EquipmentValue(worn))
-            {
+            bool undress = IsUndress(agent, slotIndex, item, out long before, out long after);
+            int oldValue = AutonomousBotEconomy.EquipmentValue(worn), newValue = AutonomousBotEconomy.EquipmentValue(item);
+            bool tradeoff = !undress && worn != null && newValue < oldValue;
+            if (undress)
                 UndressEvents++;
+            else if (tradeoff)
+                SlotValueTradeoffs++;
+            if (undress || tradeoff)
                 Log(EconomyLog.Line(EconomyLog.EconUndressGuard, ("hour", NowUtc), ("realm", RehearsalWorld.RealmName(agent.Realm)), ("bot", agent.Name),
-                    ("slot", RehearsalAgent.SlotOf(slotIndex)), ("oldValue", AutonomousBotEconomy.EquipmentValue(worn)),
-                    ("newValue", AutonomousBotEconomy.EquipmentValue(item))));
-            }
+                    ("event", undress ? "undress" : "tradeoff"), ("level", agent.Level), ("slot", RehearsalAgent.SlotOf(slotIndex)),
+                    ("source", source), ("rule", UndressScale), ("before", before), ("after", after),
+                    ("oldValue", oldValue), ("newValue", newValue), ("worn", Describe(worn)), ("item", Describe(item))));
             agent.Worn[slotIndex] = item;
             if (worn != null)
                 agent.Bag.Add(worn);
             Count(item?.IsCrafted == true ? "equipped_crafted" : "equipped");
         }
+
+        /// <summary>A piece for an undress line: level, quality, DPS/AF, untyped utility, crafted or a drop.</summary>
+        private static string Describe(DbInventoryItem item) => item == null ? "empty"
+            : $"L{item.Level} q{item.Quality} af{item.DPS_AF} u{Math.Abs(item.Bonus1) + Math.Abs(item.Bonus2) + Math.Abs(item.Bonus3)}" +
+              (item.IsCrafted ? " crafted" : item.IsROG ? " drop" : " merchant");
 
         // ---- the Exchange ----
 
