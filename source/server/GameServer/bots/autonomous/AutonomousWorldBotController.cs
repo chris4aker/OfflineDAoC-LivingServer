@@ -519,6 +519,14 @@ namespace DOL.GS
                     if (_camp != null && _groupDirective?.IsDynamic != true)
                         _recoverBeforeNextCampTarget = true;
 
+                    ReportSiegeCombatAttendance(bot, nowTick);
+                    // A battleground gatherer does not chase a fight away from its realm's staging point.
+                    bool droppedChase = DropBattlegroundGatherChase(brain, bot);
+                    // ...and a stormer with nothing it may fight goes on up to the lord (build ef76db3), still walking: the
+                    // combat stop below ran first on c165c90 and stopped it on every turn its combat timer ran (every
+                    // "march-under-fire" sample read moving=False; through the gate in 10 s steps of 150-600).
+                    if (StormerMarchesOn(brain, bot))
+                        return ExecuteBattleground(brain, bot);
                     // Combat temporarily owns movement. Preserve the actual
                     // travel destination, but discard any short wall-detour so
                     // the canonical route is replotted once combat ends.
@@ -529,12 +537,6 @@ namespace DOL.GS
                         bot.StopMoving();
                         bot.ForcePathReplot();
                     }
-                    ReportSiegeCombatAttendance(bot, nowTick);
-                    // A battleground gatherer does not chase a fight away from its realm's staging point.
-                    bool droppedChase = DropBattlegroundGatherChase(brain, bot);
-                    // ...and a stormer with nothing it may fight goes on up to the lord (build ef76db3).
-                    if (StormerMarchesOn(brain, bot))
-                        return ExecuteBattleground(brain, bot);
                     if (droppedChase)
                         return true;
                     // Relic sentinels take no damage from beyond 800 (owner 2026-10-31: ranged bots step in to range).

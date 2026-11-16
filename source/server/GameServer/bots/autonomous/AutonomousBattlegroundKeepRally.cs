@@ -64,6 +64,17 @@ namespace DOL.GS;
 /// a stormer with nothing it may fight goes on up at once; beside the lord they fight everything in his fight. BG_STORM_TRACE
 /// samples the stormers (step=storm, every 10 s per realm) and BG_RALLY_REGROUP says where the attempt's stormers fell, to
 /// what (<see cref="SummariseFallen"/>), how many got past the gate and how near the lord any came.
+///
+/// Owner's PC, build c165c90 (Thidranki 2026-11-15 17:23-18:02): Midgard stormed five times (up to 11 past the gate, 2 at
+/// the lord) but nobody stood on Lady Thidranki's floor (4,592) and she stayed at 100%; Hibernia never stormed. The tower's
+/// stair is on the navmesh (bots of 0026378 and d64d005 died beside her and on its flights at 4,423-4,524), but the
+/// controller's combat turn stopped a marching stormer on every turn its combat timer ran, and a target above it (the lord
+/// 539 over Conyff on the stair) stopped its walk for a fight it could not reach. Now a stormer fights from where it stands
+/// only on its target's floor (<see cref="StrikesFromHere"/>) and walks on up otherwise, and BG_LORD_PATH logs where the walk
+/// to the lord ends. Both realms rallied at gate 252000301 and the realm placed first took its own side (Midgard, -30),
+/// leaving Hibernia only +60, the far side from its arrival: its rally drew 0-4 for 23 minutes. Now the two attacking
+/// realms' rallies are planned as a pair (<see cref="RallyPairs"/>), and a rally that draws nobody moves
+/// (<see cref="IsBarren"/>).
 /// </summary>
 public static class AutonomousBattlegroundKeepRally
 {
@@ -89,6 +100,9 @@ public static class AutonomousBattlegroundKeepRally
     /// <summary>Guards this close to the lord, and on his floor, fight beside him.</summary>
     public const float LordRoomRadius = 1_200f;
     public const float LordFloorHeight = 300f;
+    /// <summary>A stormer this near the lord (flat) stands in his tower, for BG_RALLY_REGROUP's bestBelowLord= and
+    /// BG_LORD_PATH's tower sample (Thidranki Faste's stair winds within 160 of him).</summary>
+    public const float TowerRadius = 400f;
     /// <summary>A bot this close to the lord during an attempt is already in that fight.</summary>
     public const float InTheFightRadius = 900f;
 
@@ -301,9 +315,55 @@ public static class AutonomousBattlegroundKeepRally
     /// <summary>Where <see cref="PlanRally"/> put a rally: the point (null when nothing outside the breach is walkable), its
     /// guard clearance, its bearing, its distance to the nearest other attacking realm's rally (float.MaxValue with none),
     /// and whether it is <see cref="RallySeparation"/> from them.</summary>
-    public readonly record struct RallyPlan(Vector3? Point, float GuardClear, float Bearing, float FromOtherRally)
+    public readonly record struct RallyPlan(Vector3? Point, float GuardClear, float Bearing, float FromOtherRally, Vector3? Partner = null)
     {
         public bool Apart => FromOtherRally >= RallySeparation;
+    }
+
+    /// <summary>A candidate this near a point where the realm's rally gathered nobody (<see cref="IsBarren"/>) is passed over.</summary>
+    public const float BarrenRadius = 300f;
+
+    /// <summary>Whether <paramref name="at"/> stands within <paramref name="radius"/> (flat) of any of <paramref name="points"/>. Pure.</summary>
+    public static bool IsNearAny(Vector3 at, IReadOnlyList<Vector3> points, float radius) =>
+        points != null && points.Any(point => Vector2.DistanceSquared(new(at.X, at.Y), new(point.X, point.Y)) <= radius * radius);
+
+    /// <summary>
+    /// The pairs of candidates two attacking realms' rallies may take together, best first: both clear of the guards' posts,
+    /// <see cref="RallySeparation"/> apart, neither on a spot where that realm's rally gathered nobody; the pair whose worse
+    /// side is nearer its realm's own arrival first (then the two gaps together, then the nearer the breach, then by index,
+    /// the lower realm's spot first: <paramref name="partnerFirst"/> says the partner is the lower realm). Both realms
+    /// work out the same list from their own side, so each takes its half and the two never race for one spot. Owner's PC,
+    /// build c165c90 (Thidranki 2026-11-15 17:37): Midgard placed 4 s before Hibernia and took -30, its own side; the only
+    /// candidate 2,250 from it was +60, the far side of the gate from Hibernia's arrival (-128). For 23 minutes Hibernia's
+    /// rally read 0-4 of 19-20 while its bots walked round the keep past Midgard's rally and Albion's holders (187 of them
+    /// died; Midgard stormed five times). Midgard at +30 and Hibernia at -60 (68° and 63° off their arrivals, 2,546 apart)
+    /// is the pair this gives. Pure.
+    /// </summary>
+    public static IReadOnlyList<(int Mine, int Partner)> RallyPairs(IReadOnlyList<RallyCandidate> candidates,
+        IReadOnlyList<Vector3> points, float arrivalBearing, float partnerBearing, bool partnerFirst,
+        IReadOnlyList<bool> barren = null, IReadOnlyList<bool> partnerBarren = null)
+    {
+        var pairs = new List<(int Mine, int Partner)>();
+        bool Clear(int i) => candidates[i].GuardClearance >= RallyGuardClearance;
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            if (!Clear(i) || barren != null && barren[i]) continue;
+            for (int j = 0; j < candidates.Count; j++)
+            {
+                if (j == i || !Clear(j) || partnerBarren != null && partnerBarren[j]) continue;
+                if (Vector2.Distance(new(points[i].X, points[i].Y), new(points[j].X, points[j].Y)) < RallySeparation) continue;
+                pairs.Add((i, j));
+            }
+        }
+        float Mine((int Mine, int Partner) pair) => BearingGap(candidates[pair.Mine].Bearing, arrivalBearing);
+        float Theirs((int Mine, int Partner) pair) => BearingGap(candidates[pair.Partner].Bearing, partnerBearing);
+        return pairs
+            .OrderBy(pair => Math.Max(Mine(pair), Theirs(pair)))
+            .ThenBy(pair => Mine(pair) + Theirs(pair))
+            .ThenBy(pair => candidates[pair.Mine].StandOff + candidates[pair.Partner].StandOff)
+            .ThenBy(pair => partnerFirst ? pair.Partner : pair.Mine)
+            .ThenBy(pair => partnerFirst ? pair.Mine : pair.Partner)
+            .ToArray();
     }
 
     /// <summary>
@@ -312,10 +372,16 @@ public static class AutonomousBattlegroundKeepRally
     /// of <see cref="RallyPreference"/> with a complete walk to the gate's front (<paramref name="reachesGate"/>, asked
     /// lazily: an unreachable point is the most expensive query) is the rally. With none, as before d64d005: straight out
     /// only, the nearest clear of the guards or the clearest (<see cref="ChooseRallyCandidate"/>), even on another realm's
-    /// rally. Pure but for the delegates.
+    /// rally. With the other attacking realm in the battleground (<paramref name="partnerArrival"/>, its arrival) the two
+    /// rallies are planned as a pair (<see cref="RallyPairs"/>): the plan's <see cref="RallyPlan.Partner"/> is the spot left to
+    /// the other realm, and the placed <paramref name="otherRallies"/> only count when no pair can be walked. Candidates
+    /// near <paramref name="barren"/> (and the partner's near <paramref name="partnerBarren"/>) are passed over, but for the
+    /// last fallback. Pure but for the delegates.
     /// </summary>
     public static RallyPlan PlanRally(Vector3 gate, Vector2 outward, Vector3? arrival, IReadOnlyList<Vector3> otherRallies,
-        Func<Vector3, Vector3?> floor, Func<Vector3, bool> reachesGate, Func<Vector3, float> clearance)
+        Func<Vector3, Vector3?> floor, Func<Vector3, bool> reachesGate, Func<Vector3, float> clearance,
+        Vector3? partnerArrival = null, bool partnerFirst = false,
+        IReadOnlyList<Vector3> barren = null, IReadOnlyList<Vector3> partnerBarren = null)
     {
         float arrivalBearing = ArrivalBearing(gate, outward, arrival);
         var points = new List<Vector3>();
@@ -337,8 +403,21 @@ public static class AutonomousBattlegroundKeepRally
             return ok;
         }
         RallyPlan Plan(int i) => new(points[i], candidates[i].GuardClearance, candidates[i].Bearing, candidates[i].FromOtherRally);
+        bool[] mineBarren = points.Select(point => IsNearAny(point, barren, BarrenRadius)).ToArray();
+        if (partnerArrival != null)
+        {
+            bool[] theirBarren = points.Select(point => IsNearAny(point, partnerBarren, BarrenRadius)).ToArray();
+            foreach (var (mine, partner) in RallyPairs(candidates, points, arrivalBearing,
+                         ArrivalBearing(gate, outward, partnerArrival), partnerFirst, mineBarren, theirBarren))
+                if (Reaches(mine) && Reaches(partner))
+                    return Plan(mine) with
+                    {
+                        Partner = points[partner],
+                        FromOtherRally = Vector2.Distance(new(points[mine].X, points[mine].Y), new(points[partner].X, points[partner].Y)),
+                    };
+        }
         foreach (int i in RallyPreference(candidates, arrivalBearing))
-            if (Reaches(i)) return Plan(i);
+            if (!mineBarren[i] && Reaches(i)) return Plan(i);
         int[] straight = Enumerable.Range(0, candidates.Count).Where(i => candidates[i].Bearing == 0 && Reaches(i)).ToArray();
         int pick = ChooseRallyCandidate(straight.Select(i => candidates[i].GuardClearance).ToArray());
         return pick >= 0 ? Plan(straight[pick]) : new RallyPlan(null, 0, 0, float.MaxValue);
@@ -395,6 +474,38 @@ public static class AutonomousBattlegroundKeepRally
     /// <summary>Beside the lord and on his floor: in his fight (a rally right under his room is not). Pure.</summary>
     public static bool InLordFight(float toLord, float heightToLord) =>
         heightToLord <= LordFloorHeight && toLord <= InTheFightRadius;
+
+    /// <summary>A stormer strikes from where it stands only this near its target's height: on its floor.</summary>
+    public const float StrikeFloorHeight = 150f;
+
+    /// <summary>
+    /// Whether a stormer fights its target from where it stands (stops and swings or casts) or walks on up toward the lord:
+    /// only on the target's floor (<see cref="StrikeFloorHeight"/>), and the lord only within the controller's strike radius.
+    /// We have no line-of-sight test for a bot's cast, so being on the floor stands in for it. Owner's PC, build c165c90
+    /// (Thidranki 2026-11-15, 17:58:57): Conyff stood on the tower stair at 32285,38215,4053, 539 under Lady Thidranki
+    /// (4592), with the lord as its target, attacking=False and moving=False: a target in reach of the 900 strike radius
+    /// stopped its walk, and neither a swing nor the brain's chase climbs a stair. The stair goes on up: on builds 0026378
+    /// and d64d005 Hibernian bots died beside him at 4592 and on its flights at 4423-4524. Pure.
+    /// </summary>
+    public static bool StrikesFromHere(bool isLord, float toTarget, float heightGap) =>
+        heightGap <= StrikeFloorHeight && (!isLord || toTarget <= AutonomousWorldBotController.BattlegroundLordStrike);
+
+    /// <summary>A gathering rally that drew fewer than <see cref="MinimumRally"/> for this long, with that many of the realm in
+    /// the battleground, is re-placed (<see cref="IsBarren"/>).</summary>
+    public const long BarrenMilliseconds = 5 * 60_000;
+    /// <summary>The spots a realm's rally left as barren that are remembered for the keep (the oldest goes first).</summary>
+    public const int MaximumBarren = 4;
+
+    /// <summary>
+    /// A gathering rally that never drew <see cref="MinimumRally"/> (its peak, <paramref name="peakRallied"/>) in
+    /// <see cref="BarrenMilliseconds"/> while at least that many of the realm are in the battleground stands where the realm
+    /// cannot gather (c165c90: Hibernia's rally at +60 read 0-4 for 23 minutes with 22-36 Hibernians inside). Pure.
+    /// </summary>
+    public static bool IsBarren(long gatheringMilliseconds, int peakRallied, int inside) =>
+        gatheringMilliseconds >= BarrenMilliseconds && peakRallied < MinimumRally && inside >= MinimumRally;
+
+    /// <summary>Two plans agree on a rally spot when it lies this near (flat).</summary>
+    public const float SameSpotSlack = 50f;
 
     /// <summary><see cref="InLordFight(float, float)"/> for a living and the lord.</summary>
     public static bool InLordFight(GameLiving living, GameLiving lord) =>
@@ -492,6 +603,17 @@ public static class AutonomousBattlegroundKeepRally
         /// <summary>When the point was placed, and the other attacking realms' rally points it was placed away from.</summary>
         public long ResolvedAt;
         public Vector3[] Avoided = Array.Empty<Vector3>();
+        /// <summary>Placed as a pair with the other attacking realm's rally (<see cref="RallyPairs"/>), and at which of the keep's
+        /// plan generations (a newer one re-places a gathering rally).</summary>
+        public bool Joint;
+        public int PlacedGeneration;
+        /// <summary>Since when the rally has gathered at its spot, and the most it drew there (<see cref="IsBarren"/>).</summary>
+        public long BarrenSince;
+        public int PeakRallied;
+        /// <summary>This attempt: the least height under the lord of a stormer near his tower, and whether its lord path and
+        /// tower climb were logged (BG_LORD_PATH, once each per attempt).</summary>
+        public float BestBelowLord = float.MaxValue;
+        public bool LordPathLogged, TowerPathLogged;
         // Since the last BG_RALLY_STATUS: the realm's deaths here, and the fights its holders and stormers left alone.
         public int DiedToGuards, DiedOther, Refused, Dropped;
         /// <summary>The breach and the lord as last counted (for where the stormers fell and how far they got).</summary>
@@ -620,7 +742,7 @@ public static class AutonomousBattlegroundKeepRally
     {
         long now = GameLoop.GameLoopTime;
         Rally rally = Rallies.GetOrAdd((bracket.RegionId, bot.Realm),
-            _ => new Rally { Region = bracket.RegionId, Realm = bot.Realm, GatherSince = now,
+            _ => new Rally { Region = bracket.RegionId, Realm = bot.Realm, GatherSince = now, BarrenSince = now,
                 LeaseOwner = RallyLeaseOwner(bracket.RegionId, bot.Realm) });
         lock (rally)
         {
@@ -641,23 +763,69 @@ public static class AutonomousBattlegroundKeepRally
             if (gate == null) return default;
             rally.GatePoint = new Vector3(gate.X, gate.Y, gate.Z);
             var others = OtherRallies(bracket.RegionId, bot.Realm, keep, now);
-            bool place = rally.Point == null || rally.GateId != gate.DoorId;
-            if (!place && !rally.Storming && rally.Point is { } placed)
-                // Two realms placed at once (or the other moved onto this one): the later of the two moves (d64d005).
-                place = others.Any(other => YieldsTo(Vector2.Distance(new(placed.X, placed.Y), new(other.Placed.Point.X, other.Placed.Point.Y)),
-                    rally.ResolvedAt, bot.Realm, other.Placed.ResolvedAt, other.Realm, rally.Avoided.Contains(other.Placed.Point)));
-            if (place)
+            int generation = PlanGenerations.GetValueOrDefault((bracket.RegionId, keep.KeepID));
+            string reason = rally.Point == null ? "new" : rally.GateId != gate.DoorId ? "gate" : null;
+            if (reason == null && !rally.Storming && rally.Point is { } placed)
+            {
+                // Two realms placed alone at once (or the other moved onto this one): the later of the two moves (d64d005).
+                if (!rally.Joint && others.Any(other => YieldsTo(Vector2.Distance(new(placed.X, placed.Y), new(other.Placed.Point.X, other.Placed.Point.Y)),
+                        rally.ResolvedAt, bot.Realm, other.Placed.ResolvedAt, other.Realm, rally.Avoided.Contains(other.Placed.Point))))
+                    reason = "yield";
+                // The other realm's pair placement (or a barren rally) asked for a new plan.
+                else if (rally.PlacedGeneration != generation)
+                    reason = "replan";
+                else if (IsBarren(now - rally.BarrenSince, rally.PeakRallied, rally.Inside))
+                {
+                    reason = "barren";
+                    AddBarren(bracket.RegionId, keep, bot.Realm, placed);
+                    generation = BumpGeneration(bracket.RegionId, keep.KeepID);
+                    Log.Info($"BG_RALLY_BARREN battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
+                             $"point={placed.X:0},{placed.Y:0},{placed.Z:0} bearing={rally.Bearing:0} minutes={(now - rally.BarrenSince) / 60_000.0:0.0} " +
+                             $"peakRallied={rally.PeakRallied} needed={rally.Needed} inside={rally.Inside} joint={rally.Joint} " +
+                             $"barren={Barren(bracket.RegionId, keep, bot.Realm).Length}");
+                }
+            }
+            if (reason != null)
             {
                 rally.GateId = gate.DoorId;
                 rally.Avoided = others.Select(other => other.Placed.Point).ToArray();
-                RallyPlan plan = ResolvePoint(bracket.RegionId, keep, gate, arrival, rally.Avoided);
+                // The other attacking realm's rally is planned with this one as a pair (c165c90: whoever placed first took
+                // its own side, and the later realm got the far side of the gate from its arrival).
+                RallyPartner? partner = PartnerOf(bracket, keep, bot.Realm, others, now);
+                Vector3[] barren = Barren(bracket.RegionId, keep, bot.Realm);
+                RallyPlan plan = ResolvePoint(bracket.RegionId, keep, gate, arrival, rally.Avoided, partner?.Arrival,
+                    partner is { } first && first.Realm < bot.Realm, barren,
+                    partner is { } p ? Barren(bracket.RegionId, keep, p.Realm) : null);
+                string pairing = partner == null ? "alone" : "pair";
+                if (plan.Partner is { } spot && partner is { Placed: { } theirs } other &&
+                    Vector2.Distance(new(theirs.X, theirs.Y), new(spot.X, spot.Y)) > SameSpotSlack)
+                {
+                    if (other.Storming)
+                    {
+                        // The other realm is on its way up and its rally can't move now: placed away from it, alone.
+                        plan = ResolvePoint(bracket.RegionId, keep, gate, arrival, rally.Avoided, null, false, barren, null);
+                        pairing = "alone-other-storming";
+                    }
+                    else
+                    {
+                        // The other realm's gathering rally moves to its half of the pair on its next turn.
+                        generation = BumpGeneration(bracket.RegionId, keep.KeepID);
+                        pairing = "pair-moves-other";
+                    }
+                }
                 (rally.Point, rally.GuardClear, rally.Bearing) = (plan.Point, plan.GuardClear, plan.Bearing);
-                rally.ResolvedAt = now;
+                rally.Joint = plan.Partner != null;
+                rally.PlacedGeneration = generation;
+                rally.ResolvedAt = rally.BarrenSince = now;
+                rally.PeakRallied = 0;
                 if (plan.Point is { } at)
                     Log.Info($"BG_RALLY_PLACED battleground={bracket.Name} realm={GlobalConstants.RealmToName(bot.Realm)} keep=\"{keep.Name}\" " +
                              $"point={at.X:0},{at.Y:0},{at.Z:0} gate={rally.GateId} bearing={plan.Bearing:0} " +
+                             $"arrivalBearing={ArrivalBearing(rally.GatePoint.Value, RallyOutward(keep, gate), arrival == null ? null : new Vector3(arrival.X, arrival.Y, arrival.Z)):0} " +
                              $"apart={(plan.FromOtherRally >= float.MaxValue ? "none" : $"{plan.FromOtherRally:0}")} " +
-                             $"separated={plan.Apart} others={string.Join(";", others.Select(other => $"{GlobalConstants.RealmToName(other.Realm)}@{other.Placed.Point.X:0},{other.Placed.Point.Y:0}"))}");
+                             $"separated={plan.Apart} reason={reason} plan={pairing} generation={generation} barren={barren.Length} " +
+                             $"partner={(partner is { } q ? $"{GlobalConstants.RealmToName(q.Realm)}@{(plan.Partner is { } s ? $"{s.X:0},{s.Y:0}" : "-")}" : "-")} " +
+                             $"others={string.Join(";", others.Select(entry => $"{GlobalConstants.RealmToName(entry.Realm)}@{entry.Placed.Point.X:0},{entry.Placed.Point.Y:0}"))}");
             }
             if (rally.Point is not { } point)
             {
@@ -735,7 +903,8 @@ public static class AutonomousBattlegroundKeepRally
     {
         if (rally.Storming) StormingSeen.TryRemove((rally.Region, rally.Realm), out _);
         rally.Storming = false;
-        rally.GatherSince = now;
+        rally.GatherSince = rally.BarrenSince = now;
+        rally.PeakRallied = 0;
         rally.Committed.Clear();
         BotDutyLeases.ReleaseOwner(eDutyLeaseKind.BattlegroundWave, rally.LeaseOwner);
         rally.Engaged = 0;
@@ -748,6 +917,61 @@ public static class AutonomousBattlegroundKeepRally
         rally.Fallen.Clear();
         rally.PassedGate.Clear();
         rally.BestToLord = float.MaxValue;
+        rally.BestBelowLord = float.MaxValue;
+        rally.LordPathLogged = rally.TowerPathLogged = false;
+    }
+
+    /// <summary>
+    /// The first stormer of the realm's attempt to take the walk to the lord (<paramref name="tower"/> false) or to stand in
+    /// his tower below his floor (true) logs that walk (BG_LORD_PATH): true once per attempt for each.
+    /// </summary>
+    public static bool ClaimLordPathLog(ushort region, eRealm realm, bool tower)
+    {
+        if (!Rallies.TryGetValue((region, realm), out Rally rally)) return false;
+        lock (rally)
+        {
+            if (!rally.Storming) return false;
+            if (tower ? rally.TowerPathLogged : rally.LordPathLogged) return false;
+            if (tower) rally.TowerPathLogged = true;
+            else rally.LordPathLogged = true;
+            return true;
+        }
+    }
+
+    // The keep's plan generation, per region: a pair placement that leaves the other realm's gathering rally on the wrong
+    // spot, or a barren rally, starts a new one, and each gathering rally re-places once on its next turn.
+    private static readonly ConcurrentDictionary<(ushort Region, int KeepId), int> PlanGenerations = new();
+    // Where each realm's rally gathered nobody, per keep and holder (shared, so both realms plan their pair alike).
+    private static readonly ConcurrentDictionary<(ushort Region, int KeepId, eRealm Holder, eRealm Realm), Vector3[]> BarrenSpots = new();
+
+    private static int BumpGeneration(ushort region, int keepId) =>
+        PlanGenerations.AddOrUpdate((region, keepId), 1, (_, generation) => generation + 1);
+
+    private static Vector3[] Barren(ushort region, AbstractGameKeep keep, eRealm realm) =>
+        BarrenSpots.TryGetValue((region, keep.KeepID, keep.Realm, realm), out Vector3[] spots) ? spots : Array.Empty<Vector3>();
+
+    private static void AddBarren(ushort region, AbstractGameKeep keep, eRealm realm, Vector3 spot) =>
+        BarrenSpots.AddOrUpdate((region, keep.KeepID, keep.Realm, realm), _ => new[] { spot },
+            (_, spots) => spots.Append(spot).TakeLast(MaximumBarren).ToArray());
+
+    /// <summary>The other attacking realm whose rally is planned as a pair with this one: the one realm neither this nor the
+    /// holder, with a rally placed or gamebots here; null with none or two (a neutral keep's three attackers plan alone).</summary>
+    private readonly record struct RallyPartner(eRealm Realm, Vector3 Arrival, Vector3? Placed, bool Storming);
+
+    private static RallyPartner? PartnerOf(BattlegroundBrackets.Bracket bracket, AbstractGameKeep keep, eRealm realm,
+        List<(eRealm Realm, PlacedRally Placed)> others, long now)
+    {
+        var present = new List<RallyPartner>();
+        foreach (eRealm other in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+        {
+            if (other == realm || other == keep.Realm) continue;
+            Vector3? placed = others.Where(entry => entry.Realm == other).Select(entry => (Vector3?)entry.Placed.Point).FirstOrDefault();
+            if (placed == null && !AutonomousBotRegistry.Snapshot().Any(bot => IsMember(bot, other, bracket.RegionId))) continue;
+            if (BattlegroundBrackets.BotArrival(bracket, other) is not { } arrival) continue;
+            bool storming = StormingSeen.TryGetValue((bracket.RegionId, other), out long seen) && now - seen <= StormSeenMilliseconds;
+            present.Add(new RallyPartner(other, new Vector3(arrival.X, arrival.Y, arrival.Z), placed, storming));
+        }
+        return present.Count == 1 ? present[0] : null;
     }
 
     /// <summary>A living gamebot of the realm on its own battleground tour here (a player's group follows the player).</summary>
@@ -796,6 +1020,9 @@ public static class AutonomousBattlegroundKeepRally
                     if (!rally.Committed.Contains(stormer.DatabaseID)) continue;
                     float toLord = stormer.GetDistanceTo(lord);
                     rally.BestToLord = Math.Min(rally.BestToLord, toLord);
+                    // How high up his tower it got (c165c90: the nearest stood 539 under him on the stair).
+                    if (Vector2.Distance(new(stormer.X, stormer.Y), new(lord.X, lord.Y)) <= TowerRadius)
+                        rally.BestBelowLord = Math.Min(rally.BestBelowLord, Math.Max(0, lord.Z - stormer.Z));
                     if (Vector2.Distance(new(stormer.X, stormer.Y), new(lord.X, lord.Y)) < gateToLord)
                         rally.PassedGate.Add(stormer.DatabaseID);
                 }
@@ -821,6 +1048,7 @@ public static class AutonomousBattlegroundKeepRally
                          // in the log to say whether a stormer ever got past the gate).
                          $"{SummariseFallen(rally.Fallen)} passedGate={rally.PassedGate.Count} " +
                          $"bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
+                         $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
                          $"onLordFloor={rally.OnLordFloor} atLord={rally.AtLord}");
                 Reset(rally, now);
             }
@@ -832,6 +1060,7 @@ public static class AutonomousBattlegroundKeepRally
         rally.OnLordFloor = realmBots.Count(other => other.IsWithinRadius(lord, 800) && Math.Abs(other.Z - lord.Z) < 200);
         rally.RalliedPlayers = PlayersAtRally(realm, bracket.RegionId, point);
         rally.Rallied = RallyStrength(rallied.Length, rally.RalliedPlayers);
+        if (!rally.Storming) rally.PeakRallied = Math.Max(rally.PeakRallied, rally.Rallied);
         // "Enough" is worked out from the attackers who are there (or, before anyone is, the realm's bots in the battleground).
         GameBot[] sample = rallied.Length > 0 ? rallied : realmBots;
         int attackerLevel = sample.Length == 0 ? bracket.MaxLevel : (int)Math.Round(sample.Average(other => (double)other.Level));
@@ -858,6 +1087,8 @@ public static class AutonomousBattlegroundKeepRally
                      $"otherStorming={OtherRealmStorming(bracket.RegionId, realm, keep.Realm, now)} " +
                      $"committed={rally.Committed.Count} engaged={rally.Engaged} onLordFloor={rally.OnLordFloor} atLord={rally.AtLord} " +
                      $"passedGate={rally.PassedGate.Count} bestToLord={(rally.BestToLord >= float.MaxValue ? -1 : (int)rally.BestToLord)} " +
+                     $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
+                     $"peakRallied={rally.PeakRallied} plan={(rally.Joint ? "pair" : "alone")} " +
                      $"lord={lord.HealthPercent}% diedToGuards={rally.DiedToGuards} diedOther={rally.DiedOther} " +
                      $"fightsRefused={rally.Refused} chasesDropped={rally.Dropped}");
             rally.DiedToGuards = rally.DiedOther = rally.Refused = rally.Dropped = 0;
@@ -890,20 +1121,27 @@ public static class AutonomousBattlegroundKeepRally
         return index < 0 ? null : doors[index];
     }
 
+    /// <summary>The breach's outward side: a door behind the outer gate faces that gate, any other door faces out (as
+    /// AutonomousWorldBotController.DoorFront).</summary>
+    private static Vector2 RallyOutward(AbstractGameKeep keep, GameKeepDoor gate)
+    {
+        Vector2 centre = new(keep.X, keep.Y);
+        Vector2? approach = AutonomousWorldBotController.InnerDoorApproach(keep, gate) is { } outer &&
+            Vector2.Distance(outer, centre) > Vector2.Distance(new(gate.X, gate.Y), centre) ? outer : null;
+        return SiegePlacement.OutwardNormal(new(gate.X, gate.Y), gate.Heading, centre, approach);
+    }
+
     /// <summary>
     /// The rally point outside the breach, on the navmesh, with a complete walk from it to the gate's front, clear of the
     /// guards' posts where it can be and apart from the other attacking realms' rallies (<see cref="PlanRally"/>). Null
     /// when nothing outside the breach can be walked to.
     /// </summary>
     private static RallyPlan ResolvePoint(ushort region, AbstractGameKeep keep, GameKeepDoor gate, GameLocation arrival,
-        IReadOnlyList<Vector3> otherRallies)
+        IReadOnlyList<Vector3> otherRallies, Vector3? partnerArrival = null, bool partnerFirst = false,
+        IReadOnlyList<Vector3> barren = null, IReadOnlyList<Vector3> partnerBarren = null)
     {
         Vector3 gatePoint = new(gate.X, gate.Y, gate.Z);
-        Vector2 centre = new(keep.X, keep.Y);
-        // A door behind the outer gate faces that gate; any other door faces out (as AutonomousWorldBotController.DoorFront).
-        Vector2? approach = AutonomousWorldBotController.InnerDoorApproach(keep, gate) is { } outer &&
-            Vector2.Distance(outer, centre) > Vector2.Distance(new(gate.X, gate.Y), centre) ? outer : null;
-        Vector2 outward = SiegePlacement.OutwardNormal(new(gate.X, gate.Y), gate.Heading, centre, approach);
+        Vector2 outward = RallyOutward(keep, gate);
         Region here = WorldMgr.GetRegion(region);
         Zone zone = here?.GetZone(gate.X, gate.Y);
         IPathfindingMgr nav = PathfindingProvider.Instance;
@@ -924,7 +1162,8 @@ public static class AutonomousBattlegroundKeepRally
             return floor;
         }
         RallyPlan plan = PlanRally(gatePoint, outward, arrival == null ? null : new Vector3(arrival.X, arrival.Y, arrival.Z),
-            otherRallies, Floor, at => AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, at, front), Clearance);
+            otherRallies, Floor, at => AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, at, front), Clearance,
+            partnerArrival, partnerFirst, barren, partnerBarren);
         if (plan.Point != null) return plan;
         // Nothing farther out can be walked to: right at the breach.
         return Math.Abs(front.Z - gate.Z) <= 200
