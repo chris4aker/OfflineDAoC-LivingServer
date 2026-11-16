@@ -57,9 +57,11 @@ public static class BotCrafterSeams
         public bool? IsMaterialFor(GameBot bot, DbInventoryItem item) => AutonomousBotCrafting.IsMaterialFor(bot, item);
 
         /// <summary>DR: the bot's own work waits for a free Exchange post; only a nearly full bag sends it to a vendor.
-        /// True165: a session's seconds are not kept.</summary>
+        /// True165: a session's seconds are not kept. DR 702ef108 (WP5): nor is a piece no post may take now (the realm's
+        /// Exchange is saturated with its kind, or it came back unsold).</summary>
         public bool KeepFromVendor(GameBot bot, DbInventoryItem item) =>
-            AutonomousBotCrafting.Enabled && AutonomousBotCrafting.IsListableWork(bot, item) && !AutonomousBotEconomy.IsBackpackNearlyFull(bot);
+            AutonomousBotCrafting.Enabled && AutonomousBotCrafting.IsListableWork(bot, item) && !AutonomousBotEconomy.IsBackpackNearlyFull(bot) &&
+            !EconomySeams.BlocksListing(bot, item);
 
         /// <summary>DR: a crafter's own piece is worth a post whatever it fetches.</summary>
         public bool AlwaysWorthListing(GameBot bot, DbInventoryItem item) =>
@@ -90,6 +92,9 @@ public static class BotCrafterSeams
         {
             if (!AutonomousBotCrafting.IsCrafter(bot) || bot.Level < BotCraftingRules.MinimumBotLevel || !RecipeCatalogs.Current.IsLoaded)
                 return false;
+            // DR (ceac061a): a crafter with a paid order to make always goes (WP5's board; no random number drawn).
+            if (AutonomousBotCraftOrders.HasOpenWork(bot))
+                return true;
             bool trained = AutonomousBotCrafting.IsTrained(bot);
             return BotCraftingRules.WantsTrip(trained, bot.Level, trained ? AutonomousBotCrafting.MaterialStacks(bot) : 0,
                 (random ?? Random.Shared).NextDouble());

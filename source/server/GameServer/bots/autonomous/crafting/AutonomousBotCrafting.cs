@@ -245,6 +245,9 @@ public static class AutonomousBotCrafting
         }
         using var aiProfile = AiProfile.Scope(AiSystem.CraftSession); // AI_PROFILE: measures only
         long coin = AutonomousBotEconomy.GetMoney(bot.DatabaseID);
+        // A piece another bot (or the quartermaster) ordered is made first, with the crafter's own materials (DR; WP5's board).
+        if (AutonomousBotCraftOrders.PlanOrder(bot, coin) is BotCraftingRules.Session order)
+            return order;
         // A session's worth still waiting for the Realm Exchange: selling it comes first (DR).
         if (UnsoldWork(bot) >= BotCraftingRules.CraftsPerSession)
             return null;
@@ -423,8 +426,10 @@ public static class AutonomousBotCrafting
         bot.MarkAutonomousStateDirty();
         AutonomousBotStatusPersistence.Queue(bot, true);
         AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Crafting);
-        // A commissioned piece (WP5) is the buyer's: it waits in the bag and is never worn by its maker (DR).
-        if (session.OrderId == null && !item.IsStackable)
+        // A commissioned piece (WP5) is the buyer's: it waits in the bag for delivery and is never worn by its maker (DR).
+        if (session.OrderId != null && !item.IsStackable)
+            CraftOrders.Board.TryMarkMade(session.OrderId, item);
+        else if (!item.IsStackable)
             AutonomousBotEconomy.TryEquipOwnedUpgrade(bot, item, "crafted");
         return item;
     }

@@ -96,9 +96,26 @@ namespace DOL.GS.CraftingEconomy
             float number => number.ToString("0.###", CultureInfo.InvariantCulture),
             decimal number => number.ToString("0.###", CultureInfo.InvariantCulture),
             DateTime time => time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
+            eRealm realm => RealmName(realm),
             Enum named => named.ToString(),
             IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
             _ => Quote(value.ToString()),
+        };
+
+        /// <summary>
+        /// A realm by its player name. eRealm gives one value several names (_First = None = 0, _FirstPlayerRealm = Albion
+        /// = 1, _LastPlayerRealm = _Last = Hibernia = 3), and Enum.ToString picks any of them: Albion printed as
+        /// realm=_FirstPlayerRealm (WP5, 2026-11-15). Names are fixed here, not looked up in the language tables, so a
+        /// line reads the same on every server; any other value is its number.
+        /// </summary>
+        public static string RealmName(eRealm realm) => realm switch
+        {
+            eRealm.None => "None",
+            eRealm.Albion => "Albion",
+            eRealm.Midgard => "Midgard",
+            eRealm.Hibernia => "Hibernia",
+            eRealm.Door => "Door",
+            _ => ((int)realm).ToString(CultureInfo.InvariantCulture),
         };
 
         private static string Quote(string text) =>

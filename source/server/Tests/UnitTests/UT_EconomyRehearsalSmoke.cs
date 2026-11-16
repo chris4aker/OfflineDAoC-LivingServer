@@ -89,7 +89,8 @@ namespace DOL.GS.Tests
         {
             RehearsalReport report = EconomyRehearsal.Run(Day(RehearsalScenario.FreshStart()), build: "smoke");
             TestContext.Out.WriteLine(string.Join(Environment.NewLine, report.Metrics.Where(m => m.Key.StartsWith("wp0.")).Select(m => $"{m.Key}={m.Value}")));
-            Assert.That(report.Modules.Select(m => m.Id), Is.EqualTo(new[] { WP0CraftRulesStandIn.StandInId }));
+            // WP5's market (index, tax, commissions) runs beside the stand-in whenever bot_crafters is on.
+            Assert.That(report.Modules.Select(m => m.Id), Is.EqualTo(new[] { WP0CraftRulesStandIn.StandInId, WP5Market.ModuleId }));
             Assert.That(report.GatesPass, string.Join("; ", report.Gates.Select(g => $"{g.Name}: {g.Status} {g.Detail}")));
             int crafters = int.Parse(report.Metrics["crafters"]);
             Assert.That(crafters, Is.InRange(3 * 120 * 3 / 100, 3 * 120 * 12 / 100), "about 7% of new bots");
@@ -126,9 +127,11 @@ namespace DOL.GS.Tests
         [Test]
         public void ASettingNoModuleReadsIsReportedAsNotBuiltYet()
         {
-            RehearsalScenario scenario = Day(RehearsalScenario.Tax(5)) with { Realms = 1, BotsPerRealm = 20, Minutes = 120 };
+            // WP5 reads exchange_tax_percent now (its adapter); WP7's bot_upkeep is not built yet.
+            RehearsalScenario scenario = Day(RehearsalScenario.Upkeep(true)) with { Realms = 1, BotsPerRealm = 20, Minutes = 120 };
             RehearsalReport report = EconomyRehearsal.Run(scenario, build: "smoke");
-            Assert.That(report.NotBuilt, Has.Some.StartsWith("exchange_tax_percent=5 (WP5"));
+            Assert.That(report.NotBuilt, Has.Some.StartsWith("bot_upkeep=True (WP7"));
+            Assert.That(report.NotBuilt, Has.None.StartsWith("exchange_tax_percent"));
             Assert.That(RehearsalScenario.PlanScenarios().Select(s => s.Name).Distinct().Count(), Is.EqualTo(10));
         }
 
