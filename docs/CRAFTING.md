@@ -98,6 +98,35 @@ The secondary caps, by order (percent of the primary skill):
 Server keys, for helper scripts: `crafting_era_start`, `crafting_skill_rate`, `player_upkeep` (classic / light / free),
 `player_coin_by_level`, `crafting_secondary_caps`, `crafting_classic_quality`, `crafting_classic_losses`.
 
+## Bot crafters and the economy (launcher, Living Server tab)
+
+The card below the Crafting card. Like the rest of the tab, changes take effect at the next server start. Only
+autonomous gamebots craft and trade under these settings; your /spawn companions never do. **Tests only:** none of
+the bot side has been seen in game yet.
+
+| Setting | Default | What it does |
+|---|---|---|
+| Bot crafters | Off | Crafter gamebots join an order, buy real materials, work at the capital's stations and sell what they make. Off: no gamebot crafts |
+| Crafters among new bots | 7% | Share of new gamebots that are Crafters; existing bots keep their type |
+| Bot crafting pace | Bot XP rate | Points per gain follow the bot XP multiplier of the crafter's level; Classic: one point |
+| Craft orders | Off | Gamebots pay a crafter of their realm for an upgrade, the coin held until the piece is handed over. Needs bot crafters |
+| Realm commissions | Doubled | The quartermaster's orders to crafter bots: Classic 30 a realm an hour, Doubled 60, Off |
+| A crafter's Exchange posts | 6 | Realm Exchange posts a crafter bot may hold for its own work (3 to 100; other bots hold 3) |
+| Crafters' chat | 1× | Crafters' trade and station chat, 0 (silent) to 3 |
+| Realm Exchange tax | 0% | Kept from the seller's proceeds of each Exchange sale, yours and the bots' (0 to 50; 5 is the classic option) |
+| Economy ledger | On | Counts each realm's coin, faucets and sinks once an hour (log lines and one row an hour). Changes no amount |
+| Level-50 kit and gold | On | "+ Lv.50" bots arrive with the quality-100 kit and 10,000 gold. Off (a fresh-start world): no kit, a 25-gold purse, and plain merchant gear for their level from the server at their first login |
+
+**ECONOMY PAGE** writes and opens `runtime\herald\economy.html`: each realm's money supply, the last 24 recorded hours
+with faucets, sinks, the Exchange tax and the residual, the biggest sinks, the flows by kind and the Exchange's price
+index, all as the ledger records them ([ECONOMY-LEDGER.md](ECONOMY-LEDGER.md)). The Camelot Herald links to it and lists
+the top five crafters of each order. ALL OFF switches bot crafters and craft orders off; it leaves the tax, the ledger
+and the kit as they are.
+
+Server keys: `bot_crafters`, `bot_crafter_share_percent`, `bot_crafting_pace` (xp / classic), `bot_craft_orders`,
+`realm_commissions` (classic / doubled / off), `bot_crafter_exchange_listings`, `bot_crafter_chat_rate`,
+`exchange_tax_percent`, `economy_ledger_enabled`, `launcher_level50_kit` (read by the launcher).
+
 ## Updating a world from 1.1.4
 
 Your world keeps every character's crafting. Exactly what you see:
@@ -132,6 +161,8 @@ Your world keeps every character's crafting. Exactly what you see:
   here, and so are the tab rows for all of them. With secondary caps on, `GamePlayer.GainCraftingSkill` clips a gain of
   several points (the pace) at the cap.
 - Tests: `UT_PlayerCraftingRules` (server) and `SocialExpansionSettingsTests.CraftingRowsAreSavedReadAndChecked`
-  (launcher).
+  (launcher). The bot and economy card, the economy page, the Herald's crafters and the bot purge: WP9's
+  `SocialExpansionSettingsTests.EconomyRowsAreSavedReadAndChecked`, `CraftingEconomyLauncherTests`,
+  `HeraldPageTests.TheHeraldListsTheTopCraftersOfEachOrder`.
 - Ports: upstream OpenDAoC `7b0df1b12` (no Legendary Grandmaster) and `ad789ee4d` (no Basic Crafting title), from
   Baptiste Marie (bm01), GPL.

@@ -87,6 +87,9 @@ public class SocialExpansionSettingsTests
         [
             nameof(SocialExpansionSettings.ManaHalvedBelowHalf), nameof(SocialExpansionSettings.CraftingSecondaryCaps),
             nameof(SocialExpansionSettings.CraftingClassicQuality), nameof(SocialExpansionSettings.CraftingClassicLosses),
+            // Bot crafters and their craft orders stay off for a first install too (Crafting 2.0: every bot-side switch is off
+            // until it is seen working on the owner's PC); turning them on for new installs is the owner's decision.
+            nameof(SocialExpansionSettings.BotCrafters), nameof(SocialExpansionSettings.BotCraftOrders),
         ];
         var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && !classicRules.Contains(p.Name)).ToArray();
@@ -96,6 +99,7 @@ public class SocialExpansionSettingsTests
         Assert.That(r.BotXpByLevel, Is.EqualTo(SocialExpansionSettings.SuggestedBotXp));
         Assert.That(r.ScheduleMode, Is.EqualTo("clock"));
         Assert.That((r.ManaRegenModifier, r.ManaHalvedBelowHalf), Is.EqualTo((1.5, false)));
+        Assert.That((r.BotCrafters, r.BotCraftOrders, r.ExchangeTaxPercent, r.BotCrafterSharePercent), Is.EqualTo((false, false, 0, 7)));
         Assert.That(r.Validate(), Is.Null);
         r.Save(_database, null, () => true);
         var problems = new List<string>();
@@ -420,6 +424,99 @@ public class SocialExpansionSettingsTests
             Is.EqualTo(("False", "4", "light", "True", "False")));
     }
 
+    /// <summary>
+    /// Crafting 2.0, the gamebots' side and the economy (WP9): bot crafters and their share, pace, orders, commissions, posts and
+    /// chat, the Exchange tax, the ledger, the level-50 kit and the No Lifers' buffbot share and range are saved as the server
+    /// reads them, loaded back, checked, switched off (crafters and orders only) by ALL OFF, and shown and saved by the tab.
+    /// </summary>
+    [Test] public void EconomyRowsAreSavedReadAndChecked()
+    {
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That((d.BotCrafters, d.BotCrafterSharePercent, d.BotCraftingPace, d.BotCraftOrders, d.RealmCommissions, d.BotCrafterExchangeListings),
+            Is.EqualTo((false, 7, "xp", false, "doubled", 6)));
+        Assert.That((d.BotCrafterChatRate, d.ExchangeTaxPercent, d.EconomyLedger, d.Level50Kit, d.BuffBotPercent, d.BuffBotEraConcRange),
+            Is.EqualTo((1.0, 0, true, true, 30, true)));
+        var on = d with
+        {
+            BotCrafters = true, BotCrafterSharePercent = 12, BotCraftingPace = "classic", BotCraftOrders = true, RealmCommissions = "off",
+            BotCrafterExchangeListings = 9, BotCrafterChatRate = 0.5, ExchangeTaxPercent = 5, EconomyLedger = false, Level50Kit = false,
+            BuffBotPercent = 50, BuffBotEraConcRange = false,
+        };
+        Assert.That(on.Validate(), Is.Null);
+        on.Save(_database, d, () => _stopped);
+        var rows = Rows();
+        Assert.That((rows["bot_crafters"], rows["bot_crafter_share_percent"], rows["bot_crafting_pace"], rows["bot_craft_orders"],
+                rows["realm_commissions"], rows["bot_crafter_exchange_listings"]),
+            Is.EqualTo(("True", "12", "classic", "True", "off", "9")));
+        Assert.That((rows["bot_crafter_chat_rate"], rows["exchange_tax_percent"], rows["economy_ledger_enabled"], rows["launcher_level50_kit"],
+                rows["bot_nolifer_buffbot_percent"], rows["bot_nolifer_buffbot_era_conc_range"]),
+            Is.EqualTo(("0.5", "5", "False", "False", "50", "False")));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(on));
+        Assert.That(problems, Is.Empty);
+
+        var off = on.AllOff();
+        Assert.That((off.BotCrafters, off.BotCraftOrders), Is.EqualTo((false, false)), "ALL OFF switches bot crafters and orders off");
+        Assert.That((off.ExchangeTaxPercent, off.EconomyLedger, off.Level50Kit, off.BotCrafterSharePercent, off.BuffBotPercent),
+            Is.EqualTo((5, false, false, 12, 50)), "and keeps the tax, the ledger, the kit and the shares as chosen");
+        Assert.That((d with { BotCrafters = true }).IsAllOff, Is.False);
+
+        Assert.That((d with { BotCrafterSharePercent = 101 }).Validate(), Does.Contain("crafters among new bots"));
+        Assert.That((d with { BotCraftingPace = "fast" }).Validate(), Does.Contain("xp or classic"));
+        Assert.That((d with { RealmCommissions = "tripled" }).Validate(), Does.Contain("classic, doubled or off"));
+        Assert.That((d with { BotCrafterExchangeListings = 2 }).Validate(), Does.Contain("3 to 100"));
+        Assert.That((d with { BotCrafterChatRate = 4 }).Validate(), Does.Contain("0 to 3"));
+        Assert.That((d with { ExchangeTaxPercent = 51 }).Validate(), Does.Contain("0 to 50"));
+        Assert.That((d with { BuffBotPercent = -1 }).Validate(), Does.Contain("buffbot"));
+
+        // Unreadable and out-of-range rows: reported, shown as what the server then uses, and repaired by a save.
+        Exec("""
+            UPDATE ServerProperty SET Value='lots' WHERE `Key`='bot_crafter_share_percent';
+            UPDATE ServerProperty SET Value='200' WHERE `Key`='exchange_tax_percent';
+            UPDATE ServerProperty SET Value='1' WHERE `Key`='bot_crafter_exchange_listings';
+            UPDATE ServerProperty SET Value='turbo' WHERE `Key`='bot_crafting_pace';
+            UPDATE ServerProperty SET Value='NONE' WHERE `Key`='realm_commissions';
+            UPDATE ServerProperty SET Value='x' WHERE `Key`='bot_nolifer_buffbot_percent';
+            UPDATE ServerProperty SET Value='nah' WHERE `Key`='bot_crafters';
+            """);
+        var keys = new HashSet<string>();
+        problems.Clear();
+        var bad = SocialExpansionSettings.Load(_database, problems, keys);
+        Assert.That(keys, Is.EquivalentTo(new[] { "bot_crafter_share_percent", "exchange_tax_percent", "bot_crafter_exchange_listings",
+            "bot_crafting_pace", "bot_nolifer_buffbot_percent", "bot_crafters" }), "none is read as off by the server too, so it is no problem");
+        Assert.That((bad.BotCrafterSharePercent, bad.ExchangeTaxPercent, bad.BotCrafterExchangeListings, bad.BotCraftingPace, bad.RealmCommissions,
+                bad.BuffBotPercent, bad.BotCrafters),
+            Is.EqualTo((7, 50, 3, "xp", "off", 0, false)),
+            "the server keeps its defaults (7, crafters off), clamps the tax and posts, reads xp, reads 0 buffbots (no start value)");
+        bad.Save(_database, bad, () => _stopped, keys);
+        problems.Clear();
+        Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(bad));
+        Assert.That(problems, Is.Empty, "SAVE SETTINGS repaired the rows");
+
+        // The tab shows and saves them.
+        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
+        T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
+        Assert.That((Field<CheckBox>("_botCrafters").Checked, Field<NumericUpDown>("_crafterShare").Value, Field<ComboBox>("_commissions").SelectedIndex,
+                Field<NumericUpDown>("_exchangeTax").Value, Field<CheckBox>("_level50Kit").Checked, Field<NumericUpDown>("_buffBotPercent").Value),
+            Is.EqualTo((false, 7m, 2, 50m, false, 0m)));
+        Color muted = Color.FromArgb(166, 154, 128), parchment = Color.FromArgb(215, 199, 157);
+        Assert.That(Field<CheckBox>("_craftOrders").ForeColor, Is.EqualTo(muted), "craft orders are dimmed while bot crafters are off");
+        Field<CheckBox>("_botCrafters").Checked = true;
+        Assert.That(Field<CheckBox>("_craftOrders").ForeColor, Is.EqualTo(parchment));
+        Field<CheckBox>("_craftOrders").Checked = true;
+        Field<NumericUpDown>("_exchangeTax").Value = 5m;
+        Field<ComboBox>("_botCraftPace").SelectedIndex = 1;
+        Field<NumericUpDown>("_crafterChat").Value = 2.5m;
+        Field<CheckBox>("_level50Kit").Checked = true;
+        Field<NumericUpDown>("_buffBotPercent").Value = 30m;
+        type.GetMethod("SaveSettings", Hidden)!.Invoke(panel, null);
+        rows = Rows();
+        Assert.That((rows["bot_crafters"], rows["bot_craft_orders"], rows["exchange_tax_percent"], rows["bot_crafting_pace"], rows["bot_crafter_chat_rate"],
+                rows["launcher_level50_kit"], rows["bot_nolifer_buffbot_percent"]),
+            Is.EqualTo(("True", "True", "5", "classic", "2.5", "True", "30")));
+    }
+
     /// <summary>The keys and defaults here must be the server's (ServerProperties.cs), or the tab would show the wrong state.</summary>
     [Test] public void KeysAndDefaultsMatchTheServer()
     {
@@ -603,6 +700,12 @@ public class SocialExpansionSettingsTests
             F<CheckBox>(panel, "_death").Checked = true;
             F<ComboBox>(panel, "_schedule").SelectedIndex = 2;
         }, scroll: 600);
+        // Crafting 2.0 (WP9): the bot crafters and economy card, below the crafting card.
+        Render("5d-tab-editing-economy.png", panel =>
+        {
+            F<CheckBox>(panel, "_botCrafters").Checked = true;
+            F<NumericUpDown>(panel, "_exchangeTax").Value = 5m;
+        }, scroll: 2400);
         AllOn.Save(_database, null, () => true);
         Render("6-tab-saved-on.png", _ => { });
         Render("6c-tab-saved-on-living.png", _ => { }, scroll: 600);

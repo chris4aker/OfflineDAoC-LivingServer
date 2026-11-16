@@ -41,6 +41,54 @@ public static class HeraldPage
 
     public sealed record Character(string Name, int Realm, string ClassName, int Level, long RealmPoints, string Guild, bool IsBot);
 
+    /// <summary>A crafter of an order: a player's account in a realm (crafting is shared per account and realm, named by its
+    /// highest-level character there) or an autonomous gamebot. Skill is the primary craft's value.</summary>
+    public sealed record Crafter(string Name, int Realm, int Order, int Skill, bool IsBot);
+
+    /// <summary>The six orders a character can join (eCraftingSkill id, the craft, the profession in a title), in the
+    /// order docs/CRAFTING.md lists them. Basic Crafting and Siegecraft are not orders in the era.</summary>
+    public static readonly (int Id, string Craft, string Profession)[] Orders =
+    [
+        (1, "Weaponcraft", "Weaponcrafter"), (2, "Armorcraft", "Armorer"), (11, "Tailoring", "Tailor"),
+        (12, "Fletching", "Fletcher"), (4, "Alchemy", "Alchemist"), (13, "Spellcraft", "Spellcrafter"),
+    ];
+
+    /// <summary>The crafting title of a skill, as the server writes it (AbstractProfession.GetTitleFormat, language/EN/Crafting.txt).</summary>
+    public static string CraftTitle(int skill, string profession) => (Math.Max(0, skill) / 100) switch
+    {
+        0 => $"{profession}'s Helper",
+        1 => $"Junior Apprentice {profession}",
+        2 => $"Apprentice {profession}",
+        3 => $"Neophyte {profession}",
+        4 => $"Assistant {profession}",
+        5 => $"Junior {profession}",
+        6 => $"Journeyman {profession}",
+        7 => $"Senior {profession}",
+        8 => $"Master {profession}",
+        9 => $"Grandmaster {profession}",
+        _ => $"Legendary {profession}",
+    };
+
+    /// <summary>The skills of a SerializedCraftingSkills value ("id|value;id|value"), in saved order (BotCraftingSkills.Parse).</summary>
+    public static List<(int Id, int Value)> CraftSkills(string saved)
+    {
+        var skills = new List<(int, int)>();
+        foreach (string entry in (saved ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            string[] parts = entry.Split('|');
+            if (parts.Length == 2 && int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int id) &&
+                int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int value) && id > 0 && value > 0 &&
+                skills.All(s => s.Item1 != id))
+                skills.Add((id, value));
+        }
+        return skills;
+    }
+
+    /// <summary>The top crafters of each order, highest skill first (then name), at most <paramref name="perOrder"/> each.</summary>
+    public static Dictionary<int, List<Crafter>> TopCrafters(IEnumerable<Crafter> crafters, int perOrder = 5) =>
+        Orders.ToDictionary(o => o.Id, o => crafters.Where(c => c.Order == o.Id && c.Skill > 0)
+            .OrderByDescending(c => c.Skill).ThenBy(c => c.Name, StringComparer.OrdinalIgnoreCase).Take(perOrder).ToList());
+
     /// <summary>Realm rank and level ("RR3L4") for a realm point total, as the server's table counts them.</summary>
     public static string RealmRank(long realmPoints)
     {
@@ -97,6 +145,7 @@ public static class HeraldPage
                 botGuild[Long(r[0])] = Str(r[1]);
 
         var characters = new List<Character>();
+        var crafters = ReadCrafters(c, tables);
         if (tables.Contains("DOLCharacters"))
         {
             foreach (var r in Rows(c, "SELECT Name, Realm, Class, Level, RealmPoints, GuildID FROM DOLCharacters"))
@@ -154,7 +203,49 @@ public static class HeraldPage
         }
         catch (Exception) { bestiary.Clear(); /* the ledger is optional news */ }
 
-        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary);
+        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary, crafters);
+    }
+
+    /// <summary>Players' crafting (AccountXCrafting, per account and realm) and crafter gamebots' (offline_world_bots'
+    /// SerializedCraftingSkills, primary first; offline_bot_crafters' PrimaryCraft when it has a row). Read-only.</summary>
+    private static List<Crafter> ReadCrafters(SQLiteConnection c, HashSet<string> tables)
+    {
+        var crafters = new List<Crafter>();
+        var orderIds = Orders.Select(o => o.Id).ToHashSet();
+        if (tables.Contains("AccountXCrafting") && tables.Contains("DOLCharacters") &&
+            Rows(c, "PRAGMA table_info(DOLCharacters)").Any(r => Str(r[1]).Equals("AccountName", StringComparison.OrdinalIgnoreCase)))
+        {
+            // The account's highest-level character in that realm names its crafting.
+            var names = new Dictionary<(string Account, int Realm), string>();
+            foreach (var r in Rows(c, "SELECT AccountName, Realm, Name FROM DOLCharacters WHERE COALESCE(Name,'')<>'' ORDER BY Level DESC, Name"))
+                names.TryAdd((Str(r[0]).ToLowerInvariant(), Int(r[1])), Str(r[2]));
+            foreach (var r in Rows(c, "SELECT AccountId, Realm, SerializedCraftingSkills, CraftingPrimarySkill FROM AccountXCrafting"))
+            {
+                int order = Int(r[3]), realm = Int(r[1]);
+                if (!orderIds.Contains(order) || !names.TryGetValue((Str(r[0]).ToLowerInvariant(), realm), out string? name)) continue;
+                int skill = CraftSkills(Str(r[2])).FirstOrDefault(s => s.Id == order).Value;
+                crafters.Add(new Crafter(name, realm, order, skill, false));
+            }
+        }
+        // A world from before the bots had a crafting column has no crafter bots.
+        if (tables.Contains("offline_world_bots") &&
+            Rows(c, "PRAGMA table_info(offline_world_bots)").Any(r => Str(r[1]).Equals("SerializedCraftingSkills", StringComparison.OrdinalIgnoreCase)))
+        {
+            var primary = new Dictionary<long, int>();
+            if (tables.Contains("offline_bot_crafters"))
+                foreach (var r in Rows(c, "SELECT BotId, PrimaryCraft FROM offline_bot_crafters"))
+                    primary[Long(r[0])] = Int(r[1]);
+            foreach (var r in Rows(c, "SELECT BotId, Name, Realm, SerializedCraftingSkills FROM offline_world_bots WHERE COALESCE(IsRetired,0)=0 AND COALESCE(SerializedCraftingSkills,'')<>''"))
+            {
+                var skills = CraftSkills(Str(r[3]));
+                if (skills.Count == 0) continue;
+                int order = primary.TryGetValue(Long(r[0]), out int p) && p > 0 ? p : skills[0].Id;
+                if (!orderIds.Contains(order)) continue;
+                crafters.Add(new Crafter(Str(r[1]), Int(r[2]), order, skills.FirstOrDefault(s => s.Id == order).Value, true));
+            }
+        }
+        crafters.RemoveAll(cr => cr.Realm is < 1 or > 3 || string.IsNullOrWhiteSpace(cr.Name));
+        return crafters;
     }
 
     private static string Render(DateTime now, List<Character> characters,
@@ -163,7 +254,7 @@ public static class HeraldPage
         List<(int Realm, int Original, int Type, string Captured)> relics,
         List<(string Title, int Realm, string Name, string ClassName, string When)> firsts,
         List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events,
-        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null)
+        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null, List<Crafter>? crafters = null)
     {
         var h = new StringBuilder();
         string E(string s) => WebUtility.HtmlEncode(s);
@@ -260,6 +351,28 @@ public static class HeraldPage
             foreach (var g in guildRows)
                 h.Append($"<tr><td>{E(g.Name)}</td><td>{Realm(g.Realm)}</td><td class=\"num\">{g.Members:N0}</td><td class=\"num\">{g.RealmPoints:N0}</td><td class=\"num\">{g.Merit:N0}</td></tr>");
             h.Append("</table>");
+        }
+        h.Append("</section>");
+
+        // Living Server 1.2, Crafting 2.0: the top crafters of each order (design facet E).
+        var topCrafters = TopCrafters(crafters ?? []);
+        h.Append("<section><h2>Master Crafters</h2>");
+        if (topCrafters.Values.All(list => list.Count == 0))
+            h.Append("<p class=\"muted\">No one has joined a crafting order yet. Speak to a crafting master in your capital to join one.</p>");
+        else
+        {
+            h.Append("<p class=\"muted\">The most skilled of each order, players and gamebots alike. <a href=\"economy.html\">The realms' purses</a>.</p><div class=\"realms\">");
+            foreach (var (id, craft, profession) in Orders)
+            {
+                var list = topCrafters[id];
+                h.Append($"<div class=\"card\"><h3>{E(craft)}</h3>");
+                if (list.Count == 0) { h.Append("<p class=\"muted\">No members yet.</p></div>"); continue; }
+                h.Append("<table>");
+                foreach (var cr in list)
+                    h.Append($"<tr><td>{E(cr.Name)} <span class=\"muted\">{E(CraftTitle(cr.Skill, profession))}</span></td><td>{Realm(cr.Realm)}</td><td class=\"num\">{cr.Skill:N0}</td></tr>");
+                h.Append("</table></div>");
+            }
+            h.Append("</div>");
         }
         h.Append("</section>");
 

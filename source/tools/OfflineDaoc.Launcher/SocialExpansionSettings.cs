@@ -89,7 +89,46 @@ public sealed record SocialExpansionSettings
     /// <summary>Failed crafts cost materials and explosions destroy the item (crafting_classic_losses). Off by default.</summary>
     public bool CraftingClassicLosses { get; init; }
 
+    // ---- Crafting 2.0, the gamebots' side and the economy (CraftingEconomyProperties; WP9). Defaults are the server's. ----
+    /// <summary>Crafter-type gamebots join an order, buy materials, craft at stations and sell what they make (bot_crafters). Off by default.</summary>
+    public bool BotCrafters { get; init; }
+    /// <summary>Percent of NEW gamebots that are Crafters, 0-100 (bot_crafter_share_percent); existing bots keep their stored type.</summary>
+    public int BotCrafterSharePercent { get; init; } = DefaultBotCrafterSharePercent;
+    /// <summary>xp (the bot XP rate of the crafter's level) or classic (bot_crafting_pace).</summary>
+    public string BotCraftingPace { get; init; } = "xp";
+    /// <summary>Gamebots pay crafter gamebots of their realm for an upgrade, coin held until delivery (bot_craft_orders). Off by default; needs bot crafters.</summary>
+    public bool BotCraftOrders { get; init; }
+    /// <summary>The realm quartermaster's commissions to crafter gamebots: classic, doubled (the default) or off (realm_commissions).</summary>
+    public string RealmCommissions { get; init; } = "doubled";
+    /// <summary>Realm Exchange posts a crafter gamebot may hold for its own work (bot_crafter_exchange_listings), 3 to 100.</summary>
+    public int BotCrafterExchangeListings { get; init; } = DefaultBotCrafterExchangeListings;
+    /// <summary>Crafter gamebots' trade and station chat, 0 to 3 times normal (bot_crafter_chat_rate).</summary>
+    public double BotCrafterChatRate { get; init; } = DefaultBotCrafterChatRate;
+    /// <summary>The Realm Exchange tax in percent of a sale, 0 to 50, from the seller's proceeds (exchange_tax_percent). 0 by default.</summary>
+    public int ExchangeTaxPercent { get; init; }
+    /// <summary>The hourly economy ledger (economy_ledger_enabled): logs and one row an hour, no amount changes. On by default.</summary>
+    public bool EconomyLedger { get; init; } = true;
+    /// <summary>The launcher's "+ Lv.50" bots arrive with the quality-100 kit and 10,000 gold (launcher_level50_kit). On by default.</summary>
+    public bool Level50Kit { get; init; } = true;
+    /// <summary>Percent of the No Lifer bots that run a buffbot, 0 to 100 (bot_nolifer_buffbot_percent).</summary>
+    public int BuffBotPercent { get; init; } = DefaultBuffBotPercent;
+    /// <summary>Buffbots' concentration buffs have no range limit, the 2003 rule (bot_nolifer_buffbot_era_conc_range). On by default.</summary>
+    public bool BuffBotEraConcRange { get; init; } = true;
+
     public static readonly string[] UpkeepModes = ["classic", "light", "free"];
+
+    /// <summary>The bot crafting paces the server knows (BotCraftingRules.PaceRate: anything but classic is xp).</summary>
+    public static readonly string[] BotCraftingPaces = ["xp", "classic"];
+
+    /// <summary>The commission modes (QuartermasterCommissions.ParseMode: off/none/0 is off, anything unknown doubled).</summary>
+    public static readonly string[] CommissionModes = ["classic", "doubled", "off"];
+
+    public const int DefaultBotCrafterSharePercent = 7, DefaultBotCrafterExchangeListings = 6, DefaultBuffBotPercent = 30;
+    /// <summary>MarketSeams.ListingPolicy.CrafterCap: never below the 3 every bot has, never above the 100 consignment slots.</summary>
+    public const int MinBotCrafterExchangeListings = 3, MaxBotCrafterExchangeListings = 100;
+    /// <summary>CraftingEconomyProperties.SanitizeTaxPercent.</summary>
+    public const int MaxExchangeTaxPercent = 50;
+    public const double DefaultBotCrafterChatRate = 1, MaxBotCrafterChatRate = 3;
 
     public const double DefaultCraftingPace = 1, MinCraftingPace = 1, MaxCraftingPace = 10;
 
@@ -105,7 +144,8 @@ public sealed record SocialExpansionSettings
     /// <summary>
     /// What Setup turns on for a first install (owner 2026-10-28: "every setting turned on and to our suggested level"):
     /// every feature and Server life part on, the suggested XP ranges, and the real-clock bot schedule. The guild share and
-    /// lowest level keep their defaults.
+    /// lowest level keep their defaults. Bot crafters and their craft orders stay off (Crafting 2.0's rule: every bot-side
+    /// switch defaults off until it is seen working on the owner's PC); turning them on for new installs is the owner's call.
     /// </summary>
     public static SocialExpansionSettings Recommended { get; } = new()
     {
@@ -164,6 +204,18 @@ public sealed record SocialExpansionSettings
         ("player_coin_by_level", "crafting", "A real player's monster coin follows the XP-by-level multiplier of their band (bots' coin unchanged). Set in the launcher's Living Server tab."),
         ("crafting_classic_quality", "crafting", "Classic quality: 94-99% with a small masterpiece chance at every skill (off = the 1.87 rules, 96-99% and masterpieces only at 1000 or grey). Set in the launcher's Living Server tab."),
         ("crafting_classic_losses", "crafting", "Classic losses: a failed craft costs its materials and a spellcraft explosion destroys the item. Set in the launcher's Living Server tab."),
+        ("bot_crafters", "bots", "Master switch for gamebot crafters: Crafter-type gamebots join an order, buy real materials, work at real stations and sell what they make. Off: no gamebot crafts. Set in the launcher's Living Server tab."),
+        ("bot_crafter_share_percent", "bots", "Percent of NEW gamebots that are Crafters (existing bots keep their stored type). Set in the launcher's Living Server tab."),
+        ("bot_crafting_pace", "bots", "Gamebot crafting pace: xp (points per gain follow the bot XP multiplier of the crafter's level band) or classic (one point). Needs bot_crafters. Set in the launcher's Living Server tab."),
+        ("bot_craft_orders", "bots", "Gamebots pay crafter gamebots of their realm to make an upgrade, with the coin held until delivery. Needs bot_crafters. Set in the launcher's Living Server tab."),
+        ("realm_commissions", "bots", "Realm quartermaster commissions to crafter gamebots: classic (30 an hour), doubled (60) or off. Needs bot_crafters. Set in the launcher's Living Server tab."),
+        ("bot_crafter_exchange_listings", "bots", "Realm Exchange posts a crafter gamebot may hold for its own work (other bots hold 3). Set in the launcher's Living Server tab."),
+        ("bot_crafter_chat_rate", "bots", "Crafter gamebots' trade and station chat, as a multiple of normal (0 = silent). Set in the launcher's Living Server tab."),
+        ("exchange_tax_percent", "bots", "Realm Exchange tax in percent of a sale, taken from the seller's proceeds (0 = none; 5 is the documented option). Only a trade pays it. Set in the launcher's Living Server tab."),
+        ("economy_ledger_enabled", "bots", "Hourly economy ledger: money supply, faucets and sinks per realm (ECON_SUPPLY, ECON_FLOWS). Logs and one table row an hour only; changes no amount. Set in the launcher's Living Server tab."),
+        ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world). Set in the launcher's Living Server tab."),
+        ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),
+        ("bot_nolifer_buffbot_era_conc_range", "bots", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
@@ -223,6 +275,18 @@ public sealed record SocialExpansionSettings
         ["player_coin_by_level"] = Bool(PlayerCoinByLevel),
         ["crafting_classic_quality"] = Bool(CraftingClassicQuality),
         ["crafting_classic_losses"] = Bool(CraftingClassicLosses),
+        ["bot_crafters"] = Bool(BotCrafters),
+        ["bot_crafter_share_percent"] = BotCrafterSharePercent.ToString(CultureInfo.InvariantCulture),
+        ["bot_crafting_pace"] = BotCraftingPace,
+        ["bot_craft_orders"] = Bool(BotCraftOrders),
+        ["realm_commissions"] = RealmCommissions,
+        ["bot_crafter_exchange_listings"] = BotCrafterExchangeListings.ToString(CultureInfo.InvariantCulture),
+        ["bot_crafter_chat_rate"] = BotCrafterChatRate.ToString("0.##", CultureInfo.InvariantCulture),
+        ["exchange_tax_percent"] = ExchangeTaxPercent.ToString(CultureInfo.InvariantCulture),
+        ["economy_ledger_enabled"] = Bool(EconomyLedger),
+        ["launcher_level50_kit"] = Bool(Level50Kit),
+        ["bot_nolifer_buffbot_percent"] = BuffBotPercent.ToString(CultureInfo.InvariantCulture),
+        ["bot_nolifer_buffbot_era_conc_range"] = Bool(BuffBotEraConcRange),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -375,6 +439,75 @@ public sealed record SocialExpansionSettings
                 upkeep = "light";
             }
         }
+        // The gamebots' crafting and the economy (CraftingEconomyProperties): an unreadable number leaves the server on its
+        // default (the field keeps it), and one out of range is clamped by the code that reads it, as shown here.
+        int ReadCraftingInt(string key, int fallback, int min, int max)
+        {
+            if (!stored.TryGetValue(key, out string? text) || string.IsNullOrWhiteSpace(text)) return fallback;
+            if (!int.TryParse(text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
+            {
+                Problem(key, $"{key} = \"{text}\" is not a whole number, so the server keeps its default ({fallback}).");
+                return fallback;
+            }
+            if (value < min || value > max)
+            {
+                Problem(key, $"{key} = \"{text}\" is outside {min} to {max}, so the server uses {Math.Clamp(value, min, max)}.");
+                return Math.Clamp(value, min, max);
+            }
+            return value;
+        }
+        double crafterChat = d.BotCrafterChatRate;
+        if (stored.TryGetValue("bot_crafter_chat_rate", out string? crafterChatText) && !string.IsNullOrWhiteSpace(crafterChatText))
+        {
+            if (!double.TryParse(crafterChatText.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double rate) || double.IsNaN(rate))
+                Problem("bot_crafter_chat_rate", $"bot_crafter_chat_rate = \"{crafterChatText}\" is not a number, so the server keeps its default (1).");
+            else if (rate < 0 || rate > MaxBotCrafterChatRate)
+            {
+                Problem("bot_crafter_chat_rate", $"bot_crafter_chat_rate = \"{crafterChatText}\" is outside 0 to 3.");
+                crafterChat = Math.Clamp(rate, 0, MaxBotCrafterChatRate);
+            }
+            else
+                crafterChat = Math.Round(rate, 1, MidpointRounding.AwayFromZero);
+        }
+        string botPace = d.BotCraftingPace;
+        if (stored.TryGetValue("bot_crafting_pace", out string? botPaceText) && !string.IsNullOrWhiteSpace(botPaceText))
+        {
+            botPace = botPaceText.Trim().ToLowerInvariant();
+            if (!BotCraftingPaces.Contains(botPace))
+            {
+                Problem("bot_crafting_pace", $"bot_crafting_pace = \"{botPaceText}\" is not xp or classic, so the server reads it as xp.");
+                botPace = "xp";
+            }
+        }
+        string commissions = d.RealmCommissions;
+        if (stored.TryGetValue("realm_commissions", out string? commissionText) && !string.IsNullOrWhiteSpace(commissionText))
+        {
+            commissions = commissionText.Trim().ToLowerInvariant();
+            if (commissions is "none" or "0")
+                commissions = "off";   // QuartermasterCommissions.ParseMode reads these as off too
+            else if (!CommissionModes.Contains(commissions))
+            {
+                Problem("realm_commissions", $"realm_commissions = \"{commissionText}\" is not classic, doubled or off, so the server reads it as doubled.");
+                commissions = "doubled";
+            }
+        }
+        // bot_nolifer_buffbot_percent is a ServerProperties field without a start value: unreadable, the server reads 0.
+        int buffBotPercent = d.BuffBotPercent;
+        if (stored.TryGetValue("bot_nolifer_buffbot_percent", out string? buffText) && !string.IsNullOrWhiteSpace(buffText))
+        {
+            if (!int.TryParse(buffText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int percent))
+            {
+                Problem("bot_nolifer_buffbot_percent", $"bot_nolifer_buffbot_percent = \"{buffText}\" is not a whole number, so the server reads it as 0 (no buffbots).");
+                buffBotPercent = 0;
+            }
+            else if (percent is < 0 or > 100)
+            {
+                Problem("bot_nolifer_buffbot_percent", $"bot_nolifer_buffbot_percent = \"{buffText}\" is outside 0 to 100.");
+                buffBotPercent = Math.Clamp(percent, 0, 100);
+            }
+            else
+                buffBotPercent = percent;
+        }
         string schedule = d.ScheduleMode;
         if (stored.TryGetValue("bot_schedule_mode", out string? scheduleText) && !string.IsNullOrWhiteSpace(scheduleText))
         {
@@ -434,6 +567,19 @@ public sealed record SocialExpansionSettings
             PlayerCoinByLevel = ReadCraftingBool("player_coin_by_level", d.PlayerCoinByLevel),
             CraftingClassicQuality = ReadCraftingBool("crafting_classic_quality", d.CraftingClassicQuality),
             CraftingClassicLosses = ReadCraftingBool("crafting_classic_losses", d.CraftingClassicLosses),
+            BotCrafters = ReadCraftingBool("bot_crafters", d.BotCrafters),
+            BotCrafterSharePercent = ReadCraftingInt("bot_crafter_share_percent", d.BotCrafterSharePercent, 0, 100),
+            BotCraftingPace = botPace,
+            BotCraftOrders = ReadCraftingBool("bot_craft_orders", d.BotCraftOrders),
+            RealmCommissions = commissions,
+            BotCrafterExchangeListings = ReadCraftingInt("bot_crafter_exchange_listings", d.BotCrafterExchangeListings,
+                MinBotCrafterExchangeListings, MaxBotCrafterExchangeListings),
+            BotCrafterChatRate = crafterChat,
+            ExchangeTaxPercent = ReadCraftingInt("exchange_tax_percent", d.ExchangeTaxPercent, 0, MaxExchangeTaxPercent),
+            EconomyLedger = ReadCraftingBool("economy_ledger_enabled", d.EconomyLedger),
+            Level50Kit = ReadCraftingBool("launcher_level50_kit", d.Level50Kit),
+            BuffBotPercent = buffBotPercent,
+            BuffBotEraConcRange = ReadBool("bot_nolifer_buffbot_era_conc_range", d.BuffBotEraConcRange),
         };
     }
 
@@ -447,10 +593,11 @@ public sealed record SocialExpansionSettings
                              LivingAtmosphere;
 
     /// <summary>
-    /// "All off": the three features, every Living Server part, bot leaders' invites and both XP ranges off. The share, lowest level
-    /// and each part keep their values, so turning a feature back on later restores the player's own choices. Power regeneration and
-    /// the loot share are rates, not features, and keep their values too, as do the crafting rules (they are the game's rules
-    /// for your characters, not Living Server features).
+    /// "All off": the three features, every Living Server part, bot leaders' invites, bot crafters and their craft orders, and
+    /// both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
+    /// the player's own choices. Power regeneration and the loot share are rates, not features, and keep their values too, as
+    /// do the crafting rules (they are the game's rules for your characters, not Living Server features), the Exchange tax, the
+    /// economy ledger (it only counts) and the level-50 kit (a launcher option).
     /// </summary>
     public SocialExpansionSettings AllOff() => this with
     {
@@ -459,10 +606,12 @@ public sealed record SocialExpansionSettings
         LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false, LivingBuffBots = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
         LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
+        BotCrafters = false, BotCraftOrders = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
-    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites &&
+                            !BotCrafters && !BotCraftOrders && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
     /// <summary>Why these settings can't be saved, or null when they can.</summary>
     public string? Validate()
@@ -478,6 +627,15 @@ public sealed record SocialExpansionSettings
         if (double.IsNaN(CraftingPace) || CraftingPace < MinCraftingPace || CraftingPace > MaxCraftingPace || CraftingPace != Math.Floor(CraftingPace))
             return $"The crafting pace must be a whole number of points from {MinCraftingPace} to {MaxCraftingPace}.";
         if (!UpkeepModes.Contains(PlayerUpkeep)) return "Repair upkeep must be classic, light or free.";
+        if (BotCrafterSharePercent is < 0 or > 100) return "The share of crafters among new bots must be 0 to 100%.";
+        if (!BotCraftingPaces.Contains(BotCraftingPace)) return "The bot crafting pace must be xp or classic.";
+        if (!CommissionModes.Contains(RealmCommissions)) return "Realm commissions must be classic, doubled or off.";
+        if (BotCrafterExchangeListings is < MinBotCrafterExchangeListings or > MaxBotCrafterExchangeListings)
+            return $"A crafter's Exchange posts must be {MinBotCrafterExchangeListings} to {MaxBotCrafterExchangeListings}.";
+        if (double.IsNaN(BotCrafterChatRate) || BotCrafterChatRate < 0 || BotCrafterChatRate > MaxBotCrafterChatRate)
+            return "The crafters' chat rate must be 0 to 3.";
+        if (ExchangeTaxPercent is < 0 or > MaxExchangeTaxPercent) return $"The Exchange tax must be 0 to {MaxExchangeTaxPercent}%.";
+        if (BuffBotPercent is < 0 or > 100) return "The share of No Lifers with a buffbot must be 0 to 100%.";
         return XpError("Your XP by level", PlayerXpByLevel) ?? XpError("Bot XP by level", BotXpByLevel);
     }
 

@@ -109,6 +109,45 @@ public class HeraldPageTests
             "a bot guild is counted as before");
     }
 
+    /// <summary>
+    /// Crafting 2.0 (WP9, design facet E): the Herald lists the top crafters of each order, players (per account and realm,
+    /// named by the account's highest-level character there) and gamebots alike, with the title their skill gives.
+    /// </summary>
+    [Test] public void TheHeraldListsTheTopCraftersOfEachOrder()
+    {
+        Exec("""
+            CREATE TABLE DOLCharacters (Name TEXT, AccountName TEXT, Realm INT, Class INT, Level INT, RealmPoints INT, GuildID TEXT);
+            CREATE TABLE AccountXCrafting (AccountId TEXT, Realm INT, SerializedCraftingSkills TEXT, CraftingPrimarySkill INT);
+            CREATE TABLE offline_world_bots (BotId INTEGER PRIMARY KEY, Name TEXT, Realm INT, ClassName TEXT, Level INT, RealmPoints INT,
+                IsRetired INT, SerializedCraftingSkills TEXT);
+            CREATE TABLE offline_bot_crafters (BotId INT, Realm INT, PrimaryCraft INT);
+            INSERT INTO DOLCharacters VALUES ('Lowalt', 'chris', 1, 1, 10, 0, '');
+            INSERT INTO DOLCharacters VALUES ('Chrisplays', 'CHRIS', 1, 1, 50, 0, '');
+            INSERT INTO AccountXCrafting VALUES ('chris', 1, '11|1012;12|640;1|300', 11);
+            INSERT INTO AccountXCrafting VALUES ('chris', 2, '13|500', 13);
+            INSERT INTO AccountXCrafting VALUES ('basic', 1, '15|200', 15);
+            INSERT INTO offline_world_bots VALUES (1, 'Needles', 1, 'Cleric', 40, 0, 0, '11|850;12|400');
+            INSERT INTO offline_world_bots VALUES (2, 'Gone', 1, 'Cleric', 40, 0, 1, '11|999');
+            INSERT INTO offline_world_bots VALUES (3, 'Forgeheart', 2, 'Warrior', 30, 0, 0, '2|120;1|90');
+            INSERT INTO offline_world_bots VALUES (4, 'Plain', 3, 'Hero', 30, 0, 0, '');
+            INSERT INTO offline_bot_crafters VALUES (3, 2, 1);
+            """);
+        string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
+        Assert.That(html, Does.Contain("Master Crafters"));
+        Assert.That(html, Does.Contain("Chrisplays <span class=\"muted\">Legendary Tailor</span>"), "named by the account's highest character");
+        Assert.That(html, Does.Contain("Needles <span class=\"muted\">Master Tailor</span>"));
+        Assert.That(html.IndexOf("Chrisplays <span", StringComparison.Ordinal), Is.LessThan(html.IndexOf("Needles <span", StringComparison.Ordinal)), "highest skill first");
+        Assert.That(html, Does.Contain("Forgeheart <span class=\"muted\">Weaponcrafter&#39;s Helper</span>"), "the crafter row's order wins");
+        Assert.That(html, Does.Not.Contain("Gone <span"), "retired bots are not listed");
+        Assert.That(html, Does.Not.Contain("Lowalt"));
+        Assert.That(html, Does.Contain("economy.html"), "the Herald links to the economy page");
+
+        Assert.That(HeraldPage.CraftTitle(0, "Tailor"), Is.EqualTo("Tailor's Helper"));
+        Assert.That(HeraldPage.CraftTitle(999, "Fletcher"), Is.EqualTo("Grandmaster Fletcher"));
+        Assert.That(HeraldPage.CraftTitle(1100, "Alchemist"), Is.EqualTo("Legendary Alchemist"), "no Legendary Grandmaster in the era");
+        Assert.That(HeraldPage.CraftSkills("11|5;x;11|9;0|4;12|0;13|7"), Is.EqualTo(new[] { (11, 5), (13, 7) }));
+    }
+
     [Test] public void AnEmptyOrOldDatabaseStillMakesAPage()
     {
         Exec("CREATE TABLE ServerProperty (Key TEXT)");

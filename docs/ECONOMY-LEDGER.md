@@ -92,3 +92,12 @@ idle hour), so a tool written for True165's logs reads ours unchanged.
 `offline_economy_ledger`, one row per realm and hour: `HourUtc` (the hour's end), `Realm`, `BotCoin`, `PlayerCoin`
 (wallets + proceeds), `GuildBanks`, `ListedValue`, `FaucetsJson` and `SinksJson` (per kind, e.g. `{"lootcoin":123}`),
 `ResidualCopper`, `Bots`, `Crafters`. Saved progress that stays in its world; release builds empty it.
+
+## The launcher's economy page
+
+The Living Server tab's ECONOMY PAGE button (and the Camelot Herald, which links to it) writes
+`runtime\herald\economy.html` from this table and `offline_exchange_index`, read-only: each realm's supply at the last
+recorded hour and its parts, the last 24 hours (supply, faucets, sinks, the Exchange tax as its own column, the
+residual; every realm together), the top sinks, the flows by kind per realm and the price index's ten bands with the
+most stock per realm. It reads the table, not the log, as the launcher reads every other saved state
+(`source/tools/OfflineDaoc.Launcher/EconomyPage.cs`). Release builds ship the table empty.
