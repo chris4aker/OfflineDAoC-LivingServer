@@ -854,6 +854,50 @@ holding it, 100 level 20-24 gamebots per realm, 25-39 of each attacking realm in
   Not verified here: whether the stormers now get through the gate and up the tower stairs in numbers (the Thidranki
   navmesh isn't in the build container), and whether the class AIs pick fights of their own on the way.
 
+**Battleground storms: the climb from the tower's foot goes** (tests only; owner's PC, build `4d48f42` = the change below,
+Thidranki and Murdaigean 2026-11-16 05:39-06:27. 25 storms; the lord stayed at 100% at both keeps; nobody reached her floor.)
+
+- **What the log showed:**
+  - No climb went from the foot in any of the 25 attempts (`climbs=-` in every `BG_RALLY_REGROUP`), and not one storm
+    trace was of the walk up to the lord (`phase=lord`: 0 samples; 25 on `95af6fd`). Everyone was sent to the foot instead.
+  - At Thidranki the foot (32278,38202,3750, 842 under Lady Thidranki) was reached and held: two `foot-hold` samples there,
+    past keep door 252000302. The best attempts got only as far as the foot (`bestToLord` 725-874). At most 2 stood at
+    the foot at once (`footPeak`).
+  - The climb waited for 70% of every standing stormer, including those still fighting outside or back at the rally. Or it
+    waited for one waiter's unbroken 25 s, and that clock went back to 0 whenever the foot stood empty. Both together held
+    the climb shut.
+  - Dun Murdaigean's walk had no point 600 from the guards' posts, so the first choice stood: 4,314 up its ramp, 188 from a
+    post (`guardClear=188`). No stormer ever reached it (`footPeak=0`).
+  - The `phase=gate moving=False` samples (31) are the turn the walk to the gate was given (`pending=True`: the trace
+    is written before the mover takes the order). They are at the rally at second 0, or when a reinforcement is sent. The
+    same bots stand 1,000-2,000 on 10 s later. `95af6fd` and `0acc99b` have them at the same rate.
+  - The same goes for 8 of the 11 `to-foot moving=False` samples: the turn a bot reached the gate (`toGate=2-3`).
+  - Most `march-under-fire moving=False` samples are written just before the turn gives the walk again. They come at the
+    same rate as on `95af6fd` (8 of 22) and `0acc99b` (16 of 42). A few bots stood 10 s or more under fire although the walk
+    was given again every 1.5 s (Rormur, Weeturnip, Oisoinnan, Ivargeildrik). The trace doesn't say why.
+  - Bots that reached the rally as it went up kept the last attempt's `gatePassed=True` and walked to the foot straight from
+    the rally (Crandira, Svaetiah, Ivargeildrik at second 0).
+  - The other attacking realm killed 32 of the 154 stormers that fell. 19 of the 28 storms went with the other realm's.
+- **Now:**
+  - **The climb waits only for the stormers inside the walls** (nearer her than the outer gate is). It goes once 70% of
+    those are at the foot, or 12 s after the first reached it. That clock keeps running when the first waiter falls.
+    Nobody else inside: it goes at once.
+  - **A climb that is working stays open** while anyone is up her tower, so stormers arriving later go straight up. It shuts
+    once they are gone, and the foot gathers again.
+  - **No foot when no point of the walk is clear of the guards' posts** (Dun Murdaigean). The stormers walk straight at the
+    lord there, as before `#280`.
+  - **Each attempt comes in through the gate again**, unless the bot already stands within the walls.
+  - **Beside the lord**, a stormer fights the other attacking realm only when that bot is on it: the keep's guards and the
+    holder come first. The realms stay enemies. On the way up nothing changes: stormers still hit back only at what is on
+    them.
+- **Logs:**
+  - `BG_TOWER_CLIMB` (new): each climb, with `second=`, `atFoot=`, `comingInside=`, `upTheTower=`, `standing=` and
+    `footHeldSeconds=`.
+  - Storm traces add `cc=` (mez, stun or -) and `speed=` (a rooted bot reads 0), to say why a bot given a walk stands.
+- **Kept from `#280`:** the joint storms (join window, holding for the other realm), the attempt going on while it works,
+  and the lord pick on her floor. **Reverted from `#280`:** only the fallback that kept a foot beside a guard's post.
+- **Unchanged:** the keep, its level, guards, lord, doors and respawns, the raid code and the navmeshes.
+
 **Battleground storms reach the lord together** (tests only; owner's PC, build `95af6fd` = the change below, Thidranki
 2026-11-15 22:37-23:00. The rallies were right: Hibernia at -90, Midgard at -30, 2,381 apart. There were 17 storms, and the
 stormers reached Lady Thidranki's floor (`bestToLord=0`), but she never went below 97%.)

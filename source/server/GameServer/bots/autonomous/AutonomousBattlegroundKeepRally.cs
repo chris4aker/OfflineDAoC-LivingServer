@@ -538,10 +538,16 @@ public static class AutonomousBattlegroundKeepRally
     /// gatherers' rule with the bot as the staging point: anything within 700, or anything within 1,500 firing on a
     /// realm-mate within 1,000) held every stormer in the skirmishes at its own rally, and a stormer under fire it could not
     /// answer stood still for the ten seconds its combat timer ran. Live servers' battleground lord rushes ran past the
-    /// courtyard to the lord and fought him. Pure.
+    /// courtyard to the lord and fought him.
+    /// In the lord's fight an enemy of the other attacking realm (<paramref name="otherAttacker"/>: not the holder's, not a
+    /// guard) is fought only when it is on this bot: the realms stay enemies, but a stormer beside the lord takes the keep's
+    /// side first. Owner's PC, build 4d48f42 (2026-11-16 05:39-06:27): with both realms storming together (19 of 28 storms
+    /// withOtherRealm=True) 32 of the 154 stormers that fell were killed by the other attacking realm. Pure.
     /// </summary>
-    public static bool StormerMayEngage(bool isLord, bool inLordFight, bool onThisBot, float targetToBot, float heightGap) =>
-        isLord || inLordFight || onThisBot && targetToBot <= StormerHitBackRadius && heightGap <= StormerHitBackHeight;
+    public static bool StormerMayEngage(bool isLord, bool inLordFight, bool onThisBot, float targetToBot, float heightGap,
+        bool otherAttacker = false) =>
+        isLord || inLordFight && (!otherAttacker || onThisBot) ||
+        onThisBot && targetToBot <= StormerHitBackRadius && heightGap <= StormerHitBackHeight;
 
     /// <summary>Beside the lord and on his floor: in his fight (a rally right under his room is not). Pure.</summary>
     public static bool InLordFight(float toLord, float heightToLord) =>
@@ -693,21 +699,24 @@ public static class AutonomousBattlegroundKeepRally
     public const float FootRise = 150f;
     /// <summary>The foot keeps this far (3D) from every guard's post on the way, stepping back along the walk if it must.</summary>
     public const float FootGuardClearance = 600f;
-    /// <summary>The climb goes once this share of the standing stormers still on their way has reached the foot...</summary>
+    /// <summary>The climb goes once this share of the standing stormers inside the walls has reached the foot...</summary>
     public const int FootShare = 70;
-    /// <summary>...or the first of them has waited this long.</summary>
-    public const long FootWaitMilliseconds = 25_000;
-    /// <summary>A climb, once called, stays open this long: everyone at the foot (and arriving) goes up in it.</summary>
+    /// <summary>...or this long after the first of them reached it (was 25 s of one waiter's unbroken wait on 4d48f42).</summary>
+    public const long FootWaitMilliseconds = 12_000;
+    /// <summary>A climb, once called, stays open this long, and for as long as anyone of it is still up the tower: everyone at
+    /// the foot (and arriving) goes up in it.</summary>
     public const long ClimbWindowMilliseconds = 10_000;
 
     /// <summary>
     /// Which point of the walk from the breach to the lord (<paramref name="path"/>, its corners in order) is the foot of his
     /// tower: the last at least <see cref="FootDrop"/> below him, never the walk's end; stepped back along the walk while a
     /// guard's post stands within <see cref="FootGuardClearance"/> of it (<paramref name="guardClearance"/>, 3D) and the point
-    /// before is still on the ground floor; with no clear point the first choice stays. -1 with none (a lord less than
-    /// <see cref="FootDrop"/> above the ground: the stormers walk straight at him, as before). Owner's PC, build 95af6fd
+    /// before is still on the ground floor. -1 with none (a lord less than <see cref="FootDrop"/> above the ground, or no point
+    /// of the walk clear of the guards' posts: the stormers walk straight at him, as before #280). Owner's PC, build 95af6fd
     /// (Thidranki 2026-11-15 22:37-23:00): of 122 stormers fallen in 15 attempts, 107 fell before her floor; the 15 that fell
-    /// on it reached it one or two at a time, 30-60 s into the attempt. Pure.
+    /// on it reached it one or two at a time, 30-60 s into the attempt. Build 4d48f42 (2026-11-16 05:39-06:27): Dun
+    /// Murdaigean's walk had no point clear (BG_TOWER_FOOT guardClear=188, 4,314 up its ramp, beside a guard's post) and the
+    /// first choice stood; no stormer of 11 attempts ever reached it (footPeak=0, bestToLord 885-3,316). Pure.
     /// </summary>
     public static int TowerFootIndex(IReadOnlyList<Vector3> path, Vector3 lord, Func<Vector3, float> guardClearance)
     {
@@ -718,16 +727,50 @@ public static class AutonomousBattlegroundKeepRally
         if (foot < 0) return -1;
         int pick = foot;
         while (pick > 0 && guardClearance(path[pick]) < FootGuardClearance && lord.Z - path[pick - 1].Z >= FootDrop) pick--;
-        return guardClearance(path[pick]) >= FootGuardClearance ? pick : foot;
+        return guardClearance(path[pick]) >= FootGuardClearance ? pick : -1;
     }
 
     /// <summary>
-    /// Whether the climb from the foot goes now: someone is there (<paramref name="atFoot"/>) and either nobody else is still on
-    /// the way (<paramref name="coming"/>), or <see cref="FootShare"/> of them are there, or the first has waited
-    /// <see cref="FootWaitMilliseconds"/>. The wave goes up the stair together, as players' zergs did. Pure.
+    /// Whether the climb from the foot goes now: someone is there (<paramref name="atFoot"/>) and either nobody else is on the
+    /// way inside the walls (<paramref name="comingInside"/>: standing stormers through the gate, neither at the foot nor up the
+    /// tower), or <see cref="FootShare"/> of those inside are there, or the first reached it
+    /// <see cref="FootWaitMilliseconds"/> ago (<paramref name="footHeldMilliseconds"/>). The wave goes up the stair together,
+    /// as players' zergs did. Stormers still outside (fighting at the gate or back at the rally) are not waited for: on
+    /// 4d48f42 every standing stormer counted, most were still outside or dead before the gate (fell outside 78, gate 51,
+    /// inside 25 of 154), at most 2 ever stood at the foot (footPeak), and no climb went in any of 25 attempts (climbs=-). Pure.
     /// </summary>
-    public static bool ClimbGoes(int atFoot, int coming, long firstWaitingMilliseconds) =>
-        atFoot > 0 && (coming <= 0 || atFoot * 100 >= FootShare * (atFoot + coming) || firstWaitingMilliseconds >= FootWaitMilliseconds);
+    public static bool ClimbGoes(int atFoot, int comingInside, long footHeldMilliseconds) =>
+        atFoot > 0 && (comingInside <= 0 || atFoot * 100 >= FootShare * (atFoot + comingInside) ||
+                       footHeldMilliseconds >= FootWaitMilliseconds);
+
+    /// <summary>The climb from the foot in one attempt: since when its first stormer stands there (0 with none since the last
+    /// climb), until when the climb is open, and whether one went.</summary>
+    public readonly record struct FootClimb(long FootFirstAt, long OpenUntil, bool Climbed)
+    {
+        public bool IsOpen(long now) => now < OpenUntil;
+    }
+
+    /// <summary>
+    /// One count of the foot (every <see cref="CountMilliseconds"/>): a climb that went stays open while any stormer is up the
+    /// tower (<paramref name="upTheTower"/>), so the ones arriving join a climb that is working instead of waiting below it;
+    /// a shut foot starts its clock at the first arrival and keeps it when that one falls (4d48f42 reset it whenever the foot
+    /// stood empty, so a lone waiter under the keep's guards never saw its 25 s); the climb goes when
+    /// <see cref="ClimbGoes"/> says. <paramref name="wentNow"/>: a climb was called by this count. Pure.
+    /// </summary>
+    public static FootClimb NextClimb(FootClimb climb, int atFoot, int comingInside, int upTheTower, long now, out bool wentNow)
+    {
+        wentNow = false;
+        if (climb.Climbed && upTheTower > 0)
+            climb = climb with { OpenUntil = Math.Max(climb.OpenUntil, now + ClimbWindowMilliseconds) };
+        if (climb.IsOpen(now)) return climb;
+        if (atFoot > 0 && climb.FootFirstAt == 0) climb = climb with { FootFirstAt = now };
+        if (!ClimbGoes(atFoot, comingInside, climb.FootFirstAt == 0 ? 0 : now - climb.FootFirstAt)) return climb;
+        wentNow = true;
+        return new FootClimb(0, now + ClimbWindowMilliseconds, true);
+    }
+
+    /// <summary>A stormer through the gate: nearer the lord (flat) than the breach is, as BG_RALLY_REGROUP's passedGate. Pure.</summary>
+    public static bool ThroughTheGate(float flatToLord, float gateToLord) => flatToLord < gateToLord;
 
     /// <summary>
     /// In the lord's fight, whom a stormer strikes: casters, archers and healers (<paramref name="rangedOrHealer"/>) the lord;
@@ -814,11 +857,11 @@ public static class AutonomousBattlegroundKeepRally
         public float BestToLord = float.MaxValue;
         /// <summary>The gamebots that went up. Each also holds a battleground-wave duty lease for this rally (docs/DUTY-LEASE.md).</summary>
         public readonly HashSet<long> Committed = new();
-        /// <summary>This attempt: the foot of the lord's tower (null with none), since when its first waiter waits, until when
-        /// the climb is open, the climbs' seconds into the attempt, the most at the foot at once, and each stormer's first
-        /// second on the lord's floor.</summary>
+        /// <summary>This attempt: the foot of the lord's tower (null with none), its climb (<see cref="NextClimb"/>), the
+        /// climbs' seconds into the attempt, the most at the foot at once, and each stormer's first second on the lord's
+        /// floor.</summary>
         public Vector3? Foot;
-        public long FootFirstAt, ClimbOpenUntil;
+        public FootClimb Climb;
         public readonly List<int> Climbs = new();
         public int FootPeak;
         public readonly List<int> FloorArrivals = new();
@@ -1169,7 +1212,7 @@ public static class AutonomousBattlegroundKeepRally
     /// <summary>A stormer's order: up for the lord, by way of the foot of his tower while its climb is shut.</summary>
     private static Order StormOrder(Rally rally, Vector3 point, GameKeepGuard lord, long now) =>
         new(Step.Storm, point, $"{rally.Engaged} went up for {lord.Name}", rally.Foot,
-            rally.Foot == null || now < rally.ClimbOpenUntil, rally.AttemptSince);
+            rally.Foot == null || rally.Climb.IsOpen(now), rally.AttemptSince);
 
     /// <summary>
     /// The foot of the lord's tower for this attempt (<see cref="TowerFootIndex"/>) on the navmesh walk from the breach's
@@ -1235,7 +1278,7 @@ public static class AutonomousBattlegroundKeepRally
     private static void ClearAttemptRecord(Rally rally)
     {
         rally.Foot = null;
-        rally.FootFirstAt = rally.ClimbOpenUntil = 0;
+        rally.Climb = default;
         rally.Climbs.Clear();
         rally.FootPeak = 0;
         rally.FloorArrivals.Clear();
@@ -1380,24 +1423,30 @@ public static class AutonomousBattlegroundKeepRally
             // Up his tower, at its foot, and still on the way; each stormer's first second on his floor; and the climb.
             GameBot[] stormers = realmBots.Where(other => rally.Committed.Contains(other.DatabaseID)).ToArray();
             int second = (int)((now - rally.AttemptSince) / 1000);
-            int upTheTower = 0, atFoot = 0;
+            int upTheTower = 0, atFoot = 0, comingInside = 0;
+            float breachToLord = rally.GatePoint is { } breach
+                ? Vector2.Distance(new(breach.X, breach.Y), new(lord.X, lord.Y))
+                : float.MaxValue;
             foreach (GameBot stormer in stormers)
             {
                 if (OnLordFloor(stormer, lord) && rally.OnFloorSeen.Add(stormer.DatabaseID)) rally.FloorArrivals.Add(second);
                 if (UpTheTower(stormer, lord, rally.Foot)) upTheTower++;
                 else if (rally.Foot is { } foot && AtFoot(stormer, foot)) atFoot++;
+                else if (ThroughTheGate(Vector2.Distance(new(stormer.X, stormer.Y), new(lord.X, lord.Y)), breachToLord)) comingInside++;
             }
             if (rally.Foot != null)
             {
                 rally.FootPeak = Math.Max(rally.FootPeak, atFoot);
-                if (atFoot == 0) rally.FootFirstAt = 0;
-                else if (rally.FootFirstAt == 0) rally.FootFirstAt = now;
-                if (now >= rally.ClimbOpenUntil &&
-                    ClimbGoes(atFoot, stormers.Length - upTheTower - atFoot, rally.FootFirstAt == 0 ? 0 : now - rally.FootFirstAt))
+                long heldSince = rally.Climb.FootFirstAt;
+                rally.Climb = NextClimb(rally.Climb, atFoot, comingInside, upTheTower, now, out bool went);
+                if (went)
                 {
-                    rally.ClimbOpenUntil = now + ClimbWindowMilliseconds;
                     rally.Climbs.Add(second);
-                    rally.FootFirstAt = 0;
+                    // Who went up and why (4d48f42: no climb in 25 attempts, and nothing said what the foot was waiting for).
+                    Log.Info($"BG_TOWER_CLIMB battleground={bracket.Name} realm={GlobalConstants.RealmToName(realm)} keep=\"{keep.Name}\" " +
+                             $"second={second} atFoot={atFoot} comingInside={comingInside} upTheTower={upTheTower} " +
+                             $"standing={stormers.Length} footHeldSeconds={(heldSince == 0 ? 0 : (now - heldSince) / 1000)} " +
+                             $"climb={rally.Climbs.Count} lord={lord.HealthPercent}%");
                 }
             }
             string over = AttemptOver(rally.Engaged, rally.Committed.Count, lord.HealthPercent, rally.LowestPercent, now - rally.LastProgress,
@@ -1456,7 +1505,7 @@ public static class AutonomousBattlegroundKeepRally
                      $"bestBelowLord={(rally.BestBelowLord >= float.MaxValue ? -1 : (int)rally.BestBelowLord)} " +
                      $"peakRallied={rally.PeakRallied} plan={(rally.Joint ? "pair" : "alone")} " +
                      $"readySeconds={(rally.ReadySince == 0 ? -1 : (now - rally.ReadySince) / 1000)} floorArrivals={rally.FloorArrivals.Count} " +
-                     $"climbs={rally.Climbs.Count} climbOpen={now < rally.ClimbOpenUntil} " +
+                     $"climbs={rally.Climbs.Count} climbOpen={rally.Climb.IsOpen(now)} " +
                      $"lord={lord.HealthPercent}% diedToGuards={rally.DiedToGuards} diedOther={rally.DiedOther} " +
                      $"fightsRefused={rally.Refused} chasesDropped={rally.Dropped}");
             rally.DiedToGuards = rally.DiedOther = rally.Refused = rally.Dropped = 0;
