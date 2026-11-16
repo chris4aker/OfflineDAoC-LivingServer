@@ -6,7 +6,9 @@ using System.Text.Json.Serialization;
 namespace OfflineDaoc.Configuration;
 
 // Linked into the launcher: validation, defaults and disk format have one owner.
-// Battlegrounds (added 2026-10-07) defaults to 0, so settings files saved before it stay valid.
+// Battlegrounds (added 2026-10-07) is 0 in a row that omits it, so settings files saved before it stay valid.
+// The default Levels 20–49 row sends 15% of those bots to the battlegrounds (owner, 2026-11-16: Living Server features
+// on by default for installer users).
 public sealed record BotGoalWeights(int SoloPve, int GroupPve, int RvR, int Battlegrounds = 0)
 {
     public int Total => SoloPve + GroupPve + RvR + Battlegrounds;
@@ -36,7 +38,7 @@ public sealed record BotGoalSettings
     public required BotGoalWeights Level50 { get; init; }
     public static BotGoalSettings Defaults => new()
     {
-        Levels1To19 = new(60, 40, 0), Levels20To49 = new(40, 40, 20), Level50 = new(20, 40, 40),
+        Levels1To19 = new(60, 40, 0), Levels20To49 = new(35, 35, 15, 15), Level50 = new(20, 40, 40),
     };
     public BotGoalWeights ForLevel(int level) => level >= 50 ? Level50 : level >= 20 ? Levels20To49 : Levels1To19;
 

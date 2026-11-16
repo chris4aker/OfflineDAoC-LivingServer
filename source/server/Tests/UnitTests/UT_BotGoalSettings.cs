@@ -23,10 +23,10 @@ public class UT_BotGoalSettings
         AutonomousBotGoalPolicy.Initialize(_directory);
     }
 
-    [TestCase(1, 60, 40, 0)] [TestCase(19, 60, 40, 0)]
-    [TestCase(20, 40, 40, 20)] [TestCase(49, 40, 40, 20)] [TestCase(50, 20, 40, 40)]
-    public void DefaultsAndBrackets(int level, int solo, int group, int rvr) =>
-        Assert.That(BotGoalSettings.Defaults.ForLevel(level), Is.EqualTo(new BotGoalWeights(solo, group, rvr)));
+    [TestCase(1, 60, 40, 0, 0)] [TestCase(19, 60, 40, 0, 0)]
+    [TestCase(20, 35, 35, 15, 15)] [TestCase(49, 35, 35, 15, 15)] [TestCase(50, 20, 40, 40, 0)]
+    public void DefaultsAndBrackets(int level, int solo, int group, int rvr, int battlegrounds) =>
+        Assert.That(BotGoalSettings.Defaults.ForLevel(level), Is.EqualTo(new BotGoalWeights(solo, group, rvr, battlegrounds)));
 
     [TestCase(100, 0, 0, 0)] [TestCase(0, 100, 0, 1)] [TestCase(0, 0, 100, 2)]
     public void ExclusivePoliciesApplyToAllocationRollsRecoveryAndOldEligibility(int solo, int group, int rvr, int kind)
