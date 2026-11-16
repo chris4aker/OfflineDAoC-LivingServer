@@ -132,6 +132,27 @@ gamebots only: companions (`/bot`), Epic Special Force visitors, beggars and rea
   on our `SpellcraftRules`. Ours: the Crafter-only gate, stored types and the 7% share, realm weights, the pace and
   sessions per trip, titles and the first, the adverts, station hangouts, the tick budgets. DividedRealms' quest runner
   is not taken. Tests only: nothing here has been seen in game.
+### WP2 Economy ledger
+
+Instrumentation only: **no amount changes**; tests only so far. Until now no log line recorded a gamebot's coin
+coming in or going out (M0); this makes coin per hour measurable. Guide: [docs/ECONOMY-LEDGER.md](docs/ECONOMY-LEDGER.md).
+
+- **Every gamebot coin move is counted by kind, per realm and level band**, with no call-site edit: the caller's file
+  and member (WP0's caller info on `AddMoney`/`TrySpend`) name the kind (loot coin, loot share, vendor sale, vendor
+  gear, stable ticket, frontier medallion, repair kit, siege, dye, beggar gift, Exchange credit). A refund counts
+  against its own spend. A new call site that names nothing is listed by name in the hourly line, and a unit test
+  scanning the source fails until it is named.
+- **Realm Exchange sales** are counted from the sale-committed seam: sales, value, tax, crafted pieces, and what bots
+  and players paid and received.
+- **An hourly snapshot of the money supply per realm** (bot purses, player wallets, unclaimed Exchange proceeds, guild
+  banks, plus the Exchange's listed value), read on a background task, with a residual = change in supply − the flows
+  seen, and the bots' own residual. Bots that appear or go bring or take their purse.
+- **Lines**: `ECON_SUPPLY` and `ECON_FLOWS` each UTC hour for each realm and All (True165's `in_<kind>=copper/count`
+  keys kept, and True165's own `BOT_MONEY_LEDGER_165` line once an hour as an alias), a baseline at start, a partial
+  hour at shutdown; one `offline_economy_ledger` row per realm and hour.
+- Setting `economy_ledger_enabled` (on; logs and one row an hour per realm only).
+- Ported: the money ledger from shadowofze (a8c793e, df86f9f), via True165, GPL-3.0; its test adapted. Ours: the
+  classifier, per-realm and per-band sums, the supply snapshot, the residual, the Exchange counters, the table rows.
 
 ## 1.2.1 (in development)
 
