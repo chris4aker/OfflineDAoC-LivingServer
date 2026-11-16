@@ -1973,6 +1973,7 @@ namespace DOL.GS
                 _rvrIntent = (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
                     .GetProperty<int>("RvrWarbandIntent", (int)AutonomousRvrEventLayer.Intent.Roam);
             bool carrying = GameRelic.IsPlayerCarryingRelic(bot);
+            if (RvrTacticsTravelHold(brain, bot)) return true;
             if (!battleActive && !carrying && !(dynamicWarband && _groupDirective.GroupCombatActive) && HoldBeforeNewGroupPull(brain, bot))
                 return true;
             if (!battleActive && !dynamicWarband && !GameRelic.IsPlayerCarryingRelic(bot) && !StageSoloRvrAtBorderKeep(bot))
@@ -2601,6 +2602,7 @@ namespace DOL.GS
             CampDestination chosen = choices.FirstOrDefault(destination => destination.Id == plan?.TargetId) ??
                 (plan == null ? null : new CampDestination(plan.TargetId, plan.Name, plan.Name,
                     plan.RegionId, plan.X, plan.Y, plan.Z, 1, false, true));
+            chosen = RvrTacticsRoamDestination(bot, chosen) ?? chosen;
             if (chosen != null && chosen.RegionId is 1 or 100 or 200 &&
                 (chosen.RegionId != _rvrFrontierRegion || GameLoop.GameLoopTime >= _rvrFrontierCommittedUntil))
             {

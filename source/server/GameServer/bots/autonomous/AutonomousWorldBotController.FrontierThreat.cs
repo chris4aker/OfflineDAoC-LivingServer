@@ -213,6 +213,7 @@ public sealed partial class AutonomousWorldBotController
                 visibleTargets = allowed;
             }
         }
+        visibleTargets = RvrTacticsGateThreats(brain, bot, visibleTargets);
         var operatorThreats=visibleTargets.Where(target=>target.IsAttacking && target.TargetObject is GameBot friendly &&
             friendly.Realm==bot.Realm && bot.IsWithinRadius(friendly,1000) && BotSiegeRuntime.HoldingPosition(friendly)).ToArray();
         GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);

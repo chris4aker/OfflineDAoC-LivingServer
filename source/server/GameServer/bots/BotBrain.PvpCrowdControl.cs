@@ -13,6 +13,7 @@ namespace DOL.AI.Brain
             Body.castingComponent?.SpellHandler?.Spell?.ID==_pvpControlSpellId;
         private bool TryPvpCrowdControl()
         {
+            if (RvrTacticsCrowdControl() is { } rvrPlanned) return rvrPlanned;
             if (BotBody?.CanCastCrowdControlSpells != true || Body.IsCasting || Body.IsIncapacitated ||
                 Body.castingComponent?.HasPendingSkillRequests == true || GameLoop.GameLoopTime < _nextPvpControl) return false;
             _nextPvpControl = GameLoop.GameLoopTime + 2000;

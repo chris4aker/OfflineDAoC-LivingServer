@@ -1899,6 +1899,7 @@ public static partial class AutonomousBotGroupCoordinator
                 // Pet caps (audit 2026-11-03): at most rvr_group_pet_cap pet classes in one warband; the rest stay free.
                 compatible = AutonomousRvrPetCap.Pick(compatiblePool, rolledSize - 1, AutonomousRvrPetCap.IsPetClass(leader) ? 1 : 0,
                     AutonomousRvrPetCap.CapFor(rolledSize, ServerProperties.Properties.RVR_GROUP_PET_CAP), AutonomousRvrPetCap.IsPetClass);
+                compatible = RvrTacticsRoster(leader, compatiblePool, compatible, rolledSize) ?? compatible;
                 if (!AutonomousRvrStaging.AcceptWarband(rolledSize, compatible.Length))
                     continue;
                 rolledSize = compatible.Length + 1;
