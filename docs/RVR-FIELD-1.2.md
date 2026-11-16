@@ -9,7 +9,8 @@ on the fringes or checking PvE or dungeon or named spots for enemy realm players
 
 This is the design for realm-versus-realm (RvR) fights away from keeps. It builds on
 [BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md) and the RvR perception part of [LIVING-SERVER.md](LIVING-SERVER.md).
-**Status: design only. Nothing here is built or seen in game.** The route and check-spot data were proven by probes
+**Status: approved by the owner on 2026-11-16 (all nine recommendations below); being built for 1.2. Nothing here
+is seen in game yet.** The route and check-spot data were proven by probes
 on the navigation mesh (the server's map of walkable ground): tests only.
 
 ## What changes for you
@@ -283,7 +284,11 @@ The same kind of session on the owner's PC, before and after, from the server lo
 | Attacker siege win rate | About 50% is the target | Stays in the 35-65% band |
 | AI time for the frontier scan | To be read before WP1 | Not higher than today |
 
-## Open decisions for the owner
+## Owner decisions (2026-11-16)
+
+The owner accepted all nine recommendations: "Great, let's build all that with your proposed recommendations".
+The list below is kept as decided.
+
 
 1. **Fights at a keep keep today's rules in 1.2.** Recommended: yes. It protects siege balance, and it is the main
    part of "all in 1.2" that this design defers.
