@@ -172,6 +172,7 @@ public sealed class BotPeopleStore
             Current.LoadFrom(GameServer.Database);
             if (Current.Unreadable > 0)
                 Log.Warn($"Bots as people: {Current.Unreadable} row(s) with an unreadable PersonKey were not loaded");
+            RaidLearning.StartSeeding(Current); // WP2R: the upgrade seeding, off the game loop, once the raid record has loaded
         }
         catch (Exception exception)
         {

@@ -125,7 +125,7 @@ namespace DOL.GS
                 var raid = AutonomousRealmRaid.RaidOf(raider?.Group);
                 string raidId = raid?.Id ?? AutonomousRealmRaid.RaidIdForBoss(boss.GetType().Name);
                 Group[] parties = raid?.Parties ?? (raider?.Group != null ? [raider.Group] : []);
-                double familiarity = RaidDiscipline.FamiliarityOf(raidId);
+                double familiarity = RaidLearning.FamiliarityAtCall(raidId, MechanicKey(boss), parties, boss); // WP2R: the record's when off
                 int seed = RaidDiscipline.SeedOf(raidId);
                 GameBot planned = CallerOf(parties);
                 long plannedId = planned?.DatabaseID ?? 0;
@@ -336,7 +336,8 @@ namespace DOL.GS
                     BotPersonalityTraits traits = AutonomousBotPersonality.Applies(bot) ? AutonomousBotPersonality.For(bot).Traits
                         : RaidDiscipline.NeutralTraits;
                     reaction = holds ? new RaidDiscipline.Reaction(double.PositiveInfinity, RaidDiscipline.Lapse.Stays, "the party he fights holds him")
-                        : RaidDiscipline.ReactionFor(bot.DatabaseID, traits, RoleOf(bot), MechanicKey(boss), call.Threshold, call.Seed, call.Familiarity);
+                        : RaidDiscipline.ReactionFor(bot.DatabaseID, traits, RoleOf(bot), MechanicKey(boss), call.Threshold, call.Seed,
+                            RaidLearning.FamiliarityOf(bot, call.RaidId, MechanicKey(boss), call.Seed, call.Familiarity)); // WP2R: its own count
                     call.Reactions[bot.DatabaseID] = reaction;
                 }
             }

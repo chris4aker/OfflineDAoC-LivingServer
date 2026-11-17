@@ -2698,7 +2698,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, work package 2R.
 		/// </summary>
-		[ServerProperty("bots", "raid_learns_from_raiders", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything. A played world is seeded once so its familiarity stays the same on average. Log: RAID_LEARN, RAID_MECHANIC_SEEN. In this build it changes nothing yet (work package 2R).", true)]
+		[ServerProperty("bots", "raid_learns_from_raiders", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything; real players and companions are not counted. Wired for Xanxicar's stomp. A played world is seeded once at its first start with the switch (each level 50 of a realm with a counted attempt, with a chance of the record's familiarity but at least 80%), so its familiarity stays the same on average. False: the record's familiarity alone, as before. Log: RAID_LEARN, RAID_MECHANIC_SEEN.", true)]
 		public static bool RAID_LEARNS_FROM_RAIDERS = true;
 
 		/// <summary>
