@@ -335,13 +335,18 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
   Where it differs from the text above:
   - `ERA_BUILD_CENSUS` also counts `new=` (bots with no plan yet, drawn at their first login), so `era + kept + new =
     bots`; `kept` is every plan without an era build (earlier builds and this build's off-meta and legacy plans).
-    Hibernia's line always lists `Sluaghbinder=` (check 4).
+    Hibernia's line always lists `Sluaghbinder=` (check 4). After review it ends with `eraClasses="..."`, the same
+    class count over the era-built bots only, so check 2 isn't swayed by older bots; checks 1 and 2 also want a fresh
+    world with Bot schedule Off (with `clock` only the scheduled bots log in, and a bot draws at its first login).
   - `ERA_BUILD_TRAINED` is logged only when an era-built bot first stands trained at 50 (a `+ Lv.50` arrival or its
     trainer visit at 50), not for a `+ Lv.20` arrival, so it stays one line per bot for life; `match=no` adds
     `short="Line:at/planned,..."`.
   - Off-meta and legacy plans log `build=today-<SpecType> label="today's class-file build" role=`. With `bot_era_builds`
     off nothing is logged (today's builds, as before).
   - In the nearest-build case the weapons follow the levels the bot already trained as well as the build's.
+  - After review, the class file's own random picks in an era plan (its variant, an untrained weapon slot) are seeded
+    by the bot id and the build (`Util.SeededScope`, this thread only), so a crash before the first save makes the
+    same plan; and the launcher's ALL OFF turns both era switches off.
   - The review of WP0-2 found that a gamebot trained every level missed the half-level points above 40 that the budget
     counts; gamebots now get them (`GameBot.SpecPointsForLevel`), so a levelled bot can finish its build too.
 
@@ -362,7 +367,8 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
 - **Tests:** roster template tests with mixed Healer builds; bots without an era role keep today's ranking.
 - **Setting:** `rvr_roster_build_roles` (True). Not raid code; RvR field code merged in #302-#304.
 - **Built 2026-11-17 (tests only):** `RvrRosterCandidate.EraRole`, `RvrRosterTemplates.Build(..., buildRoles)`,
-  `RvrRosterTemplates.IsCrowdControlRole`, `RvrRoster.CrowdControlRole`/`CrowdControlLabel`. The slot takes, in order: a
+  `RvrRosterTemplates.IsCrowdControlRole` (healer-cc and cc-mezzer; cc-root is left out after review, as its only
+  build is a Theurgist, which no realm's slot takes), `RvrRoster.CrowdControlRole`/`CrowdControlLabel`. The slot takes, in order: a
   member already in the eight (the leader included) whose class is one of the slot's (its preferred or next-best
   classes) and whose build is a crowd-control build; then such a bot from the pool; then today's order. A leader of the
   slot's class without such a build leaves the slot to one and takes its next slot (a Regrowth Bard leader is the speed).

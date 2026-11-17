@@ -9,7 +9,7 @@ namespace DOL.UnitTests
 {
     /// <summary>
     /// Era builds 1.2, WP5 (owner's review D9): the RvR eight's crowd-control slot ranks a crowd-control era build first
-    /// (healer-cc, cc-mezzer, cc-root), then today's order; bots without an era role keep today's ranking. RvR field code
+    /// (healer-cc, cc-mezzer), then today's order; bots without an era role keep today's ranking. RvR field code
     /// (RvrRosterTemplates), not raid code. Pure. Tests only.
     /// </summary>
     [TestFixture]
@@ -121,11 +121,12 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyTheThreeCrowdControlRolesCount()
         {
-            Assert.That(new[] { "healer-cc", "cc-mezzer", "cc-root" }.All(RvrRosterTemplates.IsCrowdControlRole), Is.True);
-            Assert.That(new[] { "healer", "cc-support", "pbae", "", null }.Any(RvrRosterTemplates.IsCrowdControlRole), Is.False);
+            Assert.That(new[] { "healer-cc", "cc-mezzer" }.All(RvrRosterTemplates.IsCrowdControlRole), Is.True);
+            Assert.That(new[] { "healer", "cc-support", "cc-root", "pbae", "", null }.Any(RvrRosterTemplates.IsCrowdControlRole), Is.False,
+                "cc-root is the Theurgist's, which is no realm's crowd-control class");
             Assert.That(OfflineDaoc.Shared.EraBuildCatalog.Default.Classes.SelectMany(c => c.Builds)
                 .Where(b => RvrRosterTemplates.IsCrowdControlRole(b.Role)).Select(b => b.Id).OrderBy(id => id, StringComparer.Ordinal),
-                Is.EqualTo(new[] { "bard-music-nurt", "healer-pac-mend-aug", "healer-pac-mend31", "sorcerer-mind-body", "theurgist-cold-earth" }));
+                Is.EqualTo(new[] { "bard-music-nurt", "healer-pac-mend-aug", "healer-pac-mend31", "sorcerer-mind-body" }));
         }
 
         [Test]

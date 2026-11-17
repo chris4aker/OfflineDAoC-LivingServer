@@ -253,10 +253,11 @@ public static class RvrRosterTemplates
 
     /// <summary>
     /// Era builds 1.2, WP5 (owner's review D9): the era build roles that are a crowd-control build, which the crowd-control
-    /// slot takes first when rvr_roster_build_roles is on. A Pacification Healer (healer-cc), a Mind Sorcerer or Music
-    /// Bard (cc-mezzer), a Cold Theurgist (cc-root).
+    /// slot takes first when rvr_roster_build_roles is on: a Pacification Healer (healer-cc), a Mind Sorcerer or a Music
+    /// Bard (cc-mezzer). The data's cc-root (the Cold Theurgist) is left out: the Theurgist is not one of any realm's
+    /// crowd-control classes (it has Albion's own slot), so it could never fill this one.
     /// </summary>
-    public static bool IsCrowdControlRole(string eraRole) => eraRole is "healer-cc" or "cc-mezzer" or "cc-root";
+    public static bool IsCrowdControlRole(string eraRole) => eraRole is "healer-cc" or "cc-mezzer";
 
     public const int CureMezWanted = 2;
     /// <summary>An eight that finds fewer members than this (leader included) forms as an ordinary warband instead.</summary>

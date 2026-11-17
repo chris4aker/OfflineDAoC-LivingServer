@@ -380,10 +380,12 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
   `nearest` or `legacy`, with the jitter); `ERA_BUILD_TRAINED` once when an era-built bot first stands trained at 50
   (`match=yes`, or `match=no short=...`); `ERA_BUILD_CENSUS` once per start and realm: the bots by plan (`era`, `kept`,
   `new` = not loaded yet) and by class against the target share (`Healer=139(15.4%/15%)`; Hibernia always lists
-  `Sluaghbinder`). `RVR_PARTY_FORMED` names the crowd controller's build role (`cc=Healer(healer-cc)`). None of these
+  `Sluaghbinder`), then the same by class over the era-built bots only (`eraClasses="Healer=12(16.0%/15%),..."`). `RVR_PARTY_FORMED` names the crowd controller's build role (`cc=Healer(healer-cc)`). None of these
   is behind a diagnostics switch; ASSIGNED and TRAINED are at most one line per bot for life.
 - **Switches:** `bot_era_class_shares` and `bot_era_builds` are in the launcher's Living Server tab (economy card,
-  "2003 class mix" and "2003 builds"); the other two are server keys only (category `bots`).
+  "2003 class mix" and "2003 builds"); the other two are server keys only (category `bots`). **ALL OFF** switches the
+  two tab switches off with the other Living Server features: new bots then come evenly and with today's builds, and
+  bots that already have a build keep it.
 
 ### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_bot_perception_bots`, `rvr_bot_group_lookers`, `rvr_group_pet_cap`)
 

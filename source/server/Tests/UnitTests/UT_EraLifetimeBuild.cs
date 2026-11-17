@@ -111,6 +111,30 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void ABotAndABuildAlwaysMakeTheSamePlan()
+        {
+            // Review of WP3-5: the class file's own picks (its variant, an untrained weapon slot) are seeded by the bot id
+            // and the build, so a crash before the first save makes the same plan again.
+            foreach (EraBuild build in Catalog.Classes.SelectMany(c => c.Builds))
+            {
+                var cls = (eCharacterClass)Catalog.GetClass(build.ClassName).ClassId;
+                for (long id = 1; id <= 5; id++)
+                {
+                    string first = BotLifetimeBuild.Encode(BotSpec.FromEraBuild(cls, build, null, id * 7919));
+                    for (int again = 0; again < 5; again++)
+                    {
+                        Util.Random(100); // other draws in between must not matter
+                        Assert.That(BotLifetimeBuild.Encode(BotSpec.FromEraBuild(cls, build, null, id * 7919)), Is.EqualTo(first),
+                            $"{build.Id} bot {id * 7919}");
+                    }
+                }
+            }
+            // The seeded scope ends with the plan: the next draws are the server's own again.
+            var after = Enumerable.Range(0, 20).Select(_ => Util.Random(1_000_000)).ToArray();
+            Assert.That(after.Distinct().Count(), Is.GreaterThan(1));
+        }
+
+        [Test]
         public void TheClassGuardsKeepTheirOwnPlans()
         {
             BotSpec savageHands = BotSpec.FromEraBuild(eCharacterClass.Savage, Catalog.GetBuild("savage-h2h-sav"));
@@ -409,7 +433,13 @@ namespace DOL.UnitTests
             Assert.That(lines[0], Does.StartWith("ERA_BUILD_CENSUS realm=Albion bots=0 era=0 kept=0 new=0 Cleric=0(0.0%/12%)"));
             Assert.That(lines[1], Does.StartWith("ERA_BUILD_CENSUS realm=Midgard bots=5 era=3 kept=1 new=1 Healer=4(80.0%/15%) Skald=1(20.0%/12%)"));
             Assert.That(lines[2], Does.Contain(" Druid=1(100.0%/12%)"));
-            Assert.That(lines[2], Does.EndWith(" Sluaghbinder=0(0.0%/0%)"), "Hibernia always says the custom class is 0");
+            Assert.That(lines[2], Does.Contain(" Sluaghbinder=0(0.0%/0%) eraClasses=\""), "Hibernia always says the custom class is 0");
+            // The same count over the era-built bots only (review of WP3-5): the kept Healer and the new Skald are left out.
+            Assert.That(lines[1], Does.Contain(" eraClasses=\"Healer=3(100.0%/15%),Skald=0(0.0%/12%),Shadowblade=0(0.0%/10%),"));
+            Assert.That(lines[1], Does.EndWith(",Bonedancer=0(0.0%/3%)\""));
+            Assert.That(lines[2], Does.EndWith("eraClasses=\"Druid=0(0.0%/12%),Bard=0(0.0%/11%),Nightshade=0(0.0%/11%),Hero=0(0.0%/10%)," +
+                "Eldritch=0(0.0%/9%),Ranger=0(0.0%/9%),Blademaster=0(0.0%/8%),Enchanter=0(0.0%/8%),Warden=0(0.0%/8%)," +
+                "Champion=0(0.0%/6%),Mentalist=0(0.0%/4%),Animist=0(0.0%/2%),Valewalker=0(0.0%/2%)\""), "no Sluaghbinder among era-built bots");
             Assert.That(EraBuildCensus.PlanKind("{broken"), Is.EqualTo('n'));
         }
 

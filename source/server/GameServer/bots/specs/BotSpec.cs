@@ -149,12 +149,18 @@ namespace DOL.GS
             specs ??= build.Specs;
             if (specs.Count == 0)
                 return null;
-            BotSpec plan = charClass switch
+            BotSpec plan;
+            // The class file's own random picks (its variant, and any weapon slot the build doesn't train) are seeded by the
+            // bot and the build, so a crash before the first save makes the same plan again.
+            using (Util.SeededScope(PlanSeed(botId, build.Id)))
             {
-                eCharacterClass.Bonedancer => new BonedancerBotSpec(family, botId, true),
-                eCharacterClass.Savage => new SavageBotSpec(family, SavageWeapon(specs)),
-                _ => GetSpec(charClass, family),
-            };
+                plan = charClass switch
+                {
+                    eCharacterClass.Bonedancer => new BonedancerBotSpec(family, botId, true),
+                    eCharacterClass.Savage => new SavageBotSpec(family, SavageWeapon(specs)),
+                    _ => GetSpec(charClass, family),
+                };
+            }
             if (plan == null)
                 return null;
 
@@ -177,6 +183,22 @@ namespace DOL.GS
             plan.EraBuildId = build.Id;
             plan.EraRole = build.Role ?? string.Empty;
             return plan;
+        }
+
+        /// <summary>A seed from the bot id and the build id that is the same in every process (FNV-1a, then SplitMix64).</summary>
+        private static int PlanSeed(long botId, string buildId)
+        {
+            unchecked
+            {
+                ulong hash = 14695981039346656037UL;
+                foreach (char c in buildId ?? string.Empty)
+                    hash = (hash ^ c) * 1099511628211UL;
+                ulong value = hash ^ (ulong)botId;
+                value += 0x9E3779B97F4A7C15UL;
+                value = (value ^ (value >> 30)) * 0xBF58476D1CE4E5B9UL;
+                value = (value ^ (value >> 27)) * 0x94D049BB133111EBUL;
+                return (int)(value ^ (value >> 31));
+            }
         }
 
         /// <summary>The Savage's weapon from an era build's lines (Hand to Hand, Sword, Axe or Hammer; 0 = the class file's pick).</summary>

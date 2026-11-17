@@ -2665,7 +2665,7 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_ROAMING_PARTIES;
 
 		/// <summary>Era builds 1.2 (WP5, decision D9): the RvR eight's crowd-control slot prefers a crowd-control build.</summary>
-		[ServerProperty("bots", "rvr_roster_build_roles", "Era builds in RvR (1.2): when a role-built eight fills its crowd-control slot it first takes a member or bot whose era build is a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard; roles healer-cc, cc-mezzer, cc-root), then the classes as before. Bots without an era build rank as before. Groups you lead or join are never changed. Needs rvr_roaming_parties. Log: RVR_PARTY_FORMED cc=.", true)]
+		[ServerProperty("bots", "rvr_roster_build_roles", "Era builds in RvR (1.2): when a role-built eight fills its crowd-control slot it first takes a member or bot whose era build is a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard; roles healer-cc and cc-mezzer), then the classes as before. Bots without an era build rank as before. Groups you lead or join are never changed. Needs rvr_roaming_parties. Log: RVR_PARTY_FORMED cc=.", true)]
 		public static bool RVR_ROSTER_BUILD_ROLES = true;
 
 		/// <summary>
