@@ -151,42 +151,64 @@ public sealed partial class AutonomousWorldBotController
         // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
         using var aiProfile = AiProfile.Scope(AiSystem.FrontierThreatScan);
 
+        // 1.2 work package 1 ("Eyes"): where the bot is (at its objective only near it), which field rules apply, and
+        // whether this bot looks this turn (two lookers per group; the others are woken by a call or a fight).
+        long scanNow = GameLoop.GameLoopTime;
+        RvrScanContext rvr = RvrContext(brain, bot, defending || siegeFighter);
+        RvrScanRole scanRole = RvrScanTurn(brain, bot, rvr, scanNow);
+        RvrScanBudget.Add(bot.Realm, scanRole);
+        LogRvrScanBudget(scanNow);
+        if (!RvrScanRoster.Scans(scanRole)) return false;
+
         var nav = PathfindingProvider.Instance;
         if (!nav.IsAvailable || !nav.HasNavmesh(bot.CurrentZone)) return false;
+        RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.Scans);
+        // Away from its objective a bot looks only to where noticing stops (never less than 2,600), not 5,000.
+        int searchRadius = AutonomousRvrPerception.ScanRadius(rvr.Profile, rvr.Rules.FieldRadius, TargetSearchRadius);
+        // A stealthed enemy is a candidate only close up, for the stealth rule (RvrStealthNotice); never otherwise.
+        bool StealthOk(GameLiving target) => !target.IsStealthed ||
+            rvr.Rules.Stealth && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange);
         // Cheap rejections first (most nearby livings are friendly bots); the area lookup last
         // (IsSafeArea/GetAreasOfZone were ~64 MB per 40 s of allocations in run 11).
-        bool Eligible(GameLiving target) => target != bot && !target.IsStealthed && !IsIgnoredPvpTarget(target) &&
+        bool Eligible(GameLiving target) => target != bot && StealthOk(target) && !IsIgnoredPvpTarget(target) &&
             target.ObjectState == GameObject.eObjectState.Active && target.IsAlive &&
             target.Realm != bot.Realm && target.Realm != eRealm.None && target.CurrentRegionID == bot.CurrentRegionID &&
             AutonomousRvrTargetPolicy.IsEligible(bot.Realm, target.Realm, target.IsAlive,
                 target.CurrentRegionID == bot.CurrentRegionID, IsBattleground(target), IsSafeArea(target),
                 GameServer.ServerRules.IsAllowedToAttack(bot, target, true));
 
-        GameLiving[] nearby = bot.GetPlayersInRadius(TargetSearchRadius).Where(Eligible).Cast<GameLiving>()
-            .Concat(bot.GetNPCsInRadius(TargetSearchRadius)
+        GameLiving[] nearby = bot.GetPlayersInRadius((ushort)searchRadius).Where(Eligible).Cast<GameLiving>()
+            .Concat(bot.GetNPCsInRadius((ushort)searchRadius)
                 .Where(npc => (npc is GameBot or GameSiegeWeapon ||
                     npc is GameKeepGuard && AutonomousRvrDefense.IsRangedDefender(bot) && FiringOnRealm(bot, npc) ||
                     (siegeFighter ? AutonomousRvrDefense.IsCombatant(npc) :
                         npc.Brain is IControlledBrain pet && pet.GetLivingOwner() is IGamePlayer)) && Eligible(npc)))
-            .Where(target => bot.GetDistanceTo(target) <= TargetSearchRadius)
+            .Where(target => bot.GetDistanceTo(target) <= searchRadius)
             .Where(target => defending || !BotSiegeRuntime.Assigned(bot) || bot.IsWithinRadius(target, 450) && target is not GameSiegeWeapon)
             .OrderBy(target => target.TargetObject is GameBot friendly && friendly.Realm == bot.Realm &&
                 bot.IsWithinRadius(friendly, 1000) && BotSiegeRuntime.HoldingPosition(friendly) ? 0 : 1)
             .ThenBy(bot.GetDistanceTo).ToArray();
-        AutonomousLivingServer.ObserveEnemies(bot, nearby);
-        RvrAwarenessProfile rvrProfile = RvrProfile();
-        bool Visible(GameLiving target) => FiringOnRealm(bot, target) || nav.HasLineOfSight(bot.CurrentZone,
-            new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters);
+        // Nobody calls out a stealther they have not seen: the alarms hear only the visible enemies.
+        AutonomousLivingServer.ObserveEnemies(bot, rvr.Rules.Stealth ? nearby.Where(target => !target.IsStealthed).ToArray() : nearby);
+        bool Ray(bool seen)
+        {
+            RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.Rays);
+            return seen;
+        }
+        bool Visible(GameLiving target) => FiringOnRealm(bot, target) && !target.IsStealthed ||
+            !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(nav.HasLineOfSight(bot.CurrentZone,
+            new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters));
         var visible = siegeFighter
             ? _frontierThreat.VisiblePriority(nearby.Where(AutonomousRvrDefense.IsCombatant).ToArray(),
                 nearby.OfType<GameSiegeWeapon>().Cast<GameLiving>().ToArray(), Visible)
-            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) ||
-                // RvR perception: no ray for a player this bot couldn't notice on this scan anyway (observer cap, range).
-                !RvrSkipsLineOfSight(bot, target, defending, rvrProfile, GameLoop.GameLoopTime) && nav.HasLineOfSight(bot.CurrentZone,
-                new(bot.X, bot.Y, bot.Z), new(target.X, target.Y, target.Z), nav.DefaultFilters));
+            : _frontierThreat.Visible(nearby, target => FiringOnRealm(bot, target) && !target.IsStealthed ||
+                // RvR perception: no ray for a target this bot couldn't notice on this scan anyway (observer cap, range).
+                !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(nav.HasLineOfSight(bot.CurrentZone,
+                new(bot.X, bot.Y, bot.Z), new(target.X, target.Y, target.Z), nav.DefaultFilters)));
         var visibleTargets=visible.ToArray();
-        // RvR perception (owner 2026-11-01): enemy players, companions and pets only once noticed and after a reaction delay.
-        visibleTargets = PerceiveRvrTargets(bot, visibleTargets, defending || siegeFighter);
+        // RvR perception (owner 2026-11-01; enemy gamebots and stealth since 1.2 work package 1): perceived targets only
+        // once noticed and after a reaction delay. At its objective (near the keep it holds or besieges) as before.
+        visibleTargets = PerceiveRvrTargets(bot, visibleTargets, rvr);
         // A bot gathering for its realm's battleground wave fights only what comes at it (owner's PC, build 3d67b6f: the
         // gatherers saw the keep's Albion defenders and other realms within 5,000 and were pulled into the guards).
         // The same for a bot holding at its realm's keep rally once the doors are down, and a stormer going up to the lord

@@ -2544,7 +2544,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// RvR perception (owner 2026-11-01): autonomous gamebots notice enemy players in RvR by chance, react after a moment and call it to their group.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance: always within 1,000 units, never beyond 3,500; one bot looking on its own takes about 1.5 s at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the median), less when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, more when it stands still. At most 3 bots of a realm look for the same enemy each second; the others learn of it from their call. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots, siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
+		[ServerProperty("bots", "rvr_bot_perception", "In the frontier, battlegrounds and Darkness Falls, an autonomous gamebot notices an enemy player (or a player's companion or pet) by chance: always within 1,000 units, never beyond 3,500; one bot looking on its own takes about 1.5 s at 1,500 units, 6 s at 2,500 and 20 s at 3,400 (the median), less when the enemy is fighting, casting, in a group of 3 or more or in front of the bot, more when it stands still. At most 3 bots of a realm look for the same enemy group each second; the others learn of it from their call. It engages 0.5-2 s later (faster at higher level and for bold personalities). Enemy gamebots are noticed the same way when rvr_bot_perception_bots is on; siege, guards, doors and monsters are unchanged, and a bot or group under attack fights back at once. False keeps the old instant sighting up to 5,000 units.", true)]
 		public static bool RVR_BOT_PERCEPTION;
 
 		/// <summary>
@@ -2566,15 +2566,15 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_FIELD_TACTICS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 1 (eyes): bots notice enemy bots by the player rule.
+		/// 1.2 work package 1 (eyes): bots notice enemy bots by the player rule, scan only as far as noticing reaches, and may notice a stealther close up.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_perception_bots", "Does nothing yet: reserved for 1.2 work package 1. When built: autonomous gamebots notice enemy gamebots and their pets the way they notice you (rvr_bot_perception: by chance, after a reaction delay), instead of at once at 5,000 units. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_perception_bots", "1.2 work package 1: away from keeps, autonomous gamebots notice enemy gamebots and their pets the way they notice you (rvr_bot_perception: by chance, after a reaction delay, called to the group), instead of at once at 5,000 units; noticing one enemy notices its group mates within 1,500 units of it, and a bot looks only as far as noticing reaches (3,500 on normal, never less than 2,600). A bot may also notice a stealthed enemy, player or bot, close up by chance (about 50% a second at point blank, none beyond 350 units or beyond what a player in its place could see, never while fighting someone else). Bots at a keep they hold or besiege, raids, battleground assaults and groups with a player are unchanged, and a bot or group under attack fights back at once. Needs rvr_bot_perception and rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_PERCEPTION_BOTS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 1 (eyes): two lookers per group.
+		/// 1.2 work package 1 (eyes): two lookers per group.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_group_lookers", "Does nothing yet: reserved for 1.2 work package 1. When built: two members of a bot group take turns looking for enemies and the others take their target from the group's plan; soloers look for themselves. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_group_lookers", "1.2 work package 1: away from keeps, two members of each gamebot group take turns (every 10 s) looking for enemies, you included; soloers look for themselves. The others look only once a mate calls an enemy, a group mate is fighting or the group's plan has a target. Bots at a keep they hold or besiege, raids, battleground assaults and groups with a player are unchanged. Needs rvr_bot_perception and rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_GROUP_LOOKERS;
 
 		/// <summary>

@@ -1962,6 +1962,7 @@ namespace DOL.GS
                 _rvrSharedEvent = true;
                 _rvrIntent = committedPlan.Intent;
                 bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+                RvrAtObjective.Remember(bot, committedPlan.RegionId, committedPlan.X, committedPlan.Y, true);
             }
             var rally = AutonomousRvrEventLayer.GetRallyOrder(forceId, bot.Realm, GameLoop.GameLoopTime);
             // A marching army's siege operators set up rams, catapults and trebuchets as soon as they reach
@@ -2596,6 +2597,7 @@ namespace DOL.GS
             _rvrSharedEvent = plan?.IsSharedEvent == true;
             _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
             bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+            RvrAtObjective.Remember(bot, plan?.RegionId ?? 0, plan?.X ?? 0, plan?.Y ?? 0, plan != null);
             bot.TempProperties.SetProperty("RvrDefendingKeep",
                 _rvrIntent == AutonomousRvrEventLayer.Intent.DefendEvent && plan.TargetId.StartsWith("rvr-keep-") &&
                 int.TryParse(plan.TargetId.Substring(9), out int defendingKeep) ? defendingKeep : -1);
