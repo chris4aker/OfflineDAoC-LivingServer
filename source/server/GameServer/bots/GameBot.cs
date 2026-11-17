@@ -114,9 +114,8 @@ namespace DOL.GS
                 if (!HasPendingAutonomousTraining || BotSpec == null || IsTemporaryGroupHelper)
                     return false;
                 int points = m_leftOverSpecPoints;
-                bool catchingUp = Level - _lastAutonomousTrainedLevel > 1;
                 for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
-                    points += GetSpecPointsForLevel(level, catchingUp);
+                    points += GetSpecPointsForLevel(level);
                 return BotSpec.SpecLines.Any(line => (line.levelRatio > 0 || Level >= 50) &&
                     GetSpecializationByName(line.Spec) is Specialization spec && spec.Trainable &&
                     spec.Level < Math.Min(Level, line.SpecCap) && points >= spec.Level + 1);
@@ -2085,6 +2084,10 @@ namespace DOL.GS
                 // XP is a real progression event, so coalesce it into the next
                 // status batch instead of waiting for a server-wide save.
                 AutonomousBotStatusPersistence.Queue(this);
+                // A hired companion's x.5 points come at its second stage, as a player's do (CompanionSpecPoints).
+                if (hiredCompanion && !ReachedSecondStage(Level, previousExperience) && ReachedSecondStage(Level, Experience) &&
+                    HiredCompanions165.OwnerOf(this) is { } hirer)
+                    Hire165.Refresh(hirer);
             }
             if (previousExperience == 0 || previousLevel != Level)
             {
@@ -2848,7 +2851,10 @@ namespace DOL.GS
             }
             if (eraBuild != null)
                 log.Info(EraLifetimeBuild.AssignedLine(Name, DatabaseID, ClassName, Level, BotSpec, eraBuild));
-            m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
+            // An Epic Special Force or buffbot keeps what its training above left unspent (a player's total, all of it
+            // counted); a saved bot takes its saved count.
+            if (!IsInMemoryOnly)
+                m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
             _lastAutonomousTrainedLevel = IsInMemoryOnly ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
             // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
             // arrives trained in that build, as a player who leveled there would be. PC 2026-11-11 (build e90bf21): 900 such
@@ -3733,16 +3739,48 @@ namespace DOL.GS
 
         // ---- hired companions: their player trains their specs (from True 1.65, owner 2026-10-30)
 
-        /// <summary>Spec points the companion can spend now: what's left plus every level not yet trained.</summary>
-        public int CompanionSpecPoints
+        /// <summary>
+        /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
+        /// player of its class has earned at its level - levels 2-5, each level above 5, each half level 40.5-49.5 it has
+        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost.
+        /// Owner 2026-11-17: "companions and bots should be the same as a player". Before Living Server 1.2 a hired
+        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0); counting from its level
+        /// gives a saved companion those points to spend, and never takes a trained point away.
+        /// </summary>
+        public int CompanionSpecPoints => Math.Max(0, CompanionEarnedSpecPoints - TrainedSpecPointCost());
+
+        /// <summary>Every spec point a player of this class has earned at this level and experience.</summary>
+        private int CompanionEarnedSpecPoints =>
+            PlayerSpecPointTotal(CharacterClass.SpecPointsMultiplier, Level, ReachedSecondStage(Level, Experience));
+
+        /// <summary>What the trainable lines cost to train from 1 to their levels now.</summary>
+        private int TrainedSpecPointCost() => GetSpecList().Where(spec => spec.Trainable).Sum(spec => PointsToTrain(spec.Level));
+
+        /// <summary>The points to train a line from 1 to <paramref name="specLevel"/> (2 + 3 + ... + level), as
+        /// GamePlayer.VerifySpecPoints counts them. Pure.</summary>
+        public static int PointsToTrain(int specLevel) => specLevel <= 1 ? 0 : specLevel * (specLevel + 1) / 2 - 1;
+
+        /// <summary>The spec points a player earns by <paramref name="level"/> (GamePlayer.OnLevelUp, OnLevelSecondStage):
+        /// with <paramref name="secondStage"/>, the half level <paramref name="level"/>.5 too (levels 40-49). Pure.</summary>
+        public static int PlayerSpecPointTotal(int multiplier, int level, bool secondStage)
         {
-            get
-            {
-                int points = m_leftOverSpecPoints;
-                for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
-                    points += GetSpecPointsForLevel(level, false);
-                return points;
-            }
+            int total = 0;
+            for (int reached = 2; reached <= level; reached++)
+                total += SpecPointsForLevel(multiplier, reached, true);
+            if (secondStage && level >= 40 && level < 50)
+                total += multiplier * level / 20;
+            return total;
+        }
+
+        /// <summary>A player of <paramref name="level"/> with this experience is at the level's second stage ("x.5", levels
+        /// 40-49; GamePlayer.ExperienceForCurrentLevelSecondStage, whose bar the bot's levels share). Pure.</summary>
+        public static bool ReachedSecondStage(int level, long experience)
+        {
+            if (level < 40 || level >= 50)
+                return false;
+            long current = GamePlayer.GetExperienceAmountForLevel(level - 1);
+            long next = GamePlayer.GetExperienceAmountForLevel(level);
+            return experience >= 1 + current + (next - current) / 2;
         }
 
         /// <summary>Raises one spec line by one level, as the player chose. Returns the problem, or null.</summary>
@@ -3763,15 +3801,13 @@ namespace DOL.GS
             return null;
         }
 
-        /// <summary>The free respec (owner rule): every trainable line back to 1, all the points back to spend.</summary>
+        /// <summary>The free respec (owner rule): every trainable line back to 1, all the points back to spend - a player's
+        /// total for the level, half levels included.</summary>
         public void CompanionRespec()
         {
-            int total = 0;
-            for (int level = 2; level <= Level; level++)
-                total += GetSpecPointsForLevel(level, false);
             foreach (Specialization spec in GetSpecList().Where(s => s.Trainable))
                 spec.Level = 1;
-            m_leftOverSpecPoints = total;
+            m_leftOverSpecPoints = CompanionEarnedSpecPoints;
             _lastAutonomousTrainedLevel = Level;
             AfterCompanionTraining();
         }
@@ -4094,7 +4130,6 @@ namespace DOL.GS
             int leftOverSpecPoints = m_leftOverSpecPoints;
             bool spentPoints = true;
             bool spendLeftOverPoints = false;
-            bool botCreation = level - previousLevel > 1;
 
             byte index = (byte)(previousLevel + 1);
 
@@ -4106,7 +4141,7 @@ namespace DOL.GS
                 spentPoints = true;
                 spendLeftOverPoints = false;
 
-                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i, botCreation) + leftOverSpecPoints;
+                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i) + leftOverSpecPoints;
 
                 while (spentPoints)
                 {
@@ -4151,19 +4186,17 @@ namespace DOL.GS
             }
         }
 
-        private int GetSpecPointsForLevel(int level, bool botCreation) =>
-            SpecPointsForLevel(CharacterClass.SpecPointsMultiplier, level, botCreation || EarnsHalfLevelPoints);
-
         /// <summary>
-        /// An autonomous gamebot earns the half-level points above level 40 whether it trains every level or catches up
-        /// several at once. Players get them at each "x.5" second stage (GamePlayer.OnLevelSecondStage, multiplier x level
-        /// / 20); gamebots have no second stage, and before 1.2 only a bot catching up more than one level (or made above
-        /// level 1) was given them, so a gamebot that trained every level reached 50 with 220/330/445 points fewer (x1.0,
-        /// x1.5, x2.0) than one the launcher made at 50, and could not finish an era build sized to the level-50 budget
-        /// (review of era builds WP0-2, 2026-11-17). Hired companions keep their own count: their player places their
-        /// points (True 1.65), and /spawn and /bot companions are made trained.
+        /// Every bot earns the half-level points above level 40, whether it trains every level or catches up several at
+        /// once (owner 2026-11-17: "companions and bots should be the same as a player"). Players get them at each "x.5"
+        /// second stage (GamePlayer.OnLevelSecondStage, multiplier x level / 20); a bot that trains here gets the half level
+        /// before each level with that level, so at every whole level it has a player's total. Before 1.2 only a bot catching
+        /// up more than one level (or made above level 1) was given them: a gamebot that trained every level reached 50 with
+        /// 220/330/445 points fewer (x1.0, x1.5, x2.0; review of era builds WP0-2, fixed in #326), and a /spawn helper
+        /// promoted from 49 to 50 missed the 49.5 points. Hired companions count as a player does (CompanionSpecPoints).
         /// </summary>
-        private bool EarnsHalfLevelPoints => IsAutonomousWorldBot && !IsHiredCompanion;
+        private int GetSpecPointsForLevel(int level) =>
+            SpecPointsForLevel(CharacterClass.SpecPointsMultiplier, level, true);
 
         /// <summary>The spec points for reaching <paramref name="level"/>; with <paramref name="halfLevel"/>, above level 40,
         /// also the half level before it (level - 1).5. Pure; the sum over levels 2-50 with half levels is
