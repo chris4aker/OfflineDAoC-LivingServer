@@ -351,12 +351,13 @@ public static partial class AutonomousBotGroupCoordinator
     /// </summary>
     public static int MaximumGroupedForObjective(eAutonomousObjectiveKind objectiveKind, int rosterCount) =>
         objectiveKind == eAutonomousObjectiveKind.RvR
-            ? Math.Max(0, rosterCount - MinimumSoloRvrReserve(rosterCount))
+            ? Math.Max(0, rosterCount - MinimumSoloRvrReserve(rosterCount, RvrTacticsSoloReserveShare()))
             : Math.Max(0, rosterCount);
 
-    public static int MinimumSoloRvrReserve(int rosterCount) => rosterCount < 4
+    // 1.2 (rvr_roam_population_split): with the split on, the reserve is the split's small share (15%), not 35%.
+    public static int MinimumSoloRvrReserve(int rosterCount, double share = 0.35d) => rosterCount < 4
         ? Math.Max(0, rosterCount - 2)
-        : Math.Max(2, (int)Math.Ceiling(rosterCount * 0.35d));
+        : Math.Max(2, (int)Math.Ceiling(rosterCount * share));
 
     public static int AvailableGroupSlotsForObjective(eAutonomousObjectiveKind objectiveKind, int realmRosterCount, int realmGroupedCount) =>
         Math.Max(0, MaximumGroupedForObjective(objectiveKind, realmRosterCount) - realmGroupedCount);
@@ -1852,6 +1853,7 @@ public static partial class AutonomousBotGroupCoordinator
             int rolledSize = objectiveKind == eAutonomousObjectiveKind.RvR
                 ? AutonomousRvrStaging.RollWarbandSize(largestAllowed, Random.Shared.NextDouble(), leader.Level)
                 : 8;
+            if (!pve) rolledSize = RvrTacticsPartySize(leader, rolledSize, largestAllowed, activeRoster); // 1.2 WP6: the split
             if (rolledSize == 1)
                 continue;
             // PvE recruits by travel time to the leader, from any region of the realm; RvR keeps the leader's region.
@@ -1943,6 +1945,7 @@ public static partial class AutonomousBotGroupCoordinator
             GameBot[] formedMembers = BotMembers(group);
             WriteSessionMetadata(session, formedMembers);
             AutonomousBotGuildSocial.OnGroupFormed(formedMembers, objectiveKind == eAutonomousObjectiveKind.RvR);
+            if (!pve) RvrTacticsPartyFormed(session, leader, formedMembers); // 1.2 WP6: what the party is for
             if (pve)
                 AutonomousBotBonds.OnPartyFormed(formedMembers);
             Log.Info($"AUTONOMOUS_GROUP_FORMED group={session.Id} realm={GlobalConstants.RealmToName(leader.Realm)} " +

@@ -30,8 +30,9 @@ namespace DOL.GS
         /// <summary>
         /// Styles a bot may pick. Side, back and front styles count (owner 2026-11-08: bots never used them, so a bot
         /// behind a boss swung its front styles): CanUseStyle checks the real angle to the target at selection and again at
-        /// the swing, so one is only picked when the bot really is beside or behind. Stealth openers stay out: bots do not
-        /// stalk (2.0, with what bots can know).
+        /// the swing, so one is only picked when the bot really is beside or behind. Stealth openers stay out here: in 1.2
+        /// a hidden Infiltrator, Nightshade or Shadowblade in the open-field scope may open with one, once per target
+        /// (rvr_bot_stealth_openers; the hook in <see cref="Usable"/>, RvrStealthOpener).
         /// </summary>
         public static bool IsEligible(Style style) => style != null && !style.StealthRequirement;
 
@@ -64,6 +65,8 @@ namespace DOL.GS
         public static double Score(Style style, bool opensKnownChain, bool tauntWanted)
         {
             double score = Math.Max(0.05, style.GrowthRate);
+            // 1.2 (RvrStealthOpener): a stealth style is only usable as the opener, from stealth; when it is, it goes first.
+            if (style.StealthRequirement) score += RvrStealthOpener.ScoreBonus;
             if (IsChainFollowUp(style)) score += ChainFollowUpBonus;
             else if (IsBackOrSide(style)) score += PositionalBonus;
             else if (IsReactive(style)) score += ReactiveBonus;

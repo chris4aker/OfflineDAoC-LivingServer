@@ -108,6 +108,8 @@
   "rvr_march_lanes": "True",
   "rvr_roam_checks": "True",
   "rvr_roam_lanes": "True",
+  "rvr_roam_move_on_minutes": "3",
+  "rvr_roam_population_split": "55/30/15",
   "rvr_roaming_parties": "True"
  },
  "KeptOff": {
