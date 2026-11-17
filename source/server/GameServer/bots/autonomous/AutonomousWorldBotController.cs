@@ -1590,6 +1590,18 @@ namespace DOL.GS
                 if (!TryResolveConnectedApproach(bot, formation, arrivalRadius, out Vector3 approach) &&
                     !TryRaidHubWayToFormation(bot, directive, formation, out approach))
                 {
+                    // 2026-11-17 (owner PC, 453e01a): Lordmuffin stood on the walled-off Fort Gwyntell floor and was
+                    // released from the raid after three failures. An audited terminal pocket whose escape reaches
+                    // the slot moves the member there first; it retries from the connected ground next turn.
+                    if (AutonomousRouteHotspotRepair.TryGetHubRouteEscape(PathfindingProvider.Instance,
+                            bot.CurrentRegion, bot.CurrentRegionID, position, formation, out Vector3 hubEscape) &&
+                        bot.MoveInRegion(bot.CurrentRegionID, (int)Math.Round(hubEscape.X),
+                            (int)Math.Round(hubEscape.Y), (int)Math.Round(hubEscape.Z), bot.Heading, true))
+                    {
+                        Log.Warn($"REALM_RAID_HUB_FLOOR_ESCAPE group={directive.GroupId} bot={bot.Name} region={bot.CurrentRegionID} " +
+                                 $"from={(int)position.X},{(int)position.Y},{(int)position.Z} to={(int)hubEscape.X},{(int)hubEscape.Y},{(int)hubEscape.Z}");
+                        return true;
+                    }
                     AutonomousBotGroupCoordinator.ReportUnreachableRendezvous(
                         bot, directive.GroupId,
                         "The current member-to-formation navmesh corridor is disconnected");
