@@ -3863,7 +3863,7 @@ namespace DOL.GS
             record.Health = Math.Max(1, Health);
             record.Mana = Math.Max(0, Mana);
             record.Endurance = Math.Max(0, Endurance);
-            record.IsAlive = IsAlive;
+            record.IsAlive = SavedAlive(ObjectState == eObjectState.Active, IsAlive, Health);
             record.IsOnline = ObjectState == eObjectState.Active;
             record.SerializedSpecs = string.Join(';', GetSpecList().Where(spec => spec.Trainable).Select(spec => $"{spec.KeyName}|{spec.Level}"));
             record.SerializedAbilities = $"trained-level|{_lastAutonomousTrainedLevel}|realm-points|{AutonomousBotRealmAbilities.TrainedPoints(this)}" +
@@ -3875,6 +3875,14 @@ namespace DOL.GS
             record.Dirty = true;
             return record;
         }
+
+        /// <summary>
+        /// Pure: the alive flag a status save writes. GameLiving.IsAlive is false for anything out of the world, and the
+        /// status queue can save a bot after it left the world (a hired companion parked by /hire dismiss or its player's
+        /// logout, owner's PC 2026-11-17 on 5ddd003: IsAlive=0 with Health=116, so summon and login said "dead"). Out of
+        /// the world, health decides. True 1.65 (f68cc75) has the same rule; the port in #287 missed it.
+        /// </summary>
+        public static bool SavedAlive(bool inWorld, bool aliveInWorld, int health) => inWorld ? aliveInWorld : health > 0;
 
         public void MarkAutonomousStateSaved() => AutonomousStateDirty = false;
 
