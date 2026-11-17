@@ -19,8 +19,13 @@ namespace DOL.GS;
 /// is <b>paid for the time</b>: the materials back and a wage for the crafting time at the crafter's skill, at least the
 /// simulator's three times the materials (<see cref="Pay"/>).
 /// <para>The order goes on the same board as the bots' own orders (source Quartermaster, buyer "quartermaster:{realm}"),
-/// so the crafter makes it on its next craft trip and hands it over at the end of that break, at a natural task break as
-/// everything else. The piece goes to the realm's guards: it leaves the world (a goods sink), and the realm pays the
+/// so the crafter makes it on its next craft trip and hands it over at the station as soon as it is made (the trip is
+/// the natural task break; PC log 2026-11-17: a trip cut short before the end of its break left 38 made pieces undelivered).
+/// It is <b>posted only to a crafter that can come for it</b>: one in the world, ungrouped, at a craft break within the
+/// board's window and kept online by the schedule for <see cref="OnlineLookahead"/>; an open commission whose crafter has
+/// since logged out, joined a group or lost its break is withdrawn (ECON_ORDER outcome "withdrawn") and the realm posts it
+/// again to a crafter that can (PC log 2026-11-17: 137 of the night's 206 lapsed open commissions belonged to crafters
+/// who had logged out, 48 to crafters drawn into raids and groups). The piece goes to the realm's guards: it leaves the world (a goods sink), and the realm pays the
 /// crafter, which is new coin: the pay is recorded as a faucet of kind Commission in the economy ledger
 /// (<see cref="EconomyFlowKind.Commission"/>). An order not made in time lapses; nobody paid for it, so nothing is
 /// refunded, and a piece already made stays with its maker as its own work.</para>
@@ -44,6 +49,12 @@ public static class QuartermasterCommissions
     public const long PostPassMilliseconds = 60_000;
     /// <summary>A crafter asked within this time waits behind one that was not (the work goes round).</summary>
     public static readonly TimeSpan CrafterRest = TimeSpan.FromMinutes(30);
+    /// <summary>A crafter is asked only while the schedule keeps it online this long: the board's 45-minute break window
+    /// and a trip's half hour at the station (PC log 2026-11-17: the median crafter that lapsed its commission logged out
+    /// 35 minutes after it was asked).</summary>
+    public static readonly TimeSpan OnlineLookahead = AutonomousBotCraftOrders.BreakWindow + TimeSpan.FromMinutes(30);
+    /// <summary>An open commission is never withdrawn in its first minutes (no flapping while a task's clock settles).</summary>
+    public static readonly TimeSpan WithdrawGrace = TimeSpan.FromMinutes(10);
 
     private static double _governor = 1.0;
 
@@ -64,7 +75,7 @@ public static class QuartermasterCommissions
     /// <summary>The hour's counts per realm, for the hourly ECON_COMMISSION line.</summary>
     private sealed class Tally
     {
-        public int Posted, Delivered, Expired;
+        public int Posted, Delivered, Expired, Withdrawn;
         public long Paid;
     }
 
@@ -74,6 +85,11 @@ public static class QuartermasterCommissions
     // Tests replace these.
     public static Func<long, long, EconomyFlowKind, bool> PayCrafter = DefaultPay;
     public static Func<eRealm, IEnumerable<GameBot>> CraftersOf = realm => AutonomousBotCraftOrders.CraftersOf(realm);
+    /// <summary>Whether the schedule (sessions, clock, brb breaks, rage-quits) wants this gamebot online at that time.</summary>
+    public static Func<GameBot, DateTime, bool> ScheduledOnline = DefaultScheduledOnline;
+
+    private static bool DefaultScheduledOnline(GameBot bot, DateTime utcAt) =>
+        !AutonomousBotSchedule.Active || bot?.PersistentRecord == null || AutonomousBotSchedule.WantsOnline(bot.PersistentRecord, utcAt);
 
     private static bool DefaultPay(long botId, long copper, EconomyFlowKind kind) => AutonomousBotEconomy.AddMoney(botId, copper, kind);
 
@@ -127,11 +143,13 @@ public static class QuartermasterCommissions
 
     /// <summary>The crafters to ask, in order: able and at a craft break soon, the longest unasked first, then the least busy.</summary>
     public static IEnumerable<GameBot> Candidates(IEnumerable<GameBot> crafters, eRealm realm, DateTime utcNow,
-        Func<long, DateTime> lastAsked)
+        Func<long, DateTime> lastAsked, Func<GameBot, DateTime, bool> scheduledOnline = null)
     {
         DateTime latest = utcNow + AutonomousBotCraftOrders.BreakWindow;
+        scheduledOnline ??= ScheduledOnline;
         return (crafters ?? [])
             .Where(crafter => AutonomousBotCraftOrders.IsAbleCrafter(crafter) && crafter.Realm == realm &&
+                              StaysOnline(scheduledOnline(crafter, utcNow), scheduledOnline(crafter, utcNow + OnlineLookahead)) &&
                               BotCraftingSkills.Value(crafter.PersistentRecord.SerializedCraftingSkills,
                                   BotCraftingSkills.Primary(crafter.PersistentRecord.SerializedCraftingSkills)) >= MinimumSkill &&
                               AutonomousBotCraftOrders.OfCrafter(crafter.DatabaseID).Count < AutonomousBotCraftOrders.MaximumOpenPerCrafter &&
@@ -139,6 +157,32 @@ public static class QuartermasterCommissions
             .OrderBy(crafter => lastAsked(crafter.DatabaseID))
             .ThenBy(crafter => AutonomousBotCraftOrders.OfCrafter(crafter.DatabaseID).Count)
             .ThenBy(crafter => crafter.DatabaseID);
+    }
+
+    /// <summary>A crafter is asked only when the schedule wants it online now and still at the end of the lookahead.</summary>
+    public static bool StaysOnline(bool onlineNow, bool onlineAtLookahead) => onlineNow && onlineAtLookahead;
+
+    /// <summary>
+    /// Why an open commission goes back to the realm, or null while its crafter can still come for it: the crafter has
+    /// logged out, is in a group (no task break), has no craft break within the board's window or is leaving on the
+    /// schedule. A crafter on its craft trip now keeps it (it is making it), and nothing is withdrawn in its first
+    /// <see cref="WithdrawGrace"/>. Made, bot and player orders are never withdrawn here.
+    /// </summary>
+    public static string WithdrawReason(CraftOrder order, bool crafterOnline, bool grouped, DateTime nextCraftBreak,
+        bool scheduledOnlineNow, DateTime utcNow)
+    {
+        if (order == null || order.Source != CraftOrderSource.Quartermaster || order.State != CraftOrderState.Open ||
+            utcNow - order.CreatedUtc < WithdrawGrace)
+            return null;
+        if (!crafterOnline)
+            return "the crafter logged out";
+        if (grouped)
+            return "the crafter is in a group";
+        if (nextCraftBreak <= utcNow)
+            return null; // on its craft trip now
+        if (nextCraftBreak > utcNow + AutonomousBotCraftOrders.BreakWindow)
+            return "the crafter has no craft break soon";
+        return scheduledOnlineNow ? null : "the crafter is logging out";
     }
 
     /// <summary>The buyer id of a realm's quartermaster on the board.</summary>
@@ -164,9 +208,34 @@ public static class QuartermasterCommissions
         double perMinute = PerHour(ParseMode(CraftingEconomyProperties.REALM_COMMISSIONS), GovernorMultiplier) / 60.0;
         int posted = 0;
         using var aiProfile = AiProfile.Scope(AiSystem.EconomyMarket); // AI_PROFILE: measures only
+        WithdrawUnavailable(utcNow);
         foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
             posted += PostForRealm(realm, perMinute, utcNow);
         return posted;
+    }
+
+    /// <summary>
+    /// Takes back every open commission whose crafter can no longer come for it (<see cref="WithdrawReason"/>); the realm
+    /// gets the order back as credit, so the next pass asks a crafter that can. Nobody paid, so nothing moves. Returns how many.
+    /// </summary>
+    public static int WithdrawUnavailable(DateTime utcNow)
+    {
+        int withdrawn = 0;
+        foreach (CraftOrder order in AutonomousBotCraftOrders.All()
+                     .Where(order => order.Source == CraftOrderSource.Quartermaster && order.State == CraftOrderState.Open).ToArray())
+        {
+            GameBot crafter = AutonomousBotCraftOrders.FindLive(order.CrafterBotId);
+            bool online = crafter != null && crafter.ObjectState == GameObject.eObjectState.Active;
+            string reason = WithdrawReason(order, online, online && crafter.Group != null,
+                online ? AutonomousBotCraftOrders.NextCraftBreak(crafter) : DateTime.MaxValue,
+                online && ScheduledOnline(crafter, utcNow), utcNow);
+            if (reason == null || !AutonomousBotCraftOrders.TryCloseOpen(order.OrderId, reason, "withdrawn"))
+                continue;
+            int slot = Math.Clamp((int)order.Realm, 0, 3);
+            Credit[slot] = Math.Min(MaxCredit, Credit[slot] + 1);
+            withdrawn++;
+        }
+        return withdrawn;
     }
 
     /// <summary>Adds the minute's share to the realm's credit and posts whole orders while crafters can take them.</summary>
@@ -258,10 +327,17 @@ public static class QuartermasterCommissions
         return true;
     }
 
-    internal static void NoteExpired(CraftOrder order)
+    /// <summary>A commission that ended without a delivery: withdrawn (its crafter could not come) or lapsed.</summary>
+    internal static void NoteClosed(CraftOrder order, string outcome)
     {
         lock (Hour)
-            Hour[Math.Clamp((int)order.Realm, 0, 3)].Expired++;
+        {
+            Tally tally = Hour[Math.Clamp((int)order.Realm, 0, 3)];
+            if (outcome == "withdrawn")
+                tally.Withdrawn++;
+            else
+                tally.Expired++;
+        }
     }
 
     /// <summary>The hourly ECON_COMMISSION line per realm (when anything happened). Returns the lines written.</summary>
@@ -275,12 +351,12 @@ public static class QuartermasterCommissions
             foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
             {
                 Tally tally = Hour[(int)realm];
-                if (tally.Posted + tally.Delivered + tally.Expired == 0)
+                if (tally.Posted + tally.Delivered + tally.Expired + tally.Withdrawn == 0)
                     continue;
                 lines.Add(EconomyLog.Line(EconomyLog.EconCommission, ("outcome", "hour"), ("realm", realm),
                     ("mode", ParseMode(CraftingEconomyProperties.REALM_COMMISSIONS).ToString().ToLowerInvariant()),
                     ("governor", GovernorMultiplier), ("posted", tally.Posted), ("delivered", tally.Delivered),
-                    ("expired", tally.Expired), ("paid", tally.Paid)));
+                    ("expired", tally.Expired), ("paid", tally.Paid), ("withdrawn", tally.Withdrawn)));
                 if (reset)
                     Hour[(int)realm] = new Tally();
             }
@@ -331,5 +407,6 @@ public static class QuartermasterCommissions
         _hourStartUtc = DateTime.UtcNow;
         PayCrafter = DefaultPay;
         CraftersOf = realm => AutonomousBotCraftOrders.CraftersOf(realm);
+        ScheduledOnline = DefaultScheduledOnline;
     }
 }

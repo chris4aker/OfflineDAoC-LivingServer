@@ -597,6 +597,9 @@ public static class AutonomousBotCrafting
                 ("seconds", Math.Max(0, pieces.Count - (best == null ? 0 : 1))), ("enchant", enchant?.Describe() ?? "none"), ("reason", reason)));
         if (best != null)
             BotCrafterVoice.AfterSession(bot, best);
+        // A realm commission is handed over at the station (WP5): a trip cut short before its break ends kept it otherwise.
+        if (session?.OrderId != null && made.Any(item => item != null))
+            AutonomousBotCraftOrders.DeliverCommissions(bot);
     }
 
     #endregion

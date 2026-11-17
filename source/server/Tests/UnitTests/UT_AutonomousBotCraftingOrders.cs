@@ -176,6 +176,7 @@ namespace DOL.UnitTests
             AutonomousBotCraftOrders.OnSale = (_, _) => true;
             AutonomousBotCraftOrders.CoinOf = id => _purses.GetValueOrDefault(id);
             QuartermasterCommissions.CraftersOf = realm => _live.Values.Where(bot => bot.Realm == realm);
+            QuartermasterCommissions.ScheduledOnline = (_, _) => true;
         }
 
         [TearDown]
