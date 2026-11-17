@@ -2626,15 +2626,15 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_REGROUP;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
+		/// 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
 		/// </summary>
-		[ServerProperty("bots", "rvr_march_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: the groups of a marching force split 50/25/25 across the main lane and up to two proven alternates from the milegate; with no proven lane everyone takes today's route. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_march_lanes", "Open-field RvR (1.2): a siege army leaves on up to three proven lanes instead of one line: from a portal keep everyone takes the one road to its milegate, then the groups split 50/25/25 across the main lane and up to two alternates the server re-walked at start (67/33 with one). A lane that passes near a keep the enemy holds now, or a march hazard, is left out; with no lane left everyone takes today's route. The march leader keeps the pace on the main lane, the other groups keep level with him on theirs, and the army gathers again at the siege camp as today. Groups you lead or are in march as today. Log: RVR_LANE_LOADED, RVR_LANE_REJECTED, RVR_LANE_ASSIGN, RVR_LANE_FALLBACK. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_MARCH_LANES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 5 (lanes): roamers use the proven lanes.
+		/// 1.2 work package 5 (lanes): roaming groups may travel on the proven lanes between catalog objectives.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roam_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: roaming warbands travel on the proven lanes instead of one line. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roam_lanes", "Open-field RvR (1.2): roaming bot groups that travel between two catalog objectives (keeps, milegates, border keeps) may take one of the proven lanes instead of the one main route, by group. Used by the roaming groups of work package 6; groups you lead or are in are never changed. Log: RVR_LANE_ASSIGN, RVR_LANE_FALLBACK (by work package 6's callers). Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_ROAM_LANES;
 
 		/// <summary>

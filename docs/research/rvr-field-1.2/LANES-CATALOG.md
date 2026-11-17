@@ -70,3 +70,26 @@ python3 source/tools/build_rvr_lanes.py --db <world db> --navroot <folder holdin
 - Raise `UT_RvrLaneSurvey.ToolVersion` when the walk changes.
 
 This build read the static tables of a played world; rebuild it from a clean release world before 1.2 ships.
+
+## How the server uses it (work package 5, tests only)
+
+- **Load and check.** `RvrLaneCatalog` reads the embedded file on first use. About 20 seconds after the game loop
+  starts, a background thread walks every lane (hops both ways) with `RvrKeepRoute.TryBuild`, the keep walker's own
+  planner, in 8 ms slices with 50 ms pauses. A lane is turned off when a leg does not walk, its walk is more than 25%
+  off the surveyed length, or an alternate comes within 2,000 units (80% of 2,500) of a lower lane over its middle
+  half. A trip's lanes go live together, after that check; an unchecked lane is never used.
+  Log: `RVR_LANE_REJECTED` per lane, then one `RVR_LANE_LOADED` line with validated/rejected counts per region and kind.
+- **Choice.** `RvrLaneChoice` picks a march's lanes once, from the objective within 8,000 units of the march leader
+  to the target keep: the trunk, then up to three lanes from the gate. It leaves out a lane that passes within 4,000
+  units of a keep an enemy of the marching realm holds now (not the goal), or crosses one of the
+  `AutonomousArmyDetour` hazards before the siege camp. Groups split 50/25/25 by head count (67/33 over two lanes).
+  The leader's group takes lane 0. A Casual, Average or Veteran group stays with the main body instead of its flank
+  lane 15%, 8% or 3% of the time. Each group keeps its lane for the whole march.
+  Log: `RVR_LANE_ASSIGN` per group, `RVR_LANE_FALLBACK` when the march takes today's route.
+- **Pace.** The march leader keeps the pace. A group on another lane compares its share of its own lane walked with
+  his share. It waits when ahead by 1,000 / 1,500 / 2,500 units (Veteran / Average / Casual) and walks on while he
+  waits when behind by as much. The leader waits up to 45 seconds for a flank lane 3,000 units behind, then marches
+  at least 45 seconds before he waits again. The march still ends at the camp ring, 11,500 units from the keep, where
+  the existing arrival hold gathers the column. Tests bound the extra arrival spread at 60 seconds.
+- **Roamers.** `RvrLaneChoice.ForRoam` (switch `rvr_roam_lanes`) is the hook for work package 6. A roaming group
+  between two catalog objectives gets a lane fixed by its key, and `UseLaneTravel` hands it to the keep walker.
