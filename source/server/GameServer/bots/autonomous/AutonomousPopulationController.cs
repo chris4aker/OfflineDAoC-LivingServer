@@ -38,6 +38,9 @@ public static class AutonomousPopulationController
     // in run 22's allocation trace); a retired bot's history only gains a pending delete, which the command poll runs.
     private static readonly HashSet<long> OrphanChecked = new();
     private static volatile OfflineWorldBotRecord[] _cachedRoster = Array.Empty<OfflineWorldBotRecord>();
+    // The roster the population logs in from: _cachedRoster without the gamebots of the custom class (owner 2026-11-17: bots
+    // never play the Sluaghbinder). They stay on _cachedRoster, so they keep their guild, characters and items.
+    private static volatile OfflineWorldBotRecord[] _loginRoster = Array.Empty<OfflineWorldBotRecord>();
     private static bool _cachedEnabled;
     private static int _cachedRampMinutes = 15;
     private static int _polling;
@@ -65,6 +68,7 @@ public static class AutonomousPopulationController
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
         RefreshControlPlane(force: true);
+        RetireCustomClassBots(_cachedRoster);
         _nextCommandPollUtc = DateTime.MinValue;
         _nextOrphanRepairUtc = DateTime.MinValue;
         lock (OrphanChecked) OrphanChecked.Clear();
@@ -84,6 +88,7 @@ public static class AutonomousPopulationController
         PendingSpawns.Clear();
         PendingCommands.Clear();
         _cachedRoster = Array.Empty<OfflineWorldBotRecord>();
+        _loginRoster = Array.Empty<OfflineWorldBotRecord>();
     }
 
     private static void Poll(object state)
@@ -104,7 +109,7 @@ public static class AutonomousPopulationController
                 QueueOwnerCommands(repairOrphans);
             }
 
-            OfflineWorldBotRecord[] roster = _cachedRoster;
+            OfflineWorldBotRecord[] roster = _loginRoster;
             int desired = AutonomousPopulationRamp.DesiredActiveCount(_cachedEnabled, roster.Length, _cachedRampMinutes, nowUtc - _startedUtc);
             int online = AutonomousBotRegistry.Count;
             // Living Server schedules (off by default): only bots scheduled online are logged in, and the
@@ -205,7 +210,7 @@ public static class AutonomousPopulationController
         try
         {
             if (prepared.Generation != Volatile.Read(ref _loginGeneration) || _timer == null) return;
-            OfflineWorldBotRecord record = _cachedRoster.FirstOrDefault(candidate => candidate.BotId == botId);
+            OfflineWorldBotRecord record = _loginRoster.FirstOrDefault(candidate => candidate.BotId == botId);
             if (record == null || record.IsRetired || record.IsOnline || AutonomousBotRegistry.Contains(botId))
                 return;
 
@@ -401,9 +406,40 @@ public static class AutonomousPopulationController
             .Where(record => !HiredCompanions165.IsHired(record.BotId))
             .OrderBy(record => record.BotId)
             .ToArray();
+        _loginRoster = CustomClassBotRetirement.LoginRoster(_cachedRoster);
         // A gamebot taken off the roster (launcher removal, retirement, test-roster rollback) leaves its guild.
         long[] rosterIds = _cachedRoster.Select(record => record.BotId).ToArray();
         NpcService.Instance.Post<long[]>(ids => AutonomousBotGuilds.Reconcile(ids), rosterIds);
+    }
+
+    /// <summary>
+    /// Owner rule 2026-11-17: bots never play the custom class. A gamebot that is already a Sluaghbinder (test worlds have
+    /// some) is kept, character and items, and never logged in again; once per start each says so in the log
+    /// (BOT_CUSTOM_CLASS_RETIRED) and its launcher row says so in the Activity column. Reversible: nothing is deleted and
+    /// IsRetired (the launcher's delete request) is not set.
+    /// </summary>
+    private static void RetireCustomClassBots(OfflineWorldBotRecord[] roster)
+    {
+        try
+        {
+            OfflineWorldBotRecord[] kept = CustomClassBotRetirement.Kept(roster);
+            var changed = new List<OfflineWorldBotRecord>();
+            foreach (OfflineWorldBotRecord record in kept)
+            {
+                Log.Info(CustomClassBotRetirement.LogLine(record));
+                if (CustomClassBotRetirement.MarkActivity(record))
+                    changed.Add(record);
+            }
+            if (changed.Count > 0)
+            {
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+                    GameServer.Database.SaveObject(changed.Cast<DataObject>());
+            }
+        }
+        catch (Exception exception)
+        {
+            Log.Error("Custom-class gamebots could not be marked (they are still never logged in)", exception);
+        }
     }
 
     private static volatile bool _populationSatisfied;

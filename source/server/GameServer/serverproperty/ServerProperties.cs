@@ -2262,11 +2262,21 @@ namespace DOL.GS.ServerProperties
 
 		/// <summary>
 		/// Offline DAoC 0.33 editions: the custom Hibernian Sluaghbinder class (0.33b keeps it on,
-		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot,
-		/// no Sluaghbinder autonomous bots and no Sluaghbinder temporary helpers.
+		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot.
+		/// Bots never play the class in either edition (owner 2026-11-17, BotCustomClassRule): no gamebot, companion,
+		/// helper or hired companion is made as one, and a gamebot that already is one is kept but never logged in.
 		/// </summary>
 		[ServerProperty("classes", "enable_sluaghbinder", "Allow the custom Hibernian Sluaghbinder class (player creation, autonomous bots and helpers). False leaves only the Classic + SI classes.", true)]
 		public static bool ENABLE_SLUAGHBINDER = true;
+
+		/// <summary>
+		/// Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md, WP2): the launcher's + Lv.1, + Lv.20 and + Lv.50 batches (and
+		/// AutonomousBotIdentityGenerator.Generate) draw each new gamebot's class from its realm's 2003 share
+		/// (OfflineDaoc.Shared.EraBuildCatalog: Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.
+		/// The launcher reads the row (a missing row is on); bots never play the custom class either way (owner 2026-11-17).
+		/// </summary>
+		[ServerProperty("bots", "bot_era_class_shares", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class. Set in the launcher's Living Server tab.", true)]
+		public static bool BOT_ERA_CLASS_SHARES = true;
 
 		/// <summary>
 		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters

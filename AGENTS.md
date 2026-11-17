@@ -106,8 +106,13 @@ In a playable folder:
 
 - **Edition switch:**
   - The switch is `ServerProperties.Properties.ENABLE_SLUAGHBINDER`. It defaults to on, is read
-    from the database and is honored by the bot generator, character creation and launcher bot
-    batches.
+    from the database and is honored by character creation (players only).
+  - **Bots never play the custom class, in any edition** (owner, 2026-11-17: "the custom class, that should never be
+    played by bots"). No path makes a bot of class 63: launcher batches, the server's bot generator, `/spawn` and
+    `/raid` helpers, hired companions, `/bot` companions, Epic Special Forces, No Lifer buffbots
+    (`OfflineDaoc.Shared.BotCustomClassRule`), and the era class shares leave it out. A gamebot that already is one is
+    kept with its items but never logged in (`BOT_CUSTOM_CLASS_RETIRED` at start-up; the launcher shows it as "Not
+    played"). Players keep the class in the 0.37b edition. See [docs/ERA-BUILDS-1.2.md](docs/ERA-BUILDS-1.2.md).
   - The Sluaghbinder uses the client's Hibernian Mauler slot (class 62), and the novice is stored
     as Acolyte (16) until promotion to class 63.
 - **Item model chain:** `objects.csv` model ID → `items.csv` row → `items/<nif>`.

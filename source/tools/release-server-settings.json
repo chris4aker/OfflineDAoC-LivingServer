@@ -10,6 +10,7 @@
   "bot_crafter_commerce": "True",
   "bot_crafters": "True",
   "bot_crafting_social": "True",
+  "bot_era_class_shares": "True",
   "bot_group_bonds": "True",
   "bot_group_invite_player": "True",
   "bot_guild_alliances": "True",
