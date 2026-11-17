@@ -419,8 +419,17 @@ public static class AutonomousRestPolicy
         byte manaPercent,
         byte endurancePercent,
         bool usesPower) =>
+        NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower, PowerRestThreshold);
+
+    /// <summary>The same with a bot's own power floor (Bots as people WP2: BotRestRecovery.PowerRestThreshold).</summary>
+    public static bool NeedsRecovery(
+        byte healthPercent,
+        byte manaPercent,
+        byte endurancePercent,
+        bool usesPower,
+        byte powerThreshold) =>
         healthPercent < HealthRestThreshold ||
-        (usesPower && manaPercent < PowerRestThreshold) ||
+        (usesPower && manaPercent < powerThreshold) ||
         endurancePercent < EnduranceRestThreshold;
 
     public static bool IsFullyRecovered(
@@ -454,11 +463,12 @@ public static class AutonomousRestPolicy
     // finish recovering instead of standing as soon as those thresholds are crossed.
     public static bool ShouldRest(
         bool atRestPoint, bool moving, bool inCombat, bool alreadyResting,
-        byte healthPercent, byte manaPercent, byte endurancePercent, bool usesPower) =>
+        byte healthPercent, byte manaPercent, byte endurancePercent, bool usesPower,
+        byte powerThreshold = PowerRestThreshold) =>
         atRestPoint && !moving && !inCombat &&
         (alreadyResting
             ? !IsFullyRecovered(healthPercent, manaPercent, endurancePercent, usesPower)
-            : NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower));
+            : NeedsRecovery(healthPercent, manaPercent, endurancePercent, usesPower, powerThreshold));
 }
 
 public static class AutonomousFormation

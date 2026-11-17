@@ -169,6 +169,11 @@ namespace DOL.AI.Brain
             Style.eOpeningPosition? keep = flankStyle == null ? null : (Style.eOpeningPosition)flankStyle.OpeningRequirementValue;
             float angle = monster.GetAngle(bot);
             int direction = BotCombatMovement.ChooseDirection(angle, sweep, crowdSide, holdsAggro, keep, Random.Shared.NextDouble());
+            // Bots as people WP2 ("Positioning"): now and then a bot circles the wrong way and ends in the monster's face
+            // (Casual 12% of steps, Average 6%, Veteran 2%); never the bot holding aggro, never against a named. The next
+            // step takes it out again.
+            if (crowdSide == 0 && BotSkillHands.PositionMistake(bot, monster, holdsAggro))
+                direction = BotSkillMistakes.TowardFront(angle, sweep);
             Vector2[] arc = BotCombatMovement.ArcLegs(center, radius, monster.GetHeading(bot), direction, sweep);
             if (!StartCombatStep(bot, target, arc))
                 return false;

@@ -3334,7 +3334,7 @@ namespace DOL.GS
             bool shouldRest = requireFullRecovery
                 ? !combatBlocked && !fullyRecovered
                 : AutonomousRestPolicy.ShouldRest(true, false, combatBlocked, bot.IsRecoveryResting,
-                    bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, usesPower);
+                    bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, usesPower, BotRestRecovery.PowerRestThreshold(bot));
             if (!shouldRest)
             {
                 _restingCamp = null;
@@ -3413,8 +3413,9 @@ namespace DOL.GS
                 // other melee classes. Only dungeons and audited risky camps
                 // require the extra reversible approach proof below.
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
-                // a party pulls the monster standing apart first, then the highest level (AutonomousGroupPullOrder)
-                .OrderForPull(_groupDirective?.IsDynamic == true)
+                // a party pulls the monster standing apart first, then the highest level (AutonomousGroupPullOrder);
+                // a careless puller now and then takes one with an add (Bots as people WP2, its skill)
+                .OrderForPull(_groupDirective?.IsDynamic == true, bot)
                 .ThenBy(npc => bot.GetDistanceTo(npc) + Math.Abs((int)ConLevels.GetConColor(bot.GetConLevel(npc))) * 220)
                 // Run native checks only after cheap filters and sorting, and
                 // stop at the first reachable target. Self-defense is handled

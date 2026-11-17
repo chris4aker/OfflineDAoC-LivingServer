@@ -28,7 +28,7 @@ namespace DOL.UnitTests
 
         /// <summary>The switches whose package is built: their description says what they do now.</summary>
         public static readonly string[] Built =
-            ["bot_skill_growth", "bot_place_knowledge", "bot_movement_habits", "bot_move_strafe", "bot_move_stick_line", "bot_move_sit_and_walls", "bot_ask_the_way", "bot_wrong_roads"];
+            ["bot_skill_growth", "bot_place_knowledge", "bot_movement_habits", "bot_move_strafe", "bot_move_stick_line", "bot_move_sit_and_walls", "bot_ask_the_way", "bot_wrong_roads", "bot_skill_profiles", "bot_skill_spare_player_group"];
 
         // ---- tables ----------------------------------------------------------------------------------------------------
 
