@@ -69,6 +69,7 @@ public static class AutonomousPopulationController
         }
         RefreshControlPlane(force: true);
         RetireCustomClassBots(_cachedRoster);
+        LogEraBuildCensus(_cachedRoster);
         _nextCommandPollUtc = DateTime.MinValue;
         _nextOrphanRepairUtc = DateTime.MinValue;
         lock (OrphanChecked) OrphanChecked.Clear();
@@ -439,6 +440,25 @@ public static class AutonomousPopulationController
         catch (Exception exception)
         {
             Log.Error("Custom-class gamebots could not be marked (they are still never logged in)", exception);
+        }
+    }
+
+    /// <summary>
+    /// Era builds 1.2 (WP3): ERA_BUILD_CENSUS, one line a realm once per start, after the first roster read: the gamebots
+    /// by plan (era, kept, new) and by class against the era share (EraBuildCensus). Hired companions are not in the roster.
+    /// </summary>
+    private static void LogEraBuildCensus(OfflineWorldBotRecord[] roster)
+    {
+        try
+        {
+            foreach (string line in EraBuildCensus.Lines(roster.Select(record =>
+                         new EraBuildCensus.Entry(record.Realm, record.ClassId, record.SerializedBuildPlan)),
+                         OfflineDaoc.Shared.EraBuildCatalog.Default))
+                Log.Info(line);
+        }
+        catch (Exception exception)
+        {
+            Log.Error("ERA_BUILD_CENSUS could not be counted", exception);
         }
     }
 

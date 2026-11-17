@@ -2279,6 +2279,17 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_ERA_CLASS_SHARES = true;
 
 		/// <summary>
+		/// Era builds 1.2 (docs/ERA-BUILDS-1.2.md, WP3): a new gamebot takes its lifetime build from the era data at its first
+		/// load. Saved builds are never re-drawn; companions, hired companions, Epic Special Forces and buffbots are untouched.
+		/// </summary>
+		[ServerProperty("bots", "bot_era_builds", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep today's builds. Off: today's builds for new bots too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS.", true)]
+		public static bool BOT_ERA_BUILDS = true;
+
+		/// <summary>Era builds 1.2 (WP3): percent of new gamebots that take one of today's class-file builds instead (the odd spec).</summary>
+		[ServerProperty("bots", "bot_era_offmeta_percent", "Era builds: percent (0 to 100) of new gamebots that take one of today's class-file builds instead of an era build, the odd spec every server had. 0: era builds only. Which bots are off-meta is fixed by each bot's roster id. Needs bot_era_builds.", 10)]
+		public static int BOT_ERA_OFFMETA_PERCENT = 10;
+
+		/// <summary>
 		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters
 		/// through the Passport Desk. False refuses new visitors; visitors already here can still go home.
 		/// </summary>
