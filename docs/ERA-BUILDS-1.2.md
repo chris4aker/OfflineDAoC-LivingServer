@@ -327,6 +327,24 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
     start after the roster loads (counts by class with the target share; `era` = bots with an era plan, `kept` =
     with an earlier plan).
 
+- **Built 2026-11-17 (`feat/era-builds-wp3-5`, tests only):** `bots/EraLifetimeBuild.cs` (`EraLifetimeBuild`: who takes the
+  draw and the three cases, the log lines; `EraBuildCensus`), `BotSpec.FromEraBuild` (the family's class file sets
+  weapons and gear rules, the weapon lines move to the build's, the lines and caps are the build's with derived ratios;
+  the Savage and Bonedancer keep their own spec classes), `BotSpec.EraBuildId`/`EraRole`, `Restore` copying them, the
+  record constructor, `AutonomousPopulationController` (the census after the first roster read) and the trainer status.
+  Where it differs from the text above:
+  - `ERA_BUILD_CENSUS` also counts `new=` (bots with no plan yet, drawn at their first login), so `era + kept + new =
+    bots`; `kept` is every plan without an era build (earlier builds and this build's off-meta and legacy plans).
+    Hibernia's line always lists `Sluaghbinder=` (check 4).
+  - `ERA_BUILD_TRAINED` is logged only when an era-built bot first stands trained at 50 (a `+ Lv.50` arrival or its
+    trainer visit at 50), not for a `+ Lv.20` arrival, so it stays one line per bot for life; `match=no` adds
+    `short="Line:at/planned,..."`.
+  - Off-meta and legacy plans log `build=today-<SpecType> label="today's class-file build" role=`. With `bot_era_builds`
+    off nothing is logged (today's builds, as before).
+  - In the nearest-build case the weapons follow the levels the bot already trained as well as the build's.
+  - The review of WP0-2 found that a gamebot trained every level missed the half-level points above 40 that the budget
+    counts; gamebots now get them (`GameBot.SpecPointsForLevel`), so a levelled bot can finish its build too.
+
 ### WP4 — Release plumbing and notes (0.5 day)
 
 - **Files:** `source/tools/release-server-settings.json` (the three switches; `test_release_server_settings.py` checks
@@ -343,6 +361,13 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
   names the role: `cc=Healer(healer-cc)`).
 - **Tests:** roster template tests with mixed Healer builds; bots without an era role keep today's ranking.
 - **Setting:** `rvr_roster_build_roles` (True). Not raid code; RvR field code merged in #302-#304.
+- **Built 2026-11-17 (tests only):** `RvrRosterCandidate.EraRole`, `RvrRosterTemplates.Build(..., buildRoles)`,
+  `RvrRosterTemplates.IsCrowdControlRole`, `RvrRoster.CrowdControlRole`/`CrowdControlLabel`. The slot takes, in order: a
+  member already in the eight (the leader included) whose class is one of the slot's (its preferred or next-best
+  classes) and whose build is a crowd-control build; then such a bot from the pool; then today's order. A leader of the
+  slot's class without such a build leaves the slot to one and takes its next slot (a Regrowth Bard leader is the speed).
+  `RVR_PARTY_FORMED` gains `cc=Healer(healer-cc)`, `cc=Sorcerer` (no era build) or `cc=none`. With no crowd-control build
+  about, the roster is today's, member for member (a 3,000-pool test).
 
 ### WP6 — Played checks on the owner's PC (two sessions)
 

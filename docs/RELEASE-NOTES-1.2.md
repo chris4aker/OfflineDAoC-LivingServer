@@ -165,6 +165,16 @@ A few friends can now join your bot world from their own PCs, with the original 
   never bother, some wear one tidy colour, a few are peacocks in the dearest shades, many lean on their realm's colours,
   and a guild often wears one. Bots never buy glows: glowing weapons still come from epic and dragon drops and the
   Darkness Falls merchants. The server setting `bot_cosmetics` (on by default) turns it off.
+- **[if it lands: era builds] New bots are built like 2003 players.** The launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50`
+  buttons now make each realm's 2003 class mix (Cleric 12% of Albion, Healer 15% of Midgard, Druid 12% of Hibernia),
+  and each new gamebot keeps one of its class's period builds for life: a Mind/Body Sorcerer more often than a Matter
+  one, a Pacification Healer more often than a Mending one, with a little per-bot variation, and one bot in ten on an
+  odd spec. These are **new bots only**: bots already in your world keep their class and build. The shares and weights
+  are **estimates** from 2002-2003 forum posts, not counts. In RvR a role-built eight now looks for a crowd-control build
+  (a mezzing Healer, Sorcerer or Bard) for its crowd controller. A gamebot that trains every level also gets the
+  half-level spec points above 40 now, as you do. Bots never play the Sluaghbinder, in either edition; a gamebot that
+  already is one is kept with its items but no longer logs in. Switches: "2003 class mix" and "2003 builds" in the
+  Living Server tab.
 - **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own
   budget. In the automated playtester's runs (10 gamebots a realm, two half-hour listens each, on a development machine) it went from 1.20 and 1.33
   lines a minute to 0.87 and 0.97. A full server is not quieter: its channels were rebalanced, not cut.
@@ -274,6 +284,9 @@ only".
   on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, the
   loremasters and books, a session played together with a friend, and a character passport trip between two PCs. Real
   play may still find cases the tests miss.
+- **[if it lands: era builds] No raid has been fought by an era-built world yet.** The raid results above come from
+  the owner's world, whose bots keep their earlier builds. A new install's bots have more healers and fewer pet classes;
+  the raids haven't been played with that mix. Era builds have been tested automatically only.
 - **Dragon fights can fall apart partway.** In the play tests a raid on Cuuldurach collapsed at 69% and one on
   Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were beaten later.
 - **Play with friends is experimental.** It needs the original client, and it has been tried on a home network only.

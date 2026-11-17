@@ -103,4 +103,15 @@ public sealed class EraClassSharesTests
         Assert.That((SocialExpansionSettings.Defaults with { BotEraClassShares = false }).ToStoredValues()[EraClassShares.Key],
             Is.EqualTo("False"));
     }
+
+    [Test]
+    public void TheEraBuildsSwitchIsOnInDefaultsAndRecommendedAndWritten()
+    {
+        // Era builds 1.2, WP3/WP4: bots / bot_era_builds, the server's lifetime-build draw.
+        Assert.That(SocialExpansionSettings.Defaults.BotEraBuilds, Is.True);
+        Assert.That(SocialExpansionSettings.Recommended.BotEraBuilds, Is.True);
+        Assert.That(SocialExpansionSettings.Defaults.ToStoredValues()["bot_era_builds"], Is.EqualTo("True"));
+        Assert.That((SocialExpansionSettings.Defaults with { BotEraBuilds = false }).ToStoredValues()["bot_era_builds"],
+            Is.EqualTo("False"));
+    }
 }

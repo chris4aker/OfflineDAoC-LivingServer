@@ -35,6 +35,9 @@ namespace DOL.GS.Tests
             "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones",
         ];
 
+        /// <summary>Era builds (docs/ERA-BUILDS-1.2.md, "Settings"): new 1.2 keys, on from the start, so no upgrade line.</summary>
+        public static readonly string[] EraBuilds = ["bot_era_class_shares", "bot_era_builds", "rvr_roster_build_roles"];
+
         /// <summary>Kept off, each for its reason (docs/CRAFTING.md, AGENTS.md).</summary>
         public static readonly string[] KeptOff =
         [
@@ -68,6 +71,11 @@ namespace DOL.GS.Tests
                 Assert.That(defaults[key], Is.EqualTo(false), key + " stays off");
             foreach (string key in BotsAsPeople)
                 Assert.That(defaults[key], Is.EqualTo(true), key + " (bots as people)");
+            foreach (string key in EraBuilds)
+                Assert.That(defaults[key], Is.EqualTo(true), key + " (era builds)");
+            Assert.That(defaults["bot_era_offmeta_percent"], Is.EqualTo(10), "one new gamebot in ten on an odd spec (D5)");
+            Assert.That(Upgrade.Changes.Select(change => change.Key).Intersect(EraBuilds.Append("bot_era_offmeta_percent")), Is.Empty,
+                "era builds: new keys, no upgrade line");
             Assert.That(Upgrade.Changes.Select(change => change.Key).Intersect(BotsAsPeople), Is.Empty,
                 "new keys: a world from an earlier build has no row, so it takes the code default without an upgrade line");
             Assert.That(defaults["exchange_tax_percent"], Is.EqualTo(0), "the tax stays 0 (owner 2026-11-15)");
