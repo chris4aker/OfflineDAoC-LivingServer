@@ -14,16 +14,23 @@ public enum RvrBotAwareness
     Veteran,
 }
 
-/// <summary>What a frontier scan found, for the perception rule. Only players and what they bring are perceived.</summary>
+/// <summary>
+/// What a frontier scan found, for the perception rule. Enemy players and what they bring are perceived; since 1.2 work
+/// package 1 (rvr_bot_perception_bots) enemy gamebots and their pets too.
+/// </summary>
 public enum RvrPerceivedKind
 {
-    /// <summary>Everything else (enemy gamebots and their pets, siege, guards, doors, monsters): acquired as before.</summary>
+    /// <summary>Everything else (siege, guards, doors, monsters), and enemy gamebots when their rule is off: acquired as before.</summary>
     Other,
     Player,
     /// <summary>A player's /spawn companion or a temporary helper bot.</summary>
     PlayerCompanion,
     /// <summary>A pet owned by a player or by a player's companion.</summary>
     PlayerPet,
+    /// <summary>An enemy autonomous gamebot (not one a player has).</summary>
+    EnemyBot,
+    /// <summary>A pet owned by an enemy autonomous gamebot.</summary>
+    EnemyBotPet,
 }
 
 /// <summary>Why a target was noticed (logged with RVR_NOTICE).</summary>
@@ -38,6 +45,10 @@ public enum RvrNoticeFactors
     Facing = 16,
     Still = 32,
     Alerted = 64,
+    /// <summary>Noticed with a group mate of it that the bot noticed (within PartyNoticeRadius of it).</summary>
+    Party = 128,
+    /// <summary>A stealthed enemy noticed by the close-range stealth rule (RvrStealthNotice).</summary>
+    Stealth = 256,
 }
 
 /// <summary>
@@ -62,6 +73,13 @@ public readonly record struct RvrSighting(double Distance, bool InCombat, bool C
 /// its duty lease doesn't let it leave what it is doing (AutonomousRvrPerception.MayAnswerCall).
 /// </summary>
 public readonly record struct RvrSpotterMate(long Id, int X, int Y, int Z, bool Alive, bool SameRegion, bool MayAnswer = true);
+
+/// <summary>One visible member of an enemy party, for AutonomousRvrPerception.ScanParty.</summary>
+public readonly record struct RvrPartyMember(long Key, RvrSighting Sighting, int X, int Y, int Z);
+
+/// <summary>What one party scan decided for one member (in the order the members were given).</summary>
+public readonly record struct RvrMemberOutcome(long Key, RvrScanResult Result, RvrNoticeFactors Factors, double Chance,
+    int DelayMilliseconds, long SinceFirstSightMilliseconds);
 
 /// <summary>A mate a call reaches: it treats the enemy as noticed after ExtraDelay plus its own reaction delay.</summary>
 public readonly record struct RvrCallee(long Id, int ExtraDelayMilliseconds, bool Relayed);
@@ -95,8 +113,12 @@ public readonly record struct RvrScanOutcome(RvrScanResult Result, RvrNoticeFact
 /// observer cap); the rest learn of it only when one of them calls it. A bot then takes a moment to react, and its
 /// group hears the call at once while other groups of its warband sometimes hear it relayed, later. A bot whose duty is
 /// a raid, a battleground assault or a player's group does not leave it to answer a call. Close up a bot always
-/// notices. Enemy gamebots, siege, keep guards, doors and monsters are acquired as before, and a bot or group under
-/// attack fights back at once. The rules here are pure (unit-tested); the frontier scan reads the game.
+/// notices. Siege, keep guards, doors and monsters are acquired as before, and a bot or group under attack fights back
+/// at once.
+/// 1.2 work package 1 ("Eyes", docs/RVR-FIELD-1.2.md): enemy gamebots and their pets go through the same rule
+/// (rvr_bot_perception_bots), the observer cap counts lookers per enemy party (RvrPartyKey), and noticing one member
+/// of a party notices its mates within PartyNoticeRadius of it (ScanParty). Who looks is RvrScanRoster; stealth is
+/// RvrStealthNotice. The rules here are pure (unit-tested); the frontier scan reads the game.
 /// </summary>
 public static class AutonomousRvrPerception
 {
@@ -139,6 +161,15 @@ public static class AutonomousRvrPerception
     public const int ForgetAfterMilliseconds = 15_000;
     /// <summary>At most one spoken spot call in a group this often.</summary>
     public const int SpotCallGapMilliseconds = 12_000;
+    /// <summary>Noticing one member of an enemy party notices its mates within this distance of it.</summary>
+    public const int PartyNoticeRadius = 1_500;
+    /// <summary>A bot away from an objective scans no less far than this (the old immediate search radius).</summary>
+    public const int FieldScanMinimum = 2_600;
+    /// <summary>
+    /// A non-looker woken by a notice or a call scans for this long: enough for a relayed call (4 s) and the slowest
+    /// reaction (easy, 2.6 s) to run out and the bot to engage; then it goes back to taking its target from the others.
+    /// </summary>
+    public const int NewsMilliseconds = 8_000;
 
     /// <summary>
     /// The normal curve: the audit's targets (technical §8.2: 1.5 s at 1,500, 6 s at 2,500, 20 s at 3,400), 0.75 s just
@@ -173,8 +204,25 @@ public static class AutonomousRvrPerception
         _ => NormalProfile,
     };
 
-    /// <summary>Only enemy players and what they bring are perceived; everything else is acquired as before.</summary>
+    /// <summary>Only perceived kinds go through the rule; everything else is acquired as before.</summary>
     public static bool IsSubject(RvrPerceivedKind kind) => kind != RvrPerceivedKind.Other;
+
+    /// <summary>Whether a kind is an enemy gamebot or its pet (rvr_bot_perception_bots).</summary>
+    public static bool IsBotKind(RvrPerceivedKind kind) => kind is RvrPerceivedKind.EnemyBot or RvrPerceivedKind.EnemyBotPet;
+
+    /// <summary>
+    /// The kind the rule uses: enemy gamebots and their pets count as Other (acquired as before) when their rule does not
+    /// apply to this bot (the setting off, or the bot out of the tactics' scope). Pure.
+    /// </summary>
+    public static RvrPerceivedKind Effective(RvrPerceivedKind kind, bool perceiveBots) =>
+        !perceiveBots && IsBotKind(kind) ? RvrPerceivedKind.Other : kind;
+
+    /// <summary>
+    /// How far the frontier scan looks: as before (<paramref name="legacyRadius"/>, 5,000) at an objective or when the
+    /// work package 1 rule does not apply; otherwise to where noticing stops, never less than 2,600. Pure.
+    /// </summary>
+    public static int ScanRadius(RvrAwarenessProfile profile, bool fieldRule, int legacyRadius) =>
+        fieldRule ? Math.Min(legacyRadius, Math.Max(profile.OuterRange, FieldScanMinimum)) : legacyRadius;
 
     /// <summary>
     /// Whether the perception rule applies to this pick: the setting is on, the target is a player-kind, and the target is
@@ -321,11 +369,22 @@ public static class AutonomousRvrPerception
     /// second's observer slots for it are taken. Pure apart from reading the memory and the budget.
     /// </summary>
     public static bool SkipsLineOfSight(Memory memory, ObserverBudget observers, long bot, int realm, long target, long now,
-        double distance, RvrAwarenessProfile profile)
+        double distance, RvrAwarenessProfile profile) =>
+        SkipsLineOfSight(memory, observers, bot, realm, target, target, now, distance, profile);
+
+    /// <summary>
+    /// The same for a member of an enemy party: the cap is the party's, and a bot already watching the party (it noticed
+    /// a member of it) always casts the ray, so it can notice the mates near the one it saw. Pure apart from reading the
+    /// memory and the budget.
+    /// </summary>
+    public static bool SkipsLineOfSight(Memory memory, ObserverBudget observers, long bot, int realm, long target, long party,
+        long now, double distance, RvrAwarenessProfile profile)
     {
         if (distance <= profile.AlwaysNoticeRadius || memory.Peek(bot, target, now) != Memory.State.Unnoticed)
             return false;
-        return distance > profile.OuterRange || observers.IsFull(target, realm, now, profile.ObserverCap);
+        if (distance > profile.OuterRange)
+            return true;
+        return !memory.WatchingParty(bot, party, now) && observers.IsFull(party, realm, now, profile.ObserverCap);
     }
 
     /// <summary>
@@ -338,26 +397,163 @@ public static class AutonomousRvrPerception
         RvrSighting sighting, RvrAwarenessProfile profile, double scanIntervalMilliseconds, double roll, Func<int> reactionDelay,
         bool mayAnswerCall)
     {
+        var results = new List<RvrMemberOutcome>(1);
+        ScanParty(memory, observers, bot, realm, target, [new RvrPartyMember(target, sighting, 0, 0, 0)], now, profile,
+            scanIntervalMilliseconds, roll, reactionDelay, mayAnswerCall, results);
+        RvrMemberOutcome only = results[0];
+        return new(only.Result, only.Factors, only.Chance, only.DelayMilliseconds, only.SinceFirstSightMilliseconds);
+    }
+
+    /// <summary>
+    /// One scan of the visible members of one enemy party by one bot (a solo enemy is a party of one: this is
+    /// <see cref="Scan"/>). Members already noticed (or called) are engaged once their delay is over, as in Scan. An
+    /// unnoticed member within <paramref name="mateRadius"/> of a member the bot knows of is noticed with it (the bot is
+    /// watching that group). For the rest the bot looks at the party once: it takes one of this second's observer slots
+    /// for the party (none needed when a member is within the sure radius) and rolls once, for the member it is most
+    /// likely to notice; on a notice it notices that member and every unnoticed member within the mate radius of it, and
+    /// every member within the sure radius, all after one reaction delay. Results are added to <paramref name="results"/>
+    /// in the members' order; <paramref name="reactionDelay"/> is asked once per notice.
+    /// </summary>
+    public static void ScanParty(Memory memory, ObserverBudget observers, long bot, int realm, long party,
+        IReadOnlyList<RvrPartyMember> members, long now, RvrAwarenessProfile profile, double scanIntervalMilliseconds,
+        double roll, Func<int> reactionDelay, bool mayAnswerCall, List<RvrMemberOutcome> results,
+        int mateRadius = PartyNoticeRadius)
+    {
+        int count = members.Count;
+        int first = results.Count;
+        var states = new Memory.State[count];
+        bool anyKnown = false, anyUnnoticed = false;
+        for (int i = 0; i < count; i++)
+        {
+            long key = members[i].Key;
+            Memory.State state = memory.Seen(bot, key, now, out bool fromCall);
+            if (state != Memory.State.Unnoticed && fromCall && !mayAnswerCall)
+            {
+                memory.DropCall(bot, key);
+                state = Memory.State.Unnoticed;
+                fromCall = false;
+            }
+            states[i] = state;
+            RvrNoticeFactors called = fromCall ? RvrNoticeFactors.Alerted : RvrNoticeFactors.None;
+            results.Add(state switch
+            {
+                Memory.State.Ready => new(key, RvrScanResult.Engage, called, 1, 0, 0),
+                Memory.State.Reacting => new(key, RvrScanResult.Reacting, called, 1, 0, 0),
+                _ => new(key, RvrScanResult.Unseen, RvrNoticeFactors.None, 0, 0, 0),
+            });
+            anyKnown |= state != Memory.State.Unnoticed;
+            anyUnnoticed |= state == Memory.State.Unnoticed;
+        }
+        if (!anyUnnoticed)
+            return;
+        long mateSquared = (long)mateRadius * mateRadius;
+        bool Near(int a, int b) => DistanceSquared(members[a], members[b]) <= mateSquared;
+
+        // Mates of a member the bot already knows of, near it: noticed with it.
+        if (anyKnown)
+        {
+            int delay = -1;
+            for (int i = 0; i < count; i++)
+            {
+                if (states[i] != Memory.State.Unnoticed)
+                    continue;
+                for (int j = 0; j < count; j++)
+                {
+                    if (states[j] == Memory.State.Unnoticed || j == i || !Near(i, j))
+                        continue;
+                    if (delay < 0)
+                        delay = reactionDelay();
+                    long since = memory.Notice(bot, members[i].Key, now, delay);
+                    results[first + i] = new(members[i].Key, RvrScanResult.Noticed, RvrNoticeFactors.Party, 1, delay, since);
+                    break;
+                }
+            }
+            for (int i = 0; i < count; i++)
+                if (results[first + i].Result == RvrScanResult.Noticed)
+                    states[i] = Memory.State.Reacting;
+            if (delay >= 0)
+                memory.WatchParty(bot, party, now);
+        }
+
+        // One look at the rest of the party: the member most likely to be noticed decides.
+        int best = -1;
+        double bestChance = 0;
+        var chances = new double[count];
+        var factors = new RvrNoticeFactors[count];
+        for (int i = 0; i < count; i++)
+        {
+            if (states[i] != Memory.State.Unnoticed)
+                continue;
+            chances[i] = NoticeChance(members[i].Sighting, profile, scanIntervalMilliseconds, out factors[i]);
+            if (chances[i] > bestChance || chances[i] == bestChance && chances[i] > 0 &&
+                members[i].Sighting.Distance < members[best].Sighting.Distance)
+            {
+                best = i;
+                bestChance = chances[i];
+            }
+        }
+        if (best < 0)
+        {
+            for (int i = 0; i < count; i++)
+                if (states[i] == Memory.State.Unnoticed)
+                    results[first + i] = new(members[i].Key, RvrScanResult.Unseen, factors[i], 0, 0, 0);
+            return;
+        }
+        bool close = (factors[best] & RvrNoticeFactors.Close) != 0;
+        RvrScanResult missed = !close && !observers.TryClaim(party, realm, now, profile.ObserverCap)
+            ? RvrScanResult.Capped
+            : roll >= bestChance ? RvrScanResult.Unseen : RvrScanResult.Noticed;
+        if (missed != RvrScanResult.Noticed)
+        {
+            for (int i = 0; i < count; i++)
+                if (states[i] == Memory.State.Unnoticed)
+                    results[first + i] = new(members[i].Key, missed, factors[i], chances[i], 0, 0);
+            return;
+        }
+        int noticeDelay = reactionDelay();
+        for (int i = 0; i < count; i++)
+        {
+            if (states[i] != Memory.State.Unnoticed)
+                continue;
+            bool withBest = i == best || (factors[i] & RvrNoticeFactors.Close) != 0 || Near(i, best);
+            if (!withBest)
+            {
+                results[first + i] = new(members[i].Key, RvrScanResult.Unseen, factors[i], chances[i], 0, 0);
+                continue;
+            }
+            long since = memory.Notice(bot, members[i].Key, now, noticeDelay);
+            RvrNoticeFactors why = i == best ? factors[i] : factors[i] | RvrNoticeFactors.Party;
+            results[first + i] = new(members[i].Key, RvrScanResult.Noticed, why, i == best ? bestChance : 1, noticeDelay, since);
+        }
+        memory.WatchParty(bot, party, now);
+    }
+
+    private static long DistanceSquared(in RvrPartyMember a, in RvrPartyMember b) =>
+        (long)(a.X - b.X) * (a.X - b.X) + (long)(a.Y - b.Y) * (a.Y - b.Y) + (long)(a.Z - b.Z) * (a.Z - b.Z);
+
+    /// <summary>
+    /// One scan of one stealthed enemy by one bot (RvrStealthNotice): engaged once noticed and the delay is over, as any
+    /// other enemy; otherwise a roll against the close-range stealth chance, with no observer slot (it is close). A call
+    /// about a stealther is never answered: only the bot that noticed it can see it.
+    /// </summary>
+    public static RvrScanOutcome ScanStealthed(Memory memory, long bot, long target, long now, double chance, double roll,
+        Func<int> reactionDelay)
+    {
         Memory.State state = memory.Seen(bot, target, now, out bool fromCall);
-        if (state != Memory.State.Unnoticed && fromCall && !mayAnswerCall)
+        if (state != Memory.State.Unnoticed && fromCall)
         {
             memory.DropCall(bot, target);
             state = Memory.State.Unnoticed;
         }
         if (state == Memory.State.Ready)
-            return new(RvrScanResult.Engage, fromCall ? RvrNoticeFactors.Alerted : RvrNoticeFactors.None, 1, 0, 0);
+            return new(RvrScanResult.Engage, RvrNoticeFactors.Stealth, 1, 0, 0);
         if (state == Memory.State.Reacting)
-            return new(RvrScanResult.Reacting, fromCall ? RvrNoticeFactors.Alerted : RvrNoticeFactors.None, 1, 0, 0);
-        double chance = NoticeChance(sighting, profile, scanIntervalMilliseconds, out RvrNoticeFactors factors);
-        if (chance <= 0)
-            return new(RvrScanResult.Unseen, factors, 0, 0, 0);
-        if ((factors & RvrNoticeFactors.Close) == 0 && !observers.TryClaim(target, realm, now, profile.ObserverCap))
-            return new(RvrScanResult.Capped, factors, chance, 0, 0);
-        if (roll >= chance)
-            return new(RvrScanResult.Unseen, factors, chance, 0, 0);
+            return new(RvrScanResult.Reacting, RvrNoticeFactors.Stealth, 1, 0, 0);
+        if (chance <= 0 || roll >= chance)
+            return new(RvrScanResult.Unseen, RvrNoticeFactors.Stealth, chance, 0, 0);
         int delay = reactionDelay();
         long since = memory.Notice(bot, target, now, delay);
-        return new(RvrScanResult.Noticed, factors, chance, delay, since);
+        return new(RvrScanResult.Noticed, RvrNoticeFactors.Stealth, chance, delay, since);
     }
 
     /// <summary>The spotter's mates that hear its call: alive, in its region, within the spotter radius, not itself. Pure.</summary>
@@ -513,9 +709,29 @@ public static class AutonomousRvrPerception
         }
 
         private readonly ConcurrentDictionary<(long Bot, long Target), Entry> _entries = new();
+        // (bot, enemy party) to when the bot last noticed a member of it; bot to when it last noticed or was told.
+        private readonly ConcurrentDictionary<(long Bot, long Party), long> _parties = new();
+        private readonly ConcurrentDictionary<long, long> _lastNews = new();
         private long _nextSweep;
 
         public int Count => _entries.Count;
+
+        /// <summary>The bot noticed a member of this enemy party now: it watches the party for a while.</summary>
+        public void WatchParty(long bot, long party, long now)
+        {
+            _parties[(bot, party)] = now;
+            _lastNews[bot] = now;
+        }
+
+        /// <summary>Whether the bot noticed a member of this party in the last ForgetAfterMilliseconds.</summary>
+        public bool WatchingParty(long bot, long party, long now) =>
+            _parties.TryGetValue((bot, party), out long at) && now - at <= ForgetAfterMilliseconds;
+
+        /// <summary>
+        /// Whether the bot noticed an enemy, or was told of one by a call, in the last NewsMilliseconds (a non-looker is
+        /// woken by it: RvrScanRoster).
+        /// </summary>
+        public bool HasNews(long bot, long now) => _lastNews.TryGetValue(bot, out long at) && now - at <= NewsMilliseconds;
 
         /// <summary>The bot sees the target on this scan: its state, refreshing the entry (a first sight is recorded).</summary>
         public State Seen(long bot, long target, long now) => Seen(bot, target, now, out _);
@@ -565,6 +781,7 @@ public static class AutonomousRvrPerception
                 entry.ReadyAt = now + delayMilliseconds;
                 entry.LastSeen = now;
                 entry.FromCall = false;
+                _lastNews[bot] = now;
                 return now - entry.FirstSeen;
             }
         }
@@ -587,6 +804,7 @@ public static class AutonomousRvrPerception
                 entry.ReadyAt = now + delayMilliseconds;
                 entry.LastSeen = now;
                 entry.FromCall = true;
+                _lastNews[bot] = now;
                 return true;
             }
         }
@@ -613,8 +831,19 @@ public static class AutonomousRvrPerception
             foreach (var pair in _entries)
                 if (now - pair.Value.LastSeen > ForgetAfterMilliseconds)
                     _entries.TryRemove(pair.Key, out _);
+            foreach (var pair in _parties)
+                if (now - pair.Value > ForgetAfterMilliseconds)
+                    _parties.TryRemove(pair.Key, out _);
+            foreach (var pair in _lastNews)
+                if (now - pair.Value > ForgetAfterMilliseconds)
+                    _lastNews.TryRemove(pair.Key, out _);
         }
 
-        public void Clear() => _entries.Clear();
+        public void Clear()
+        {
+            _entries.Clear();
+            _parties.Clear();
+            _lastNews.Clear();
+        }
     }
 }

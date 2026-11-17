@@ -62,7 +62,8 @@ namespace DOL.UnitTests
             Assert.That(AutonomousWorldBotController.PerceivedKind(inGroup), Is.EqualTo(RvrPerceivedKind.PlayerCompanion));
             Assert.That(AutonomousWorldBotController.PerceivedKind(companion), Is.EqualTo(RvrPerceivedKind.PlayerCompanion));
             Assert.That(AutonomousWorldBotController.PerceivedKind(player), Is.EqualTo(RvrPerceivedKind.Player));
-            Assert.That(AutonomousWorldBotController.PerceivedKind(spotter), Is.EqualTo(RvrPerceivedKind.Other), "an enemy gamebot: as before");
+            Assert.That(AutonomousWorldBotController.PerceivedKind(spotter), Is.EqualTo(RvrPerceivedKind.EnemyBot),
+                "an enemy gamebot: noticed by the same rule when rvr_bot_perception_bots is on (1.2 work package 1)");
         }
     }
 }

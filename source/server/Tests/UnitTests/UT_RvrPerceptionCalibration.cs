@@ -101,7 +101,7 @@ namespace DOL.GS.Tests
         /// through CallRecipients. Returns the share of bots engaging by 1, 5, 10 and 30 s, and P(first notice by 5 s).
         /// </summary>
         private static (double FirstBy5, double[] Engaged) Crowd(int bots, int groupSize, bool oneWarband, RvrAwarenessProfile profile,
-            Func<Random, double> groupDistance, int trials = 400, int seed = Seed)
+            Func<Random, double> groupDistance, int trials = 400, int seed = Seed, bool lookers = false)
         {
             var random = new Random(seed);
             double[] marks = { 1, 5, 10, 30 };
@@ -124,6 +124,10 @@ namespace DOL.GS.Tests
                     }
                 }
                 var byId = crowd.ToDictionary(b => b.Id);
+                // 1.2 work package 1 (rvr_bot_group_lookers): two lookers per group; the others scan once woken by a
+                // mate's call or a group mate fighting (RvrScanRoster), as the frontier scan decides.
+                var groups = crowd.GroupBy(b => b.Group).ToDictionary(g => g.Key, g => g.ToArray());
+                var groupIds = groups.ToDictionary(g => g.Key, g => g.Value.Select(b => b.Id).ToArray());
                 var scans = new List<(double At, SimBot Bot)>();
                 foreach (SimBot bot in crowd)
                     for (double t = random.NextDouble() * bot.Interval; t <= 30_000; t += bot.Interval)
@@ -135,6 +139,16 @@ namespace DOL.GS.Tests
                     if (!double.IsPositiveInfinity(bot.EngagedAt))
                         continue;
                     long now = (long)at;
+                    if (lookers)
+                    {
+                        long[] ids = groupIds[bot.Group];
+                        bool isLooker = ids.Length > RvrScanRoster.LookersPerGroup && RvrScanRoster.IsLooker(bot.Id, ids, now);
+                        bool fighting = groups[bot.Group].Any(b => b != bot && b.EngagedAt <= at);
+                        RvrScanRole role = RvrScanRoster.Decide(true, ids.Length, isLooker, !isLooker && memory.HasNews(bot.Id, now),
+                            fighting, false);
+                        if (!RvrScanRoster.Scans(role))
+                            continue;
+                    }
                     double distance = Math.Sqrt((double)bot.X * bot.X + (double)bot.Y * bot.Y);
                     RvrScanOutcome outcome = AutonomousRvrPerception.Scan(memory, budget, bot.Id, 1, 77, now,
                         Plain(distance, random.NextDouble() < 1 / 3.0), profile, bot.Interval, random.NextDouble(),
@@ -204,6 +218,224 @@ namespace DOL.GS.Tests
             Assert.That(apart.Engaged[1], Is.LessThan(0.5), "at 5 s fewer than half the camp");
             Assert.That(warband.Engaged[1], Is.LessThan(0.5), "at 5 s fewer than half the camp");
             Assert.That(apart.Engaged[3], Is.GreaterThan(apart.Engaged[1]), "then they drip in");
+        }
+
+        // ---- 1.2 work package 1: lookers and the per-group cap also apply to the player (owner decision 7)
+
+        /// <summary>
+        /// The time from first sight until the first of a group's bots notices a solo player, through the real rules (Scan,
+        /// its memory and observer budget, the looker roster), with no calls: every bot looks (as before) or only the
+        /// group's two lookers (rvr_bot_group_lookers). A group of one is a soloer.
+        /// </summary>
+        private static double[] GroupTimesToNotice(RvrAwarenessProfile profile, double distance, int groupSize, bool lookers,
+            int samples, Random random, double horizonSeconds = 300)
+        {
+            var times = new double[samples];
+            for (int s = 0; s < samples; s++)
+            {
+                var memory = new AutonomousRvrPerception.Memory();
+                var budget = new AutonomousRvrPerception.ObserverBudget();
+                long[] ids = Enumerable.Range(0, groupSize).Select(i => 5_000L + s * 16 + i).ToArray();
+                // Real time: the group has been in the field a while, so the looker turn is anywhere in its rotation.
+                long start = 1_000_000 + random.Next(RvrScanRoster.RotationMilliseconds * 7);
+                var scans = new List<(long At, long Bot, int Interval)>();
+                foreach (long id in ids)
+                {
+                    int interval = AutonomousFrontierThreatPolicy.IntervalMilliseconds(random.NextInt64(1, 1_000_000));
+                    for (double t = random.NextDouble() * interval; t <= horizonSeconds * 1000; t += interval)
+                        scans.Add((start + (long)t, id, interval));
+                }
+                scans.Sort((a, b) => a.At.CompareTo(b.At));
+                times[s] = horizonSeconds;
+                foreach ((long at, long id, int interval) in scans)
+                {
+                    if (lookers && RvrScanRoster.Decide(true, ids.Length, ids.Length > RvrScanRoster.LookersPerGroup &&
+                            RvrScanRoster.IsLooker(id, ids, at), false, false, false) == RvrScanRole.Idle)
+                        continue;
+                    RvrScanOutcome outcome = AutonomousRvrPerception.Scan(memory, budget, id, 1, 77, at, Plain(distance), profile,
+                        interval, random.NextDouble(), () => 1_000, true);
+                    if (outcome.Result == RvrScanResult.Noticed)
+                    {
+                        times[s] = (at - start) / 1000.0;
+                        break;
+                    }
+                }
+            }
+            return times;
+        }
+
+        [TestCase(1_500, 1.5)]
+        [TestCase(2_500, 6.0)]
+        [TestCase(3_400, 20.0)]
+        public void With_lookers_the_player_table_still_holds_for_one_bot_and_a_group_is_not_a_radar(int distance, double target)
+        {
+            RvrAwarenessProfile normal = AutonomousRvrPerception.Profile(RvrBotAwareness.Normal);
+            var random = new Random(Seed + distance);
+            double solo = Median(GroupTimesToNotice(normal, distance, 1, lookers: true, 4_000, random));
+            double groupBefore = Median(GroupTimesToNotice(normal, distance, 8, lookers: false, 4_000, random));
+            double groupAfter = Median(GroupTimesToNotice(normal, distance, 8, lookers: true, 4_000, random));
+            TestContext.Out.WriteLine($"normal at {distance}: one bot {solo:0.00} s (table {target} s); a group of 8 first notices " +
+                                      $"after {groupBefore:0.00} s with every bot looking (cap 3), {groupAfter:0.00} s with two lookers");
+            // The table is one bot looking on its own: a soloer, or each of the two lookers.
+            Assert.That(solo, Is.EqualTo(target).Within(target * 0.10));
+            // Two lookers with a memoryless chance: about half the table; never faster than everyone looking under the cap.
+            Assert.That(groupAfter, Is.EqualTo(target / 2).Within(target * 0.10));
+            Assert.That(groupAfter, Is.GreaterThanOrEqualTo(groupBefore * 0.95));
+        }
+
+        [Test]
+        public void With_lookers_a_crowd_still_sees_a_solo_player_soon_and_drips_in_no_faster_than_before()
+        {
+            RvrAwarenessProfile normal = AutonomousRvrPerception.Profile(RvrBotAwareness.Normal);
+            var cases = new (string Name, int Bots, bool Warband, Func<Random, double> Distance)[]
+            {
+                ("50 bots, groups of 8, spread 1,000-3,500", 50, false, Spread),
+                ("50 bots, groups of 8 in one warband", 50, true, Spread),
+                ("camp of 3 groups at 3,000, separate", 24, false, _ => 3_000),
+                ("camp of 3 groups at 3,000, one warband", 24, true, _ => 3_000),
+            };
+            foreach ((string name, int bots, bool warband, Func<Random, double> distance) in cases)
+            {
+                var before = Crowd(bots, 8, warband, normal, distance);
+                var after = Crowd(bots, 8, warband, normal, distance, lookers: true);
+                TestContext.Out.WriteLine(Row(name + ", every bot looks (cap 3 per enemy)", before));
+                TestContext.Out.WriteLine(Row(name + ", two lookers per group (cap 3 per enemy group)", after));
+                Assert.That(after.Engaged[1], Is.LessThan(0.5), name + ": at 5 s fewer than half have engaged");
+                Assert.That(after.Engaged[1], Is.LessThanOrEqualTo(before.Engaged[1] + 0.05), name + ": no faster than before");
+                Assert.That(after.Engaged[3], Is.GreaterThan(after.Engaged[1]), name + ": the rest keep coming");
+            }
+            var spread = Crowd(50, 8, false, normal, Spread, lookers: true);
+            Assert.That(spread.FirstBy5, Is.GreaterThan(0.75), "someone still notices you within 5 s");
+        }
+
+        // ---- 1.2 work package 1: the scan budget in the architecture's scenario (ARCHITECTURE.md section 4)
+
+        private sealed class BudgetBot
+        {
+            public int Index, Realm, Group, X, Y;
+            public long Id, Key, Party;
+            public AutonomousFrontierThreatPolicy Policy = new();
+            public long Phase;
+        }
+
+        /// <summary>
+        /// 300 gamebots per realm, three realms, out of combat in one square of <paramref name="side"/> units: 80% in groups
+        /// of five (members within 150 of the group's centre), the rest solo. 10 s of game time from a cold start. Each
+        /// scan takes the enemies within its radius nearest first and casts at most VisibilityBudget rays through the real
+        /// AutonomousFrontierThreatPolicy (a ray "sees" by a fixed hash, half the pairs). Before: every bot scans 5,000 and
+        /// casts a ray at every enemy bot in its window (bots were acquired at once). After (work package 1): lookers
+        /// (RvrScanRoster; a called non-looker wakes and scans), the radius of ScanRadius, the pre-ray skip, one roll per
+        /// enemy party (ScanParty) and calls to the group. Nobody engages, so woken bots keep scanning: an upper bound.
+        /// </summary>
+        private static (long Scans, long Rays, long Rolls, long Capped, long Idle, int MaxPerScan) PerceptionBudget(int side, bool wp1)
+        {
+            const int perRealm = 300, groupSize = 5, seconds = 10, legacyRadius = 5_000;
+            var random = new Random(Seed);
+            RvrAwarenessProfile normal = AutonomousRvrPerception.Profile(RvrBotAwareness.Normal);
+            var bots = new List<BudgetBot>();
+            int groupId = 0;
+            for (int realm = 1; realm <= 3; realm++)
+            {
+                for (int g = 0; g < perRealm * 4 / 5 / groupSize; g++)
+                {
+                    int cx = random.Next(side), cy = random.Next(side);
+                    groupId++;
+                    for (int m = 0; m < groupSize; m++)
+                        bots.Add(new BudgetBot { Realm = realm, Group = groupId, X = cx + random.Next(-150, 151), Y = cy + random.Next(-150, 151) });
+                }
+                while (bots.Count(b => b.Realm == realm) < perRealm)
+                    bots.Add(new BudgetBot { Realm = realm, Group = -(++groupId), X = random.Next(side), Y = random.Next(side) });
+            }
+            for (int i = 0; i < bots.Count; i++)
+            {
+                BudgetBot b = bots[i];
+                b.Index = i;
+                b.Id = 100_000 + i;
+                b.Key = 200_000 + i;
+                b.Party = RvrPartyKey.Compose(b.Key, b.Group > 0 ? b.Group : null);
+                b.Phase = i * 7919 % 1_250;
+            }
+            var members = bots.Where(b => b.Group > 0).GroupBy(b => b.Group).ToDictionary(g => g.Key, g => g.ToArray());
+            var memberIds = members.ToDictionary(g => g.Key, g => g.Value.Select(b => b.Id).ToArray());
+            var byId = bots.ToDictionary(b => b.Id);
+            var memory = new AutonomousRvrPerception.Memory();
+            var budget = new AutonomousRvrPerception.ObserverBudget();
+            int radius = wp1 ? AutonomousRvrPerception.ScanRadius(normal, true, legacyRadius) : legacyRadius;
+            long scans = 0, rays = 0, rolls = 0, capped = 0, idle = 0;
+            int maxPerScan = 0;
+            var results = new List<RvrMemberOutcome>();
+            for (long now = 0; now < seconds * 1000; now += 50)
+                foreach (BudgetBot me in bots)
+                {
+                    if (now < me.Phase || !me.Policy.Due(now, me.Index))
+                        continue;
+                    if (wp1)
+                    {
+                        long[] ids = me.Group > 0 ? memberIds[me.Group] : new[] { me.Id };
+                        bool isLooker = ids.Length > RvrScanRoster.LookersPerGroup && RvrScanRoster.IsLooker(me.Id, ids, now);
+                        RvrScanRole role = RvrScanRoster.Decide(true, ids.Length, isLooker, !isLooker && memory.HasNews(me.Id, now), false, false);
+                        if (!RvrScanRoster.Scans(role))
+                        {
+                            idle++;
+                            continue;
+                        }
+                    }
+                    scans++;
+                    long DistanceSquared(BudgetBot other) => (long)(other.X - me.X) * (other.X - me.X) + (long)(other.Y - me.Y) * (other.Y - me.Y);
+                    BudgetBot[] nearby = bots.Where(other => other.Realm != me.Realm && DistanceSquared(other) <= (long)radius * radius)
+                        .OrderBy(DistanceSquared).ToArray();
+                    int scanRays = 0;
+                    IReadOnlyList<BudgetBot> visible = me.Policy.Visible(nearby, target =>
+                    {
+                        if (wp1 && AutonomousRvrPerception.SkipsLineOfSight(memory, budget, me.Id, me.Realm, target.Key, target.Party, now,
+                                Math.Sqrt(DistanceSquared(target)), normal))
+                            return false;
+                        scanRays++;
+                        return ((uint)(me.Index * 31 + target.Index * 17) * 2654435761u) >> 31 == 0;
+                    });
+                    rays += scanRays;
+                    maxPerScan = Math.Max(maxPerScan, scanRays);
+                    if (!wp1)
+                        continue;
+                    foreach (var party in visible.GroupBy(target => target.Party))
+                    {
+                        RvrPartyMember[] seen = party.Select(t => new RvrPartyMember(t.Key, Plain(Math.Sqrt(DistanceSquared(t))), t.X, t.Y, 0)).ToArray();
+                        results.Clear();
+                        AutonomousRvrPerception.ScanParty(memory, budget, me.Id, me.Realm, party.Key, seen, now, normal,
+                            me.Policy.LastIntervalMilliseconds, random.NextDouble(), () => 1_000, true, results);
+                        if (results.Any(r => r.Result == RvrScanResult.Capped))
+                            capped++;
+                        if (results.Any(r => r.Result == RvrScanResult.Unseen && r.Chance > 0 ||
+                                             r.Result == RvrScanResult.Noticed && (r.Factors & RvrNoticeFactors.Party) == 0))
+                            rolls++;
+                        long[] noticed = results.Where(r => r.Result == RvrScanResult.Noticed).Select(r => r.Key).ToArray();
+                        if (noticed.Length == 0 || me.Group <= 0)
+                            continue;
+                        foreach (RvrCallee callee in AutonomousRvrPerception.CallRecipients(me.Id, me.X, me.Y, 0,
+                                     members[me.Group].Select(b => new RvrSpotterMate(b.Id, b.X, b.Y, 0, true, true)),
+                                     Array.Empty<IReadOnlyCollection<RvrSpotterMate>>(), normal.SpotterRadius, random.NextDouble, out _))
+                            foreach (long key in noticed)
+                                memory.Alert(callee.Id, key, now, callee.ExtraDelayMilliseconds + 1_000);
+                    }
+                }
+            return (scans / seconds, rays / seconds, rolls / seconds, capped / seconds, idle / seconds, maxPerScan);
+        }
+
+        [Test]
+        public void In_the_architecture_scenario_the_scan_casts_no_more_rays_and_runs_no_more_scans_than_before()
+        {
+            foreach (int side in new[] { 24_000, 48_000 })
+            {
+                var before = PerceptionBudget(side, wp1: false);
+                var after = PerceptionBudget(side, wp1: true);
+                foreach ((string name, var r) in new[] { ("before", before), ("after (work package 1)", after) })
+                    TestContext.Out.WriteLine($"900 bots in {side:N0}², {name}: {r.Scans} scans/s, {r.Rays} rays/s, {r.Rolls} rolls/s, " +
+                                              $"{r.Capped} capped/s, {r.Idle} idle non-lookers/s, at most {r.MaxPerScan} rays per scan");
+                Assert.That(after.Scans, Is.LessThanOrEqualTo(before.Scans), $"{side}: scans");
+                Assert.That(after.Rays, Is.LessThanOrEqualTo(before.Rays), $"{side}: rays");
+                Assert.That(after.MaxPerScan, Is.LessThanOrEqualTo(AutonomousFrontierThreatPolicy.VisibilityBudget));
+                Assert.That(after.Rays, Is.LessThanOrEqualTo(after.Scans * AutonomousFrontierThreatPolicy.VisibilityBudget + 1));
+            }
         }
 
         // ---- cost: line-of-sight rays at 900 bots per realm

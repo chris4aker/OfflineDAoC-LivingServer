@@ -44,7 +44,10 @@ public readonly record struct RvrScopeFacts
     public bool OnRealmRaid { get; init; }
     /// <summary>The bot is part of a battleground keep assault (gathering, at the rally or storming), whatever its lease says.</summary>
     public bool BattlegroundAssault { get; init; }
-    /// <summary>A committed keep defender or siege fighter (AutonomousRvrDefense): the frontier scan's "at objective".</summary>
+    /// <summary>
+    /// At its objective (<see cref="RvrAtObjective"/>): a committed keep defender or siege fighter within the siege
+    /// engagement radius of its target keep. A column still marching to the keep is not at it (work package 1).
+    /// </summary>
     public bool AtObjective { get; init; }
     /// <summary>The bot holds a siege engine job (BotSiegeRuntime.Assigned).</summary>
     public bool SiegeOperator { get; init; }
@@ -131,7 +134,7 @@ public static class RvrTacticsScope
         Companion = bot.IsTemporaryGroupHelper,
         PlayerLedGroup = bot.IsPlayerLedGroup,
         Duty = BotDutyLeases.KindOf(bot),
-        AtObjective = AutonomousRvrDefense.IsCommittedDefender(bot) || AutonomousRvrDefense.IsCommittedSiegeFighter(bot),
+        AtObjective = RvrAtObjective.Of(bot),
         SiegeOperator = BotSiegeRuntime.Assigned(bot),
         RelicCarrier = GameRelic.IsPlayerCarryingRelic(bot),
     };
@@ -161,6 +164,77 @@ public static class RvrTacticsScope
         return AutonomousBattlegroundWave.IsGathering(region, bot.Realm, out _) ||
                AutonomousBattlegroundKeepRally.IsRallying(region, bot.Realm, bot.DatabaseID, out _) ||
                AutonomousBattlegroundKeepRally.IsStorming(region, bot.Realm, bot.DatabaseID);
+    }
+}
+
+/// <summary>Where a committed bot's objective is: the region and the point it marches to (its keep or relic target).</summary>
+public readonly record struct RvrObjectivePoint(ushort Region, int X, int Y);
+
+/// <summary>
+/// "At objective", by position (lead engineer's decision, 2026-11-16; work package 1). Until 1.2 a bot counted as at its
+/// objective as soon as its warband chose to assault or defend a keep, so a column marching there acquired every enemy
+/// at once from the moment it set out. Now a committed defender or siege fighter (AutonomousRvrDefense) is at its
+/// objective only within <see cref="EngagementRadius"/> of the point it marches to: the radius the siege code already
+/// counts as "physically there" (AutonomousWorldBotController.SiegeCombatAttendanceRadius, the rally-post ring; the
+/// siege camps stand at 9,000). A siege engine operator is at its objective wherever it is. A committed bot whose
+/// objective point is not known keeps today's rule (at its objective). The frontier scan's perception bypass and
+/// <see cref="RvrTacticsScope"/> both read it; keep defence and siege fighting at the keep are unchanged.
+/// </summary>
+public static class RvrAtObjective
+{
+    /// <summary>The siege's own "physically there" radius around the target (2D, as the siege code measures it).</summary>
+    public const int EngagementRadius = AutonomousWorldBotController.SiegeCombatAttendanceRadius;
+
+    /// <summary>The bot's TempProperties key holding its <see cref="RvrObjectivePoint"/>.</summary>
+    public const string PointProperty = "RvrObjectivePoint";
+
+    /// <summary>
+    /// Whether a bot with these facts is at its objective. Not committed: no. A siege operator: yes. Committed with no
+    /// known point: yes (today's rule). Otherwise in the point's region and within the engagement radius. Pure.
+    /// </summary>
+    public static bool Within(bool committed, bool siegeOperator, ushort region, int x, int y, RvrObjectivePoint? point,
+        int radius = EngagementRadius)
+    {
+        if (siegeOperator)
+            return true;
+        if (!committed)
+            return false;
+        if (point is not RvrObjectivePoint at)
+            return true;
+        if (at.Region != region)
+            return false;
+        long dx = x - at.X, dy = y - at.Y;
+        return dx * dx + dy * dy <= (long)radius * radius;
+    }
+
+    /// <summary>A committed keep defender or siege fighter (the warband's plan; not where it is).</summary>
+    public static bool Committed(GameBot bot) =>
+        AutonomousRvrDefense.IsCommittedDefender(bot) || AutonomousRvrDefense.IsCommittedSiegeFighter(bot);
+
+    /// <summary>Whether this bot is at its objective now (reads the game).</summary>
+    public static bool Of(GameBot bot)
+    {
+        if (bot == null)
+            return false;
+        bool committed = Committed(bot);
+        if (!committed)
+            return false;
+        RvrObjectivePoint? point = bot.TempProperties.GetProperty<RvrObjectivePoint?>(PointProperty, null);
+        return Within(true, false, bot.CurrentRegionID, bot.X, bot.Y, point);
+    }
+
+    /// <summary>
+    /// Records where the bot's objective is, beside its warband intent (the two sites that set RvrWarbandIntent call it).
+    /// A null destination clears it.
+    /// </summary>
+    public static void Remember(GameBot bot, ushort region, int x, int y, bool known)
+    {
+        if (bot == null)
+            return;
+        if (known)
+            bot.TempProperties.SetProperty(PointProperty, (RvrObjectivePoint?)new RvrObjectivePoint(region, x, y));
+        else
+            bot.TempProperties.RemoveProperty(PointProperty);
     }
 }
 
