@@ -2638,22 +2638,34 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_ROAM_LANES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): role-built eight-man groups.
+		/// 1.2 work package 6 (roamers): the population split and role-built eight-man groups.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roaming_parties", "Does nothing yet: reserved for 1.2 work package 6. When built: RvR groups that gamebots form are built by role, each realm's 2003 eight, and some of them roam the fringes as eight-man groups. Groups you lead or join are never changed. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roaming_parties", "Open-field RvR (1.2): Autonomous gamebots split their RvR population (siege parties form first and are not counted) into warbands, role-built eight-man groups and soloers, duos and stealthers, by rvr_roam_population_split. An eight is built to its realm's 2003 skeleton: two main healers, a crowd controller, a shield tank, a speed class, two who can cure mez, a Shaman (Midgard) or Theurgist (Albion), the rest damage; a missing role goes to the next best class and the group still forms, and rvr_group_pet_cap holds. Eights roam; they do not open sieges. Groups you lead or join are never changed. Needs rvr_bot_field_tactics. Log: RVR_PARTY_FORMED.", true)]
 		public static bool RVR_ROAMING_PARTIES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): circuits and check spots.
+		/// 1.2 work package 6 (roamers): circuits and check spots.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roam_checks", "Does nothing yet: reserved for 1.2 work package 6. When built: a roaming bot group walks a patrol circuit and checks milegates, levelling camps, dungeon doors and named monsters for 30 to 60 seconds each, then moves on. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roam_checks", "Open-field RvR (1.2): A roaming eight walks one of its realm's patrol circuits in order (the check-spot catalog, re-walked on the navmesh at server start) and checks each milegate, levelling camp, dungeon door or named monster for 30 to 60 seconds, then moves on. Circuits are weighted toward where enemy levelling bots are by a live count every 3 minutes; Forest Sauvage, Snowdonia, Mount Collory and Cruachan Gorge are walked only when nothing else has prey. Enemy levelling bots at a spot are hunted, and after a kill the group moves on (rvr_roam_move_on_minutes). Soloers and duos work chokepoints and camps; stealthers camp milegates and crossings in loose packs. Needs rvr_bot_field_tactics. Log: RVR_ROAM_CHECK, RVR_ROAM_HUNT, RVR_ROAM_MOVE_ON, RVR_CHECKSPOT_LOADED.", true)]
 		public static bool RVR_ROAM_CHECKS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): stealth openers.
+		/// 1.2 work package 6 (roamers): stealth openers and the soloer's odds.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_stealth_openers", "Does nothing yet: reserved for 1.2 work package 6. When built: a bot stealther opens a fight from stealth with its opening style, and a soloer opens only when the odds allow it. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_stealth_openers", "Open-field RvR (1.2): A gamebot Infiltrator, Nightshade or Shadowblade still in stealth opens a fight with its own stealth style (Backstab, Perforate Artery and the like), once per target, and a soloer, duo or stealther opens only when the odds allow it: the target alone or weaker, no enemy group near it, its own health and power up (casual bots misjudge more often). A bot that is hit always fights back. Needs rvr_bot_field_tactics. Log: RVR_STEALTH_OPEN.", true)]
 		public static bool RVR_BOT_STEALTH_OPENERS;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the population split of RvR gamebots not in a siege (owner decision 2, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_population_split", "Of the RvR gamebots not in a siege, the percent in warbands / role-built eight-man groups / soloers, duos and stealthers (owner decision 2026-11-16: 55/30/15; an assumption, no source gives the 2003 proportions). Three numbers; anything else reads as 55/30/15. Needs rvr_roaming_parties.", "55/30/15")]
+		public static string RVR_ROAM_POPULATION_SPLIT;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the move-on rule (owner decision 4, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_move_on_minutes", "The move-on rule: after a kill at a check spot a roaming bot group, soloer or stealther leaves within this many minutes (veteran groups sooner, casual ones later); no corpse camping. 0 leaves right after the kill. Needs rvr_roam_checks.", 3)]
+		public static int RVR_ROAM_MOVE_ON_MINUTES;
 
 		/// <summary>
 		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.

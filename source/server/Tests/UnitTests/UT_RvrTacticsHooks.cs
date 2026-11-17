@@ -225,7 +225,7 @@ namespace DOL.UnitTests
                     Assert.That(attribute.DefaultValue, Is.EqualTo(true), key);
                     if (workPackage == 0)
                         Assert.That(attribute.Description, Does.Contain("In this build it changes nothing by itself"), key);
-                    else if (workPackage is 2 or 3)
+                    else if (workPackage is 2 or 3 or 6)
                         Assert.That(attribute.Description, Does.StartWith("Open-field RvR (1.2):").And.Contain("Log: RVR_"), key);
                     else
                         Assert.That(attribute.Description, Does.StartWith($"Does nothing yet: reserved for 1.2 work package {workPackage}."), key);
