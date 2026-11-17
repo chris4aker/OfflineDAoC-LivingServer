@@ -86,7 +86,7 @@ namespace DOL.UnitTests
             Assert.That(post.X, Is.EqualTo(15022).Within(1), "Bjagira's route destination, 12:09-12:11");
             Assert.That(post.Y, Is.EqualTo(49568).Within(1));
             Assert.That(Flat(post, AgmundrSpawn), Is.LessThan(AgmundrAggro), "546 from his spawn: inside his aggro");
-            Assert.That(R.InBossDanger(post, Agmundr), Is.True, "now refused while the raid holds (RealmRaidDungeonRoute.PostDangers)");
+            Assert.That(R.InBossDangerStrict(post, Agmundr), Is.True, "now refused while the raid holds (RealmRaidDungeonRoute.PostDangers)");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace DOL.UnitTests
             {
                 bool any = false;
                 for (int attempt = 0; attempt < 22 && !any; attempt++)
-                    any = !R.InBossDanger(RealmRaidFormation.RawPost(IcespineMuster, slot, attempt), Agmundr);
+                    any = !R.InBossDangerStrict(RealmRaidFormation.RawPost(IcespineMuster, slot, attempt), Agmundr);
                 Assert.That(any, Is.True, $"slot {slot}");
             }
         }

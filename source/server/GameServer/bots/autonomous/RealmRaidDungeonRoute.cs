@@ -1565,9 +1565,16 @@ namespace DOL.GS
 
         // ---- where raiders stand while the raid holds, and where a stranded raider is moved (owner's PC, 2026-11-17) ----------
 
-        private IReadOnlyList<BossDanger> _postDangers = [], _restingDangers = [];
-        private long _postDangersUntil, _restingDangersUntil;
-        public const long DangerCacheMilliseconds = 2_000;
+        private IReadOnlyList<BossDanger> _postDangers, _restingDangers;
+
+        /// <summary>A danger's edge is this soft for posts and stranded regroups: a point is inside only when it is more than this
+        /// within the sphere (the floor snap moves a point up to 48 across; a muster placed at exactly aggro + 300, Summoner Roesia's
+        /// 900, stays clear).</summary>
+        public const float FloorSnapTolerance = 64f;
+
+        /// <summary>Inside a danger by more than <see cref="FloorSnapTolerance"/> (posts and stranded regroups).</summary>
+        public static bool InBossDangerStrict(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            dangers.Any(d => Vector3.Distance(point, d.At) < d.Radius - FloorSnapTolerance);
 
         /// <summary>
         /// The spots no party's post around the hold point may stand in while the raid holds (AutonomousRealmRaid.TryBattlePost):
@@ -1575,51 +1582,67 @@ namespace DOL.GS
         /// Glacier: the muster for the hrimthursa icespine (15333,49257) lay 907 from Icelord Agmundr's spawn, just outside his
         /// aggro + 300, but one party's post around it (formation slot 6) was 15022,49568, 546 from his spawn and inside his
         /// aggro (600); he came at 12:20:11 while the muster stood at 66 of 67 and wiped the raid. Empty while the raid goes in.
+        /// Worked out at most once a route turn (AdvanceCore), and only when asked.
         /// </summary>
         public IReadOnlyList<BossDanger> PostDangers()
         {
             if (!Hold || _target == null) return [];
-            long now = GameLoop.GameLoopTime;
-            if (now >= _postDangersUntil)
-            {
-                _postDangers = UntargetedBossDangers();
-                _postDangersUntil = now + DangerCacheMilliseconds;
-            }
-            return _postDangers;
+            return _postDangers ??= UntargetedBossDangers();
         }
 
+        /// <summary>A living NPC of the dungeon as the stranded-regroup guard sees it (<see cref="RestingDangersOf"/>).</summary>
+        public readonly record struct DangerCandidate(string Name, Vector3 Spawn, Vector3 At, int AggroRange, bool InCombat,
+            bool Hazard, bool BossOrNamed, bool LinkedPack, bool OfTheTarget);
+
         /// <summary>
-        /// Every resting boss, named encounter, final and boss's linked monster (EpicEncounterTactics.ClearFirstOwner: Agmundr's
-        /// hrimthursa, the Crypt Lord's court) of the dungeon, the raid's own target included, with its aggro sphere
-        /// (<see cref="UntargetedBossMargin"/> included) at its spawn and where it stands, and the rules' muster dangers. A
-        /// stranded raider is never moved into one (<see cref="StrandedRegroupPoint"/>). A monster in combat is a fight already
-        /// on and is left out.
+        /// The dangers a stranded raider is never moved into (pure): every resting boss, named encounter and final with its aggro
+        /// sphere and <see cref="UntargetedBossMargin"/>, and every boss's linked monster (EpicEncounterTactics.ClearFirstOwner:
+        /// Agmundr's hrimthursa, the Crypt Lord's court, Drihten's students) with its own aggro sphere, each at its spawn and where
+        /// it stands. Left out: one in combat (a fight already on), a ground hazard, and the raid's own target and what goes with
+        /// it (OfTheTarget: what it covers, its required adds, and the other linked monsters of the boss it is linked to): the raid
+        /// goes to them, and a holding raid never sends anyone to its front (review of 27abe6e78: with the target in, every
+        /// stranded raider of a clear-first target without a muster, Krondon's Drihten students, was refused).
         /// </summary>
+        public static List<BossDanger> RestingDangersOf(IEnumerable<DangerCandidate> candidates)
+        {
+            var dangers = new List<BossDanger>();
+            foreach (DangerCandidate c in candidates)
+            {
+                if (c.InCombat || c.Hazard || c.OfTheTarget || c.AggroRange <= 0 || !c.BossOrNamed && !c.LinkedPack) continue;
+                float radius = c.BossOrNamed ? c.AggroRange + UntargetedBossMargin : c.AggroRange;
+                dangers.Add(new(c.Name, c.Spawn, radius));
+                if (Vector3.DistanceSquared(c.At, c.Spawn) > 64 * 64) dangers.Add(new(c.Name, c.At, radius));
+            }
+            return dangers;
+        }
+
+        /// <summary><see cref="RestingDangersOf"/> for this turn's NPCs, and the rules' muster dangers; worked out at most once a
+        /// route turn, and only when asked.</summary>
         private IReadOnlyList<BossDanger> RestingDangers()
         {
-            long now = GameLoop.GameLoopTime;
-            if (now < _restingDangersUntil) return _restingDangers;
+            if (_restingDangers != null) return _restingDangers;
             IReadOnlyList<GameNPC> live = _live;
-            var dangers = new List<BossDanger>();
+            var candidates = new List<DangerCandidate>();
+            GameNPC targetOwner = _target == null ? null : EpicEncounterTactics.ClearFirstOwner(_target, live);
             foreach (GameNPC npc in live)
             {
                 if (npc == null || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.InCombat ||
                     npc.Realm != eRealm.None || (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
-                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain || IsEncounterHazard(npc))
+                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain)
                     continue;
-                if (npc is not GameEpicBoss && npc is not IGameEpicNpc && !_finalTypes.Contains(npc.GetType().Name) &&
-                    EpicEncounterTactics.ClearFirstOwner(npc, live) == null)
-                    continue;
-                float radius = brain.AggroRange + UntargetedBossMargin;
-                var spawn = new Vector3(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z);
-                dangers.Add(new(npc.Name, spawn, radius));
-                var at = new Vector3(npc.X, npc.Y, npc.Z);
-                if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(npc.Name, at, radius));
+                bool boss = npc is GameEpicBoss || npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name);
+                GameNPC owner = boss ? null : EpicEncounterTactics.ClearFirstOwner(npc, live);
+                bool pack = owner != null;
+                if (!boss && !pack) continue;
+                bool ofTarget = _target != null && (npc == _target || EpicEncounterTactics.Covers(npc, _target, live) ||
+                                                    EpicEncounterTactics.RequiredAddOwner(npc, live) == _target ||
+                                                    pack && targetOwner != null && owner == targetOwner);
+                candidates.Add(new(npc.Name, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), new(npc.X, npc.Y, npc.Z),
+                    brain.AggroRange, false, IsEncounterHazard(npc), boss, pack, ofTarget));
             }
+            List<BossDanger> dangers = RestingDangersOf(candidates);
             dangers.AddRange(RuleMusterDangers(live));
-            _restingDangers = dangers;
-            _restingDangersUntil = now + DangerCacheMilliseconds;
-            return dangers;
+            return _restingDangers = dangers;
         }
 
         /// <summary>
@@ -1636,8 +1659,8 @@ namespace DOL.GS
         {
             dangers ??= [];
             Vector3 first = holding ? destination : front;
-            if (!InBossDanger(first, dangers)) return first;
-            if (muster is Vector3 m && !InBossDanger(m, dangers)) return m;
+            if (!InBossDangerStrict(first, dangers)) return first;
+            if (muster is Vector3 m && !InBossDangerStrict(m, dangers)) return m;
             return null;
         }
 
@@ -2418,6 +2441,8 @@ namespace DOL.GS
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
             _live = live;
+            // The guards' dangers are worked out again this turn, when asked (PostDangers, RestingDangers).
+            _postDangers = _restingDangers = null;
             EpicFightLedger.Watch(_region, now);
             // Raiders step out of a ground hazard and no battle post goes in one (EpicEncounterTactics.ObserveHazards).
             EpicEncounterTactics.ObserveHazards(live);

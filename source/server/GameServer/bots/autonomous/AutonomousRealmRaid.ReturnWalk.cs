@@ -100,22 +100,9 @@ namespace DOL.GS
             RealmRaidDungeonRoute route = raid.DungeonRoute;
             Vector3 goal = route.Destination;
             Vector3[] steps = RealmRaidReturnWave.WalkSteps(route.ReturnWalk(), goal);
-            static int Nearest(Vector3[] steps, Vector3 was)
-            {
-                int step = 0;
-                for (int i = 1; i < steps.Length; i++)
-                    if (Vector3.DistanceSquared(steps[i], was) < Vector3.DistanceSquared(steps[step], was)) step = i;
-                return step;
-            }
-            int step = walk.Steps.Length > 0 ? Nearest(steps, walk.Steps[walk.Step]) : 0;
+            int step = walk.Steps.Length > 0 ? RealmRaidReturnWave.Nearest(steps, walk.Steps[walk.Step]) : 0;
             // Raiders catching up go on from the new step nearest the one they were walking to, behind the wave.
-            if (walk.Steps.Length > 0)
-                foreach (long member in walk.Catching.Keys.ToArray())
-                {
-                    int at = Nearest(steps, walk.Steps[Math.Min(walk.Catching[member], walk.Steps.Length - 1)]);
-                    if (at >= step) walk.Catching.Remove(member);
-                    else walk.Catching[member] = at;
-                }
+            RealmRaidReturnWave.RemapCatching(walk.Steps, steps, walk.Catching, step);
             walk.Steps = steps;
             walk.Goal = goal;
             walk.Step = walk.BestStep = step;
@@ -155,10 +142,10 @@ namespace DOL.GS
         private static bool RebaseOnCatching(Raid raid, ReturnWalk walk, long now, string why)
         {
             walk.Catching.Keys.Where(m => !walk.Members.Contains(m)).ToList().ForEach(m => walk.Catching.Remove(m));
-            if (walk.Catching.Count == 0) return false;
-            int to = walk.Catching.Values.Max();
-            foreach (long m in walk.Catching.Where(p => p.Value >= to).Select(p => p.Key).ToArray()) walk.Catching.Remove(m);
-            walk.Step = walk.BestStep = to;
+            int to = RealmRaidReturnWave.Rebase(walk.Catching);
+            if (to < 0) return false;
+            // BestStep is kept: walking these steps again is no headway on the stall clock.
+            walk.Step = to;
             walk.StepEntered = now;
             walk.StepKills = 0;
             walk.StepSince = 0;
@@ -236,9 +223,8 @@ namespace DOL.GS
             // A raider of the wave already standing with the raid (moved there by its stranded regroup) is there: it leaves the walk.
             if (walk.Step < walk.Steps.Length - 1)
             {
-                Vector3 end = walk.Steps[^1];
-                var endPoint = new Point3D((int)end.X, (int)end.Y, (int)end.Z);
-                foreach (GameBot b in members.Where(b => b.CurrentRegionID == region && b.IsWithinRadius(endPoint, RealmRaidReturnWave.AtStepRadius)))
+                foreach (GameBot b in members.Where(b => b.CurrentRegionID == region &&
+                             RealmRaidReturnWave.WithTheRaid(walk.Steps, walk.Step, new Vector3(b.X, b.Y, b.Z))))
                 {
                     walk.Members.Remove(b.DatabaseID);
                     walk.Catching.Remove(b.DatabaseID);
@@ -257,11 +243,7 @@ namespace DOL.GS
             {
                 if (!walk.Members.Contains(m)) { walk.Catching.Remove(m); continue; }
                 GameBot b = byId[m];
-                int latest = -1;
-                if (b.CurrentRegionID == region)
-                    for (int i = walk.Steps.Length - 1; i >= 0; i--)
-                        if (b.IsWithinRadius(new Point3D((int)walk.Steps[i].X, (int)walk.Steps[i].Y, (int)walk.Steps[i].Z), RealmRaidReturnWave.AtStepRadius))
-                        { latest = i; break; }
+                int latest = b.CurrentRegionID == region ? RealmRaidReturnWave.LatestStepAt(walk.Steps, new Vector3(b.X, b.Y, b.Z)) : -1;
                 int was = walk.Catching[m], next = RealmRaidReturnWave.CatchUp(was, latest, walk.Step);
                 if (next == was) continue;
                 walk.LastMove = now;
@@ -380,7 +362,7 @@ namespace DOL.GS
                         walk.CapLogged = false;
                         walk.StepSince = 0;
                         walk.Closest = float.MaxValue;
-                        if (walk.Step > walk.BestStep) { walk.BestStep = walk.Step; WalkHeadway(raid, walk, now); }
+                        if (RealmRaidReturnWave.Headway(walk.Step, walk.BestStep)) { walk.BestStep = walk.Step; WalkHeadway(raid, walk, now); }
                         RefreshWalkViews(raid, walk);
                         Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=moving wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
                                  $"living={members.Length} together={atStep} kills={walk.Kills} minutes={minutes}");

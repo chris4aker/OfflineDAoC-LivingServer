@@ -35,7 +35,7 @@ namespace DOL.GS
             // Never a post inside a ground hazard (Orshom's Fire: PC 2026-11-09, the front 200 from it put parties in its 300).
             ushort region = zone.ZoneRegion?.ID ?? 0;
             bool Valid(Vector3 floor) => EpicEncounterTactics.HazardAt(region, floor) == null &&
-                (dangers == null || !RealmRaidDungeonRoute.InBossDanger(floor, dangers)) &&
+                (dangers == null || !RealmRaidDungeonRoute.InBossDangerStrict(floor, dangers)) &&
                 nav.HasLineOfSight(zone, center, floor, nav.DefaultFilters) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, center, floor) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, center);

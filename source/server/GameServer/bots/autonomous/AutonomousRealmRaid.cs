@@ -178,6 +178,8 @@ namespace DOL.GS
             // A post search that found nothing is not repeated for the same spot for a while (see TryBattlePost).
             public Vector3 FailedPostCenter;
             public long FailedPostUntil;
+            /// <summary>The last post search failed only because every post it found was in a resting boss's aggro (PostDangers).</summary>
+            public bool FailedPostByDanger;
             public View View;
             public View DestinationView;
             /// <summary>A dungeon raid's party staging outside the way in, as before the raid went in (return waves).</summary>
@@ -1645,9 +1647,15 @@ namespace DOL.GS
                     // Far from the front, a party without a free post there walks to it anyway instead of waiting at its old
                     // post: at Caer Sidi's final staging no post was free, every party waited where it stood, nobody came
                     // near, and the front was moved back down after three minutes, twice (runs 22, 23).
-                    // Nor does it wait at an old post in a resting boss's aggro: it stands at the hold point itself.
-                    if (region == route.Region && (Vector3.DistanceSquared(destination, front) > QueuedApproachDistance * QueuedApproachDistance ||
-                                                   postDangers != null && RealmRaidDungeonRoute.InBossDanger(destination, postDangers)))
+                    // Nor does it wait at an old post in a resting boss's aggro, nor outside because every post was in one: it stands
+                    // at the hold point itself, which the muster guard keeps clear.
+                    if (postDangers != null && (party.FailedPostByDanger ||
+                                                party.Anchor.HasValue && RealmRaidDungeonRoute.InBossDangerStrict(party.Anchor.Value, postDangers)))
+                    {
+                        region = route.Region;
+                        destination = front;
+                    }
+                    else if (region == route.Region && Vector3.DistanceSquared(destination, front) > QueuedApproachDistance * QueuedApproachDistance)
                         destination = front;
                 }
                 party.DestinationView = new(raid.Definition.Id, queued ? "RAID — waiting for a clear formation post" : raid.Started ? "RAID — " + route.Status : "Raid rally",
@@ -1690,18 +1698,22 @@ namespace DOL.GS
         {
             if (party.Anchor.HasValue && party.AnchorRegion == region &&
                 Vector3.DistanceSquared(center, party.AnchorCenter) < 128 * 128 &&
-                (dangers == null || !RealmRaidDungeonRoute.InBossDanger(party.Anchor.Value, dangers)))
+                (dangers == null || !RealmRaidDungeonRoute.InBossDangerStrict(party.Anchor.Value, dangers)))
             { point = party.Anchor.Value; return true; }
             // Run 4 (2026-10-14): around Prince Abdin no post was free, and every party re-ran the full post search
             // (about 300 path queries, 1-3 s) on every AI turn; 414 such turns averaged 1,026 ms.
             long now = GameLoop.GameLoopTime;
             if (now < party.FailedPostUntil && Vector3.DistanceSquared(center, party.FailedPostCenter) < 128 * 128)
             { point = default; return false; }
+            party.FailedPostByDanger = false;
             Zone zone = WorldMgr.GetRegion(region)?.GetZone((int)center.X, (int)center.Y);
             Vector3[] occupied = raid.Parties.Values.Where(p => p != party && p.Anchor.HasValue && p.AnchorRegion == region)
                 .Select(p => p.Anchor.Value).ToArray();
             if (!RealmRaidFormation.TryResolve(PathfindingProvider.Instance, zone, center, party.FormationSlot, occupied, out point, dangers))
             {
+                // Was a post there but for the dangers? Then the party stands at the hold point itself (UpdateDestinationView).
+                party.FailedPostByDanger = dangers is { Count: > 0 } &&
+                    RealmRaidFormation.TryResolve(PathfindingProvider.Instance, zone, center, party.FormationSlot, occupied, out _);
                 party.FailedPostCenter = center;
                 party.FailedPostUntil = now + FailedPostRetryMilliseconds;
                 return false;
@@ -2317,6 +2329,17 @@ namespace DOL.GS
         /// next encounter); never within a resting boss's aggro + 300 (RealmRaidDungeonRoute.StrandedRegroupPoint, owner's PC,
         /// build 453e01a, 2026-11-17: Tuscaran's front stood 200 from Icelord Agmundr). False when no such point is clear.
         /// </summary>
+        /// <summary>The bot stands in its started expedition's dungeon (or the gate it fights on the way), where a regroup it was
+        /// refused (<see cref="TryDungeonRegroupPoint"/> false) means "stay": never its capital (review of 27abe6e78; run 9's
+        /// Darkness Falls loop, 2026-10-14: raiders sent home from the way in rode back and failed again, 338 times).</summary>
+        public static bool InExpeditionDungeon(GameBot bot)
+        {
+            if (bot?.Group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                return Membership.TryGetValue(bot.Group, out var raid) && raid.DungeonRoute != null && raid.Started &&
+                       (raid.Transit is { } gate && bot.CurrentRegionID == gate.Region || bot.CurrentRegionID == raid.Definition.Region);
+        }
+
         public static bool TryDungeonRegroupPoint(GameBot bot, out ushort region, out Vector3 point)
         {
             region = 0; point = default;

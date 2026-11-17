@@ -322,6 +322,64 @@ public static class RealmRaidReturnWave
         return next >= waveStep ? -1 : next;
     }
 
+    /// <summary>The latest of <paramref name="steps"/> a raider at <paramref name="at"/> stands at (within <see cref="AtStepRadius"/>),
+    /// or -1 (pure; <see cref="CatchUp"/>).</summary>
+    public static int LatestStepAt(IReadOnlyList<Vector3> steps, Vector3 at)
+    {
+        for (int i = (steps?.Count ?? 0) - 1; i >= 0; i--)
+            if (Vector3.DistanceSquared(at, steps[i]) <= AtStepRadius * AtStepRadius) return i;
+        return -1;
+    }
+
+    /// <summary>A raider of a wave that has not reached the raid already stands with it (at the last step: moved there by its
+    /// stranded regroup): it leaves the walk (pure; step=ahead).</summary>
+    public static bool WithTheRaid(IReadOnlyList<Vector3> steps, int waveStep, Vector3 at) =>
+        steps is { Count: > 1 } && waveStep < steps.Count - 1 && Vector3.DistanceSquared(at, steps[^1]) <= AtStepRadius * AtStepRadius;
+
+    /// <summary>
+    /// The wave's steps were worked out again (the raid's destination moved): each raider catching up goes on from the new step
+    /// nearest the one it walked to; one at or past the wave's new step <paramref name="waveStep"/> walks with the wave (pure).
+    /// </summary>
+    public static void RemapCatching(IReadOnlyList<Vector3> oldSteps, IReadOnlyList<Vector3> newSteps, IDictionary<long, int> catching,
+        int waveStep)
+    {
+        if (oldSteps == null || oldSteps.Count == 0 || newSteps == null || newSteps.Count == 0) { catching.Clear(); return; }
+        foreach (long member in new List<long>(catching.Keys))
+        {
+            Vector3 was = oldSteps[Math.Clamp(catching[member], 0, oldSteps.Count - 1)];
+            int at = Nearest(newSteps, was);
+            if (at >= waveStep) catching.Remove(member);
+            else catching[member] = at;
+        }
+    }
+
+    /// <summary>The index of the step of <paramref name="steps"/> nearest <paramref name="was"/> (the first on a tie).</summary>
+    public static int Nearest(IReadOnlyList<Vector3> steps, Vector3 was)
+    {
+        int step = 0;
+        for (int i = 1; i < steps.Count; i++)
+            if (Vector3.DistanceSquared(steps[i], was) < Vector3.DistanceSquared(steps[step], was)) step = i;
+        return step;
+    }
+
+    /// <summary>
+    /// The wave has no raider of its own left walking while some catch up behind it (pure): they are the wave now, from the step
+    /// of the furthest of them, which is returned (those at it leave <paramref name="catching"/>); -1 when none catch up. The
+    /// wave's best step is kept (review of 27abe6e78: steps walked again are no headway, <see cref="Headway"/>).
+    /// </summary>
+    public static int Rebase(IDictionary<long, int> catching)
+    {
+        if (catching.Count == 0) return -1;
+        int to = int.MinValue;
+        foreach (int s in catching.Values) to = Math.Max(to, s);
+        foreach (long member in new List<long>(catching.Keys))
+            if (catching[member] >= to) catching.Remove(member);
+        return to;
+    }
+
+    /// <summary>A step the wave reaches is headway (the stall clock) only past the furthest it has been (pure).</summary>
+    public static bool Headway(int step, int bestStep) => step > bestStep;
+
     public enum WaveMove { Wait, Fight, CallHelp, Advance, Arrived }
 
     /// <summary>Raiders of a wave of <paramref name="living"/> that make it "together" at a step.</summary>

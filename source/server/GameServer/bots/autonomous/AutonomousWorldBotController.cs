@@ -5609,6 +5609,12 @@ namespace DOL.GS
                 escape = raidFront;
                 escapeName = "the raid front";
             }
+            else if (AutonomousRealmRaid.InExpeditionDungeon(bot) && !AutonomousRealmRaid.TryDungeonRegroupPoint(bot, out _, out _))
+            {
+                // Inside its raid's dungeon and its regroup refused (every point by a resting boss: REALM_EXPEDITION_REGROUP_REFUSED):
+                // it stays and the ordinary recovery retries; never its capital (review of 27abe6e78).
+                return false;
+            }
             else
             {
                 // A walled-off pocket (navmesh/pockets.json) has no way out: relocate at the first
