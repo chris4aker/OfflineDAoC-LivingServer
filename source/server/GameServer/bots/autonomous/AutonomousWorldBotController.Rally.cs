@@ -303,6 +303,8 @@ public sealed partial class AutonomousWorldBotController
         if (leader == null || leader.CurrentRegionID != bot.CurrentRegionID) return false;
         GameBot[] army = AutonomousRvrEventLayer.ArmyMembers(targetId);
         long now = GameLoop.GameLoopTime;
+        // Work package 5: the groups of the column on up to three lanes (null: today's one route).
+        MarchLaneTurn? lanes = MarchLanes(bot, leader, keep, targetId, army, now);
 
         // A column that has stood in one place too long pushes on (AutonomousArmyPush).
         if (leader == bot)
@@ -340,7 +342,9 @@ public sealed partial class AutonomousWorldBotController
         if (leader == bot)
         {
             AutonomousRvrEventLayer.ReportMarchLeading(targetId, bot);
-            int near = army.Count(member => member.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(member, ArmyAssistRadius));
+            // A group level with the leader on its own lane is with the column, though thousands of units to the side.
+            int near = army.Count(member => member.CurrentRegionID == bot.CurrentRegionID &&
+                (bot.IsWithinRadius(member, ArmyAssistRadius) || LevelOnOtherLane(lanes, member, now)));
             int marching = army.Count(member => member.CurrentRegionID == bot.CurrentRegionID); // the fallen who released home don't hold the column
             if (pushing)
             {
@@ -379,7 +383,18 @@ public sealed partial class AutonomousWorldBotController
                 SetRvrStatus(bot, "Army regrouping", keep.Name, $"{near} of {marching} with the leader; waiting for the column");
                 return true;
             }
-            bool detouring = TryArmyDetour(bot, keep, targetId);
+            // The leader waits for a flank lane that fell behind (at most 45 seconds, then 45 seconds of marching).
+            if (lanes is { } paced && !pushing &&
+                RvrLanePacing.LeaderWaits(WorstLaneGap(paced, army, now), now, ref _laneWaitUntil, ref _nextLaneWait))
+            {
+                bot.StopMovingOnPath(); bot.StopMoving();
+                SetRvrStatus(bot, "Army waiting for the flank lanes", keep.Name,
+                    $"{near} of {marching} with the leader; a lane is {(int)-WorstLaneGap(paced, army, now)} units behind");
+                return true;
+            }
+            // Lanes passed the same hazards when they were chosen; the leader's detour is for today's route only.
+            if (lanes != null) _marchDetour = null;
+            bool detouring = lanes == null && TryArmyDetour(bot, keep, targetId);
             bot.TempProperties.SetProperty(ArmyDetourProperty, detouring);
             if (detouring)
             {
@@ -391,6 +406,24 @@ public sealed partial class AutonomousWorldBotController
             return true;
         }
 
+        // A group on another lane keeps level with the leader by progress along its own lane, not by closing on him.
+        if (lanes is { } lane && lane.Slot != lane.LeaderSlot)
+        {
+            float gap = RvrLanePacing.Gap(lane.Walked, lane.Route, lane.LeaderWalked, lane.LeaderRoute);
+            _lanePace = RvrLanePacing.Next(_lanePace, _lanePaceSince, gap, RvrLanePacing.Margins(lane.Tier), now, out _lanePaceSince);
+            if (RvrLanePacing.Waits(_lanePace, gap, leader.IsMoving))
+            {
+                bot.StopMovingOnPath(); bot.StopMoving();
+                SetRvrStatus(bot, "Keeping level with the army", keep.Name,
+                    $"On lane {lane.Route.LaneIndex}, {(int)gap} units {(gap >= 0 ? "ahead of" : "behind")} {leader.Name}");
+                return true;
+            }
+            FollowKeepTravel(bot, _rvrDestination);
+            SetRvrStatus(bot, "Marching with the army", keep.Name, _lanePace == RvrLanePace.Hurry
+                ? $"Catching up on lane {lane.Route.LaneIndex}, {(int)-gap} units behind {leader.Name}"
+                : $"On lane {lane.Route.LaneIndex}, level with {leader.Name}");
+            return true;
+        }
         if (!bot.IsWithinRadius(leader, ArmyKeepUpDistance))
         {
             IssuePath(bot, new Vector3(leader.X, leader.Y, leader.Z));
@@ -414,6 +447,120 @@ public sealed partial class AutonomousWorldBotController
         FollowKeepTravel(bot, _rvrDestination);
         SetRvrStatus(bot, "Marching with the army", keep.Name, $"In the column with {leader.Name}");
         return true;
+    }
+
+    // ---- Work package 5 (docs/RVR-FIELD-1.2.md, "Feet"): the march on lanes. The march leader keeps the pace on his
+    // group's lane (lane 0: his group takes it); the other groups walk their own lane's validated walk (FollowKeepTravel)
+    // and keep level with him by the share of their lane walked. Fights, pushes, regroups, the combat hold and the arrival
+    // hold at the camp are today's. Tests only until seen in the owner's PC log.
+    private float _laneWalked = -1;
+    private string _laneWalkedTag;
+    private RvrLanePace _lanePace;
+    private long _lanePaceSince;
+    private long _laneWaitUntil, _nextLaneWait;
+
+    private readonly record struct MarchLaneTurn(RvrMarchLanePlan Plan, int Slot, RvrLaneRoute Route, float Walked,
+        int LeaderSlot, RvrLaneRoute LeaderRoute, float LeaderWalked, RvrSkillTier Tier);
+
+    private static string MarchForceOf(GameBot bot) =>
+        bot.TempProperties.GetProperty<string>("RvrEventForce") ?? $"rvr-{bot.DatabaseID}";
+
+    /// <summary>Lanes are for autonomous gamebots in bot-only groups; a group a player leads or is in marches as today.</summary>
+    private static bool LaneEligible(GameBot bot)
+    {
+        if (bot == null || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup) return false;
+        Group group = bot.Group;
+        return group == null || group.Leader == null && group.GetPlayersInTheGroup().Count == 0 && AutonomousRealmRaid.GetView(group) == null;
+    }
+
+    private void DropMarchLane()
+    {
+        if (_laneTravel?.Purpose == "march") UseLaneTravel(null);
+    }
+
+    /// <summary>This marcher's lane and the leader's, or null for today's one-route march (switch off, a player's group,
+    /// no proven lane: RVR_LANE_FALLBACK once per march).</summary>
+    private MarchLaneTurn? MarchLanes(GameBot bot, GameBot leader, AbstractGameKeep keep, string targetId, GameBot[] army, long now)
+    {
+        if (!RvrTacticsSwitches.Current.MarchLanes || !LaneEligible(bot))
+        {
+            DropMarchLane();
+            return null;
+        }
+        using var profile = AiProfile.Scope(AiSystem.RvrTactics);
+        RvrLaneCatalog.StartValidation();
+        RvrMarchLanePlan plan = RvrMarchLanes.Get(targetId, keep.Region, bot.Realm, now, () => MarchLaneOptions(leader, keep));
+        if (!plan.Options.UsesLanes)
+        {
+            if (plan.TakeFallbackLog())
+                Log.Info($"RVR_LANE_FALLBACK force=\"{targetId}\" region={keep.Region} realm={GlobalConstants.RealmToName(bot.Realm)} " +
+                         $"reason={plan.Options.Fallback} detail=\"{plan.Options.Detail}\" from=\"{plan.Options.FromRef}\" " +
+                         $"to=\"{plan.Options.ToRef}\" column={army.Length} lanes=1");
+            DropMarchLane();
+            return null;
+        }
+        string force = MarchForceOf(bot), leaderForce = MarchForceOf(leader);
+        RvrMarchLanePlan.ForceLane own = AssignMarchLane(plan, force, force == leaderForce, bot, army);
+        RvrMarchLanePlan.ForceLane led = force == leaderForce ? own : AssignMarchLane(plan, leaderForce, true, leader, army);
+        RvrLaneRoute route = plan.Options.Routes[own.Slot];
+        if (_laneWalkedTag != route.Tag) { _laneWalkedTag = route.Tag; _laneWalked = -1; }
+        _laneWalked = route.Project(new(bot.X, bot.Y, bot.Z), _laneWalked, out _);
+        plan.Report(bot.DatabaseID, own.Slot, _laneWalked, now);
+        UseLaneTravel(new RvrLaneTravel(_rvrDestination.Id, keep.Region, route, "march"));
+        RvrLaneRoute leaderRoute = plan.Options.Routes[led.Slot];
+        float leaderWalked = leader == bot ? _laneWalked
+            : plan.TryProgress(leader.DatabaseID, now, out int slot, out float walked) && slot == led.Slot ? walked
+            : leaderRoute.Project(new(leader.X, leader.Y, leader.Z), -1, out _);
+        return new(plan, own.Slot, route, _laneWalked, led.Slot, leaderRoute, leaderWalked, own.Tier);
+    }
+
+    private static RvrMarchLanePlan.ForceLane AssignMarchLane(RvrMarchLanePlan plan, string force, bool leaderForce, GameBot member,
+        GameBot[] army)
+    {
+        if (plan.TryGetForce(force, out RvrMarchLanePlan.ForceLane known)) return known;
+        int size = army.Count(other => MarchForceOf(other) == force);
+        RvrMarchLanePlan.ForceLane lane = plan.Assign(force, size, leaderForce, RvrFightBoards.DefaultSkillTier(member), out bool assigned);
+        if (assigned)
+        {
+            RvrLaneRoute route = plan.Options.Routes[lane.Slot];
+            Log.Info(FormattableString.Invariant(
+                $"RVR_LANE_ASSIGN force=\"{plan.TargetId}\" group=\"{force}\" lane={route.LaneIndex} slot={lane.Slot} lanes={plan.Options.Routes.Length} ") +
+                FormattableString.Invariant($"length={route.MergeLength:0} trunk={route.TrunkLength:0} heads={lane.Heads} tier={lane.Tier} ") +
+                $"tagAlong={(lane.TagAlong ? 1 : 0)} leader={(leaderForce ? 1 : 0)} distinct={plan.DistinctLanes} region={plan.Region} " +
+                $"realm={GlobalConstants.RealmToName(plan.Realm)} from=\"{plan.Options.FromRef}\" to=\"{plan.Options.ToRef}\"");
+        }
+        return lane;
+    }
+
+    private static RvrLaneOptions MarchLaneOptions(GameBot leader, AbstractGameKeep keep)
+    {
+        RvrLiveKeep[] keeps = GameServer.KeepManager.GetKeepsOfRegion(keep.Region)
+            .Select(other => new RvrLiveKeep(other.KeepID, other.Realm, new(other.X, other.Y))).ToArray();
+        Region region = WorldMgr.GetRegion(keep.Region);
+        eRealm realm = leader.Realm;
+        return RvrLaneChoice.Options(RvrLaneCatalog.Data, RvrLaneCatalog.ProofOf, keep.Region, realm,
+            new(leader.X, leader.Y, leader.Z), RvrLaneData.KeepRef(keep.KeepID), new(keep.X, keep.Y), keep.KeepID, keeps,
+            AutonomousArmyDetour.HazardsFor(keep.Region, realm, keep),
+            point => region?.GetZone((int)point.X, (int)point.Y) is Zone zone && AutonomousRealmBoundary.Allows(realm, keep.Region, zone.ID));
+    }
+
+    private static bool LevelOnOtherLane(MarchLaneTurn? lanes, GameBot member, long now) =>
+        lanes is { } turn && turn.Plan.TryProgress(member.DatabaseID, now, out int slot, out float walked) && slot != turn.LeaderSlot &&
+        RvrLanePacing.Level(RvrLanePacing.Gap(walked, turn.Plan.Options.Routes[slot], turn.LeaderWalked, turn.LeaderRoute));
+
+    /// <summary>The gap of the flank lane furthest behind the leader (the median of its marchers; 0 when none report).</summary>
+    private static float WorstLaneGap(MarchLaneTurn turn, GameBot[] army, long now)
+    {
+        var bySlot = new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<float>>();
+        foreach (GameBot member in army)
+        {
+            if (!turn.Plan.TryProgress(member.DatabaseID, now, out int slot, out float walked) || slot == turn.LeaderSlot) continue;
+            if (!bySlot.TryGetValue(slot, out var gaps)) bySlot[slot] = gaps = new();
+            gaps.Add(RvrLanePacing.Gap(walked, turn.Plan.Options.Routes[slot], turn.LeaderWalked, turn.LeaderRoute));
+        }
+        float worst = 0;
+        foreach (var gaps in bySlot.Values) worst = MathF.Min(worst, RvrLanePacing.Median(gaps));
+        return worst;
     }
 
     private bool TravelToDefensivePost(GameBot bot, AbstractGameKeep keep, Vector3 post)

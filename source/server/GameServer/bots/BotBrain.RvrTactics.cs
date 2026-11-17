@@ -426,6 +426,10 @@ namespace DOL.AI.Brain
         {
             if (!RvrTacticsActive() || !(Properties.RVR_BOT_POSITIONING || Properties.RVR_BOT_STEALTH_OPENERS))
                 return false;
+            // Work package 6: a hidden melee stealther at melee range opens from stealth (BotRvrAmbush.TryStealthOpener),
+            // before any work package 3 placement step.
+            if (Properties.RVR_BOT_STEALTH_OPENERS && BotRvrAmbush.TryStealthOpener(BotBody, target))
+                return true;
             if (Properties.RVR_BOT_POSITIONING && TryRvrPlaceMove(target))
                 return true;
             return false;
@@ -433,18 +437,110 @@ namespace DOL.AI.Brain
 
         #endregion
 
+        // ---- work package 4: stances (size-up, watching, retreat, regroup, chasing) ---------------------------------
+        #region WP4 stances (RvrEngagement)
+
+        private GameLiving _rvrStanceLeashed;
+        private long _rvrStanceLeashedUntil;
+        private long _rvrStanceChaseLogAt = long.MinValue / 2;
+
+        /// <summary>A chase this bot gave up is not taken up again for this long.</summary>
+        public const long RvrChaseGiveUpMilliseconds = 10_000;
+
+        /// <summary>
+        /// Hook (work package 4): TryHoldRetreat, right after the group's retreat order is read, on every think of a live
+        /// bot. For a bot-only group in the open field it keeps the group's fight board fresh while the bot fights or the
+        /// group has a stance to keep (one build per group and second at most), acts once on each new board
+        /// (RvrEngagementRuntime.Observe: logs, the group's own retreat order, the warband relay), makes the group's own
+        /// retreat ragged (each member reacts after its tier's delay, some never run, a member being hit in melee fights
+        /// back) and gives up a chase past the leash. Returns the order this bot obeys now (null: none); any other order
+        /// (a PvE RUN) passes unchanged. Out of scope, solo or switched off: the order unchanged and nothing built.
+        /// </summary>
+        public BotGroupRetreat.Order RvrStanceRetreatOrder(BotGroupRetreat.Order order, long now)
+        {
+            GameBot bot = BotBody;
+            if (bot?.Group == null || !(Properties.RVR_BOT_SIZE_UP || Properties.RVR_BOT_DISENGAGE || Properties.RVR_BOT_REGROUP) ||
+                !RvrTacticsActive())
+                return order;
+            using var aiProfile = AiProfile.Scope(AiSystem.RvrTactics);
+            bool fighting = bot.InCombat || bot.IsAttacking;
+            RvrFightBoard board;
+            if (fighting || RvrEngagementRuntime.NeedsUpkeep(bot, now))
+            {
+                RvrEngagementRuntime.EnsureFacts(bot);
+                board = RvrFightBoards.Get(bot);
+            }
+            else
+                board = RvrFightBoards.Peek(bot);
+            if (board != null)
+                RvrEngagementRuntime.Observe(bot, board, now);
+            if (order != null && RvrEngagementRuntime.IsOwnOrder(bot.Group, order, out long publishedAt))
+            {
+                RvrSkillTier tier = board?.Plan?.SkillTier ?? RvrFightBoards.StateOf(bot.Group).SkillTier ?? RvrSkillTier.Average;
+                var reaction = RvrEngagement.RetreatReaction(tier, RvrEngagementRuntime.MemberKey(bot), order.Id);
+                if (!RvrEngagement.HeedsRetreat(now, publishedAt, reaction, RvrEngagementRuntime.HitInMelee(bot, now)))
+                    order = null;
+            }
+            if (fighting && order == null && board != null)
+                MaintainRvrChaseLeash(bot, board, now);
+            return order;
+        }
+
+        /// <summary>Whether this bot gave up chasing <paramref name="target"/> lately (the threat gate leaves it alone).</summary>
+        public bool RvrStanceLeashed(GameLiving target, long now) =>
+            target != null && ReferenceEquals(target, _rvrStanceLeashed) && now < _rvrStanceLeashedUntil;
+
+        /// <summary>
+        /// Chasing (docs/RVR-FIELD-1.2.md, "Hands"): a member that ran past its leash from its group's centre after an
+        /// enemy running further away gives up and goes back; a bold bot's leash is 2.5 times longer, into the enemy's
+        /// guards. A bot that is hit, or whose enemy is on a group mate, keeps fighting.
+        /// </summary>
+        private void MaintainRvrChaseLeash(GameBot bot, RvrFightBoard board, long now)
+        {
+            if (bot.TargetObject is not GameLiving target || target is not (GamePlayer or GameBot) || !target.IsAlive ||
+                target.Realm == bot.Realm || RvrEngagementRuntime.Hit(bot, now) ||
+                target.TargetObject is GameLiving victim && (victim == bot || victim.Group == bot.Group && bot.Group != null))
+                return;
+            BotPersonality? personality = AutonomousBotPersonality.Applies(bot) ? AutonomousBotPersonality.For(bot) : null;
+            double boldness = AutonomousRvrPerception.Boldness(personality);
+            int leash = RvrEngagement.ChaseLeash(board.Plan?.SkillTier ?? RvrSkillTier.Average, boldness);
+            System.Numerics.Vector3 centre = board.FriendlyCentroid;
+            double botFrom = System.Numerics.Vector2.Distance(new System.Numerics.Vector2(bot.X, bot.Y), new System.Numerics.Vector2(centre.X, centre.Y));
+            double targetFrom = System.Numerics.Vector2.Distance(new System.Numerics.Vector2(target.X, target.Y), new System.Numerics.Vector2(centre.X, centre.Y));
+            if (!RvrEngagement.StopsChasing(botFrom, targetFrom, leash, false))
+                return;
+            if (bot.IsAttacking)
+                bot.StopAttack();
+            RemoveFromAggroList(target);
+            bot.TargetObject = null;
+            bot.StopMoving();
+            _rvrStanceLeashed = target;
+            _rvrStanceLeashedUntil = now + RvrChaseGiveUpMilliseconds;
+            if (now - _rvrStanceChaseLogAt >= RvrChaseGiveUpMilliseconds && log.IsInfoEnabled)
+            {
+                _rvrStanceChaseLogAt = now;
+                log.Info($"RVR_CHASE group={RvrEngagementRuntime.GroupName(bot)} bot=\"{bot.Name}\" target=\"{target.Name}\" " +
+                         $"fromGroup={(int)botFrom} targetFromGroup={(int)targetFrom} leash={leash} boldness={boldness:0.00} " +
+                         $"skill={board.Plan?.SkillTier}");
+            }
+        }
+
+        #endregion
+
         // ---- work package 6: stealth openers ---------------------------------------------------------------------------
 
         /// <summary>
-        /// Hook: BotMeleeStylePolicy.Usable, for a style that needs stealth (which bots never pick today). True lets the
-        /// bot use it as an opener; false for no opinion (the style stays out).
-        /// Reserved for work package 6 (rvr_bot_stealth_openers).
+        /// Hook: BotMeleeStylePolicy.Usable, for a style that needs stealth (which bots never picked before 1.2). True lets
+        /// the bot use it as its opener: work package 6 (rvr_bot_stealth_openers), a hidden Infiltrator, Nightshade or
+        /// Shadowblade in scope, once per target (BotRvrAmbush.AllowsOpener); false for no opinion (the style stays out).
+        /// The cheap checks (stealthed) come before the scope.
         /// </summary>
         public static bool RvrTacticsAllowsStealthOpener(GameBot bot, Style style)
         {
-            if (style?.StealthRequirement != true || !Properties.RVR_BOT_STEALTH_OPENERS || !RvrTacticsApplyTo(bot))
+            if (style?.StealthRequirement != true || !Properties.RVR_BOT_STEALTH_OPENERS || bot?.IsStealthed != true ||
+                !RvrTacticsApplyTo(bot))
                 return false;
-            return false;
+            return BotRvrAmbush.AllowsOpener(bot, style, inScope: true);
         }
     }
 }

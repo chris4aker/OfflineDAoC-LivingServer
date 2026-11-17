@@ -129,9 +129,9 @@ public static class RvrFightPlanner
         };
     }
 
-    /// <summary>Work package 4: the stance. Reserved; returns the plan unchanged.</summary>
+    /// <summary>Work package 4: the stance and a regroup's rally point (<see cref="RvrEngagement.PlanStance(RvrFightPlan, RvrFightBoard, RvrGroupState, RvrTacticsSwitches, long)"/>).</summary>
     public static RvrFightPlan PlanStance(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
-        RvrTacticsSwitches switches, long now) => plan;
+        RvrTacticsSwitches switches, long now) => RvrEngagement.PlanStance(plan, board, state, switches, now);
 
     /// <summary>Work package 2: the main assist and the called target (<see cref="RvrAssist.Plan"/>, on the board's facts).</summary>
     public static RvrFightPlan PlanAssist(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,

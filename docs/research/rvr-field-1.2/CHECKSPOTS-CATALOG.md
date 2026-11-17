@@ -2,8 +2,9 @@
 
 Status: **tests only.** Every proof here is a navmesh walk. No catalog spot or circuit has been seen in an owner PC log.
 
-File: `source/server/GameServer/bots/autonomous/data/rvr-checkspots.json`, embedded in GameServer. WP6 reads it; no
-loader exists yet. The design is [RVR-FIELD-1.2.md](../../RVR-FIELD-1.2.md) section 4; the survey behind it is
+File: `source/server/GameServer/bots/autonomous/data/rvr-checkspots.json`, embedded in GameServer. WP6 reads it
+(`RvrCheckSpots`, lazily; the server re-walks it on the live navmesh in the background at start and turns off what fails:
+`RVR_CHECKSPOT_LOADED`, `RVR_CHECKSPOT_REJECTED`, `RVR_CHECKSPOT_VALIDATED`; tests only). The design is [RVR-FIELD-1.2.md](../../RVR-FIELD-1.2.md) section 4; the survey behind it is
 [CHECKSPOTS-FINDINGS.md](CHECKSPOTS-FINDINGS.md).
 
 ## What is in it

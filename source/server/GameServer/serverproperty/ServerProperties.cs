@@ -2608,52 +2608,64 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_POSITIONING;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): watch and size up before engaging.
+		/// 1.2 work package 4 (stances, RvrEngagement): watch and size up before engaging.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_size_up", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group that sees an enemy group, or a fight between the other two realms, watches first and counts heads, healers, levels, health and power. A bot that is hit always fights back. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_size_up", "Open-field RvR (1.2): size-up. A bot-only group in the open field that notices an enemy group, or a fight between the other two realms, stops and watches first (about 6 s casual, 9 s average, 12 s veteran, shorter for an impatient leader) and counts heads, healers, levels, health and power; then it engages at fair odds, kites or retreats. A bot that is hit always fights back. Raids, battleground assaults, keep fights and groups with a player keep today's rules. Needs rvr_bot_field_tactics. Log: RVR_SIZE_UP, RVR_WATCH, RVR_STANCE.", true)]
 		public static bool RVR_BOT_SIZE_UP;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): kite and retreat from bad odds.
+		/// 1.2 work package 4 (stances, RvrEngagement): kite and retreat from bad odds (needs bot_veteran_retreat for the retreat).
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_disengage", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group facing bad odds or losing a fight kites or retreats, raggedly, as people do. It uses the group retreat, so bot_veteran_retreat off also turns it off. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_disengage", "Open-field RvR (1.2): disengage. A bot-only group facing bad odds or losing its fight kites (fights while backing away) or retreats: drops its targets, sprints and runs, raggedly (members react 0.3-2 s apart, some never run, and one caught in melee fights back). Half of the warband's other groups hear of a retreat 4 s later. The retreat uses the group retreat, so bot_veteran_retreat off also turns the RvR retreat off (kiting stays). Needs rvr_bot_field_tactics. Log: RVR_RETREAT, RVR_STANCE.", true)]
 		public static bool RVR_BOT_DISENGAGE;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): regroup after a retreat or a wipe.
+		/// 1.2 work package 4 (stances, RvrEngagement): hold, regroup and rest, the chase leash, wipe memory.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_regroup", "Does nothing yet: reserved for 1.2 work package 4. When built: after a retreat or a wipe a bot group meets at a rally point, rests, re-forms and goes back out, and remembers its recent wipes. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_regroup", "Open-field RvR (1.2): regroup. After a retreat, or after a fight that left it hurt, a bot-only group meets at a rally point, rests and goes back out; veteran groups leave the fight's spot to rest, casual ones rest where they fought. Members strung out when an enemy is noticed wait for the rest. A member gives up a chase past its leash (bold bots chase much further). A group remembers its wipes; after three in ten minutes it roams before it hunts again. Needs rvr_bot_field_tactics. Log: RVR_REGROUP, RVR_CHASE, RVR_STANCE.", true)]
 		public static bool RVR_BOT_REGROUP;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
+		/// 1.2 work package 5 (lanes): a siege march uses up to three proven lanes.
 		/// </summary>
-		[ServerProperty("bots", "rvr_march_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: the groups of a marching force split 50/25/25 across the main lane and up to two proven alternates from the milegate; with no proven lane everyone takes today's route. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_march_lanes", "Open-field RvR (1.2): a siege army leaves on up to three proven lanes instead of one line: from a portal keep everyone takes the one road to its milegate, then the groups split 50/25/25 across the main lane and up to two alternates the server re-walked at start (67/33 with one). A lane that passes near a keep the enemy holds now, or a march hazard, is left out; with no lane left everyone takes today's route. The march leader keeps the pace on the main lane, the other groups keep level with him on theirs, and the army gathers again at the siege camp as today. Groups you lead or are in march as today. Log: RVR_LANE_LOADED, RVR_LANE_REJECTED, RVR_LANE_ASSIGN, RVR_LANE_FALLBACK. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_MARCH_LANES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 5 (lanes): roamers use the proven lanes.
+		/// 1.2 work package 5 (lanes): roaming groups may travel on the proven lanes between catalog objectives.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roam_lanes", "Does nothing yet: reserved for 1.2 work package 5. When built: roaming warbands travel on the proven lanes instead of one line. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roam_lanes", "Open-field RvR (1.2): roaming bot groups that travel between two catalog objectives (keeps, milegates, border keeps) may take one of the proven lanes instead of the one main route, by group. Used by the roaming groups of work package 6; groups you lead or are in are never changed. Log: RVR_LANE_ASSIGN, RVR_LANE_FALLBACK (by work package 6's callers). Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_ROAM_LANES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): role-built eight-man groups.
+		/// 1.2 work package 6 (roamers): the population split and role-built eight-man groups.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roaming_parties", "Does nothing yet: reserved for 1.2 work package 6. When built: RvR groups that gamebots form are built by role, each realm's 2003 eight, and some of them roam the fringes as eight-man groups. Groups you lead or join are never changed. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roaming_parties", "Open-field RvR (1.2): Autonomous gamebots split their RvR population (siege parties form first and are not counted) into warbands, role-built eight-man groups and soloers, duos and stealthers, by rvr_roam_population_split. An eight is built to its realm's 2003 skeleton: two main healers, a crowd controller, a shield tank, a speed class, two who can cure mez, a Shaman (Midgard) or Theurgist (Albion), the rest damage; a missing role goes to the next best class and the group still forms, and rvr_group_pet_cap holds. Eights roam; they do not open sieges. Groups you lead or join are never changed. Needs rvr_bot_field_tactics. Log: RVR_PARTY_FORMED.", true)]
 		public static bool RVR_ROAMING_PARTIES;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): circuits and check spots.
+		/// 1.2 work package 6 (roamers): circuits and check spots.
 		/// </summary>
-		[ServerProperty("bots", "rvr_roam_checks", "Does nothing yet: reserved for 1.2 work package 6. When built: a roaming bot group walks a patrol circuit and checks milegates, levelling camps, dungeon doors and named monsters for 30 to 60 seconds each, then moves on. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_roam_checks", "Open-field RvR (1.2): A roaming eight walks one of its realm's patrol circuits in order (the check-spot catalog, re-walked on the navmesh at server start) and checks each milegate, levelling camp, dungeon door or named monster for 30 to 60 seconds, then moves on. Circuits are weighted toward where enemy levelling bots are by a live count every 3 minutes; Forest Sauvage, Snowdonia, Mount Collory and Cruachan Gorge are walked only when nothing else has prey. Enemy levelling bots at a spot are hunted, and after a kill the group moves on (rvr_roam_move_on_minutes). Soloers and duos work chokepoints and camps; stealthers camp milegates and crossings in loose packs. Needs rvr_bot_field_tactics. Log: RVR_ROAM_CHECK, RVR_ROAM_HUNT, RVR_ROAM_MOVE_ON, RVR_CHECKSPOT_LOADED.", true)]
 		public static bool RVR_ROAM_CHECKS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 6 (roamers): stealth openers.
+		/// 1.2 work package 6 (roamers): stealth openers and the soloer's odds.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_stealth_openers", "Does nothing yet: reserved for 1.2 work package 6. When built: a bot stealther opens a fight from stealth with its opening style, and a soloer opens only when the odds allow it. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_stealth_openers", "Open-field RvR (1.2): A gamebot Infiltrator, Nightshade or Shadowblade still in stealth opens a fight with its own stealth style (Backstab, Perforate Artery and the like), once per target, and a soloer, duo or stealther opens only when the odds allow it: the target alone or weaker, no enemy group near it, its own health and power up (casual bots misjudge more often). A bot that is hit always fights back. Needs rvr_bot_field_tactics. Log: RVR_STEALTH_OPEN.", true)]
 		public static bool RVR_BOT_STEALTH_OPENERS;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the population split of RvR gamebots not in a siege (owner decision 2, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_population_split", "Of the RvR gamebots not in a siege, the percent in warbands / role-built eight-man groups / soloers, duos and stealthers (owner decision 2026-11-16: 55/30/15; an assumption, no source gives the 2003 proportions). Three numbers; anything else reads as 55/30/15. Needs rvr_roaming_parties.", "55/30/15")]
+		public static string RVR_ROAM_POPULATION_SPLIT;
+
+		/// <summary>
+		/// 1.2 work package 6 (roamers): the move-on rule (owner decision 4, 2026-11-16).
+		/// </summary>
+		[ServerProperty("bots", "rvr_roam_move_on_minutes", "The move-on rule: after a kill at a check spot a roaming bot group, soloer or stealther leaves within this many minutes (veteran groups sooner, casual ones later); no corpse camping. 0 leaves right after the kill. Needs rvr_roam_checks.", 3)]
+		public static int RVR_ROAM_MOVE_ON_MINUTES;
 
 		/// <summary>
 		/// Pet caps (North Star audit 2026-11-03): how many pet classes may join one RvR group that gamebots form.

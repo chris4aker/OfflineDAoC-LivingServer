@@ -53,6 +53,9 @@ namespace DOL.GS
                 _reportAt = now + 60 * Stopwatch.Frequency;
                 ServerMemoryDiagnostics.EnsureStarted();
                 AutonomousZoneRoads.Preload();
+                // The RvR lane catalog's background walk on the live navmesh (bounded slices with pauses, off the loop).
+                if (RvrTacticsSwitches.Current is { MarchLanes: true } or { RoamLanes: true })
+                    RvrLaneCatalog.StartValidation();
             }
             if (now < _reportAt) return;
             _reportAt = now + 60 * Stopwatch.Frequency;

@@ -598,7 +598,7 @@ namespace DOL.GS
                 // the bot when movement actually takes over.
                 bool recoveringAtCurrentCamp = _camp != null && ReferenceEquals(_restingCamp, _camp);
                 if (bot.IsRecoveryResting && !recoveringAtCurrentCamp && !_dungeonRouteResting &&
-                    _groupDirective?.Phase != "Regrouping" && !_townIdleUntilUtc.HasValue)
+                    _groupDirective?.Phase != "Regrouping" && !_townIdleUntilUtc.HasValue && !RvrStanceRestHolds(nowTick))
                     bot.WakeRecoveryRest();
 
                 if (bot.IsCasting && !BotSongTwistPolicy.HasMobileSongCast(bot))
@@ -2083,6 +2083,8 @@ namespace DOL.GS
                     _rvrApproachDestination = null;
                 }
             }
+            // 1.2 WP6: a roaming eight, soloer or stealther at its check spot looks, hunts and moves on (RvrTactics partial).
+            if (RvrTacticsRoamTurn(brain, bot)) return true;
             if (_rvrDestination == null || _rvrDestination.RegionId == 0 ||
                 (!_rvrSharedEvent && GameLoop.GameLoopTime >= _nextRvrPlanReview && !BotSiegeRuntime.Assigned(bot)) ||
                 (_rvrIntent == AutonomousRvrEventLayer.Intent.Roam && bot.CurrentRegionID == _rvrDestination.RegionId &&
@@ -2587,12 +2589,14 @@ namespace DOL.GS
                                                     member.ClassName.Contains("healer", StringComparison.OrdinalIgnoreCase) ||
                                                     member.ClassName.Contains("druid", StringComparison.OrdinalIgnoreCase) ||
                                                     member.ClassName.Contains("bard", StringComparison.OrdinalIgnoreCase));
-            bool siegeReady = warband.Length >= 4 && averageLevel >= 35 && CanSupplySiege(bot);
+            // 1.2 WP6: a roaming eight walks its circuits; it answers defence calls but opens no siege.
+            bool siegeReady = warband.Length >= 4 && averageLevel >= 35 && !RvrTacticsIsRoamingEight(bot) && CanSupplySiege(bot);
             AutonomousRvrEventLayer.Plan plan = AutonomousRvrEventLayer.ChooseOrJoin(
                 new AutonomousRvrEventLayer.Force(_groupDirective?.GroupId ?? $"rvr-{bot.DatabaseID}", bot.Realm,
                     warband.Length, averageLevel, healers, siegeReady,
                     (unchecked((ulong)(_groupDirective?.Leader?.DatabaseID ?? bot.DatabaseID)) * 2654435761UL % 100) < 30,
-                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level)),
+                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level),
+                    RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime)),
                 objectives, GameLoop.GameLoopTime, Random.Shared.NextDouble());
             _rvrSharedEvent = plan?.IsSharedEvent == true;
             _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
