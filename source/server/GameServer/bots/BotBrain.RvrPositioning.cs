@@ -211,6 +211,9 @@ namespace DOL.AI.Brain
                 return false;
             if (target != null && target.IsAlive && charge.IsWithinRadius(target, RvrPeelPlan.LeashRadius))
                 return false;
+            // A bot that is hit always fights back: a guard hit in melee does not stand idle beside his charge.
+            if (RecentDirectAttacker() is GameLiving attacker && attacker.IsAlive && bot.IsWithinRadius(attacker, bot.MeleeAttackRange + 50))
+                return false;
             Vector2 spot = RvrPositioning.EscortSpot(Flat(charge), enemy);
             if (Vector2.Distance(Flat(bot), spot) > RvrPeelPlan.StickRadius)
             {
