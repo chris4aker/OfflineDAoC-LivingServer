@@ -110,7 +110,19 @@
   "rvr_roam_lanes": "True",
   "rvr_roam_move_on_minutes": "3",
   "rvr_roam_population_split": "55/30/15",
-  "rvr_roaming_parties": "True"
+  "rvr_roaming_parties": "True",
+  "bot_skill_profiles": "True",
+  "bot_skill_growth": "True",
+  "bot_skill_spare_player_group": "True",
+  "raid_learns_from_raiders": "True",
+  "bot_place_knowledge": "True",
+  "bot_ask_the_way": "True",
+  "bot_wrong_roads": "True",
+  "bot_movement_habits": "True",
+  "bot_move_strafe": "True",
+  "bot_move_stick_line": "True",
+  "bot_move_sit_and_walls": "True",
+  "bot_living_milestones": "True"
  },
  "KeptOff": {
   "craft_made_lines": "diagnostics: one log line per gamebot craft",

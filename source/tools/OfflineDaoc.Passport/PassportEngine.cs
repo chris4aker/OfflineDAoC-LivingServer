@@ -123,6 +123,11 @@ public static class PassportTables
         ["offline_exchange_index"] = new(PassportDecision.StaysInWorld, "That world's Realm Exchange prices."),
         ["offline_economy_ledger"] = new(PassportDecision.StaysInWorld, "That world's hourly money supply."),
         ["offline_crafter_customers"] = new(PassportDecision.StaysInWorld, "What that world's crafter gamebots remember of their customers, by name.", true),
+        // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): what that world's gamebots have learned; no player is named.
+        ["offline_bot_skill"] = new(PassportDecision.StaysInWorld, "That world's gamebots' skill and how much they have played."),
+        ["offline_bot_places"] = new(PassportDecision.StaysInWorld, "The places that world's gamebots know."),
+        ["offline_bot_milestones"] = new(PassportDecision.StaysInWorld, "That world's gamebots' personal milestones (the Herald's Milestones of the Realm)."),
+        ["offline_bot_mechanics_seen"] = new(PassportDecision.StaysInWorld, "The raid mechanics that world's gamebots have seen."),
     };
 
     /// <summary>
