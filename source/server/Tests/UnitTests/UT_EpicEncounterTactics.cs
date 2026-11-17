@@ -395,6 +395,45 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void WithRaidLearningSeededAPlayersOwnGroupKeepsTodaysCall()
+        {
+            // Bots as people WP2R, seeding done and the blast learned: outside a running realm raid (a player's own group at
+            // the boss, as here: no raid) the call is today's, timed from the record's familiarity, and nobody is credited.
+            EpicEncounterTactics.CallBlastForTests("TacticGiant");
+            RaidDiscipline.LearnForTests("TacticGiant/blast");
+            RaidLearning.ResetForTests(RaidLearning.SeedingState.Done);
+            int rows = BotPeopleStore.Current.MechanicsSeen.Count;
+            try
+            {
+                var giant = Npc<TacticGiant>(31577, 35305, 14551);
+                var tank = Npc<Raider>(31600, 35305, 14551);
+                var caster = Npc<Raider>(32577, 35305, 14551);
+                giant.TargetObject = tank;
+                var live = new List<GameNPC> { giant };
+                EpicEncounterTactics.ResetBlastForTests();
+                giant.Fighting = true;
+                giant.Hp = 82;
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 1_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                giant.Hp = 79;
+                var call = RaidDiscipline.CallFor(0, "TacticGiant/blast", 80, 0, 0); // familiarity 0: no record for a test boss
+                long callAt = 3_000 + (long)Math.Ceiling((EpicEncounterTactics.BlastLandsAfterCrossSeconds - call.LeadSeconds) * 1000);
+                if (callAt > 3_000)
+                    Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, 3_000).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
+                Assert.That(EpicEncounterTactics.Decide(caster, giant, live, 0, true, Math.Max(callAt, 3_000) + 250).Action,
+                    Is.EqualTo(EpicEncounterTactics.BotAction.StandOff), "out on today's call");
+                Assert.That(BotPeopleStore.Current.MechanicsSeen.Count, Is.EqualTo(rows), "nobody credited");
+                Assert.That(RaidLearning.RosterOf(null, "TacticGiant/blast"), Is.Null);
+            }
+            finally
+            {
+                EpicEncounterTactics.UncallBlastForTests("TacticGiant");
+                RaidDiscipline.LearnForTests(null);
+                RaidLearning.ResetForTests(RaidLearning.SeedingState.Pending);
+                EpicEncounterTactics.ResetBlastForTests();
+            }
+        }
+
+        [Test]
         public void ACalledBlastWaitsForTheRaidsCallNotForHisHealth()
         {
             // 1.2 raid discipline: the window opens as before, but nobody moves until the caller has called it, a lead

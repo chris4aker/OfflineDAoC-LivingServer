@@ -108,9 +108,9 @@ namespace DOL.UnitTests
         {
             OfflineBotMechanicSeenRecord Seen(long id, string mechanic, int seen, string last) =>
                 new() { PersonKey = BotPersonKey.Of(id).ToString(), CharacterId = id, Mechanic = mechanic, Seen = seen, LastSeenUtc = last };
-            var merged = BotPersonKey.Merge(Person, [Seen(1, "xanxicar.stomp", 3, "2026-11-01"), Seen(2, "xanxicar.stomp", 4, "2026-11-10"),
-                Seen(2, "legion.fear", 1, "2026-11-02"), Seen(3, "legion.fear", int.MaxValue, "2026-11-03")]);
-            Assert.That(merged.Select(r => (r.Mechanic, r.Seen)), Is.EqualTo(new[] { ("legion.fear", int.MaxValue), ("xanxicar.stomp", 7) }));
+            var merged = BotPersonKey.Merge(Person, [Seen(1, "Xanxicar/blast", 3, "2026-11-01"), Seen(2, "Xanxicar/blast", 4, "2026-11-10"),
+                Seen(2, "Legion/blast", 1, "2026-11-02"), Seen(3, "Legion/blast", int.MaxValue, "2026-11-03")]);
+            Assert.That(merged.Select(r => (r.Mechanic, r.Seen)), Is.EqualTo(new[] { ("Legion/blast", int.MaxValue), ("Xanxicar/blast", 7) }));
             Assert.That(merged[1].LastSeenUtc, Is.EqualTo("2026-11-10"));
             Assert.That(merged.All(r => r.PersonKey == "p:5"), Is.True);
         }

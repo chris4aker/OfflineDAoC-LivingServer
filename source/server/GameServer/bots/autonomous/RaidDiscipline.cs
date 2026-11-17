@@ -15,6 +15,9 @@ namespace DOL.GS
     /// and leaves late or not at all.</item>
     /// <item><b>The realm learns the boss</b> (<see cref="Familiarity(int, int)"/>): every counted attempt at the encounter, and
     /// every win more, makes the calls earlier, the reactions quicker and the lapses rarer. A fresh world is unlearned.</item>
+    /// <item><b>The raiders remember it</b> (Bots as people WP2R, raid_learns_from_raiders; <see cref="RosterFamiliarity(double, double)"/>,
+    /// <see cref="RaiderFamiliarity"/>, RaidLearning): the raid knows it as well as the record says only when enough of the
+    /// raiders present have seen it, and a newcomer lapses more than a veteran beside him.</item>
     /// </list>
     /// Everything here is pure and deterministic per (raider, mechanic, occurrence, seed), so tests and container runs can be
     /// reproduced. Wired today: Xanxicar's stomp (EpicEncounterTactics.RaidCalls.cs). The same API is meant for Scurceol's orbs,
@@ -76,6 +79,102 @@ namespace DOL.GS
 
         private static double Lerp(double unlearned, double learned, double familiarity) =>
             unlearned + (learned - unlearned) * Math.Clamp(familiarity, 0, 1);
+
+        // ---- learning from the raiders (Bots as people WP2R, owner decision 1, 2026-11-17) -----------------------------
+
+        /// <summary>The mechanics a raid learns from its raiders: the called blasts (EpicEncounterTactics.RaidCalls.cs), keyed as
+        /// the call keys them (boss class + "/blast"). Only Xanxicar's stomp is wired; a mechanic not listed keeps the record's
+        /// familiarity, so an upgraded world never loses one the seeding did not cover.</summary>
+        public static readonly (string Mechanic, string BossType)[] LearnedMechanics = [("Xanxicar/blast", "Xanxicar")];
+
+        public static bool IsLearned(string mechanic)
+        {
+            foreach (var learned in LearnedMechanics)
+                if (string.Equals(learned.Mechanic, mechanic, StringComparison.Ordinal)) return true;
+            string test = System.Threading.Volatile.Read(ref _learnedForTests);
+            return test != null && string.Equals(test, mechanic, StringComparison.Ordinal);
+        }
+
+        private static string _learnedForTests;
+
+        /// <summary>Tests: one more mechanic is learned (a test boss's blast), or none (null).</summary>
+        public static void LearnForTests(string mechanic) => System.Threading.Volatile.Write(ref _learnedForTests, mechanic);
+
+        /// <summary>The raid knows the mechanic as well as its record says once this share of the raiders present has seen it;
+        /// with nobody it keeps <see cref="RosterFloor"/> of it (the record's calls and plans are still the realm's).</summary>
+        public const double RosterFullShare = 0.6, RosterFloor = 0.25;
+        /// <summary>A raider knows a mechanic fully after this many raids at it (one raid: half).</summary>
+        public const int KnowsAfterRaids = 2;
+        /// <summary>How far a raider's own familiarity moves from the raid's, per unit of knowledge above or below the raid's
+        /// mean, times the record's familiarity (bounded so nobody leaves 0..1 and the raid's mean stays the raid's).</summary>
+        public const double RaiderSpread = 0.5;
+
+        /// <summary>The raid's familiarity: the record's, scaled from <see cref="RosterFloor"/> (nobody has seen it) to full (from
+        /// <see cref="RosterFullShare"/> of the raiders). Pure.</summary>
+        public static double RosterFamiliarity(double recordFamiliarity, double seenShare)
+        {
+            double record = Math.Clamp(recordFamiliarity, 0, 1);
+            double share = Math.Clamp(seenShare, 0, 1);
+            return record * (RosterFloor + (1 - RosterFloor) * Math.Min(1, share / RosterFullShare));
+        }
+
+        /// <summary>How well one raider knows the mechanic from its own count of raids at it, 0..1. Pure.</summary>
+        public static double OwnKnowledge(int seen) => Math.Clamp(seen, 0, KnowsAfterRaids) / (double)KnowsAfterRaids;
+
+        /// <summary>
+        /// What the raiders present know (pure, no allocation): how many count, how many have seen the mechanic before this
+        /// raid, and the sum of their own knowledge. Real players, companions and buffbots are not counted; an Epic Special
+        /// Force counts as a raider who has seen everything (<see cref="WithVeteran"/>).
+        /// </summary>
+        public readonly record struct RosterKnowledge(int Raiders, int HaveSeen, int SpecialForces, double KnowledgeSum)
+        {
+            public double SeenShare => Raiders == 0 ? 0 : HaveSeen / (double)Raiders;
+            public double MeanKnowledge => Raiders == 0 ? 0 : KnowledgeSum / Raiders;
+            /// <summary>Adds a raider who has seen the mechanic in <paramref name="seen"/> raids before this one.</summary>
+            public RosterKnowledge With(int seen) => new(Raiders + 1, HaveSeen + (seen > 0 ? 1 : 0), SpecialForces, KnowledgeSum + OwnKnowledge(seen));
+            /// <summary>Adds an Epic Special Force: the realm's veterans have seen everything.</summary>
+            public RosterKnowledge WithVeteran() => new(Raiders + 1, HaveSeen + 1, SpecialForces + 1, KnowledgeSum + 1);
+        }
+
+        /// <summary>The raid's familiarity from its roster: the record's when nobody present counts (a raid of real players or
+        /// a test raider), else <see cref="RosterFamiliarity(double, double)"/>. Pure.</summary>
+        public static double RosterFamiliarity(double recordFamiliarity, RosterKnowledge roster) =>
+            roster.Raiders == 0 ? Math.Clamp(recordFamiliarity, 0, 1) : RosterFamiliarity(recordFamiliarity, roster.SeenShare);
+
+        /// <summary>
+        /// One raider's familiarity, for its own reaction and lapse (pure): the raid's, moved up for a raider who knows the
+        /// mechanic better than the raid's mean and down for a newcomer. The move is <see cref="RaiderSpread"/> times the
+        /// record's familiarity per unit of knowledge, bounded so that no raider leaves 0..1; so over the raiders counted the
+        /// mean is the raid's familiarity exactly, and a newcomer lapses more than the veteran beside him.
+        /// </summary>
+        public static double RaiderFamiliarity(double recordFamiliarity, double raidFamiliarity, double ownKnowledge, double meanKnowledge)
+        {
+            double raid = Math.Clamp(raidFamiliarity, 0, 1), own = Math.Clamp(ownKnowledge, 0, 1), mean = Math.Clamp(meanKnowledge, 0, 1);
+            double spread = RaiderSpread * Math.Clamp(recordFamiliarity, 0, 1);
+            if (mean < 1) spread = Math.Min(spread, (1 - raid) / (1 - mean));
+            if (mean > 0) spread = Math.Min(spread, raid / mean);
+            return Math.Clamp(raid + Math.Max(0, spread) * (own - mean), 0, 1);
+        }
+
+        // ---- the upgrade seeding ------------------------------------------------------------------------------------------
+
+        /// <summary>A played world has a record but no "seen" rows. Once, on the first start with the switch, each level 50 bot
+        /// of a realm with a counted attempt is marked as having seen the mechanic (<see cref="KnowsAfterRaids"/> raids) with
+        /// this chance: the record's familiarity, but at least <see cref="SeedShareFloor"/>, because a raid knows the
+        /// mechanic fully only from <see cref="RosterFullShare"/> of its raiders (a chance equal to a familiarity of 0.39
+        /// would leave a raid at 0.29).</summary>
+        public const double SeedShareFloor = 0.8;
+        /// <summary>The level the seeding marks (the raids recruit level 50s only, RealmRaidRecruitmentPolicy.Eligible).</summary>
+        public const int SeedLevel = 50;
+        private const ulong SeedSalt = 0x5345454452414944UL; // "SEEDRAID"
+
+        /// <summary>The seeding's chance for a record's familiarity (0 without a counted attempt). Pure.</summary>
+        public static double SeedChance(double recordFamiliarity) =>
+            recordFamiliarity <= 0 ? 0 : Math.Max(Math.Clamp(recordFamiliarity, 0, 1), SeedShareFloor);
+
+        /// <summary>Whether this bot is seeded as having seen the mechanic: a fixed roll by bot id and mechanic. Pure.</summary>
+        public static bool SeededAtUpgrade(long botId, int level, string mechanic, double recordFamiliarity) =>
+            level >= SeedLevel && Roll(Key(botId, mechanic, 0, 0), SeedSalt) < SeedChance(recordFamiliarity);
 
         // ---- the call ---------------------------------------------------------------------------------------------------
 

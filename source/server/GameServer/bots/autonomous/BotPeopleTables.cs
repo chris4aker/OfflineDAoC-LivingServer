@@ -165,7 +165,7 @@ public sealed class OfflineBotMechanicSeenRecord : DataObject, ILivingServerRow
     public DataObject CopyForSave() => (OfflineBotMechanicSeenRecord)MemberwiseClone();
 
     [DataElement(AllowDbNull = false, Index = true, Varchar = BotPersonKey.TextLength)] public string PersonKey { get; set; } = string.Empty;
-    /// <summary>The mechanic's id (WP2R, e.g. "xanxicar.stomp").</summary>
+    /// <summary>The mechanic's id (WP2R: the raid call's key, e.g. "Xanxicar/blast"; RaidDiscipline.LearnedMechanics).</summary>
     [DataElement(AllowDbNull = false, Varchar = 64)] public string Mechanic { get; set; } = string.Empty;
     [DataElement(AllowDbNull = false, Index = true)] public long CharacterId { get; set; }
     [DataElement(AllowDbNull = false)] public int Seen { get; set; }
