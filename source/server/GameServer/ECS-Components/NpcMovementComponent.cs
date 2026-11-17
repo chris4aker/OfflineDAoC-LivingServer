@@ -661,6 +661,8 @@ namespace DOL.GS
         private void WalkToInternal(Vector3 destination, short speed)
         {
             if (!AllowPosition(destination)) return;
+            // A gamebot seated by a movement habit stands before it walks (Bots as people 1.2, WP5).
+            if (speed > 0 && Owner is GameBot { IsSeatedByHabit: true } seated) seated.StandFromHabit();
             if (IsTurningDisabled)
                 return;
 
