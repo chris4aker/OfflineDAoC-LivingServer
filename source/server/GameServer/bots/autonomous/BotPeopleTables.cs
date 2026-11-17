@@ -143,6 +143,15 @@ public sealed class OfflineBotMilestoneRecord : DataObject, ILivingServerRow
     [DataElement(AllowDbNull = false)] public string StartedUtc { get; set; } = string.Empty;
     [DataElement(AllowDbNull = false)] public string ReachedUtc { get; set; } = string.Empty;
     [DataElement(AllowDbNull = false)] public string LastTalkUtc { get; set; } = string.Empty;
+    /// <summary>WP6: the highest talk point the arc has passed (0, 50 or 90 percent; BotMilestones.TalkPoint), talked or not,
+    /// so a restart never says the same point twice.</summary>
+    [DataElement(AllowDbNull = false)] public int TalkPoint { get; set; }
+    /// <summary>WP6, the dragon trophy: the high-end raid kills the character was at without winning an item.</summary>
+    [DataElement(AllowDbNull = false)] public int Count { get; set; }
+    /// <summary>WP6, the dragon trophy: the item it really won (its name as the game gave it), once reached.</summary>
+    [DataElement(AllowDbNull = false, Varchar = 96)] public string Trophy { get; set; } = string.Empty;
+    /// <summary>WP6, the dragon trophy: the boss that dropped it (the item's Creator, the killed boss's name).</summary>
+    [DataElement(AllowDbNull = false, Varchar = 64)] public string Source { get; set; } = string.Empty;
 
     /// <summary>How far an arc got, for merges: reached 0, active 1, dropped 2, anything else 3. Pure.</summary>
     public static int StateRank(string state) => state switch { Reached => 0, Active => 1, Dropped => 2, _ => 3 };
@@ -152,6 +161,7 @@ public sealed class OfflineBotMilestoneRecord : DataObject, ILivingServerRow
     {
         PersonKey = person.ToString(), CharacterId = CharacterId, Realm = Realm, Name = Name, ClassName = ClassName, Arc = Arc,
         State = State, StartedUtc = StartedUtc, ReachedUtc = ReachedUtc, LastTalkUtc = LastTalkUtc,
+        TalkPoint = TalkPoint, Count = Count, Trophy = Trophy, Source = Source,
     };
 }
 

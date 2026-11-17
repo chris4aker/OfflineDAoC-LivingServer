@@ -113,13 +113,14 @@ class BotPeopleDescriptionsMatch(unittest.TestCase):
             self.assertIn(key, launcher_text, key)
             self.assertEqual(launcher_text[key], server_text[key], key)
 
-    def test_only_milestones_still_say_they_change_nothing_yet(self):
+    def test_no_switch_says_it_changes_nothing_yet(self):
         server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
         card = (HERE / "OfflineDaoc.Launcher/SocialExpansionSettingsControl.cs").read_text(encoding="utf-8")
         server_text = dict(re.findall(r'\[ServerProperty\("bots", "(\w+)", "([^"]*)"', server))
         waiting = sorted(key for key, text in server_text.items() if "changes nothing yet" in text)
-        self.assertEqual(waiting, ["bot_living_milestones"], "work package 6 is the one not built")
-        self.assertNotIn("these change nothing yet", card)
+        self.assertEqual(waiting, [], "work package 6 (milestones) is built: every package is")
+        self.assertNotIn("change nothing yet", card)
+        self.assertNotIn("still being built", card)
 
 
 if __name__ == "__main__":

@@ -165,6 +165,7 @@ public static class AutonomousBotRegistry
             AutonomousBotRealmGuilds.OnBotOnline(bot);
             BotFriends.OnBotOnline(bot); // Fork: friends hear when a bot comes online
             BotSkill.OnLoggedIn(bot); // Bots as people WP1: its skill profile (BOT_SKILL_PROFILE)
+            BotMilestoneLife.OnLoggedIn(bot); // Bots as people WP6: it takes or resumes its milestone arc
         }
     }
 

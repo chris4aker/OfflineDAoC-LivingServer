@@ -1909,6 +1909,7 @@ namespace DOL.GS
 
             item.RemoveFromWorld();
             _reportedLootRejection = null;
+            BotMilestoneLife.OnItemReceived(this, item.Item); // Bots as people WP6: in a high-end raid kill's loot, a dragon trophy
             AutonomousBotEconomy.MarkInventoryChanged(this);
             // Queue owned loot for the existing asynchronous save before appraisal.
             // This is not a synchronous commit; /spawn helpers never enter this path.
@@ -2089,6 +2090,8 @@ namespace DOL.GS
                     HiredCompanions165.OwnerOf(this) is { } hirer)
                     Hire165.Refresh(hirer);
             }
+            if (!hiredCompanion)
+                BotMilestoneLife.OnExperience(this); // Bots as people WP6: the ding to 50 (its talk points and the moment)
             if (previousExperience == 0 || previousLevel != Level)
             {
                 log.Info($"AUTONOMOUS_XP_PROGRESS bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" " +

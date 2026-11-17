@@ -98,12 +98,12 @@ namespace DOL.UnitTests
         // ---- the 5-minute summaries ------------------------------------------------------------------------------------
 
         private static readonly string[] SummaryTags =
-            ["BOT_MOVE_HABITS", "BOT_PLACE_BUDGET", "BOT_SKILL_BUDGET", "BOT_SKILL_MISTAKES", "BOT_WAY_SUMMARY"];
+            ["BOT_MILESTONE_SUMMARY", "BOT_MOVE_HABITS", "BOT_PLACE_BUDGET", "BOT_SKILL_BUDGET", "BOT_SKILL_MISTAKES", "BOT_WAY_SUMMARY"];
 
         [Test]
         public void Each_built_package_logs_one_summary_line_after_BOT_PEOPLE_SUMMARY()
         {
-            string[] names = ["skill", "lost", "ask", "wall"];
+            string[] names = ["skill", "lost", "ask", "wall", "milestone"];
             bool[] built = names.Select(BotPeopleTest.IsBuilt).ToArray();
             try
             {
@@ -112,6 +112,7 @@ namespace DOL.UnitTests
                 BotWayFinding.Register(); // and BotPlaceKnowledge.Register
                 BotMovementHabitsRuntime.RegisterSeams();
                 BotMovementHabitsRuntime.RegisterSeams(); // twice: a tag is replaced, never doubled
+                BotMilestoneLife.Wire();
             }
             finally
             {
@@ -131,7 +132,6 @@ namespace DOL.UnitTests
                 foreach (string line in lines.Where(line => SummaryTags.Any(tag => line.StartsWith(tag + " ", StringComparison.Ordinal))))
                     Assert.That(line, Does.Contain(" seconds=300"), "the window is named");
                 Assert.That(lines, Has.None.StartsWith("BOT_PEOPLE_SUMMARY"), "the store logs its own line first, once");
-                Assert.That(BotPeopleSummary.Tags, Has.None.StartsWith("BOT_MILESTONE"), "work package 6 is not built");
             });
         }
 
@@ -150,7 +150,7 @@ namespace DOL.UnitTests
                 foreach (string tag in SummaryTags)
                     Assert.That(Regex.Matches(source, $@"(Log\.Info|Info)\(\$?""{tag} ").Count, Is.EqualTo(0),
                         $"{tag} is written by BotPeopleStore's timer only");
-                foreach (string system in new[] { "BotSkill", "PlaceKnowledge", "WayFinding", "MovementHabits" })
+                foreach (string system in new[] { "BotSkill", "PlaceKnowledge", "WayFinding", "MovementHabits", "Milestones" })
                     Assert.That(source, Does.Contain($"AiProfile.Scope(AiSystem.{system})"), system);
             });
         }

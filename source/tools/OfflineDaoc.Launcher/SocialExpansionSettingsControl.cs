@@ -251,7 +251,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         var peopleNote = new Label
         {
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
-            Text = "Only autonomous gamebots, never your companions, raids or keep fights. Personal milestones are still being built: in this build that switch changes nothing yet.",
+            Text = "Only autonomous gamebots, never your companions; raids and keep fights keep their rules. A dragon trophy is only an item a bot really won in a raid.",
         };
         people.Grid.Controls.Add(peopleNote, 0, people.Grid.RowCount - 1);
         people.Grid.SetColumnSpan(peopleNote, 3);

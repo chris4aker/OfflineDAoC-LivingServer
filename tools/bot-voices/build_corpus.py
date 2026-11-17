@@ -49,7 +49,9 @@ KINDS = {'ambient', 'reply', 'lfg', 'trade', 'rvr', 'greet', 'thanks', 'grudge',
          # Crafting 2.0 (docs/CRAFTING-2.0-BUILD-PLAN.md, WP0): a crafter's own lines and its answers to "can you make X"
          'craft', 'craft_reply',
          # The full bot trade (WP8, BotTrades): what any gamebot says to a player in a trade window
-         'trade_reply'}
+         'trade_reply',
+         # Bots as people WP6 (BotMilestoneLife): a gamebot's own milestone, as it gets close and when it gets there
+         'milestone'}
 # Lines that start a conversation; each says what kind of answer it invites (@invites, or inferred below).
 OPENER_KINDS = {'ambient', 'lfg', 'trade', 'rvr', 'camp', 'group', 'guild', 'news', 'tell'}
 # Kinds whose lines speak about the speaker's own here and now, so a place they name must be true (or @about).
@@ -62,7 +64,8 @@ INVITES = {'none', 'chat', 'joke', 'boast', 'complaint', 'news', 'lfg', 'trade',
 # answer when a player asks "why?", "really?", "how?", "what?" or "where?" right after the bot's own line.
 # "player_<shape>" (the talking update audit): replies to a kind of player statement the reply path reads (good news,
 # an offer of help or items, a request to wait).
-INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news(_[a-z0-9]+)*|lfg|trade|ask(_[a-z0-9]+)*|followup_[a-z]+|player_[a-z_]+|debate_[a-z]+)')
+# "milestone_<arc>" (Bots as people WP6): the realm's cheer when a gamebot reaches realm rank 5 or wins a dragon trophy.
+INVITE_RE = re.compile(r'(none|chat|joke|boast|complaint|news(_[a-z0-9]+)*|lfg|trade|ask(_[a-z0-9]+)*|followup_[a-z]+|player_[a-z_]+|debate_[a-z]+|milestone_[a-z0-9]+)')
 TYPES = {'Leveler', 'Crafter', 'Socialite', 'Explorer', 'Daredevil', 'NoLifer'}
 REALMS = {'alb', 'mid', 'hib'}
 CLASSES = {

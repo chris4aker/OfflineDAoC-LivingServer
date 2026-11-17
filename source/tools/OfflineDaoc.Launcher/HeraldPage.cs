@@ -180,6 +180,8 @@ public static class HeraldPage
             foreach (var r in Rows(c, "SELECT Title, Realm, Name, ClassName, AchievedUtc FROM offline_server_firsts WHERE Name <> '' ORDER BY AchievedUtc DESC LIMIT 40"))
                 firsts.Add((Str(r[0]), Int(r[1]), Str(r[2]), Str(r[3]), Str(r[4])));
 
+        var milestones = ReadMilestones(c, tables);
+
         var wanted = new List<(string Name, int Realm, int Kills, int Hunters)>();
         if (tables.Contains("offline_bot_nemesis"))
             foreach (var r in Rows(c, """
@@ -203,7 +205,54 @@ public static class HeraldPage
         }
         catch (Exception) { bestiary.Clear(); /* the ledger is optional news */ }
 
-        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary, crafters);
+        return Render(nowLocal, characters, guildNames, botGuild, keeps, relics, firsts, wanted, events, bestiary, crafters, milestones);
+    }
+
+    /// <summary>A reached personal milestone of a gamebot (Bots as people WP6, offline_bot_milestones).</summary>
+    public sealed record Milestone(string Name, string ClassName, int Realm, string Arc, string Trophy, string Source, string When);
+
+    /// <summary>Milestones of the Realm shows the last this many reached arcs.</summary>
+    public const int MilestoneRows = 40;
+
+    /// <summary>What the Herald says a milestone was (Bots as people WP6 arcs: the ding to 50, realm rank 5, a dragon trophy).</summary>
+    public static string MilestoneText(string arc, string trophy, string source) => arc switch
+    {
+        "ding50" => "Reached level 50",
+        "rr5" => "Earned realm rank 5",
+        "dragon_trophy" when !string.IsNullOrWhiteSpace(trophy) && !string.IsNullOrWhiteSpace(source) => $"Won {trophy} from {source}",
+        "dragon_trophy" when !string.IsNullOrWhiteSpace(trophy) => $"Won {trophy} in a great raid",
+        "dragon_trophy" => "Won a trophy in a great raid",
+        _ => "",
+    };
+
+    /// <summary>
+    /// The last <see cref="MilestoneRows"/> reached arcs, newest first, of gamebots still playing (a retired bot is not news).
+    /// Only gamebots have arcs (the server never gives a player's character one). Read-only; an older world has no table.
+    /// </summary>
+    private static List<Milestone> ReadMilestones(SQLiteConnection c, HashSet<string> tables)
+    {
+        var list = new List<Milestone>();
+        if (!tables.Contains("offline_bot_milestones"))
+            return list;
+        var columns = Rows(c, "PRAGMA table_info(offline_bot_milestones)").Select(r => Str(r[1])).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (!columns.IsSupersetOf(["CharacterId", "Name", "ClassName", "Realm", "Arc", "State", "ReachedUtc"]))
+            return list;
+        string trophy = columns.Contains("Trophy") ? "COALESCE(m.Trophy,'')" : "''";
+        string source = columns.Contains("Source") ? "COALESCE(m.Source,'')" : "''";
+        bool bots = tables.Contains("offline_world_bots") &&
+            Rows(c, "PRAGMA table_info(offline_world_bots)").Any(r => Str(r[1]).Equals("IsRetired", StringComparison.OrdinalIgnoreCase));
+        string retired = bots ? " AND NOT EXISTS (SELECT 1 FROM offline_world_bots b WHERE b.BotId = m.CharacterId AND COALESCE(b.IsRetired,0)<>0)" : "";
+        foreach (var r in Rows(c, $"""
+            SELECT m.Name, m.ClassName, m.Realm, m.Arc, {trophy}, {source}, m.ReachedUtc FROM offline_bot_milestones m
+            WHERE m.State = 'reached' AND COALESCE(m.Name,'') <> '' AND COALESCE(m.ReachedUtc,'') <> '' AND m.Realm IN (1,2,3){retired}
+            ORDER BY m.ReachedUtc DESC LIMIT {MilestoneRows}
+            """))
+        {
+            var milestone = new Milestone(Str(r[0]), Str(r[1]), Int(r[2]), Str(r[3]), Str(r[4]), Str(r[5]), Str(r[6]));
+            if (MilestoneText(milestone.Arc, milestone.Trophy, milestone.Source).Length > 0)
+                list.Add(milestone);
+        }
+        return list;
     }
 
     /// <summary>Players' crafting (AccountXCrafting, per account and realm) and crafter gamebots' (offline_world_bots'
@@ -254,7 +303,8 @@ public static class HeraldPage
         List<(int Realm, int Original, int Type, string Captured)> relics,
         List<(string Title, int Realm, string Name, string ClassName, string When)> firsts,
         List<(string Name, int Realm, int Kills, int Hunters)> wanted, List<DOL.GS.RealmEventRecord> events,
-        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null, List<Crafter>? crafters = null)
+        Dictionary<int, List<DOL.GS.LoreChannels.LoreBestiaryEntry>>? bestiary = null, List<Crafter>? crafters = null,
+        List<Milestone>? milestones = null)
     {
         var h = new StringBuilder();
         string E(string s) => WebUtility.HtmlEncode(s);
@@ -306,6 +356,21 @@ public static class HeraldPage
             h.Append("<table><tr><th>Achievement</th><th>Who</th><th>Realm</th><th>When</th></tr>");
             foreach (var f in firsts)
                 h.Append($"<tr><td>{E(f.Title)}</td><td>{E(f.Name)} <span class=\"muted\">{E(f.ClassName)}</span></td><td>{Realm(f.Realm)}</td><td>{E(When(f.When))}</td></tr>");
+            h.Append("</table>");
+        }
+        h.Append("</section>");
+
+        // Bots as people (1.2, WP6): the personal milestones the realms' people reached, newest first.
+        h.Append("<section><h2>Milestones of the Realm</h2>");
+        if (milestones is not { Count: > 0 })
+            h.Append("<p class=\"muted\">No milestones told yet. When one of the realm's adventurers reaches level 50, earns realm rank 5 or wins a trophy from a dragon or a great foe, the criers will tell it here.</p>");
+        else
+        {
+            h.Append("<p class=\"muted\">Deeds the criers carried from town to town.</p>");
+            h.Append("<table><tr><th>Who</th><th>Realm</th><th>Milestone</th><th>When</th></tr>");
+            foreach (var m in milestones)
+                h.Append($"<tr><td>{E(m.Name)} <span class=\"muted\">{E(m.ClassName)}</span></td><td>{Realm(m.Realm)}</td>" +
+                         $"<td>{E(MilestoneText(m.Arc, m.Trophy, m.Source))}</td><td>{E(When(m.When))}</td></tr>");
             h.Append("</table>");
         }
         h.Append("</section>");

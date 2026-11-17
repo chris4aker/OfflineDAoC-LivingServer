@@ -472,14 +472,34 @@ class BotsAsPeople(unittest.TestCase):
                        "refusedLegs=0 busyDrops=0 budgetDrops=0")
         log.add(at(5), 'BOT_MOVE_SIT bot="Bot6" id=6 region=1 where=group waited_s=41')
         log.add(at(5), 'BOT_MOVE_WALL bot="Bot6" id=6 region=1 keep="Caer Benowyc" x=1 y=2 z=3 waited_s=38')
+        log.add(at(5), 'BOT_MILESTONE_ARC bot="Bot7" id=7 person=c:7 realm=Albion level=46 class="Armsman" xp=60000000000 '
+                       'rr=1L0 rp=0 arc=ding50 state=active progress=5')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot7" id=7 person=c:7 realm=Albion level=48 class="Armsman" xp=115000000000 '
+                       'rr=1L0 rp=0 arc=ding50 point=50 topic=ding50_half channel=faction count=0 line="48 now, over halfway to 50"')
+        log.add(at(6), 'BOT_MILESTONE_REACHED bot="Bot8" id=8 person=c:8 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=5L0 rp=513500 arc=rr5 trophy="" source="" started="2026-11-17T10:00:00.0000000Z"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot8" id=8 person=c:8 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=5L0 rp=513500 arc=rr5 point=100 topic=rr5_reached channel=faction trophy="" source="" line="finally rr5!"')
         return log
+
+    def test_a_milestone_line_that_claims_more_than_the_numbers_is_contradicted(self):
+        log = self.played_session()
+        log.add(at(7), 'BOT_MILESTONE_TALK bot="Bot9" id=9 person=c:9 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=4L5 rp=300000 arc=rr5 point=90 topic=rr5_close channel=say count=0 line="almost rr5"')
+        row = check(only(log.run()[1]), "milestones")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("false_claims=1", row["detail"])
+        self.assertTrue(pcl.milestone_claim_true({"arc": "ding50", "point": "90", "level": "49", "xp": "158400000000"}))
+        self.assertFalse(pcl.milestone_claim_true({"arc": "ding50", "point": "90", "level": "49", "xp": "150000000000"}))
+        self.assertFalse(pcl.milestone_claim_true({"arc": "dragon_trophy", "point": "100", "trophy": ""}))
 
     def test_people_rows_from_the_lines_the_server_writes(self):
         log = self.played_session()
         sec = only(log.run()[1])
         for cid in ("summary", "skill_profile", "skill_growth", "mistakes", "raid_learn", "places", "way", "movement"):
             self.assertEqual(check(sec, cid)["status"], pcl.SEEN, cid)
-        self.assertEqual(check(sec, "milestones")["status"], pcl.NOT_SEEN, "work package 6 is not built")
+        self.assertEqual(check(sec, "milestones")["status"], pcl.SEEN)
+        self.assertIn("talk=2", check(sec, "milestones")["detail"])
         self.assertIn("100 profiles: 31/49/20", check(sec, "skill_profile")["detail"])
         self.assertIn("in/out=0.25", check(sec, "mistakes")["detail"])
         self.assertIn("rose between runs in albion-crystal-cave", check(sec, "raid_learn")["detail"])

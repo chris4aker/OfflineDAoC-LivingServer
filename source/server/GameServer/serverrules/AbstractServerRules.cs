@@ -1102,7 +1102,8 @@ namespace DOL.GS.ServerRules
             // Support bots earn the same kill credit without duplicating XP awards.
             var expeditionOwner = AutonomousRealmRaid.LootOwner(killedNpc,
                 botCountAndDamage.ToDictionary(pair => pair.Key, pair => pair.Value.Damage)) as RealmRaidLootOwner;
-            if (expeditionOwner != null && AutonomousRealmRaid.IsHighEndRaidEncounter(killedNpc))
+            bool highEndRaidKill = expeditionOwner != null && AutonomousRealmRaid.IsHighEndRaidEncounter(killedNpc);
+            if (highEndRaidKill)
             {
                 // the real players in a high-end raid encounter get their quarter of its loot (owner 2026-10-31): whoever
                 // fought it, or stands with the expedition's realm by the boss. Only these bosses: every other kill keeps
@@ -1133,6 +1134,8 @@ namespace DOL.GS.ServerRules
             if (killedNpc.CampBonus > 0)
                 killedNpc.CampBonus -= 0.02;
 
+            // Bots as people WP6: the raiders at a high-end raid kill, and the items its loot really gives them (dragon trophies).
+            using var milestoneLoot = BotMilestoneLife.RaidLoot(highEndRaidKill ? killedNpc : null, expeditionOwner?.Members);
             if (killedNpc.CanDropLoot && !NoItemLoot(killedNpc))
             {
                 // The set contains potential item owners (entities able to pick the item up). They are the battlegroup, group, and player that did the most damage.

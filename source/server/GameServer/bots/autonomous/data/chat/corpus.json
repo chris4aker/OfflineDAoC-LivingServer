@@ -560424,6 +560424,5066 @@
    "id": "02a7ce92f59a"
   },
   {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} now, over halfway to 50",
+   "family": "b8dca1c563",
+   "id": "972121982d0d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} now, past the halfway mark to 50",
+   "family": "b8dca1c563",
+   "id": "25e9bd140cb8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50. the grind is real",
+   "family": "31517cf0f7",
+   "id": "383930174cae"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50. slow going but getting there",
+   "family": "31517cf0f7",
+   "id": "6958cd158115"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "more than halfway to 50. the grind is real",
+   "family": "31517cf0f7",
+   "id": "63a99ae4308b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "more than halfway to 50. slow going but getting there",
+   "family": "31517cf0f7",
+   "id": "09a341fc55af"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50 finally. {level} and climbing",
+   "family": "f05e864b49",
+   "id": "121dd62e703d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50 at last. {level} and climbing",
+   "family": "f05e864b49",
+   "id": "bc95df96d1b1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to 50 finally. {level} and climbing",
+   "family": "f05e864b49",
+   "id": "b704aca18855"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to 50 at last. {level} and climbing",
+   "family": "f05e864b49",
+   "id": "9b549206b508"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level}, the back half of the 40s. 50 is starting to look real",
+   "family": "d06c63475a",
+   "id": "26252e66848d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level}, the long end of the 40s. 50 is starting to look real",
+   "family": "d06c63475a",
+   "id": "88773f11bb01"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway there. 50 here i come",
+   "family": "578f7d0a5c",
+   "id": "333aa3623ee7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway there. cant wait for 50",
+   "family": "578f7d0a5c",
+   "id": "762175a967e3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "half way there. 50 here i come",
+   "family": "578f7d0a5c",
+   "id": "feef51ea8f98"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "half way there. cant wait for 50",
+   "family": "578f7d0a5c",
+   "id": "c475a06cb7f8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "ok im past halfway to 50 now. still a ways to go",
+   "family": "d0af17e734",
+   "id": "7c86eead3a25"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "ok im past halfway to 50 now. plenty left to grind",
+   "family": "d0af17e734",
+   "id": "5dc1dd46a2e4"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "so im past halfway to 50 now. still a ways to go",
+   "family": "d0af17e734",
+   "id": "e4aeaaea6f65"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "so im past halfway to 50 now. plenty left to grind",
+   "family": "d0af17e734",
+   "id": "c67adec0584a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} and over halfway to 50, cant stop now",
+   "family": "5e1caef32f",
+   "id": "e4de0194a283"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} and over halfway to 50, no turning back",
+   "family": "5e1caef32f",
+   "id": "834250bd7838"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50. best xp of my life",
+   "family": "45c9bf7b8f",
+   "id": "fb3332ae40cc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50. camping hard",
+   "family": "45c9bf7b8f",
+   "id": "1c8dd7d448fc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to 50. best xp of my life",
+   "family": "45c9bf7b8f",
+   "id": "c2e15b1a4b50"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to 50. camping hard",
+   "family": "45c9bf7b8f",
+   "id": "dd9c577747bd"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "math says im halfway to 50. {level}, back to the camp",
+   "id": "11100364a83c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 guys! someone throw a party",
+   "family": "10b2e573d9",
+   "id": "6841b10afdd2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 guys! ill throw a party at 50",
+   "family": "10b2e573d9",
+   "id": "c13b1371d9ad"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 all! someone throw a party",
+   "family": "10b2e573d9",
+   "id": "6d15a4653c6e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 all! ill throw a party at 50",
+   "family": "10b2e573d9",
+   "id": "588e95c77b50"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50. no sleep till 50",
+   "family": "9e0bc28137",
+   "id": "436992f42cb0"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to 50. sleep is for 50s",
+   "family": "9e0bc28137",
+   "id": "13782a2da12e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50. no sleep till 50",
+   "family": "9e0bc28137",
+   "id": "06e520268bee"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50. sleep is for 50s",
+   "family": "9e0bc28137",
+   "id": "a40e1874ea7a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 and i havent died in a while. new record",
+   "family": "2bdfaaad10",
+   "id": "9411ceb3ad53"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 and i havent died in a while. not bad",
+   "family": "2bdfaaad10",
+   "id": "09d6cdfac383"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 and only died twice today. new record",
+   "family": "2bdfaaad10",
+   "id": "b953bfa7e692"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to 50 and only died twice today. not bad",
+   "family": "2bdfaaad10",
+   "id": "06b1233159bc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} and halfway to 50. still havent seen half the map",
+   "family": "d48c15f11f",
+   "id": "b05b58568f56"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} and halfway to 50. so many places left to see",
+   "family": "d48c15f11f",
+   "id": "5b0b291ab2cc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "halfway to 50, then back to the forge",
+   "family": "d2c3e2731e",
+   "id": "982aa49f65bb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "halfway to 50, then i can craft in peace",
+   "family": "d2c3e2731e",
+   "id": "76065547e432"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{bubbles} bubbles to 50",
+   "id": "d2cf8aa43dde"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles left to 50. so close",
+   "family": "60e4353a2f",
+   "id": "86e177a61356"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles left to 50. almost there",
+   "family": "60e4353a2f",
+   "id": "79ee447658eb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles left till 50. so close",
+   "family": "60e4353a2f",
+   "id": "9c0c3c81f0aa"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles left till 50. almost there",
+   "family": "60e4353a2f",
+   "id": "17d15d05c679"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles to go to 50. so close",
+   "family": "60e4353a2f",
+   "id": "b33e7619aa5e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles to go to 50. almost there",
+   "family": "60e4353a2f",
+   "id": "97e7dc293dc8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles to go till 50. so close",
+   "family": "60e4353a2f",
+   "id": "535cb540282f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{bubbles} bubbles to go till 50. almost there",
+   "family": "60e4353a2f",
+   "id": "4abbb059a682"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "only {bubbles} bubbles to 50 now",
+   "family": "fe2ccbf5bb",
+   "id": "b57d62e41632"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "only {bubbles} bubbles to 50 left",
+   "family": "fe2ccbf5bb",
+   "id": "92fd747f5bdb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "just {bubbles} bubbles to 50 now",
+   "family": "fe2ccbf5bb",
+   "id": "75808ed58c84"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "just {bubbles} bubbles to 50 left",
+   "family": "fe2ccbf5bb",
+   "id": "496835def417"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "49 and {bubbles} bubbles to go. 50 tonight maybe",
+   "family": "c327688ead",
+   "id": "575a5ee3a6e3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "49 and {bubbles} bubbles to go. 50 soon",
+   "family": "c327688ead",
+   "id": "e0a672a17c0f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "getting there, {bubbles} bubbles to 50",
+   "family": "a852222e86",
+   "id": "5a8c873f8f01"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "close now, {bubbles} bubbles to 50",
+   "family": "a852222e86",
+   "id": "6b7424ee1e19"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50. nobody talk to me",
+   "family": "3bb75f9d52",
+   "id": "3bbaa2eb145e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50. dont distract me",
+   "family": "3bb75f9d52",
+   "id": "5dfdb115fc35"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50!! be there for the ding",
+   "family": "ddb1bfdf9f",
+   "id": "236e7d5715a3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50!! who wants to see the ding",
+   "family": "ddb1bfdf9f",
+   "id": "e6a91bcb5796"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50, not logging till i ding",
+   "family": "cdaa731fbb",
+   "id": "fb3cf11e4e3d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_bubbles",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    49,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{bubbles} bubbles to 50, staying up for this",
+   "family": "cdaa731fbb",
+   "id": "b590c6c746db"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50 now",
+   "family": "39ee848eb2",
+   "id": "e497fdd2f56d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50 finally",
+   "family": "39ee848eb2",
+   "id": "19f1d92f1016"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50 now",
+   "family": "39ee848eb2",
+   "id": "2841b5fecfd8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50 finally",
+   "family": "39ee848eb2",
+   "id": "a08564b40bdf"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "so close to 50. almost there",
+   "family": "d0a42d34a1",
+   "id": "d9db81d43ff6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "so close to 50. nearly there",
+   "family": "d0a42d34a1",
+   "id": "9b56e1fd1640"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "50 is right there. almost there",
+   "family": "d0a42d34a1",
+   "id": "5e47834760f2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "50 is right there. nearly there",
+   "family": "d0a42d34a1",
+   "id": "28f5701873f9"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50, i can taste it",
+   "family": "ec2d23bd21",
+   "id": "d632ce6229e9"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50, can see it from here",
+   "family": "ec2d23bd21",
+   "id": "8154511b5b0a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50, i can taste it",
+   "family": "ec2d23bd21",
+   "id": "7c0b97f2c719"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50, can see it from here",
+   "family": "ec2d23bd21",
+   "id": "6f11f36d76e9"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "last stretch to 50",
+   "family": "9e148debcc",
+   "id": "9792065389d7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "home stretch to 50",
+   "family": "9e148debcc",
+   "id": "c3f5e1d2691b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost there. 50 soon",
+   "family": "25945b4e6d",
+   "id": "d3fd29f1efb5"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost there. 50 any time now",
+   "family": "25945b4e6d",
+   "id": "5fa8b8d9ec07"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly there. 50 soon",
+   "family": "25945b4e6d",
+   "id": "42c0f5268033"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly there. 50 any time now",
+   "family": "25945b4e6d",
+   "id": "f3d7e8f0a3bf"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50. one more good camp and its done",
+   "family": "baaccf1253",
+   "id": "2f6e7de3a246"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost 50. a few more pulls and its done",
+   "family": "baaccf1253",
+   "id": "9c1d79a20264"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50. one more good camp and its done",
+   "family": "baaccf1253",
+   "id": "f1c2eef3766b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly 50. a few more pulls and its done",
+   "family": "baaccf1253",
+   "id": "6ab3eac74785"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "almost 50, if i dont die first",
+   "family": "0244933ed3",
+   "id": "c271190e7b07"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_close",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "almost 50, as long as i stop dying",
+   "family": "0244933ed3",
+   "id": "3add75a559d2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "over halfway to rr5",
+   "family": "2181b06e12",
+   "id": "7a9bc16330f6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "past halfway to rr5",
+   "family": "2181b06e12",
+   "id": "ff085d79b1fb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "halfway to rr5 now. the frontier pays",
+   "family": "ea89070a81",
+   "id": "693b55d4011e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "halfway to rr5 now. keep the fights coming",
+   "family": "ea89070a81",
+   "id": "b414c3364e28"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "halfway to rr5 already. the frontier pays",
+   "family": "ea89070a81",
+   "id": "49588f0d206b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "halfway to rr5 already. keep the fights coming",
+   "family": "ea89070a81",
+   "id": "16163ce49853"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "more than halfway to rr5 now. the frontier pays",
+   "family": "ea89070a81",
+   "id": "d8ffa1ec4261"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "more than halfway to rr5 now. keep the fights coming",
+   "family": "ea89070a81",
+   "id": "cc5001333107"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "more than halfway to rr5 already. the frontier pays",
+   "family": "ea89070a81",
+   "id": "88185359a3be"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "more than halfway to rr5 already. keep the fights coming",
+   "family": "ea89070a81",
+   "id": "ea2259bd2f36"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5. long way still",
+   "family": "3cb6bf4c2b",
+   "id": "29b14f15c761"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5. long road still",
+   "family": "3cb6bf4c2b",
+   "id": "0ae8ec0b833c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "half way to rr5. long way still",
+   "family": "3cb6bf4c2b",
+   "id": "eb2125eab1e8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "half way to rr5. long road still",
+   "family": "3cb6bf4c2b",
+   "id": "e4821e61e0da"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to rr5, see you at the keeps",
+   "family": "32463076fb",
+   "id": "cb7169147678"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to rr5, see you out there",
+   "family": "32463076fb",
+   "id": "1f50747af909"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to rr5, see you at the keeps",
+   "family": "32463076fb",
+   "id": "098870b0fcfa"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "past halfway to rr5, see you out there",
+   "family": "32463076fb",
+   "id": "9e226cf6c214"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 and counting. who is coming out",
+   "family": "aaa9933a47",
+   "id": "55eb04664c2e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 and counting. anyone want to roam",
+   "family": "aaa9933a47",
+   "id": "7a7d1172363f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 and climbing. who is coming out",
+   "family": "aaa9933a47",
+   "id": "d2852b3b3183"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 and climbing. anyone want to roam",
+   "family": "aaa9933a47",
+   "id": "8cbcda2fe18b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to rr5. frontier every night",
+   "family": "229e506dce",
+   "id": "431a134c7649"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "over halfway to rr5. living in the frontier",
+   "family": "229e506dce",
+   "id": "54bdc14f59b8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5. frontier every night",
+   "family": "229e506dce",
+   "id": "e852e2d3153e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5. living in the frontier",
+   "family": "229e506dce",
+   "id": "e0e1388935d7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 thanks to you all. best realm",
+   "family": "d34a6ac09d",
+   "id": "9b8bdd0ad617"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 thanks to you all. good fights",
+   "family": "d34a6ac09d",
+   "id": "3c7a11077c6a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 thanks to the groups. best realm",
+   "family": "d34a6ac09d",
+   "id": "51753bc4e527"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_half",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "halfway to rr5 thanks to the groups. good fights",
+   "family": "d34a6ac09d",
+   "id": "aebed4caac17"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "about {count}k rps to rr5",
+   "family": "75a5a8dd65",
+   "id": "6e48cb23726e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "around {count}k rps to rr5",
+   "family": "75a5a8dd65",
+   "id": "7769486477b3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5, about {count}k to go",
+   "family": "7bdbe4debc",
+   "id": "d324e7be3f1d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5, around {count}k to go",
+   "family": "7bdbe4debc",
+   "id": "5070584305c7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5, about {count}k to go",
+   "family": "7bdbe4debc",
+   "id": "bc9189f6ce5e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5, around {count}k to go",
+   "family": "7bdbe4debc",
+   "id": "9fd56bb5871d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count}k rps left to rr5",
+   "family": "8a75841d0b",
+   "id": "b3ac8f580b0f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count}k rps to go to rr5",
+   "family": "8a75841d0b",
+   "id": "e9d5b34540d1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count}k realm points left to rr5",
+   "family": "8a75841d0b",
+   "id": "8f77e9b66ab1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count}k realm points to go to rr5",
+   "family": "8a75841d0b",
+   "id": "9cb35f8190ea"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5. a few more fights",
+   "family": "3378203123",
+   "id": "c2ea2ecf85e9"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5. a couple more good fights",
+   "family": "3378203123",
+   "id": "97875424e082"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5. a few more fights",
+   "family": "3378203123",
+   "id": "6102d1936d5c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5. a couple more good fights",
+   "family": "3378203123",
+   "id": "0b5b88ea9a5c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count}k to rr5. need a big fight",
+   "family": "2893252e97",
+   "id": "42cb81e93ef6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count}k to rr5. need a keep take",
+   "family": "2893252e97",
+   "id": "ee073eb90cf8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5, {count}k left. not logging till i get it",
+   "family": "018f50c3f2",
+   "id": "dd66c80dc001"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "almost rr5, {count}k left. staying out till i get it",
+   "family": "018f50c3f2",
+   "id": "f9851820cb59"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5, {count}k left. not logging till i get it",
+   "family": "018f50c3f2",
+   "id": "5bab9e63109e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_close",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "nearly rr5, {count}k left. staying out till i get it",
+   "family": "018f50c3f2",
+   "id": "9e51039899c2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally rr5!",
+   "family": "836d187a26",
+   "id": "50bbfdb1626e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "at last rr5!",
+   "family": "836d187a26",
+   "id": "dedaf35e0c91"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 finally. thanks all",
+   "family": "f2fa7ef83e",
+   "id": "cd047fd99f92"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 finally. ty all for the groups",
+   "family": "f2fa7ef83e",
+   "id": "c2483de294be"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 at last. thanks all",
+   "family": "f2fa7ef83e",
+   "id": "8caa41e9c4b4"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 at last. ty all for the groups",
+   "family": "f2fa7ef83e",
+   "id": "5ce78b539304"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "woot rr5!! took long enough",
+   "family": "26d89dcdc7",
+   "id": "f63f595aa5d4"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "woot rr5!! took forever",
+   "family": "26d89dcdc7",
+   "id": "bf439542e177"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "yes rr5!! took long enough",
+   "family": "26d89dcdc7",
+   "id": "9b74ce1d5aba"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "yes rr5!! took forever",
+   "family": "26d89dcdc7",
+   "id": "54a9e00fbe84"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "just hit rr5. what a night",
+   "family": "15edb872e3",
+   "id": "b1eb0514b423"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "just hit rr5. good fights out there",
+   "family": "15edb872e3",
+   "id": "f75219f2b8f4"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 baby. see you in the frontier",
+   "family": "bfea2ed61b",
+   "id": "77d77abb72e3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 baby. back to the keeps",
+   "family": "bfea2ed61b",
+   "id": "837e16f12d21"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 woot. see you in the frontier",
+   "family": "bfea2ed61b",
+   "id": "84101bfb0c1b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 woot. back to the keeps",
+   "family": "bfea2ed61b",
+   "id": "0ce0fa8c4542"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "rr5! and i still pull too much",
+   "family": "b947cbe1da",
+   "id": "3c34068a19a6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "rr5! now who wants to roam",
+   "family": "b947cbe1da",
+   "id": "a4ea7ecd28f7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5!! couldnt have done it without you guys",
+   "family": "830e53084d",
+   "id": "15bd47c19845"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5!! couldnt have done it without you all",
+   "family": "830e53084d",
+   "id": "1b0ea501f50b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 woot! couldnt have done it without you guys",
+   "family": "830e53084d",
+   "id": "324a89f2edb1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "rr5_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "rr5 woot! couldnt have done it without you all",
+   "family": "830e53084d",
+   "id": "33ba33f10d4a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "no drop off {boss} for me again. next time",
+   "family": "6a4af3de18",
+   "id": "871103c953be"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "no drop off {boss} for me again. maybe next raid",
+   "family": "6a4af3de18",
+   "id": "85c3e916535c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "no drop off {boss} for me this time. next time",
+   "family": "6a4af3de18",
+   "id": "c8aec3724f7f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "no drop off {boss} for me this time. maybe next raid",
+   "family": "6a4af3de18",
+   "id": "add4d4857cbc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} big kills and still nothing for me. one day",
+   "family": "cf9c64bcdd",
+   "id": "eababc839ad2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} big kills and still nothing for me. someday",
+   "family": "cf9c64bcdd",
+   "id": "181771071849"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} big kills and not one drop for me. one day",
+   "family": "cf9c64bcdd",
+   "id": "0ca334b94ba8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} big kills and not one drop for me. someday",
+   "family": "cf9c64bcdd",
+   "id": "2b60546d760e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} boss kills and still nothing for me. one day",
+   "family": "cf9c64bcdd",
+   "id": "7aad4642d4c4"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} boss kills and still nothing for me. someday",
+   "family": "cf9c64bcdd",
+   "id": "48375891c857"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} boss kills and not one drop for me. one day",
+   "family": "cf9c64bcdd",
+   "id": "c73d10cd89fe"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{count} boss kills and not one drop for me. someday",
+   "family": "cf9c64bcdd",
+   "id": "cb41d1034bb5"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "grats to the lucky ones. nothing off {boss} for me again",
+   "family": "987828c311",
+   "id": "4f60ff78f747"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "grats to the lucky ones. nothing off {boss} for me",
+   "family": "987828c311",
+   "id": "cb2baef896ec"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "gz to those who got loot. nothing off {boss} for me again",
+   "family": "987828c311",
+   "id": "424d274037bb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "gz to those who got loot. nothing off {boss} for me",
+   "family": "987828c311",
+   "id": "537fac59c5c3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} down and no drop for me. next one maybe",
+   "family": "aa7e622c86",
+   "id": "50385f1849a5"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} down and no drop for me. next raid maybe",
+   "family": "aa7e622c86",
+   "id": "e2210d7a1843"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} down and nothing for me. next one maybe",
+   "family": "aa7e622c86",
+   "id": "1451c76e4b63"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} down and nothing for me. next raid maybe",
+   "family": "aa7e622c86",
+   "id": "b7a653269231"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} dead and no drop for me. next one maybe",
+   "family": "aa7e622c86",
+   "id": "ca2780dfae9d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} dead and no drop for me. next raid maybe",
+   "family": "aa7e622c86",
+   "id": "f13fd658cecf"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} dead and nothing for me. next one maybe",
+   "family": "aa7e622c86",
+   "id": "a1127f2d2957"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "{boss} dead and nothing for me. next raid maybe",
+   "family": "aa7e622c86",
+   "id": "903518a10e71"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nothing off {boss} for me but what a raid",
+   "family": "48cb16d62a",
+   "id": "4c8175436ffa"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "nothing off {boss} for me but great raid all",
+   "family": "48cb16d62a",
+   "id": "3f24546b0b51"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "no loot off {boss} again. at least the xp",
+   "family": "dc593221a9",
+   "id": "1f11deba0af1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_try",
+   "who": [
+    "Leveler"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "no loot off {boss} again. oh well",
+   "family": "dc593221a9",
+   "id": "6da084f7384e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills now and still no drop for me",
+   "family": "49452fe27c",
+   "id": "a05835687b60"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills now and not one item for me",
+   "family": "49452fe27c",
+   "id": "370a71dbec45"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} big kills now and still no drop for me",
+   "family": "49452fe27c",
+   "id": "4981b4b452b1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} big kills now and not one item for me",
+   "family": "49452fe27c",
+   "id": "7561a8d6a1e2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} boss kills and nothing. the loot gods hate me",
+   "family": "5917bf8cf3",
+   "id": "662994250437"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} boss kills and nothing. i must be cursed",
+   "family": "5917bf8cf3",
+   "id": "10355558673d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills and nothing. the loot gods hate me",
+   "family": "5917bf8cf3",
+   "id": "bb6a7749075e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills and nothing. i must be cursed",
+   "family": "5917bf8cf3",
+   "id": "44e0952b7a31"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "still nothing off {boss}. thats {count} raid kills with nothing",
+   "family": "f929107f59",
+   "id": "14c855d87efb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "still nothing off {boss}. thats {count} raid kills dry",
+   "family": "f929107f59",
+   "id": "26de6f37ba24"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "still nothing off {boss}. thats {count} big kills with nothing",
+   "family": "f929107f59",
+   "id": "ba8ecf5b3eb7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "still nothing off {boss}. thats {count} big kills dry",
+   "family": "f929107f59",
+   "id": "4be23581a049"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yet again nothing off {boss}. thats {count} raid kills with nothing",
+   "family": "f929107f59",
+   "id": "bdcb59a8ccd9"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yet again nothing off {boss}. thats {count} raid kills dry",
+   "family": "f929107f59",
+   "id": "b02d1e029a91"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yet again nothing off {boss}. thats {count} big kills with nothing",
+   "family": "f929107f59",
+   "id": "5d79810dc209"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yet again nothing off {boss}. thats {count} big kills dry",
+   "family": "f929107f59",
+   "id": "bb51fc780f02"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills and still no drop. not stopping now",
+   "family": "72df10d61b",
+   "id": "c9458cb49fb1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} raid kills and still no drop. ill be there for the next one",
+   "family": "72df10d61b",
+   "id": "6cef2f90dcef"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} boss kills and still no drop. not stopping now",
+   "family": "72df10d61b",
+   "id": "515c0b9f0454"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "{count} boss kills and still no drop. ill be there for the next one",
+   "family": "72df10d61b",
+   "id": "5b93c7bdea5b"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count} big kills, zero drops. i want my dragon loot",
+   "family": "0639a32c51",
+   "id": "750ae19b4587"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_long",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{count} big kills, zero drops. someday i get my drop",
+   "family": "0639a32c51",
+   "id": "1adc8fa7f9a6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally got a drop off {boss}! {item}",
+   "family": "a73fa8d7dd",
+   "id": "8f42a873793e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "at last got a drop off {boss}! {item}",
+   "family": "a73fa8d7dd",
+   "id": "ec9da29ca28f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! finally",
+   "family": "655beaf9f2",
+   "id": "1b388f10ac37"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! at last",
+   "family": "655beaf9f2",
+   "id": "5f4f854faae8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} from {boss}. worth every raid",
+   "family": "967d0f93f6",
+   "id": "a78a78938ecb"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} from {boss}. worth the wait",
+   "family": "967d0f93f6",
+   "id": "1b799f6685ab"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} off {boss}. worth every raid",
+   "family": "967d0f93f6",
+   "id": "d2add09122ad"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} off {boss}. worth the wait",
+   "family": "967d0f93f6",
+   "id": "3cb6378a6782"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} from {boss}. worth every raid",
+   "family": "967d0f93f6",
+   "id": "398b6ac2d057"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} from {boss}. worth the wait",
+   "family": "967d0f93f6",
+   "id": "70c5d845e10a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} off {boss}. worth every raid",
+   "family": "967d0f93f6",
+   "id": "2d572fcd9acf"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} off {boss}. worth the wait",
+   "family": "967d0f93f6",
+   "id": "c751ebb55531"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "cant believe it, {item} off {boss}",
+   "family": "e04ed1442f",
+   "id": "1f0c2a8e25d1"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "no way, {item} off {boss}",
+   "family": "e04ed1442f",
+   "id": "96415033a9b7"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally some loot off {boss}: {item}",
+   "family": "d501b41170",
+   "id": "4397b7118f7c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "at last some loot off {boss}: {item}",
+   "family": "d501b41170",
+   "id": "b15224853ea3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! thanks everyone",
+   "family": "9f55ff4f4d",
+   "id": "3bb4dff615ba"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! ty all who came",
+   "family": "9f55ff4f4d",
+   "id": "6674272c260c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "finally, {item} off {boss}. all those raids paid off",
+   "family": "b2d2ca6724",
+   "id": "37b489ec15de"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "finally, {item} off {boss}. worth all those raids",
+   "family": "b2d2ca6724",
+   "id": "2c35d4f597ae"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last, {item} off {boss}. all those raids paid off",
+   "family": "b2d2ca6724",
+   "id": "2413cdfc5414"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last, {item} off {boss}. worth all those raids",
+   "family": "b2d2ca6724",
+   "id": "f904b1bab144"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz on rr5",
+   "family": "244a6d908d",
+   "id": "bb0260a8ee30"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats on rr5",
+   "family": "244a6d908d",
+   "id": "5453c299680a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "rr5, nice",
+   "family": "187b9dcf61",
+   "id": "8f8859e37627"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "rr5, grats",
+   "family": "187b9dcf61",
+   "id": "cfb7d79ea681"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz on the rank, well earned",
+   "family": "8811cdb79c",
+   "id": "a32e8589b3ab"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz on rr5, well earned",
+   "family": "8811cdb79c",
+   "id": "deccf55ccdc1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats on the rank, well earned",
+   "family": "8811cdb79c",
+   "id": "782b529ce1eb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats on rr5, well earned",
+   "family": "8811cdb79c",
+   "id": "2ef87dae7e2c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "nice, rr5 already",
+   "family": "1da719ae00",
+   "id": "bf121be11e23"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "nice, rr5 finally",
+   "family": "1da719ae00",
+   "id": "895a6b59c092"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats, see you in the frontier",
+   "family": "1ddc5c6c4b",
+   "id": "d23eafba4f35"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats, see you at the keeps",
+   "family": "1ddc5c6c4b",
+   "id": "a71b4ebfb3b7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz, see you in the frontier",
+   "family": "1ddc5c6c4b",
+   "id": "e02c73dbba48"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz, see you at the keeps",
+   "family": "1ddc5c6c4b",
+   "id": "07813ad48087"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Daredevil"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz rr5, now come roam with us",
+   "id": "369a4afe422b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "gz rr5, next stop rr6",
+   "family": "89729fce11",
+   "id": "4be9cfba0d10"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_rr5"
+   ],
+   "text": "grats rr5, next stop rr6",
+   "family": "89729fce11",
+   "id": "d52cfa7b1de5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "nice drop, gz",
+   "family": "ac59f01057",
+   "id": "8e21c1de57bb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "nice drop, grats",
+   "family": "ac59f01057",
+   "id": "94f81425d9d8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "sweet drop, gz",
+   "family": "ac59f01057",
+   "id": "8d1218b33d02"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "sweet drop, grats",
+   "family": "ac59f01057",
+   "id": "c320ab4b4c7e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "gz on the loot",
+   "family": "d22f602bf4",
+   "id": "f243f1d56e54"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats on the loot",
+   "family": "d22f602bf4",
+   "id": "438c608ad340"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "nice, gz on the {item}",
+   "family": "a340fcaf13",
+   "id": "2506ba11ddc1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "nice, grats on the {item}",
+   "family": "a340fcaf13",
+   "id": "00076038ee67"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "sweet, gz on the {item}",
+   "family": "a340fcaf13",
+   "id": "c6a2c682d618"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "sweet, grats on the {item}",
+   "family": "a340fcaf13",
+   "id": "c77afcabb15e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "gz, {boss} finally gave something up",
+   "family": "134abadc65",
+   "id": "705affc33552"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats, {boss} finally gave something up",
+   "family": "134abadc65",
+   "id": "1a49ef479642"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "lucky, grats",
+   "family": "4c5a9e886f",
+   "id": "8283f2e280d3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "gz!! well deserved",
+   "family": "089eca8ff3",
+   "id": "81dc5b17e837"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats!! so happy for you",
+   "family": "089eca8ff3",
+   "id": "246254f25fe1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats!! well deserved",
+   "family": "089eca8ff3",
+   "id": "8e81879f3432"
+  },
+  {
    "kind": "ding",
    "topic": "general",
    "who": [],
