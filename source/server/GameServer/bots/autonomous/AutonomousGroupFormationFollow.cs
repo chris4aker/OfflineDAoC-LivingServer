@@ -46,6 +46,17 @@ namespace DOL.GS
             public long RefreshedTick;
             public long TrailLeaderUntil;
             public bool StoodLastCheck;
+            // Bots as people 1.2, work package 5: the /stick line (BotStickLine) and a wall spot to wait on.
+            public bool Stick;
+            public long StickCheckTick;
+            public GameBot Ahead;
+            public float Gap;
+            public bool StickRunning;
+            public long NextLegTick;
+            public long LostUntil;
+            public Vector3 LostAim;
+            public float Behind;
+            public Vector3? HabitSpot;
         }
 
         private static readonly ConditionalWeakTable<GameBot, State> States = new();
@@ -83,8 +94,94 @@ namespace DOL.GS
             state.Offset = slot - center;
             state.Tight = tight;
             state.RefreshedTick = GameLoop.GameLoopTime;
+            RefreshHabits(follower, leader, state, tight);
             if (follower.movementComponent is NpcMovementComponent mover && mover.FollowTarget != leader)
                 follower.Follow(leader, 0, MaximumFollowDistance);
+        }
+
+        /// <summary>
+        /// Bots as people 1.2, work package 5, once an AI turn: whether this follower runs on the /stick line, who it
+        /// follows and its gap (BotStickLine), the 1-in-50 lost stick each 10 s of travel, and, while the leader stands,
+        /// sitting while it waits or a held keep's wall spot (BotMovementHabitsRuntime.WaitTurn).
+        /// </summary>
+        private static void RefreshHabits(GameBot follower, GameBot leader, State state, bool tight)
+        {
+            long now = GameLoop.GameLoopTime;
+            if (now >= state.StickCheckTick)
+            {
+                state.StickCheckTick = now + 5_000;
+                state.Stick = !tight && leader.IsAutonomousWorldBot && !leader.IsOnStableMasterRoute &&
+                    BotPeopleScope.Check(follower, BotPeopleRule.Movement, BotPeopleSwitches.Current.MoveStickLine, out _) ==
+                    BotPeopleRefusal.None;
+            }
+            bool leaderWalking = leader.IsMoving && leader.CurrentSpeed > 0;
+            if (state.Stick)
+            {
+                using var aiProfile = AiProfile.Scope(AiSystem.MovementHabits);
+                state.Ahead = StickAhead(follower, leader, out int followers);
+                state.Gap = BotStickLine.Gap(follower.DatabaseID > 0 ? follower.DatabaseID : follower.ObjectID, followers);
+                if (leaderWalking && state.Ahead != null)
+                {
+                    BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.StickMembers);
+                    if (now >= state.NextLegTick)
+                    {
+                        state.NextLegTick = now + BotStickLine.LegMilliseconds;
+                        if (now >= state.LostUntil && BotStickLine.LoseStick(Random.Shared.NextDouble()))
+                        {
+                            long lost = BotStickLine.LostMilliseconds(Random.Shared.NextDouble());
+                            state.LostUntil = now + lost;
+                            state.LostAim = new(state.Ahead.X, state.Ahead.Y, state.Ahead.Z);
+                            BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.StickLost);
+                            if (BotMovementHabitsRuntime.ShouldLog(BotMovementHabitsRuntime.EventTag.StickLost))
+                                BotMovementHabitsRuntime.Info($"BOT_MOVE_STICK_LOST bot=\"{follower.Name}\" id={follower.DatabaseID} " +
+                                    $"leader=\"{leader.Name}\" ahead=\"{state.Ahead.Name}\" gap={(int)state.Gap} lost_ms={lost} " +
+                                    $"region={follower.CurrentRegionID}");
+                        }
+                    }
+                    // The pace rule's catch-up measured from the line spot, not the formation slot (re-set every check).
+                    AutonomousGroupPace.CatchUp(follower, state.Behind, now);
+                }
+            }
+            else
+                state.Ahead = null;
+            if (!leaderWalking && !leader.InCombat && !follower.InCombat)
+            {
+                // Standing at its slot it waits; walking to its wall spot it keeps it.
+                if (!follower.IsMoving || state.HabitSpot != null)
+                    state.HabitSpot = BotMovementHabitsRuntime.WaitTurn(follower, BotMovementHabitsRuntime.WaitSpot.Formation, leader);
+            }
+            else if (state.HabitSpot != null)
+            {
+                state.HabitSpot = null;
+                BotMovementHabitsRuntime.EndWall(follower);
+            }
+        }
+
+        /// <summary>The one this follower sticks to: the nearest member above it in the group window that is on the line
+        /// with the same leader, or the leader (BotStickLine.Order); null when it is not found. Also the line's followers.</summary>
+        private static GameBot StickAhead(GameBot follower, GameBot leader, out int followers)
+        {
+            followers = 0;
+            if (follower.Group == null)
+                return null;
+            var members = follower.Group.GetMembersInTheGroup();
+            int count = Math.Min(members.Count, 16);
+            int leaderIndex = -1, mine = -1, previous = -1;
+            for (int i = 0; i < count; i++)
+                if (members[i] == leader)
+                    leaderIndex = i;
+            var inLine = new bool[count];
+            for (int i = 0; i < count; i++)
+                inLine[i] = members[i] is GameBot bot && bot != leader && bot.IsAlive && bot.CurrentRegion == follower.CurrentRegion &&
+                    (bot == follower || States.TryGetValue(bot, out State other) && other.Stick && other.Leader == leader);
+            int[] order = BotStickLine.Order(inLine, leaderIndex);
+            followers = BotStickLine.Followers(order);
+            for (int i = 0; i < count; i++)
+                if (members[i] == follower)
+                    mine = i;
+            if (mine >= 0)
+                previous = order[mine];
+            return previous >= 0 ? members[previous] as GameBot : null;
         }
 
         /// <summary>The follower takes another order (a route, a fight): its formation follow ends.</summary>
@@ -139,10 +236,40 @@ namespace DOL.GS
                 center = new Vector3(ahead.X, ahead.Y, leader.Z);
             }
             slot = center + state.Offset;
+            // Bots as people 1.2 (WP5): on the /stick line the member follows the one above it instead of its slot.
+            if (leaderWalking && state.Stick && StickSlot(bot, state, ref slot))
+                return true;
+            // A waiting member walks to its wall spot and sits there while the leader stands.
+            if (!leaderWalking && state.HabitSpot is Vector3 wall)
+                slot = wall;
             if (leaderWalking)
                 Measure(bot, state, new Vector3(leader.X, leader.Y, leader.Z) + state.Offset, leader.CurrentSpeed, slot);
             else
                 state.StoodLastCheck = false;
+            return true;
+        }
+
+        /// <summary>The follow aim on the /stick line (BotStickLine.AimFor), or false when the one ahead is gone (the slot then).</summary>
+        private static bool StickSlot(GameBot bot, State state, ref Vector3 slot)
+        {
+            GameBot ahead = state.Ahead;
+            if (ahead == null || !ahead.IsAlive || ahead.CurrentRegion != bot.CurrentRegion || ahead.ObjectState != GameObject.eObjectState.Active)
+                return false;
+            long now = GameLoop.GameLoopTime;
+            if (now < state.LostUntil)
+            {
+                // Lost stick: it runs on to where the one ahead was and stands there until it sticks again.
+                slot = state.LostAim;
+                return true;
+            }
+            Vector2 forward = Vector2.Zero;
+            if (ahead.IsMoving && ahead.CurrentSpeed > 0)
+                forward = BotCombatMovement.PointFromHeading(Vector2.Zero, ahead.Heading, 1f);
+            BotStickLine.Aim aim = BotStickLine.AimFor(new(bot.X, bot.Y), new(ahead.X, ahead.Y), forward, ahead.CurrentSpeed,
+                state.Gap, state.StickRunning);
+            state.StickRunning = aim.Run;
+            state.Behind = aim.Behind;
+            slot = new Vector3(aim.Point, aim.Run ? ahead.Z : bot.Z);
             return true;
         }
 

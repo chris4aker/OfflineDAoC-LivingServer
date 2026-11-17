@@ -2722,25 +2722,25 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, item 5's master switch (work package 5).
 		/// </summary>
-		[ServerProperty("bots", "bot_movement_habits", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS. In this build it changes nothing yet (work package 5).", true)]
+		[ServerProperty("bots", "bot_movement_habits", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS.", true)]
 		public static bool BOT_MOVEMENT_HABITS = true;
 
 		/// <summary>
 		/// Bots as people, work package 5.
 		/// </summary>
-		[ServerProperty("bots", "bot_move_strafe", "Bots as people (1.2): in an open-field RvR fight, melee gamebots circle-strafe their target and casters and healers face the enemy and back off in an arc, more often the better the bot. Needs bot_movement_habits and rvr_bot_field_tactics. Log: BOT_MOVE_STRAFE. In this build it changes nothing yet (work package 5).", true)]
+		[ServerProperty("bots", "bot_move_strafe", "Bots as people (1.2): in an open-field RvR fight, melee gamebots circle-strafe their target and casters and healers face the enemy and back off in an arc, more often the better the bot. Needs bot_movement_habits and rvr_bot_field_tactics. Log: BOT_MOVE_STRAFE.", true)]
 		public static bool BOT_MOVE_STRAFE = true;
 
 		/// <summary>
 		/// Bots as people, work package 5.
 		/// </summary>
-		[ServerProperty("bots", "bot_move_stick_line", "Bots as people (1.2): bot-only groups travelling in the open world run on /stick, each member following the one above it, so the group runs as a strung-out line; now and then one loses stick and catches up. Not on stable rides, raids, battleground waves or sieges. Needs bot_movement_habits. Log: BOT_MOVE_STICK_LOST. In this build it changes nothing yet (work package 5).", true)]
+		[ServerProperty("bots", "bot_move_stick_line", "Bots as people (1.2): bot-only groups travelling in the open world run on /stick, each member following the one above it, so the group runs as a strung-out line; now and then one loses stick and catches up. Not on stable rides, raids, battleground waves or sieges. Needs bot_movement_habits. Log: BOT_MOVE_STICK_LOST.", true)]
 		public static bool BOT_MOVE_STICK_LINE = true;
 
 		/// <summary>
 		/// Bots as people, work package 5.
 		/// </summary>
-		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL. In this build it changes nothing yet (work package 5).", true)]
+		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL.", true)]
 		public static bool BOT_MOVE_SIT_AND_WALLS = true;
 
 		/// <summary>
