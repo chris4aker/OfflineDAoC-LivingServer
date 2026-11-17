@@ -296,6 +296,259 @@ namespace DOL.UnitTests
             });
         }
 
+        // ---- the kiting group (stance Kite) -------------------------------------------------------------------------------
+
+        private static RvrCombatant Foe(eCharacterClass characterClass, Vector2 at, RvrControlState control = RvrControlState.None,
+            bool pet = false) => C(null, characterClass, (int)at.X, (int)at.Y, eRealm.Midgard, control: control, pet: pet);
+
+        /// <summary>The first step number from <paramref name="step"/> on at which this member makes no kite error.</summary>
+        private static long Clean(RvrSkillTier tier, long id, long step = 1)
+        {
+            while (RvrPositioning.KiteErrors(tier, id, step) != RvrKiteError.None)
+                step++;
+            return step;
+        }
+
+        [Test]
+        public void A_kite_step_backs_away_from_the_enemy_centroid_for_every_bearing()
+        {
+            const long Id = 7_001;
+            foreach (double bearing in Bearings)
+            {
+                Vector2 front = RvrPositioning.Direction(bearing);
+                Vector2 self = new(500, -300);
+                var enemies = ImmutableArray.Create(Foe(eCharacterClass.Berserker, self + front * 800),
+                    Foe(eCharacterClass.Runemaster, self + front * 1_700));
+                Vector2 centroid = self + front * 1_250;
+                long step = Clean(RvrSkillTier.Veteran, Id);
+                RvrKiteStep kite = RvrPositioning.KiteStep(self, null, bearing, enemies, centroid, null, RvrSkillTier.Veteran, Id, step,
+                    (_, _) => true);
+                Assert.That(kite.Spot, Is.Not.Null, $"bearing {bearing:F2}");
+                Vector2 leg = kite.Spot!.Value - self;
+                Assert.Multiple(() =>
+                {
+                    Assert.That(kite.Held, Is.EqualTo(RvrKiteHeld.None));
+                    Assert.That(Vector2.Dot(Vector2.Normalize(leg), -front), Is.GreaterThan(0.999f), "straight back, away from the centroid");
+                    Assert.That(leg.Length(), Is.EqualTo(RvrPositioning.KiteStepLength).Within(0.5f), "a short leg");
+                    Assert.That(kite.MeleeDistance, Is.EqualTo(800).Within(2f), "positions are whole units");
+                });
+
+                // the back-arc slot bends the leg sideways, never forward
+                Vector2 side = RvrPositioning.Direction(bearing + Math.PI / 2);
+                RvrKiteStep bent = RvrPositioning.KiteStep(self, self - front * 300 + side * 400, bearing, enemies, centroid, null,
+                    RvrSkillTier.Veteran, Id, step, (_, _) => true);
+                Vector2 bentLeg = bent.Spot!.Value - self;
+                Assert.That(Vector2.Dot(bentLeg, side), Is.GreaterThan(50), "toward its slot's side");
+                Assert.That(Vector2.Dot(bentLeg, -front), Is.GreaterThan(200), "still backing away");
+            }
+        }
+
+        [TestCase(RvrSkillTier.Casual)]
+        [TestCase(RvrSkillTier.Average)]
+        [TestCase(RvrSkillTier.Veteran)]
+        public void Kite_steps_keep_the_stand_off_distance_then_the_member_stands_and_casts(RvrSkillTier tier)
+        {
+            const long Id = 7_102;
+            Vector2 melee = Vector2.Zero, self = new(-600, 0);
+            var enemies = ImmutableArray.Create(Foe(eCharacterClass.Armsman, melee));
+            float standOff = RvrPositioning.KiteStandOffFor(tier, Id);
+            long step = 1;
+            int steps = 0;
+            while (true)
+            {
+                step = Clean(tier, Id, step);
+                RvrKiteStep kite = RvrPositioning.KiteStep(self, null, 0, enemies, melee, null, tier, Id, step++, (_, _) => true);
+                if (kite.Spot == null)
+                {
+                    Assert.That(kite.Held, Is.EqualTo(RvrKiteHeld.Clear));
+                    break;
+                }
+                Assert.That(Vector2.Distance(kite.Spot.Value, melee), Is.GreaterThan(Vector2.Distance(self, melee)), "every step gains distance");
+                Assert.That(kite.Length, Is.InRange(RvrPositioning.KiteMinStep, RvrPositioning.KiteStepLength));
+                self = kite.Spot.Value;
+                Assert.That(++steps, Is.LessThan(10));
+            }
+            float kept = Vector2.Distance(self, melee);
+            Assert.Multiple(() =>
+            {
+                Assert.That(kept, Is.GreaterThanOrEqualTo(standOff), "kept the stand-off distance");
+                Assert.That(kept, Is.LessThan(standOff + RvrPositioning.KiteMinStep + 1), "and no farther (still in cast range)");
+                Assert.That(standOff, Is.InRange(1_000f, 1_400f));
+                Assert.That(RvrPositioning.KiteStep(new(-1_500, 0), null, 0, enemies, melee, null, tier, Id, 1, (_, _) => true).Held,
+                    Is.EqualTo(RvrKiteHeld.Clear), "far enough: it does not step");
+                Assert.That(RvrPositioning.KiteStep(self, null, 0, ImmutableArray.Create(Foe(eCharacterClass.Wizard, new(-200, 0)),
+                    Foe(eCharacterClass.Berserker, new(-300, 0), RvrControlState.Mezzed), Foe(eCharacterClass.Unknown, new(-300, 0), pet: true)),
+                    melee, null, tier, Id, 1, (_, _) => true).Held, Is.EqualTo(RvrKiteHeld.NoMelee),
+                    "casters, mezzed fighters and pets do not chase: the layout applies");
+            });
+        }
+
+        [Test]
+        public void A_kite_step_never_takes_a_blocked_or_dangerous_leg_and_holds_instead()
+        {
+            const long Id = 7_204;
+            long step = Clean(RvrSkillTier.Veteran, Id);
+            Vector2 self = Vector2.Zero, melee = new(700, 0);
+            var chasers = ImmutableArray.Create(Foe(eCharacterClass.Berserker, melee));
+            RvrKiteStep Step(ImmutableArray<RvrCombatant> enemies, Func<Vector2, Vector2, bool> clear,
+                IReadOnlyList<AutonomousArmyDetour.Hazard> keeps = null) =>
+                RvrPositioning.KiteStep(self, null, 0, enemies, melee, keeps, RvrSkillTier.Veteran, Id, step, clear);
+
+            var tried = new List<Vector2>();
+            RvrKiteStep blocked = Step(chasers, (_, to) =>
+            {
+                tried.Add(to);
+                return false;
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(blocked.Spot, Is.Null);
+                Assert.That(blocked.Held, Is.EqualTo(RvrKiteHeld.Blocked), "no leg clear on the mesh: it holds and fights");
+                Assert.That(tried, Has.Count.EqualTo(1 + RvrPositioning.KiteDetourDegrees.Length * 2), "straight, then 35 and 70 degrees each side");
+            });
+
+            // only the straight leg is blocked (a ledge behind): it takes a detour leg that is clear
+            Vector2 straight = new(-RvrPositioning.KiteStepLength, 0);
+            RvrKiteStep detour = Step(chasers, (_, to) => Vector2.Distance(to, straight) > 1);
+            Assert.That(detour.Spot, Is.Not.Null);
+            Assert.That(Vector2.Distance(detour.Spot!.Value, straight), Is.GreaterThan(1));
+            Assert.That(detour.Spot.Value.X, Is.LessThan(-100), "still backing away");
+
+            // another enemy group behind: no leg toward it
+            var second = chasers.Add(Foe(eCharacterClass.Warrior, new(-1_200, 0))).Add(Foe(eCharacterClass.Hero, new(-1_200, 400)))
+                .Add(Foe(eCharacterClass.Champion, new(-1_200, -400)));
+            RvrKiteStep group = RvrPositioning.KiteStep(self, null, 0, second, melee, null, RvrSkillTier.Veteran, Id, step, (_, _) => true);
+            Assert.That(group.Spot, Is.Null);
+            Assert.That(group.Held, Is.EqualTo(RvrKiteHeld.EnemyGroup));
+
+            // an enemy keep behind: no leg into its guards' range
+            var keep = new[] { new AutonomousArmyDetour.Hazard(new(-1_500, 0), 3_000) };
+            RvrKiteStep guards = Step(chasers, (_, _) => true, keep);
+            Assert.That(guards.Spot, Is.Null);
+            Assert.That(guards.Held, Is.EqualTo(RvrKiteHeld.KeepGuards));
+            Assert.That(Step(chasers, (_, _) => true, [new(new(-1_500, 0), 1_000)]).Spot, Is.Not.Null, "a keep out of range does not stop it");
+            Assert.That(RvrPositioning.KiteHazard(self, new(300, 0), chasers, melee, keep), Is.EqualTo(RvrKiteHeld.None),
+                "inside the range, a leg away from the keep is fine");
+        }
+
+        [TestCase(RvrSkillTier.Casual, 0.35, 0.20, 0.25, 0.25)]
+        [TestCase(RvrSkillTier.Average, 0.15, 0.08, 0.10, 0.10)]
+        [TestCase(RvrSkillTier.Veteran, 0.05, 0.02, 0.03, 0.03)]
+        public void Each_tier_kites_with_its_share_of_mistakes(RvrSkillTier tier, double late, double wrongWay, double overrun, double chase)
+        {
+            const int Members = 20_000;
+            int lates = 0, wrongs = 0, overruns = 0, chases = 0;
+            float minStandOff = float.MaxValue, maxStandOff = 0;
+            for (long id = 1; id <= Members; id++)
+            {
+                RvrKiteError errors = RvrPositioning.KiteErrors(tier, 9_000_000 + id, 5);
+                lates += (errors & RvrKiteError.Late) != 0 ? 1 : 0;
+                wrongs += (errors & RvrKiteError.WrongWay) != 0 ? 1 : 0;
+                overruns += (errors & RvrKiteError.Overrun) != 0 ? 1 : 0;
+                chases += RvrPositioning.KiteChases(tier, 9_000_000 + id, 90_000) ? 1 : 0;
+                float standOff = RvrPositioning.KiteStandOffFor(tier, 9_000_000 + id);
+                minStandOff = Math.Min(minStandOff, standOff);
+                maxStandOff = Math.Max(maxStandOff, standOff);
+            }
+            float spread = RvrPositioning.KiteStandOffSpread(tier);
+            Assert.Multiple(() =>
+            {
+                Assert.That(lates / (double)Members, Is.EqualTo(late).Within(0.015), "backs off late");
+                Assert.That(wrongs / (double)Members, Is.EqualTo(wrongWay).Within(0.015), "runs the wrong way");
+                Assert.That(overruns / (double)Members, Is.EqualTo(overrun).Within(0.015), "runs too far");
+                Assert.That(chases / (double)Members, Is.EqualTo(chase).Within(0.015), "melee charges anyway");
+                Assert.That(minStandOff, Is.GreaterThanOrEqualTo(RvrPositioning.KiteStandOff - spread));
+                Assert.That(maxStandOff, Is.LessThanOrEqualTo(RvrPositioning.KiteStandOff + spread));
+            });
+            Assert.That(RvrPositioning.KiteStandOffSpread(RvrSkillTier.Veteran), Is.LessThan(RvrPositioning.KiteStandOffSpread(RvrSkillTier.Average)));
+            Assert.That(RvrPositioning.KiteStandOffSpread(RvrSkillTier.Average), Is.LessThan(RvrPositioning.KiteStandOffSpread(RvrSkillTier.Casual)));
+        }
+
+        [Test]
+        public void The_kite_errors_change_the_step()
+        {
+            Vector2 self = Vector2.Zero, melee = new(700, 0);
+            var enemies = ImmutableArray.Create(Foe(eCharacterClass.Berserker, melee));
+            RvrKiteStep With(RvrKiteError wanted, Vector2 at, out long id)
+            {
+                for (id = 1; ; id++)
+                    if (RvrPositioning.KiteErrors(RvrSkillTier.Casual, id, 1) == wanted)
+                        return RvrPositioning.KiteStep(at, null, 0, enemies, melee, null, RvrSkillTier.Casual, id, 1, (_, _) => true);
+            }
+            RvrKiteStep late = With(RvrKiteError.Late, self, out _);
+            RvrKiteStep lateClose = With(RvrKiteError.Late, new(400, 0), out _);
+            RvrKiteStep overrun = With(RvrKiteError.Overrun, self, out _);
+            RvrKiteStep wrong = With(RvrKiteError.WrongWay, self, out _);
+            Assert.Multiple(() =>
+            {
+                Assert.That(late.Held, Is.EqualTo(RvrKiteHeld.Clear), "late: 700 away it does not move yet");
+                Assert.That(lateClose.Spot, Is.Not.Null, "late: 300 away it finally runs");
+                Assert.That(overrun.Length, Is.EqualTo(RvrPositioning.KiteStepLength * RvrPositioning.KiteOverrunFactor).Within(0.5f), "too far");
+                double off = Math.Abs(Math.Atan2(wrong.Spot!.Value.Y, -wrong.Spot.Value.X) * 180 / Math.PI);
+                Assert.That(off, Is.InRange(RvrPositioning.KiteWrongWayMinDegrees - 0.5, RvrPositioning.KiteWrongWayMaxDegrees + 0.5),
+                    "the wrong way: well off the back direction");
+            });
+        }
+
+        [Test]
+        public void Melee_screen_the_backline_and_fight_only_what_reaches_it()
+        {
+            Vector2 enemy = new(2_000, 0);
+            var backline = new List<Vector2> { new(-100, 300), new(-100, -300) };
+            Vector2 screen = new(-100 + RvrPositioning.KiteScreenDistance, 0);
+            Assert.Multiple(() =>
+            {
+                (RvrKitePeel action, Vector2 spot) = RvrPositioning.KitePeel(new(900, 0), new(1_000, 0), backline, enemy, false, false);
+                Assert.That(action, Is.EqualTo(RvrKitePeel.Screen), "a far target: back to the backline instead of charging");
+                Assert.That(Vector2.Distance(spot, screen), Is.LessThan(1));
+                Assert.That(RvrPositioning.KitePeel(screen, new(1_000, 0), backline, enemy, false, false).Action, Is.EqualTo(RvrKitePeel.Stand));
+                Assert.That(RvrPositioning.KitePeel(new(900, 0), new(200, 250), backline, enemy, false, false).Action,
+                    Is.EqualTo(RvrKitePeel.Fight), "an enemy that reached the backline");
+                Assert.That(RvrPositioning.KitePeel(new(900, 0), new(1_000, 0), backline, enemy, true, false).Action,
+                    Is.EqualTo(RvrKitePeel.Fight), "hit in melee: it fights back");
+                Assert.That(RvrPositioning.KitePeel(new(900, 0), new(1_000, 0), backline, enemy, false, true).Action,
+                    Is.EqualTo(RvrKitePeel.Fight), "the tier's charge anyway");
+                Assert.That(RvrPositioning.KitePeel(new(900, 0), new(1_000, 0), [], enemy, false, false).Action,
+                    Is.EqualTo(RvrKitePeel.Fight), "nobody to screen");
+            });
+        }
+
+        [Test]
+        public void Stances_other_than_kite_place_as_before() => Assert.Multiple(() =>
+        {
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Engage), Is.True);
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Observe), Is.True);
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Hold), Is.True);
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Kite), Is.True, "kiting now moves the group");
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Retreat), Is.False, "the stance's own retreat");
+            Assert.That(RvrPositioning.PlacesIn(RvrStance.Regroup), Is.False, "the stance's own regroup");
+            // the layout the other stances use is untouched by the kite rules
+            (List<RvrPositioning.Placed> members, Vector2 enemy) = Group(0.3, eCharacterClass.Cleric, eCharacterClass.Wizard);
+            Assert.That(RvrPositioning.Layout(members, enemy, RvrSkillTier.Veteran, false, 0, errors: false),
+                Is.EqualTo(RvrPositioning.Layout(members, enemy, RvrSkillTier.Veteran, false, 0, errors: false)));
+        });
+
+        [Test]
+        public void The_kite_turn_keeps_out_of_player_groups_companions_raids_and_keeps()
+        {
+            Bot enemy = Gamebot(realm: eRealm.Midgard, objective: "RvR");
+            enemy.Region = 250;
+            long builds = RvrFightBoards.Builds;
+            Bot raider = Gamebot(objective: "RvR"), raidMate = Gamebot(objective: "RvR");
+            raider.Region = raidMate.Region = 250;
+            GroupOf(raider, raidMate);
+            BotDutyLeases.Claim(raider, Kind.RealmRaid, "df-raid", DutyLeaseReason.RaidReserved);
+            NoOpinion(new BotBrain { Body = raider }, enemy, "a raider");
+            Bot companion = Companion();
+            companion.Region = 250;
+            NoOpinion(new BotBrain { Body = companion }, enemy, "a companion");
+            Bot invited = Gamebot(objective: "RvR");
+            invited.Region = 250;
+            JoinPlayersGroup(invited, RealPlayer());
+            NoOpinion(new BotBrain { Body = invited }, enemy, "a player's group");
+            Assert.That(RvrFightBoards.Builds, Is.EqualTo(builds), "no board, so no stance and no kite step");
+        }
+
         // ---- scope guard --------------------------------------------------------------------------------------------------
 
         private readonly Dictionary<string, bool> _switches = new();
