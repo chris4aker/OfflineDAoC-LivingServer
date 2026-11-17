@@ -169,6 +169,9 @@ public static class BotWayFinding
 
     public const long FollowMaxMilliseconds = 10 * 60_000;
 
+    /// <summary>A leader at most this many levels above or below the follower: what it walks past is the follower's own con.</summary>
+    public const int FollowLevelGap = 2;
+
     /// <summary>The design's search budget for tagging along: 4 searches a second server-wide.</summary>
     public const int FollowSearchesPerSecond = 4;
 
@@ -254,8 +257,8 @@ public static class BotWayFinding
     }
 
     /// <summary>
-    /// The branch a wrong road takes from <paramref name="from"/>: one of the route network's anchors (nearest first, as
-    /// <see cref="AutonomousZoneRoads.AnchorsNear"/> gives them) that lies 750-5,000 units away and 60-150 degrees off the way
+    /// The branch a wrong road takes from <paramref name="from"/>: one of the route network's anchors (as
+    /// <see cref="AutonomousZoneRoads.AnchorsNear"/> gives them: proven walking legs, which may cross open ground) that lies 750-5,000 units away and 60-150 degrees off the way
     /// to <paramref name="goal"/>, so neither the right road nor straight back. Picked by <paramref name="roll"/> (0 to 1).
     /// -1 for none. Pure.
     /// </summary>
@@ -325,11 +328,14 @@ public static class BotWayFinding
         return default;
     }
 
-    /// <summary>Whether a realm-mate may be tagged along behind: near enough, going to the same place, knows it, free to lead. Pure.</summary>
+    /// <summary>
+    /// Whether a realm-mate may be tagged along behind: near enough, going to the same place, knows it, free to lead, and within
+    /// <see cref="FollowLevelGap"/> levels of the follower (a level 20 behind a level 45 would walk past monsters orange to it). Pure.
+    /// </summary>
     public static bool FollowFits(float distance, bool sameDestination, BotPlaceKnowing leaderKnows, bool leaderRiding, bool leaderFighting,
-        bool leaderGroupedWithPlayer) =>
+        bool leaderGroupedWithPlayer, int levelGap) =>
         distance <= FollowSearchRadius && sameDestination && leaderKnows == BotPlaceKnowing.Known && !leaderRiding && !leaderFighting &&
-        !leaderGroupedWithPlayer;
+        !leaderGroupedWithPlayer && Math.Abs(levelGap) <= FollowLevelGap;
 
     /// <summary>What a tagging bot does at this distance from its leader: -1 wait (closer than 300), 0 keep going, 1 catch up. Pure.</summary>
     public static int FollowStep(float distance, float desired) =>
@@ -495,6 +501,85 @@ public static class BotWayFinding
         return outcome;
     }
 
+    // ---- monsters on the way (today's route-threat rules) ------------------------------------------------------------------
+
+    private static bool IsThreat(GameBot bot, GameNPC npc, out StandardMobBrain mob)
+    {
+        mob = null;
+        if (npc == null || npc is GameBot || !npc.IsAlive || npc.Realm != eRealm.None || npc.InCombat)
+            return false;
+        mob = npc.Brain as StandardMobBrain;
+        return mob != null && mob.AggroRange > 0 && mob.AggroLevel > 0 && mob.CanAggroTarget(bot);
+    }
+
+    /// <summary>
+    /// A wrong leg is refused before it starts when an aggressive monster more than 2 levels above the bot is within 1,500
+    /// units of it (owner decision 7), or when today's route-threat guard would act on one beside it (yellow or worse to the
+    /// bot, a pack, a boss: AutonomousRouteThreatPolicy.WayWalkMustYield). One scan, at the decision.
+    /// </summary>
+    public static bool WrongLegThreatened(GameBot bot, Vector3 from, Vector3 to)
+    {
+        float reach = Vector3.Distance(from, to) + AutonomousRouteThreatPolicy.WrongRoadThreatRadius;
+        List<GameNPC> near = bot.GetNPCsInRadius((ushort)Math.Min(ushort.MaxValue, reach));
+        foreach (GameNPC npc in near)
+        {
+            if (!IsThreat(bot, npc, out StandardMobBrain mob))
+                continue;
+            Vector3 at = new(npc.X, npc.Y, npc.Z);
+            if (AutonomousRouteThreatPolicy.WrongLegThreatened(from, to, bot.Level, npc.Level, true, at))
+                return true;
+            if (AutonomousRouteThreatPolicy.SegmentDistance2D(from, to, at) <= mob.AggroRange + AutonomousRouteThreatPolicy.RangedMargin &&
+                AutonomousRouteThreatPolicy.WayWalkMustYield(ConLevels.GetConColor(bot.GetConLevel(npc)), PackOf(npc, mob, near), npc is IGameEpicNpc))
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Today's route-threat look for a walk that owns the bot (a follow or a wrong road): a monster on the bot's upcoming path
+    /// to <paramref name="target"/> (1,500 units ahead, within its aggro range and a margin) that the guard would act on
+    /// (AutonomousRouteThreatPolicy.WayWalkMustYield). The caller looks every 2.5 s, as the guard does.
+    /// </summary>
+    public static bool ThreatAhead(GameBot bot, Vector3 target)
+    {
+        if (!AutonomousRouteThreatPolicy.Enabled || bot?.CurrentZone == null)
+            return false;
+        Span<Vector3> route = stackalloc Vector3[65];
+        route[0] = new(bot.X, bot.Y, bot.Z);
+        int count = 1;
+        if (bot.movementComponent != null)
+            count += bot.movementComponent.CopyUpcomingPath(target, route[1..]);
+        if (count < 2)
+        {
+            route[1] = target;
+            count = 2;
+        }
+        ReadOnlySpan<Vector3> corridor = route[..count];
+        List<GameNPC> near = bot.GetNPCsInRadius((ushort)AutonomousRouteThreatPolicy.ScanRadius);
+        foreach (GameNPC npc in near)
+        {
+            if (!IsThreat(bot, npc, out StandardMobBrain mob))
+                continue;
+            if (!AutonomousDungeonPolicy.IntersectsCorridor(corridor, new(npc.X, npc.Y, npc.Z),
+                    mob.AggroRange + AutonomousRouteThreatPolicy.RangedMargin, AutonomousRouteThreatPolicy.LookAhead, out _))
+                continue;
+            if (AutonomousRouteThreatPolicy.WayWalkMustYield(ConLevels.GetConColor(bot.GetConLevel(npc)), PackOf(npc, mob, near), npc is IGameEpicNpc))
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>The monster and those near enough to come with it (as today's guard counts a pack).</summary>
+    private static int PackOf(GameNPC npc, StandardMobBrain mob, List<GameNPC> near)
+    {
+        int pack = 1;
+        foreach (GameNPC other in near)
+            if (other != npc && other.IsAlive && other.Realm == eRealm.None && Math.Abs(other.Z - npc.Z) <= 160 &&
+                other.Brain is StandardMobBrain otherBrain && other.GetDistanceTo(npc) < Math.Max(320, mob.AggroRange + otherBrain.AggroRange + 80))
+                pack++;
+        return pack;
+    }
+
     // ---- the travellers by destination (tagging along) ----------------------------------------------------------------
 
     private static readonly Dictionary<string, List<GameBot>> Travellers = new(StringComparer.Ordinal);
@@ -564,7 +649,7 @@ public static class BotWayFinding
             if (distance >= bestDistance || !same)
                 continue;
             if (!FollowFits(distance, same, KnowingOf(other, destination), other.IsOnStableMasterRoute, other.InCombat,
-                    other.IsPlayerLedGroup || BotPeopleScope.FactsOf(other).InPlayerGroup))
+                    other.IsPlayerLedGroup || BotPeopleScope.FactsOf(other).InPlayerGroup, other.Level - bot.Level))
                 continue;
             best = other;
             bestDistance = distance;
@@ -646,6 +731,8 @@ public static class BotWayFinding
 
     internal static void NoteTrip(GameBot bot, string line) => LastTrips[bot.DatabaseID] = line;
 
+    internal static void NoteTrip(long botId, string line) => LastTrips[botId] = line;
+
     /// <summary>/lswhy way: WP3's place lines first, then the bot's last trip, its tier's shares and the realm's /faction cap.</summary>
     public static IEnumerable<string> WhyLines(GameBot bot)
     {
@@ -685,6 +772,7 @@ public static class BotWayFinding
     private static long _wrongRoads;
     private static long _wrongMilliseconds;
     private static long _wrongDeaths;
+    private static long _followDeaths;
     private static long _lines;
     private static long _suppressed;
     private static long _lineWindowStart;
@@ -734,6 +822,8 @@ public static class BotWayFinding
 
     internal static void CountWrongRoadDeath() => Interlocked.Increment(ref _wrongDeaths);
 
+    internal static void CountFollowDeath() => Interlocked.Increment(ref _followDeaths);
+
     /// <summary>One event line, at most <see cref="EventLinesPerMinute"/> a minute server-wide (the text is built only when said).</summary>
     internal static void Line(Func<string> text)
     {
@@ -766,11 +856,12 @@ public static class BotWayFinding
     /// <summary>
     /// "BOT_WAY_SUMMARY seconds=300 trips=N unknown=N choices=casual:k/a/f/w,average:k/a/f/w,veteran:k/a/f/w
     /// asks=said:N(say:N),capped:N,unheard:N,held:N told=N follows=N,none:N wrong_roads=N minutes_lost=M.M
-    /// refused=reason:n,...|none deaths_60s=N lines=N suppressed=N". Pure.
+    /// refused=reason:n,...|none deaths_60s=N follow_deaths_60s=N lines=N suppressed=N" (deaths during or within 60 s after
+    /// a wrong road, and a follow). Pure.
     /// </summary>
     public static string SummaryLine(long seconds, long trips, long unknown, long[,] choices, long asksSaid, long asksSay, long capped,
         long unheard, long held, long told, long follows, long followsNone, long wrongRoads, long wrongMilliseconds,
-        IReadOnlyDictionary<BotWrongRoadRefusal, long> refused, long deaths, long lines, long suppressed)
+        IReadOnlyDictionary<BotWrongRoadRefusal, long> refused, long deaths, long followDeaths, long lines, long suppressed)
     {
         string Tier(int t) => $"{TierName((RvrSkillTier)t)}:{choices[t, 0]}/{choices[t, 1]}/{choices[t, 2]}/{choices[t, 3]}";
         string refusals = refused == null || refused.Count == 0 || refused.Values.All(n => n == 0)
@@ -779,10 +870,11 @@ public static class BotWayFinding
         return $"BOT_WAY_SUMMARY seconds={seconds} trips={trips} unknown={unknown} choices={Tier(0)},{Tier(1)},{Tier(2)} " +
                $"asks=said:{asksSaid}(say:{asksSay}),capped:{capped},unheard:{unheard},held:{held} told={told} follows={follows},none:{followsNone} " +
                $"wrong_roads={wrongRoads} minutes_lost={(wrongMilliseconds / 60_000.0).ToString("0.0", CultureInfo.InvariantCulture)} " +
-               $"refused={refusals} deaths_60s={deaths} lines={lines} suppressed={suppressed}";
+               $"refused={refusals} deaths_60s={deaths} follow_deaths_60s={followDeaths} lines={lines} suppressed={suppressed}";
     }
 
-    private static IEnumerable<string> TakeSummary(long seconds)
+    /// <summary>The 5-minute BOT_WAY_SUMMARY line of the window that ends now (its counts start again).</summary>
+    public static IEnumerable<string> TakeSummary(long seconds)
     {
         var choices = new long[3, 4];
         for (int t = 0; t < 3; t++)
@@ -797,7 +889,7 @@ public static class BotWayFinding
             Interlocked.Exchange(ref _asksUnheard, 0), Interlocked.Exchange(ref _asksHeld, 0), Interlocked.Exchange(ref _told, 0),
             Interlocked.Exchange(ref _follows, 0), Interlocked.Exchange(ref _followsNone, 0), Interlocked.Exchange(ref _wrongRoads, 0),
             Interlocked.Exchange(ref _wrongMilliseconds, 0), refused, Interlocked.Exchange(ref _wrongDeaths, 0),
-            Interlocked.Exchange(ref _lines, 0), Interlocked.Exchange(ref _suppressed, 0));
+            Interlocked.Exchange(ref _followDeaths, 0), Interlocked.Exchange(ref _lines, 0), Interlocked.Exchange(ref _suppressed, 0));
     }
 
     // ---- start-up -----------------------------------------------------------------------------------------------------
@@ -841,7 +933,7 @@ public static class BotWayFinding
     {
         Array.Clear(Choices);
         _trips = _unknownTrips = _asksSaid = _asksSay = _asksCapped = _asksUnheard = _asksHeld = _told = 0;
-        _follows = _followsNone = _wrongRoads = _wrongMilliseconds = _wrongDeaths = _lines = _suppressed = 0;
+        _follows = _followsNone = _wrongRoads = _wrongMilliseconds = _wrongDeaths = _followDeaths = _lines = _suppressed = 0;
         _linesInWindow = 0;
         _lineWindowStart = 0;
         Refused.Clear();
@@ -914,549 +1006,3 @@ public sealed class BotWayAskCap
     }
 }
 
-/// <summary>
-/// One gamebot's way finding on its trips, owned by its AutonomousWorldBotController. <see cref="Observe"/> runs every turn
-/// and costs two compares unless the bot's travel destination changed (a trip starts: the choice is made once, here).
-/// <see cref="Walk"/> owns the bot's walk while it tags along or takes a wrong road, and returns false at once otherwise.
-/// Every order is one PathTo per leg; nothing is planned per tick.
-/// </summary>
-public sealed class BotWayTrip
-{
-    private enum Phase : byte { None, PendingWrongRoad, Out, Look, Back, PendingFollow, Following }
-
-    private string _seenDestination;
-    private string _trip;
-    private string _travelKey;
-    private long _tripStartedTick;
-    private BotWayChoice _choice;
-    private RvrSkillTier _tier;
-    private bool _wrongRoadUsed;
-    private int _attempts;
-    private BotWrongRoadRefusal _lastRefusal;
-    private Phase _phase;
-    private long _nextCheckTick;
-    private long _lastWalkTick;
-    private long _phaseStartedTick;
-    private long _wrongStartedTick;
-    private long _wrongEndedTick;
-    private bool _lookedOtherWay;
-    private string _assignment;
-    private Vector3 _fork;
-    private Vector3 _branch;
-    private BotWrongLeg _leg;
-    private GameBot _leader;
-    private float _followDistance;
-    private Vector3 _lastOrder;
-    private long _lastOrderTick;
-    private long _lastDeathTick;
-    private bool _endedPending;
-    private bool _tripUnknown;
-
-    /// <summary>Whether this bot is tagging along or on a wrong road now (tests and /lswhy).</summary>
-    public bool IsWalking => _phase is Phase.Out or Phase.Look or Phase.Back or Phase.Following;
-
-    /// <summary>
-    /// Every controller turn (alive or not): a new trip is decided once; a death within 60 s of a wrong road is counted. Two
-    /// compares when nothing changed.
-    /// </summary>
-    public void Observe(GameBot bot, long now)
-    {
-        if (_wrongEndedTick != 0 && !bot.IsAlive)
-        {
-            if (now - _wrongEndedTick <= BotWayFinding.DeathWindowMilliseconds)
-                BotWayFinding.CountWrongRoadDeath();
-            _wrongEndedTick = 0;
-        }
-        if (!bot.IsAlive)
-            _lastDeathTick = now;
-        // /lstest lost on a bot already walking to a place it does not know: this trip takes it.
-        if (BotWayFinding.AnyForced && _tripUnknown && !_wrongRoadUsed && _phase == Phase.None && bot.Group == null &&
-            BotWayFinding.TakeForcedWrongRoad(bot))
-            BotWayFinding.NoteTrip(bot, $"{_trip}: {PendWrongRoad(now, true)}.");
-        string destination = bot.PersistentRecord?.TravelDestination;
-        if (ReferenceEquals(destination, _seenDestination))
-            return;
-        _seenDestination = destination;
-        if (string.IsNullOrWhiteSpace(destination) || string.Equals(destination, _trip, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(destination, bot.CurrentZone?.Description, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(destination, bot.CurrentRegion?.Description, StringComparison.OrdinalIgnoreCase) ||
-            !AutonomousBotVoices.IsPlaceName(destination))
-            return;
-        // A stable ride's town or a zone connection on the way names another place for a while; the journey is the same
-        // (one choice per journey: no second ask when the destination comes back after the ride).
-        if (SameJourney(destination, now))
-        {
-            _trip = destination;
-            return;
-        }
-        try
-        {
-            using var aiProfile = AiProfile.Scope(AiSystem.WayFinding); // AI_PROFILE: measures only
-            StartTrip(bot, destination, now);
-        }
-        catch (Exception exception)
-        {
-            _phase = Phase.None;
-            LoggerManager.Create(typeof(BotWayTrip)).Warn($"Bots as people: way finding failed for {bot.Name}", exception);
-        }
-    }
-
-    /// <summary>The last destinations decided, with when: a destination decided in the last 30 minutes is the same journey.</summary>
-    private readonly (string Destination, long Tick)[] _recent = new (string, long)[4];
-
-    public const long JourneyMilliseconds = 30 * 60_000;
-
-    private bool SameJourney(string destination, long now)
-    {
-        int oldest = 0;
-        for (int i = 0; i < _recent.Length; i++)
-        {
-            if (_recent[i].Destination != null && now - _recent[i].Tick < JourneyMilliseconds &&
-                string.Equals(_recent[i].Destination, destination, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (_recent[i].Tick < _recent[oldest].Tick)
-                oldest = i;
-        }
-        _recent[oldest] = (destination, now);
-        return false;
-    }
-
-    private void StartTrip(GameBot bot, string destination, long now)
-    {
-        if (_phase is Phase.Out or Phase.Look or Phase.Back)
-            EndWrongRoad(bot, now, "new_trip");
-        else if (_phase != Phase.None)
-            Stop(bot, now, "new trip");
-        _trip = destination;
-        _tripUnknown = false;
-        _tripStartedTick = now;
-        _wrongRoadUsed = false;
-        _attempts = 0;
-        _lastRefusal = BotWrongRoadRefusal.None;
-        _choice = BotWayChoice.Knows;
-        string key = BotWayFinding.TravelKeyFor(bot.Realm, destination);
-        BotWayFinding.NoteTraveller(bot, _travelKey, key);
-        _travelKey = key;
-        BotPeopleSwitches switches = BotPeopleSwitches.Current;
-        if (!switches.PlaceKnowledge)
-            return;
-        if (BotPeopleScope.Check(bot, BotPeopleRule.WayFinding, switches.PlaceKnowledge, out _) != BotPeopleRefusal.None)
-            return;
-        BotPersonKey person = BotPersonKey.Of(bot);
-        BotPlaceKnowing knowing = BotWayFinding.KnowingOf(bot, destination);
-        BotWayFinding.CountTrip(knowing != BotPlaceKnowing.Known);
-        if (knowing == BotPlaceKnowing.Known)
-            return;
-        _tripUnknown = true;
-        _tier = BotWayFinding.TierOf(person, AutonomousRvrPerception.ParseAwareness(DOL.GS.ServerProperties.Properties.RVR_BOT_AWARENESS));
-        BotWayGroup group = GroupOf(bot, destination);
-        BotWayChoice choice = BotWayFinding.Choose(knowing, _tier, group, switches.AskTheWay, switches.WrongRoads, Random.Shared.NextDouble());
-        bool forced = !group.InGroup && switches.WrongRoads && BotWayFinding.TakeForcedWrongRoad(bot);
-        if (forced)
-            choice = BotWayChoice.WrongRoad;
-        _choice = choice;
-        BotWayFinding.CountChoice(_tier, choice);
-        string what = choice switch
-        {
-            BotWayChoice.Ask => Asked(bot, destination),
-            BotWayChoice.Follow => BeginFollow(bot, destination, now) ? $"tags along behind {_leader?.Name}" : NoFollow(bot, destination, now),
-            BotWayChoice.WrongRoad => PendWrongRoad(now, forced),
-            _ => group.InGroup ? (group.IsLeader ? "a member knows the way" : "takes its leader's way") : "knows the way anyway",
-        };
-        BotWayFinding.NoteTrip(bot, $"{destination} ({BotWayFinding.KnowingName(knowing)}, {BotWayFinding.TierName(_tier)}): {what}.");
-    }
-
-    private string Asked(GameBot bot, string destination)
-    {
-        BotWayAskOutcome outcome = BotWayFinding.Ask(bot, destination, _tier);
-        if (outcome == BotWayAskOutcome.Said)
-            return "asked the way";
-        // Nobody to ask: a solo bot looks for someone to tag along behind, then goes by its own reckoning.
-        if (bot.Group == null && BotPeopleSwitches.Current.AskTheWay && BeginFollow(bot, destination, GameLoop.GameLoopTime))
-            return $"could not ask ({BotWayFinding.OutcomeName(outcome)}), tags along behind {_leader?.Name}";
-        return $"could not ask ({BotWayFinding.OutcomeName(outcome)}), goes by its own reckoning";
-    }
-
-    private string NoFollow(GameBot bot, string destination, long now)
-    {
-        // The search budget was spent this second: look again for a few seconds before going alone.
-        if (_phase == Phase.PendingFollow)
-            return "looks for someone going there";
-        BotWayFinding.CountFollow(false);
-        return "nobody to tag along behind, goes by its own reckoning";
-    }
-
-    private string PendWrongRoad(long now, bool forced)
-    {
-        _phase = Phase.PendingWrongRoad;
-        _nextCheckTick = now + BotWayFinding.WrongRoadEarliestMilliseconds;
-        return forced ? "takes a wrong road (/lstest lost)" : "may take a wrong road";
-    }
-
-    private static BotWayGroup GroupOf(GameBot bot, string destination)
-    {
-        Group group = bot.Group;
-        if (group == null || group.MemberCount <= 1)
-            return BotWayGroup.Solo;
-        bool leader = group.LivingLeader == bot;
-        bool anyKnows = false;
-        if (leader)
-            foreach (GameLiving member in group.GetMembersInTheGroup())
-                if (member is GameBot other && other != bot && BotWayFinding.KnowingOf(other, destination) == BotPlaceKnowing.Known)
-                {
-                    anyKnows = true;
-                    break;
-                }
-        return new BotWayGroup(true, leader, anyKnows);
-    }
-
-    private bool BeginFollow(GameBot bot, string destination, long now)
-    {
-        if (!BotWayFinding.FollowSearchAllowed(now))
-        {
-            _phase = Phase.PendingFollow;
-            _phaseStartedTick = now;
-            _nextCheckTick = now + 250;
-            return false;
-        }
-        GameBot leader = BotWayFinding.FindLeader(bot, destination, _travelKey);
-        if (leader == null)
-            return false;
-        _leader = leader;
-        _followDistance = BotWayFinding.FollowNearest + (float)Random.Shared.NextDouble() * (BotWayFinding.FollowFarthest - BotWayFinding.FollowNearest);
-        _phase = Phase.Following;
-        _phaseStartedTick = now;
-        _lastWalkTick = now;
-        _assignment = bot.PersistentRecord?.ObjectiveAssignmentId;
-        _lastOrderTick = 0;
-        BotWayFinding.CountFollow(true);
-        BotWayFinding.Line(() => $"BOT_WAY_FOLLOW bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                                 $"leader={leader.Name} leaderId={leader.DatabaseID} dest=\"{destination}\" " +
-                                 $"distance={(int)Vector2.Distance(new(bot.X, bot.Y), new(leader.X, leader.Y))} at={(int)_followDistance}");
-        return true;
-    }
-
-    /// <summary>
-    /// The controller's turn after its combat and casting checks: true while this bot's tag-along or wrong road owns its walk
-    /// (the controller then does nothing else this turn). <paramref name="ended"/> is true on the turn one ends: the controller
-    /// then re-plans its route from where the bot stands. False at once when there is nothing to do.
-    /// </summary>
-    public bool Walk(GameBot bot, long now, Vector3? goal, out bool ended)
-    {
-        ended = _endedPending;
-        _endedPending = false;
-        if (_phase == Phase.None)
-            return false;
-        if (_phase is Phase.PendingWrongRoad or Phase.PendingFollow && now < _nextCheckTick)
-            return false;
-        using var aiProfile = AiProfile.Scope(AiSystem.WayFinding); // AI_PROFILE: measures only
-        bool owns;
-        try
-        {
-            owns = _phase switch
-            {
-                Phase.PendingWrongRoad => TryStartWrongRoad(bot, now, goal),
-                Phase.PendingFollow => RetryFollow(bot, now),
-                Phase.Following => Follow(bot, now),
-                _ => WrongRoad(bot, now),
-            };
-        }
-        catch (Exception exception)
-        {
-            LoggerManager.Create(typeof(BotWayTrip)).Warn($"Bots as people: way finding walk failed for {bot.Name}", exception);
-            Stop(bot, now, "error");
-            owns = false;
-        }
-        ended |= _endedPending;
-        _endedPending = false;
-        return owns;
-    }
-
-    private bool RetryFollow(GameBot bot, long now)
-    {
-        long started = _phaseStartedTick;
-        _phase = Phase.None;
-        if (_trip == null || now - started > 10_000)
-        {
-            BotWayFinding.CountFollow(false);
-            return false;
-        }
-        if (BeginFollow(bot, _trip, now))
-            return true;
-        if (_phase == Phase.PendingFollow)
-            _phaseStartedTick = started;
-        else
-            BotWayFinding.CountFollow(false);
-        return false;
-    }
-
-    // ---- the wrong road ---------------------------------------------------------------------------------------------
-
-    private bool TryStartWrongRoad(GameBot bot, long now, Vector3? goal)
-    {
-        _nextCheckTick = now + BotWayFinding.PendingCheckMilliseconds;
-        if (now - _tripStartedTick > BotWayFinding.WrongRoadLatestMilliseconds || !BotPeopleSwitches.Current.WrongRoads)
-        {
-            _phase = Phase.None;
-            BotWayFinding.CountRefusal(BotPeopleSwitches.Current.WrongRoads ? (_lastRefusal == BotWrongRoadRefusal.None
-                ? BotWrongRoadRefusal.NotWalking : _lastRefusal) : BotWrongRoadRefusal.SwitchedOff);
-            return false;
-        }
-        Zone zone = bot.CurrentZone;
-        string activity = bot.PersistentRecord?.Activity;
-        bool walking = goal.HasValue && bot.IsMoving && zone != null && activity != null &&
-                       activity.StartsWith("Traveling to", StringComparison.Ordinal) &&
-                       string.Equals(bot.PersistentRecord?.TravelDestination, _trip, StringComparison.OrdinalIgnoreCase) &&
-                       AutonomousObjectiveAssignments.KindFor(bot) is eAutonomousObjectiveKind.SoloPve or eAutonomousObjectiveKind.GroupPve;
-        var facts = new BotWrongRoadFacts(true, _wrongRoadUsed, bot.IsOnStableMasterRoute, bot.Group != null,
-            zone?.IsRvR == true || bot.CurrentRegion?.IsRvR == true || AutonomousBotVoices.IsBattlegroundRegion(bot.CurrentRegionID),
-            zone?.IsDungeon == true || AutonomousBotVoices.InDungeon(bot), false, bot.HealthPercent,
-            _lastDeathTick != 0 && now - _lastDeathTick < BotWayFinding.DeathWindowMilliseconds, walking);
-        BotWrongRoadRefusal refusal = BotWayFinding.WrongRoadRefusal(facts);
-        if (refusal != BotWrongRoadRefusal.None)
-        {
-            _lastRefusal = refusal;
-            if (refusal is BotWrongRoadRefusal.StableRide or BotWrongRoadRefusal.Grouped or BotWrongRoadRefusal.UsedThisTrip)
-            {
-                // A ride or a group lasts the trip: it goes on as today.
-                _phase = Phase.None;
-                BotWayFinding.CountRefusal(refusal);
-            }
-            return false;
-        }
-        if (_attempts >= BotWayFinding.WrongRoadAttemptsPerTrip)
-        {
-            _phase = Phase.None;
-            BotWayFinding.CountRefusal(_lastRefusal == BotWrongRoadRefusal.None ? BotWrongRoadRefusal.NoBranch : _lastRefusal);
-            return false;
-        }
-        Vector3 from = new(bot.X, bot.Y, bot.Z);
-        List<Vector3> anchors = AutonomousZoneRoads.AnchorsNear(zone, from);
-        int branch = BotWayFinding.WrongBranch(from, goal.Value, anchors, Random.Shared.NextDouble());
-        if (branch < 0)
-        {
-            _lastRefusal = BotWrongRoadRefusal.NoBranch;
-            return false;
-        }
-        _attempts++;
-        Vector3 anchor = anchors[branch];
-        float branchDistance = Vector2.Distance(new(from.X, from.Y), new(anchor.X, anchor.Y));
-        BotWrongLeg leg = BotWayFinding.LegFor(branch, branchDistance, Random.Shared.NextDouble(), Random.Shared.NextDouble(), bot.MaxSpeed);
-        if (leg.IsNone)
-        {
-            _lastRefusal = BotWrongRoadRefusal.NoBranch;
-            return false;
-        }
-        Vector3 end = from + (anchor - from) * (leg.Length / Math.Max(1f, Vector3.Distance(from, anchor)));
-        if (Threatened(bot, from, end))
-        {
-            _lastRefusal = BotWrongRoadRefusal.Threat;
-            return false;
-        }
-        // Both ways proven before it starts, so the way back exists (no navmesh change; two checks, cached by the itinerary).
-        IPathfindingMgr nav = PathfindingProvider.Instance;
-        if (nav == null || !AutonomousZoneItinerary.HasDirectCorridor(nav, zone, from, anchor) ||
-            !AutonomousZoneItinerary.HasDirectCorridor(nav, zone, anchor, from))
-        {
-            _lastRefusal = BotWrongRoadRefusal.NoBranch;
-            return false;
-        }
-        _wrongRoadUsed = true;
-        _fork = from;
-        _branch = anchor;
-        _leg = leg;
-        _wrongStartedTick = now;
-        _assignment = bot.PersistentRecord?.ObjectiveAssignmentId;
-        Begin(Phase.Out, now);
-        bot.StopMovingOnPath();
-        bot.ForcePathReplot();
-        bot.PathTo(anchor, bot.MaxSpeed);
-        _lastWalkTick = now;
-        return true;
-    }
-
-    /// <summary>Owner decision 7: an aggressive monster more than 2 levels above the bot within 1,500 units of the wrong leg.</summary>
-    private static bool Threatened(GameBot bot, Vector3 from, Vector3 to)
-    {
-        float reach = Vector3.Distance(from, to) + AutonomousRouteThreatPolicy.WrongRoadThreatRadius;
-        foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)Math.Min(ushort.MaxValue, reach)))
-        {
-            if (npc == null || !npc.IsAlive || npc.Realm != eRealm.None || npc is GameBot)
-                continue;
-            bool aggressive = npc.Brain is StandardMobBrain mob && mob.AggroRange > 0 && mob.AggroLevel > 0;
-            if (AutonomousRouteThreatPolicy.WrongLegThreatened(from, to, bot.Level, npc.Level, aggressive, new(npc.X, npc.Y, npc.Z)))
-                return true;
-        }
-        return false;
-    }
-
-    private void Begin(Phase phase, long now)
-    {
-        _phase = phase;
-        _phaseStartedTick = now;
-        _lookedOtherWay = false;
-    }
-
-    private bool WrongRoad(GameBot bot, long now)
-    {
-        // Anything else that owned the bot in between (a fight, a group, a new task, a ride) ends the wrong road at once.
-        if (now - _lastWalkTick > 5_000 || bot.Group != null || bot.IsOnStableMasterRoute || !bot.IsAlive || bot.HealthPercent < 50 ||
-            !string.Equals(bot.PersistentRecord?.ObjectiveAssignmentId, _assignment, StringComparison.Ordinal))
-            return EndWrongRoad(bot, now, "interrupted");
-        _lastWalkTick = now;
-        if (BotWayFinding.MustEnd(now - _wrongStartedTick))
-            return EndWrongRoad(bot, now, "cap");
-        Vector3 at = new(bot.X, bot.Y, bot.Z);
-        long inPhase = now - _phaseStartedTick;
-        bool failed = bot.TryConsumeAutonomousPathFailure(out _, out _);
-        switch (_phase)
-        {
-            case Phase.Out:
-                if (failed)
-                {
-                    Back(bot, now);
-                    return true;
-                }
-                float out2D = Vector2.Distance(new(at.X, at.Y), new(_fork.X, _fork.Y));
-                long outLimit = (long)(2_000 * _leg.Length / Math.Max(1f, (float)bot.MaxSpeed)) + 10_000;
-                if (out2D >= _leg.Length || Vector3.Distance(at, _branch) <= BotWayFinding.WrongLegAnchorMargin ||
-                    inPhase > outLimit || !bot.IsMoving && inPhase > 3_000)
-                {
-                    bot.StopMovingOnPath();
-                    bot.StopMoving();
-                    Begin(Phase.Look, now);
-                    BotTurning.TurnGradually(bot, AutonomousBotBodyLanguage.Turned(bot.Heading, 900 + Random.Shared.Next(300)));
-                }
-                return true;
-            case Phase.Look:
-                if (!_lookedOtherWay && inPhase >= _leg.LookMilliseconds / 2)
-                {
-                    _lookedOtherWay = true;
-                    BotTurning.TurnGradually(bot, AutonomousBotBodyLanguage.Turned(bot.Heading, -(1_800 + Random.Shared.Next(300))));
-                }
-                if (inPhase >= _leg.LookMilliseconds)
-                    Back(bot, now);
-                return true;
-            default:
-                if (failed)
-                    return EndWrongRoad(bot, now, "own_route");
-                if (Vector3.Distance(at, _fork) <= 120)
-                    return EndWrongRoad(bot, now, "back");
-                long backLimit = (long)(2_000 * _leg.Length / Math.Max(1f, (float)bot.MaxSpeed)) + 15_000;
-                if (inPhase > backLimit)
-                    return EndWrongRoad(bot, now, "own_route");
-                if (!bot.IsMoving && inPhase > 3_000)
-                {
-                    // One more order back along the proven leg; the controller takes over if that stalls too.
-                    bot.ForcePathReplot();
-                    bot.PathTo(_fork, bot.MaxSpeed);
-                    _phaseStartedTick = now - backLimit / 2;
-                }
-                return true;
-        }
-    }
-
-    private void Back(GameBot bot, long now)
-    {
-        Begin(Phase.Back, now);
-        bot.ForcePathReplot();
-        bot.PathTo(_fork, bot.MaxSpeed);
-    }
-
-    private bool EndWrongRoad(GameBot bot, long now, string result)
-    {
-        long cost = now - _wrongStartedTick;
-        Stop(bot, now, result);
-        _wrongEndedTick = now;
-        BotWayFinding.CountWrongRoad(cost);
-        BotWrongLeg leg = _leg;
-        string trip = _trip;
-        RvrSkillTier tier = _tier;
-        Vector3 fork = _fork;
-        BotWayFinding.Line(() => $"BOT_WAY_WRONG_ROAD bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                                 $"level={bot.Level} tier={BotWayFinding.TierName(tier)} dest=\"{trip}\" zone=\"{bot.CurrentZone?.Description}\" " +
-                                 $"cost_s={cost / 1000.0:0.0} length={(int)leg.Length} look_s={leg.LookMilliseconds / 1000.0:0.0} result={result} " +
-                                 $"at={(int)fork.X},{(int)fork.Y},{(int)fork.Z}");
-        BotWayFinding.NoteTrip(bot, $"{trip} ({BotWayFinding.TierName(tier)}): took a wrong road of {(int)leg.Length} units, " +
-                                    $"{cost / 1000.0:0} s, then {(result == "back" ? "went back to its route" : "planned on from there (" + result + ")")}.");
-        return false;
-    }
-
-    // ---- tagging along ----------------------------------------------------------------------------------------------
-
-    private bool Follow(GameBot bot, long now)
-    {
-        GameBot leader = _leader;
-        string reason = null;
-        if (now - _lastWalkTick > 5_000 || bot.Group != null || bot.IsOnStableMasterRoute || !bot.IsAlive || bot.HealthPercent < 50 ||
-            !string.Equals(bot.PersistentRecord?.ObjectiveAssignmentId, _assignment, StringComparison.Ordinal) ||
-            !string.Equals(bot.PersistentRecord?.TravelDestination, _trip, StringComparison.OrdinalIgnoreCase) &&
-            !string.IsNullOrEmpty(bot.PersistentRecord?.TravelDestination))
-            reason = "interrupted";
-        else if (now - _phaseStartedTick > BotWayFinding.FollowMaxMilliseconds)
-            reason = "time";
-        else if (leader == null || leader.ObjectState != GameObject.eObjectState.Active || !leader.IsAlive ||
-                 leader.CurrentRegion != bot.CurrentRegion || leader.IsOnStableMasterRoute ||
-                 !string.Equals(leader.PersistentRecord?.TravelDestination, _trip, StringComparison.OrdinalIgnoreCase))
-            reason = "leader_gone";
-        else if (leader.CurrentZone != bot.CurrentZone || BotPlaceCatalog.Current.For(_trip).Any(place =>
-                     BotPlaceCatalog.Current.At(bot.CurrentZone?.Description).Contains(place)))
-            reason = "zone_line";
-        _lastWalkTick = now;
-        if (reason == null && bot.TryConsumeAutonomousPathFailure(out _, out _))
-            reason = "no_path";
-        float distance = leader == null ? float.MaxValue : Vector2.Distance(new(bot.X, bot.Y), new(leader.X, leader.Y));
-        if (reason == null && distance > BotWayFinding.FollowLostDistance)
-            reason = "lost";
-        if (reason != null)
-        {
-            string trip = _trip;
-            Stop(bot, now, reason);
-            BotWayFinding.Line(() => $"BOT_WAY_FOLLOW bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                                     $"leader={leader?.Name} dest=\"{trip}\" ended={reason}");
-            return false;
-        }
-        if (now < _nextCheckTick)
-            return true;
-        _nextCheckTick = now + 1_000;
-        switch (BotWayFinding.FollowStep(distance, _followDistance))
-        {
-            case -1:
-                if (bot.IsMoving)
-                {
-                    bot.StopMovingOnPath();
-                    bot.StopMoving();
-                }
-                break;
-            case 1:
-                Vector3 target = new(leader.X, leader.Y, leader.Z);
-                if (!bot.IsMoving || now - _lastOrderTick >= 1_500 && Vector3.DistanceSquared(target, _lastOrder) > 250 * 250)
-                {
-                    bot.ForcePathReplot();
-                    bot.PathTo(target, bot.MaxSpeed);
-                    _lastOrder = target;
-                    _lastOrderTick = now;
-                }
-                break;
-        }
-        return true;
-    }
-
-    /// <summary>Ends whatever this trip's way finding is doing; the bot stands where it is and the controller plans on.</summary>
-    private void Stop(GameBot bot, long now, string reason)
-    {
-        Phase was = _phase;
-        _phase = Phase.None;
-        _leader = null;
-        if (was is Phase.Out or Phase.Look or Phase.Back or Phase.Following)
-        {
-            _endedPending = true;
-            bot.TryConsumeAutonomousPathFailure(out _, out _);
-            if (!bot.IsOnStableMasterRoute)
-            {
-                bot.StopMovingOnPath();
-                bot.StopMoving();
-            }
-        }
-    }
-}

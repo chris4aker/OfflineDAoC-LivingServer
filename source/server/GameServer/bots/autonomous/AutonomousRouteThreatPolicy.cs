@@ -167,6 +167,21 @@ namespace DOL.GS
         public static bool WrongLegThreatened(Vector3 from, Vector3 to, int botLevel, int monsterLevel, bool aggressive, Vector3 monster) =>
             aggressive && monsterLevel > botLevel + WrongRoadLevelMargin && SegmentDistance2D(from, to, monster) <= WrongRoadThreatRadius;
 
+        /// <summary>
+        /// Bots as people WP4: whether a walk that owns the bot (tagging along, a wrong road) must hand it back because today's
+        /// guard would act on this monster: anything but a grey that is yellow or worse to the bot, a boss, or a pack the guard
+        /// would go around or give the camp up for (Decide for a solo bot). Green and blue singles the guard would only pull are
+        /// walked past, as a bot walking today's route does when it may not pull. Pure.
+        /// </summary>
+        public static bool WayWalkMustYield(ConColor con, int packSize, bool bossLike)
+        {
+            if (con <= ConColor.GREY && !bossLike)
+                return false;
+            if (bossLike || con >= ConColor.YELLOW)
+                return true;
+            return Decide(con, false, packSize, false, true, 0, true) is RouteThreatAction.Detour or RouteThreatAction.Retarget;
+        }
+
         public static float SegmentDistance2D(Vector3 a, Vector3 b, Vector3 p)
         {
             Vector2 a2 = new(a.X, a.Y), b2 = new(b.X, b.Y), p2 = new(p.X, p.Y), ab = b2 - a2;
