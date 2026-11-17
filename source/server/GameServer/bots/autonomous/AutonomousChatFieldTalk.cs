@@ -99,6 +99,12 @@ public static class AutonomousChatFieldTalk
 
         /// <summary>Whether the speaker lies dead now (live facts), or null when unknown: only a dead bot asks for a rez.</summary>
         public bool? Dead { get; init; }
+
+        /// <summary>
+        /// Bots as people WP4: asking the way is real (bot_place_knowledge and bot_ask_the_way on), so the Travel scene's
+        /// questions are not drawn as ambient lines; a bot asks only on a trip to a place it does not know (<see cref="WayQuestion"/>).
+        /// </summary>
+        public bool WayAsksAreReal { get; init; }
     }
 
     /// <summary>Whether the facts' recent death was to an enemy (a player, a bot or an enemy's pet). Pure.</summary>
@@ -238,6 +244,12 @@ public static class AutonomousChatFieldTalk
 
         /// <summary>The place a question asks about ("any1 at bold?": Caer Boldiam; "anyone in hadrian's wall?"), for a live answer.</summary>
         public string Place { get; init; }
+
+        /// <summary>
+        /// Bots as people WP4: the travel destination of a real "ask the way" question (<see cref="WayQuestion"/>), or null.
+        /// Only a bot that knows the place answers it (BotWayFinding.MayAnswer), and the asker is then told the way.
+        /// </summary>
+        public string WayTo { get; init; }
     }
 
     /// <summary>
@@ -1035,7 +1047,7 @@ public static class AutonomousChatFieldTalk
         }
         if (f.AtCamp && f.Monster != null)
             options.Add((() => Camp(f, random), 1.5));
-        if (f.Destination != null)
+        if (f.Destination != null && !f.WayAsksAreReal)
             options.Add((() => Travel(f, random), 1.5));
         options.Add((() => Crafter(f, random), 0.8));
         options.Add((() => PriceCheck(f, random), 0.8));
@@ -1092,7 +1104,7 @@ public static class AutonomousChatFieldTalk
                 new V($"lfg {f.Level} {cls}", null, Joins), new V("anyone grouping?", "say_grouping", Joins), new V("brb", "brb"),
                 new V("back", "back"), new V("any healers around?", "say_healers", Pool("{healer}me", "{healer}me, {lvl}")),
                 new V("anyone heading out?", "say_out", Pool("me", "in a bit", "me, where to?")),
-                f.Destination != null ? new V($"which stable for {ShortZone(f.Destination, random)}?", "say_stable", TravelAnswers(f.Realm))
+                f.Destination != null && !f.WayAsksAreReal ? new V($"which stable for {ShortZone(f.Destination, random)}?", "say_stable", TravelAnswers(f.Realm))
                     : f.Level <= TrainerAskMaxLevel ? new V("where is the trainer", "say_trainer", TrainerAnswers(f, random)) : new V("anyone selling dye?", "say_dye"),
                 new V($"{f.Level} {cls} lf grp", null, Joins), new V("afk 5", "afk"), new V("anyone selling pots?", "say_pots", pots), new V("brb selling", "brb_selling"));
         }
@@ -1259,6 +1271,23 @@ public static class AutonomousChatFieldTalk
         return Make(random, "travel", dest, Pool("nm found it", $"nm, found {dest}"), Pool("ty", "k ty", "ty!"),
             new V($"where is {dest}?", "ask_way", way), new V($"how do i get to {dest}", "ask_way", way), new V($"which stable for {dest}?", "ask_stable", way),
             new V($"fastest way to {dest}?", "ask_way", way));
+    }
+
+    /// <summary>
+    /// Bots as people WP4: the Travel scene's question as a bot's real one ("how do i get to lyonesse", "which stable for
+    /// lyonesse?"), for a trip to a place it does not know. The same lines, answers and follow-ups as the scene; it carries
+    /// <see cref="Said.WayTo"/>, so only a bot that knows the place answers. The realm's memory notes it. Pure but for the memory.
+    /// </summary>
+    public static Said WayQuestion(Facts f, string destination, Random random, Memory memory = null, long now = 0)
+    {
+        if (f == null || string.IsNullOrWhiteSpace(destination))
+            return null;
+        Said said = Travel(f with { Destination = destination }, random);
+        said = said with { Text = Finish(said.Text, random), WayTo = destination };
+        memory?.Add(AutonomousChatFiller.Skeleton(said.Text));
+        memory?.Use(said.Family, said.Idea, now);
+        memory?.UseFrame(said.Frame, now);
+        return said;
     }
 
     /// <summary>A rally while a keep is really under attack: "all to beno", "grp up for bled def" (round 6).</summary>
@@ -2636,6 +2665,7 @@ public static class AutonomousChatFieldTalk
             KillerClass = death?.KillerClass,
             WasAway = AutonomousChatEngagement.WasAway(bot.DatabaseID, GameLoop.GameLoopTime, flags.Contains("just_died") || bot.IsReturningAfterRelease),
             Dead = !bot.IsAlive,
+            WayAsksAreReal = BotWayFinding.AsksAreReal,
         };
     }
 }

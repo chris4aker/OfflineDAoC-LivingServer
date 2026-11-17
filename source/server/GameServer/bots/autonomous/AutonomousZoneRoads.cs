@@ -213,6 +213,23 @@ public static class AutonomousZoneRoads
         return near.Count == 0 ? null : roads.Areas[near[0]];
     }
 
+    /// <summary>
+    /// Bots as people WP4 (a wrong road, BotWayFinding.WrongBranch): the anchors of the point's own walkable area in its cell
+    /// and the eight around it, nearest first, each with at least one proven leg. Empty without road data. Reads only; no
+    /// corridor query (the caller proves the leg it takes, both ways).
+    /// </summary>
+    public static List<Vector3> AnchorsNear(Zone zone, Vector3 point)
+    {
+        if (zone == null || !Data.Value.TryGetValue(zone.ID, out ZoneRoads roads)) return [];
+        List<int> near = Nearby(roads, point);
+        if (near.Count == 0) return [];
+        int area = roads.Areas[near[0]];
+        var result = new List<Vector3>(near.Count);
+        foreach (int anchor in near)
+            if (roads.Areas[anchor] == area && roads.Next[anchor].Length > 0) result.Add(roads.Anchors[anchor]);
+        return result;
+    }
+
     /// <summary>Anchors in the point's cell and the eight around it, nearest first (height counts double).</summary>
     private static List<int> Nearby(ZoneRoads roads, Vector3 point)
     {
