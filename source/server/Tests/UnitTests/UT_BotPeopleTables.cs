@@ -26,8 +26,9 @@ namespace DOL.UnitTests
             "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones",
         ];
 
-        /// <summary>The switches whose package is built: their description says what they do now (WP1: growth).</summary>
-        public static readonly string[] Live = ["bot_skill_growth"];
+        /// <summary>The switches whose package is built: their description says what they do now (WP1: growth;
+        /// WP3: bot_place_knowledge).</summary>
+        public static readonly string[] Built = ["bot_skill_growth", "bot_place_knowledge"];
 
         // ---- tables ----------------------------------------------------------------------------------------------------
 
@@ -161,7 +162,7 @@ namespace DOL.UnitTests
                 Assert.That(attribute.DefaultValue, Is.EqualTo(true), attribute.Key);
                 Assert.That(field.GetValue(null), Is.EqualTo(true), attribute.Key + " starts at its default");
                 // A package that fills its switch replaces this sentence and updates this test (as the RvR switches do).
-                if (!Live.Contains(attribute.Key))
+                if (!Built.Contains(attribute.Key))
                     Assert.That(attribute.Description, Does.Contain("In this build it changes nothing yet (work package"), attribute.Key);
                 else
                     Assert.That(attribute.Description, Does.Not.Contain("changes nothing yet"), attribute.Key);

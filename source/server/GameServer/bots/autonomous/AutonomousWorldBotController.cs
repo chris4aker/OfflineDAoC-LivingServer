@@ -321,6 +321,17 @@ namespace DOL.GS
 
         private long _nextPocketCheckTick;
         private static long _nextPocketNudgeLog;
+        // Bots as people WP3: when the bot next looks at which zone it is in (BotPlaceKnowledge.Visit).
+        private long _nextPlaceCheckTick;
+
+        /// <summary>Bots as people WP3: learn the places it has arrived in (nothing while zone and level are unchanged).</summary>
+        private void VisitPlaces(GameBot bot, long nowTick)
+        {
+            if (nowTick < _nextPlaceCheckTick)
+                return;
+            _nextPlaceCheckTick = nowTick + BotPlaceKnowledge.VisitCheckMilliseconds + bot.ObjectID % 1_000;
+            BotPlaceKnowledge.Visit(bot);
+        }
 
         /// <summary>
         /// A bot standing in a listed walled-off pocket (navmesh/pockets.json) is put on the nearest real floor at once.
@@ -353,8 +364,15 @@ namespace DOL.GS
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerTick); // AI_PROFILE: measures only
             GameBot bot = brain?.BotBody;
-            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup)
+            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper)
                 return false;
+            if (bot.IsPlayerLedGroup)
+            {
+                // Bots as people WP3: a bot in a player's group still learns where it has been (data only; the Record
+                // rule allows the player's group), so it doesn't ask the way to a place it walked through with them.
+                VisitPlaces(bot, GameLoop.GameLoopTime);
+                return false;
+            }
 
             try
             {
@@ -369,6 +387,7 @@ namespace DOL.GS
                     // A pocket with no real floor within reach: the normal escape handles it; do not re-search every 5 s.
                     if (stillInPocket) _nextPocketCheckTick = nowTick + 60_000;
                 }
+                VisitPlaces(bot, nowTick); // Bots as people WP3
                 // A solo siege force is released at most a couple of seconds
                 // after its event ends; no need to take the event lock each turn.
                 if (bot.Group == null && nowTick >= _nextRvrReleaseCheckTick)
