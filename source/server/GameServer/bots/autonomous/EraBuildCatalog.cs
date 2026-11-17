@@ -385,7 +385,9 @@ public sealed class EraBuildCatalog
             if (BuildCost(result) > budget)
                 continue;
             moves = $"{result[to].Key}+{k},{result[from].Key}-{k}";
-            return result.OrderByDescending(line => line.Value).ThenBy(line => line.Key, StringComparer.Ordinal).ToArray();
+            // The top line stays first, even when a lower line now ties it (DerivedRatio gives the first line 1.0).
+            return result.Take(1).Concat(result.Skip(1).OrderByDescending(line => line.Value)
+                .ThenBy(line => line.Key, StringComparer.Ordinal)).ToArray();
         }
         return build.Specs;
     }

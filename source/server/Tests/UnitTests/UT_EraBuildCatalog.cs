@@ -136,6 +136,31 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void JitterNeverPutsALowerLineBeforeTheTopLineOnATie()
+        {
+            // Review of WP0-2 (2026-11-17): a lower line raised to tie the top line sorted first by name, and DerivedRatio
+            // then gave it the top line's 1.0. "Axe" ties "Zz" at 44 here; "Zz" stays the first line.
+            const string json = """
+                {"schema": 1, "status": "test", "offMetaPercent": 10, "jitterPoints": 2,
+                 "classes": {
+                   "Shadowblade": {"classId": 23, "realm": "Midgard", "specMultiplier": 22, "lines": ["Zz", "Axe", "Envenom"],
+                     "builds": [{"id": "tie", "family": "LeftAxe", "weight": 1, "specs": {"Zz": 44, "Axe": 43, "Envenom": 30}}]}},
+                 "realms": {"Midgard": {"classShare": {"Shadowblade": {"share": 1.0}}}}}
+                """;
+            EraBuildCatalog catalog = EraBuildCatalog.Parse(json);
+            EraBuild build = catalog.GetBuild("tie");
+            int ties = 0;
+            for (ulong seed = 0; seed < 2000; seed++)
+            {
+                var specs = catalog.Jitter(build, seed, out string moves);
+                Assert.That(specs[0].Key, Is.EqualTo("Zz"), moves);
+                if (specs.Count(line => line.Value == 44) == 2)
+                    ties++;
+            }
+            Assert.That(ties, Is.GreaterThan(0), "some seed raises Axe to 44");
+        }
+
+        [Test]
         public void TheNearestBuildMatchesTheTwoHighestTrainedLines()
         {
             var trained = new Dictionary<string, int> { ["Body Magic"] = 30, ["Mind Magic"] = 40, ["Matter Magic"] = 1 };

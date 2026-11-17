@@ -162,7 +162,9 @@ public class BotCommand : AbstractCommandHandler, ICommandHandler
         var bot = BotManager.LoadBotByName(client.Player, botName);
         if (bot == null)
         {
-            client.Out.SendMessage($"No bot named '{botName}' found.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+            // A saved Sluaghbinder is kept but never loaded: say why, not "not found" (bots never play the custom class).
+            string refusal = BotDatabase.RefusalFor(BotDatabase.FindProfileByName(client.Player, botName));
+            client.Out.SendMessage(refusal ?? $"No bot named '{botName}' found.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return;
         }
 

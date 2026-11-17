@@ -280,7 +280,7 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
   validate, `DrawClass`, `DrawBuild(class, seed)`, `Jitter`, `NearestBuild`, budget), linked into
   `OfflineDaoc.Launcher.csproj` with the JSON as an embedded resource.
 - **Tests:** `UT_EraBuildCatalog`: draws over 100,000 seeds match the shares and weights within 0.5 points; a seed always
-  gives the same draw; jitter stays inside the budget and the caps; Sluaghbinder in or out with the switch; a broken
+  gives the same draw; jitter stays inside the budget and the caps; never the Sluaghbinder, in either edition; a broken
   file or build falls back per class.
 - **Log tags:** `ERA_BUILDS_LOADED version=1 status="approved 2026-11-17" classes=39 builds=106 dropped=0
   sharesSourced=0/3 weightsSourced=0/106 offMeta=10% jitter=2 customClass=never loaded=yes classShares=on` (server
@@ -297,7 +297,7 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
 ### WP2 — Launcher batches draw the era class mix (0.5 day)
 
 - **Files:** `BotCharacterGenerator.cs` (`Generate` takes the catalog draw), `MainForm.cs` (reads
-  `bot_era_class_shares` beside `SluaghbinderEnabled`), `SocialExpansionSettings.cs` and
+  `bot_era_class_shares`; the batches no longer read the edition switch, since bots never play the custom class), `SocialExpansionSettings.cs` and
   `SocialExpansionSettingsControl.cs` (the switch, on in `Defaults` and `Recommended`),
   `AutonomousBotIdentityGenerator.cs` (same draw).
 - **Tests:** launcher tests: 10,000 identities per realm within 1.5 points of each share; no class 63 with the class
