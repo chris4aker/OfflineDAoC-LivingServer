@@ -1,0 +1,365 @@
+// Living Server 1.2, open-field RvR work package 3 ("Hands": docs/RVR-FIELD-1.2.md): where a bot-only group's members stand
+// in a fight against players or bots. The rules are RvrPositioning's and RvrPeelPlan's (pure, tested); this partial reads
+// the fight boards, proves each walk on the navigation mesh and walks it. Tests only until seen in the owner's PC log.
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using DOL.GS;
+
+namespace DOL.AI.Brain
+{
+    /// <summary>
+    /// Positioning in an open-field fight (rvr_bot_positioning): casters and healers stand behind the tanks relative to
+    /// the enemy, keep more than 350 units apart (one mez cannot catch two healers) and scatter wider on "incoming"; a
+    /// shield tank guarding a named member stays beside it and leaves enemies far from it to the others; a healer with an
+    /// enemy melee fighter on it kites ("run a bit, throw heal"), then heals. Each group makes its tier's mistakes
+    /// (RvrPositioning, RvrPeelPlan). Every walk is proven first on dry ground on the bot's own floor (the combat
+    /// steps' ReachableLeg, piece by piece): no ledge, no water, no other floor. The PvE combat movement
+    /// (BotBrain.CombatMovement) stays off for player and bot targets; this is the only movement added for them.
+    /// Only for bots the open-field tactics apply to (RvrTacticsActive: no raid, battleground assault, keep fight,
+    /// companion or player's group), in a group of two or more, while the group's board shows enemies.
+    /// </summary>
+    public partial class BotBrain
+    {
+        /// <summary>RVR_KITE at most this often per healer; RVR_BACKLINE at most this often per group.</summary>
+        public const long RvrKiteLogGapMilliseconds = 10_000;
+        public const long RvrBacklineLogGapMilliseconds = 10_000;
+
+        private enum RvrPlaceWalk : byte { None, Place, Kite }
+
+        private RvrPlaceWalk _rvrPlaceWalk;
+        private Vector3 _rvrPlaceTo;
+        private long _rvrPlaceStarted;
+        private long _rvrPlaceUntil;
+        private long _rvrPlaceNextCheck;
+        private long _rvrPlaceDueAt;
+        private bool _rvrPlaceHold;
+        private long _rvrKiteReadyAt;
+        private long _rvrKiteContacts;
+        private GameLiving _rvrKiteFrom;
+        private long _rvrKiteLogAt = long.MinValue / 2;
+
+        private sealed class RvrBacklineLog
+        {
+            public long LastAt = long.MinValue / 2;
+            public int Moved;
+        }
+
+        private static readonly ConditionalWeakTable<object, RvrBacklineLog> RvrBacklineLogs = new();
+
+        // ---- shared reads -------------------------------------------------------------------------------------------------
+
+        /// <summary>An enemy player, bot or pet of theirs.</summary>
+        private bool RvrPlaceEnemy(GameLiving living) =>
+            living != null && living.IsAlive && living.Realm != Body.Realm && living.Realm != eRealm.None &&
+            BotPvpCrowdControl.PlayerLike(living);
+
+        /// <summary>
+        /// The group's RvR board when the bot is in a fight against players or bots: its target or its last attacker is
+        /// one, or a group mate built a board in the last two seconds; and the board shows enemies. Null otherwise, so a
+        /// PvE fight never builds a board here.
+        /// </summary>
+        private RvrFightBoard RvrPlaceBoard(GameLiving target)
+        {
+            if (Body?.CurrentRegion == null)
+                return null;
+            if (!RvrPlaceEnemy(target) && !RvrPlaceEnemy(RecentDirectAttacker()) &&
+                RvrFightBoards.Peek(Body) is not { Enemies.IsDefaultOrEmpty: false })
+                return null;
+            RvrFightBoard board = RvrBoard();
+            return board == null || board.Enemies.IsDefaultOrEmpty || board.EnemyCentroid == null ? null : board;
+        }
+
+        private long RvrPlaceGroupId()
+        {
+            GameLiving leader = Body.Group?.LivingLeader ?? Body;
+            return leader is GameBot bot ? bot.DatabaseID : leader?.ObjectID ?? 0;
+        }
+
+        private static string RvrPlaceKind(GameLiving living) => living switch
+        {
+            null => "none",
+            GamePlayer => "player",
+            GameBot => "bot",
+            GameNPC npc when BotPvpCrowdControl.PlayerLike(npc) => "pet",
+            _ => "monster",
+        };
+
+        private static Vector2 Flat(GameObject living) => new(living.X, living.Y);
+
+        // ---- the turns ------------------------------------------------------------------------------------------------------
+
+        /// <summary>The attack turn (TryRvrTacticsMove): backline, spread, a guard's escort, and a hybrid healer's kite.</summary>
+        private bool TryRvrPlaceMove(GameLiving target) => RvrPlaceTurn(target, support: false);
+
+        /// <summary>The support turn (PerformGroupSupport, through TryRvrTacticsSupport): a main healer's kite and its place.</summary>
+        private bool TryRvrPlaceSupport() => RvrPlaceTurn(Body.TargetObject as GameLiving, support: true);
+
+        private bool RvrPlaceTurn(GameLiving target, bool support)
+        {
+            GameBot bot = BotBody;
+            long now = GameLoop.GameLoopTime;
+            if (bot?.Group == null || bot.Group.MemberCount < 2 || !bot.IsAlive || bot.CurrentRegion == null)
+                return false;
+            if (ContinueRvrPlaceWalk(bot, now))
+                return true;
+            if (bot.IsCasting || bot.IsIncapacitated || bot.IsCrowdControlled || bot.MaxSpeed <= 0 || bot.IsStealthed ||
+                bot.IsUnderwater || bot.IsTurningDisabled)
+            {
+                _rvrPlaceHold = false;
+                return false;
+            }
+            if (now < _rvrPlaceNextCheck)
+                return _rvrPlaceHold && !support && target != null;
+            _rvrPlaceNextCheck = now + RvrPositioning.CheckMilliseconds + Math.Abs(bot.DatabaseID % 250);
+            _rvrPlaceHold = false;
+
+            RvrFightBoard board = RvrPlaceBoard(target);
+            RvrFightPlan plan = board?.Plan;
+            // Retreat, regroup and a kiting group belong to the stance (work package 4).
+            if (plan == null || plan.Stance is RvrStance.Retreat or RvrStance.Regroup or RvrStance.Kite)
+                return false;
+            RvrCombatant me = RvrPeelPlan.Find(board.Members, Body);
+            if (me == null)
+                return false;
+
+            // AI_PROFILE: the layout and the walk proof (the board's build is timed by its own system).
+            using var aiProfile = AiProfile.Scope(AiSystem.RvrTactics);
+            RvrSkillTier tier = plan.SkillTier;
+            if ((IsHealer || RvrPositioning.CountsAsHealer(me.Role, me.Class)) && TryRvrKite(bot, board, plan, me, now))
+                return true;
+
+            var placed = new List<RvrPositioning.Placed>(board.Members.Length);
+            var positions = new List<(Vector2, RvrStand)>(board.Members.Length);
+            Vector2 centre = Vector2.Zero;
+            foreach (RvrCombatant member in board.Members)
+            {
+                if (member?.Living == null || member.IsPet)
+                    continue;
+                RvrStand stand = RvrPositioning.StandFor(member.Role, member.Class);
+                GameLiving charge = null;
+                if (member.Living is GameBot { Brain: BotBrain brain } && brain.RvrPeelSticks(plan, now, out GameLiving sticksTo))
+                {
+                    stand = RvrStand.Escort;
+                    charge = sticksTo;
+                }
+                placed.Add(new RvrPositioning.Placed(member, stand, charge));
+                positions.Add((RvrPeelPlan.At(member), stand));
+                centre += RvrPeelPlan.At(member);
+            }
+            if (placed.Count < 2)
+                return false;
+            centre /= placed.Count;
+            Vector2 enemy = new(board.EnemyCentroid.Value.X, board.EnemyCentroid.Value.Y);
+            bool targeted = false;
+            foreach (RvrCombatant foe in board.Enemies)
+                targeted |= foe.TargetsGroup;
+            bool incoming = RvrPositioning.Incoming(board.Enemies, targeted, centre);
+            var slots = RvrPositioning.Layout(placed, enemy, tier, incoming, now);
+            RvrSlot mine = default;
+            foreach (RvrSlot slot in slots)
+                if (ReferenceEquals(slot.Member, Body))
+                    mine = slot;
+            Vector2 self = Flat(bot);
+
+            if (mine.Stand == RvrStand.Escort)
+                return !support && RvrEscort(bot, target, plan, enemy, now);
+            if (mine.Stand != RvrStand.Back)
+                return false;
+            // Heals first: a healer walks for its place only while nobody needs a heal.
+            if (IsHealer)
+                foreach (RvrCombatant member in board.Members)
+                    if (!member.IsPet && member.HealthPercent < RvrPositioning.HealFirstPercent)
+                        return false;
+
+            Vector2? line = RvrPositioning.Line(positions);
+            double front = RvrPositioning.Bearing(line ?? centre, enemy);
+            var others = new List<(Vector2, bool)>();
+            foreach (RvrSlot slot in slots)
+                if (slot.Stand == RvrStand.Back && !ReferenceEquals(slot.Member, Body) &&
+                    RvrPeelPlan.Find(board.Members, slot.Member) is { } other)
+                    others.Add((RvrPeelPlan.At(other), slot.Healer));
+            RvrMoveReason reason = RvrPositioning.NeedsMove(self, mine, line, front, incoming, others);
+            if (reason == RvrMoveReason.None)
+            {
+                _rvrPlaceDueAt = 0;
+                return false;
+            }
+            // A person notices he stands wrong a moment later (the tier's delay).
+            if (_rvrPlaceDueAt == 0)
+                _rvrPlaceDueAt = now + RvrPositioning.ReactionMilliseconds(tier, bot.DatabaseID, now);
+            if (now < _rvrPlaceDueAt)
+                return false;
+            Vector2 spot = mine.Spot;
+            if (!support && target != null && PrefersCurrentSpellRange())
+                spot = RvrPositioning.WithinRange(spot, Flat(target), Math.Max(300, OffensiveApproachRange(target) - 75));
+            if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
+                return false;
+            _rvrPlaceDueAt = 0;
+            LogRvrBackline(reason, line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, front) : 0, tier, now);
+            return true;
+        }
+
+        /// <summary>
+        /// A guard with a charge: he fights an enemy within RvrPeelPlan.LeashRadius of his charge; otherwise he walks back
+        /// beside it and stands there facing the fight (2003: "Guard + intercept + /stick on your casters").
+        /// </summary>
+        private bool RvrEscort(GameBot bot, GameLiving target, RvrFightPlan plan, Vector2 enemy, long now)
+        {
+            if (!RvrPeelSticks(plan, now, out GameLiving charge))
+                return false;
+            if (target != null && target.IsAlive && charge.IsWithinRadius(target, RvrPeelPlan.LeashRadius))
+                return false;
+            Vector2 spot = RvrPositioning.EscortSpot(Flat(charge), enemy);
+            if (Vector2.Distance(Flat(bot), spot) > RvrPeelPlan.StickRadius)
+            {
+                if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
+                    return false;
+                LogRvrBackline(RvrMoveReason.Escort, 0, plan.SkillTier, now);
+                return true;
+            }
+            if (Body.attackComponent?.AttackState == true)
+                Body.StopAttack();
+            Body.StopFollowing();
+            if (target != null)
+                Body.TurnTo(target);
+            _rvrPlaceHold = true;
+            return true;
+        }
+
+        /// <summary>
+        /// A healer with an enemy melee fighter on it runs a bit (by tier: some do not), toward its guard or the tanks'
+        /// line so they can peel the attacker, then heals for 3-5 s before it kites again.
+        /// </summary>
+        private bool TryRvrKite(GameBot bot, RvrFightBoard board, RvrFightPlan plan, RvrCombatant me, long now)
+        {
+            RvrCombatant attacker = RvrPositioning.KiteFrom(Body, me.X, me.Y, board.Enemies);
+            if (attacker?.Living == null || now < _rvrKiteReadyAt)
+                return false;
+            RvrSkillTier tier = plan.SkillTier;
+            long contact = ++_rvrKiteContacts;
+            double roll = RvrPeelPlan.Roll(bot.DatabaseID, contact, 0x4B495445);
+            if (RvrPositioning.KiteSkipped(tier, bot.DatabaseID, contact))
+            {
+                _rvrKiteReadyAt = now + RvrPositioning.KiteHealWindow(roll);
+                return false;
+            }
+            Vector2? refuge = null;
+            if (RvrPeelPlan.GuardOf(plan, Body) is GameLiving guard && guard.IsAlive && guard.CurrentRegion == Body.CurrentRegion)
+                refuge = Flat(guard);
+            else
+            {
+                var line = new List<(Vector2, RvrStand)>();
+                foreach (RvrCombatant member in board.Members)
+                    if (!member.IsPet && member.Living != Body)
+                        line.Add((RvrPeelPlan.At(member), RvrPositioning.StandFor(member.Role, member.Class)));
+                refuge = RvrPositioning.Line(line);
+            }
+            float distance = RvrPositioning.KiteDistance(tier, roll);
+            Vector2 spot = RvrPositioning.KiteSpot(Flat(bot), RvrPeelPlan.At(attacker), refuge, distance);
+            if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Kite, now))
+                return false;
+            _rvrKiteFrom = attacker.Living;
+            _rvrKiteReadyAt = _rvrPlaceUntil + RvrPositioning.KiteHealWindow(roll);
+            if (log.IsInfoEnabled && RvrPositioning.ShouldLog(now, _rvrKiteLogAt, RvrKiteLogGapMilliseconds))
+            {
+                _rvrKiteLogAt = now;
+                log.Info($"RVR_KITE group={RvrPlaceGroupId()} region={Body.CurrentRegionID} healer=\"{Body.Name}\" class={me.Class} " +
+                         $"attacker=\"{attacker.Living.Name}\" attackerKind={RvrPlaceKind(attacker.Living)} attackerClass={attacker.Class} " +
+                         $"run={(int)distance} guard={(RvrPeelPlan.GuardOf(plan, Body) is GameLiving g ? $"\"{g.Name}\"" : "none")} skill={tier}");
+            }
+            return true;
+        }
+
+        // ---- walking --------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Walks toward <paramref name="spot"/> (at most RvrPositioning.MaxWalk) at full speed, once the walk is proven on
+        /// the mesh piece by piece with the combat steps' ReachableLeg (same zone, dry ground, the bot's own floor: never
+        /// off a ledge or into water). A walk blocked part way ends where the proof ended when that is at least half the
+        /// way; otherwise there is no walk. True when the bot set off.
+        /// </summary>
+        private bool StartRvrPlaceWalk(GameBot bot, Vector2 spot, RvrPlaceWalk kind, long now)
+        {
+            Vector3 from = new(bot.X, bot.Y, bot.Z);
+            Vector2 start = new(from.X, from.Y);
+            float total = Vector2.Distance(start, spot);
+            if (total < RvrPositioning.SlotTolerance)
+                return false;
+            if (total > RvrPositioning.MaxWalk)
+            {
+                spot = start + (spot - start) / total * RvrPositioning.MaxWalk;
+                total = RvrPositioning.MaxWalk;
+            }
+            Vector3 at = from;
+            int proven = 0;
+            Vector2[] pieces = RvrPositioning.Chunks(start, spot);
+            foreach (Vector2 piece in pieces)
+            {
+                if (ReachableLeg(bot, at, new Vector3(piece.X, piece.Y, at.Z)) is not Vector3 leg)
+                    break;
+                at = leg;
+                proven++;
+            }
+            float covered = Vector2.Distance(start, new(at.X, at.Y));
+            if (proven == 0 || proven < pieces.Length && (covered < total / 2 || covered < 80))
+            {
+                BotCombatMovement.Count(BotCombatMovement.Counter.Blocked);
+                return false;
+            }
+            if (Body.attackComponent?.AttackState == true)
+                Body.StopAttack();
+            Body.StopFollowing();
+            bot.PathTo(at, bot.MaxSpeed);
+            _rvrPlaceWalk = kind;
+            _rvrPlaceTo = at;
+            _rvrPlaceStarted = now;
+            _rvrPlaceUntil = now + Math.Min(RvrPositioning.MoveTimeoutMilliseconds, (long)(covered * 1000 / Math.Max(50, (int)bot.MaxSpeed)) + 1_000);
+            _rvrPlaceHold = false;
+            return true;
+        }
+
+        /// <summary>True while a walk this partial started still owns the turn; ends it (facing the fight) when it arrived,
+        /// stopped or timed out.</summary>
+        private bool ContinueRvrPlaceWalk(GameBot bot, long now)
+        {
+            if (_rvrPlaceWalk == RvrPlaceWalk.None)
+                return false;
+            bool arrived = Vector2.Distance(Flat(bot), new(_rvrPlaceTo.X, _rvrPlaceTo.Y)) <= RvrPositioning.SlotTolerance;
+            if (!arrived && now < _rvrPlaceUntil && !bot.IsIncapacitated && (bot.IsMoving || now - _rvrPlaceStarted < 600))
+                return true;
+            if (bot.IsMoving && !arrived)
+                bot.StopMoving();
+            RvrPlaceWalk walk = _rvrPlaceWalk;
+            _rvrPlaceWalk = RvrPlaceWalk.None;
+            _rvrPlaceNextCheck = Math.Max(_rvrPlaceNextCheck, now + RvrPositioning.CheckMilliseconds);
+            GameLiving face = walk == RvrPlaceWalk.Kite ? _rvrKiteFrom : Body.TargetObject as GameLiving;
+            if (face?.IsAlive == true && face.CurrentRegion == bot.CurrentRegion)
+                bot.TurnTo(face);
+            _rvrKiteFrom = null;
+            return false;
+        }
+
+        /// <summary>RVR_BACKLINE group= region= moved= member= class= reason= depth= skill=: at most every 10 s per group,
+        /// with how many members of the group walked for their place since the last line.</summary>
+        private void LogRvrBackline(RvrMoveReason reason, float depth, RvrSkillTier tier, long now)
+        {
+            if (!log.IsInfoEnabled)
+                return;
+            RvrBacklineLog entry = RvrBacklineLogs.GetValue(RvrFightBoards.KeyOf(Body), static _ => new RvrBacklineLog());
+            int moved;
+            lock (entry)
+            {
+                entry.Moved++;
+                if (!RvrPositioning.ShouldLog(now, entry.LastAt, RvrBacklineLogGapMilliseconds))
+                    return;
+                moved = entry.Moved;
+                entry.Moved = 0;
+                entry.LastAt = now;
+            }
+            log.Info($"RVR_BACKLINE group={RvrPlaceGroupId()} region={Body.CurrentRegionID} moved={moved} member=\"{Body.Name}\" " +
+                     $"class={(eCharacterClass)(BotBody?.CharacterClass?.ID ?? 0)} reason={reason} depth={(int)depth} skill={tier}");
+        }
+    }
+}

@@ -4059,6 +4059,7 @@ namespace DOL.AI.Brain
 
         private bool TryPriorityTaunt(GameLiving target)
         {
+            if (RvrSlamQueued(target)) return false; // an open-field slam queued on it stays (BotBrain.TankPeel)
             if (!IsTankClass || target?.TargetObject is not GameLiving victim || Body.Group == null ||
                 victim.Group != Body.Group || !Body.Group.IsInTheGroup(victim) ||
                 victim.CurrentRegionID != Body.CurrentRegionID ||
