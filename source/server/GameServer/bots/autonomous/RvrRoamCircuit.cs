@@ -152,6 +152,30 @@ public static class RvrRoamCircuits
         return (long)(Math.Min(1.0, share) * minutes * 60_000L);
     }
 
+    /// <summary>The radius around an enemy in which its mates count against a roaming eight's odds (the noticing radius of a group).</summary>
+    public const int PreyPartyRadius = 1_500;
+
+    /// <summary>
+    /// Whether a roaming eight hunts an enemy gamebot it sees at its check spot. A leveller (a PvE goal) always, as
+    /// before. Since fix/rvr-quiet-frontier an enemy RvR bot too (a soloer, a duo, another roaming group: 2003 roaming
+    /// groups hunted whoever they found at the gate or the camp, owner's PC log 2026-11-17: no enemy levellers at the
+    /// spots overnight, 93 of 96 checks "clear"), when the enemy heads within <see cref="PreyPartyRadius"/> of it are no
+    /// more than the group's own plus the tier's overconfidence: a casual group takes on two more than it has, an
+    /// average one one more, a veteran one only even numbers or better. Pure.
+    /// </summary>
+    public static bool MayHuntAtSpot(bool leveller, int ownHeads, int enemyHeadsNear, RvrSkillTier tier)
+    {
+        if (leveller)
+            return true;
+        int slack = tier switch
+        {
+            RvrSkillTier.Veteran => 0,
+            RvrSkillTier.Average => 1,
+            _ => 2,
+        };
+        return ownHeads > 0 && Math.Max(1, enemyHeadsNear) <= ownHeads + slack;
+    }
+
     /// <summary>The chance that a group notices enemy levelling bots at its spot on one look (casual groups miss more).</summary>
     public static double NoticeChance(RvrSkillTier tier) => tier switch
     {

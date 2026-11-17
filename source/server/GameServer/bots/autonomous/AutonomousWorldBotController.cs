@@ -2596,7 +2596,7 @@ namespace DOL.GS
                     warband.Length, averageLevel, healers, siegeReady,
                     (unchecked((ulong)(_groupDirective?.Leader?.DatabaseID ?? bot.DatabaseID)) * 2654435761UL % 100) < 30,
                     warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level),
-                    RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime)),
+                    RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime), RoamingEight: RvrTacticsIsRoamingEight(bot)),
                 objectives, GameLoop.GameLoopTime, Random.Shared.NextDouble());
             _rvrSharedEvent = plan?.IsSharedEvent == true;
             _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;

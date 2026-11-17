@@ -43,7 +43,7 @@ public static partial class AutonomousRvrEventLayer
     /// RvrEngagement.RecentWipes); with <see cref="RvrEngagement.RepeatedWipes"/> or more it does not go hunting.</summary>
     public sealed record Force(string GroupId, eRealm Realm, int MemberCount, int AverageLevel, int HealerCount,
         bool CanSupplySiege = true, bool RoamingReserve = false, long[] MemberIds = null, int MinimumMemberLevel = 50,
-        int RecentWipes = 0);
+        int RecentWipes = 0, bool RoamingEight = false);
     public sealed record LiveObjective(string Id, string Name, Intent Kind, eRealm OwningRealm, ushort RegionId,
         int X, int Y, int Z, bool IsRelicKeep, int EnemyCount, int FriendlyCount, int GuardStrength, int ClosedDoors,
         bool IsRelicCarrier = false, bool IsPortalKeep = false, bool UnderAttack = false);
@@ -539,6 +539,8 @@ public static partial class AutonomousRvrEventLayer
                     continue;
                 if (!IsLatestDefenseFocus(active)) continue;
                 if (target.UnderAttack) active.AttackObserved = true;
+                // 1.2: a roaming eight defends its realm's keeps but is not drafted into another realm's keep event.
+                if (!RvrRoamSplit.MayJoinKeepEvent(force.RoamingEight, force.Realm == active.DefenderRealm)) continue;
                 // The attacking commitment raises the alarm before combat. Defenders
                 // form next; the third realm joins after both primary forces exist.
                 if (force.Realm != active.AttackerRealm && !(SiegeScheduling

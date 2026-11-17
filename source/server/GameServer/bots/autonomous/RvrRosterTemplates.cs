@@ -97,6 +97,37 @@ public static class RvrRoamSplit
     }
 
     /// <summary>
+    /// How long a realm waits for its free pool to fill an eight before a short eight forms as a warband after all
+    /// (fix/rvr-quiet-frontier, owner's PC log 2026-11-17 on 19e7037: 27 eights against 235 warbands, 178 of them pairs).
+    /// </summary>
+    public const long ShortEightWaitMilliseconds = 5 * 60_000;
+
+    /// <summary>
+    /// What a leader chosen for an eight does when its roster found only <paramref name="found"/> members (leader
+    /// included). Enough for an eight: <see cref="RvrPartyKind.Eight"/>. Short: it waits (null: no party this pass, the
+    /// leader stays free and the realm's free pool fills as warbands end), unless the realm's eight share cannot hold a
+    /// minimum eight at all, or the realm has waited <see cref="ShortEightWaitMilliseconds"/> since its first short eight
+    /// in a row; then it forms as a warband, as before. Pure.
+    /// </summary>
+    public static RvrPartyKind? ShortEight(int found, RvrRoamCensus census, RvrRoamShares shares, long waitedMilliseconds)
+    {
+        if (found >= RvrRosterTemplates.MinimumEight)
+            return RvrPartyKind.Eight;
+        if (shares.Share(RvrPartyKind.Eight) * census.Total < RvrRosterTemplates.MinimumEight ||
+            waitedMilliseconds >= ShortEightWaitMilliseconds)
+            return RvrPartyKind.Warband;
+        return null;
+    }
+
+    /// <summary>
+    /// Whether a force may join a running keep event on this side. A roaming eight walks its circuits: it answers its
+    /// realm's defence (the defender side), but is not drafted into another realm's keep as an attacker or third realm
+    /// (owner's PC log 2026-11-17 on 19e7037: 18 of 27 eights ended "Siege in progress", 2 ever walked a circuit). Every
+    /// other force joins as before. Pure.
+    /// </summary>
+    public static bool MayJoinKeepEvent(bool roamingEight, bool defenderSide) => !roamingEight || defenderSide;
+
+    /// <summary>
     /// The party size for a chosen kind. <paramref name="rolled"/> is today's warband roll (1 means "alone"), kept for a
     /// warband when it is a real party; <paramref name="largestAllowed"/> is what the realm's reserve leaves.
     /// </summary>
