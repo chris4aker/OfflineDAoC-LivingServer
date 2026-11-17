@@ -474,6 +474,8 @@ public static class BotPlaceKnowledge
         Zone zone = bot?.CurrentZone;
         if (zone == null)
             return;
+        if (!On)
+            return; // switched off: no watch and no scope count every 5 s
         BotPersonKey person = BotPersonKey.Of(bot);
         if (person.IsNone)
             return;

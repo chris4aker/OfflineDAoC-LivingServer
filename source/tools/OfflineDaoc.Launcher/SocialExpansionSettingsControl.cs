@@ -101,6 +101,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly System.Windows.Forms.Timer _poll = new() { Interval = 2000 };
     private SocialExpansionSettings _saved = SocialExpansionSettings.Defaults;
     private bool _loading;
+    // raid_learns_from_raiders has no checkbox: kept from the loaded values, off with ALL OFF, back on with Skill that grows.
+    private bool _raidLearns = true;
     // The saved settings couldn't be read at all: nothing may be saved over them (that would overwrite the
     // player's real values with what the tab happens to show) until a reload succeeds.
     private bool _loadFailed;
@@ -317,6 +319,11 @@ internal sealed class SocialExpansionSettingsControl : UserControl
                      _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
             box.CheckedChanged += (_, _) => Edited();
+        _skillProfiles.CheckedChanged += (_, _) =>
+        {
+            if (!_loading && _skillProfiles.Checked)
+                _raidLearns = true; // turning Bots as people's skill back on after ALL OFF brings raid learning back
+        };
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _joinMode.SelectedIndexChanged += (_, _) => Edited();
         _upkeep.SelectedIndexChanged += (_, _) => Edited();
@@ -432,6 +439,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BuffBotPercent = (int)_buffBotPercent.Value,
         BuffBotEraConcRange = _buffBotConcRange.Checked,
         BotSkillProfiles = _skillProfiles.Checked,
+        RaidLearnsFromRaiders = _raidLearns,
         BotPlaceKnowledge = _placeKnowledge.Checked,
         BotMovementHabits = _movementHabits.Checked,
         LivingMilestones = _milestones.Checked,
@@ -480,6 +488,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _buffBotPercent.Value = Math.Clamp(settings.BuffBotPercent, 0, 100);
         _buffBotConcRange.Checked = settings.BuffBotEraConcRange;
         _skillProfiles.Checked = settings.BotSkillProfiles;
+        _raidLearns = settings.RaidLearnsFromRaiders;
         _placeKnowledge.Checked = settings.BotPlaceKnowledge;
         _movementHabits.Checked = settings.BotMovementHabits;
         _milestones.Checked = settings.LivingMilestones;

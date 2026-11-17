@@ -157,8 +157,9 @@ public static class BotSkillMistakes
 
     /// <summary>
     /// A delay inside a band [<paramref name="min"/>, <paramref name="max"/>]: a member's place in its band (1 the best)
-    /// moves the middle of its draws, the roll spreads them around it; never outside the band, and over members spread
-    /// evenly the mean stays the band's middle (owner decision 5: the RvR field's measures stay readable). Pure.
+    /// moves the middle of its draws, the roll spreads them around it; never outside the band (owner decision 5). The mean
+    /// stays the band's middle only while members' places average the middle of their bands: places rise with growth, so a
+    /// group of grown members is up to about a quarter of the band quicker, still inside it. Pure.
     /// </summary>
     public static long SpreadInBand(long min, long max, double roll, double position)
     {
@@ -199,7 +200,8 @@ public static class BotSkillMistakes
     /// The delay (ms) before a member of an RvR group follows its group's call (work package 7): inside the group tier's band
     /// (RvrAssist.FollowDelayRange: Casual 1-4 s, Average 0.6-2.5 s, Veteran 0.3-1.5 s), moved by the member's reactions facet
     /// (owner decision 5). <paramref name="todayDelay"/> is today's fixed draw in that band; its place in the band is kept as
-    /// the roll, so the group's mean delay stays today's. Pure.
+    /// the roll. The group's mean stays today's only for members at mid-band; members who have grown follow sooner (up to
+    /// about a quarter of the band), still inside the group tier's band. Pure.
     /// </summary>
     public static long FollowDelayMilliseconds(RvrSkillTier groupTier, double memberPosition, long todayDelay)
     {

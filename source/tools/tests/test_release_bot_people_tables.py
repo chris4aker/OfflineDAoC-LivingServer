@@ -97,14 +97,11 @@ class BotPeopleTablesShipEmpty(unittest.TestCase):
             self.assertEqual(sorted(t["Table"] for t in update["NewTables"]), sorted(BOT_PEOPLE))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class BotPeopleDescriptionsMatch(unittest.TestCase):
     """The launcher copies the four master switches' descriptions from the server (WP0); they stay equal (WP7)."""
 
-    MASTERS = ["bot_skill_profiles", "bot_place_knowledge", "bot_movement_habits", "bot_living_milestones"]
+    MASTERS = ["bot_skill_profiles", "bot_place_knowledge", "bot_movement_habits", "bot_living_milestones",
+               "raid_learns_from_raiders"]   # the last has no master; the launcher writes it for ALL OFF (WP7)
 
     def test_the_launcher_and_the_server_describe_each_master_switch_alike(self):
         server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
@@ -124,3 +121,6 @@ class BotPeopleDescriptionsMatch(unittest.TestCase):
         self.assertEqual(waiting, ["bot_living_milestones"], "work package 6 is the one not built")
         self.assertNotIn("these change nothing yet", card)
 
+
+if __name__ == "__main__":
+    unittest.main()

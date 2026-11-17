@@ -51,7 +51,7 @@ namespace DOL.UnitTests
         // ---- the RvR call-follow delay (WP2's open point) --------------------------------------------------------------
 
         [Test]
-        public void A_members_follow_delay_stays_in_its_group_tiers_band_and_keeps_the_mean() => Assert.Multiple(() =>
+        public void A_members_follow_delay_stays_in_its_group_tiers_band_and_keeps_the_mean_at_mid_band() => Assert.Multiple(() =>
         {
             var random = new Random(11);
             foreach (RvrSkillTier tier in Enum.GetValues<RvrSkillTier>())
@@ -70,8 +70,11 @@ namespace DOL.UnitTests
                     sharp += BotSkillMistakes.FollowDelayMilliseconds(tier, 0.95, draw);
                     slow += BotSkillMistakes.FollowDelayMilliseconds(tier, 0.05, draw);
                 }
-                Assert.That(moved / n, Is.EqualTo(today / n).Within((max - min) * 0.03), $"{tier}: the group's mean stays today's");
+                // Positions spread evenly around mid-band: the mean stays today's. A grown group (places high) is quicker.
+                Assert.That(moved / n, Is.EqualTo(today / n).Within((max - min) * 0.03), $"{tier}: mid-band members keep today's mean");
                 Assert.That(sharp / n, Is.LessThan(slow / n - (max - min) * 0.3), $"{tier}: quick reactions follow sooner");
+                Assert.That(sharp / n, Is.GreaterThanOrEqualTo(min).And.GreaterThan(today / n - (max - min) * 0.3),
+                    $"{tier}: a grown group is quicker by at most about a quarter of the band");
             }
             Assert.That(BotSkillMistakes.FollowDelayMilliseconds(RvrSkillTier.Casual, 0.5, -5), Is.InRange(1_000, 4_000), "a draw out of band is clamped");
             Assert.That(BotSkillMistakes.FollowDelayMilliseconds(RvrSkillTier.Veteran, double.NaN, 99_999), Is.InRange(300, 1_500));

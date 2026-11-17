@@ -268,7 +268,8 @@ public static class BotSkill
     {
         if (Bots.TryGetValue(person, out Online entry) && entry.Current != null)
             return entry;
-        entry = Bots.GetOrAdd(person, _ => new Online((int)(bot?.Realm ?? 0), GameLoop.GameLoopTime, EventKinds));
+        // The factory takes the bot as its argument: no closure, so a cached read allocates nothing.
+        entry = Bots.GetOrAdd(person, static (_, b) => new Online((int)(b?.Realm ?? 0), GameLoop.GameLoopTime, EventKinds), bot);
         if (entry.Current == null)
             Interlocked.CompareExchange(ref entry.Current, new Snapshot(ProfileOf(person, PersonalityOf(bot), Awareness)), null);
         return entry;

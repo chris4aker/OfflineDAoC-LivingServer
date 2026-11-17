@@ -456,9 +456,9 @@ class BotsAsPeople(unittest.TestCase):
                        "group=4 add=1")
         log.add(at(3), self.mistakes())
         log.add(at(3), "RAID_LEARN raid=albion-crystal-cave mechanic=Xanxicar/blast record=0.39 seenShare=0.00 "
-                       "familiarity=0.29 raiders=60 seen=0 specialForces=0 knowledge=0.00 newcomer=0.29 veteran=0.29 health=100")
+                       "familiarity=0.29 raiders=60 seen=0 specialForces=0 knowledge=0.00 newcomer=0.29 veteran=0.29 run=1000 health=100")
         log.add(at(5), "RAID_LEARN raid=albion-crystal-cave mechanic=Xanxicar/blast record=0.39 seenShare=0.75 "
-                       "familiarity=0.39 raiders=62 seen=46 specialForces=0 knowledge=0.37 newcomer=0.22 veteran=0.48 health=100")
+                       "familiarity=0.39 raiders=62 seen=46 specialForces=0 knowledge=0.37 newcomer=0.22 veteran=0.48 run=2000 health=100")
         log.add(at(3), 'BOT_PLACE_LEARNED how=seeded bot=Bot3 id=3 realm=Albion level=35 places=24 at="Camelot City"')
         log.add(at(4), 'BOT_PLACE_LEARNED how=visited bot=Bot3 id=3 realm=Albion level=35 place="Llyn Barfog" '
                        'zone="Llyn Barfog"')
@@ -482,7 +482,7 @@ class BotsAsPeople(unittest.TestCase):
         self.assertEqual(check(sec, "milestones")["status"], pcl.NOT_SEEN, "work package 6 is not built")
         self.assertIn("100 profiles: 31/49/20", check(sec, "skill_profile")["detail"])
         self.assertIn("in/out=0.25", check(sec, "mistakes")["detail"])
-        self.assertIn("rose in albion-crystal-cave", check(sec, "raid_learn")["detail"])
+        self.assertIn("rose between runs in albion-crystal-cave", check(sec, "raid_learn")["detail"])
         self.assertIn("sits=9", check(sec, "movement")["detail"])
         log.add(at(7), 'BOT_WAY_WRONG_ROAD bot=Bot8 id=8 realm=Albion level=30 tier=casual dest="x" zone="y" cost_s=240.5 '
                        'length=900 look_s=5.0 result=back at=1,2,3')
@@ -500,6 +500,47 @@ class BotsAsPeople(unittest.TestCase):
         mistakes = check(only(log.run()[1]), "mistakes")
         self.assertEqual(mistakes["status"], pcl.NOT_SEEN)
         self.assertIn("too few decisions", mistakes["detail"])
+        log = Log().start(at(0))
+        log.add(at(1), "BOT_SKILL_MISTAKE kind=buff spared=true name=Bot2 person=c:2 realm=alb tier=casual chance=0.062")
+        log.add(at(2), self.mistakes(out=(10, 100), inside=(1, 500)))
+        mistakes = check(only(log.run()[1]), "mistakes")
+        self.assertEqual(mistakes["status"], pcl.NOT_SEEN, "in/out 0.02 is not about a quarter")
+        self.assertIn("below 0.1", mistakes["detail"])
+
+    def test_movement_needs_sits_stick_losses_and_overshoots(self):
+        log = Log().start(at(0))
+        log.add(at(1), "BOT_MOVE_HABITS seconds=300 strafes=3 stickLost=0 overshoots=2 sits=9")
+        log.add(at(2), 'BOT_MOVE_SIT bot="Bot6" id=6 region=1 where=group waited_s=41')
+        self.assertEqual(check(only(log.run()[1]), "movement")["status"], pcl.NOT_SEEN)
+        log.add(at(6), "BOT_MOVE_HABITS seconds=300 strafes=0 stickLost=1 overshoots=0 sits=2")
+        self.assertEqual(check(only(log.run()[1]), "movement")["status"], pcl.SEEN)
+
+    @staticmethod
+    def learn(share, run=None, raiders=60):
+        return (f"RAID_LEARN raid=crystal-cave mechanic=Xanxicar/blast record=0.00 seenShare={share:.2f} familiarity=0.00 "
+                f"raiders={raiders} seen=0 specialForces=0 knowledge=0.00 newcomer=0.00 veteran=0.00 "
+                + (f"run={run} " if run is not None else "") + "health=100")
+
+    def test_a_rise_inside_one_run_is_not_a_rise_between_runs(self):
+        log = Log().start(at(0))
+        log.add(at(1), self.learn(0.00, run=1000))
+        log.add(at(2), self.learn(0.40, run=1000, raiders=70))  # late veterans and Special Forces join run 1
+        learn = check(only(log.run()[1]), "raid_learn")
+        self.assertEqual(learn["status"], pcl.NOT_SEEN)
+        self.assertIn("in 1 run(s)", learn["detail"])
+        log.add(at(30), self.learn(0.35, run=2000))
+        self.assertEqual(check(only(log.run()[1]), "raid_learn")["status"], pcl.SEEN, "run 2 starts above run 1's start")
+
+    def test_lines_without_a_run_are_split_at_the_raid_starts(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_STARTED event=crystal-cave present=60 required=40 forced=true")
+        log.add(at(2), self.learn(0.00))
+        log.add(at(3), self.learn(0.50, raiders=70))
+        self.assertEqual(check(only(log.run()[1]), "raid_learn")["status"], pcl.NOT_SEEN)
+        log.add(at(20), 'REALM_RAID_ENDED event=crystal-cave outcome="Boss defeated" minutes=19 named=1')
+        log.add(at(21), "REALM_RAID_STARTED event=crystal-cave present=60 required=40 forced=true")
+        log.add(at(22), self.learn(0.70))
+        self.assertEqual(check(only(log.run()[1]), "raid_learn")["status"], pcl.SEEN)
 
     def test_raid_learning_without_a_rise_is_not_seen(self):
         log = Log().start(at(0))
