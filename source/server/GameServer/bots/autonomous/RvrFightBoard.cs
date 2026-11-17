@@ -139,6 +139,11 @@ public sealed record RvrFightBoard
     public Vector3? EnemyCentroid { get; init; }
     /// <summary>Two other realms are fighting each other in view.</summary>
     public bool ThirdPartyFight { get; init; }
+    /// <summary>
+    /// The board is of the group's main body: the region holding most of its living members (the leader's on a tie;
+    /// RvrEngagement.MainBody). Only such a board has a stance and moves the group's stance runtime; true for a solo bot.
+    /// </summary>
+    public bool MainBody { get; init; } = true;
     /// <summary>The group's stored facts when the board was built.</summary>
     public RvrGroupState State { get; init; } = RvrGroupState.Empty;
     /// <summary>The group's plan, made from this board and the plan before it, and published with it.</summary>

@@ -48,6 +48,10 @@ public sealed record RvrFightPlan
     public RvrStance Stance { get; init; } = RvrStance.Engage;
     /// <summary>When the group took <see cref="Stance"/> (game-loop tick).</summary>
     public long StanceSince { get; init; }
+    /// <summary>Why the group took <see cref="Stance"/> (the RVR_STANCE and RVR_REGROUP reason); empty for the neutral start.</summary>
+    public string StanceReason { get; init; } = string.Empty;
+    /// <summary>Starting <see cref="Stance"/> was a real reason to pass it on to the warband (RvrStanceDecision.Relays).</summary>
+    public bool StanceRelays { get; init; }
     public Vector3? RallyPoint { get; init; }
     public ushort RallyRegion { get; init; }
     public RvrSkillTier SkillTier { get; init; } = RvrSkillTier.Average;

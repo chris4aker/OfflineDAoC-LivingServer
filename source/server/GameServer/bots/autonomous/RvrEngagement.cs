@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using DOL.GS.ServerProperties;
 
@@ -85,8 +86,35 @@ public readonly record struct RvrSizeUp
     public Vector3? EnemyCentre { get; init; }
 }
 
-/// <summary>A stance decision: the stance, why, and the rally point for a regroup (null: keep the stored one).</summary>
-public readonly record struct RvrStanceDecision(RvrStance Stance, string Reason, Vector3? Rally = null);
+/// <summary>
+/// A stance decision: the stance, why, the rally point for a regroup (null: keep the stored one), and whether starting
+/// it is a real reason to pass it on to the warband (a retreat from a fight, a regroup after a retreat or a hurting fight).
+/// </summary>
+public readonly record struct RvrStanceDecision(RvrStance Stance, string Reason, Vector3? Rally = null, bool Relays = false);
+
+/// <summary>One living member of a group as the main-body rule sees it: its region, where it stands, whether it leads.</summary>
+public readonly record struct RvrMemberSpot(ushort Region, float X, float Y, bool Leader);
+
+/// <summary>A group's main body: the region holding most of its living members, their centre there, and how many they are.</summary>
+public readonly record struct RvrGroupBody(ushort Region, Vector2 Centre, int Members);
+
+/// <summary>
+/// What the group's runtime last acted on: the build time, stance, start and region of the group's own main record. Only
+/// the main body's boards move it (<see cref="RvrEngagement.Track"/>), so a member in another region cannot end or restart
+/// the group's stance. Immutable.
+/// </summary>
+public sealed record RvrStanceLedger
+{
+    public long LastBuild { get; init; } = long.MinValue;
+    public RvrStance Stance { get; init; } = RvrStance.Engage;
+    public long Since { get; init; } = long.MinValue;
+    public ushort Region { get; init; }
+
+    public static RvrStanceLedger Empty { get; } = new();
+}
+
+/// <summary>One step of the ledger: the next ledger, whether this board was acted on, whether the stance changed, and the stance before.</summary>
+public readonly record struct RvrStanceStep(RvrStanceLedger Next, bool Acted, bool Changed, RvrStance Previous, long PreviousSince);
 
 /// <summary>
 /// Work package 4 of docs/RVR-FIELD-1.2.md ("Mind": stances, size-up, watching, retreat and regroup). The group's stance
@@ -104,8 +132,13 @@ public readonly record struct RvrStanceDecision(RvrStance Stance, string Reason,
 /// <item>Kite: the odds are below fair but not bad, or a melee-heavy enemy meets a group that fights from range. Only the
 /// stance is published; work package 3 moves the bots.</item>
 /// <item>Retreat: bad odds (<see cref="RetreatOdds"/>), or a lost fight. Runs through BotGroupRetreat.</item>
-/// <item>Regroup: after a retreat, after a fight when the group needs rest, or when another group passes it on.</item>
+/// <item>Regroup: after a retreat, after a fight when the group needs rest, or when another group passes it on. It lasts
+/// at least <see cref="MinRegroupMilliseconds"/> (by tier) unless the group is in contact.</item>
 /// </list>
+/// Only the board of the group's main body (<see cref="MainBody"/>) has a stance; a member in another region gets the
+/// neutral Engage and cannot start or end the group's stance (<see cref="Track"/>). A group passes a retreat or regroup on
+/// only for a real reason, once per <see cref="RelayWindowMilliseconds"/>, to groups near it in its region (<see cref="MayRelay"/>,
+/// <see cref="RelayReaches"/>).
 /// A stance lasts at least <see cref="MinStanceMilliseconds"/>, except that contact ends a watch, a hold or a regroup at
 /// once (the enemy came to the group). A bot that is hit always fights back, whatever the stance (<see cref="MayTakeTarget"/>).
 /// </summary>
@@ -187,6 +220,9 @@ public static class RvrEngagement
 
     // ---- regroup and after the fight (design values) -------------------------------------------------------------------
     public const long MaxRegroupMilliseconds = 75_000;
+    /// <summary>A regroup lasts at least this long, by tier, unless the group is in contact (attacked or attacking):
+    /// casual groups head out again soonest, veterans take their time to rest and re-form. Design values.</summary>
+    public const long CasualMinRegroupMilliseconds = 10_000, AverageMinRegroupMilliseconds = 15_000, VeteranMinRegroupMilliseconds = 20_000;
     /// <summary>A regroup is over when the members are together and at this health and power (average).</summary>
     public const int RegroupHealth = 85, RegroupPower = 70;
     /// <summary>A member this close to the rally point is there.</summary>
@@ -207,6 +243,11 @@ public static class RvrEngagement
     public const long RelayDelayMilliseconds = AutonomousRvrPerception.WarbandRelayDelayMilliseconds;
     /// <summary>A relayed stance is acted on within this long after it arrives, or not at all.</summary>
     public const long RelayValidMilliseconds = 10_000;
+    /// <summary>A group passes a stance on at most once in this long (fix of the 1.2 test build 19e7037 regroup flap).</summary>
+    public const long RelayWindowMilliseconds = 60_000;
+    /// <summary>Only groups whose main body is in the sender's region and within this of the sender's centre hear it: the
+    /// reach of a spotter's call (<see cref="AutonomousRvrPerception.SpotterRadius"/>).</summary>
+    public const int RelayRadius = AutonomousRvrPerception.SpotterRadius;
 
     // ---- chasing (design values) ---------------------------------------------------------------------------------------
     /// <summary>A member stops chasing a fleeing enemy this far from its group's centre, by tier.</summary>
@@ -416,7 +457,7 @@ public static class RvrEngagement
                 return new(RvrStance.Engage, "retreat switched off");
             if (now - since >= MaxRetreatMilliseconds || !aware || s.EnemyDistance >= RetreatClearDistance)
                 return o.Regroup
-                    ? new(RvrStance.Regroup, "retreat over", RegroupRally(f, state, tier, s))
+                    ? new(RvrStance.Regroup, "retreat over", RegroupRally(f, state, tier, s), Relays: true)
                     : new(RvrStance.Engage, "retreat over");
             return new(RvrStance.Retreat, "retreating");
         }
@@ -427,6 +468,8 @@ public static class RvrEngagement
                 return Fight(s, f, wipes, o, coolingDown, "contact while regrouping");
             if (!o.Regroup)
                 return new(RvrStance.Engage, "regroup switched off");
+            if (now - since < MinRegroupMilliseconds(tier))
+                return new(RvrStance.Regroup, "regrouping", RegroupRally(f, state, tier, s));
             if (now - since >= MaxRegroupMilliseconds)
                 return new(RvrStance.Engage, "regroup timed out");
             if (Rested(s.Friendly) && !s.StrungOut)
@@ -434,11 +477,14 @@ public static class RvrEngagement
             return new(RvrStance.Regroup, "regrouping", RegroupRally(f, state, tier, s));
         }
 
+        // Nothing in view: Regroup is only for after a retreat (above) or a fight that hurt (health under
+        // AfterFightHealth or power under AfterFightPower). A group at or above both goes back to Engage, the neutral
+        // stance under which it travels and roams on (the travel hold lets go of it).
         if (!aware)
         {
             if (current is RvrStance.Engage or RvrStance.Kite && o.Regroup && f.LastContactAt >= since &&
                 now - f.LastContactAt <= AfterFightMilliseconds && NeedsRest(s.Friendly))
-                return new(RvrStance.Regroup, "after the fight", AfterFightRally(f, tier));
+                return new(RvrStance.Regroup, "after the fight", AfterFightRally(f, tier), Relays: true);
             return new(RvrStance.Engage, "nothing in view");
         }
 
@@ -481,7 +527,7 @@ public static class RvrEngagement
         bool retreatCoolingDown, int recentWipes, double boldness, string why)
     {
         if (o.Retreat && !retreatCoolingDown && (perceivedOdds < RetreatThreshold(recentWipes, boldness) || lost))
-            return new(RvrStance.Retreat, lost ? why + ": fight lost" : why + ": bad odds");
+            return new(RvrStance.Retreat, lost ? why + ": fight lost" : why + ": bad odds", Relays: true);
         if (o.Kite && (perceivedOdds < EngageThreshold(recentWipes, boldness) || kiteMelee && perceivedOdds < KiteMeleeMaxOdds))
             return new(RvrStance.Kite, kiteMelee ? why + ": melee-heavy enemy" : why + ": odds below fair");
         return new(RvrStance.Engage, why + ": fair odds");
@@ -549,15 +595,89 @@ public static class RvrEngagement
         RvrEngagementFacts facts = state.Engagement ?? RvrEngagementFacts.Empty;
         RvrEngagementOptions options = RvrEngagementOptions.From(switches, groupRetreatEnabled);
         if (!options.Any || facts.GroupSize < 2)
-            return plan.Stance == RvrStance.Engage ? plan : plan with { Stance = RvrStance.Engage, StanceSince = now };
+            return Neutral(plan, now, "no stance");
+        // One stance per group: a board of members away from the group's main body (another region) has none.
+        if (!board.MainBody)
+            return Neutral(plan, now, "away from the main body");
         RvrSizeUp sizeUp = SizeUp(board, facts, plan.SkillTier);
         RvrStanceDecision decision = Decide(plan.Stance, plan.StanceSince, sizeUp, facts, state, options, plan.SkillTier, now);
         if (decision.Stance != plan.Stance)
-            plan = plan with { Stance = decision.Stance, StanceSince = now };
+            plan = plan with { Stance = decision.Stance, StanceSince = now, StanceReason = decision.Reason, StanceRelays = decision.Relays };
         if (decision.Stance == RvrStance.Regroup && decision.Rally is { } rally)
             plan = plan with { RallyPoint = rally, RallyRegion = board.RegionId };
         return plan;
     }
+
+    private static RvrFightPlan Neutral(RvrFightPlan plan, long now, string reason) =>
+        plan.Stance == RvrStance.Engage ? plan
+            : plan with { Stance = RvrStance.Engage, StanceSince = now, StanceReason = reason, StanceRelays = false };
+
+    /// <summary>How long a regroup lasts at least, by tier, unless contact ends it. Pure.</summary>
+    public static long MinRegroupMilliseconds(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => CasualMinRegroupMilliseconds,
+        RvrSkillTier.Veteran => VeteranMinRegroupMilliseconds,
+        _ => AverageMinRegroupMilliseconds,
+    };
+
+    // ---- one stance per group ------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// A group's main body: the region holding most of its living members; on a tie the leader's region, and when the
+    /// leader is in none of the tied regions (or dead), the lowest region id. Region 0 and no members when none is alive. Pure.
+    /// </summary>
+    public static RvrGroupBody MainBody(IEnumerable<RvrMemberSpot> alive)
+    {
+        var counts = new Dictionary<ushort, (int Count, double X, double Y, bool Leader)>();
+        if (alive != null)
+            foreach (RvrMemberSpot spot in alive)
+            {
+                counts.TryGetValue(spot.Region, out var c);
+                counts[spot.Region] = (c.Count + 1, c.X + spot.X, c.Y + spot.Y, c.Leader || spot.Leader);
+            }
+        ushort best = 0;
+        (int Count, double X, double Y, bool Leader) top = default;
+        bool any = false;
+        foreach (KeyValuePair<ushort, (int Count, double X, double Y, bool Leader)> pair in counts)
+        {
+            var c = pair.Value;
+            bool better = !any || c.Count > top.Count ||
+                          c.Count == top.Count && (c.Leader && !top.Leader || c.Leader == top.Leader && pair.Key < best);
+            if (!better)
+                continue;
+            any = true;
+            best = pair.Key;
+            top = c;
+        }
+        return any ? new RvrGroupBody(best, new Vector2((float)(top.X / top.Count), (float)(top.Y / top.Count)), top.Count) : default;
+    }
+
+    /// <summary>
+    /// The group's runtime acting on a board: only a board of the group's main body that is newer than the last one acted
+    /// on counts; any other board (a member in another region, an older build) changes nothing. Pure.
+    /// </summary>
+    public static RvrStanceStep Track(RvrStanceLedger ledger, RvrFightBoard board)
+    {
+        ledger ??= RvrStanceLedger.Empty;
+        if (board?.Plan == null || !board.MainBody || board.BuiltAt <= ledger.LastBuild)
+            return new RvrStanceStep(ledger, false, false, ledger.Stance, ledger.Since);
+        RvrFightPlan plan = board.Plan;
+        bool changed = plan.Stance != ledger.Stance ||
+                       plan.Stance == RvrStance.Retreat && plan.StanceSince != ledger.Since && ledger.Since != long.MinValue;
+        RvrStanceLedger next = ledger with { LastBuild = board.BuiltAt, Stance = plan.Stance, Since = plan.StanceSince, Region = board.RegionId };
+        return new RvrStanceStep(next, true, changed, ledger.Stance, ledger.Since);
+    }
+
+    /// <summary>
+    /// Whether a group that just started a stance passes it on: only for a real reason (<see cref="RvrStanceDecision.Relays"/>:
+    /// never a relayed stance, never "nothing in view"), and at most once per <see cref="RelayWindowMilliseconds"/>. Pure.
+    /// </summary>
+    public static bool MayRelay(bool startRelays, long lastRelayAt, long now) =>
+        startRelays && now - lastRelayAt >= RelayWindowMilliseconds;
+
+    /// <summary>Whether a relay from a group's main body (region, centre) reaches another group: same region, within <see cref="RelayRadius"/>. Pure.</summary>
+    public static bool RelayReaches(ushort fromRegion, Vector2 from, RvrGroupBody to) =>
+        to.Members > 0 && to.Region == fromRegion && Vector2.Distance(from, to.Centre) <= RelayRadius;
 
     /// <summary>The step as the planner calls it: bot_veteran_retreat read from <see cref="BotGroupRetreat.Enabled"/>.</summary>
     public static RvrFightPlan PlanStance(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
