@@ -73,7 +73,11 @@ namespace DOL.Events
 
         public static DOLEventHandlerChain Unsubscribe(DOLEventHandlerChain chain, DOLEventHandler handler)
         {
-            ArgumentNullException.ThrowIfNull(chain);
+            // Removing a handler that is not in the chain leaves the chain as it is. The recursion below reaches the
+            // empty tail (null) whenever the handler was never added; that used to throw ArgumentNullException
+            // ('chain') at the caller, e.g. a script's unload removing what a switched-off load never added.
+            if (chain == null)
+                return null;
 
             if (chain._handler == handler)
                 return chain._next;
