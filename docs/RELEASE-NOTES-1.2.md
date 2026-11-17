@@ -172,7 +172,9 @@ A few friends can now join your bot world from their own PCs, with the original 
   odd spec. These are **new bots only**: bots already in your world keep their class and build. The shares and weights
   are **estimates** from 2002-2003 forum posts, not counts. In RvR a role-built eight now looks for a crowd-control build
   (a mezzing Healer, Sorcerer or Bard) for its crowd controller. A gamebot that trains every level also gets the
-  half-level spec points above 40 now, as you do. Bots never play the Sluaghbinder, in either edition; a gamebot that
+  half-level spec points above 40 now, as you do, and so do hired companions (their spec window shows the points a
+  player of their class and level has; a companion you already trained keeps its lines and gets the missing points to
+  spend) and `/spawn` helpers. Bots never play the Sluaghbinder, in either edition; a gamebot that
   already is one is kept with its items but no longer logs in. Switches: "2003 class mix" and "2003 builds" in the
   Living Server tab.
 - **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own

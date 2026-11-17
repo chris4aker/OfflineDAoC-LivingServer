@@ -406,6 +406,13 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
 - **Level 41-50 points:** since 1.2 a gamebot that trains every level gets the half-level spec points above 40 that a
   player gets at each "x.5", so it reaches 50 with the same points as a `+ Lv.50` bot. Points it missed before 1.2 are
   not given back (its trained levels don't change on the update).
+- **Every bot has a player's points** (owner, 2026-11-17: "companions and bots should be the same as a player"). A hired
+  companion's spec window counts its points as yours are counted: every level, every half level above 40 it has
+  passed, and the current one once its bar reaches the half. A companion saved before 1.2 keeps every trained line
+  and gets its missing half-level points to spend (up to 220/330/445 at level 50 for x1.0/x1.5/x2.0 classes); its free
+  respec gives back the same total. `/spawn` helpers promoted from 49 to 50 now get the 49.5 points too. A gamebot gets
+  each "x.5" point with its next level's training, so it matches a player at every whole level. Tests only until seen
+  on the owner's PC.
 - **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so
   for each share and weight, and a later data update can re-weight them.
 - **Log:** `ERA_BUILDS_LOADED` at start; `ERA_BUILD_ASSIGNED` when a bot's plan is first saved (`draw=era`, `offmeta`,
