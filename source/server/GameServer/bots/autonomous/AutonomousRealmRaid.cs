@@ -126,6 +126,8 @@ namespace DOL.GS
             public Vector3[] OutboundSeams = [];
             public readonly List<GameBot[]> ForcedParties = new();
             public readonly Dictionary<int, Vector3> StagingPosts = new();
+            /// <summary>An open-world boss's neighbours no staging post stands near (AutonomousRealmRaid.RingMonsters).</summary>
+            public RealmRaidTetherReach.RingMonster[] RingMonsters;
             /// <summary>Formation slots with no staging or hub post (tight ground by the entrance); skipped from then on.</summary>
             public readonly HashSet<int> UnusableSlots = new();
             public RealmRaidDungeonRoute DungeonRoute;
@@ -828,7 +830,7 @@ namespace DOL.GS
                         if (playtestFocus is { Length: > 0 }) route.Focus = playtestFocus;
                     }
                     else
-                        candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name);
+                        candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name, candidate.Definition.IsOpenWorld);
                     bool staged = TryStaging(candidate, 0, out var destination);
                     if (staged && playtestAtStaging)
                     {
@@ -1537,14 +1539,48 @@ namespace DOL.GS
             }
             Point3D home = LairHome(raid);
             Region region = WorldMgr.GetRegion(raid.Definition.Region);
-            if (RealmRaidStaging.TryDragonPost(nav, region?.GetZone(home.X, home.Y), new(home.X, home.Y, home.Z), slot,
-                raid.StagingPosts.Values.ToArray(), out staging))
+            Zone zone = region?.GetZone(home.X, home.Y);
+            Vector3 centre = new(home.X, home.Y, home.Z);
+            // An open-world boss's ring (where the raid regroups) starts past its tether, aggro and roam, and no post stands in
+            // the reach of the monsters around it (RealmRaidTetherReach; Marfoirwort, owner's PC 2026-11-16). If no such post
+            // is found, the ring the raid always used.
+            if (raid.Definition.IsOpenWorld && raid.Boss != null &&
+                RealmRaidTetherReach.OpenWorldStagingInner(EpicEncounterTactics.LeashOf(raid.Boss)?.TetherRange is int t && t > 0 ? t : raid.Boss.TetherRange,
+                    (raid.Boss.Brain as StandardMobBrain)?.AggroRange ?? 0, Math.Max(0, raid.Boss.RoamingRange)) is float inner &&
+                inner > RealmRaidTetherReach.DefaultStagingInner)
+            {
+                raid.RingMonsters ??= RingMonsters(region, raid.Boss, centre, inner + 3_000);
+                if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, raid.StagingPosts.Values.ToArray(), out staging, inner,
+                        p => RealmRaidTetherReach.ClearOfMonsters(p, raid.RingMonsters)))
+                {
+                    raid.StagingPosts[slot] = staging;
+                    if (slot == 0)
+                        Log.Info($"REALM_RAID_STAGING_OUT_OF_REACH event={raid.Definition.Id} boss=\"{raid.Boss.Name}\" inner={(int)inner} " +
+                                 $"post={(int)staging.X},{(int)staging.Y},{(int)staging.Z} fromSpawn={(int)Vector3.Distance(staging, centre)} " +
+                                 $"monsters={raid.RingMonsters.Length} reason=\"the ring the raid regroups on is out of the boss's reach and its neighbours'\"");
+                    return true;
+                }
+                Log.Info($"REALM_RAID_STAGING_IN_REACH event={raid.Definition.Id} boss=\"{raid.Boss.Name}\" slot={slot} inner={(int)inner} " +
+                         $"reason=\"no post out of the boss's reach; the 3,600 ring is used for this slot\"");
+            }
+            if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, raid.StagingPosts.Values.ToArray(), out staging))
             {
                 raid.StagingPosts[slot] = staging;
                 return true;
             }
             return false;
         }
+
+        /// <summary>The aggressive monsters around an open-world boss's ring (not the boss, not a realm's): no post stands in
+        /// their aggro and roam (RealmRaidTetherReach.ClearOfMonsters).</summary>
+        private static RealmRaidTetherReach.RingMonster[] RingMonsters(Region region, GameNPC boss, Vector3 centre, float within) =>
+            region?.Objects.OfType<GameNPC>()
+                .Where(n => n != null && n != boss && n is not GameBot && n.IsAlive && n.Realm == eRealm.None &&
+                            n.Brain is StandardMobBrain { AggroLevel: > 0, AggroRange: > 0 } &&
+                            Vector3.DistanceSquared(new(n.SpawnPoint.X, n.SpawnPoint.Y, n.SpawnPoint.Z), centre) < within * within)
+                .Select(n => new RealmRaidTetherReach.RingMonster(new(n.SpawnPoint.X, n.SpawnPoint.Y, n.SpawnPoint.Z),
+                    ((StandardMobBrain)n.Brain).AggroRange, Math.Max(0, n.RoamingRange)))
+                .ToArray() ?? [];
 
         private static void UpdateView(Raid raid, Party party)
         {
