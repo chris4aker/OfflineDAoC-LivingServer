@@ -50,7 +50,9 @@ namespace DOL.GS
         [
             new("KingTuscar", ["KingTuscar", "QueenKula"], TuscarAndKula)
             {
-                Summary = "Twin heal: Kula first, only the King's target fights him; out of Kula's frost circle; casters clear of his hammers.",
+                Summary = "Twin heal: Kula first, only the King's target fights him; out of Kula's frost circle; casters clear of his hammers. " +
+                          "No muster in her frost circle (it stood 288 from its middle, owner's PC 2026-11-16).",
+                MusterDangers = KulaFrostMusterDanger,
             },
             new("Kvasir", ["Kvasir"], c => KvasirScream(c) ?? KvasirColdCarrier(c))
             {
@@ -315,6 +317,21 @@ namespace DOL.GS
         }
 
         // ---- King Tuscar and Queen Kula ---------------------------------------------------------------------------------
+
+        /// <summary>No muster stands within this of the middle of Kula's frost circle: her radius and the step-out a raider in it
+        /// takes (<see cref="HazardStepOut"/>).</summary>
+        public const int KulaFrostMusterRadius = KulaFrostRadius + HazardStepOut;
+
+        /// <summary>
+        /// Owner's PC, 2026-11-16 (build ccba364): the raid's muster for Queen Kula stood at 34116,55807, 288 from the middle of
+        /// her frost circle (34128,56095; she mesmerizes or roots whoever stands in it during her fight, and her drag to the
+        /// throne lands raiders there). Raiders gathering and healing there drew the twins to it, 1,395 from her spawn and 1,381
+        /// from the King's. The frost circle is now a muster danger while she lives (RealmRaidDungeonRoute.GuardMuster).
+        /// </summary>
+        private static IEnumerable<(Vector3 At, float Radius)> KulaFrostMusterDanger(GameNPC npc, IReadOnlyList<GameNPC> live) =>
+            IsOfType(npc, "QueenKula") && On(nameof(EpicEncounterMechanics.AllowPositionPuzzle), "QueenKula")
+                ? [(KulaFrostPoint, KulaFrostMusterRadius)]
+                : [];
 
         private static Advice? TuscarAndKula(RuleContext c)
         {

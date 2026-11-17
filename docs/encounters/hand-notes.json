@@ -3210,7 +3210,8 @@
    },
    "aiTactics": {
     "after": "QueenKula",
-    "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle.",
+    "fightAtHomeRadius": 1100,
+    "summary": "Twin heal (AllowTuscarTwinHeal, on since 1.2): damage to one twin heals the other while it is hurt, so the raid kills Queen Kula first (the route musters for her) and only the King's own target fights him; the rest of his party turns on her too. Casters and healers on Kula keep clear of his hammers and Thor's Might (500 around his target). Nobody stands in Kula's frost circle. Fight at home (owner's PC 2026-11-16): past 1,100 from his spawn (tether 1,550) whoever he chases leads him home, so the raid tanks him where he stands and his tether never resets him.",
     "since": "1.2"
    },
    "rules": {
@@ -3277,7 +3278,8 @@
     "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9"
    },
    "aiTactics": {
-    "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600.",
+    "fightAtHomeRadius": 1400,
+    "summary": "Killed first (see King Tuscar). Her drag to the throne (AllowDisplacement, bots too since 1.2) puts a raider in her frost circle, where it is mesmerized or rooted: a bot waits it out like a player (the recovery's walk does not count crowd control as a stall; at most 5 minutes) and walks back. Frost circle (AllowPositionPuzzle, on): no raider fights within 450 of 34128,56095; one that gets there steps out to 600. Fight at home (owner's PC 2026-11-16): past 1,400 from her spawn (tether 1,800) the raid stops hitting her and whoever she chases leads her home; her muster stays out of the frost circle and inside both twins' reach.",
     "since": "1.2"
    },
    "rules": {
