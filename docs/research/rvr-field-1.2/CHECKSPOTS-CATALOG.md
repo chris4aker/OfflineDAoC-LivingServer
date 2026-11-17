@@ -42,8 +42,8 @@ Spots not on a circuit are reserve. Loops run 34,169 to 203,275 units.
 
 ## Not covered
 
-- **The world data.** It came from the static tables (Mob, Zones, Door, ZonePoint) of a played world's copy. These
-  are not saved-progress tables, but they were not compared with a clean release world.
+- **The world data.** Spot positions came from the static tables (Mob, Zones, Door, ZonePoint) of a played world's
+  copy. The 1.2 rebuild below compared them with a release world.
 - **Distance from keeps.** Not measured on the standing-point routes. The survey estimated 4,500 units or more for
   the circuit spots' centres.
 - **Aggro values.** Aggro ranges are the database values; NPC template overrides were not read.
@@ -53,7 +53,8 @@ Spots not on a circuit are reserve. Loops run 34,169 to 203,275 units.
 ## Rebuild
 
 1. Edit the spots and circuits in the JSON.
-2. `python source/tools/rvr_checkspots.py request --db <clean release world> --catalog <json> --out req.json`
+2. `python source/tools/rvr_catalog_inputs.py release-world <world db> release-world.db`, then
+   `python source/tools/rvr_checkspots.py request --db release-world.db --catalog <json> --out req.json`
 3. Run `UT_RvrCheckSpotCatalog` with `OFFLINE_DAOC_NAV_ROOT`, `OFFLINE_DAOC_PROOF_OUT` and
    `OFFLINE_DAOC_CHECKSPOT_SEARCH=req.json`. Then run `rvr_checkspots.py stands --catalog <json> --search <out>`.
 4. Run the test again with `OFFLINE_DAOC_CHECKSPOTS=<json>`, then `rvr_checkspots.py seal --catalog <json> --report
@@ -64,3 +65,18 @@ Spots not on a circuit are reserve. Loops run 34,169 to 203,275 units.
 The `request` step picks each spot's own monsters by radius and level band. The first build picked them by cluster
 and name. A trial rebuild on the same tables passed every check (0 failed), but it moved 12 of 98 standing points:
 11 by one ring (about 400 units) and one by 2,624.
+
+## Release world (2026-11-17)
+
+The 1.2 file was rebuilt from a release world: the static tables of the test world with `release-world-defaults.json`
+applied (21 keep owners or levels and 76 door states reset). `request` reads none of those columns. Door and
+ZonePoint positions are the same in every world checked. One input does change with play: about 100 frontier
+`Mob.Level` values (Parthanan, Blackthorn, Develin and other boss adds re-roll their level and save it), and the
+release build does not reset them. The request file was still byte-identical for the test world, the release copy
+and three other played worlds (2026-11-06, 11, 15): no drifting spawn crosses a spot's level band within its radius.
+
+The rebuild passed all 400 checks (98 standing points, 196 entry walks, 106 circuit approaches and legs both ways;
+0 failed), and the strict check matched the new `proof_hash`. Like the trial rebuild, it moved 12 of 98 standing
+points, because `request` picks a spot's own monsters by radius and level band, not by the first build's cluster
+and name: 11 by one ring (270 to 496 units) and Bledmeer near camps by 2,624 (now 6,292 units from Bledmeer Faste).
+Spots, circuits and via spots are unchanged. Two rebuilds gave the same bytes. Tests only.
