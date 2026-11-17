@@ -426,6 +426,10 @@ namespace DOL.AI.Brain
         {
             if (!RvrTacticsActive() || !(Properties.RVR_BOT_POSITIONING || Properties.RVR_BOT_STEALTH_OPENERS))
                 return false;
+            // Work package 6: a hidden melee stealther at melee range opens from stealth (BotRvrAmbush.TryStealthOpener),
+            // before any work package 3 placement step.
+            if (Properties.RVR_BOT_STEALTH_OPENERS && BotRvrAmbush.TryStealthOpener(BotBody, target))
+                return true;
             if (Properties.RVR_BOT_POSITIONING && TryRvrPlaceMove(target))
                 return true;
             return false;
@@ -436,15 +440,17 @@ namespace DOL.AI.Brain
         // ---- work package 6: stealth openers ---------------------------------------------------------------------------
 
         /// <summary>
-        /// Hook: BotMeleeStylePolicy.Usable, for a style that needs stealth (which bots never pick today). True lets the
-        /// bot use it as an opener; false for no opinion (the style stays out).
-        /// Reserved for work package 6 (rvr_bot_stealth_openers).
+        /// Hook: BotMeleeStylePolicy.Usable, for a style that needs stealth (which bots never picked before 1.2). True lets
+        /// the bot use it as its opener: work package 6 (rvr_bot_stealth_openers), a hidden Infiltrator, Nightshade or
+        /// Shadowblade in scope, once per target (BotRvrAmbush.AllowsOpener); false for no opinion (the style stays out).
+        /// The cheap checks (stealthed) come before the scope.
         /// </summary>
         public static bool RvrTacticsAllowsStealthOpener(GameBot bot, Style style)
         {
-            if (style?.StealthRequirement != true || !Properties.RVR_BOT_STEALTH_OPENERS || !RvrTacticsApplyTo(bot))
+            if (style?.StealthRequirement != true || !Properties.RVR_BOT_STEALTH_OPENERS || bot?.IsStealthed != true ||
+                !RvrTacticsApplyTo(bot))
                 return false;
-            return false;
+            return BotRvrAmbush.AllowsOpener(bot, style, inScope: true);
         }
     }
 }
