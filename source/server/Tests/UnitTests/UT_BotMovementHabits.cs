@@ -394,7 +394,7 @@ namespace DOL.UnitTests
                 Assert.That(BotMovementHabits.TierFor(tier, 123, RvrBotAwareness.Normal), Is.EqualTo(tier));
             Assert.That(BotMovementHabits.TierFor(null, 123, RvrBotAwareness.Normal),
                 Is.EqualTo(BotMovementHabits.TierOf(123, RvrBotAwareness.Normal)), "no profile: the package's own roll");
-            Assert.That(BotMovementHabitsRuntime.ProfileTier, Is.Null, "unset until the skill profiles are on the branch");
+            Assert.That(BotMovementHabitsRuntime.ProfileTier, Is.Not.Null, "wired to the skill profiles (WP1): one tier per bot");
         });
 
         [Test]
