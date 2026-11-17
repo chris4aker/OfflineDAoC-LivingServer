@@ -13,12 +13,37 @@ namespace DOL.GS
 
         private static Random _random = System.Random.Shared;
 
+        // Era builds 1.2: a draw that must repeat for the same bot (a lifetime plan made from a bot id) runs the class files'
+        // Util.Random calls from a seeded generator on this thread only, for the length of a SeededScope.
+        [ThreadStatic] private static Random _seeded;
+
+        private static Random Rng => _seeded ?? _random;
+
+        /// <summary>
+        /// Until disposed, this thread's Util.Random, RandomDouble and Chance calls come from a generator seeded with
+        /// <paramref name="seed"/>, so the same seed makes the same choices; every other thread is unaffected. Scopes nest.
+        /// </summary>
+        public static SeededRandomScope SeededScope(int seed) => new(new Random(seed));
+
+        public readonly struct SeededRandomScope : IDisposable
+        {
+            private readonly Random _previous;
+
+            internal SeededRandomScope(Random generator)
+            {
+                _previous = _seeded;
+                _seeded = generator;
+            }
+
+            public void Dispose() => _seeded = _previous;
+        }
+
         /// <summary>
         /// Generates a random number between 0..max, inclusive 0 AND max
         /// </summary>
         public static int Random(int max)
         {
-            return _random.Next(0, max + 1);
+            return Rng.Next(0, max + 1);
         }
 
         /// <summary>
@@ -26,7 +51,7 @@ namespace DOL.GS
         /// </summary>
         public static int Random(int min, int max)
         {
-            return _random.Next(min, max + 1);
+            return Rng.Next(min, max + 1);
         }
 
         /// <summary>
@@ -34,7 +59,7 @@ namespace DOL.GS
         /// </summary>
         public static double RandomDouble()
         {
-            return _random.NextDouble();
+            return Rng.NextDouble();
         }
 
         /// <summary>
@@ -42,17 +67,17 @@ namespace DOL.GS
         /// </summary>
         public static double RandomDoubleIncl()
         {
-            return _random.Next() / (double) (int.MaxValue - 1);
+            return Rng.Next() / (double) (int.MaxValue - 1);
         }
 
         public static bool Chance(int chancePercent)
         {
-            return chancePercent > _random.Next(100);
+            return chancePercent > Rng.Next(100);
         }
 
         public static bool Chance(double chancePercent)
         {
-            return chancePercent > _random.NextDouble();
+            return chancePercent > Rng.NextDouble();
         }
 
         #endregion

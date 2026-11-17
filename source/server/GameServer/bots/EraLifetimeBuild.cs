@@ -163,7 +163,9 @@ namespace DOL.GS
     /// population controller's first read): the realm's gamebots by plan (era = an era build; kept = a plan without one,
     /// from an earlier build or today's class files; new = no plan yet, drawn at first login) and by class, each with its
     /// share now and its era target: <c>Healer=139(15.4%/15%)</c>. Classes without a target (the Sluaghbinder, always
-    /// listed for Hibernia, so a census proves it is 0) show <c>/0%</c>. Pure.
+    /// listed for Hibernia, so a census proves it is 0) show <c>/0%</c>. Then <c>eraClasses="Healer=12(16.0%/15%),..."</c>:
+    /// the same count over the era-built bots only (review of WP3-5: an old world's evenly mixed bots would hide the new
+    /// bots' mix). Pure.
     /// </summary>
     public static class EraBuildCensus
     {
@@ -176,42 +178,51 @@ namespace DOL.GS
             for (int realm = 1; realm <= 3; realm++)
             {
                 Entry[] bots = all.Where(entry => entry.Realm == realm).ToArray();
-                int era = 0, kept = 0, fresh = 0;
-                foreach (Entry bot in bots)
-                {
-                    switch (PlanKind(bot.SerializedBuildPlan))
-                    {
-                        case 'e': era++; break;
-                        case 'k': kept++; break;
-                        default: fresh++; break;
-                    }
-                }
+                char[] kinds = bots.Select(bot => PlanKind(bot.SerializedBuildPlan)).ToArray();
+                int era = kinds.Count(kind => kind == 'e'), kept = kinds.Count(kind => kind == 'k');
+                int fresh = kinds.Length - era - kept;
                 var line = new StringBuilder();
                 line.Append(EraLifetimeBuild.CensusTag).Append(" realm=").Append(EraBuildCatalog.RealmName(realm))
                     .Append(" bots=").Append(bots.Length).Append(" era=").Append(era).Append(" kept=").Append(kept)
                     .Append(" new=").Append(fresh);
-                var counts = bots.GroupBy(bot => bot.ClassId).ToDictionary(group => group.Key, group => group.Count());
-                var listed = new HashSet<int>();
-                foreach (EraClassShare share in (catalog?.Shares(realm) ?? Array.Empty<EraClassShare>()).OrderByDescending(s => s.Share))
-                {
-                    listed.Add(share.ClassId);
-                    Append(line, share.ClassName, counts.GetValueOrDefault(share.ClassId), bots.Length, share.Share);
-                }
-                if (realm == 3)
-                    counts.TryAdd(BotCustomClassRule.CustomClassId, 0);
-                foreach ((int classId, int count) in counts.Where(entry => !listed.Contains(entry.Key)).OrderBy(entry => entry.Key))
-                    Append(line, ((eCharacterClass)classId).ToString(), count, bots.Length, 0);
+                IReadOnlyList<EraClassShare> shares = catalog?.Shares(realm) ?? Array.Empty<EraClassShare>();
+                AppendClasses(line, bots, shares, realm == 3, ' ');
+                // The same count over the era-built bots only, so a world's older bots don't hide the new bots' mix.
+                line.Append(" eraClasses=\"");
+                AppendClasses(line, bots.Where((_, i) => kinds[i] == 'e').ToArray(), shares, false, ',');
+                line.Append('"');
                 lines.Add(line.ToString());
             }
             return lines;
         }
 
-        private static void Append(StringBuilder line, string className, int count, int total, double target)
+        /// <summary>Each class's count, its share now and its target. <paramref name="separator"/> ' ' puts a space before
+        /// every entry (the line's own fields); ',' joins them (inside a quoted field).</summary>
+        private static void AppendClasses(StringBuilder line, Entry[] bots, IReadOnlyList<EraClassShare> shares, bool customClass,
+            char separator)
         {
-            double share = total > 0 ? count * 100.0 / total : 0;
-            line.Append(' ').Append(className).Append('=').Append(count).Append('(')
-                .Append(share.ToString("0.0", CultureInfo.InvariantCulture)).Append("%/")
-                .Append((target * 100).ToString("0.#", CultureInfo.InvariantCulture)).Append("%)");
+            var counts = bots.GroupBy(bot => bot.ClassId).ToDictionary(group => group.Key, group => group.Count());
+            var listed = new HashSet<int>();
+            bool first = true;
+            void One(string className, int count, double target)
+            {
+                if (separator == ' ' || !first)
+                    line.Append(separator);
+                first = false;
+                double share = bots.Length > 0 ? count * 100.0 / bots.Length : 0;
+                line.Append(className).Append('=').Append(count).Append('(')
+                    .Append(share.ToString("0.0", CultureInfo.InvariantCulture)).Append("%/")
+                    .Append((target * 100).ToString("0.#", CultureInfo.InvariantCulture)).Append("%)");
+            }
+            foreach (EraClassShare share in shares.OrderByDescending(s => s.Share))
+            {
+                listed.Add(share.ClassId);
+                One(share.ClassName, counts.GetValueOrDefault(share.ClassId), share.Share);
+            }
+            if (customClass)
+                counts.TryAdd(BotCustomClassRule.CustomClassId, 0);
+            foreach ((int classId, int count) in counts.Where(entry => !listed.Contains(entry.Key)).OrderBy(entry => entry.Key))
+                One(((eCharacterClass)classId).ToString(), count, 0);
         }
 
         /// <summary>'e' an era plan, 'k' a plan without an era build, 'n' no plan.</summary>

@@ -114,4 +114,17 @@ public sealed class EraClassSharesTests
         Assert.That((SocialExpansionSettings.Defaults with { BotEraBuilds = false }).ToStoredValues()["bot_era_builds"],
             Is.EqualTo("False"));
     }
+
+    [Test]
+    public void AllOffTurnsTheEraBuildsOffAndKeepsTheLevelFiftyKit()
+    {
+        // Review of WP3-5 (2026-11-17): ALL OFF is the classic server, and era builds are a Living Server feature.
+        SocialExpansionSettings off = SocialExpansionSettings.Defaults.AllOff();
+        Assert.That(off.BotEraClassShares, Is.False);
+        Assert.That(off.BotEraBuilds, Is.False);
+        Assert.That(off.Level50Kit, Is.True, "a launcher option, not a feature");
+        Assert.That(off.IsAllOff, Is.True);
+        Assert.That((off with { BotEraClassShares = true }).IsAllOff, Is.False);
+        Assert.That((off with { BotEraBuilds = true }).IsAllOff, Is.False);
+    }
 }

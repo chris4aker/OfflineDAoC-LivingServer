@@ -308,12 +308,12 @@ below). Then `4be6fab`, 06:18-06:48.
 
 The plan is [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md) (WP0-WP5; the checks are its WP6). Everything is tests only. The owner
 sets which rows are must. Each row is checked on the era candidate's build, from the owner's log; checks 1, 2, 4 and 6
-need a test copy (new batches), check 3 the owner's world.
+need a test copy (new batches; 1 and 2 a fresh world with no other gamebots), check 3 the owner's world.
 
 | What | Must | Status |
 |---|---|---|
-| 1. New bots are era-built: a test copy, `+ Lv.50 ×100` per realm, start. 300 `ERA_BUILD_ASSIGNED` lines, about 10% of them `draw=offmeta`, and an `ERA_BUILD_TRAINED match=yes` for each era-drawn one |  | Not run (tests only) |
-| 2. The class mix: three batches of 100 per realm (`+ Lv.1`, `+ Lv.20`, `+ Lv.50`), restart. `ERA_BUILD_CENSUS` has each class within 4 points of its share |  | Not run (tests only) |
+| 1. New bots are era-built: a fresh test world with no other gamebots, **Bot schedule Off** in the launcher's Living Server tab (with `clock`, the 1.2 default, only the bots scheduled online log in, and a bot draws its build when it first logs in), `+ Lv.50 ×100` per realm, start and let the population log in. One `ERA_BUILD_ASSIGNED` line for each bot that logged in (300 once all have), about 10% of them `draw=offmeta`, and an `ERA_BUILD_TRAINED match=yes` for each `draw=era` one |  | Not run (tests only) |
+| 2. The class mix: the same kind of fresh world, Bot schedule Off, three batches of 100 per realm (`+ Lv.1`, `+ Lv.20`, `+ Lv.50`); start, let them all log in, restart. In each realm's `ERA_BUILD_CENSUS`, `new=0`, and `eraClasses=` (the classes counted over the era-built bots only, so older bots never weigh in) has each class within 4 points of its share |  | Not run (tests only) |
 | 3. Existing bots unchanged: the owner's world after the update. `ERA_BUILD_CENSUS` has `era=0 new=0` and `kept=` the roster; no `ERA_BUILD_ASSIGNED` for a bot with a saved plan; three named bots show the same spec levels before and after (trainer window or `/target`) |  | Not run (tests only) |
 | 4. No custom-class bots, either edition: on a 0.37b and on a 0.37 world, `ERA_BUILDS_LOADED customClass=never`, and `Sluaghbinder=0` in Hibernia's `ERA_BUILD_CENSUS` after a `+ Lv.50 ×100` Hibernia batch; on a test world with Sluaghbinder gamebots, one `BOT_CUSTOM_CLASS_RETIRED` line each and none of them online |  | Not run (tests only) |
 | 5. Battleground: Thidranki with `+ Lv.20` era bots. `RVR_PARTY_FORMED` lines with a crowd-control role filled (`cc=Healer(healer-cc)`, `cc=Sorcerer(cc-mezzer)`, `cc=Bard(cc-mezzer)`); the pet count chasing the player against the 2026-11 numbers (BOT-BUILDS-AND-RVR, "How we'll know") |  | Not run (tests only) |

@@ -635,7 +635,8 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// "All off": the three features, every Living Server part, bot leaders' invites, bot crafters and their craft orders, the
-    /// four "Bots as people" master switches, and both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
+    /// four "Bots as people" master switches, the era builds (the 2003 class mix and builds of new gamebots; bots that have
+    /// theirs keep them), and both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
     /// the player's own choices. Power regeneration and the loot share are rates, not features, and keep their values too, as
     /// do the crafting rules (they are the game's rules for your characters, not Living Server features), the Exchange tax, the
     /// economy ledger (it only counts) and the level-50 kit (a launcher option).
@@ -649,11 +650,13 @@ public sealed record SocialExpansionSettings
         LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
         BotCrafters = false, BotCraftOrders = false,
         BotSkillProfiles = false, BotPlaceKnowledge = false, BotMovementHabits = false, LivingMilestones = false,
+        BotEraClassShares = false, BotEraBuilds = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
     public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites &&
-                            !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+                            !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && !BotEraClassShares && !BotEraBuilds &&
+                            PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
     /// <summary>True when any "Bots as people" master switch is on.</summary>
     public bool AnyBotsAsPeople => BotSkillProfiles || BotPlaceKnowledge || BotMovementHabits || LivingMilestones;
