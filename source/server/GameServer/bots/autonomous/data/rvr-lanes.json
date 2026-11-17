@@ -1,7 +1,7 @@
 {
  "version": 1,
  "tool": "UT_RvrLaneSurvey/2",
- "built": "2026-11-16",
+ "built": "2026-11-17",
  "note": "Tests only: every lane completed a walk both ways in the server planner (UT_RvrLaneSurvey); none has been seen in game. Lane 0 is the planner's own route. The server re-walks every lane at start.",
  "criteria": {
   "max_length_ratio": 1.35,
