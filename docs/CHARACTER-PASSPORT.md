@@ -112,6 +112,9 @@ A character's own record travels. Things that belong to one world stay in that w
   `offline_economy_ledger`, `offline_crafter_customers`: that world's crafting and bot economy (Crafting 2.0). A craft
   order you placed, and what its crafters remember of you, wait for you there.
 - `offline_hired_companions`: the companions you hired in that world (they are its bots); they wait for you there.
+- `offline_bot_skill`, `offline_bot_places`, `offline_bot_milestones`, `offline_bot_mechanics_seen`: what that world's
+  gamebots have learned (their skill, the places they know, their milestones, the raid mechanics they have seen). No
+  player is named in them.
 - `Guild`, `GuildRank`, `GuildAlliance`: guilds. Your character leaves its guild for the trip and rejoins it at home.
 - `DBHousePermissions`, `DBHouseCharsXPerms`, `DBIndoorItem`, `DBOutdoorItem`, `HouseConsignmentMerchant`,
   `househookpointitem`: houses.
