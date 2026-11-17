@@ -230,18 +230,80 @@ class Raids(unittest.TestCase):
 
 
 class Rvr(unittest.TestCase):
-    def test_regroups_relayed_on_contradict(self):
+    REGROUP = ('RVR_REGROUP phase=start group={g} realm=Hibernia region=1 reason="{r}" skill=Average members=4 '
+               'relayedTo={to} relay={relay} minSeconds=15')
+    RETREAT = ('RVR_RETREAT group={g} realm=Hibernia region=1 reason="{r}" odds=0.3 skill=Average runners=4 '
+               'relayedTo={to} relay={relay} relayed={relayed}')
+
+    def stance_log(self, own_regroups=10):
+        """Own regroups and an own retreat relayed one hop (allowed by #304), received once by another group."""
         log = Log().start(at(0))
-        log.add(at(1), 'RVR_REGROUP phase=start group=1 realm=Hibernia reason="after the fight" relayedTo=0')
-        log.add(at(2), 'RVR_REGROUP phase=end group=1 reason="regrouped" seconds=29')
-        sec = only(log.run()[1])
-        self.assertEqual(check(sec, "regroup")["status"], pcl.SEEN)
-        self.assertIn("1 regroup starts", check(sec, "regroup")["detail"])
-        log.add(at(3), 'RVR_REGROUP phase=start group=2 realm=Albion reason="relayed regroup" relayedTo=3')
-        regroup = check(only(log.run()[1]), "regroup")
-        self.assertEqual(regroup["status"], pcl.CONTRADICTED)
-        self.assertIn("1 relayed on", regroup["detail"])
-        self.assertIn("1 started by a relay", regroup["detail"])
+        for i in range(own_regroups):
+            log.add(at(1, i), self.REGROUP.format(g=100 + i, r="after the fight", to=0, relay="window"))
+        log.add(at(2), self.RETREAT.format(g=1, r="in contact: fight lost", to=2, relay="sent", relayed="False"))
+        log.add(at(2, 8), self.REGROUP.format(g=2, r="relayed retreat", to=0, relay="none"))
+        log.add(at(2, 30), self.REGROUP.format(g=1, r="retreat over", to=3, relay="sent"))
+        return log
+
+    def regroup(self, log):
+        return check(only(log.run()[1]), "regroup")
+
+    def test_one_hop_is_seen_with_the_rates(self):
+        row = self.regroup(self.stance_log())
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("12 regroup starts", row["detail"])
+        self.assertIn("1 started by a relay (8.3%", row["detail"])
+        self.assertIn("(a) relayed stance relayed again: 0", row["detail"])
+        self.assertIn("(b) regroup ending a relayed retreat relayed: 0", row["detail"])
+        self.assertIn("(c) relay back at its sender within 60 s: 0", row["detail"])
+        self.assertEqual(self.regroup(Log().start(at(0)))["status"], pcl.NOT_SEEN)
+
+    def test_a_relayed_stance_that_relays_again(self):
+        log = self.stance_log()
+        log.add(at(3), self.RETREAT.format(g=5, r="relayed retreat", to=2, relay="sent", relayed="True"))
+        row = self.regroup(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("(a) relayed stance relayed again: 1", row["detail"])
+        self.assertIn("group=5", row["line"])
+
+    def test_b_the_regroup_ending_a_relayed_retreat_relays(self):
+        log = self.stance_log()
+        log.add(at(4), self.RETREAT.format(g=7, r="relayed retreat", to=0, relay="none", relayed="True"))
+        log.add(at(4, 20), self.REGROUP.format(g=7, r="retreat over", to=0, relay="sent"))
+        row = self.regroup(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("(b) regroup ending a relayed retreat relayed: 1", row["detail"])
+        self.assertIn("group=7", row["line"])
+        # the same group's own retreat first, then its regroup relaying: one hop, allowed
+        log = self.stance_log()
+        log.add(at(4), self.RETREAT.format(g=7, r="relayed retreat", to=0, relay="none", relayed="True"))
+        log.add(at(5), self.RETREAT.format(g=7, r="in contact: bad odds", to=0, relay="sent", relayed="False"))
+        log.add(at(5, 20), self.REGROUP.format(g=7, r="retreat over", to=2, relay="sent"))
+        self.assertIn("(b) regroup ending a relayed retreat relayed: 0", self.regroup(log)["detail"])
+
+    def test_c_a_relay_back_at_its_sender_within_60_s(self):
+        # 4891 -> 5219 -> 4891, as at 12:36-12:37 on 453e01a
+        log = self.stance_log()
+        log.add(at(5, 0), self.RETREAT.format(g=4891, r="in contact: fight lost", to=3, relay="sent", relayed="False"))
+        log.add(at(5, 9), self.RETREAT.format(g=5219, r="relayed retreat", to=0, relay="none", relayed="True"))
+        log.add(at(5, 30), self.REGROUP.format(g=5219, r="retreat over", to=4, relay="sent"))
+        log.add(at(5, 37), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none"))
+        row = self.regroup(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("(c) relay back at its sender within 60 s: 1", row["detail"])
+        self.assertIn("(b) regroup ending a relayed retreat relayed: 1", row["detail"])
+        log = self.stance_log()
+        log.add(at(5, 0), self.RETREAT.format(g=4891, r="in contact: fight lost", to=3, relay="sent", relayed="False"))
+        log.add(at(5, 50), self.REGROUP.format(g=6000, r="after the fight", to=2, relay="sent"))
+        log.add(at(6, 5), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none"))   # 65 s: too late
+        self.assertIn("(c) relay back at its sender within 60 s: 0", self.regroup(log)["detail"])
+
+    def test_d_relay_started_regroups_over_ten_percent(self):
+        log = self.stance_log(own_regroups=3)
+        row = self.regroup(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 started by a relay (20.0%, at most 10%)", row["detail"])
+        self.assertIn('reason="relayed retreat"', row["line"])
 
     def test_field_rows(self):
         log = Log().start(at(0))
