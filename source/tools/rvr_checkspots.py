@@ -13,7 +13,8 @@ the JSON. These steps refresh what is derived from the meshes and seal it:
   seal     --catalog <json> --report <proof-out.txt>
            Writes proof_hash from a UT_RvrCheckSpotCatalog validation report, only when every check passed.
 
-Use a clean release world (build_release_037.py output), never a played database.
+Use a clean release world (build_release_037.py output, or `rvr_catalog_inputs.py release-world` on a copy of the
+static tables), never a played database.
 """
 import argparse
 import json
