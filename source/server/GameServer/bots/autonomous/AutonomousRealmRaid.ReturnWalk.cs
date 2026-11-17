@@ -39,6 +39,10 @@ namespace DOL.GS
             /// <summary>Raiders who joined far behind the wave and walk its cleared steps one at a time to catch up with it
             /// (RealmRaidReturnWave.JoinStep): the step each walks to now. Not counted in the wave's own "together".</summary>
             public readonly Dictionary<long, int> Catching = new();
+            /// <summary>When the wave's step became its step, and its kills there (RealmRaidReturnWave.StillBlocks).</summary>
+            public long StepEntered;
+            public int StepKills;
+            public bool CapLogged;
             public readonly Dictionary<int, View> CatchingViews = new();
         }
 
@@ -60,7 +64,7 @@ namespace DOL.GS
             ReturnWalk walk = raid.Walk;
             if (walk == null)
             {
-                walk = raid.Walk = new ReturnWalk { Number = ++raid.WalksFormed, Formed = now, LastMove = now };
+                walk = raid.Walk = new ReturnWalk { Number = ++raid.WalksFormed, Formed = now, LastMove = now, StepEntered = now };
                 foreach (GameBot b in bots) walk.Members.Add(b.DatabaseID);
                 BuildSteps(raid, walk);
                 walk.MostMembers = walk.Members.Count;
@@ -155,6 +159,8 @@ namespace DOL.GS
             int to = walk.Catching.Values.Max();
             foreach (long m in walk.Catching.Where(p => p.Value >= to).Select(p => p.Key).ToArray()) walk.Catching.Remove(m);
             walk.Step = walk.BestStep = to;
+            walk.StepEntered = now;
+            walk.StepKills = 0;
             walk.StepSince = 0;
             walk.Closest = float.MaxValue;
             walk.Target = null;
@@ -310,6 +316,7 @@ namespace DOL.GS
                 if (!target.IsAlive || target.ObjectState != GameObject.eObjectState.Active)
                 {
                     walk.Kills++;
+                    walk.StepKills++;
                     walk.Target = null;
                     WalkHeadway(raid, walk, now);
                 }
@@ -339,6 +346,12 @@ namespace DOL.GS
             else
             {
                 GameNPC ahead = InTheWay(raid, walk, middle, region);
+                if (walk.StepKills >= RealmRaidReturnWave.StepKillCap && ahead == null && !walk.CapLogged)
+                {
+                    walk.CapLogged = true;
+                    Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=passable wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
+                             $"kills_at_step={walk.StepKills} reason=\"{RealmRaidReturnWave.StepKillCap} kills at this step; it goes on (what attacks it is fought)\"");
+                }
                 bool last = walk.Step >= walk.Steps.Length - 1;
                 switch (RealmRaidReturnWave.Walk(members.Length, atStep, stepWaited, ahead != null, last, bodyCanCome, bodyComing))
                 {
@@ -362,6 +375,9 @@ namespace DOL.GS
                         break;
                     case RealmRaidReturnWave.WaveMove.Advance:
                         walk.Step++;
+                        walk.StepEntered = now;
+                        walk.StepKills = 0;
+                        walk.CapLogged = false;
                         walk.StepSince = 0;
                         walk.Closest = float.MaxValue;
                         if (walk.Step > walk.BestStep) { walk.BestStep = walk.Step; WalkHeadway(raid, walk, now); }
@@ -480,6 +496,9 @@ namespace DOL.GS
                 bool byNamed = named.Any(e => e.IsWithinRadius(n, (int)RealmRaidReturnWave.EpicClearance));
                 bool onWalk = RealmRaidDungeonRoute.OnWalkBack(legs, at, aggro);
                 if (!RealmRaidReturnWave.InTheWay(byNamed, walk.SetAside.Contains(n), onWalk, aggro > 0, distance, at.Z - middle.Z)) continue;
+                // Clear what blocks the way when the wave reached this step, then go on: no farming what comes back (Tur Suil).
+                bool attacking = n.InCombat && n.TargetObject is GameBot victim && walk.Members.Contains(victim.DatabaseID);
+                if (!RealmRaidReturnWave.StillBlocks(attacking, n.SpawnTick > walk.StepEntered, walk.StepKills, onWalk, distance, aggro)) continue;
                 if (distance < bestDistance) { best = n; bestDistance = distance; }
             }
             return best;
