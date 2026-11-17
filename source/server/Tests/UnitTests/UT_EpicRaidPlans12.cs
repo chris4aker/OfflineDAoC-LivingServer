@@ -305,6 +305,27 @@ namespace DOL.UnitTests
             Assert.That(T.DungeonAdvice(new(wizard, lord, live, 0, true, 1_000, Wizard)), Is.Null, "no court in his fight: everyone on him");
         }
 
+        /// <summary>Carries Queen Kula's class name (her frost circle's muster rule goes by it).</summary>
+        public sealed class QueenKula : Mob { }
+
+        [Test]
+        public void NoMusterLiesInQueenKulasFrostCircle()
+        {
+            // Owner's PC, build ccba364, 2026-11-16: the muster for her stood at 34116,55807, 288 from the circle's middle; the
+            // raiders gathering there drew the twins out to it (RealmRaidTetherReach).
+            var kula = Npc<QueenKula>(34136, 57202, 12025);
+            List<GameNPC> live = [kula];
+            var dangers = RealmRaidDungeonRoute.RuleMusterDangers(live).ToList();
+            Assert.That(dangers.Any(d => d.Name == kula.Name && d.At == T.KulaFrostPoint && d.Radius == T.KulaFrostMusterRadius), Is.True);
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(new(34116, 55807, 11907), dangers), Is.True, "the 11/16 muster is refused");
+            Assert.That(RealmRaidDungeonRoute.InBossDanger(new(34800, 56150, 11900), dangers), Is.False, "east of the circle is clear");
+            kula.Fighting = true;
+            Assert.That(RealmRaidDungeonRoute.RuleMusterDangers(live), Is.Empty, "asked only while she is out of combat, as every rule's");
+            kula.Fighting = false;
+            kula.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.RuleMusterDangers(live), Is.Empty, "dead, no circle");
+        }
+
         [Test]
         public void NoMusterLiesByTheCryptLordsPatrolOrHisCourt()
         {
