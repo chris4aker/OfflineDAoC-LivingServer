@@ -60,16 +60,27 @@ The server must re-walk every lane at start: Detour can choose another corridor 
 Build `Tests.dll` with `Detour.so` or `Detour.dll` in its `lib/`, then run:
 
 ```
-python3 source/tools/build_rvr_lanes.py --db <world db> --navroot <folder holding navmesh/> \
+python3 source/tools/rvr_catalog_inputs.py release-world <world db> <scratch>/release-world.db
+python3 source/tools/build_rvr_lanes.py --db <scratch>/release-world.db --navroot <folder holding navmesh/> \
     --tests-dll source/server/build/Tests/Debug/lib/Tests.dll --work <scratch> \
-    --out source/server/GameServer/bots/autonomous/data/rvr-lanes.json [--lock <flock file>]
+    --out source/server/GameServer/bots/autonomous/data/rvr-lanes.json --built <date> [--lock <flock file>]
 ```
 
 - The database supplies only the positions in `Keep`, `Zones` and `Mob`.
 - The script needs numpy and scipy and takes minutes per region.
 - Raise `UT_RvrLaneSurvey.ToolVersion` when the walk changes.
+- Pass `--built`: it is the only field that depends on the day. Two builds with the same inputs give the same bytes.
 
-This build read the static tables of a played world; rebuild it from a clean release world before 1.2 ships.
+## Release world (2026-11-17)
+
+The 1.2 file was rebuilt from a release world: the static tables of the test world with
+`release-world-defaults.json` applied (`rvr_catalog_inputs.py release-world`, as `build_release_037.py` does). That
+reset 21 keep owners or levels and 76 door states. The builder reads none of those columns, and no saved-progress
+table. `rvr_catalog_inputs.py digest` gives the same hashes for what it does read (33 keeps, 1,846 camp spawns,
+42 zones) in the test world, the release copy and five other played worlds from 2026-11-06 to 2026-11-15.
+
+Result: all 332 lanes, their points, lengths and proof hashes are unchanged; only `built` moved to 2026-11-17. Two
+builds gave the same bytes. Tests only.
 
 ## How the server uses it (work package 5, tests only)
 
