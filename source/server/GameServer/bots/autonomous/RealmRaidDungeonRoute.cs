@@ -1484,37 +1484,19 @@ namespace DOL.GS
             float standOff = _musterStandOff = RealmRaidTetherReach.MusterStandOff(FinalMusterStandOff, AggroOf(_target), ReachOf(_target));
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
-            if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
-                return GuardMuster(Front, null, boss);
-            // Searched from the encounter's approach toward the raid, so the path always starts at the encounter even
-            // when it is too long to finish. From the raid's side a partial path ended wherever the search gave up:
-            // Legion's muster in Darkness Falls was placed 19,000 units from him and nobody ever reached it (run 9).
-            Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
-            PathfindingResult path = nav.GetPathStraight(zone, Front, body, nav.DefaultFilters, nodes);
-            bool found = path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound;
-            Vector3[] walk = found ? new Vector3[Math.Min(path.NodeCount, nodes.Length)] : [];
-            for (int i = 0; i < walk.Length; i++) walk[i] = nodes[i].Position;
-            Vector3? Floor(Vector3 p) => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters);
-            if (Vector3.Distance(body, boss) <= standOff + 200)
-                return GuardMuster(body, walk, boss, Floor);
-            if (found)
+            Vector3? body = TryRegroupFront(inside, out Vector3 main) ? main : null;
+            MusterPlan plan = PlanMuster(nav, zone, Front, body, boss, standOff, UntargetedBossDangers(), _musterReaches, AggroOf(_target));
+            if (plan.By != null)
             {
-                for (int i = 1; i < walk.Length; i++)
-                {
-                    Vector3 a = walk[i - 1], b = walk[i];
-                    if (Vector3.Distance(b, boss) < standOff) continue;
-                    // a inside the stand-off circle, b outside: the crossing point on a-b.
-                    float lo = 0, hi = 1;
-                    for (int step = 0; step < 12; step++)
-                    {
-                        float mid = (lo + hi) / 2;
-                        if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= standOff) hi = mid; else lo = mid;
-                    }
-                    return GuardMuster(Floor(Vector3.Lerp(a, b, hi)) ?? b, walk, boss, Floor);
-                }
-                if (walk.Length > 0) return GuardMuster(walk[^1], walk, boss, Floor);
+                if (!plan.Unsafe)
+                    log.Warn($"REALM_EXPEDITION_MUSTER_GUARDED region={_region} target=\"{_target?.Name}\" " +
+                             $"from={(int)plan.Chosen.X},{(int)plan.Chosen.Y},{(int)plan.Chosen.Z} to={(int)plan.Point.X},{(int)plan.Point.Y},{(int)plan.Point.Z} " +
+                             $"standOff={(int)standOff} reaches=\"{ReachesText(_musterReaches, plan.Point)}\" reason=\"the muster was {plan.By}; {plan.How}\"");
+                else
+                    log.Warn($"REALM_EXPEDITION_MUSTER_UNSAFE region={_region} target=\"{_target?.Name}\" at={(int)plan.Point.X},{(int)plan.Point.Y},{(int)plan.Point.Z} " +
+                             $"standOff={(int)standOff} reaches=\"{ReachesText(_musterReaches, plan.Point)}\" reason=\"{plan.By} and no point of the walk to the raid or around the encounter is clear and in reach\"");
             }
-            return GuardMuster(Front, walk, boss, Floor);
+            return plan.Point;
         }
 
         /// <summary>How far outside a living boss's aggro range (other than the encounter mustered for) a muster must lie.</summary>
@@ -1593,6 +1575,58 @@ namespace DOL.GS
                     yield return new(npc.Name, at, radius);
         }
 
+        /// <summary>A muster as <see cref="PlanMuster"/> placed it: the point, the walk's own choice before the guard, and why it
+        /// was moved (<see cref="By"/> null: not moved; <see cref="Unsafe"/>: kept although nothing clear was found).</summary>
+        public readonly record struct MusterPlan(Vector3 Point, Vector3 Chosen, string By, string How, bool Unsafe);
+
+        /// <summary>
+        /// Where the raid musters for an encounter (the game and the navmesh probes run the same code): the point on the walk
+        /// from the encounter's approach (<paramref name="front"/>) to the raid's main body (<paramref name="body"/>) that lies
+        /// <paramref name="standOff"/> from the encounter (<paramref name="boss"/>), or the main body itself when it is closer;
+        /// then guarded: never in another boss's aggro or a rule's danger (#213), never past the reach of a boss of the fight
+        /// (RealmRaidTetherReach). Moved back along the walk, else to a clear point in reach around the encounter that walks
+        /// to the front and to the raid (<see cref="RingMuster"/>), else kept with <see cref="MusterPlan.Unsafe"/>.
+        /// </summary>
+        public static MusterPlan PlanMuster(IPathfindingMgr nav, Zone zone, Vector3 front, Vector3? body, Vector3 boss, float standOff,
+            IReadOnlyList<BossDanger> dangers, IReadOnlyList<RealmRaidTetherReach.BossReach> reaches, int targetAggro)
+        {
+            reaches ??= [];
+            dangers ??= [];
+            if (body is not Vector3 raid || zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
+                return Guard(nav, zone, front, null, null, boss, standOff, dangers, reaches, targetAggro, front, null);
+            // Searched from the encounter's approach toward the raid, so the path always starts at the encounter even
+            // when it is too long to finish. From the raid's side a partial path ended wherever the search gave up:
+            // Legion's muster in Darkness Falls was placed 19,000 units from him and nobody ever reached it (run 9).
+            Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+            PathfindingResult path = nav.GetPathStraight(zone, front, raid, nav.DefaultFilters, nodes);
+            bool found = path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound;
+            Vector3[] walk = found ? new Vector3[Math.Min(path.NodeCount, nodes.Length)] : [];
+            for (int i = 0; i < walk.Length; i++) walk[i] = nodes[i].Position;
+            Vector3? Floor(Vector3 p) => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters);
+            Vector3 chosen = front;
+            if (Vector3.Distance(raid, boss) <= standOff + 200) chosen = raid;
+            else if (found)
+            {
+                bool crossed = false;
+                for (int i = 1; i < walk.Length && !crossed; i++)
+                {
+                    Vector3 a = walk[i - 1], b = walk[i];
+                    if (Vector3.Distance(b, boss) < standOff) continue;
+                    // a inside the stand-off circle, b outside: the crossing point on a-b.
+                    float lo = 0, hi = 1;
+                    for (int step = 0; step < 12; step++)
+                    {
+                        float mid = (lo + hi) / 2;
+                        if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= standOff) hi = mid; else lo = mid;
+                    }
+                    chosen = Floor(Vector3.Lerp(a, b, hi)) ?? b;
+                    crossed = true;
+                }
+                if (!crossed && walk.Length > 0) chosen = walk[^1];
+            }
+            return Guard(nav, zone, front, raid, walk, boss, standOff, dangers, reaches, targetAggro, chosen, Floor);
+        }
+
         /// <summary>
         /// A muster is never placed in a living boss's aggro range (plus <see cref="UntargetedBossMargin"/>) unless it is the
         /// encounter the raid musters for. Owner's PC, 2026-11-14 (build e3b8238): Tuscaran Glacier's muster for a hrimthursa
@@ -1600,36 +1634,23 @@ namespace DOL.GS
         /// raiders gathered there and 80 died to him and 29 to his adds. Moved further back along the walk to the raid when
         /// it lands in one; kept (with a warning) only when no point of the walk is safe.
         /// </summary>
-        private Vector3 GuardMuster(Vector3 chosen, IReadOnlyList<Vector3> walk, Vector3 encounter, Func<Vector3, Vector3?> floor = null)
+        private static MusterPlan Guard(IPathfindingMgr nav, Zone zone, Vector3 front, Vector3? raid, IReadOnlyList<Vector3> walk, Vector3 encounter,
+            float standOff, IReadOnlyList<BossDanger> dangers, IReadOnlyList<RealmRaidTetherReach.BossReach> reaches, int targetAggro,
+            Vector3 chosen, Func<Vector3, Vector3?> floor)
         {
-            List<BossDanger> dangers = UntargetedBossDangers();
-            IReadOnlyList<RealmRaidTetherReach.BossReach> reaches = _musterReaches ?? [];
-            float standOff = _musterStandOff > 0 ? _musterStandOff : FinalMusterStandOff;
             bool inDanger = InBossDanger(chosen, dangers);
             string pastReach = string.Join(",", RealmRaidTetherReach.OutOfReachOf(chosen, reaches).Select(r => r.Name).Distinct());
-            if (!inDanger && pastReach.Length == 0) return chosen;
+            if (!inDanger && pastReach.Length == 0) return new(chosen, chosen, null, null, false);
             string by = string.Join("; ", new[]
             {
                 inDanger ? "in the aggro range of " + string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct()) : null,
                 pastReach.Length > 0 ? "past the reach (tether less 300) of " + pastReach : null,
             }.Where(x => x != null));
-            Vector3? safe = SafeMusterAlong(walk, encounter, standOff, dangers, null, floor, reaches);
-            string how = "moved back along the walk to the raid";
-            if (safe == null && RingMuster(chosen, encounter, standOff, dangers, reaches) is Vector3 ring)
-            {
-                safe = ring;
-                how = "no point of the walk is clear and in reach; moved to a clear point in reach around the encounter";
-            }
-            if (safe is Vector3 moved)
-            {
-                log.Warn($"REALM_EXPEDITION_MUSTER_GUARDED region={_region} target=\"{_target?.Name}\" " +
-                         $"from={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} to={(int)moved.X},{(int)moved.Y},{(int)moved.Z} " +
-                         $"standOff={(int)standOff} reaches=\"{ReachesText(reaches, moved)}\" reason=\"the muster was {by}; {how}\"");
-                return moved;
-            }
-            log.Warn($"REALM_EXPEDITION_MUSTER_UNSAFE region={_region} target=\"{_target?.Name}\" at={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} " +
-                     $"standOff={(int)standOff} reaches=\"{ReachesText(reaches, chosen)}\" reason=\"{by} and no point of the walk to the raid or around the encounter is clear and in reach\"");
-            return chosen;
+            if (SafeMusterAlong(walk, encounter, standOff, dangers, null, floor, reaches) is Vector3 along)
+                return new(along, chosen, by, "moved back along the walk to the raid", false);
+            if (RingMuster(nav, zone, front, raid, chosen, encounter, standOff, dangers, reaches, targetAggro) is Vector3 ring)
+                return new(ring, chosen, by, "no point of the walk is clear and in reach; moved to a clear point in reach around the encounter", false);
+            return new(chosen, chosen, by, null, true);
         }
 
         // ---- tethers: the reach the bosses of the fight can be hurt in (RealmRaidTetherReach) ----------------------------
@@ -1671,24 +1692,27 @@ namespace DOL.GS
             string.Join(",", reaches.Select(r => $"{r.Name}:{(int)Vector3.Distance(at, r.Spawn)}/{(int)r.Reach}"));
 
         /// <summary>
-        /// A muster on rings around the encounter, from the stand-off out to the nearest reach, nearest the walk's own muster
-        /// first, on the floor, clear and in reach, with a walk to the front (Queen Kula: her frost circle covers the walk
-        /// at the reach of the King). Null without a navmesh or when none is found.
+        /// A muster on rings around the encounter, from outside the target's aggro out to the nearest reach, nearest the walk's
+        /// own muster first: on the floor of the encounter, clear and in reach, with a walk to the front and from the raid
+        /// (Queen Kula: her frost circle covers the walk at the reach of the King). Null without a navmesh or when none is found.
         /// </summary>
-        private Vector3? RingMuster(Vector3 chosen, Vector3 encounter, float standOff, IReadOnlyList<BossDanger> dangers,
-            IReadOnlyList<RealmRaidTetherReach.BossReach> reaches)
+        public static Vector3? RingMuster(IPathfindingMgr nav, Zone zone, Vector3 front, Vector3? raid, Vector3 chosen, Vector3 encounter,
+            float standOff, IReadOnlyList<BossDanger> dangers, IReadOnlyList<RealmRaidTetherReach.BossReach> reaches, int targetAggro)
         {
-            if (reaches.Count == 0) return null;
-            var nav = PathfindingProvider.Instance;
-            Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)encounter.X, (int)encounter.Y);
-            if (zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return null;
+            if (reaches.Count == 0 || zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return null;
             float outer = reaches.Min(r => r.Reach + Vector3.Distance(r.Spawn, encounter));
+            float inner = Math.Min(Math.Min(standOff, outer), targetAggro + RealmRaidTetherReach.AggroMargin);
             int paths = 0;
-            return RealmRaidTetherReach.NearestAccepted(RealmRaidTetherReach.RingCandidates(encounter, Math.Min(Math.Min(standOff, outer), AggroOf(_target) + RealmRaidTetherReach.AggroMargin), outer),
+            return RealmRaidTetherReach.NearestAccepted(RealmRaidTetherReach.RingCandidates(encounter, inner, outer),
                 chosen, p => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters),
-                p => Math.Abs(p.Z - encounter.Z) <= SameFloorBand && !InBossDanger(p, dangers) && !RealmRaidTetherReach.OutOfReach(p, reaches) &&
-                     paths++ < 24 && AutonomousZonePointApproach.TryResolve(nav, zone, p, Front, 160, out _));
+                p => Math.Abs(p.Z - encounter.Z) <= SameFloorBand && Vector3.Distance(p, encounter) >= inner &&
+                     !InBossDanger(p, dangers) && !RealmRaidTetherReach.OutOfReach(p, reaches) &&
+                     paths++ < RingPathChecks && AutonomousZonePointApproach.TryResolve(nav, zone, p, front, 160, out _) &&
+                     (raid is not Vector3 from || AutonomousZonePointApproach.TryResolve(nav, zone, from, p, 160, out _)));
         }
+
+        /// <summary>At most this many ring candidates are walked (the ones nearest the walk's own muster).</summary>
+        public const int RingPathChecks = 24;
 
         /// <summary>The boss of the fight (the target or a partner) in combat with raiders nearest the regroup point, when it
         /// is within its aggro plus the margin of it (RealmRaidTetherReach.RegroupThreatened); null otherwise.</summary>

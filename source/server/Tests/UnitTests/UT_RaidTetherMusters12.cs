@@ -54,7 +54,8 @@ namespace DOL.UnitTests
                     Assert.That(standOff, Is.LessThanOrEqualTo(reach), $"{boss} aggro {aggro}: muster {standOff} within its reach {reach}");
                     Assert.That(standOff, Is.LessThanOrEqualTo(OldStandOff), $"{boss}: never further out than before");
                     Assert.That(R.OutOfReach(muster, reaches), Is.False, $"{boss} aggro {aggro}: the guard accepts its own muster");
-                    if (aggro + R.AggroMargin <= reach)
+                    Assert.That(standOff, Is.LessThanOrEqualTo(Math.Max(reach - R.MusterInset, 1)), $"{boss} aggro {aggro}: never at the reach's edge");
+                    if (aggro + R.AggroMargin <= reach - R.MusterInset)
                         Assert.That(standOff, Is.GreaterThanOrEqualTo(aggro + R.AggroMargin), $"{boss} aggro {aggro}: outside its aggro when that fits");
                     if (tether > 0)
                         Assert.That(R.OutOfReach(spawn + new Vector3(tether + 1, 0, 0), reaches), Is.True, $"{boss}: a muster past its tether is refused");
@@ -77,6 +78,22 @@ namespace DOL.UnitTests
             Assert.That(R.MusterStandOff(OldStandOff, 600, R.DamageReach(2000)), Is.EqualTo(OldStandOff));
             Assert.That(R.MusterStandOff(OldStandOff, 600, 0), Is.EqualTo(OldStandOff));
             Assert.That(R.DamageReach(0), Is.EqualTo(0), "no tether: no limit");
+        }
+
+        [Test]
+        public void TheEarthPrimalsMusterStandsInsideHisReachNotOnItsEdge()
+        {
+            // The PC's zone191.nav (UT_RaidTetherMusterProbe, 2026-11-17): his tether is 890 (reach 590) and his aggro 1,500, so
+            // no muster clears his aggro; at the reach itself the walk's point snapped to the floor 590.3 from his spawn and was
+            // refused, and the muster was kept unsafe. It now stands 100 inside.
+            Assert.That(Leash("EarthPrimal").TetherRange, Is.EqualTo(890));
+            int reach = Reach("EarthPrimal");
+            float standOff = R.MusterStandOff(OldStandOff, 1500, reach);
+            Assert.That(standOff, Is.EqualTo(reach - R.MusterInset));
+            var spawn = new Vector3(39727, 62620, 11684);
+            R.BossReach[] reaches = [new("Corrupt Primal of Earth", spawn, reach)];
+            Assert.That(R.OutOfReach(new(39698.613f, 62030.676f, 11692.941f), reaches), Is.True, "the probe's first muster, 590.3 out");
+            Assert.That(R.OutOfReach(spawn + new Vector3(0, -standOff, 30), reaches), Is.False, "a floor 30 lower at the stand-off is in reach");
         }
 
         // ---- 2. Summoner Roesia ------------------------------------------------------------------------------------------

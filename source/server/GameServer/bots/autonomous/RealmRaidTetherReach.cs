@@ -21,7 +21,7 @@ namespace DOL.GS;
 /// </list>
 /// Now a muster stands inside the reach each boss of the fight can be hurt in (<see cref="DamageReach"/>), outside its aggro
 /// where that fits (<see cref="MusterStandOff"/>), and a muster point that lies past a reach is refused like one in another
-/// boss's aggro (#213's check, RealmRaidDungeonRoute.GuardMuster).
+/// boss's aggro (#213's check, RealmRaidDungeonRoute.PlanMuster).
 /// </para>
 /// </summary>
 public static class RealmRaidTetherReach
@@ -45,15 +45,18 @@ public static class RealmRaidTetherReach
     /// How far from a boss its muster stands (pure): <paramref name="preferred"/> (the 1,400 every muster stood at), but
     /// never past <paramref name="reach"/> (<see cref="MusterInset"/> inside it where that still clears the aggro), and at
     /// least <paramref name="aggroRange"/> plus <see cref="AggroMargin"/> when the reach leaves room for it. When it doesn't,
-    /// the reach wins: a boss that comes to its muster is fought where it can be hurt. No reach: unchanged.
+    /// the reach (less the inset) wins: a boss that comes to its muster is fought where it can be hurt. No reach: unchanged.
     /// </summary>
     public static float MusterStandOff(float preferred, int aggroRange, int reach)
     {
         if (reach <= 0) return preferred;
         float clear = aggroRange > 0 ? aggroRange + AggroMargin : 0;
-        float standOff = Math.Min(preferred, reach - MusterInset);
+        float inside = reach > MusterInset ? reach - MusterInset : reach;
+        float standOff = Math.Min(preferred, inside);
         standOff = Math.Max(standOff, clear);
-        return Math.Min(standOff, reach);
+        // Never at the reach's very edge: the walk's point is snapped to the floor, and a floor a little lower or further
+        // round lies past it (Galladoria's Earth primal on the PC's zone191.nav: 590.3 of 590, refused).
+        return Math.Min(standOff, inside);
     }
 
     /// <summary>One boss of the fight mustered for: its spawn and the reach it can be hurt in (0: no limit).</summary>
