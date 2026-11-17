@@ -435,6 +435,8 @@ namespace DOL.AI.Brain
             return false;
         }
 
+        #endregion
+
         // ---- work package 4: stances (size-up, watching, retreat, regroup, chasing) ---------------------------------
         #region WP4 stances (RvrEngagement)
 
