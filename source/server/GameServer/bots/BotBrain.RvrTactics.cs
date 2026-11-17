@@ -12,7 +12,7 @@ namespace DOL.AI.Brain
     /// opinion, so the code at the site runs exactly as before. The later packages fill their own hook:
     /// <list type="bullet">
     /// <item>work package 2: <see cref="RvrTacticsTarget"/>, <see cref="RvrTacticsCrowdControl"/>, <see cref="TryRvrTacticsSupport"/></item>
-    /// <item>work package 3: <see cref="RvrTacticsPeel"/>, <see cref="RvrTacticsProtectionTarget"/>, <see cref="TryRvrTacticsMove"/></item>
+    /// <item>work package 3: <see cref="RvrTacticsPeel"/>, <see cref="RvrTacticsProtectionTarget"/>, <see cref="TryRvrTacticsMove"/>, <see cref="TryRvrTacticsSupport"/> (a healer's kite)</item>
     /// <item>work package 4: the stance, through the plan (<see cref="RvrPlan"/>) the other hooks read</item>
     /// <item>work package 6: <see cref="RvrTacticsAllowsStealthOpener"/> (and <see cref="TryRvrTacticsMove"/> for the opener itself)</item>
     /// </list>
@@ -376,52 +376,62 @@ namespace DOL.AI.Brain
         /// <summary>
         /// Hook: the support turn (PerformGroupSupport), after the bot stopped attacking and before heals and crowd
         /// control. True when the tactics used the turn; false for no opinion.
-        /// Reserved for work packages 2 and 3 (an interrupt duty, a healer's kiting step).
+        /// Work package 3 (rvr_bot_positioning): a main healer's kite and its walk to its place (BotBrain.RvrPositioning).
         /// </summary>
         public bool TryRvrTacticsSupport()
         {
             if (!RvrTacticsActive())
                 return false;
-            return false;
+            return Properties.RVR_BOT_POSITIONING && TryRvrPlaceSupport();
         }
 
         // ---- work package 3: peel, protection, positioning -----------------------------------------------------------
 
+        #region work package 3: peel, protection, positioning (rvr_bot_peel, rvr_bot_positioning)
+
+        // The work is in BotBrain.TankPeel.cs (peel, protection target, slam) and BotBrain.RvrPositioning.cs (backline,
+        // spread, escort, kiting); the rules are RvrPeelPlan and RvrPositioning (pure, tested). Each hook answers "no
+        // opinion" outside a fight against players or bots, so PvE fights in the frontier run as before.
+
         /// <summary>
-        /// Hook: the entry of MaintainTankPeel. True when the plan handled Protect, Guard and Intercept this turn; false
-        /// for no opinion (today's peel runs). Reserved for work package 3 (rvr_bot_peel).
+        /// Hook: the entry of MaintainTankPeel. True when the open-field peel handled Protect, Guard, Intercept and the
+        /// slam this turn (the bot's group is in a fight against players or bots); false for no opinion (today's peel runs).
         /// </summary>
         public bool RvrTacticsPeel()
         {
             if (!RvrTacticsActive() || !Properties.RVR_BOT_PEEL)
                 return false;
-            return false;
+            return TryRvrPeel();
         }
 
         /// <summary>
         /// Hook: the entry of FindProtectionTarget. True when the plan decides whom this bot pulls off a group mate:
-        /// <paramref name="target"/> is that enemy, or null for "nobody now". False for no opinion (today's search runs).
-        /// Reserved for work package 3 (rvr_bot_peel).
+        /// <paramref name="target"/> is that enemy, or null for "nobody now" (a tank pulls only attackers off its own charge
+        /// in an open-field fight). False for no opinion (today's search runs).
         /// </summary>
         public bool RvrTacticsProtectionTarget(out GameLiving target)
         {
             target = null;
             if (!RvrTacticsActive() || !Properties.RVR_BOT_PEEL)
                 return false;
-            return false;
+            return TryRvrProtectionTarget(out target);
         }
 
         /// <summary>
         /// Hook: AttackMostWanted, with a target, before the ambush approach, the flank step and the circle. True when
-        /// the tactics used the turn to move (backline, spread, kiting, a stealth opener); false for no opinion.
-        /// Reserved for work packages 3 (rvr_bot_positioning) and 6 (rvr_bot_stealth_openers).
+        /// the tactics used the turn to move (backline, spread, a guard's escort, a hybrid healer's kite; a main healer
+        /// moves in TryRvrTacticsSupport; work package 6: a stealth opener); false for no opinion.
         /// </summary>
         public bool TryRvrTacticsMove(GameLiving target)
         {
             if (!RvrTacticsActive() || !(Properties.RVR_BOT_POSITIONING || Properties.RVR_BOT_STEALTH_OPENERS))
                 return false;
+            if (Properties.RVR_BOT_POSITIONING && TryRvrPlaceMove(target))
+                return true;
             return false;
         }
+
+        #endregion
 
         // ---- work package 6: stealth openers ---------------------------------------------------------------------------
 
