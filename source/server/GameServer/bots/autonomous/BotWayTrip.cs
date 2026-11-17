@@ -292,13 +292,12 @@ public sealed class BotWayTrip
             return;
         if (BotPeopleScope.Check(bot, BotPeopleRule.WayFinding, switches.PlaceKnowledge, out _) != BotPeopleRefusal.None)
             return;
-        BotPersonKey person = BotPersonKey.Of(bot);
         BotPlaceKnowing knowing = BotWayFinding.KnowingOf(bot, destination);
         BotWayFinding.CountTrip(knowing != BotPlaceKnowing.Known);
         if (knowing == BotPlaceKnowing.Known)
             return;
         _tripUnknown = true;
-        _tier = BotWayFinding.TierOf(person, AutonomousRvrPerception.ParseAwareness(DOL.GS.ServerProperties.Properties.RVR_BOT_AWARENESS));
+        _tier = BotWayFinding.TierOf(bot);
         BotWayGroup group = GroupOf(bot, destination);
         BotWayChoice choice = BotWayFinding.Choose(knowing, _tier, group, switches.AskTheWay, switches.WrongRoads, Random.Shared.NextDouble());
         bool forced = !group.InGroup && switches.WrongRoads && BotWayFinding.TakeForcedWrongRoad(bot);

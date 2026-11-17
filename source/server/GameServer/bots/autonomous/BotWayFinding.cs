@@ -343,11 +343,18 @@ public static class BotWayFinding
 
     /// <summary>
     /// The bot's skill tier for way finding: WP1's start tier (the same roll, salt "BSKL", on RVR-FIELD-1.2's shares moved by
-    /// rvr_bot_awareness). WP7: read BotSkill.TryProfile's grown tier once both packages are in one build. Pure.
+    /// rvr_bot_awareness). A live bot uses its grown profile tier (<see cref="TierOf(GameBot)"/>). Pure.
     /// </summary>
     public static RvrSkillTier TierOf(BotPersonKey person, RvrBotAwareness awareness) =>
         RvrGroupSkill.TierForRoll(AutonomousBotPersonality.Mix(person.Id, SkillRollSalt + (ulong)person.Kind) % 1_000_000 / 10_000.0, 0,
             RvrGroupSkill.Shares(awareness));
+
+    /// <summary>
+    /// A live gamebot's tier for way finding: its skill profile's tier (WP1, grown by play) when skill profiles are on, else
+    /// the same start roll (<see cref="TierOf(BotPersonKey, RvrBotAwareness)"/>).
+    /// </summary>
+    public static RvrSkillTier TierOf(GameBot bot) =>
+        BotSkill.TryProfile(bot, out BotSkillProfile profile) ? profile.Tier : TierOf(BotPersonKey.Of(bot), Awareness);
 
     public static string ChoiceName(BotWayChoice choice) => choice switch
     {
@@ -697,7 +704,7 @@ public static class BotWayFinding
             dest = UnknownPlaceFor(target) ?? dest;
         if (dest == null)
             return $"{target.Name} knows every place it could ask about.";
-        BotWayAskOutcome outcome = Ask(target, dest, TierOf(BotPersonKey.Of(target), Awareness), test: true);
+        BotWayAskOutcome outcome = Ask(target, dest, TierOf(target), test: true);
         return $"{target.Name} asks the way to {dest} ({KnowingName(KnowingOf(target, dest))}): {OutcomeName(outcome)}" +
                (outcome == BotWayAskOutcome.Said ? ". Only a realm-mate that knows the place answers; the asker then half knows it." :
                    outcome == BotWayAskOutcome.Unheard ? " (no player of its realm could hear it)." : ".");
@@ -743,7 +750,7 @@ public static class BotWayFinding
         BotPersonKey person = BotPersonKey.Of(bot);
         if (person.IsNone)
             return lines;
-        RvrSkillTier tier = TierOf(person, Awareness);
+        RvrSkillTier tier = TierOf(bot);
         BotWayShares unknown = Shares(tier, BotPlaceKnowing.Unknown, s.AskTheWay, s.WrongRoads);
         lines.Add($"Way finding ({TierName(tier)}): to a place it does not know it knows the way anyway {unknown.Knows}%, asks {unknown.Ask}%, " +
                   $"tags along {unknown.Follow}%, takes a wrong road {unknown.WrongRoad}% (asking {(s.AskTheWay ? "on" : "off")}, wrong roads " +
