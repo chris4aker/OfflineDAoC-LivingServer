@@ -2664,6 +2664,10 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "rvr_roaming_parties", "Open-field RvR (1.2): Autonomous gamebots split their RvR population (siege parties form first and are not counted) into warbands, role-built eight-man groups and soloers, duos and stealthers, by rvr_roam_population_split. An eight is built to its realm's 2003 skeleton: two main healers, a crowd controller, a shield tank, a speed class, two who can cure mez, a Shaman (Midgard) or Theurgist (Albion), the rest damage; a missing role goes to the next best class and the group still forms, and rvr_group_pet_cap holds. Eights roam; they do not open sieges. Groups you lead or join are never changed. Needs rvr_bot_field_tactics. Log: RVR_PARTY_FORMED.", true)]
 		public static bool RVR_ROAMING_PARTIES;
 
+		/// <summary>Era builds 1.2 (WP5, decision D9): the RvR eight's crowd-control slot prefers a crowd-control build.</summary>
+		[ServerProperty("bots", "rvr_roster_build_roles", "Era builds in RvR (1.2): when a role-built eight fills its crowd-control slot it first takes a member or bot whose era build is a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard; roles healer-cc, cc-mezzer, cc-root), then the classes as before. Bots without an era build rank as before. Groups you lead or join are never changed. Needs rvr_roaming_parties. Log: RVR_PARTY_FORMED cc=.", true)]
+		public static bool RVR_ROSTER_BUILD_ROLES = true;
+
 		/// <summary>
 		/// 1.2 work package 6 (roamers): circuits and check spots.
 		/// </summary>

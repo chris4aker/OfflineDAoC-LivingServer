@@ -167,8 +167,9 @@ public enum RvrRosterRole : byte
     Damage,
 }
 
-/// <summary>A bot the roster may take: its index in the pool, class, level and whether it knows a cure for mez.</summary>
-public readonly record struct RvrRosterCandidate(int Index, eCharacterClass Class, int Level, bool CanCureMez);
+/// <summary>A bot the roster may take: its index in the pool, class, level, whether it knows a cure for mez, and its era
+/// build's role (BotSpec.EraRole: healer-cc, cc-mezzer, cc-root...; null or empty for a bot without an era build).</summary>
+public readonly record struct RvrRosterCandidate(int Index, eCharacterClass Class, int Level, bool CanCureMez, string EraRole = null);
 
 /// <summary>A built roster: the pool indices taken (in the order taken), each skeleton role filled, short or covered by
 /// a next best fit.</summary>
@@ -179,6 +180,20 @@ public sealed record RvrRoster
     public ImmutableArray<(RvrRosterRole Role, eCharacterClass Class)> Filled { get; init; } = [];
     public ImmutableArray<RvrRosterRole> Missing { get; init; } = [];
     public ImmutableArray<RvrRosterRole> NextBest { get; init; } = [];
+    /// <summary>The era build role of the member in the crowd-control slot (empty: none, or no era build).</summary>
+    public string CrowdControlRole { get; init; } = string.Empty;
+
+    /// <summary>The crowd controller for RVR_PARTY_FORMED: "Healer(healer-cc)", "Sorcerer" (no era build), or "none".</summary>
+    public string CrowdControlLabel
+    {
+        get
+        {
+            foreach ((RvrRosterRole role, eCharacterClass cls) in Filled)
+                if (role == RvrRosterRole.CrowdControl)
+                    return string.IsNullOrEmpty(CrowdControlRole) ? cls.ToString() : $"{cls}({CrowdControlRole})";
+            return "none";
+        }
+    }
 }
 
 /// <summary>
@@ -236,6 +251,13 @@ public static class RvrRosterTemplates
             eCharacterClass.Mentalist, eCharacterClass.Valewalker, eCharacterClass.Ranger, eCharacterClass.Enchanter, eCharacterClass.Animist, eCharacterClass.Bainshee],
     };
 
+    /// <summary>
+    /// Era builds 1.2, WP5 (owner's review D9): the era build roles that are a crowd-control build, which the crowd-control
+    /// slot takes first when rvr_roster_build_roles is on. A Pacification Healer (healer-cc), a Mind Sorcerer or Music
+    /// Bard (cc-mezzer), a Cold Theurgist (cc-root).
+    /// </summary>
+    public static bool IsCrowdControlRole(string eraRole) => eraRole is "healer-cc" or "cc-mezzer" or "cc-root";
+
     public const int CureMezWanted = 2;
     /// <summary>An eight that finds fewer members than this (leader included) forms as an ordinary warband instead.</summary>
     public const int MinimumEight = 4;
@@ -258,7 +280,12 @@ public static class RvrRosterTemplates
     /// level, distance), taking at most <paramref name="take"/> members besides the leader and at most
     /// <paramref name="petCap"/> pet classes counting the leader (AutonomousRvrPetCap).
     /// </summary>
-    public static RvrRoster Build(eRealm realm, RvrRosterCandidate leader, IReadOnlyList<RvrRosterCandidate> pool, int take, int petCap)
+    /// <para>With <paramref name="buildRoles"/> (rvr_roster_build_roles, WP5) the crowd-control slot ranks a member or
+    /// candidate of the slot's classes whose era build is a crowd-control build first (<see cref="IsCrowdControlRole"/>),
+    /// then today's order; a leader of the slot's class without one leaves the slot to such a candidate and takes its
+    /// next slot. Without any crowd-control build about, the roster is today's, member for member.</para>
+    public static RvrRoster Build(eRealm realm, RvrRosterCandidate leader, IReadOnlyList<RvrRosterCandidate> pool, int take, int petCap,
+        bool buildRoles = true)
     {
         Slot[] slots = Skeletons.TryGetValue(realm, out Slot[] found) ? found : Skeletons[eRealm.Albion];
         eCharacterClass[] damage = DamageOrder.TryGetValue(realm, out eCharacterClass[] order) ? order : [];
@@ -271,6 +298,7 @@ public static class RvrRosterTemplates
         int pets = AutonomousRvrPetCap.IsPetClass(leader.Class) ? 1 : 0;
         // Each member stands in one skeleton slot; a member can also cover an overlapping role its class does.
         bool leaderSlotted = false;
+        string crowdControlRole = string.Empty;
 
         bool CanTake(RvrRosterCandidate candidate) => !used.Contains(candidate.Index) &&
             (!AutonomousRvrPetCap.IsPetClass(candidate.Class) || pets < petCap);
@@ -286,17 +314,53 @@ public static class RvrRosterTemplates
 
         foreach (Slot slot in slots)
         {
+            bool crowdControlBuilds = buildRoles && slot.Role == RvrRosterRole.CrowdControl;
+            bool SlotClass(eCharacterClass cls) => slot.Preferred.Contains(cls) || slot.NextBest.Contains(cls);
+            // WP5: a crowd-control build of the slot's classes first, a member already in the eight before a new one.
+            if (crowdControlBuilds)
+            {
+                // The members include the leader.
+                RvrRosterCandidate? member = members.Cast<RvrRosterCandidate?>()
+                    .FirstOrDefault(m => IsCrowdControlRole(m.Value.EraRole) && SlotClass(m.Value.Class));
+                if (member != null)
+                {
+                    if (member.Value.Index == leader.Index && !leaderSlotted && slot.Preferred.Contains(leader.Class))
+                        leaderSlotted = true;
+                    filled.Add((slot.Role, member.Value.Class));
+                    crowdControlRole = member.Value.EraRole;
+                    if (!slot.Preferred.Contains(member.Value.Class))
+                        nextBest.Add(slot.Role);
+                    continue;
+                }
+                RvrRosterCandidate? built = picked.Count >= take ? null : pool.Where(CanTake)
+                    .Where(c => IsCrowdControlRole(c.EraRole) && SlotClass(c.Class))
+                    .OrderBy(c => slot.Preferred.Contains(c.Class) ? 0 : 1).Cast<RvrRosterCandidate?>().FirstOrDefault();
+                if (built != null)
+                {
+                    Take(built.Value);
+                    filled.Add((slot.Role, built.Value.Class));
+                    crowdControlRole = built.Value.EraRole;
+                    if (!slot.Preferred.Contains(built.Value.Class))
+                        nextBest.Add(slot.Role);
+                    continue;
+                }
+            }
             // The leader takes the first slot its class is preferred for.
             if (!leaderSlotted && slot.Preferred.Contains(leader.Class))
             {
                 leaderSlotted = true;
                 filled.Add((slot.Role, leader.Class));
+                if (slot.Role == RvrRosterRole.CrowdControl)
+                    crowdControlRole = leader.EraRole ?? string.Empty;
                 continue;
             }
             // An overlapping job (mez, speed) already done by a member whose class does it.
             if (slot.Overlaps && members.Any(member => slot.Preferred.Contains(member.Class)))
             {
-                filled.Add((slot.Role, members.First(member => slot.Preferred.Contains(member.Class)).Class));
+                RvrRosterCandidate covering = members.First(member => slot.Preferred.Contains(member.Class));
+                filled.Add((slot.Role, covering.Class));
+                if (slot.Role == RvrRosterRole.CrowdControl)
+                    crowdControlRole = covering.EraRole ?? string.Empty;
                 continue;
             }
             if (picked.Count >= take)
@@ -312,7 +376,10 @@ public static class RvrRosterTemplates
                 // The next best fit, in the order the slot lists them; or, for an overlapping job, a member who does it.
                 if (slot.Overlaps && members.Any(member => slot.NextBest.Contains(member.Class)))
                 {
-                    filled.Add((slot.Role, members.First(member => slot.NextBest.Contains(member.Class)).Class));
+                    RvrRosterCandidate covering = members.First(member => slot.NextBest.Contains(member.Class));
+                    filled.Add((slot.Role, covering.Class));
+                    if (slot.Role == RvrRosterRole.CrowdControl)
+                        crowdControlRole = covering.EraRole ?? string.Empty;
                     nextBest.Add(slot.Role);
                     continue;
                 }
@@ -327,6 +394,8 @@ public static class RvrRosterTemplates
             }
             Take(choice.Value);
             filled.Add((slot.Role, choice.Value.Class));
+            if (slot.Role == RvrRosterRole.CrowdControl)
+                crowdControlRole = choice.Value.EraRole ?? string.Empty;
             if (fallback)
                 nextBest.Add(slot.Role);
         }
@@ -378,6 +447,7 @@ public static class RvrRosterTemplates
             Filled = filled.ToImmutable(),
             Missing = missing.ToImmutable(),
             NextBest = nextBest.ToImmutable(),
+            CrowdControlRole = crowdControlRole ?? string.Empty,
         };
     }
 

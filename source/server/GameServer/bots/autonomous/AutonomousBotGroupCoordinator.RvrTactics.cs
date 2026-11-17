@@ -128,7 +128,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static RvrRosterCandidate RosterCandidate(GameBot bot, int index) =>
         new(index, bot?.CharacterClass != null ? (eCharacterClass)bot.CharacterClass.ID : eCharacterClass.Unknown,
-            bot?.Level ?? 0, bot?.CureMezz != null);
+            bot?.Level ?? 0, bot?.CureMezz != null, bot?.BotSpec?.EraRole);
 
     /// <summary>
     /// Hook: the RvR branch of group formation (TryFormGroups), after the pet cap picked <paramref name="picked"/> from
@@ -153,7 +153,8 @@ public static partial class AutonomousBotGroupCoordinator
             int partner = RvrRosterTemplates.DuoPartner(RosterCandidate(leader, -1), candidates, cap);
             return partner < 0 ? [] : [pool[partner]];
         }
-        RvrRoster roster = RvrRosterTemplates.Build(leader.Realm, RosterCandidate(leader, -1), candidates, size - 1, cap);
+        RvrRoster roster = RvrRosterTemplates.Build(leader.Realm, RosterCandidate(leader, -1), candidates, size - 1, cap,
+            Properties.RVR_ROSTER_BUILD_ROLES);
         long now = GameLoop.GameLoopTime;
         long shortSince = RvrShortEightSince.TryGetValue(leader.Realm, out long since) ? since : now;
         RvrPartyKind? outcome = RvrRoamSplit.ShortEight(roster.Picked.Length + 1, RvrCensus.GetValueOrDefault(leader.Realm),
@@ -211,7 +212,8 @@ public static partial class AutonomousBotGroupCoordinator
                  $"size={members.Length} tier={tier} " +
                  (roster != null
                      ? $"filled=\"{string.Join(",", roster.Filled.Select(slot => $"{slot.Role}:{slot.Class}"))}\" " +
-                       $"nextBest=\"{string.Join(",", roster.NextBest)}\" missing=\"{string.Join(",", roster.Missing)}\" "
+                       $"nextBest=\"{string.Join(",", roster.NextBest)}\" missing=\"{string.Join(",", roster.Missing)}\" " +
+                       $"cc={roster.CrowdControlLabel} "
                      : "") +
                  $"classes=\"{classes}\" split={RvrRoamShares} census={after.Warband}/{after.Eight}/{after.Small}" +
                  (fellBack ? " fallback=shortEight" : ""));
