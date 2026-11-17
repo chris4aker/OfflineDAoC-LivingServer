@@ -84,6 +84,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _placeKnowledge = Switch("Knowing the way");
     private readonly CheckBox _movementHabits = Switch("Moving like people");
     private readonly CheckBox _milestones = Switch("Personal milestones");
+    private readonly CheckBox _eraClassShares = Switch("2003 class mix");
+    private readonly CheckBox _eraBuilds = Switch("2003 builds");
     private readonly RuneButton _economy = Action("ECONOMY PAGE", DaocTheme.Midgard);
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
     private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
@@ -209,7 +211,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         crafting.Grid.Controls.Add(craftNote, 0, crafting.Grid.RowCount - 1);
         crafting.Grid.SetColumnSpan(craftNote, 3);
 
-        var economy = Card("BOT CRAFTERS AND THE ECONOMY", DaocTheme.Gold, 12);
+        var economy = Card("BOT CRAFTERS AND THE ECONOMY", DaocTheme.Gold, 14);
         Add(economy, _botCrafters, null, "Crafter gamebots join an order, buy real materials, work at the capital's stations and sell what they make on the Realm Exchange.");
         Func<SocialExpansionSettings, bool> craftersOn = v => v.BotCrafters;
         Dependent(Caption("CRAFTERS AMONG NEW BOTS"), Add(economy, null, WithUnit(_crafterShare, "%"),
@@ -228,6 +230,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             "Taken from the seller's proceeds of each Exchange sale, yours and the bots'. 0 (default): no tax; 5 is the classic option."));
         Add(economy, _ledger, null, "Once an hour the server counts each realm's coin, faucets and sinks (log lines and one row an hour). It changes no amount.");
         Add(economy, _level50Kit, null, "\"+ Lv.50\" bots arrive with a quality-100 kit and 10,000 gold. Off (a fresh-start world): plain merchant gear and a small purse.");
+        Add(economy, _eraClassShares, null, "New bots from the + Lv.1, + Lv.20 and + Lv.50 buttons come in each realm's 2003 class mix (Cleric 12% of Albion, Reaver 3%; estimates from period forums). Off: every class equally likely. Existing bots keep their class.");
+        Add(economy, _eraBuilds, null, "Each new gamebot keeps one of its class's 2003 builds for life (a Mind/Body Sorcerer more often than a Matter one; estimates from period forums), one in ten an odd spec. Off: today's builds. Bots you already have keep theirs.");
         Add(economy, _economy, null, "The economy as the ledger records it: each realm's coin, what came in and went out, the tax and the Exchange's prices.");
         var economyNote = new Label
         {
@@ -308,7 +312,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
 
         foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
                      _craftEraStart, _craftSecondaryCaps, _coinByLevel, _classicQuality, _classicLosses,
-                     _botCrafters, _craftOrders, _ledger, _level50Kit, _buffBotConcRange,
+                     _botCrafters, _craftOrders, _ledger, _level50Kit, _eraClassShares, _eraBuilds, _buffBotConcRange,
                      _skillProfiles, _placeKnowledge, _movementHabits, _milestones,
                      _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
@@ -423,6 +427,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         ExchangeTaxPercent = (int)_exchangeTax.Value,
         EconomyLedger = _ledger.Checked,
         Level50Kit = _level50Kit.Checked,
+        BotEraClassShares = _eraClassShares.Checked,
+        BotEraBuilds = _eraBuilds.Checked,
         BuffBotPercent = (int)_buffBotPercent.Value,
         BuffBotEraConcRange = _buffBotConcRange.Checked,
         BotSkillProfiles = _skillProfiles.Checked,
@@ -469,6 +475,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _exchangeTax.Value = Math.Clamp(settings.ExchangeTaxPercent, 0, SocialExpansionSettings.MaxExchangeTaxPercent);
         _ledger.Checked = settings.EconomyLedger;
         _level50Kit.Checked = settings.Level50Kit;
+        _eraClassShares.Checked = settings.BotEraClassShares;
+        _eraBuilds.Checked = settings.BotEraBuilds;
         _buffBotPercent.Value = Math.Clamp(settings.BuffBotPercent, 0, 100);
         _buffBotConcRange.Checked = settings.BuffBotEraConcRange;
         _skillProfiles.Checked = settings.BotSkillProfiles;

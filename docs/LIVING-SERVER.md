@@ -349,6 +349,44 @@ New bots are named the way a 2003 server's players named themselves:
 - **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
 - **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
+### Era builds (`bot_era_class_shares`, `bot_era_builds`, `bot_era_offmeta_percent`, `rvr_roster_build_roles`)
+
+Added for 1.2 (owner Chris, 2026-11-17; design and review in [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md)). **Tests only**:
+nothing here has been seen on the owner's PC yet. New gamebots are built the way players built their characters in
+2002-2003 (patch 1.65):
+- **The class mix** (`bot_era_class_shares`, on): the launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50` batches draw each
+  bot's class from its realm's 2003 share (Cleric 12% of Albion, Healer 15% of Midgard, Druid 12% of Hibernia, Reaver
+  3%), not evenly.
+- **A build for life** (`bot_era_builds`, on): at its first load a new gamebot draws one of its class's period builds by
+  weight (a Mind/Body Sorcerer more often than a Matter one), seeded by its roster id, moves up to 2 points between its
+  lower lines, and keeps that build for life, as it kept today's. A `+ Lv.20` or `+ Lv.50` bot arrives trained in it; a
+  `+ Lv.1` bot trains it level by level at its trainer. Its weapons and its starter gear follow the build's weapon lines.
+- **The odd spec** (`bot_era_offmeta_percent`, 10): one new gamebot in ten takes one of today's class-file builds
+  instead. 0: era builds only. Which bots do is fixed by their roster ids.
+- **Crowd control in RvR** (`rvr_roster_build_roles`, on): when a role-built eight fills its crowd-control slot, it first
+  takes a member or bot with a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard), then the
+  classes as before. Bots without an era build rank as before.
+- **Who keeps what:** a gamebot that already has a saved build keeps its class and build; nothing is re-drawn and no
+  point is ever untrained. One from before lifetime builds that already trained lines takes the era build of its two
+  highest lines, or today's build if none matches. Your `/spawn`, `/raid` and `/bot` companions, hired companions, Epic
+  Special Forces and No Lifers' buffbots keep today's builds. Bots never play the custom class (the Sluaghbinder), in
+  either edition.
+- **Level 41-50 points:** since 1.2 a gamebot that trains every level gets the half-level spec points above 40 that a
+  player gets at each "x.5", so it reaches 50 with the same points as a `+ Lv.50` bot. Points it missed before 1.2 are
+  not given back (its trained levels don't change on the update).
+- **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so
+  for each share and weight, and a later data update can re-weight them.
+- **Log:** `ERA_BUILDS_LOADED` at start; `ERA_BUILD_ASSIGNED` when a bot's plan is first saved (`draw=era`, `offmeta`,
+  `nearest` or `legacy`, with the jitter); `ERA_BUILD_TRAINED` once when an era-built bot first stands trained at 50
+  (`match=yes`, or `match=no short=...`); `ERA_BUILD_CENSUS` once per start and realm: the bots by plan (`era`, `kept`,
+  `new` = not loaded yet) and by class against the target share (`Healer=139(15.4%/15%)`; Hibernia always lists
+  `Sluaghbinder`), then the same by class over the era-built bots only (`eraClasses="Healer=12(16.0%/15%),..."`). `RVR_PARTY_FORMED` names the crowd controller's build role (`cc=Healer(healer-cc)`). None of these
+  is behind a diagnostics switch; ASSIGNED and TRAINED are at most one line per bot for life.
+- **Switches:** `bot_era_class_shares` and `bot_era_builds` are in the launcher's Living Server tab (economy card,
+  "2003 class mix" and "2003 builds"); the other two are server keys only (category `bots`). **ALL OFF** switches the
+  two tab switches off with the other Living Server features: new bots then come evenly and with today's builds, and
+  bots that already have a build keep it.
+
 ### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_bot_perception_bots`, `rvr_bot_group_lookers`, `rvr_group_pet_cap`)
 
 Added for 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gamebots in the frontier saw you from

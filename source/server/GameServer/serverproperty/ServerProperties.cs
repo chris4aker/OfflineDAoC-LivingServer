@@ -2262,11 +2262,32 @@ namespace DOL.GS.ServerProperties
 
 		/// <summary>
 		/// Offline DAoC 0.33 editions: the custom Hibernian Sluaghbinder class (0.33b keeps it on,
-		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot,
-		/// no Sluaghbinder autonomous bots and no Sluaghbinder temporary helpers.
+		/// 0.33 "no custom class" turns it off). Off means no player creation through the Mauler slot.
+		/// Bots never play the class in either edition (owner 2026-11-17, BotCustomClassRule): no gamebot, companion,
+		/// helper or hired companion is made as one, and a gamebot that already is one is kept but never logged in.
 		/// </summary>
 		[ServerProperty("classes", "enable_sluaghbinder", "Allow the custom Hibernian Sluaghbinder class (player creation, autonomous bots and helpers). False leaves only the Classic + SI classes.", true)]
 		public static bool ENABLE_SLUAGHBINDER = true;
+
+		/// <summary>
+		/// Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md, WP2): the launcher's + Lv.1, + Lv.20 and + Lv.50 batches (and
+		/// AutonomousBotIdentityGenerator.Generate) draw each new gamebot's class from its realm's 2003 share
+		/// (OfflineDaoc.Shared.EraBuildCatalog: Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.
+		/// The launcher reads the row (a missing row is on); bots never play the custom class either way (owner 2026-11-17).
+		/// </summary>
+		[ServerProperty("bots", "bot_era_class_shares", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class. Set in the launcher's Living Server tab.", true)]
+		public static bool BOT_ERA_CLASS_SHARES = true;
+
+		/// <summary>
+		/// Era builds 1.2 (docs/ERA-BUILDS-1.2.md, WP3): a new gamebot takes its lifetime build from the era data at its first
+		/// load. Saved builds are never re-drawn; companions, hired companions, Epic Special Forces and buffbots are untouched.
+		/// </summary>
+		[ServerProperty("bots", "bot_era_builds", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep today's builds. Off: today's builds for new bots too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS.", true)]
+		public static bool BOT_ERA_BUILDS = true;
+
+		/// <summary>Era builds 1.2 (WP3): percent of new gamebots that take one of today's class-file builds instead (the odd spec).</summary>
+		[ServerProperty("bots", "bot_era_offmeta_percent", "Era builds: percent (0 to 100) of new gamebots that take one of today's class-file builds instead of an era build, the odd spec every server had. 0: era builds only. Which bots are off-meta is fixed by each bot's roster id. Needs bot_era_builds.", 10)]
+		public static int BOT_ERA_OFFMETA_PERCENT = 10;
 
 		/// <summary>
 		/// Character passport (docs/CHARACTER-PASSPORT.md): while this world is hosted, friends may bring their own characters
@@ -2642,6 +2663,10 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("bots", "rvr_roaming_parties", "Open-field RvR (1.2): Autonomous gamebots split their RvR population (siege parties form first and are not counted) into warbands, role-built eight-man groups and soloers, duos and stealthers, by rvr_roam_population_split. An eight is built to its realm's 2003 skeleton: two main healers, a crowd controller, a shield tank, a speed class, two who can cure mez, a Shaman (Midgard) or Theurgist (Albion), the rest damage; a missing role goes to the next best class and the group still forms, and rvr_group_pet_cap holds. Eights roam; they do not open sieges. Groups you lead or join are never changed. Needs rvr_bot_field_tactics. Log: RVR_PARTY_FORMED.", true)]
 		public static bool RVR_ROAMING_PARTIES;
+
+		/// <summary>Era builds 1.2 (WP5, decision D9): the RvR eight's crowd-control slot prefers a crowd-control build.</summary>
+		[ServerProperty("bots", "rvr_roster_build_roles", "Era builds in RvR (1.2): when a role-built eight fills its crowd-control slot it first takes a member or bot whose era build is a crowd-control build (a Pacification Healer, a Mind Sorcerer, a Music Bard; roles healer-cc and cc-mezzer), then the classes as before. Bots without an era build rank as before. Groups you lead or join are never changed. Needs rvr_roaming_parties. Log: RVR_PARTY_FORMED cc=.", true)]
+		public static bool RVR_ROSTER_BUILD_ROLES = true;
 
 		/// <summary>
 		/// 1.2 work package 6 (roamers): circuits and check spots.

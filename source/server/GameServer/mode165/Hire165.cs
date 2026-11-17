@@ -140,13 +140,10 @@ namespace DOL.GS
             return result.OrderBy(c => c.ToString(), StringComparer.Ordinal).ToList();
         }
 
-        /// <summary>A custom class a companion can't be hired as here: the Sluaghbinder in an edition without it
-        /// (classes / enable_sluaghbinder off, 0.37). True 1.65 refused it with every freeshard script; Living Server's
-        /// gamebots and /spawn helpers follow the edition switch, so hiring does too.</summary>
+        /// <summary>A custom class a companion can't be hired as: the Sluaghbinder, in every edition. True 1.65 refused it
+        /// with every freeshard script; bots never play the custom class (owner 2026-11-17, BotCustomClassRule).</summary>
         public static bool IsCustomClass(Type type)
         {
-            if (ServerProperties.Properties.ENABLE_SLUAGHBINDER)
-                return false;
             for (Type t = type; t != null; t = t.DeclaringType)
                 if (t.Name.Contains("Sluaghbinder", StringComparison.Ordinal))
                     return true;

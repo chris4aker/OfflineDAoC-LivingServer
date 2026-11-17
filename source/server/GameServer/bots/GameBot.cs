@@ -2820,7 +2820,21 @@ namespace DOL.GS
             else
                 LoadPersistedSpecs(record.SerializedSpecs);
             bool buildLocked = IsInMemoryOnly || BotLifetimeBuild.Restore(BotSpec, record.SerializedBuildPlan);
-            if (!buildLocked)
+            bool hiredCompanion = HiredCompanions165.IsHired(record.BotId);
+            // Era builds 1.2 (WP3, docs/ERA-BUILDS-1.2.md "The build draw"): a gamebot with no saved plan takes an era build
+            // for life (or the nearest one to the lines it already trained). A saved plan was restored above and is never
+            // re-drawn (D1). Epic Special Forces and buffbots (in memory only), hired companions and the custom class keep
+            // today's plans; /spawn and /bot companions use the other constructor.
+            EraBuildDecision eraBuild = null;
+            if (!buildLocked && EraLifetimeBuild.Applies(ServerProperties.Properties.BOT_ERA_BUILDS, ClassId, IsInMemoryOnly,
+                    hiredCompanion, OfflineDaoc.Shared.EraBuildCatalog.Default))
+            {
+                eraBuild = EraLifetimeBuild.Choose(OfflineDaoc.Shared.EraBuildCatalog.Default, persistentClass, record.BotId,
+                    TrainedSpecLevels(), ServerProperties.Properties.BOT_ERA_OFFMETA_PERCENT);
+                if (eraBuild.Plan != null)
+                    BotSpec = eraBuild.Plan;
+            }
+            if (!buildLocked && eraBuild?.Plan == null)
                 BotLifetimeBuild.AlignWithInvestedWeapons(BotSpec, GetBaseSpecLevel);
             // A saved build can predate the Savage's trained weapon line. Its
             // old weapon field must not override the specialization restored
@@ -2832,6 +2846,8 @@ namespace DOL.GS
                 record.SerializedBuildPlan = BotLifetimeBuild.Encode(BotSpec);
                 MarkAutonomousStateDirty();
             }
+            if (eraBuild != null)
+                log.Info(EraLifetimeBuild.AssignedLine(Name, DatabaseID, ClassName, Level, BotSpec, eraBuild));
             m_leftOverSpecPoints = Math.Max(0, record.UnspentSpecPoints);
             _lastAutonomousTrainedLevel = IsInMemoryOnly ? Level : ParseLastTrainedLevel(record.SerializedAbilities, Level, record.SerializedSpecs);
             // A bot the launcher made at level 50 ("+ Lv.50") has its lifetime build but has never stood at a trainer: it
@@ -2841,14 +2857,16 @@ namespace DOL.GS
             // Living Server 1.2: so does one the launcher made for the Thidranki battleground ("+ Lv.20", levels 20-24), which would
             // otherwise fight its battleground with every line at 1 (it trains only at a break between PvE tasks).
             // A hired companion's points stay unspent: its player places them (True 1.65 owner rule).
-            bool hiredCompanion = HiredCompanions165.IsHired(record.BotId);
             bool arrivedTrained = !IsInMemoryOnly && !hiredCompanion &&
                 ArrivesTrained(Level, _lastAutonomousTrainedLevel, string.IsNullOrWhiteSpace(record.LastSavedUtc));
             if (arrivedTrained)
             {
+                byte arrivalTrainedFrom = _lastAutonomousTrainedLevel;
                 SpendSpecPoints(Level, _lastAutonomousTrainedLevel);
                 _lastAutonomousTrainedLevel = Level;
                 MarkAutonomousStateDirty();
+                if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, arrivalTrainedFrom, Level))
+                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
                 if (AutonomousDiagnosticsProperties.Training)
                     log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
                              $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
@@ -3669,6 +3687,10 @@ namespace DOL.GS
             if (Mana > maximumMana) Mana = maximumMana;
         }
 
+        /// <summary>The trainable lines and their levels now (the era draw's "no trained line above 1" and nearest build).</summary>
+        private List<KeyValuePair<string, int>> TrainedSpecLevels() =>
+            GetSpecList().Where(spec => spec.Trainable).Select(spec => new KeyValuePair<string, int>(spec.KeyName, spec.Level)).ToList();
+
         private void LoadPersistedSpecs(string serialized)
         {
             if (string.IsNullOrWhiteSpace(serialized))
@@ -3809,6 +3831,8 @@ namespace DOL.GS
             int abilitiesBefore = GetAllAbilities().Count;
             SpendSpecPoints(Level, previous);
             _lastAutonomousTrainedLevel = Level;
+            if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, previous, Level))
+                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -4127,16 +4151,32 @@ namespace DOL.GS
             }
         }
 
-        private int GetSpecPointsForLevel(int level, bool botCreation)
+        private int GetSpecPointsForLevel(int level, bool botCreation) =>
+            SpecPointsForLevel(CharacterClass.SpecPointsMultiplier, level, botCreation || EarnsHalfLevelPoints);
+
+        /// <summary>
+        /// An autonomous gamebot earns the half-level points above level 40 whether it trains every level or catches up
+        /// several at once. Players get them at each "x.5" second stage (GamePlayer.OnLevelSecondStage, multiplier x level
+        /// / 20); gamebots have no second stage, and before 1.2 only a bot catching up more than one level (or made above
+        /// level 1) was given them, so a gamebot that trained every level reached 50 with 220/330/445 points fewer (x1.0,
+        /// x1.5, x2.0) than one the launcher made at 50, and could not finish an era build sized to the level-50 budget
+        /// (review of era builds WP0-2, 2026-11-17). Hired companions keep their own count: their player places their
+        /// points (True 1.65), and /spawn and /bot companions are made trained.
+        /// </summary>
+        private bool EarnsHalfLevelPoints => IsAutonomousWorldBot && !IsHiredCompanion;
+
+        /// <summary>The spec points for reaching <paramref name="level"/>; with <paramref name="halfLevel"/>, above level 40,
+        /// also the half level before it (level - 1).5. Pure; the sum over levels 2-50 with half levels is
+        /// OfflineDaoc.Shared.EraBuildCatalog.PointBudget.</summary>
+        public static int SpecPointsForLevel(int multiplier, int level, bool halfLevel)
         {
             int specpoints = 0;
 
-            if (botCreation)
-                if (level > 40)
-                    specpoints += CharacterClass.SpecPointsMultiplier * (level - 1) / 20;
+            if (halfLevel && level > 40)
+                specpoints += multiplier * (level - 1) / 20;
 
             if (level > 5)
-                specpoints += CharacterClass.SpecPointsMultiplier * level / 10;
+                specpoints += multiplier * level / 10;
             else if (level >= 2)
                 specpoints = level;
 

@@ -110,6 +110,12 @@ public sealed record SocialExpansionSettings
     public bool EconomyLedger { get; init; } = true;
     /// <summary>The launcher's "+ Lv.50" bots arrive with the quality-100 kit and 10,000 gold (launcher_level50_kit). On by default.</summary>
     public bool Level50Kit { get; init; } = true;
+    /// <summary>The launcher's bot batches draw each new gamebot's class from its realm's 2003 share (bot_era_class_shares,
+    /// era builds 1.2; EraClassShares). On by default.</summary>
+    public bool BotEraClassShares { get; init; } = true;
+    /// <summary>A new gamebot takes its lifetime build from the 2003 era builds at its first load (bot_era_builds, era builds 1.2
+    /// WP3). On by default.</summary>
+    public bool BotEraBuilds { get; init; } = true;
     /// <summary>Percent of the No Lifer bots that run a buffbot, 0 to 100 (bot_nolifer_buffbot_percent).</summary>
     public int BuffBotPercent { get; init; } = DefaultBuffBotPercent;
     /// <summary>Buffbots' concentration buffs have no range limit, the 2003 rule (bot_nolifer_buffbot_era_conc_range). On by default.</summary>
@@ -172,7 +178,7 @@ public sealed record SocialExpansionSettings
         LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
         LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
-        BotCrafters = true, BotCraftOrders = true,
+        BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
     };
 
@@ -231,6 +237,8 @@ public sealed record SocialExpansionSettings
         ("exchange_tax_percent", "bots", "Realm Exchange tax in percent of a sale, taken from the seller's proceeds (0 = none; 5 is the documented option). Only a trade pays it. Set in the launcher's Living Server tab."),
         ("economy_ledger_enabled", "bots", "Hourly economy ledger: money supply, faucets and sinks per realm (ECON_SUPPLY, ECON_FLOWS). Logs and one table row an hour only; changes no amount. Set in the launcher's Living Server tab."),
         ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world). Set in the launcher's Living Server tab."),
+        ("bot_era_builds", "bots", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep today's builds. Off: today's builds for new bots too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS."),
+        ("bot_era_class_shares", "bots", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class. Set in the launcher's Living Server tab."),
         ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),
         ("bot_nolifer_buffbot_era_conc_range", "bots", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range."),
         ("bot_skill_profiles", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work package 2): the profiles are made, logged and grow, but no bot plays differently until the mistakes come."),
@@ -306,6 +314,8 @@ public sealed record SocialExpansionSettings
         ["exchange_tax_percent"] = ExchangeTaxPercent.ToString(CultureInfo.InvariantCulture),
         ["economy_ledger_enabled"] = Bool(EconomyLedger),
         ["launcher_level50_kit"] = Bool(Level50Kit),
+        ["bot_era_class_shares"] = Bool(BotEraClassShares),
+        ["bot_era_builds"] = Bool(BotEraBuilds),
         ["bot_nolifer_buffbot_percent"] = BuffBotPercent.ToString(CultureInfo.InvariantCulture),
         ["bot_nolifer_buffbot_era_conc_range"] = Bool(BuffBotEraConcRange),
         ["bot_skill_profiles"] = Bool(BotSkillProfiles),
@@ -603,6 +613,8 @@ public sealed record SocialExpansionSettings
             ExchangeTaxPercent = ReadCraftingInt("exchange_tax_percent", d.ExchangeTaxPercent, 0, MaxExchangeTaxPercent),
             EconomyLedger = ReadCraftingBool("economy_ledger_enabled", d.EconomyLedger),
             Level50Kit = ReadCraftingBool("launcher_level50_kit", d.Level50Kit),
+            BotEraClassShares = ReadCraftingBool("bot_era_class_shares", d.BotEraClassShares),
+            BotEraBuilds = ReadCraftingBool("bot_era_builds", d.BotEraBuilds),
             BuffBotPercent = buffBotPercent,
             BuffBotEraConcRange = ReadBool("bot_nolifer_buffbot_era_conc_range", d.BuffBotEraConcRange),
             BotSkillProfiles = ReadBool("bot_skill_profiles", d.BotSkillProfiles),
@@ -623,7 +635,8 @@ public sealed record SocialExpansionSettings
 
     /// <summary>
     /// "All off": the three features, every Living Server part, bot leaders' invites, bot crafters and their craft orders, the
-    /// four "Bots as people" master switches, and both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
+    /// four "Bots as people" master switches, the era builds (the 2003 class mix and builds of new gamebots; bots that have
+    /// theirs keep them), and both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
     /// the player's own choices. Power regeneration and the loot share are rates, not features, and keep their values too, as
     /// do the crafting rules (they are the game's rules for your characters, not Living Server features), the Exchange tax, the
     /// economy ledger (it only counts) and the level-50 kit (a launcher option).
@@ -637,11 +650,13 @@ public sealed record SocialExpansionSettings
         LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
         BotCrafters = false, BotCraftOrders = false,
         BotSkillProfiles = false, BotPlaceKnowledge = false, BotMovementHabits = false, LivingMilestones = false,
+        BotEraClassShares = false, BotEraBuilds = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
     public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites &&
-                            !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+                            !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && !BotEraClassShares && !BotEraBuilds &&
+                            PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
     /// <summary>True when any "Bots as people" master switch is on.</summary>
     public bool AnyBotsAsPeople => BotSkillProfiles || BotPlaceKnowledge || BotMovementHabits || LivingMilestones;

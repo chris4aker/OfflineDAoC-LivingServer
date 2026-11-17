@@ -304,6 +304,22 @@ below). Then `4be6fab`, 06:18-06:48.
 | Sieges still happen and keeps change hands | must | **Seen** on `19e7037`: 4 sieges started (02:03, 03:16, 04:05, 04:55), 2 keeps taken: Caer Erasleigh by Midgard (02:15), then back by Albion (03:39) |
 | Catalogs rebuilt from a clean release world | must | Loaded and walked on `19e7037`: 98 check spots and 18 circuits (400 walks, 0 failed), 318 of 332 lanes validated (14 rejected). Whether the shipped catalogs were built from a clean release world is not in the log. Open |
 
+## Era builds (branch `feat/era-builds-wp3-5`, not merged yet)
+
+The plan is [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md) (WP0-WP5; the checks are its WP6). Everything is tests only. The owner
+sets which rows are must. Each row is checked on the era candidate's build, from the owner's log; checks 1, 2, 4 and 6
+need a test copy (new batches; 1 and 2 a fresh world with no other gamebots), check 3 the owner's world.
+
+| What | Must | Status |
+|---|---|---|
+| 1. New bots are era-built: a fresh test world with no other gamebots, **Bot schedule Off** in the launcher's Living Server tab (with `clock`, the 1.2 default, only the bots scheduled online log in, and a bot draws its build when it first logs in), `+ Lv.50 ×100` per realm, start and let the population log in. One `ERA_BUILD_ASSIGNED` line for each bot that logged in (300 once all have), about 10% of them `draw=offmeta`, and an `ERA_BUILD_TRAINED match=yes` for each `draw=era` one |  | Not run (tests only) |
+| 2. The class mix: the same kind of fresh world, Bot schedule Off, three batches of 100 per realm (`+ Lv.1`, `+ Lv.20`, `+ Lv.50`); start, let them all log in, restart. In each realm's `ERA_BUILD_CENSUS`, `new=0`, and `eraClasses=` (the classes counted over the era-built bots only, so older bots never weigh in) has each class within 4 points of its share |  | Not run (tests only) |
+| 3. Existing bots unchanged: the owner's world after the update. `ERA_BUILD_CENSUS` has `era=0 new=0` and `kept=` the roster; no `ERA_BUILD_ASSIGNED` for a bot with a saved plan; three named bots show the same spec levels before and after (trainer window or `/target`) |  | Not run (tests only) |
+| 4. No custom-class bots, either edition: on a 0.37b and on a 0.37 world, `ERA_BUILDS_LOADED customClass=never`, and `Sluaghbinder=0` in Hibernia's `ERA_BUILD_CENSUS` after a `+ Lv.50 ×100` Hibernia batch; on a test world with Sluaghbinder gamebots, one `BOT_CUSTOM_CLASS_RETIRED` line each and none of them online |  | Not run (tests only) |
+| 5. Battleground: Thidranki with `+ Lv.20` era bots. `RVR_PARTY_FORMED` lines with a crowd-control role filled (`cc=Healer(healer-cc)`, `cc=Sorcerer(cc-mezzer)`, `cc=Bard(cc-mezzer)`); the pet count chasing the player against the 2026-11 numbers (BOT-BUILDS-AND-RVR, "How we'll know") |  | Not run (tests only) |
+| 6. One raid per realm on an era-mix world (owner's review D12): a dragon per realm forced with `/epictest start`, era-built bots only. Reported as era-mix results, apart from the raid bar |  | Not run. Optional (D12: if Sunday allows; otherwise the notes say it wasn't done) |
+| The install checks again on the era candidate (D11): the launcher changed |  | Not run |
+
 ## Crafting and the economy (in 1.2 since #270)
 
 The plan is [CRAFTING-AND-ECONOMY.md](CRAFTING-AND-ECONOMY.md). Must rows since owner decision 5 of 2026-11-17.

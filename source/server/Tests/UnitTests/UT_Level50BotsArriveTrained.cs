@@ -1,4 +1,6 @@
+using System.Linq;
 using NUnit.Framework;
+using OfflineDaoc.Shared;
 
 namespace DOL.GS.Tests
 {
@@ -39,6 +41,22 @@ namespace DOL.GS.Tests
         {
             Assert.That(GameBot.ArrivesTrained(level, 1, neverSaved: true), Is.True);
             Assert.That(GameBot.ArrivesTrained(level, level, neverSaved: true), Is.False, "already trained");
+        }
+
+        [Test]
+        public void EveryEraBuildFitsWhatAnArrivalAndALevelledBotHave()
+        {
+            // Era builds 1.2, WP3: a "+ Lv.50" arrival trains levels 2-50 at once with the half levels; since 1.2 a gamebot
+            // trained every level has the same points (GameBot.SpecPointsForLevel). Every era build fits them, so both
+            // finish it exactly; UT_EraLifetimeBuild.ALevelFiftyArrivalTrainsEveryEraBuildToItsPointsExactly runs the
+            // trainer's own spending for all of them.
+            foreach (EraClass eraClass in EraBuildCatalog.Default.Classes)
+            {
+                int arrival = Enumerable.Range(2, 49).Sum(level => GameBot.SpecPointsForLevel(eraClass.SpecMultiplier, level, true));
+                Assert.That(arrival, Is.EqualTo(eraClass.PointBudget50), eraClass.Name);
+                foreach (EraBuild build in eraClass.Builds)
+                    Assert.That(build.Points, Is.LessThanOrEqualTo(arrival), build.Id);
+            }
         }
 
         [Test]

@@ -27,6 +27,13 @@ summoning companions. This is the design; it ships in 1.2 as phase B ([RELEASE-T
 
 ### 1. The era's real builds, weighted (research first)
 
+**In 1.2 (tests only until seen on the owner's PC):** built as "era builds", see [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md)
+for the design and the owner's review (2026-11-17), and [LIVING-SERVER.md](LIVING-SERVER.md#era-builds-bot_era_class_shares-bot_era_builds-bot_era_offmeta_percent-rvr_roster_build_roles)
+for the switches. The data file is `bots/autonomous/data/era-builds-165.json` (one class-share table per realm, not the
+two below); new gamebots draw their class and lifetime build from it, existing bots keep theirs, and the RvR eight's
+crowd-control slot prefers a crowd-control build. Bots never play the custom class. The text below is the plan of
+2026-11-01.
+
 For each class, the builds that were common in 1.65 (to 8 October 2003), in RvR and in PvE, with a share each, and
 for each realm the share of each class seen in RvR. Sources must be dated to the era: Camelot Herald class pages and
 patch notes, period template and spec calculators, class forums and guides from 2002–2003 (the same method as the
