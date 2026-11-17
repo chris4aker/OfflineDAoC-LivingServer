@@ -70,9 +70,13 @@ screen of the real client, an hour of play, a raid, a real PC (antivirus, SmartS
    Untick the shortcuts. Leave "suggested settings" ticked, as a new player has it.
 2. When it ends, start `START OFFLINE DAOC.cmd` in that folder. ENTER REALM makes your account. Make a character and
    enter the world.
-3. On the character screen, choose Hibernia: the class list has **no Sluaghbinder**. The 0.37 client leaves the
-   Hibernian Mauler slot disabled, as v0.32 did. This is the first part of row 3's "character creation offers no
-   Sluaghbinder", seen in the real client.
+3. On the character screen, choose Hibernia: the class list has **no Sluaghbinder**. The 0.37 client does not hide
+   the Hibernian Mauler slot: for a Celt it can be picked (it shows the stock Mauler text; for a Shar it is greyed).
+   The server refuses that slot on a class-off world. **Try it once:** a Celt in the Mauler slot, any name, create.
+   No message is shown: the server saves nothing and sends the character list back, and the new character is not in
+   it. `server.log` has `CUSTOM_CLASS_REFUSED account=<you> name=<name> class=62 race=<race> (classes/enable_sluaghbinder
+   is off)` from this change on (an older build refuses it too, without this line). This is the first
+   part of row 3's "character creation offers no Sluaghbinder", seen in the real client.
 4. Proof to record: `python <repo>\source\tools\make_classoff_copy.py status --game C:\Games\OfflineDAoC\playable-v1.2-new`
    prints `EDITION enable_sluaghbinder=False game.dll=classic` and `CUSTOM-CLASS characters=0 gamebots=0`. Also the
    Setup log's `RESULT Success` and `server.log`'s `FORK_BUILD name=1.2-beta commit=<commit> ... sluaghbinder=off`.
@@ -96,8 +100,10 @@ class-off copy of the test world `playable-v0.37b-fresh`, made the way `build_re
 2. **Start it.** Start `START OFFLINE DAOC.cmd` in `playable-v0.37-classoff`. `runtime\server\logs\server.log` must have:
    - `GameServer startup completed`;
    - `FORK_BUILD name=1.2-beta commit=<the candidate's commit> ... sluaghbinder=off`.
-3. **Character creation.** On the character screen in Hibernia, the class list has no Sluaghbinder. Make a classic
-   character (for example a Celt Naturalist): it is created. After the session,
+3. **Character creation.** On the character screen in Hibernia, the class list has no Sluaghbinder. The Mauler slot
+   can still be picked for a Celt (row 2 step 3): try it once. It is refused with no message; the character list
+   comes back without it, and `server.log` has `CUSTOM_CLASS_REFUSED ... class=62`. Then make a classic character
+   (for example a Celt Naturalist): it is created. After the session,
    `make_classoff_copy.py status --game C:\Games\OfflineDAoC\playable-v0.37-classoff` must still count the same
    custom-class characters as the copy step's `NOTE` lines (none new).
 4. **An hour of play** with a classic-class character: questing, a group with gamebots, a town visit, the Living

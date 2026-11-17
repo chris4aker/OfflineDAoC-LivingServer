@@ -466,13 +466,14 @@ namespace DOL.GS.PacketHandler.Client.v168
             if (log.IsDebugEnabled)
                 log.Debug($"Creation {client.Version} character, class:{ch.Class}, realm:{ch.Realm}");
 
-            // A client asking for the custom class directly is refused when it is switched off.
-            if (!Properties.ENABLE_SLUAGHBINDER && (eRealm)ch.Realm == eRealm.Hibernia &&
-                (ch.Class == (int)eCharacterClass.Sluaghbinder || ch.Class == (int)eCharacterClass.Acolyte) &&
-                (ePrivLevel)client.Account.PrivLevel == ePrivLevel.Player)
+            // A client asking for the custom class is refused when it is switched off: the client's slot (62, the
+            // Hibernian Mauler slot the classic 0.37 client still lets a Celt pick), the Sluaghbinder (63) and its
+            // novice (16). Nothing is saved and the client gets its character list back without the new character.
+            if (IsCustomClassRefused(Properties.ENABLE_SLUAGHBINDER, (eRealm)ch.Realm, ch.Class, (ePrivLevel)client.Account.PrivLevel))
             {
-                if (log.IsDebugEnabled)
-                    log.Debug($"Client {client.Account.Name} tried to create the disabled custom Sluaghbinder class");
+                // Warn level so the owner's log shows it even when set to warnings only (like FORK_BUILD).
+                if (log.IsWarnEnabled)
+                    log.Warn($"CUSTOM_CLASS_REFUSED account={client.Account.Name} name={pdata.CharName} class={ch.Class} race={ch.Race} (classes/enable_sluaghbinder is off)");
 
                 return true;
             }
@@ -958,6 +959,20 @@ namespace DOL.GS.PacketHandler.Client.v168
         /// </summary>
         /// <param name="ch">The character to check</param>
         /// <returns>True if valid</returns>
+        /// <summary>
+        /// True when a player's creation request asks for the custom Hibernian class while classes/enable_sluaghbinder
+        /// is off: the client's Sluaghbinder slot (62, MaulerHib), the Sluaghbinder (63) or its novice (Acolyte, 16).
+        /// GM accounts and the other realms are not refused here. With the class on, 62 and 63 are mapped to the
+        /// novice before this check, so it never refuses then.
+        /// </summary>
+        public static bool IsCustomClassRefused(bool customClassOn, eRealm realm, int requestedClass, ePrivLevel privLevel)
+        {
+            return !customClassOn && realm == eRealm.Hibernia && privLevel == ePrivLevel.Player &&
+                (requestedClass == (int)eCharacterClass.MaulerHib ||
+                 requestedClass == (int)eCharacterClass.Sluaghbinder ||
+                 requestedClass == (int)eCharacterClass.Acolyte);
+        }
+
         public static bool IsCharacterValid(DbCoreCharacter ch)
         {
             bool valid = true;
