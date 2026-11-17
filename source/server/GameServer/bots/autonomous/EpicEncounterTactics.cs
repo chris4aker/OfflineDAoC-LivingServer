@@ -887,8 +887,9 @@ namespace DOL.GS
                 AutonomousPveTargetPolicy.IsUnreachableFlyer(target.Flags, target.Z, raider.Z))
                 return new(BotAction.StandOff, target, StandFor(addOwner) ?? StandFor(target) ?? new Vector3(raider.X, raider.Y, raider.Z),
                     $"required-add of \"{addOwner.Name}\" is out of melee reach: hold at the floor stand");
+            // ...or chases the raider's pet (the pet comes off him and follows it home; Soul Reckoner, 2026-11-17).
             if (OutsideHome(target) && !AutonomousTetherReset.IsOutOfTether(target))
-                return new(target.TargetObject == raider ? BotAction.LeadHome : BotAction.StandOff, target, null,
+                return new(target.TargetObject == raider || PetOwner(target.TargetObject as GameLiving) == raider ? BotAction.LeadHome : BotAction.StandOff, target, null,
                     $"fight-at-home {(int)target.GetDistanceTo(target.SpawnPoint)}>{For(target).FightAtHomeRadius}");
             return default;
         }
@@ -1480,8 +1481,11 @@ namespace DOL.GS
                     HomeWatch.TryRemove(boss, out _);
                     continue;
                 }
+                // His target, or the owner of the pet he chases (owner's PC, 2026-11-17: Soul Reckoner held 2.5 hours by a pet
+                // nobody led; the pet comes off him below and follows its owner home).
                 if (For(boss) is not { FightAtHomeRadius: > 0 } tactic ||
-                    !LeadsHome(tactic.FightAtHomeRadius, boss.GetDistanceTo(boss.SpawnPoint), boss.TargetObject == bot,
+                    !LeadsHome(tactic.FightAtHomeRadius, boss.GetDistanceTo(boss.SpawnPoint),
+                        boss.TargetObject == bot || PetOwner(boss.TargetObject as GameLiving) == bot,
                         boss.CurrentRegionID == bot.CurrentRegionID, boss.IsReturningToSpawnPoint))
                     continue;
                 if (bot.IsCasting) bot.StopCurrentSpellcast();

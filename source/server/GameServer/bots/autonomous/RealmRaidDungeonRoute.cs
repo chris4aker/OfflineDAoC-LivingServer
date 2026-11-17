@@ -218,6 +218,10 @@ namespace DOL.GS
         private readonly Dictionary<GameNPC, MusterProgress> _musterProgress = new();
         // The log line of the reason a muster set its encounter aside (pull unreached, stalled); null for an empty muster.
         private string _setAsideLine;
+        // A stalled muster with a party's worth of the raid pinned elsewhere: the encounter pinning them, which the route
+        // turns on once the stalled target is set aside (MusterForFinal; Caer Sidi, owner's PC 2026-11-17).
+        private GameNPC _stallPinner;
+        private int _stallPinnedCount;
         /// <summary>This raid has a Leeroy (AutonomousRaidLeeroy): he charges the first final encounter early, once.</summary>
         public bool LeeroyRolled { get; set; }
         /// <summary>
@@ -452,8 +456,59 @@ namespace DOL.GS
                                    !IsEncounterHazard(n) && !EpicEncounterTactics.IsRequiredAddOfLiveBoss(n, live) &&
                                    _routeRetry.GetValueOrDefault(n) <= now &&
                                    n.ObjectState == GameObject.eObjectState.Active && !_clearedNames.Contains(n.Name) &&
-                                   n.TargetObject is GameLiving victim && raiders.Contains(victim))
+                                   n.TargetObject is GameLiving victim && FightsTheRaid(victim, raiders))
                        .OrderByDescending(n => n is GameEpicBoss).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// The monster's victim is the raid's (pure but for the pet's owner): a raider, or a raider's pet. Owner's PC, build
+        /// 453e01a, 2026-11-17 (Caer Sidi): Soul Reckoner fought a raider's pet at 27254,36125 for 2.5 hours; when the route's
+        /// target (one of his souls) died at 12:42:22 it looked for an encounter fighting the raid, did not count the pet,
+        /// and walked off 5,300 to a reckoned soul on a late raider instead.
+        /// </summary>
+        public static bool FightsTheRaid(GameLiving victim, ICollection<GameLiving> raiders) =>
+            victim != null && raiders != null &&
+            (raiders.Contains(victim) || EpicEncounterTactics.PetOwner(victim) is { } owner && raiders.Contains(owner));
+
+        /// <summary>
+        /// A raider is pinned away from the muster by another encounter (pure): its target is a live epic encounter in a fight
+        /// that is neither the route's target nor one of its own (<paramref name="otherEncounterInFight"/>), and it stands
+        /// further than <see cref="FinalMusterRadius"/> from the muster and <see cref="TargetPresenceRadius"/> from the target.
+        /// Owner's PC, build 453e01a, 2026-11-17 (Caer Sidi, 12:41-15:33): 65-78 raiders held Soul Reckoner 5,666 from the
+        /// muster at 29617,41288. They counted in the muster's need (60 of 120 living) and in "inside" (108), so the muster
+        /// never filled (7-13) and every early pull of a court monster committed the dozen at it (inside 108 &gt;= needed 84).
+        /// </summary>
+        public static bool PinnedAway(bool otherEncounterInFight, float fromMuster, float fromTarget) =>
+            otherEncounterInFight && fromMuster > FinalMusterRadius && fromTarget > TargetPresenceRadius;
+
+        /// <summary>The muster's need, of the raid that is free to come (pure): <see cref="FinalMusterNeeded"/> of the living
+        /// raid less its pinned raiders (<see cref="PinnedAway"/>).</summary>
+        public static int MusterNeededLeavingPinned(int livingRaiders, int pinned, long musterMilliseconds) =>
+            FinalMusterNeeded(Math.Max(0, livingRaiders - Math.Max(0, pinned)), musterMilliseconds);
+
+        /// <summary>A stalled muster turns the route on the encounter pinning the raid when it pins a party's worth
+        /// (<see cref="MinimumRaidersAtTarget"/>, pure); fewer are left to it, and the stalled target is set aside as before.</summary>
+        public static bool TurnsOnPinner(int pinned) => pinned >= MinimumRaidersAtTarget;
+
+        /// <summary>The raiders pinned away from the muster (<see cref="PinnedAway"/>), and the encounter pinning most of them.</summary>
+        private (GameNPC By, HashSet<GameLiving> Raiders) PinnedRaiders(GameLiving[] participants)
+        {
+            var pinned = new HashSet<GameLiving>();
+            if (_target == null || participants == null) return (null, pinned);
+            var by = new Dictionary<GameNPC, int>();
+            Vector3 muster = _musterPoint;
+            foreach (GameLiving p in participants)
+            {
+                if (!p.IsAlive || p.CurrentRegionID != _region || p.TargetObject is not GameNPC npc) continue;
+                bool other = npc != _target && npc is IGameEpicNpc && npc.IsAlive && npc.InCombat &&
+                             npc.ObjectState == GameObject.eObjectState.Active && npc.CurrentRegionID == _region &&
+                             !EpicEncounterTactics.Covers(npc, _target, _live) && !EpicEncounterTactics.Covers(_target, npc, _live);
+                if (!other || !PinnedAway(true, Vector3.Distance(new Vector3(p.X, p.Y, p.Z), muster), (float)p.GetDistanceTo(_target)))
+                    continue;
+                pinned.Add(p);
+                by[npc] = by.GetValueOrDefault(npc) + 1;
+            }
+            return (by.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key.ObjectID).Select(kv => kv.Key).FirstOrDefault(), pinned);
         }
 
         private bool IsMusteredEncounter(GameNPC npc) =>
@@ -1183,7 +1238,10 @@ namespace DOL.GS
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
                 // aggroed on the approach) is answered as a whole (EpicEncounterTactics.ChooseEarlyPull): everyone in at once,
                 // or everyone back to the muster, never piecemeal (Aidon the Archwizard, 2026-11-05).
-                GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
+                // Raiders pinned by another encounter far off are not inside for this fight: they neither commit nor are
+                // engaged (Caer Sidi 2026-11-17: 70 at Soul Reckoner counted, and the dozen at the muster went in).
+                HashSet<GameLiving> pinnedNow = PinnedRaiders(participants).Raiders;
+                GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region && !pinnedNow.Contains(p)).ToArray();
                 GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
                 if (!_musterEngaged || _skirmishHeld)
                 {
@@ -1201,7 +1259,7 @@ namespace DOL.GS
                     // The whole living raid, raiders walking back after a wipe included (AttemptRaidSize), and the muster it
                     // would wait for (70%; half after 20 minutes): a handful inside is never "the raid".
                     int livingRaid = participants.Count(p => p.IsAlive);
-                    int musterNeeded = FinalMusterNeeded(livingRaid, now - _musterSince);
+                    int musterNeeded = MusterNeededLeavingPinned(livingRaid, pinnedNow.Count, now - _musterSince);
                     var choice = EpicEncounterTactics.ChooseEarlyPull(fighting.Length, inside.Length, livingRaid, shakesOff, pulledBack,
                         musterNeeded);
                     if (_skirmishHeld)
@@ -1233,7 +1291,7 @@ namespace DOL.GS
                     bool isFinal = _finalTypes.Contains(_target.GetType().Name);
                     long since = _earlyPullLogged.TryGetValue(_target.Name, out long logged) ? now - logged : -1;
                     string line = $"REALM_EXPEDITION_EARLY_PULL region={_region} target=\"{_target.Name}\" near={fighting.Length} " +
-                                  $"inside={inside.Length} raid={livingRaid} needed={musterNeeded} resets={resets} tether={tether} " +
+                                  $"inside={inside.Length} pinned={pinnedNow.Count} raid={livingRaid} needed={musterNeeded} resets={resets} tether={tether} " +
                                   $"musterFromSpawn={(int)musterFromSpawn} decision={choice} health={_target.HealthPercent} " +
                                   $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z}";
                     if (choice == EpicEncounterTactics.EarlyPull.Hold ||
@@ -1305,7 +1363,10 @@ namespace DOL.GS
             }
             int living = participants.Count(p => p.IsAlive);
             long regroupMilliseconds = now - _regroupSince;
-            int needed = _regrouping ? RegroupNeeded(participants.Length, regroupMilliseconds) : FinalMusterNeeded(living, now - _musterSince);
+            // The raiders another encounter pins far off can't come: the muster waits for its share of the rest.
+            var pinned = PinnedRaiders(participants);
+            int needed = _regrouping ? RegroupNeeded(participants.Length, regroupMilliseconds)
+                : MusterNeededLeavingPinned(living, pinned.Raiders.Count, now - _musterSince);
             var point = new Point3D((int)_musterPoint.X, (int)_musterPoint.Y, (int)_musterPoint.Z);
             GameLiving[] musteredRaiders = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region &&
                                                    (p.IsWithinRadius(point, FinalMusterRadius) || p.IsWithinRadius(_target, TargetPresenceRadius))).ToArray();
@@ -1322,10 +1383,15 @@ namespace DOL.GS
                 _musterProgress[_target] = progress = new();
             if (progress.Observe(mustered, needed, now))
             {
+                // A party's worth pinned by another encounter: that encounter is the raid's fight now (it is fighting it), not
+                // the next target past it (Caer Sidi 2026-11-17: four stalls set the target aside and went on to the Crypt
+                // Lord's court while 65-78 held Soul Reckoner).
+                _stallPinner = TurnsOnPinner(pinned.Raiders.Count) && pinned.By is { IsAlive: true } by ? by : null;
+                _stallPinnedCount = pinned.Raiders.Count;
                 _setAsideLine = $"REALM_EXPEDITION_MUSTER_STALLED region={_region} target=\"{_target.Name}\" mustered={mustered} needed={needed} " +
                     $"best={progress.Best} minutes={(now - progress.BestSince) / 60_000} living={living} " +
                     $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} body={MainBody(participants)} " +
-                    $"pinnedBy=\"{PinnedBy(participants)}\" " +
+                    $"pinnedBy=\"{PinnedBy(participants)}\" pinned={pinned.Raiders.Count} turnsOn=\"{_stallPinner?.Name}\" " +
                     $"reason=\"the muster gained nobody for {MusterStalledMilliseconds / 60_000} minutes; set aside and tried again later\"";
                 _musterUnreachable = true;
                 return true;
@@ -2105,9 +2171,19 @@ namespace DOL.GS
                 string busyWith = string.Join(",", participants
                     .Where(p => p.IsAlive && p.TargetObject is GameLiving other && other != target && p.IsWithinRadius(target, 1_000))
                     .GroupBy(p => p.TargetObject.Name).OrderByDescending(g => g.Count()).Take(4).Select(g => $"{g.Key}:{g.Count()}"));
+                // Whom it fights, and Soul Reckoner's distance from his room's middle (owner's PC 2026-11-17: 2.5 hours held by a
+                // victim no line named).
+                GameLiving its = target.TargetObject as GameLiving;
+                var raidSet = participants.ToHashSet();
+                string itsKind = its == null ? "none" : raidSet.Contains(its) ? "raider" :
+                    EpicEncounterTactics.PetOwner(its) is { } petOwner ? (raidSet.Contains(petOwner) ? $"pet of {petOwner.Name}" : "pet") :
+                    its is GamePlayer ? "player" : its is GameBot ? "bot" : "other";
+                string room = target is SoulReckoner
+                    ? $" fromRoom={(int)Vector2.Distance(new(target.X, target.Y), new(EpicEncounterTactics.SoulReckonerRoom.X, EpicEncounterTactics.SoulReckonerRoom.Y))}" : "";
                 log.Info($"REALM_EXPEDITION_TARGET_STATUS region={_region} target=\"{target.Name}\" level={target.Level} " +
                          $"health={target.HealthPercent}% inCombat={target.InCombat} raidersWithin1000={near} targeting={onIt} " +
                          $"at={target.X},{target.Y},{target.Z} spawnDistance={(int)target.GetDistanceTo(target.SpawnPoint)} busyWith=\"{busyWith}\" " +
+                         $"itsTarget=\"{its?.Name}\" itsTargetKind=\"{itsKind}\"{room} " +
                          $"mezzedAvg={_control.MezzedAverage} mezzedPeak={_control.MezzedPeak} stunnedPeak={_control.StunnedPeak} samples={_control.Samples}");
                 _control = default;
                 // Where the raid's damage went in that minute, and what hurt it (diagnostics).
@@ -2556,6 +2632,15 @@ namespace DOL.GS
                     _musterProgress.Remove(_target);
                     _musterTarget = null;
                     _target = null;
+                    if (_stallPinner is { } pinner)
+                    {
+                        _stallPinner = null;
+                        if (pinner.IsAlive && pinner.ObjectState == GameObject.eObjectState.Active && pinner.CurrentRegionID == _region)
+                        {
+                            TurnOn(pinner, participants, now, $"the muster stalled with {_stallPinnedCount} of the raid pinned by it");
+                            return;
+                        }
+                    }
                 }
                 if (_target != null)
                 {
