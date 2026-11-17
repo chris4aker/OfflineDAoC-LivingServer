@@ -2578,21 +2578,21 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_GROUP_LOOKERS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 2 (assist): a main assist and a called target.
+		/// 1.2 work package 2 (assist): a main assist and a called target.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_assist", "Does nothing yet: reserved for 1.2 work package 2. When built: one fighter of a bot group is the main assist and calls the group's target in the 2003 kill order; the others switch to it after their own delay, and some tunnel. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_assist", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, one fighter (a tank first) is the main assist and the group's target is called by the 2003 kill order (casters, healers, bladeturn casters, crowd controllers, tanks last; versus Midgard the Shaman first, versus Hibernia the Bard, the Eldritch, then the Druids). A call is held 4-8 s; an enemy using Mastery of Concentration or just resurrected becomes the call; one the group cannot reach is never called. Members follow after their own delay by the group's skill tier, and some tunnel. Log: RVR_ASSIST_CALL, RVR_ASSIST_SWITCH. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_ASSIST;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 2 (assist): the group's crowd-control plan.
+		/// 1.2 work package 2 (assist): the group's crowd-control plan.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_cc_plan", "Does nothing yet: reserved for 1.2 work package 2. When built: a bot group's crowd controller opens on the charge, the kill target is never mezzed and a resisted mez is cast again. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_cc_plan", "Open-field RvR (1.2): a bot group's mezzers, stunners and rooters each hold one enemy that is not the kill target, from the charge on; the kill target is never mezzed, a resisted mez is cast again and the server's crowd-control immunity is respected. Human errors by skill tier: area damage sometimes breaks a mez, and a mezzed crowd controller is not covered for 2-4 s. Log: RVR_CC_ASSIGN. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_CC_PLAN;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 2 (assist): interrupt duty.
+		/// 1.2 work package 2 (assist): interrupt duty.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_interrupts", "Does nothing yet: reserved for 1.2 work package 2. When built: each enemy healer or caster that is not the kill target gets one bot of the group assigned to keep it from casting. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_interrupts", "Open-field RvR (1.2): each enemy healer or caster that is not the kill target gets one bot of the group (an archer, a caster with an instant or fast spell, a pet class, or a melee fighter in reach; at most half the group) that keeps hitting it; it looks again every 1.5-3 s by skill tier. Our design, not a 2003 rotation; the server's 1.65 interrupt rules are unchanged. Log: RVR_INTERRUPT. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_INTERRUPTS;
 
 		/// <summary>
