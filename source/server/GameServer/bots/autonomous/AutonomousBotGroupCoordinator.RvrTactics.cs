@@ -21,6 +21,10 @@ public static partial class AutonomousBotGroupCoordinator
     // The kind chosen for a leader in this pass, until its party forms (or not). Serial, under the lock.
     private static readonly Dictionary<GameBot, RvrPartyKind> RvrPendingKind = new();
     private static readonly Dictionary<GameBot, RvrRoster> RvrPendingRoster = new();
+    // fix/rvr-quiet-frontier: since when each realm's eights have come up short in a row (RvrRoamSplit.ShortEight), and
+    // the leaders whose short eight formed as a warband after the wait (logged as fallback=shortEight). Serial, under the lock.
+    private static readonly Dictionary<eRealm, long> RvrShortEightSince = new();
+    private static readonly HashSet<GameBot> RvrShortEightFallback = new();
     private static long _rvrCensusTick = long.MinValue;
     private static readonly Dictionary<eRealm, RvrRoamCensus> RvrCensus = new();
 
@@ -103,10 +107,12 @@ public static partial class AutonomousBotGroupCoordinator
             return rolledSize;
         RvrPendingKind.Remove(leader);
         RvrPendingRoster.Remove(leader);
+        RvrShortEightFallback.Remove(leader);
         if (RvrPendingKind.Count > 64)
         {
             RvrPendingKind.Clear();
             RvrPendingRoster.Clear();
+            RvrShortEightFallback.Clear();
         }
         if (!RvrRoamSplitActive || !RvrTacticsScope.Allows(leader))
             return rolledSize;
@@ -148,9 +154,26 @@ public static partial class AutonomousBotGroupCoordinator
             return partner < 0 ? [] : [pool[partner]];
         }
         RvrRoster roster = RvrRosterTemplates.Build(leader.Realm, RosterCandidate(leader, -1), candidates, size - 1, cap);
-        if (roster.Picked.Length + 1 < RvrRosterTemplates.MinimumEight)
+        long now = GameLoop.GameLoopTime;
+        long shortSince = RvrShortEightSince.TryGetValue(leader.Realm, out long since) ? since : now;
+        RvrPartyKind? outcome = RvrRoamSplit.ShortEight(roster.Picked.Length + 1, RvrCensus.GetValueOrDefault(leader.Realm),
+            RvrRoamShares, now - shortSince);
+        if (outcome == null)
+        {
+            // Short: no party this pass. The leader stays free and the realm's pool fills as warbands end.
+            RvrShortEightSince.TryAdd(leader.Realm, now);
+            RvrPendingKind.Remove(leader);
+            if (Log.IsInfoEnabled && RvrLogBudget.Take("RVR_PARTY_WAIT", now, 6))
+                Log.Info($"RVR_PARTY_WAIT realm={GlobalConstants.RealmToName(leader.Realm)} leader=\"{leader.Name}\" found={roster.Picked.Length + 1} " +
+                         $"minimum={RvrRosterTemplates.MinimumEight} waitedSeconds={(now - shortSince) / 1000} " +
+                         $"limitSeconds={RvrRoamSplit.ShortEightWaitMilliseconds / 1000} region={leader.CurrentRegionID}");
+            return [];
+        }
+        RvrShortEightSince.Remove(leader.Realm);
+        if (outcome == RvrPartyKind.Warband)
         {
             RvrPendingKind[leader] = RvrPartyKind.Warband;
+            RvrShortEightFallback.Add(leader);
             return null;
         }
         RvrPendingRoster[leader] = roster;
@@ -166,6 +189,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (session?.Group == null || leader == null || !RvrPendingKind.Remove(leader, out RvrPartyKind kind))
             return;
         RvrPendingRoster.Remove(leader, out RvrRoster roster);
+        bool fellBack = RvrShortEightFallback.Remove(leader);
         long now = GameLoop.GameLoopTime;
         RvrSkillTier tier = RvrFightBoards.DefaultSkillTier(leader);
         string template = kind switch
@@ -189,6 +213,7 @@ public static partial class AutonomousBotGroupCoordinator
                      ? $"filled=\"{string.Join(",", roster.Filled.Select(slot => $"{slot.Role}:{slot.Class}"))}\" " +
                        $"nextBest=\"{string.Join(",", roster.NextBest)}\" missing=\"{string.Join(",", roster.Missing)}\" "
                      : "") +
-                 $"classes=\"{classes}\" split={RvrRoamShares} census={after.Warband}/{after.Eight}/{after.Small}");
+                 $"classes=\"{classes}\" split={RvrRoamShares} census={after.Warband}/{after.Eight}/{after.Small}" +
+                 (fellBack ? " fallback=shortEight" : ""));
     }
 }

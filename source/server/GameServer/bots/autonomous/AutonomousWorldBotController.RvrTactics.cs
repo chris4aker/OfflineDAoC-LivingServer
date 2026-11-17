@@ -73,6 +73,7 @@ public sealed partial class AutonomousWorldBotController
         public string Walker = string.Empty;
         public long NextLookAt;
         public int PreySeen;
+        public int RoamersSeen;
         public readonly HashSet<GameBot> Tracked = new();
         public GameBot Hunting;
         public long HuntLoggedFor;
@@ -144,6 +145,7 @@ public sealed partial class AutonomousWorldBotController
                 box.Tracked.Clear();
                 box.Hunting = null;
                 box.PreySeen = 0;
+                box.RoamersSeen = 0;
             }
             RvrFrontierPoi spot = catalog.Spot(box.Walk.CurrentSpot);
             return spot == null ? null : RvrSpotDestination(spot);
@@ -226,20 +228,44 @@ public sealed partial class AutonomousWorldBotController
     }
 
     /// <summary>
-    /// Enemy levelling gamebots (a PvE goal) the walker can see inside the spot's radius: the prey. Only what is not
-    /// hidden (stealth detection is work package 1's).
+    /// The prey the walker can see inside the spot's radius: enemy levelling gamebots (a PvE goal) for every walker, and
+    /// for a roaming eight also enemy RvR gamebots whose numbers it would take on (RvrRoamCircuits.MayHuntAtSpot;
+    /// fix/rvr-quiet-frontier). Only what is not hidden (stealth detection is work package 1's). <paramref name="roamers"/>
+    /// is how many of the prey are not levellers.
     /// </summary>
-    private static GameBot[] RvrPreyAt(GameBot bot, RvrFrontierPoi spot)
+    private static GameBot[] RvrPreyAt(GameBot bot, RvrFrontierPoi spot, RvrPartyKind kind, RvrSkillTier tier, out int roamers)
     {
+        roamers = 0;
         ushort radius = (ushort)Math.Min(6_000, spot.Radius + 1_500);
         float reach = spot.Radius + 500f;
-        return bot.GetNPCsInRadius(radius).OfType<GameBot>()
+        static bool Leveller(GameBot prey) => AutonomousObjectiveAssignments.Is(prey, eAutonomousObjectiveKind.SoloPve) ||
+                                              AutonomousObjectiveAssignments.Is(prey, eAutonomousObjectiveKind.GroupPve);
+        GameBot[] seen = bot.GetNPCsInRadius(radius).OfType<GameBot>()
             .Where(prey => prey.IsAlive && prey.IsAutonomousWorldBot && prey.Realm != bot.Realm && prey.Realm != eRealm.None &&
-                           !prey.IsStealthed && prey.ObjectState == GameObject.eObjectState.Active &&
-                           (AutonomousObjectiveAssignments.Is(prey, eAutonomousObjectiveKind.SoloPve) ||
-                            AutonomousObjectiveAssignments.Is(prey, eAutonomousObjectiveKind.GroupPve)) &&
-                           Vector2.Distance(new(prey.X, prey.Y), new(spot.Position.X, spot.Position.Y)) <= reach)
+                           !prey.IsStealthed && prey.ObjectState == GameObject.eObjectState.Active)
             .ToArray();
+        GameBot[] inReach = seen.Where(prey => Vector2.Distance(new(prey.X, prey.Y), new(spot.Position.X, spot.Position.Y)) <= reach).ToArray();
+        if (kind != RvrPartyKind.Eight)
+            return inReach.Where(Leveller).ToArray();
+        int ownHeads = 1 + (bot.Group?.GetMembersInTheGroup().Count(member => member != bot && member.IsAlive &&
+            member.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(member, 3_000)) ?? 0);
+        GamePlayer[] players = bot.GetPlayersInRadius(radius).Where(player => player.IsAlive && player.Realm != bot.Realm &&
+            player.Realm != eRealm.None && !player.IsStealthed).ToArray();
+        var prey = new List<GameBot>(inReach.Length);
+        foreach (GameBot target in inReach)
+        {
+            bool leveller = Leveller(target);
+            if (!leveller)
+            {
+                int near = seen.Count(other => other.IsWithinRadius(target, RvrRoamCircuits.PreyPartyRadius)) +
+                           players.Count(player => player.IsWithinRadius(target, RvrRoamCircuits.PreyPartyRadius));
+                if (!RvrRoamCircuits.MayHuntAtSpot(false, ownHeads, near, tier))
+                    continue;
+                roamers++;
+            }
+            prey.Add(target);
+        }
+        return prey.ToArray();
     }
 
     /// <summary>
@@ -283,7 +309,7 @@ public sealed partial class AutonomousWorldBotController
             if (inArea && !passing && now >= box.NextLookAt)
             {
                 box.NextLookAt = now + RvrLookMilliseconds;
-                prey = RvrPreyAt(bot, spot);
+                prey = RvrPreyAt(bot, spot, box.Kind, box.Tier, out int roamers);
                 foreach (GameBot dead in box.Tracked.Where(tracked => !tracked.IsAlive).ToArray())
                 {
                     box.Tracked.Remove(dead);
@@ -298,6 +324,7 @@ public sealed partial class AutonomousWorldBotController
                 foreach (GameBot target in prey)
                     box.Tracked.Add(target);
                 box.PreySeen = Math.Max(box.PreySeen, prey.Length);
+                box.RoamersSeen = Math.Max(box.RoamersSeen, prey.Length == 0 ? 0 : roamers);
             }
             bool preyInView = box.Tracked.Any(tracked => tracked.IsAlive);
             RvrRoamStep step = RvrRoamCircuits.Step(walk, now, inArea, preyInView);
@@ -346,10 +373,12 @@ public sealed partial class AutonomousWorldBotController
                         box.Stealther ? "Camping the spot in stealth" : "Watching the spot for enemy levellers", spot.Label);
                     return true;
                 default:
-                    LogRoamCheck(bot, box, walk, spot, step.Action, now);
+                    if (!passing)
+                        LogRoamCheck(bot, box, walk, spot, step.Action, now); // a soloer's via spot is passed, not checked
                     box.Tracked.Clear();
                     box.Hunting = null;
                     box.PreySeen = 0;
+                    box.RoamersSeen = 0;
                     if (bot.IsStealthed && !bot.InCombat)
                         bot.Stealth(false);
                     if (box.Stealther && RvrStealthCamps.TryGetValue((spot.Id, bot.Realm), out var campers))
@@ -388,7 +417,7 @@ public sealed partial class AutonomousWorldBotController
         long stayed = walk.ArrivedAt > 0 ? now - walk.ArrivedAt : 0;
         if (RvrLogBudget.Take("RVR_ROAM_CHECK", now, 120))
             Log.Info($"RVR_ROAM_CHECK group={box.Walker} realm={GlobalConstants.RealmToName(bot.Realm)} kind={box.Kind} walk={walk.Id} " +
-                     $"spot={spot.Id} type={spot.Kind} region={spot.Region} preySeen={box.PreySeen} kills={walk.KillsHere} result={result} " +
+                     $"spot={spot.Id} type={spot.Kind} region={spot.Region} preySeen={box.PreySeen} roamersSeen={box.RoamersSeen} kills={walk.KillsHere} result={result} " +
                      $"seconds={stayed / 1000} lap={walk.Laps + 1}/{walk.MaxLaps} reserve={walk.ReserveMode} tier={box.Tier}");
         if (action == RvrRoamAction.MoveOn && walk.KillAt > 0 && RvrLogBudget.Take("RVR_ROAM_MOVE_ON", now, 120))
             Log.Info($"RVR_ROAM_MOVE_ON group={box.Walker} realm={GlobalConstants.RealmToName(bot.Realm)} kind={box.Kind} spot={spot.Id} " +
