@@ -87,7 +87,9 @@ public sealed record RvrFightPlan
 /// <list type="bullet">
 /// <item><see cref="PlanStance"/>: work package 4 (rvr_bot_size_up, rvr_bot_disengage, rvr_bot_regroup)</item>
 /// <item><see cref="PlanAssist"/>, <see cref="PlanCrowdControl"/>, <see cref="PlanInterrupts"/>: work package 2
-/// (rvr_bot_assist, rvr_bot_cc_plan, rvr_bot_interrupts)</item>
+/// (rvr_bot_assist, rvr_bot_cc_plan, rvr_bot_interrupts). Their rules are pure; the steps hand them the board's
+/// <see cref="RvrFieldFacts"/>, which <see cref="RvrFieldReader"/> reads once per board from its live objects
+/// (reachability reports, Mastery of Concentration, resurrection, crowd-control immunity, members' spells).</item>
 /// <item><see cref="PlanProtect"/>: work package 3 (rvr_bot_peel)</item>
 /// </list>
 /// In work package 0 every step returns the plan unchanged, so the result is the neutral plan.
@@ -131,17 +133,17 @@ public static class RvrFightPlanner
     public static RvrFightPlan PlanStance(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
         RvrTacticsSwitches switches, long now) => plan;
 
-    /// <summary>Work package 2: the main assist and the called target. Reserved; returns the plan unchanged.</summary>
+    /// <summary>Work package 2: the main assist and the called target (<see cref="RvrAssist.Plan"/>, on the board's facts).</summary>
     public static RvrFightPlan PlanAssist(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
-        RvrTacticsSwitches switches, long now) => plan;
+        RvrTacticsSwitches switches, long now) => RvrAssist.Plan(plan, board, switches, now, RvrFieldReader.Of(board, plan?.CalledTarget));
 
-    /// <summary>Work package 2: who holds which enemy. Reserved; returns the plan unchanged.</summary>
+    /// <summary>Work package 2: who holds which enemy (<see cref="RvrCrowdControlPlan.Plan"/>).</summary>
     public static RvrFightPlan PlanCrowdControl(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
-        RvrTacticsSwitches switches, long now) => plan;
+        RvrTacticsSwitches switches, long now) => RvrCrowdControlPlan.Plan(plan, board, switches, now, RvrFieldReader.Of(board));
 
-    /// <summary>Work package 2: who keeps which enemy caster or healer from casting. Reserved; returns the plan unchanged.</summary>
+    /// <summary>Work package 2: who keeps which enemy caster or healer from casting (<see cref="RvrInterruptPlan.Plan"/>).</summary>
     public static RvrFightPlan PlanInterrupts(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
-        RvrTacticsSwitches switches, long now) => plan;
+        RvrTacticsSwitches switches, long now) => RvrInterruptPlan.Plan(plan, board, switches, now, RvrFieldReader.Of(board));
 
     /// <summary>Work package 3: who guards whom. Reserved; returns the plan unchanged.</summary>
     public static RvrFightPlan PlanProtect(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
