@@ -35,7 +35,7 @@ import json
 import math
 import re
 import sys
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from pathlib import Path
 
 SEEN = "Seen"
@@ -231,6 +231,9 @@ class Section:
         self.err_custom_class = Evidence()
         self.stop_play = Evidence()
         self.pending_critical = None
+        self.last_retreat = {}            # group -> reason of its last RVR_RETREAT
+        self.relay_sends = {}             # group -> times it relayed (relayedTo>0) in the last 60 s
+        self.recent_sends = deque()       # (time, group, (realm, region)) of relays in the last 60 s
 
     @property
     def commit7(self):
@@ -540,16 +543,46 @@ def _sweep(sec, t, message, level, near):
         sec.lists["sweep_end"].append(f"{stamp(t)[6:]} why={f.get('why')} results={f.get('results')}")
 
 
-@handles("RVR_REGROUP")
-def _rvr_regroup(sec, t, message, level, near):
+@handles("RVR_REGROUP", "RVR_RETREAT")
+def _rvr_stance(sec, t, message, level, near):
+    """The regroup row's criterion (PLAYED-CHECK-1.2.md, corrected 2026-11-17): one hop, no echo. #304 lets a group
+    relay its own retreat or its own regroup once; a relayed stance is never passed on again."""
+    regroup = message.startswith("RVR_REGROUP ")
     f = kv(message)
-    if f.get("phase") != "start":
+    if regroup and f.get("phase") != "start":
         return
-    sec.ev["RVR_REGROUP"].add(t, message)
-    if num(f.get("relayedTo")) > 0:
-        sec.ev["regroup.relayed_on"].add(t, message)
-    if "relayed" in (f.get("reason") or ""):
-        sec.n["regroup.relayed_reason"] += 1
+    group, reason = f.get("group", "?"), f.get("reason") or ""
+    where = (f.get("realm"), f.get("region"))
+    relayed = reason.startswith("relayed")
+    sends = f.get("relay") == "sent" or num(f.get("relayedTo")) > 0
+    reached = num(f.get("relayedTo")) > 0
+    if regroup:
+        sec.ev["RVR_REGROUP"].add(t, message)
+        if relayed:
+            sec.ev["regroup.relay_started"].add(t, message)
+    # (a) a relayed stance that relays again
+    if relayed and f.get("relay") == "sent":
+        sec.ev["regroup.a_relayed_sends"].add(t, message)
+    # (b) the regroup that ends this group's relayed retreat relays again (the echo source)
+    if regroup and reason == "retreat over" and sends and sec.last_retreat.get(group) == "relayed retreat":
+        sec.ev["regroup.b_echo_source"].add(t, message)
+    # (c) a relay back at its sender within 60 s: this group sent one, another group here sent one since, and now
+    # this group takes up a relayed stance
+    if relayed:
+        mine = [s for s in sec.relay_sends.get(group, ()) if 0 < (t - s).total_seconds() <= 60]
+        if mine:
+            first = min(mine)
+            if any(g != group and w == where and first < s and (t - s).total_seconds() <= 15
+                   for s, g, w in sec.recent_sends):
+                sec.ev["regroup.c_returned"].add(t, f"{message.rstrip()} [group {group} relayed at {stamp(first)[6:]}]")
+    if reached:
+        sec.relay_sends.setdefault(group, []).append(t)
+        sec.relay_sends[group] = [s for s in sec.relay_sends[group] if (t - s).total_seconds() <= 60]
+        sec.recent_sends.append((t, group, where))
+        while sec.recent_sends and (t - sec.recent_sends[0][0]).total_seconds() > 60:
+            sec.recent_sends.popleft()
+    if not regroup:
+        sec.last_retreat[group] = reason
 
 
 @handles("RVR_NOTICE")
@@ -919,10 +952,25 @@ def raids(j: Judge, sec: Section, c):
 
 def rvr(j: Judge, sec: Section, c):
     span = max((sec.run_end() - sec.run_start()).total_seconds(), 60.0) if sec.run_start() else 60.0
-    j.seen_if("rvr", "regroup", "Regroups no longer flap (RVR_REGROUP, none relayed on)", "RVR_REGROUP",
-              f"{c('RVR_REGROUP')} regroup starts in {hours(span)}, {c('regroup.relayed_on')} relayed on "
-              f"(relayedTo>0), {sec.n['regroup.relayed_reason']} started by a relay",
-              against="regroup.relayed_on")
+    starts, relay_started = c("RVR_REGROUP"), c("regroup.relay_started")
+    share = 100 * relay_started / starts if starts else 0.0
+    counts = {k: c(f"regroup.{k}") for k in ("a_relayed_sends", "b_echo_source", "c_returned")}
+    over = starts and share > 10
+    detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
+              f"a relay ({share:.1f}%, at most 10%); (a) relayed stance relayed again: {counts['a_relayed_sends']}, "
+              f"(b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, (c) relay back at its sender "
+              f"within 60 s: {counts['c_returned']}")
+    bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
+    if over:
+        bad.append(j.ev("regroup.relay_started"))
+    row = "Regroups no longer flap: one hop, no echo, relay-started regroups 10% of starts or less (RVR_REGROUP)"
+    if bad:
+        j.add("rvr", "regroup", row, CONTRADICTED, min(bad, key=lambda e: e.first_t), detail,
+              note="relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop)")
+    elif starts:
+        j.add("rvr", "regroup", row, SEEN, j.ev("RVR_REGROUP"), detail)
+    else:
+        j.add("rvr", "regroup", row, NOT_SEEN, None, detail)
     delays = sorted(sec.lists["notice_delay"])
     median = f"{delays[len(delays) // 2]:.0f} ms" if delays else "-"
     j.seen_if("rvr", "notice", "Bots notice bots by the player rules (RVR_NOTICE kind=EnemyBot, RVR_SPOT)",
