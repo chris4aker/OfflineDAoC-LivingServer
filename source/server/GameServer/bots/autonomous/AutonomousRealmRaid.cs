@@ -1709,11 +1709,12 @@ namespace DOL.GS
             Zone zone = WorldMgr.GetRegion(region)?.GetZone((int)center.X, (int)center.Y);
             Vector3[] occupied = raid.Parties.Values.Where(p => p != party && p.Anchor.HasValue && p.AnchorRegion == region)
                 .Select(p => p.Anchor.Value).ToArray();
-            if (!RealmRaidFormation.TryResolve(PathfindingProvider.Instance, zone, center, party.FormationSlot, occupied, out point, dangers))
+            if (!RealmRaidFormation.TryResolve(PathfindingProvider.Instance, zone, center, party.FormationSlot, occupied, out point,
+                    out bool dangerOnly, dangers))
             {
-                // Was a post there but for the dangers? Then the party stands at the hold point itself (UpdateDestinationView).
-                party.FailedPostByDanger = dangers is { Count: > 0 } &&
-                    RealmRaidFormation.TryResolve(PathfindingProvider.Instance, zone, center, party.FormationSlot, occupied, out _);
+                // A post was there but for the dangers (told by the same search): the party stands at the hold point itself
+                // (UpdateDestinationView).
+                party.FailedPostByDanger = dangerOnly;
                 party.FailedPostCenter = center;
                 party.FailedPostUntil = now + FailedPostRetryMilliseconds;
                 return false;
@@ -1996,9 +1997,16 @@ namespace DOL.GS
         /// back for 30 minutes and stood in the same spot again, so the orbs never had the raid. False when the bot is in no
         /// started dungeon raid or not in its dungeon (then the capital, as before).
         /// </summary>
-        public static bool TryRecoverInsideRaid(GameBot bot, out ushort region, out Vector3 point, out string near)
+        public static bool TryRecoverInsideRaid(GameBot bot, out ushort region, out Vector3 point, out string near) =>
+            TryRecoverInsideRaid(bot, out region, out point, out near, out _);
+
+        /// <summary>As above, from the raid's regroup point and never into a resting boss's aggro (re-review of 06b9cb2c0:
+        /// it went to the raider nearest the front, or the front, which during a hold stands by the resting boss).
+        /// <paramref name="stays"/>: the regroup is refused (RealmRaidStuckRecovery.StaysInside): the bot stays inside, never
+        /// its capital.</summary>
+        public static bool TryRecoverInsideRaid(GameBot bot, out ushort region, out Vector3 point, out string near, out bool stays)
         {
-            region = 0; point = default; near = null;
+            region = 0; point = default; near = null; stays = false;
             Group group = bot?.Group;
             if (group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
@@ -2006,14 +2014,15 @@ namespace DOL.GS
                 if (!Membership.TryGetValue(group, out var raid) || !raid.Started || raid.DungeonRoute == null) return false;
                 RealmRaidDungeonRoute route = ActiveRoute(raid);
                 if (bot.CurrentRegionID != route.Region) return false;
-                Vector3 front = route.Front;
+                bool clear = route.TryStrandedRegroupPoint(out Vector3 front);
+                if (RealmRaidStuckRecovery.StaysInside(true, clear)) { stays = true; return false; }
                 GameLiving[] others = raid.Support.Where(b => b != bot && b.IsAlive && b.CurrentRegionID == route.Region &&
                     b.ObjectState == GameObject.eObjectState.Active).ToArray();
                 if (RealmRaidStuckRecovery.Choose(new Vector3(bot.X, bot.Y, bot.Z), front,
-                        others.Select(b => new Vector3(b.X, b.Y, b.Z)).ToArray(), out point, out int index))
+                        others.Select(b => new Vector3(b.X, b.Y, b.Z)).ToArray(), route.InRegroupDanger, out point, out int index))
                 {
                     region = route.Region;
-                    near = index >= 0 ? others[index].Name : "the route's front";
+                    near = index >= 0 ? others[index].Name : route.Hold ? "the raid's hold point" : "the route's front";
                     return true;
                 }
                 return false;

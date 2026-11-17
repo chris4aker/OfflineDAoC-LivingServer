@@ -418,7 +418,8 @@ public static class RealmRaidReturnWave
         !byNamed && !setAside && distanceToWave <= LookAheadUnits &&
         (onWalk || aggressive && distanceToWave <= NearUnits && Math.Abs(heightToWave) <= RealmRaidRouteGate.FloorBand);
 
-    /// <summary>At most this many kills at one step: then the wave goes on (what attacks it is still fought by its raiders).</summary>
+    /// <summary>At most this many kills of monsters off the walk at one step: then those no longer hold it (what attacks the wave
+    /// and what stood on the walk when it arrived always do).</summary>
     public const int StepKillCap = 12;
     /// <summary>A monster off the walk is in the way only within its own aggro range plus this of the wave.</summary>
     public const float OffWalkAggroMargin = 300f;
@@ -428,14 +429,16 @@ public static class RealmRaidReturnWave
     /// the wave of 8 (later 40) stood at its step 4 from 12:57 to past 14:00 and killed 216 balorians (aonghus, conall,
     /// einion: levels 49-51, aggro 350-380, respawn 3 minutes; 32 of them in the hall at 36,900-39,200 x 29,600-33,600), one
     /// every 20 s, while the hall refilled about ten a minute: there was always one "in the way", so it never went on. Now the
-    /// wave clears what blocks the way when it reaches a step: not a monster that came back while it stood there
-    /// (<paramref name="cameBackAtStep"/>) unless it attacks the wave, not one off the walk that is further from the wave than
-    /// its own aggro + <see cref="OffWalkAggroMargin"/> (a balorian 1,200 off never comes to it), and nothing once it has
-    /// made <see cref="StepKillCap"/> kills at the step.
+    /// wave clears what blocks the way when it reaches a step, then goes on: a monster attacking the wave always holds it (its
+    /// raiders never walk on mid-fight); one that stood on the walk when the wave arrived holds it until it is dead; one that
+    /// came back while the wave stood there (<paramref name="cameBackAtStep"/>) never does; one off the walk only within its
+    /// own aggro + <see cref="OffWalkAggroMargin"/> of the wave (a balorian 1,200 off never comes to it), and only until the
+    /// wave has made <see cref="StepKillCap"/> kills at the step (re-review of 06b9cb2c0: the cap never skips what attacks
+    /// the wave or an original blocker on the walk).
     /// </summary>
     public static bool StillBlocks(bool attacking, bool cameBackAtStep, int killsAtStep, bool onWalk, float distanceToWave, int aggroRange) =>
-        killsAtStep < StepKillCap &&
-        (attacking || !cameBackAtStep && (onWalk || distanceToWave <= aggroRange + OffWalkAggroMargin));
+        attacking ||
+        !cameBackAtStep && (onWalk || killsAtStep < StepKillCap && distanceToWave <= aggroRange + OffWalkAggroMargin);
 
     /// <summary>No headway, no damage on its monster and nobody closer to its step for <see cref="StuckMilliseconds"/>.</summary>
     public static bool Stuck(long lastMovement, long now) => now - lastMovement >= StuckMilliseconds;

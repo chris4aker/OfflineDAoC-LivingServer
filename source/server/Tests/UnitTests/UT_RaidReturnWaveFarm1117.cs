@@ -57,12 +57,14 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TwelveKillsAtAStepAndTheStepIsPassable()
+        public void TwelveKillsAtAStepOnlyLetOffWalkMonstersGo()
         {
-            Assert.That(W.StillBlocks(false, false, W.StepKillCap - 1, true, 300, BalorianAggro), Is.True);
-            Assert.That(W.StillBlocks(false, false, W.StepKillCap, true, 300, BalorianAggro), Is.False);
-            Assert.That(W.StillBlocks(true, false, W.StepKillCap, true, 300, BalorianAggro), Is.False,
-                "its raiders still fight what attacks them; the wave goes on");
+            Assert.That(W.StillBlocks(false, false, W.StepKillCap - 1, false, 600, BalorianAggro), Is.True, "off the walk, in reach");
+            Assert.That(W.StillBlocks(false, false, W.StepKillCap, false, 600, BalorianAggro), Is.False, "the cap: off-walk ones no longer hold it");
+            Assert.That(W.StillBlocks(false, false, W.StepKillCap, true, 300, BalorianAggro), Is.True,
+                "an original blocker standing on the walk holds it until it is dead");
+            Assert.That(W.StillBlocks(true, true, W.StepKillCap + 20, false, 900, BalorianAggro), Is.True,
+                "one attacking the wave always holds it: never on mid-fight (re-review of 06b9cb2c0)");
         }
 
         /// <summary>The Tur Suil hall, replayed with the pure rules: 32 spawns on or by the walk, 180 s respawn, one kill every 20 s
@@ -94,8 +96,8 @@ namespace DOL.UnitTests
                 return -1;
             }
             Assert.That(Run(false), Is.EqualTo(-1), "the old rule: still at the step an hour later (216 kills by 14:00)");
-            int withCap = Run(true);
-            Assert.That(withCap, Is.InRange(1, W.StepKillCap), "the new rule: on after at most the cap");
+            // The new rule: the 32 that stood there when it arrived, then on (about 11 minutes at one kill every 20 s).
+            Assert.That(Run(true), Is.EqualTo(32));
         }
 
         [Test]

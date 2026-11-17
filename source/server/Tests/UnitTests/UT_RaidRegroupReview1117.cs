@@ -57,11 +57,20 @@ namespace DOL.UnitTests
             var student = new Vector3(38016, 67270, 15117);
             var drihten = new Vector3(37323, 68217, 15102);
             var front = student + new Vector3(150, 0, 0);
+            // Who goes with the target is worked out as RestingDangers does: Drihten owns both students (ClearFirstOwner).
+            object drihtenNpc = new(), otherBoss = new();
+            Assert.That(R.GoesWithTarget(false, false, false, drihtenNpc, drihtenNpc), Is.True, "a fellow student of the target");
+            Assert.That(R.GoesWithTarget(false, false, false, otherBoss, drihtenNpc), Is.False, "another boss's student");
+            Assert.That(R.GoesWithTarget(false, false, false, null, drihtenNpc), Is.False, "Drihten himself: no owner, a danger");
+            Assert.That(R.GoesWithTarget(false, false, false, null, null), Is.False);
+            Assert.That(R.GoesWithTarget(true, false, false, null, null) && R.GoesWithTarget(false, true, false, null, null) &&
+                        R.GoesWithTarget(false, false, true, null, null), Is.True, "the target, what it covers, its required adds");
             R.DangerCandidate[] world =
             [
-                Npc("Drihten Elreden", drihten, 600),
-                Npc("thrawn ogre bocere", student, 150, boss: false, pack: true, ofTarget: true),
-                Npc("thrawn ogre bocere", new(38023, 67467, 15117), 150, boss: false, pack: true, ofTarget: true),
+                Npc("Drihten Elreden", drihten, 600, ofTarget: R.GoesWithTarget(false, false, false, null, drihtenNpc)),
+                Npc("thrawn ogre bocere", student, 150, boss: false, pack: true, ofTarget: R.GoesWithTarget(true, false, false, drihtenNpc, drihtenNpc)),
+                Npc("thrawn ogre bocere", new(38023, 67467, 15117), 150, boss: false, pack: true,
+                    ofTarget: R.GoesWithTarget(false, false, false, drihtenNpc, drihtenNpc)),
             ];
             Assert.That(R.StrandedRegroupPoint(false, front, front, null, R.RestingDangersOf(world)), Is.EqualTo(front));
             // The first cut counted the target (and its fellow students) as dangers: refused.
@@ -163,6 +172,37 @@ namespace DOL.UnitTests
                 new("Weno'iak the Enlightened", new(35817, 33952, 8625), 600), new("Dura'ek the Empowered", new(32425, 28962, 8756), 600),
                 new("Vera'erius the Brave", new(23752, 28660, 8791), 600),
             ],
+            [161] =
+            [
+                new("Hati", new(13349, 14481, 18114), 600), new("Droom", new(22055, 21795, 14903), 600),
+                new("Iarnvidiur", new(13848, 11523, 18263), 600), new("Stanga", new(21537, 32290, 16513), 600),
+                new("Delegalt", new(17956, 17650, 17976), 600), new("Ancient Syver", new(25281, 33542, 16513), 600),
+                new("Mahattava", new(17361, 29203, 12962), 600), new("Hurjavelen", new(21487, 34669, 16513), 600),
+                new("Skoll", new(14985, 14528, 18125), 600),
+            ],
+            [246] =
+            [
+                // Thane Dyggve and Gudlaugr have no aggro (0): never a danger.
+                new("Aros the Spiritmaster", new(39061, 36970, 15495), 600), new("Jarl Ormarr", new(45432, 37768, 13966), 400),
+                new("Hamar", new(32017, 41854, 15484), 550), new("Mistress of Runes", new(29728, 42388, 12912), 500),
+            ],
+            [276] =
+            [
+                new("Avartack the Champion", new(28896, 35752, 15065), 400), new("Chieftain Caimheul", new(32597, 38903, 15061), 500),
+                new("Black Lady", new(30086, 37378, 15001), 500),
+            ],
+            [277] =
+            [
+                new("Lady Darra", new(29551, 31554, 13941), 500), new("Aidon the Archwizard", new(31353, 37634, 14873), 600),
+                new("Lord Gildas", new(29015, 41910, 12933), 500), new("Captain Heathyr", new(33731, 35840, 14646), 500),
+                new("Captain Atwell", new(33999, 38790, 14614), 500), new("Captain Bardalph", new(34604, 35842, 14134), 500),
+            ],
+            [190] =
+            [
+                new("Sargan the Conqueror", new(25249, 38173, 14109), 600), new("Balor", new(32032, 31048, 15984), 600),
+                new("Norsob the Annihilator", new(25033, 31235, 14109), 600), new("Abomos the Soultrapper", new(31471, 21474, 11612), 600),
+                new("Kierac the Destroyer", new(28439, 28150, 13246), 600), new("Queen Qunilaria", new(31066, 16596, 11951), 600),
+            ],
         };
 
         /// <summary>The musters these raids held at in the owner's PC logs (REALM_EXPEDITION_FINAL_MUSTER at=), with their target.</summary>
@@ -178,17 +218,32 @@ namespace DOL.UnitTests
                 (62, "Xanxicar", new(30274, 35520, 15002)),
                 (50, "Dura'ek the Empowered", new(33486, 29874, 8724)), (50, "Sys'sro the Ruthless", new(40542, 40512, 8021)),
                 (50, "Weno'iak the Enlightened", new(34454, 34275, 8613)),
+                (161, "Iarnvidiur", new(14199, 12878, 18262)), (161, "Delegalt", new(19308, 17959, 18158)),
+                (161, "Droom", new(22467, 23107, 15156)), (161, "Ancient Syver", new(24518, 34696, 16724)),
+                (161, "Skoll", new(14652, 15887, 18086)), (161, "Mahattava", new(17747, 27857, 12984)),
+                (161, "Stanga", new(22587, 33210, 16597)),
+                (246, "Aros the Spiritmaster", new(37903, 37757, 15493)), (246, "Thane Dyggve", new(36419, 34187, 14064)),
+                (246, "Mistress of Runes", new(30382, 41156, 13047)), (246, "Gudlaugr", new(43212, 33301, 13440)),
+                (246, "Jarl Ormarr", new(45199, 36387, 13947)),
+                (276, "Black Lady", new(30280, 35991, 14980)),
+                (277, "Aidon the Archwizard", new(31384, 36234, 14885)), (277, "Captain Atwell", new(32831, 38054, 14376)),
+                (277, "Lord Gildas", new(28915, 40513, 12978)),
+                (190, "Norsob the Annihilator", new(26431, 31289, 14110)), (190, "Queen Qunilaria", new(30938, 15203, 11889)),
+                (190, "Kierac the Destroyer", new(28444, 29548, 13184)), (190, "Balor", new(31986, 32447, 15988)),
+                (190, "Sargan the Conqueror", new(26644, 38059, 14110)),
             ];
             foreach (var (region, target, at) in musters)
                 yield return new TestCaseData(region, target, at).SetName($"WonRaidPostsUnchanged({region}, {target})");
         }
 
         /// <summary>
-        /// Krondon, Crystal Cave and Avalon City (won on the owner's PC): the dangers only remove tries of a party's post, so where
-        /// no try lies in another boss's danger the post search returns what integration/1.2 returned (the muster itself is placed
-        /// by unchanged code). Every try of slots 0-31 (up to 256 raiders) around every muster they held at is clear; the only
-        /// tries removed are six of slots 32-40 (Special Forces' 38-40 included) around Ulor se Bysen's muster, 729-807 from Jehrog
-        /// se Bysen's spawn, inside his aggro + 300: those parties take their next try instead.
+        /// The dungeon raids' musters from the owner's PC logs: Krondon, Crystal Cave and Avalon City (won), Iarnvidiur's Lair,
+        /// Dodens Gruva, Marfach Caverns (the Black Lady), Hall of the Corrupt and Tur Suil. The dangers only remove tries of a
+        /// party's post, so where no try lies in another boss's danger the post search returns what integration/1.2 returned (the
+        /// muster itself is placed by unchanged code). Every try of slots 0-28 (232 raiders) is clear; the only tries removed are
+        /// of slots 29-40 (Special Forces' 38-40 included): six at Ulor se Bysen's muster (by Jehrog se Bysen), seven at the
+        /// Black Lady's (by Avartack), two at Captain Atwell's (by Aidon). Bosses at their spawn; no rule muster danger lies in
+        /// these dungeons (only Tuscaran's frost circle and Caer Sidi's Crypt Lord have one).
         /// </summary>
         [TestCaseSource(nameof(WonMusters))]
         public void WonRaidPostsUnchanged(ushort region, string target, Vector3 muster)
@@ -200,10 +255,69 @@ namespace DOL.UnitTests
                 for (int attempt = 0; attempt < 22; attempt++)
                     if (R.InBossDangerStrict(RealmRaidFormation.RawPost(muster, slot, attempt), dangers))
                         removed.Add((slot, attempt));
-            Assert.That(removed.Where(r => r.Slot < 32), Is.Empty, "no try of the first 32 slots changes");
-            (int, int)[] expected = target == "Ulor se Bysen" ? [(32, 3), (34, 5), (35, 1), (37, 3), (37, 4), (40, 2)] : [];
-            Assert.That(removed, Is.EquivalentTo(expected));
+            Assert.That(removed.Where(r => r.Slot < 29), Is.Empty, "no try of the first 29 slots (232 raiders) changes");
+            int expected = target switch
+            {
+                "Ulor se Bysen" => 6,  // slots 32-40, 729-807 from Jehrog se Bysen
+                "Black Lady" => 7,     // slots 29-40, by Avartack the Champion
+                "Captain Atwell" => 2, // slots 37-40, by Aidon the Archwizard
+                _ => 0,
+            };
+            Assert.That(removed, Has.Count.EqualTo(expected), string.Join(" ", removed));
             Assert.That(R.InBossDangerStrict(muster, dangers), Is.False, "the muster itself");
+        }
+
+        // ---- one post search; the refusal stays inside; the watchdog's spot ----------------------------------------------------
+
+        [Test]
+        public void APostSearchTellsADangerOnlyFailureInTheSamePass()
+        {
+            var center = new Vector3(15333, 49257, 12484);
+            var agmundr = new Vector3(15037, 50114, 12408);
+            int validCalls = 0;
+            bool Valid(Vector3 _) { validCalls++; return true; }
+            // Every try lies in a danger (a radius that covers them all): no post, but one would have been there.
+            bool found = RealmRaidFormation.Resolve(22, center, 6, [], p => p, Valid, _ => true, out _, out bool dangerOnly);
+            Assert.That(found, Is.False);
+            Assert.That(dangerOnly, Is.True);
+            Assert.That(validCalls, Is.EqualTo(1), "one check told it: no second search");
+            // The real danger: slot 6 skips its tries by Agmundr and takes a clear one, as one pass.
+            validCalls = 0;
+            R.BossDanger[] d = [new("Icelord Agmundr", agmundr, 900)];
+            found = RealmRaidFormation.Resolve(22, center, 6, [], p => p, Valid, p => R.InBossDangerStrict(p, d), out Vector3 post, out dangerOnly);
+            Assert.That(found && !dangerOnly && !R.InBossDangerStrict(post, d), Is.True);
+            Assert.That(validCalls, Is.LessThanOrEqualTo(22));
+            // Nothing valid anywhere: not a danger-only failure (the party waits as before).
+            found = RealmRaidFormation.Resolve(22, center, 6, [], p => p, _ => false, _ => true, out _, out dangerOnly);
+            Assert.That(found || dangerOnly, Is.False);
+            // No dangers: the first valid try, exactly as integration/1.2 chose it.
+            found = RealmRaidFormation.Resolve(22, center, 6, [], p => p, _ => true, null, out post, out _);
+            Assert.That(post, Is.EqualTo(RealmRaidFormation.RawPost(center, 6, 0)));
+        }
+
+        [Test]
+        public void ARefusedRegroupInsideTheDungeonStaysNeverTheCapital()
+        {
+            Assert.That(RealmRaidStuckRecovery.StaysInside(true, false), Is.True, "inside, refused: stays");
+            Assert.That(RealmRaidStuckRecovery.StaysInside(true, true), Is.False, "inside, clear: moved to the regroup point");
+            Assert.That(RealmRaidStuckRecovery.StaysInside(false, false), Is.False, "outside its raid's dungeon: as before");
+        }
+
+        [Test]
+        public void TheWatchdogNeverPutsAStuckRaiderBesideARestingBoss()
+        {
+            // Holding at Agmundr's muster; one raider stands by the muster, one at his front, 200 from his spawn.
+            var muster = new Vector3(15184, 48849, 12516);
+            R.BossDanger[] d = [new("Icelord Agmundr", new(15037, 50114, 12408), 900)];
+            Vector3[] raiders = [new(15037, 49914, 12424), new(15184, 47400, 12516)];
+            Assert.That(RealmRaidStuckRecovery.Choose(new(29505, 27351, 17087), muster, raiders, out _, out int before) && before == 0, Is.True,
+                "unguarded: the raider nearest the point, by him (1,090 off against 1,449)");
+            Assert.That(RealmRaidStuckRecovery.Choose(new(29505, 27351, 17087), muster, raiders, p => R.InBossDangerStrict(p, d),
+                out Vector3 spot, out int index), Is.True);
+            Assert.That(index, Is.EqualTo(1), "the one clear of him");
+            Assert.That(spot, Is.EqualTo(raiders[1]));
+            Assert.That(RealmRaidStuckRecovery.Choose(new(29505, 27351, 17087), muster, [raiders[0]], p => R.InBossDangerStrict(p, d),
+                out spot, out index) && index == -1 && spot == muster, Is.True, "nobody clear: the regroup point itself");
         }
     }
 }

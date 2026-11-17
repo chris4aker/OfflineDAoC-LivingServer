@@ -1616,6 +1616,13 @@ namespace DOL.GS
             return dangers;
         }
 
+        /// <summary>A living NPC goes with the raid's target (left out of <see cref="RestingDangersOf"/>; pure): it is the target,
+        /// the target covers it or it is the target's required add, or it is linked to the same boss as the target
+        /// (<paramref name="owner"/> == <paramref name="targetOwner"/>, both EpicEncounterTactics.ClearFirstOwner: a fellow student of
+        /// Drihten Elreden while the raid clears one; Drihten himself is no fellow and stays a danger).</summary>
+        public static bool GoesWithTarget(bool isTarget, bool coveredByTarget, bool requiredAddOfTarget, object owner, object targetOwner) =>
+            isTarget || coveredByTarget || requiredAddOfTarget || owner != null && targetOwner != null && ReferenceEquals(owner, targetOwner);
+
         /// <summary><see cref="RestingDangersOf"/> for this turn's NPCs, and the rules' muster dangers; worked out at most once a
         /// route turn, and only when asked.</summary>
         private IReadOnlyList<BossDanger> RestingDangers()
@@ -1634,9 +1641,8 @@ namespace DOL.GS
                 GameNPC owner = boss ? null : EpicEncounterTactics.ClearFirstOwner(npc, live);
                 bool pack = owner != null;
                 if (!boss && !pack) continue;
-                bool ofTarget = _target != null && (npc == _target || EpicEncounterTactics.Covers(npc, _target, live) ||
-                                                    EpicEncounterTactics.RequiredAddOwner(npc, live) == _target ||
-                                                    pack && targetOwner != null && owner == targetOwner);
+                bool ofTarget = _target != null && GoesWithTarget(npc == _target, EpicEncounterTactics.Covers(npc, _target, live),
+                    EpicEncounterTactics.RequiredAddOwner(npc, live) == _target, owner, targetOwner);
                 candidates.Add(new(npc.Name, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), new(npc.X, npc.Y, npc.Z),
                     brain.AggroRange, false, IsEncounterHazard(npc), boss, pack, ofTarget));
             }
@@ -1665,6 +1671,9 @@ namespace DOL.GS
         }
 
         private long _nextRegroupRefusedLog;
+
+        /// <summary>A point inside one of the stranded-regroup dangers (<see cref="RestingDangers"/>, strict edge).</summary>
+        public bool InRegroupDanger(Vector3 point) => InBossDangerStrict(point, RestingDangers());
 
         /// <summary>The point a stranded raider is moved to now (<see cref="StrandedRegroupPoint"/>); false: none is clear.</summary>
         public bool TryStrandedRegroupPoint(out Vector3 point)

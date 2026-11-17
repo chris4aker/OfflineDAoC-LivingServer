@@ -66,7 +66,7 @@ namespace DOL.GS
             {
                 walk = raid.Walk = new ReturnWalk { Number = ++raid.WalksFormed, Formed = now, LastMove = now, StepEntered = now };
                 foreach (GameBot b in bots) walk.Members.Add(b.DatabaseID);
-                BuildSteps(raid, walk);
+                BuildSteps(raid, walk, now);
                 walk.MostMembers = walk.Members.Count;
                 Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=formed wave={walk.Number} members={walk.Members.Count} " +
                          $"steps={walk.Steps.Length} walk={(int)walk.WalkLength} goal=\"{raid.DungeonRoute.TargetName}\"");
@@ -95,7 +95,7 @@ namespace DOL.GS
         /// <summary>Under the raid lock: the wave's steps, from where raiders come in to where the raid's parties stand
         /// (RealmRaidReturnWave.WalkSteps). Built again when that moved; the wave goes on from the step nearest the one it
         /// was walking to, never back to the way in.</summary>
-        private static void BuildSteps(Raid raid, ReturnWalk walk)
+        private static void BuildSteps(Raid raid, ReturnWalk walk, long now)
         {
             RealmRaidDungeonRoute route = raid.DungeonRoute;
             Vector3 goal = route.Destination;
@@ -106,6 +106,10 @@ namespace DOL.GS
             walk.Steps = steps;
             walk.Goal = goal;
             walk.Step = walk.BestStep = step;
+            // A new step: what holds it is judged from now (RealmRaidReturnWave.StillBlocks).
+            walk.StepEntered = now;
+            walk.StepKills = 0;
+            walk.CapLogged = false;
             walk.StepSince = 0;
             walk.Closest = float.MaxValue;
             float length = 0;
@@ -218,7 +222,7 @@ namespace DOL.GS
                 return;
             }
             if (walk.Steps.Length == 0 || Vector3.DistanceSquared(route.Destination, walk.Goal) > WalkGoalMoved * WalkGoalMoved)
-                BuildSteps(raid, walk);
+                BuildSteps(raid, walk, now);
             ushort region = route.Region;
             // A raider of the wave already standing with the raid (moved there by its stranded regroup) is there: it leaves the walk.
             if (walk.Step < walk.Steps.Length - 1)
@@ -332,7 +336,7 @@ namespace DOL.GS
                 {
                     walk.CapLogged = true;
                     Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=passable wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
-                             $"kills_at_step={walk.StepKills} reason=\"{RealmRaidReturnWave.StepKillCap} kills at this step; it goes on (what attacks it is fought)\"");
+                             $"kills_at_step={walk.StepKills} reason=\"{RealmRaidReturnWave.StepKillCap} kills at this step; monsters off the walk no longer hold it\"");
                 }
                 bool last = walk.Step >= walk.Steps.Length - 1;
                 switch (RealmRaidReturnWave.Walk(members.Length, atStep, stepWaited, ahead != null, last, bodyCanCome, bodyComing))
