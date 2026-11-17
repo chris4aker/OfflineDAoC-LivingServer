@@ -3,6 +3,7 @@
 // the fight boards, proves each walk on the navigation mesh and walks it. Tests only until seen in the owner's PC log.
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using DOL.GS;
@@ -13,7 +14,9 @@ namespace DOL.AI.Brain
     /// Positioning in an open-field fight (rvr_bot_positioning): casters and healers stand behind the tanks relative to
     /// the enemy, keep more than 350 units apart (one mez cannot catch two healers) and scatter wider on "incoming"; a
     /// shield tank guarding a named member stays beside it and leaves enemies far from it to the others; a healer with an
-    /// enemy melee fighter on it kites ("run a bit, throw heal"), then heals. Each group makes its tier's mistakes
+    /// enemy melee fighter on it kites ("run a bit, throw heal"), then heals. In the Kite stance (work package 4) the
+    /// group fights while backing away: the backline keeps its stand-off distance from the nearest enemy melee fighter
+    /// in short proven legs and the melee screen it (RvrKiteTurn). Each group makes its tier's mistakes
     /// (RvrPositioning, RvrPeelPlan). Every walk is proven first on dry ground on the bot's own floor (the combat
     /// steps' ReachableLeg, piece by piece): no ledge, no water, no other floor. The PvE combat movement
     /// (BotBrain.CombatMovement) stays off for player and bot targets; this is the only movement added for them.
@@ -25,8 +28,10 @@ namespace DOL.AI.Brain
         /// <summary>RVR_KITE at most this often per healer; RVR_BACKLINE at most this often per group.</summary>
         public const long RvrKiteLogGapMilliseconds = 10_000;
         public const long RvrBacklineLogGapMilliseconds = 10_000;
+        /// <summary>The kiting group's RVR_KITE line (kind=group) at most this often per group.</summary>
+        public const long RvrKiteGroupLogGapMilliseconds = 10_000;
 
-        private enum RvrPlaceWalk : byte { None, Place, Kite }
+        private enum RvrPlaceWalk : byte { None, Place, Kite, KiteStep }
 
         private RvrPlaceWalk _rvrPlaceWalk;
         private Vector3 _rvrPlaceTo;
@@ -39,6 +44,8 @@ namespace DOL.AI.Brain
         private long _rvrKiteContacts;
         private GameLiving _rvrKiteFrom;
         private long _rvrKiteLogAt = long.MinValue / 2;
+        private long _rvrKiteSteps;
+        private long _rvrKiteCastMilliseconds;
 
         private sealed class RvrBacklineLog
         {
@@ -47,6 +54,16 @@ namespace DOL.AI.Brain
         }
 
         private static readonly ConditionalWeakTable<object, RvrBacklineLog> RvrBacklineLogs = new();
+
+        private sealed class RvrKiteGroupLog
+        {
+            public long LastAt = long.MinValue / 2;
+            public int Stepped;
+            public int Held;
+            public int Screened;
+        }
+
+        private static readonly ConditionalWeakTable<object, RvrKiteGroupLog> RvrKiteGroupLogs = new();
 
         // ---- shared reads -------------------------------------------------------------------------------------------------
 
@@ -117,9 +134,10 @@ namespace DOL.AI.Brain
 
             RvrFightBoard board = RvrPlaceBoard(target);
             RvrFightPlan plan = board?.Plan;
-            // Retreat, regroup and a kiting group belong to the stance (work package 4).
-            if (plan == null || plan.Stance is RvrStance.Retreat or RvrStance.Regroup or RvrStance.Kite)
+            // Retreat and regroup belong to the stance (work package 4); a kiting group backs away (RvrKiteTurn).
+            if (plan == null || !RvrPositioning.PlacesIn(plan.Stance))
                 return false;
+            bool kiting = plan.Stance == RvrStance.Kite;
             RvrCombatant me = RvrPeelPlan.Find(board.Members, Body);
             if (me == null)
                 return false;
@@ -165,6 +183,8 @@ namespace DOL.AI.Brain
 
             if (mine.Stand == RvrStand.Escort)
                 return !support && RvrEscort(bot, target, plan, enemy, now);
+            if (kiting && RvrKiteTurn(bot, target, support, board, plan, slots, mine, positions, centre, enemy, now) is bool kited)
+                return kited;
             if (mine.Stand != RvrStand.Back)
                 return false;
             // Heals first: a healer walks for its place only while nobody needs a heal.
@@ -275,21 +295,153 @@ namespace DOL.AI.Brain
             return true;
         }
 
+        // ---- the kiting group (stance Kite) -----------------------------------------------------------------------------
+
+        /// <summary>
+        /// The Kite stance (work package 4 publishes it; this moves the group). A backline member keeps its stand-off
+        /// distance from the nearest enemy melee fighter: it steps back in a short leg along the group's back direction
+        /// (away from the enemy centroid, bent toward its back-arc slot), each leg proven whole on dry ground on its own
+        /// floor and kept away from other enemy groups and enemy keeps' guards; then it casts or shoots for 2-3.5 s. With
+        /// no safe leg it holds and fights. A melee member screens the backline and fights only what reaches it. Errors
+        /// by tier (RvrPositioning.KiteErrors, KiteChases). True: the turn was used; false: fight as usual; null: no enemy
+        /// melee fighter chases, so the layout of the other stances applies.
+        /// </summary>
+        private bool? RvrKiteTurn(GameBot bot, GameLiving target, bool support, RvrFightBoard board, RvrFightPlan plan,
+            ImmutableArray<RvrSlot> slots, RvrSlot mine, List<(Vector2, RvrStand)> positions, Vector2 centre, Vector2 enemy, long now)
+        {
+            RvrSkillTier tier = plan.SkillTier;
+            Vector2 self = Flat(bot);
+            Vector2? line = RvrPositioning.Line(positions);
+            double front = RvrPositioning.Bearing(line ?? centre, enemy);
+
+            if (mine.Stand is RvrStand.Front or RvrStand.Side)
+            {
+                if (support)
+                    return false;
+                var backline = new List<Vector2>();
+                foreach (RvrSlot slot in slots)
+                    if (slot.Stand == RvrStand.Back && RvrPeelPlan.Find(board.Members, slot.Member) is { } member)
+                        backline.Add(RvrPeelPlan.At(member));
+                bool hit = RecentDirectAttacker() is GameLiving attacker && attacker.IsAlive &&
+                           bot.IsWithinRadius(attacker, bot.MeleeAttackRange + 50);
+                Vector2? at = target != null && target.IsAlive ? Flat(target) : null;
+                (RvrKitePeel action, Vector2 spot) = RvrPositioning.KitePeel(self, at, backline, enemy, hit,
+                    RvrPositioning.KiteChases(tier, bot.DatabaseID, now));
+                if (action == RvrKitePeel.Fight)
+                    return false;
+                if (action == RvrKitePeel.Screen)
+                {
+                    if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
+                        return false;
+                    LogRvrKiteGroup("screen", 0, 0, 0, RvrKiteHeld.None, RvrKiteError.None, tier, now);
+                    return true;
+                }
+                if (Body.attackComponent?.AttackState == true)
+                    Body.StopAttack();
+                Body.StopFollowing();
+                if (target != null)
+                    Body.TurnTo(target);
+                _rvrPlaceHold = true;
+                return true;
+            }
+            if (mine.Stand != RvrStand.Back)
+                return false;
+
+            if (RvrPositioning.NearestMelee(self, board.Enemies, out float meleeDistance) is not { } melee)
+                return null;
+            if (IsHealer && meleeDistance > RvrPositioning.KiteHealFirstDistance)
+                foreach (RvrCombatant member in board.Members)
+                    if (!member.IsPet && member.HealthPercent < RvrPositioning.HealFirstPercent)
+                    {
+                        LogRvrKiteGroup("back", meleeDistance, 0, 0, RvrKiteHeld.HealFirst, RvrKiteError.None, tier, now);
+                        return false;
+                    }
+            IReadOnlyList<AutonomousArmyDetour.Hazard> keeps = meleeDistance < RvrPositioning.KiteStandOff + 300
+                ? RvrKiteKeepHazards(bot) : null;
+            long stepNumber = _rvrKiteSteps + 1;
+            Vector3? proven = null;
+            RvrKiteStep step = RvrPositioning.KiteStep(self, mine.Spot, front, board.Enemies, enemy, keeps, tier, bot.DatabaseID,
+                stepNumber, (_, to) => (proven = ProveRvrWalk(bot, to, whole: true, out float _)) != null);
+            if (step.Spot == null || proven == null)
+            {
+                _rvrPlaceDueAt = 0;
+                if (step.Held != RvrKiteHeld.NoMelee)
+                    LogRvrKiteGroup("back", step.MeleeDistance, 0, step.StandOff, step.Held, step.Error, tier, now);
+                return step.Held == RvrKiteHeld.NoMelee ? null : false;
+            }
+            // A person notices the melee closing a moment later (the tier's delay).
+            if (_rvrPlaceDueAt == 0)
+                _rvrPlaceDueAt = now + RvrPositioning.ReactionMilliseconds(tier, bot.DatabaseID, now);
+            if (now < _rvrPlaceDueAt)
+                return false;
+            if (!BeginRvrPlaceWalk(bot, proven.Value, RvrPlaceWalk.KiteStep, now))
+                return false;
+            _rvrPlaceDueAt = 0;
+            _rvrKiteSteps = stepNumber;
+            _rvrKiteFrom = melee.Living;
+            _rvrKiteCastMilliseconds = RvrPositioning.KiteFightWindow(RvrPeelPlan.Roll(bot.DatabaseID, stepNumber, 0x4B495445));
+            LogRvrKiteGroup("back", step.MeleeDistance, step.Length, step.StandOff, RvrKiteHeld.None, step.Error, tier, now);
+            return true;
+        }
+
+        /// <summary>The enemy keeps and towers of the bot's region with their guards' range (RvrPositioning.KiteKeepGuardClearance).</summary>
+        private static AutonomousArmyDetour.Hazard[] RvrKiteKeepHazards(GameBot bot)
+        {
+            if (GameServer.KeepManager == null || bot.CurrentRegion == null)
+                return [];
+            var hazards = new List<AutonomousArmyDetour.Hazard>();
+            foreach (DOL.GS.Keeps.AbstractGameKeep keep in GameServer.KeepManager.GetKeepsOfRegion(bot.CurrentRegionID))
+                if (keep != null && keep.Realm != bot.Realm && !keep.IsPortalKeep)
+                    hazards.Add(new(new(keep.X, keep.Y), RvrPositioning.KiteKeepGuardClearance));
+            return hazards.ToArray();
+        }
+
+        /// <summary>RVR_KITE group= region= kind=group stepped= held= screened= member= role= enemyMelee= step= standOff=
+        /// error= held= skill=: at most every 10 s per group, with the group's steps, holds and screen walks since the last
+        /// line and the latest member's numbers.</summary>
+        private void LogRvrKiteGroup(string role, float meleeDistance, float stepLength, float standOff, RvrKiteHeld held,
+            RvrKiteError error, RvrSkillTier tier, long now)
+        {
+            if (!log.IsInfoEnabled)
+                return;
+            RvrKiteGroupLog entry = RvrKiteGroupLogs.GetValue(RvrFightBoards.KeyOf(Body), static _ => new RvrKiteGroupLog());
+            int stepped, holds, screened;
+            lock (entry)
+            {
+                if (role == "screen")
+                    entry.Screened++;
+                else if (held == RvrKiteHeld.None)
+                    entry.Stepped++;
+                else if (held != RvrKiteHeld.Clear)
+                    entry.Held++;
+                if (!RvrPositioning.ShouldLog(now, entry.LastAt, RvrKiteGroupLogGapMilliseconds))
+                    return;
+                (stepped, holds, screened) = (entry.Stepped, entry.Held, entry.Screened);
+                (entry.Stepped, entry.Held, entry.Screened) = (0, 0, 0);
+                entry.LastAt = now;
+            }
+            log.Info($"RVR_KITE group={RvrPlaceGroupId()} region={Body.CurrentRegionID} kind=group stepped={stepped} held={holds} " +
+                     $"screened={screened} member=\"{Body.Name}\" class={(eCharacterClass)(BotBody?.CharacterClass?.ID ?? 0)} role={role} " +
+                     $"enemyMelee={(int)meleeDistance} step={(int)stepLength} standOff={(int)standOff} error={error} " +
+                     $"heldReason={held} skill={tier}");
+        }
+
         // ---- walking --------------------------------------------------------------------------------------------------------
 
         /// <summary>
-        /// Walks toward <paramref name="spot"/> (at most RvrPositioning.MaxWalk) at full speed, once the walk is proven on
-        /// the mesh piece by piece with the combat steps' ReachableLeg (same zone, dry ground, the bot's own floor: never
-        /// off a ledge or into water). A walk blocked part way ends where the proof ended when that is at least half the
-        /// way; otherwise there is no walk. True when the bot set off.
+        /// Proves a walk from the bot toward <paramref name="spot"/> (at most RvrPositioning.MaxWalk) on the mesh piece by
+        /// piece with the combat steps' ReachableLeg (same zone, dry ground, the bot's own floor: never off a ledge or into
+        /// water). With <paramref name="whole"/> every piece must hold; otherwise a walk blocked part way ends where the
+        /// proof ended when that is at least half the way. The walk's end, or null (no walk).
         /// </summary>
-        private bool StartRvrPlaceWalk(GameBot bot, Vector2 spot, RvrPlaceWalk kind, long now)
+        private static Vector3? ProveRvrWalk(GameBot bot, Vector2 spot, bool whole, out float covered)
         {
+            covered = 0;
             Vector3 from = new(bot.X, bot.Y, bot.Z);
             Vector2 start = new(from.X, from.Y);
             float total = Vector2.Distance(start, spot);
             if (total < RvrPositioning.SlotTolerance)
-                return false;
+                return null;
             if (total > RvrPositioning.MaxWalk)
             {
                 spot = start + (spot - start) / total * RvrPositioning.MaxWalk;
@@ -305,12 +457,26 @@ namespace DOL.AI.Brain
                 at = leg;
                 proven++;
             }
-            float covered = Vector2.Distance(start, new(at.X, at.Y));
-            if (proven == 0 || proven < pieces.Length && (covered < total / 2 || covered < 80))
+            covered = Vector2.Distance(start, new(at.X, at.Y));
+            if (proven == 0 || proven < pieces.Length && (whole || covered < total / 2 || covered < 80))
             {
                 BotCombatMovement.Count(BotCombatMovement.Counter.Blocked);
-                return false;
+                return null;
             }
+            return at;
+        }
+
+        /// <summary>
+        /// Walks toward <paramref name="spot"/> at full speed once the walk is proven (ProveRvrWalk, part way allowed).
+        /// True when the bot set off.
+        /// </summary>
+        private bool StartRvrPlaceWalk(GameBot bot, Vector2 spot, RvrPlaceWalk kind, long now) =>
+            ProveRvrWalk(bot, spot, whole: false, out _) is Vector3 at && BeginRvrPlaceWalk(bot, at, kind, now);
+
+        /// <summary>Sets off on a proven walk to <paramref name="at"/>. True when the bot set off.</summary>
+        private bool BeginRvrPlaceWalk(GameBot bot, Vector3 at, RvrPlaceWalk kind, long now)
+        {
+            float covered = Vector2.Distance(Flat(bot), new(at.X, at.Y));
             if (Body.attackComponent?.AttackState == true)
                 Body.StopAttack();
             Body.StopFollowing();
@@ -336,8 +502,11 @@ namespace DOL.AI.Brain
                 bot.StopMoving();
             RvrPlaceWalk walk = _rvrPlaceWalk;
             _rvrPlaceWalk = RvrPlaceWalk.None;
-            _rvrPlaceNextCheck = Math.Max(_rvrPlaceNextCheck, now + RvrPositioning.CheckMilliseconds);
-            GameLiving face = walk == RvrPlaceWalk.Kite ? _rvrKiteFrom : Body.TargetObject as GameLiving;
+            // After a kite step the member casts or shoots for its window before it steps again.
+            _rvrPlaceNextCheck = Math.Max(_rvrPlaceNextCheck, now + (walk == RvrPlaceWalk.KiteStep
+                ? Math.Max(RvrPositioning.CheckMilliseconds, _rvrKiteCastMilliseconds) : RvrPositioning.CheckMilliseconds));
+            GameLiving face = walk is RvrPlaceWalk.Kite or RvrPlaceWalk.KiteStep && _rvrKiteFrom?.IsAlive == true
+                ? _rvrKiteFrom : Body.TargetObject as GameLiving;
             if (face?.IsAlive == true && face.CurrentRegion == bot.CurrentRegion)
                 bot.TurnTo(face);
             _rvrKiteFrom = null;

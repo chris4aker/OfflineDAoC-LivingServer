@@ -52,6 +52,54 @@ public enum RvrMoveReason : byte
     Charge,
 }
 
+/// <summary>Why a backline member of a kiting group does not step back now (logged with RVR_KITE).</summary>
+public enum RvrKiteHeld : byte
+{
+    /// <summary>It steps back.</summary>
+    None,
+    /// <summary>No enemy melee fighter is free to chase: the group stands as in Engage.</summary>
+    NoMelee,
+    /// <summary>The nearest enemy melee fighter is at the stand-off distance or farther: it stands and casts or shoots.</summary>
+    Clear,
+    /// <summary>Every leg back would walk toward another enemy group.</summary>
+    EnemyGroup,
+    /// <summary>Every leg back would walk into the guards' range of an enemy keep or tower.</summary>
+    KeepGuards,
+    /// <summary>Every leg back is blocked on the mesh (a ledge, water, another floor, or no mesh).</summary>
+    Blocked,
+    /// <summary>A healer heals first: a group mate is low and the melee is not yet close.</summary>
+    HealFirst,
+}
+
+/// <summary>A human error in one kite step (work package 3, by skill tier).</summary>
+[Flags]
+public enum RvrKiteError : byte
+{
+    None = 0,
+    /// <summary>It backs off late: only once the melee fighter is nearly on it.</summary>
+    Late = 1,
+    /// <summary>It runs off at an angle, away from the others.</summary>
+    WrongWay = 2,
+    /// <summary>It runs too far.</summary>
+    Overrun = 4,
+}
+
+/// <summary>What a melee member of a kiting group does (work package 3).</summary>
+public enum RvrKitePeel : byte
+{
+    /// <summary>It fights its target (the target reached the backline, it is hit, or there is no backline).</summary>
+    Fight,
+    /// <summary>It walks back to its screen spot in front of the backline instead of chasing.</summary>
+    Screen,
+    /// <summary>It stands at its screen spot, facing the fight, and waits for the chasers.</summary>
+    Stand,
+}
+
+/// <summary>One backline member's kite decision: where it steps (null: it does not), why not, its error, the step
+/// length, its stand-off distance and the distance to the nearest enemy melee fighter.</summary>
+public readonly record struct RvrKiteStep(Vector2? Spot, RvrKiteHeld Held, RvrKiteError Error, float Length, float StandOff,
+    float MeleeDistance);
+
 /// <summary>
 /// Open-field RvR, work package 3 ("Hands", docs/RVR-FIELD-1.2.md): how a bot-only group stands like a 2003 group. Casters
 /// and healers stand behind the tanks relative to the enemy (the role formation's ArcAngles/RoleSlots with "front" set
@@ -565,6 +613,295 @@ public static class RvrPositioning
                 direction = Vector2.Normalize(blended);
         }
         return self + direction * distance;
+    }
+
+    // ---- the kiting group (stance Kite) -------------------------------------------------------------------------------
+    //
+    // The Kite stance (work package 4: a bigger or melee-heavy enemy) "fights while backing away": the backline keeps a
+    // stand-off distance from the nearest enemy melee fighter by stepping back in short legs along the group's back
+    // direction (away from the enemy centroid; the back-arc slots of the layout keep its spread), then stops and casts or
+    // shoots; the melee screen the backline and fight only what reaches it (2003: healers "run a bit, throw heal",
+    // ranged groups kite melee trains). Every number below is a design value.
+
+    /// <summary>The stand-off distance a backline member keeps from the nearest enemy melee fighter (inside a caster's
+    /// 1,500 range), give or take the tier's spread (<see cref="KiteStandOffSpread"/>).</summary>
+    public const float KiteStandOff = 1_200f;
+    /// <summary>A kite leg is at least this long and at most <see cref="KiteStepLength"/>; an overrun is longer.</summary>
+    public const float KiteMinStep = 150f;
+    public const float KiteStepLength = 300f;
+    /// <summary>An overrunning member runs this many times its leg.</summary>
+    public const float KiteOverrunFactor = 2.5f;
+    /// <summary>A member that backs off late steps only once the melee fighter is this close.</summary>
+    public const float KiteLateDistance = 450f;
+    /// <summary>A member that runs the wrong way runs this far off the back direction (degrees).</summary>
+    public const double KiteWrongWayMinDegrees = 50;
+    public const double KiteWrongWayMaxDegrees = 90;
+    /// <summary>The legs tried, in order, when the straight one is not safe: this many degrees to either side.</summary>
+    public static readonly double[] KiteDetourDegrees = [35, 70];
+    /// <summary>An enemy head this far from the enemy centroid belongs to another group ...</summary>
+    public const float KiteOtherGroupGap = 1_500f;
+    /// <summary>... and no leg ends closer to it than this (while getting closer).</summary>
+    public const float KiteOtherGroupClearance = 2_000f;
+    /// <summary>No leg ends this close to an enemy keep or tower (while getting closer): its guards' range.</summary>
+    public const float KiteKeepGuardClearance = 2_500f;
+    /// <summary>After a step the member casts or shoots this long (by roll) before it steps again.</summary>
+    public const long KiteFightWindowMinMilliseconds = 2_000;
+    public const long KiteFightWindowMaxMilliseconds = 3_500;
+    /// <summary>A healer heals before it steps while a group mate is under <see cref="HealFirstPercent"/> and the melee is
+    /// farther than this.</summary>
+    public const float KiteHealFirstDistance = 500f;
+    /// <summary>A melee member fights an enemy within this of a backline member (it reached the backline) ...</summary>
+    public const float KitePeelLeash = 600f;
+    /// <summary>... and otherwise stands this far in front of the backline's centre, toward the enemy ...</summary>
+    public const float KiteScreenDistance = 250f;
+    /// <summary>... walking back to it when farther than this.</summary>
+    public const float KiteScreenTolerance = 150f;
+
+    private const ulong StandOffSalt = 0x52564B54_53544F46;  // "RVKTSTOF"
+    private const ulong LateSalt = 0x52564B54_4C415445;      // "RVKTLATE"
+    private const ulong WrongWaySalt = 0x52564B54_57524F4E;  // "RVKTWRON"
+    private const ulong OverrunSalt = 0x52564B54_4F564552;   // "RVKTOVER"
+    private const ulong ChaseSalt = 0x52564B54_43484153;     // "RVKTCHAS"
+
+    /// <summary>What the positioning does in a stance: the layout (Engage, Observe, Hold), the kite (Kite), or nothing
+    /// (Retreat and Regroup belong to work package 4's stance code). Pure.</summary>
+    public static bool PlacesIn(RvrStance stance) => stance is not (RvrStance.Retreat or RvrStance.Regroup);
+
+    /// <summary>The tier's spread of the stand-off distance: Casual +-200, Average +-100, Veteran +-50 units.</summary>
+    public static float KiteStandOffSpread(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => 200f,
+        RvrSkillTier.Veteran => 50f,
+        _ => 100f,
+    };
+
+    /// <summary>This member's stand-off distance (fixed per member): <see cref="KiteStandOff"/> +- the tier's spread. Pure.</summary>
+    public static float KiteStandOffFor(RvrSkillTier tier, long memberId) =>
+        KiteStandOff + KiteStandOffSpread(tier) * (float)(RvrPeelPlan.Roll(memberId, 0, StandOffSalt) * 2 - 1);
+
+    /// <summary>The share of kite steps begun late: Casual 35%, Average 15%, Veteran 5%. Design values.</summary>
+    public static double KiteLateShare(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => 0.35,
+        RvrSkillTier.Veteran => 0.05,
+        _ => 0.15,
+    };
+
+    /// <summary>The share of kite steps run the wrong way (50-90 degrees off): Casual 20%, Average 8%, Veteran 2%.</summary>
+    public static double KiteWrongWayShare(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => 0.20,
+        RvrSkillTier.Veteran => 0.02,
+        _ => 0.08,
+    };
+
+    /// <summary>The share of kite steps run too far (2.5 times the leg): Casual 25%, Average 10%, Veteran 3%.</summary>
+    public static double KiteOverrunShare(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => 0.25,
+        RvrSkillTier.Veteran => 0.03,
+        _ => 0.10,
+    };
+
+    /// <summary>The share of 30 s windows a melee member of a kiting group charges anyway: Casual 25%, Average 10%,
+    /// Veteran 3%.</summary>
+    public static double KiteChaseShare(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => 0.25,
+        RvrSkillTier.Veteran => 0.03,
+        _ => 0.10,
+    };
+
+    /// <summary>The errors of this member's kite step number <paramref name="step"/>. Pure.</summary>
+    public static RvrKiteError KiteErrors(RvrSkillTier tier, long memberId, long step)
+    {
+        RvrKiteError errors = RvrKiteError.None;
+        if (RvrPeelPlan.Roll(memberId, step, LateSalt) < KiteLateShare(tier))
+            errors |= RvrKiteError.Late;
+        if (RvrPeelPlan.Roll(memberId, step, WrongWaySalt) < KiteWrongWayShare(tier))
+            errors |= RvrKiteError.WrongWay;
+        if (RvrPeelPlan.Roll(memberId, step, OverrunSalt) < KiteOverrunShare(tier))
+            errors |= RvrKiteError.Overrun;
+        return errors;
+    }
+
+    /// <summary>Whether a melee member of a kiting group charges anyway in the window holding <paramref name="now"/>. Pure.</summary>
+    public static bool KiteChases(RvrSkillTier tier, long memberId, long now) =>
+        RvrPeelPlan.Roll(memberId, Math.DivRem(now, ErrorWindowMilliseconds).Quotient, ChaseSalt) < KiteChaseShare(tier);
+
+    /// <summary>How long a member casts or shoots after a kite step. Pure.</summary>
+    public static long KiteFightWindow(double roll) =>
+        KiteFightWindowMinMilliseconds + (long)Math.Round((KiteFightWindowMaxMilliseconds - KiteFightWindowMinMilliseconds) * Math.Clamp(roll, 0, 1));
+
+    /// <summary>An enemy that chases on foot to hit in melee: a tank, a melee fighter, a stealther or a melee hybrid; not a
+    /// pet, and not mezzed, stunned or rooted. Pure.</summary>
+    public static bool ChasingMelee(RvrCombatant enemy) =>
+        enemy != null && !enemy.IsPet && !enemy.IsControlled &&
+        (enemy.Role == RvrRole.Stealther || StandFor(enemy.Role, enemy.Class) is RvrStand.Front or RvrStand.Side);
+
+    /// <summary>The nearest chasing melee enemy (<see cref="ChasingMelee"/>) to <paramref name="self"/>, or null. Pure.</summary>
+    public static RvrCombatant NearestMelee(Vector2 self, ImmutableArray<RvrCombatant> enemies, out float distance)
+    {
+        distance = float.MaxValue;
+        RvrCombatant nearest = null;
+        if (enemies.IsDefaultOrEmpty)
+            return null;
+        foreach (RvrCombatant enemy in enemies)
+        {
+            if (!ChasingMelee(enemy))
+                continue;
+            float d = Vector2.Distance(self, RvrPeelPlan.At(enemy));
+            if (d < distance)
+            {
+                distance = d;
+                nearest = enemy;
+            }
+        }
+        return nearest;
+    }
+
+    /// <summary>
+    /// Whether a leg from <paramref name="from"/> to <paramref name="to"/> walks into danger: toward another enemy group
+    /// (an enemy head more than <see cref="KiteOtherGroupGap"/> from the enemy centroid, ending within
+    /// <see cref="KiteOtherGroupClearance"/> of it and closer than the start), or toward an enemy keep or tower (ending
+    /// within <paramref name="keeps"/>' radius and closer than the start). Pure.
+    /// </summary>
+    public static RvrKiteHeld KiteHazard(Vector2 from, Vector2 to, ImmutableArray<RvrCombatant> enemies, Vector2 enemyCentroid,
+        IReadOnlyList<AutonomousArmyDetour.Hazard> keeps)
+    {
+        if (!enemies.IsDefaultOrEmpty)
+            foreach (RvrCombatant enemy in enemies)
+            {
+                if (enemy == null || enemy.IsPet)
+                    continue;
+                Vector2 at = RvrPeelPlan.At(enemy);
+                if (Vector2.Distance(at, enemyCentroid) <= KiteOtherGroupGap)
+                    continue;
+                float end = Vector2.Distance(to, at);
+                if (end < KiteOtherGroupClearance && end < Vector2.Distance(from, at))
+                    return RvrKiteHeld.EnemyGroup;
+            }
+        if (keeps != null)
+            foreach (AutonomousArmyDetour.Hazard keep in keeps)
+            {
+                float end = Vector2.Distance(to, keep.Center);
+                if (end < keep.Radius && end < Vector2.Distance(from, keep.Center))
+                    return RvrKiteHeld.KeepGuards;
+            }
+        return RvrKiteHeld.None;
+    }
+
+    /// <summary>
+    /// The direction of a kite leg: <paramref name="back"/> (a unit vector away from the enemy), bent toward the member's
+    /// back-arc slot sideways (at most half the leg) so the backline keeps its spread, then turned
+    /// <paramref name="turnDegrees"/>. Pure.
+    /// </summary>
+    public static Vector2 KiteDirection(Vector2 self, Vector2 back, Vector2? slot, float length, double turnDegrees)
+    {
+        Vector2 direction = back;
+        if (slot is Vector2 place)
+        {
+            Vector2 side = new(-back.Y, back.X);
+            float lateral = Math.Clamp(Vector2.Dot(place - self, side), -length / 2, length / 2);
+            Vector2 bent = back * length + side * lateral;
+            if (bent.LengthSquared() > 1f)
+                direction = Vector2.Normalize(bent);
+        }
+        if (turnDegrees != 0)
+        {
+            double angle = Math.Atan2(direction.Y, direction.X) + turnDegrees * Math.PI / 180;
+            direction = Direction(angle);
+        }
+        return direction;
+    }
+
+    /// <summary>
+    /// One backline member's kite step (stance Kite). It steps only while the nearest chasing melee enemy is closer than
+    /// its stand-off distance (<see cref="KiteStandOffFor"/>; <see cref="KiteLateDistance"/> when it backs off late), by
+    /// the shortfall (between <see cref="KiteMinStep"/> and <see cref="KiteStepLength"/>, more when it overruns), along
+    /// the group's back direction (the opposite of <paramref name="front"/>, the bearing of the enemy centroid; turned
+    /// 50-90 degrees when it runs the wrong way), bent toward its back-arc slot. The straight leg is tried first, then
+    /// 35 and 70 degrees to either side; a leg must take it farther from the melee, walk into no hazard
+    /// (<see cref="KiteHazard"/>) and be clear on the mesh (<paramref name="legClear"/>: dry ground on its own floor).
+    /// With none, it holds and fights, with the reason. <paramref name="step"/> numbers its steps (for the error rolls).
+    /// Pure apart from <paramref name="legClear"/>.
+    /// </summary>
+    public static RvrKiteStep KiteStep(Vector2 self, Vector2? slot, double front, ImmutableArray<RvrCombatant> enemies,
+        Vector2 enemyCentroid, IReadOnlyList<AutonomousArmyDetour.Hazard> keeps, RvrSkillTier tier, long memberId, long step,
+        Func<Vector2, Vector2, bool> legClear)
+    {
+        float standOff = KiteStandOffFor(tier, memberId);
+        RvrCombatant melee = NearestMelee(self, enemies, out float distance);
+        if (melee == null)
+            return new(null, RvrKiteHeld.NoMelee, RvrKiteError.None, 0, standOff, 0);
+        RvrKiteError errors = KiteErrors(tier, memberId, step);
+        float trigger = (errors & RvrKiteError.Late) != 0 ? Math.Min(KiteLateDistance, standOff) : standOff;
+        if (distance >= trigger)
+            return new(null, RvrKiteHeld.Clear, errors & RvrKiteError.Late, 0, standOff, distance);
+        float length = Math.Clamp(standOff - distance, KiteMinStep, KiteStepLength);
+        if ((errors & RvrKiteError.Overrun) != 0)
+            length *= KiteOverrunFactor;
+        double turn = 0;
+        if ((errors & RvrKiteError.WrongWay) != 0)
+        {
+            double roll = RvrPeelPlan.Roll(memberId, step, WrongWaySalt ^ 0xFF);
+            turn = (KiteWrongWayMinDegrees + (KiteWrongWayMaxDegrees - KiteWrongWayMinDegrees) * roll) * (memberId % 2 == 0 ? 1 : -1);
+        }
+        Vector2 back = -Direction(front);
+        Vector2 meleeAt = RvrPeelPlan.At(melee);
+        Vector2 direction = KiteDirection(self, back, slot, length, turn);
+        double sign = memberId % 2 == 0 ? 1 : -1;
+        RvrKiteHeld first = RvrKiteHeld.None;
+        var tries = new List<double>(1 + KiteDetourDegrees.Length * 2) { 0 };
+        foreach (double degrees in KiteDetourDegrees)
+        {
+            tries.Add(degrees * sign);
+            tries.Add(-degrees * sign);
+        }
+        foreach (double degrees in tries)
+        {
+            Vector2 leg = degrees == 0 ? direction : KiteDirection(Vector2.Zero, direction, null, length, degrees);
+            Vector2 to = self + leg * length;
+            RvrKiteHeld why = RvrKiteHeld.None;
+            if (Vector2.Distance(to, meleeAt) <= distance)
+                why = RvrKiteHeld.Blocked;
+            else if (KiteHazard(self, to, enemies, enemyCentroid, keeps) is var hazard && hazard != RvrKiteHeld.None)
+                why = hazard;
+            else if (legClear != null && !legClear(self, to))
+                why = RvrKiteHeld.Blocked;
+            if (why == RvrKiteHeld.None)
+                return new(to, RvrKiteHeld.None, errors, length, standOff, distance);
+            if (first == RvrKiteHeld.None)
+                first = why;
+        }
+        return new(null, first, errors, length, standOff, distance);
+    }
+
+    /// <summary>
+    /// What a melee member of a kiting group does: it fights when it is hit in melee, when it charges anyway (the tier's
+    /// error), when there is no backline, or when its target is within <see cref="KitePeelLeash"/> of a backline member
+    /// (it reached the backline); otherwise it screens: it stands <see cref="KiteScreenDistance"/> in front of the
+    /// backline's centre toward the enemy, walking back there when farther than <see cref="KiteScreenTolerance"/>.
+    /// Pure.
+    /// </summary>
+    public static (RvrKitePeel Action, Vector2 Spot) KitePeel(Vector2 self, Vector2? target, IReadOnlyList<Vector2> backline,
+        Vector2 enemyCentroid, bool hitInMelee, bool chases)
+    {
+        if (backline == null || backline.Count == 0 || hitInMelee || chases)
+            return (RvrKitePeel.Fight, self);
+        Vector2 centre = Vector2.Zero;
+        bool reached = false;
+        foreach (Vector2 member in backline)
+        {
+            centre += member;
+            reached |= target is Vector2 t && Vector2.Distance(t, member) <= KitePeelLeash;
+        }
+        if (reached)
+            return (RvrKitePeel.Fight, self);
+        centre /= backline.Count;
+        Vector2 toward = enemyCentroid - centre;
+        Vector2 spot = toward.LengthSquared() < 1f ? centre : centre + Vector2.Normalize(toward) * KiteScreenDistance;
+        return (Vector2.Distance(self, spot) > KiteScreenTolerance ? RvrKitePeel.Screen : RvrKitePeel.Stand, spot);
     }
 
     /// <summary>The rate limit of a log line: at most once per <paramref name="gap"/>. Pure.</summary>
