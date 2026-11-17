@@ -1174,7 +1174,11 @@ namespace DOL.GS
                     return true;
                 }
             }
-            if (_target.InCombat && !_regrouping)
+            // A boss of the fight that walks into the regroup (the twins at 23 of 79, owner's PC 2026-11-16) is answered as an
+            // early pull, as an attempt: never fought piecemeal by a raid that waits (RealmRaidTetherReach.RegroupThreatened).
+            bool regroupThreatened = _regrouping && _target.InCombat && RegroupThreatenedBy(participants) is { } threat &&
+                                     LogRegroupThreat(threat, now);
+            if (_target.InCombat && (!_regrouping || regroupThreatened))
             {
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
                 // aggroed on the approach) is answered as a whole (EpicEncounterTactics.ChooseEarlyPull): everyone in at once,
@@ -1188,7 +1192,10 @@ namespace DOL.GS
                     // 3,800, muster 1,400 from his spawn; he would follow the pull-back to the muster).
                     int tether = EpicEncounterTactics.LeashOf(_target)?.TetherRange is int t && t > 0 ? t : _target.TetherRange;
                     float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
-                    bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn);
+                    // ...and there it can't be hurt: the raid never pulls back to a rally past its reach (Summoner Roesia,
+                    // owner's PC 2026-11-16: she followed the pull-back to her tether and killed 50 walking away).
+                    bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn) &&
+                                     !RealmRaidTetherReach.PullBackLeavesReach(ReachOf(_target), musterFromSpawn);
                     // Pulled back from it a moment ago and it is still on the raid: it chases.
                     bool pulledBack = _lastBreakOff.TryGetValue(_target, out long last) && now - last < BreakOffRepeatMilliseconds;
                     // The whole living raid, raiders walking back after a wipe included (AttemptRaidSize), and the muster it
@@ -1472,6 +1479,9 @@ namespace DOL.GS
             var nav = PathfindingProvider.Instance;
             Vector3 boss = MusterReference(_target);
             _musterReference = boss;
+            // Inside the reach every boss of the fight can be hurt in (RealmRaidTetherReach): 1,400 off, closer for a short tether.
+            _musterReaches = FightReaches();
+            float standOff = _musterStandOff = RealmRaidTetherReach.MusterStandOff(FinalMusterStandOff, AggroOf(_target), ReachOf(_target));
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             if (!TryRegroupFront(inside, out Vector3 body) || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
@@ -1485,20 +1495,20 @@ namespace DOL.GS
             Vector3[] walk = found ? new Vector3[Math.Min(path.NodeCount, nodes.Length)] : [];
             for (int i = 0; i < walk.Length; i++) walk[i] = nodes[i].Position;
             Vector3? Floor(Vector3 p) => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters);
-            if (Vector3.Distance(body, boss) <= FinalMusterStandOff + 200)
+            if (Vector3.Distance(body, boss) <= standOff + 200)
                 return GuardMuster(body, walk, boss, Floor);
             if (found)
             {
                 for (int i = 1; i < walk.Length; i++)
                 {
                     Vector3 a = walk[i - 1], b = walk[i];
-                    if (Vector3.Distance(b, boss) < FinalMusterStandOff) continue;
+                    if (Vector3.Distance(b, boss) < standOff) continue;
                     // a inside the stand-off circle, b outside: the crossing point on a-b.
                     float lo = 0, hi = 1;
                     for (int step = 0; step < 12; step++)
                     {
                         float mid = (lo + hi) / 2;
-                        if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= FinalMusterStandOff) hi = mid; else lo = mid;
+                        if (Vector3.Distance(Vector3.Lerp(a, b, mid), boss) >= standOff) hi = mid; else lo = mid;
                     }
                     return GuardMuster(Floor(Vector3.Lerp(a, b, hi)) ?? b, walk, boss, Floor);
                 }
@@ -1524,8 +1534,12 @@ namespace DOL.GS
         /// every danger; then <paramref name="fallback"/> (the main body) when that is safe; else null.
         /// </summary>
         public static Vector3? SafeMusterAlong(IReadOnlyList<Vector3> walk, Vector3 encounter, float standOff,
-            IReadOnlyList<BossDanger> dangers, Vector3? fallback, Func<Vector3, Vector3?> floor = null)
+            IReadOnlyList<BossDanger> dangers, Vector3? fallback, Func<Vector3, Vector3?> floor = null,
+            IReadOnlyList<RealmRaidTetherReach.BossReach> reaches = null)
         {
+            // A point past the reach of a boss of the fight is refused like one in another boss's aggro (1.2, owner's PC
+            // 2026-11-16: Summoner Roesia's muster 1,400 out with her tether at 1,300; RealmRaidTetherReach).
+            bool Clear(Vector3 p) => !InBossDanger(p, dangers) && !RealmRaidTetherReach.OutOfReach(p, reaches);
             if (walk != null)
                 for (int i = 1; i < walk.Count; i++)
                 {
@@ -1537,10 +1551,10 @@ namespace DOL.GS
                         Vector3 raw = Vector3.Lerp(a, b, k / (float)steps);
                         if (Vector3.Distance(raw, encounter) < standOff) continue;
                         Vector3 p = floor?.Invoke(raw) ?? raw;
-                        if (!InBossDanger(p, dangers)) return p;
+                        if (Clear(p)) return p;
                     }
                 }
-            return fallback is Vector3 f && !InBossDanger(f, dangers) ? f : null;
+            return fallback is Vector3 f && Clear(f) ? f : null;
         }
 
         /// <summary>
@@ -1589,19 +1603,125 @@ namespace DOL.GS
         private Vector3 GuardMuster(Vector3 chosen, IReadOnlyList<Vector3> walk, Vector3 encounter, Func<Vector3, Vector3?> floor = null)
         {
             List<BossDanger> dangers = UntargetedBossDangers();
-            if (!InBossDanger(chosen, dangers)) return chosen;
-            string by = string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct());
-            Vector3? safe = SafeMusterAlong(walk, encounter, FinalMusterStandOff, dangers, null, floor);
+            IReadOnlyList<RealmRaidTetherReach.BossReach> reaches = _musterReaches ?? [];
+            float standOff = _musterStandOff > 0 ? _musterStandOff : FinalMusterStandOff;
+            bool inDanger = InBossDanger(chosen, dangers);
+            string pastReach = string.Join(",", RealmRaidTetherReach.OutOfReachOf(chosen, reaches).Select(r => r.Name).Distinct());
+            if (!inDanger && pastReach.Length == 0) return chosen;
+            string by = string.Join("; ", new[]
+            {
+                inDanger ? "in the aggro range of " + string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct()) : null,
+                pastReach.Length > 0 ? "past the reach (tether less 300) of " + pastReach : null,
+            }.Where(x => x != null));
+            Vector3? safe = SafeMusterAlong(walk, encounter, standOff, dangers, null, floor, reaches);
+            string how = "moved back along the walk to the raid";
+            if (safe == null && RingMuster(chosen, encounter, standOff, dangers, reaches) is Vector3 ring)
+            {
+                safe = ring;
+                how = "no point of the walk is clear and in reach; moved to a clear point in reach around the encounter";
+            }
             if (safe is Vector3 moved)
             {
                 log.Warn($"REALM_EXPEDITION_MUSTER_GUARDED region={_region} target=\"{_target?.Name}\" " +
                          $"from={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} to={(int)moved.X},{(int)moved.Y},{(int)moved.Z} " +
-                         $"reason=\"the muster was in the aggro range of {by}; moved back along the walk to the raid\"");
+                         $"standOff={(int)standOff} reaches=\"{ReachesText(reaches, moved)}\" reason=\"the muster was {by}; {how}\"");
                 return moved;
             }
             log.Warn($"REALM_EXPEDITION_MUSTER_UNSAFE region={_region} target=\"{_target?.Name}\" at={(int)chosen.X},{(int)chosen.Y},{(int)chosen.Z} " +
-                     $"reason=\"in the aggro range of {by} and no point of the walk to the raid is clear of it\"");
+                     $"standOff={(int)standOff} reaches=\"{ReachesText(reaches, chosen)}\" reason=\"{by} and no point of the walk to the raid or around the encounter is clear and in reach\"");
             return chosen;
+        }
+
+        // ---- tethers: the reach the bosses of the fight can be hurt in (RealmRaidTetherReach) ----------------------------
+
+        private IReadOnlyList<RealmRaidTetherReach.BossReach> _musterReaches;
+        private float _musterStandOff;
+
+        /// <summary>A boss's tether: its catalog leash, else its own.</summary>
+        private static int TetherOf(GameNPC npc) => EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc?.TetherRange ?? 0;
+
+        /// <summary>How far from its spawn <paramref name="npc"/> can be fought (RealmRaidTetherReach.DamageReach; 0: no limit).</summary>
+        private static int ReachOf(GameNPC npc) => npc == null ? 0 : RealmRaidTetherReach.DamageReach(TetherOf(npc));
+
+        private static int AggroOf(GameNPC npc) => npc?.Brain is DOL.AI.Brain.StandardMobBrain brain ? brain.AggroRange : 0;
+
+        /// <summary>The living bosses fought together with the target (the catalog's "after": King Tuscar with Queen Kula).</summary>
+        private IEnumerable<GameNPC> FightPartners()
+        {
+            if (_target == null) yield break;
+            string own = _target.GetType().Name;
+            string first = EpicEncounterTactics.For(_target)?.After;
+            foreach (GameNPC npc in _live)
+                if (npc != _target && npc.IsAlive && npc.ObjectState == GameObject.eObjectState.Active && npc.CurrentRegionID == _region &&
+                    (EpicEncounterTactics.For(npc)?.After == own || first != null && npc.GetType().Name == first))
+                    yield return npc;
+        }
+
+        /// <summary>The target and its fight partners, each with its spawn and reach (none without a limit).</summary>
+        private List<RealmRaidTetherReach.BossReach> FightReaches()
+        {
+            var reaches = new List<RealmRaidTetherReach.BossReach>();
+            foreach (GameNPC npc in FightPartners().Prepend(_target))
+                if (npc != null && ReachOf(npc) is int reach && reach > 0)
+                    reaches.Add(new(npc.Name, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), reach));
+            return reaches;
+        }
+
+        private static string ReachesText(IEnumerable<RealmRaidTetherReach.BossReach> reaches, Vector3 at) =>
+            string.Join(",", reaches.Select(r => $"{r.Name}:{(int)Vector3.Distance(at, r.Spawn)}/{(int)r.Reach}"));
+
+        /// <summary>
+        /// A muster on rings around the encounter, from the stand-off out to the nearest reach, nearest the walk's own muster
+        /// first, on the floor, clear and in reach, with a walk to the front (Queen Kula: her frost circle covers the walk
+        /// at the reach of the King). Null without a navmesh or when none is found.
+        /// </summary>
+        private Vector3? RingMuster(Vector3 chosen, Vector3 encounter, float standOff, IReadOnlyList<BossDanger> dangers,
+            IReadOnlyList<RealmRaidTetherReach.BossReach> reaches)
+        {
+            if (reaches.Count == 0) return null;
+            var nav = PathfindingProvider.Instance;
+            Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)encounter.X, (int)encounter.Y);
+            if (zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return null;
+            float outer = reaches.Min(r => r.Reach + Vector3.Distance(r.Spawn, encounter));
+            int paths = 0;
+            return RealmRaidTetherReach.NearestAccepted(RealmRaidTetherReach.RingCandidates(encounter, Math.Min(Math.Min(standOff, outer), AggroOf(_target) + RealmRaidTetherReach.AggroMargin), outer),
+                chosen, p => nav.GetClosestPoint(zone, p, 64, 64, 128, nav.DefaultFilters),
+                p => Math.Abs(p.Z - encounter.Z) <= SameFloorBand && !InBossDanger(p, dangers) && !RealmRaidTetherReach.OutOfReach(p, reaches) &&
+                     paths++ < 24 && AutonomousZonePointApproach.TryResolve(nav, zone, p, Front, 160, out _));
+        }
+
+        /// <summary>The boss of the fight (the target or a partner) in combat with raiders nearest the regroup point, when it
+        /// is within its aggro plus the margin of it (RealmRaidTetherReach.RegroupThreatened); null otherwise.</summary>
+        private GameNPC RegroupThreatenedBy(GameLiving[] participants)
+        {
+            foreach (GameNPC boss in FightPartners().Prepend(_target).Where(b => b != null && b.InCombat)
+                         .OrderBy(b => Vector3.DistanceSquared(new(b.X, b.Y, b.Z), _musterPoint)))
+            {
+                int fighting = participants.Count(p => p.IsAlive && p.CurrentRegionID == _region && p.IsWithinRadius(boss, TargetPresenceRadius));
+                float toRegroup = Vector3.Distance(new(boss.X, boss.Y, boss.Z), _musterPoint);
+                // A boss fighting at home is not coming to a muster placed just outside its aggro (Roesia's stands 900 off):
+                // it has to leave its spawn toward it first.
+                float homeToRegroup = Vector3.Distance(new(boss.SpawnPoint.X, boss.SpawnPoint.Y, boss.SpawnPoint.Z), _musterPoint);
+                float threat = Math.Min(AggroOf(boss) + RealmRaidTetherReach.AggroMargin, homeToRegroup - RealmRaidTetherReach.MusterInset);
+                if (RealmRaidTetherReach.RegroupThreatened(_regrouping, boss.InCombat, fighting, toRegroup, threat))
+                    return boss;
+            }
+            return null;
+        }
+
+        private long _nextRegroupThreatLog;
+
+        private bool LogRegroupThreat(GameNPC boss, long now)
+        {
+            if (now >= _nextRegroupThreatLog)
+            {
+                _nextRegroupThreatLog = now + 60_000;
+                log.Warn($"REALM_EXPEDITION_REGROUP_THREATENED region={_region} target=\"{_target.Name}\" boss=\"{boss.Name}\" " +
+                         $"at={boss.X},{boss.Y},{boss.Z} regroup={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                         $"distance={(int)Vector3.Distance(new(boss.X, boss.Y, boss.Z), _musterPoint)} " +
+                         $"reason=\"a boss of the fight came to the regroup in combat with raiders; answered as an early pull\"");
+            }
+            return true;
         }
 
         public const long CallTargetAfterMilliseconds = 90_000;
