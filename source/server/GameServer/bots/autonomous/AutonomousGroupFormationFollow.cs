@@ -115,12 +115,13 @@ namespace DOL.GS
                     BotPeopleRefusal.None;
             }
             bool leaderWalking = leader.IsMoving && leader.CurrentSpeed > 0;
-            if (state.Stick)
+            // The line is worked out only while the leader walks (a standing group keeps its formation).
+            if (BotStickLine.Refreshes(state.Stick, leaderWalking))
             {
                 using var aiProfile = AiProfile.Scope(AiSystem.MovementHabits);
                 state.Ahead = StickAhead(follower, leader, out int followers);
                 state.Gap = BotStickLine.Gap(follower.DatabaseID > 0 ? follower.DatabaseID : follower.ObjectID, followers);
-                if (leaderWalking && state.Ahead != null)
+                if (state.Ahead != null)
                 {
                     BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.StickMembers);
                     if (now >= state.NextLegTick)
@@ -142,7 +143,7 @@ namespace DOL.GS
                     AutonomousGroupPace.CatchUp(follower, state.Behind, now);
                 }
             }
-            else
+            else if (!state.Stick)
                 state.Ahead = null;
             if (!leaderWalking && !leader.InCombat && !follower.InCombat)
             {
@@ -170,12 +171,16 @@ namespace DOL.GS
             for (int i = 0; i < count; i++)
                 if (members[i] == leader)
                     leaderIndex = i;
-            var inLine = new bool[count];
+            // No allocation: the group window is at most 16 (8 in the game).
+            Span<bool> inLine = stackalloc bool[16];
+            Span<int> order = stackalloc int[16];
+            inLine = inLine[..count];
+            order = order[..count];
             for (int i = 0; i < count; i++)
                 inLine[i] = members[i] is GameBot bot && bot != leader && bot.IsAlive && bot.CurrentRegion == follower.CurrentRegion &&
                     (bot == follower || States.TryGetValue(bot, out State other) && other.Stick && other.Leader == leader);
-            int[] order = BotStickLine.Order(inLine, leaderIndex);
-            followers = BotStickLine.Followers(order);
+            BotStickLine.Order(inLine, leaderIndex, order);
+            followers = BotStickLine.Followers((ReadOnlySpan<int>)order);
             for (int i = 0; i < count; i++)
                 if (members[i] == follower)
                     mine = i;

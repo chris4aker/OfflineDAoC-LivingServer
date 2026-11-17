@@ -39,9 +39,20 @@ public static class BotStickLine
     /// </summary>
     public static int[] Order(IReadOnlyList<bool> inLine, int leaderIndex)
     {
-        var order = new int[inLine.Count];
-        int previous = leaderIndex >= 0 && leaderIndex < inLine.Count ? leaderIndex : -1;
+        Span<bool> line = inLine.Count <= 64 ? stackalloc bool[inLine.Count] : new bool[inLine.Count];
         for (int i = 0; i < inLine.Count; i++)
+            line[i] = inLine[i];
+        var order = new int[inLine.Count];
+        Order(line, leaderIndex, order);
+        return order;
+    }
+
+    /// <summary><see cref="Order(IReadOnlyList{bool}, int)"/> into <paramref name="order"/> (as long as
+    /// <paramref name="inLine"/>), with no allocation: the follow refresh's form. Pure.</summary>
+    public static void Order(ReadOnlySpan<bool> inLine, int leaderIndex, Span<int> order)
+    {
+        int previous = leaderIndex >= 0 && leaderIndex < inLine.Length ? leaderIndex : -1;
+        for (int i = 0; i < inLine.Length; i++)
         {
             order[i] = -1;
             if (i == leaderIndex || !inLine[i] || previous < 0)
@@ -49,11 +60,24 @@ public static class BotStickLine
             order[i] = previous;
             previous = i;
         }
-        return order;
     }
+
+    /// <summary>The line is worked out (who is ahead, the gaps, the lost stick) only while the leader walks: a standing
+    /// group is in its formation, as before. Pure.</summary>
+    public static bool Refreshes(bool onLine, bool leaderWalking) => onLine && leaderWalking;
 
     /// <summary>The followers on the line (members with a predecessor) in an <see cref="Order"/> result.</summary>
     public static int Followers(IReadOnlyList<int> order)
+    {
+        int count = 0;
+        foreach (int predecessor in order)
+            if (predecessor >= 0)
+                count++;
+        return count;
+    }
+
+    /// <summary><see cref="Followers(IReadOnlyList{int})"/> of a span. Pure.</summary>
+    public static int Followers(ReadOnlySpan<int> order)
     {
         int count = 0;
         foreach (int predecessor in order)

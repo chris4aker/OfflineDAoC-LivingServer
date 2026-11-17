@@ -113,9 +113,20 @@ public static class BotMovementHabitsRuntime
 
     public static RvrBotAwareness Awareness => AutonomousRvrPerception.ParseAwareness(Properties.RVR_BOT_AWARENESS);
 
-    /// <summary>The bot's own movement tier (outside RvR fights, where the group's tier counts).</summary>
+    /// <summary>
+    /// The one place the movement habits read a bot's own tier (the overshoot; in an RvR fight the group's tier counts,
+    /// owner decision 5): the tier of its skill profile when <see cref="ProfileTier"/> gives one, else this package's own
+    /// roll (<see cref="BotMovementHabits.TierOf"/>, salt "MOVE"), so a bot never has two tiers once profiles exist.
+    /// </summary>
     public static RvrSkillTier TierOf(GameBot bot) =>
-        BotMovementHabits.TierOf(bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID, Awareness);
+        BotMovementHabits.TierFor(ProfileTier?.Invoke(bot), bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID, Awareness);
+
+    /// <summary>
+    /// The skill profile's tier of a bot, or null when it has none. Set where the skill profiles (work package 1) are
+    /// on the branch: <c>ProfileTier = bot =&gt; BotSkill.TryProfile(bot, out var profile) ? profile.Tier : null;</c>.
+    /// Unset, every bot takes the fallback roll.
+    /// </summary>
+    public static Func<GameBot, RvrSkillTier?> ProfileTier { get; set; }
 
     /// <summary>The leg's end as the mesh walks it: same zone, dry ground, the bot's own floor; null when not (as
     /// BotBrain.ReachableLeg).</summary>
@@ -187,12 +198,15 @@ public static class BotMovementHabitsRuntime
 
     // ---- overshoot (town arrivals) ----------------------------------------------------------------------------------
 
+
     private sealed class OvershootState
     {
         public Vector3 Past;
         public Vector3 Back;
         public long Until;
-        public bool SteppedBack;
+        /// <summary>0 pending, 1 stepped back or cancelled: set once, by whichever of the watcher and the routing comes first.</summary>
+        public int Done;
+        public long SteppingUntil;
     }
 
     private static readonly ConditionalWeakTable<GameBot, OvershootState> Overshoots = new();
@@ -200,9 +214,10 @@ public static class BotMovementHabitsRuntime
 
     /// <summary>
     /// At the start of a walk on foot to <paramref name="spot"/> (the bank, a merchant, a trainer, a crowd): whether it
-    /// overshoots (by the bot's tier), and the spot 15-60 units past it on the line it comes along, proven on the mesh
+    /// overshoots (by the bot's tier), and the spot 30-60 units past it on the line it comes along, proven on the mesh
     /// from <paramref name="spot"/> and accepted by <paramref name="accept"/> (inside the town). It steps back on its own
-    /// (a watcher, 150-600 ms after it stops there); the caller treats either spot as arrived. Null: no overshoot.
+    /// (a watcher, 150-600 ms after it stops there) or when the routing sees it there (BotMovementHabits.Hangout), once.
+    /// Null: no overshoot.
     /// </summary>
     public static Vector3? Overshoot(GameBot bot, Vector3 spot, Func<Vector3, bool> accept)
     {
@@ -219,11 +234,8 @@ public static class BotMovementHabitsRuntime
         if (legs.Length == 0 || Vector2.Distance(new(legs[^1].X, legs[^1].Y), to) < BotMovementHabits.OvershootMinimum ||
             accept != null && !accept(legs[^1]))
             return null;
-        var state = Overshoots.GetOrCreateValue(bot);
-        state.Past = legs[^1];
-        state.Back = spot;
-        state.Until = GameLoop.GameLoopTime + 60_000;
-        state.SteppedBack = false;
+        var state = new OvershootState { Past = legs[^1], Back = spot, Until = GameLoop.GameLoopTime + 60_000 };
+        Overshoots.AddOrUpdate(bot, state);
         WatchOvershoot(bot, state);
         Count(Counter.Overshoots);
         return state.Past;
@@ -233,39 +245,53 @@ public static class BotMovementHabitsRuntime
     {
         _ = new ECSGameTimer(bot, _ =>
         {
-            if (state.SteppedBack || GameLoop.GameLoopTime > state.Until || !bot.IsAlive ||
+            if (Volatile.Read(ref state.Done) != 0 || GameLoop.GameLoopTime > state.Until || !bot.IsAlive ||
                 bot.ObjectState != GameObject.eObjectState.Active)
                 return 0;
             if (bot.IsMoving || Vector2.Distance(new(bot.X, bot.Y), new(state.Past.X, state.Past.Y)) > 12)
                 return 250;
             AutonomousLivingServer.Later(bot, (int)BotMovementHabits.StepBackDelay(Random.Shared.NextDouble()),
-                () => !state.SteppedBack && !bot.IsMoving, () => StepBack(bot, state.Back));
+                () => Volatile.Read(ref state.Done) == 0 && !bot.IsMoving, () => StepBack(bot));
             return 0;
         }, 250);
     }
 
-    /// <summary>The overshoot ended at the spot itself (the bot was stopped there on its way past): no step back.</summary>
+    /// <summary>An overshoot was started and is not yet stepped back or cancelled.</summary>
+    public static bool OvershootPending(GameBot bot) =>
+        bot != null && Overshoots.TryGetValue(bot, out OvershootState state) && Volatile.Read(ref state.Done) == 0 &&
+        GameLoop.GameLoopTime <= state.Until;
+
+    /// <summary>The step-back's legs are walking: the routing gives it no new route meanwhile.</summary>
+    public static bool SteppingBack(GameBot bot) =>
+        bot != null && Overshoots.TryGetValue(bot, out OvershootState state) && GameLoop.GameLoopTime < state.SteppingUntil;
+
+    /// <summary>The overshoot ended without a step back (the bot was stopped at the spot itself, or the walk failed).</summary>
     public static void CancelOvershoot(GameBot bot)
     {
         if (bot != null && Overshoots.TryGetValue(bot, out OvershootState state))
-            state.SteppedBack = true;
+            Interlocked.Exchange(ref state.Done, 1);
     }
 
-    /// <summary>Steps back from the overshoot to <paramref name="back"/> in short legs, facing the way it came (once).</summary>
-    public static void StepBack(GameBot bot, Vector3 back)
+    /// <summary>Steps back from the overshoot to the spot in short legs, facing the way it came: once, whichever of the
+    /// watcher and the routing asks first.</summary>
+    public static void StepBack(GameBot bot)
     {
-        if (bot == null || !Overshoots.TryGetValue(bot, out OvershootState state) || state.SteppedBack)
+        if (bot == null || !Overshoots.TryGetValue(bot, out OvershootState state) ||
+            Interlocked.CompareExchange(ref state.Done, 1, 0) != 0)
             return;
-        state.SteppedBack = true;
+        Vector3 back = state.Back;
         Vector3 here = new(bot.X, bot.Y, bot.Z);
         Vector3[] legs = ProveLegs(bot, here, BotMovementHabits.Legs(new(here.X, here.Y), new(back.X, back.Y)));
         if (legs.Length == 0)
             return;
-        WalkLegs(bot, legs, (short)Math.Clamp(bot.MaxSpeed * 45 / 100, 60, 110), null);
+        short speed = (short)Math.Clamp(bot.MaxSpeed * 45 / 100, 60, 110);
+        float length = Vector2.Distance(new(here.X, here.Y), new(back.X, back.Y));
+        state.SteppingUntil = GameLoop.GameLoopTime + (long)(length * 1000 / speed) + 60L * legs.Length + 800;
+        WalkLegs(bot, legs, speed, null);
         Count(Counter.StepBacks);
         if (ShouldLog(EventTag.Overshoot))
             Info($"BOT_MOVE_OVERSHOOT bot=\"{bot.Name}\" id={bot.DatabaseID} region={bot.CurrentRegionID} " +
-                 $"past={(int)Vector2.Distance(new(here.X, here.Y), new(back.X, back.Y))} tier={TierOf(bot)}");
+                 $"past={(int)length} tier={TierOf(bot)}");
     }
 
     // ---- sitting while waiting, and the keep walls ------------------------------------------------------------------
@@ -280,6 +306,10 @@ public static class BotMovementHabitsRuntime
         Bank,
     }
 
+    /// <summary>Only a formation member takes the walls (BotKeepWallSpots.Offered): its follow slot walks it there; every
+    /// other wait sits where it is, so no wait site's stop order fights a wall walk.</summary>
+    public static bool OffersWall(WaitSpot spot) => BotKeepWallSpots.Offered(spot == WaitSpot.Formation);
+
     private sealed class WaitState
     {
         public long Since;
@@ -289,19 +319,21 @@ public static class BotMovementHabitsRuntime
         public long Delay;
         public bool Sits;
         public bool Decided;
+        public bool ForceWall;
         public Vector3? WallSpot;
         public long WallStarted;
         public bool OnWall;
         public bool Standing;
-        public string Keep;
+        public long NextCheck;
+        public AbstractGameKeep Keep;
     }
 
     private static readonly ConditionalWeakTable<GameBot, WaitState> Waits = new();
 
     /// <summary>
-    /// One turn of a waiting bot (an AI turn, not a tick): after 30-50 s of waiting, 60% of waits sit; near a keep its
-    /// realm holds (no siege, no enemy noticed, not a committed defender or siege fighter) the bot first walks to a guard
-    /// archer's floor on the wall. Returns the wall spot a formation member walks to (its follow slot meanwhile), or null.
+    /// One turn of a waiting bot (an AI turn, not a tick): after 30-50 s of waiting, 60% of waits sit. A formation member
+    /// near a keep its realm holds (no siege, no enemy noticed, not a committed defender or siege fighter) first takes a
+    /// guard archer's floor on the wall: the returned spot is its follow slot until it sits there or gives it up (null).
     /// </summary>
     public static Vector3? WaitTurn(GameBot bot, WaitSpot spot, GameBot leader = null)
     {
@@ -318,12 +350,19 @@ public static class BotMovementHabitsRuntime
             {
                 state.LastSeen = now;
                 if (state.OnWall)
-                    WatchWall(bot, state);
+                    WatchWall(bot, state, now);
                 return state.OnWall ? state.WallSpot : null;
             }
+            if (state.OnWall)
+            {
+                // Stood up on the wall (an enemy, a cast): the wait there is over; back to its formation slot.
+                state.OnWall = false;
+                state.WallSpot = null;
+                state.Decided = true;
+            }
             float dx = bot.X - state.X, dy = bot.Y - state.Y;
-            if (state.Since == 0 || now - state.LastSeen > BotMovementHabits.WaitGapMs ||
-                dx * dx + dy * dy > BotMovementHabits.WaitDrift * BotMovementHabits.WaitDrift)
+            if (!state.ForceWall && (state.Since == 0 || now - state.LastSeen > BotMovementHabits.WaitGapMs ||
+                dx * dx + dy * dy > BotMovementHabits.WaitDrift * BotMovementHabits.WaitDrift))
             {
                 long id = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
                 state.Number++;
@@ -336,11 +375,13 @@ public static class BotMovementHabitsRuntime
                 state.OnWall = false;
             }
             state.LastSeen = now;
-            if (state.Decided || !BotMovementHabits.SitDue(now - state.Since, state.Delay))
+            bool forced = state.ForceWall && OffersWall(spot);
+            if (!forced && (state.Decided || !BotMovementHabits.SitDue(now - state.Since, state.Delay)))
                 return null;
             state.Decided = true;
-            if (!state.Sits || BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MoveSitAndWalls, out _) !=
-                BotPeopleRefusal.None)
+            state.ForceWall = false;
+            if (!forced && !state.Sits ||
+                BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MoveSitAndWalls, out _) != BotPeopleRefusal.None)
                 return null;
             if (!BotMovementHabits.MaySit(bot.IsAlive, bot.IsMoving, bot.IsCasting, bot.IsStealthed, bot.InCombat, bot.IsAttacking,
                     (bot.Brain as BotBrain)?.HasAggro == true, bot.IsCrowdControlled, bot.IsRecoveryResting, bot.IsOnStableMasterRoute))
@@ -351,7 +392,7 @@ public static class BotMovementHabitsRuntime
                 return null;
             }
             using var aiProfile = AiProfile.Scope(AiSystem.MovementHabits);
-            if (spot != WaitSpot.Bank && TryStartWall(bot, state, spot, leader ?? bot, now) is Vector3 started)
+            if (OffersWall(spot) && TryStartWall(bot, state, leader ?? bot, now, forced) is Vector3 started)
                 return started;
             Sit(bot, spot, state, wall: false);
             return null;
@@ -371,7 +412,7 @@ public static class BotMovementHabitsRuntime
         Count(wall ? Counter.WallSits : Counter.Sits);
         if (wall ? ShouldLog(EventTag.Wall) : ShouldLog(EventTag.Sit))
             Info(wall
-                ? $"BOT_MOVE_WALL bot=\"{bot.Name}\" id={bot.DatabaseID} region={bot.CurrentRegionID} keep=\"{state.Keep}\" " +
+                ? $"BOT_MOVE_WALL bot=\"{bot.Name}\" id={bot.DatabaseID} region={bot.CurrentRegionID} keep=\"{state.Keep?.Name}\" " +
                   $"x={bot.X} y={bot.Y} z={bot.Z} waited_s={(GameLoop.GameLoopTime - state.Since) / 1000}"
                 : $"BOT_MOVE_SIT bot=\"{bot.Name}\" id={bot.DatabaseID} region={bot.CurrentRegionID} where={spot.ToString().ToLowerInvariant()} " +
                   $"waited_s={(GameLoop.GameLoopTime - state.Since) / 1000}");
@@ -416,7 +457,14 @@ public static class BotMovementHabitsRuntime
     public static bool SiegeAt(AbstractGameKeep keep) =>
         keep.InCombat || AutonomousRvrEventLayer.IsTargetActive($"rvr-keep-{keep.KeepID}", GameLoop.GameLoopTime);
 
-    private static Vector3? TryStartWall(GameBot bot, WaitState state, WaitSpot spot, GameBot anchorBot, long now)
+    /// <summary>Decision 11 and the scope, read afresh (no count: the scope's summary counts only the decisions).</summary>
+    private static bool WallStillAllowed(GameBot bot, AbstractGameKeep keep) =>
+        keep != null && BotKeepWallSpots.StillAllowed(
+            BotPeopleSwitches.Current.MoveSitAndWalls && BotPeopleScope.Refusal(bot, BotPeopleRule.Movement) == BotPeopleRefusal.None,
+            keep.Realm == bot.Realm, SiegeAt(keep), EnemyNear(bot, BotKeepWallSpots.WatchRadius),
+            AutonomousRvrDefense.IsCommittedDefender(bot), AutonomousRvrDefense.IsCommittedSiegeFighter(bot));
+
+    private static Vector3? TryStartWall(GameBot bot, WaitState state, GameBot anchorBot, long now, bool forced)
     {
         AbstractGameKeep keep = KeepNear(bot);
         if (keep == null)
@@ -424,13 +472,7 @@ public static class BotMovementHabitsRuntime
         if (!BotKeepWallSpots.Allowed(keep.Realm == bot.Realm, SiegeAt(keep), EnemyNear(bot, BotKeepWallSpots.WatchRadius),
                 AutonomousRvrDefense.IsCommittedDefender(bot), AutonomousRvrDefense.IsCommittedSiegeFighter(bot)))
             return null;
-        return StartWall(bot, state, spot, keep, anchorBot, now, force: false);
-    }
-
-    private static Vector3? StartWall(GameBot bot, WaitState state, WaitSpot spot, AbstractGameKeep keep, GameBot anchorBot,
-        long now, bool force)
-    {
-        if (!force && !TakeWallRoute())
+        if (!forced && !TakeWallRoute())
             return null;
         IReadOnlyList<BotKeepWallSpots.Candidate> candidates = AutonomousRvrDefense.WallCandidates(bot, keep);
         if (candidates.Count == 0)
@@ -446,7 +488,7 @@ public static class BotMovementHabitsRuntime
         Vector3 floor = candidates[index].Floor;
         Zone zone = bot.CurrentZone;
         IPathfindingMgr nav = PathfindingProvider.Instance;
-        // The route the bot will walk (the ordinary mesh PathTo uses), proven whole: a wall reached only through a closed
+        // The route its follow slot will walk (the ordinary mesh), proven whole once: a wall reached only through a closed
         // gate is left alone.
         if (zone == null || nav == null || !nav.IsAvailable || bot.CurrentRegion.GetZone((int)floor.X, (int)floor.Y) != zone ||
             !AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, new(bot.X, bot.Y, bot.Z), floor))
@@ -456,47 +498,55 @@ public static class BotMovementHabitsRuntime
         }
         state.WallSpot = floor;
         state.WallStarted = now;
+        state.NextCheck = now + BotKeepWallSpots.RecheckMs;
         state.OnWall = false;
         state.Standing = false;
-        state.Keep = keep.Name;
-        if (spot != WaitSpot.Formation)
-            bot.PathTo(floor, Stroll(bot));
+        state.Keep = keep;
         Count(Counter.WallWalks);
         return floor;
     }
 
-    private static short Stroll(GameBot bot) => (short)Math.Clamp(bot.MaxSpeed * 70 / 100, 90, Math.Max((short)90, bot.MaxSpeed));
-
+    /// <summary>The walk to the wall (BotKeepWallSpots.Step): the follow slot walks it, so nothing is ordered here; a
+    /// re-check each second abandons it when decision 11 or the scope no longer holds.</summary>
     private static Vector3? ContinueWall(GameBot bot, WaitState state, Vector3 wall, WaitSpot spot, long now)
     {
         state.LastSeen = now;
+        bool recheck = now >= state.NextCheck;
+        if (recheck)
+            state.NextCheck = now + BotKeepWallSpots.RecheckMs;
         float distance = Vector2.Distance(new(bot.X, bot.Y), new(wall.X, wall.Y));
-        if (distance <= BotKeepWallSpots.ArriveTolerance + 16 && (!bot.IsMoving || distance <= 8))
+        switch (BotKeepWallSpots.Step(distance, bot.IsMoving, now - state.WallStarted, recheck,
+                    !recheck || WallStillAllowed(bot, state.Keep)))
         {
-            if (bot.IsMoving)
-                bot.StopMoving();
-            state.OnWall = true;
-            if (KeepNear(bot) is AbstractGameKeep keep)
-                BotTurning.TurnGradually(bot, BotCombatMovement.Heading(new(keep.X, keep.Y), new(bot.X, bot.Y)));
-            Sit(bot, spot, state, wall: true);
-            return wall;
+            case BotKeepWallSpots.WalkStep.Arrive:
+                if (!WallStillAllowed(bot, state.Keep))
+                    goto case BotKeepWallSpots.WalkStep.Abandon;
+                state.OnWall = true;
+                state.NextCheck = now + BotKeepWallSpots.RecheckMs;
+                if (state.Keep != null)
+                    BotTurning.TurnGradually(bot, BotCombatMovement.Heading(new(state.Keep.X, state.Keep.Y), new(bot.X, bot.Y)));
+                Sit(bot, spot, state, wall: true);
+                return wall;
+            case BotKeepWallSpots.WalkStep.Abandon:
+            case BotKeepWallSpots.WalkStep.GiveUp:
+                state.WallSpot = null;
+                state.OnWall = false;
+                state.Decided = true;
+                Count(Counter.WallGivenUp);
+                return null;
+            default:
+                return wall;
         }
-        if (now - state.WallStarted > BotKeepWallSpots.WalkTimeoutMs)
-        {
-            state.WallSpot = null;
-            state.Decided = true;
-            Count(Counter.WallGivenUp);
-            return null;
-        }
-        // A wait site stops the bot on its turn: it sets off again (once a turn, not a tick).
-        if (spot != WaitSpot.Formation && !bot.IsMoving)
-            bot.PathTo(wall, Stroll(bot));
-        return wall;
     }
 
-    private static void WatchWall(GameBot bot, WaitState state)
+    /// <summary>A bot sitting on a wall, at most once a second: an enemy noticed, a siege begun, a duty or a refusal makes
+    /// it stand within 0.3-1 s (decision 11); then it rejoins its formation slot.</summary>
+    private static void WatchWall(GameBot bot, WaitState state, long now)
     {
-        if (state.Standing || !EnemyNear(bot, BotKeepWallSpots.WatchRadius))
+        if (state.Standing || now < state.NextCheck)
+            return;
+        state.NextCheck = now + BotKeepWallSpots.RecheckMs;
+        if (WallStillAllowed(bot, state.Keep))
             return;
         state.Standing = true;
         AutonomousLivingServer.Later(bot, (int)BotKeepWallSpots.StandDelay(Random.Shared.NextDouble()), () => bot.IsSeatedByHabit,
@@ -520,8 +570,9 @@ public static class BotMovementHabitsRuntime
     // ---- /lstest wall -----------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// /lstest wall: the gamebots of the GM's realm standing within 1,200 units of the nearest keep it holds, with no siege
-    /// there and no enemy near, take its walls now (the same proof and spots as the habit; no wait, no roll).
+    /// /lstest wall: the gamebots of the GM's realm standing in formation within 1,200 units of the nearest keep it holds
+    /// (no siege there) take its walls on their next formation turn: no 30-50 s wait and no roll, the same spots, proofs
+    /// and decision 11 checks as the habit. Leaders, soloers and bots at a rendezvous sit where they wait.
     /// </summary>
     private static string WallTest(GamePlayer gm, GameBot target, string[] words)
     {
@@ -542,44 +593,21 @@ public static class BotMovementHabitsRuntime
             .ToArray();
         if (near.Length == 0)
             return $"No gamebot of that realm stands within {(int)BotKeepWallSpots.KeepRadius} units of {keep.Name}.";
-        int candidates = AutonomousRvrDefense.WallCandidates(near[0], keep).Count;
-        int sent = 0, refused = 0;
+        int candidates = AutonomousRvrDefense.WallCandidates(near[0], keep).Count(c => c.Archer && c.Rise >= BotKeepWallSpots.MinimumRise);
+        int marked = 0, refused = 0;
         foreach (GameBot bot in near)
         {
-            if (BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MoveSitAndWalls, out _) != BotPeopleRefusal.None ||
-                AutonomousRvrDefense.IsCommittedDefender(bot) || AutonomousRvrDefense.IsCommittedSiegeFighter(bot) ||
-                EnemyNear(bot, BotKeepWallSpots.WatchRadius) || bot.InCombat || bot.IsCasting)
+            if (bot.Group == null || bot.Group.LivingLeader == bot ||
+                BotPeopleScope.Refusal(bot, BotPeopleRule.Movement) != BotPeopleRefusal.None || !BotPeopleSwitches.Current.MoveSitAndWalls)
             {
                 refused++;
                 continue;
             }
             WaitState state = Waits.GetOrCreateValue(bot);
-            state.Since = GameLoop.GameLoopTime;
-            state.LastSeen = state.Since;
-            (state.X, state.Y) = (bot.X, bot.Y);
-            state.Decided = true;
-            if (StartWall(bot, state, WaitSpot.Group, keep, bot, GameLoop.GameLoopTime, force: true) != null)
-            {
-                sent++;
-                WatchTestWalk(bot, state);
-            }
-            else
-                refused++;
+            state.ForceWall = true;
+            marked++;
         }
-        return $"{keep.Name}: {candidates} guard archer floors on the wall; {sent} bots walk to the wall, {refused} stay " +
-               "(out of scope, busy, an enemy near, or no proven spot within 400 units). They sit when they arrive; " +
-               "a bot that is not waiting walks on with its task.";
-    }
-
-    /// <summary>A bot sent by /lstest wall that is not on a wait sits when it arrives (its own wait turns do it otherwise).</summary>
-    private static void WatchTestWalk(GameBot bot, WaitState state)
-    {
-        _ = new ECSGameTimer(bot, _ =>
-        {
-            if (state.WallSpot is not Vector3 wall || state.OnWall || !bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active)
-                return 0;
-            ContinueWall(bot, state, wall, WaitSpot.Group, GameLoop.GameLoopTime);
-            return state.OnWall || state.WallSpot == null ? 0 : 500;
-        }, 500);
+        return $"{keep.Name}: {candidates} guard archer floors on the wall. {marked} formation members take the walls on their " +
+               $"next turn while their leader stands (decision 11 checked then); {refused} stay (a leader, a soloer, or out of scope).";
     }
 }

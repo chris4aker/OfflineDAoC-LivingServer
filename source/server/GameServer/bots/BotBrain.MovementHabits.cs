@@ -11,7 +11,8 @@ namespace DOL.AI.Brain
     /// <summary>
     /// A melee gamebot in an open-field fight against a player or a bot circle-strafes its target every 3-8 s, out of the
     /// target's front and inside its own positional window (Casual 20% of fights, Average 50%, Veteran 85%). A caster or
-    /// healer with an enemy melee fighter on it backs off in an arc facing it instead of turning its back (30/60/90% of
+    /// healer with an enemy melee fighter on it runs its kite facing it, along an arc of short legs (a caster backs off 80
+    /// units), instead of turning its back (30/60/90% of
     /// contacts). The tier is the group's (owner decision 5). Legs of at most 22 units proven on dry ground of the bot's
     /// floor, from the server-wide leg budget; on a leg this short the bot keeps facing its target. Only where the RvR
     /// tactics apply (RvrTacticsActive) and BotPeopleScope allows movement habits (bot_move_strafe).
@@ -24,10 +25,12 @@ namespace DOL.AI.Brain
         private long _habitStarted;
         private bool _habitStrafe;
         private short _habitSpeed;
+        private long _habitUntil;
 
         private GameLiving _strafeTarget;
         private bool _strafeFight;
         private long _nextStrafeAt;
+        private bool _strafeFightCounted;
 
         private long _faceReadyAt;
         private long _faceContacts;
@@ -38,8 +41,8 @@ namespace DOL.AI.Brain
             if (_habitLegs == null)
                 return false;
             if (!bot.IsAlive || bot.IsCasting || bot.IsCrowdControlled || _habitFace?.IsAlive != true ||
-                _habitFace.CurrentRegion != bot.CurrentRegion || now - _habitStarted > BotCombatMovement.StepTimeoutMs + 1_000)
-                return EndHabitLegs(bot, stop: bot.IsMoving && now - _habitStarted > BotCombatMovement.StepTimeoutMs);
+                _habitFace.CurrentRegion != bot.CurrentRegion || now > _habitUntil)
+                return EndHabitLegs(bot, stop: bot.IsMoving && now > _habitUntil);
             if (bot.IsMoving)
             {
                 if (_habitStrafe)
@@ -75,9 +78,23 @@ namespace DOL.AI.Brain
             _habitStarted = GameLoop.GameLoopTime;
             _habitStrafe = strafe;
             _habitSpeed = speed;
+            _habitUntil = _habitStarted + HabitWalkMilliseconds(bot, legs, speed);
             // A follow would stop the walk on its next check; the next attack turn after the walk re-follows.
             bot.StopFollowing();
             WalkHabitLeg(bot, legs[0]);
+        }
+
+        /// <summary>How long a habit walk may take: its legs at its speed, a little for each leg's turn, and a second.</summary>
+        private static long HabitWalkMilliseconds(GameBot bot, Vector3[] legs, short speed)
+        {
+            float length = 0;
+            Vector2 at = new(bot.X, bot.Y);
+            foreach (Vector3 leg in legs)
+            {
+                length += Vector2.Distance(at, new(leg.X, leg.Y));
+                at = new(leg.X, leg.Y);
+            }
+            return (long)(length * 1000 / Math.Max((short)40, speed)) + 120L * legs.Length + 1_000;
         }
 
         /// <summary>One leg: face first, then walk (at most 22 units, so the mover does not turn the bot); think again as it ends.</summary>
@@ -109,10 +126,9 @@ namespace DOL.AI.Brain
                 _strafeTarget = target;
                 _strafeFight = BotMovementHabits.StrafesThisFight(tier, id, target is GameBot enemyBot && enemyBot.DatabaseID > 0
                     ? enemyBot.DatabaseID : target.ObjectID);
+                _strafeFightCounted = false;
                 _nextStrafeAt = now + BotMovementHabits.StrafeSettleMs +
                     BotMovementHabits.NextStrafeDelay(Random.Shared.NextDouble()) / 2;
-                if (_strafeFight)
-                    BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.StrafeFights);
             }
             if (!_strafeFight || now < _nextStrafeAt)
                 return false;
@@ -126,6 +142,12 @@ namespace DOL.AI.Brain
             {
                 _strafeFight = false;
                 return false;
+            }
+            if (!_strafeFightCounted)
+            {
+                // A strafing fight counts once the scope allowed it (the first strafe that is due).
+                _strafeFightCounted = true;
+                BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.StrafeFights);
             }
             using var aiProfile = AiProfile.Scope(AiSystem.MovementHabits);
             Vector2 center = new(target.X, target.Y), self = new(bot.X, bot.Y);
@@ -151,7 +173,8 @@ namespace DOL.AI.Brain
         /// Face the enemy (BotMovementHabits): a caster or healer with <paramref name="attacker"/> on it backs off in an arc
         /// facing it, bent toward <paramref name="refuge"/>, at its tier's share of contacts. True when it set off.
         /// </summary>
-        private bool TryRvrFaceBack(GameBot bot, GameLiving attacker, Vector2? refuge, RvrSkillTier tier, long contact)
+        private bool TryRvrFaceBack(GameBot bot, GameLiving attacker, Vector2? refuge, RvrSkillTier tier, long contact,
+            Vector2? kiteSpot = null)
         {
             if (attacker == null || !attacker.IsAlive || bot.IsCasting || bot.IsMoving || bot.MaxSpeed <= 0 || bot.IsStealthed ||
                 bot.IsTurningDisabled || bot.IsUnderwater)
@@ -161,15 +184,23 @@ namespace DOL.AI.Brain
                 BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MoveStrafe, out _) != BotPeopleRefusal.None)
                 return false;
             using var aiProfile = AiProfile.Scope(AiSystem.MovementHabits);
-            Vector2[] ends = BotMovementHabits.BackOffLegs(new(bot.X, bot.Y), new(attacker.X, attacker.Y), refuge,
-                Random.Shared.NextDouble());
+            Vector2 self = new(bot.X, bot.Y);
+            // A healer's face-back is its kite's own run (to the kite's spot, at the kite's speed), walked facing the
+            // attacker along a slight arc: the habit changes facing and the path, never the safety distance. A caster,
+            // which did not kite before, backs off 80 units.
+            Vector2[] ends = kiteSpot is Vector2 spot
+                ? BotMovementHabits.ArcLegsTo(self, spot, Random.Shared.NextDouble())
+                : BotMovementHabits.BackOffLegs(self, new(attacker.X, attacker.Y), refuge, Random.Shared.NextDouble());
             Vector3[] legs = BotMovementHabitsRuntime.ProveLegs(bot, new(bot.X, bot.Y, bot.Z), ends);
-            // Backed into a wall after one leg is no back-off: the usual kite or a stand and fight.
-            if (legs.Length < 2)
+            if (!BotMovementHabits.FaceWalkTaken(legs.Length, ends.Length,
+                    legs.Length == 0 ? 0 : Vector2.Distance(self, new(legs[^1].X, legs[^1].Y)),
+                    ends.Length == 0 ? 0 : Vector2.Distance(self, ends[^1]), kiteSpot.HasValue))
                 return false;
             if (Body.attackComponent?.AttackState == true)
                 Body.StopAttack();
-            StartHabitLegs(bot, attacker, legs, strafe: false, (short)Math.Clamp(bot.MaxSpeed * 45 / 100, 60, 110));
+            StartHabitLegs(bot, attacker, legs, strafe: false, kiteSpot.HasValue
+                ? bot.MaxSpeed
+                : (short)Math.Clamp(bot.MaxSpeed * 60 / 100, 70, 140));
             BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.Faces);
             if (BotMovementHabitsRuntime.ShouldLog(BotMovementHabitsRuntime.EventTag.Strafe))
                 BotMovementHabitsRuntime.Info($"BOT_MOVE_STRAFE kind=face bot=\"{bot.Name}\" id={bot.DatabaseID} " +

@@ -70,5 +70,40 @@ namespace DOL.UnitTests
             Assert.That(BotKeepWallSpots.WatchRadius, Is.GreaterThanOrEqualTo(2_000), "it notices well before an enemy reaches the wall");
             Assert.That(BotKeepWallSpots.MaxFromAnchor, Is.LessThan(500), "inside the group's cohesion radius");
         });
+
+        [Test]
+        public void Formation_members_are_the_only_ones_offered_a_wall() => Assert.Multiple(() =>
+        {
+            Assert.That(BotKeepWallSpots.Offered(true), Is.True);
+            Assert.That(BotKeepWallSpots.Offered(false), Is.False);
+        });
+
+        [Test]
+        public void The_walk_rechecks_decision_eleven_and_gives_up_in_time() => Assert.Multiple(() =>
+        {
+            Assert.That(BotKeepWallSpots.Step(300, true, 2_000, recheckDue: false, stillAllowed: true), Is.EqualTo(BotKeepWallSpots.WalkStep.Walk));
+            Assert.That(BotKeepWallSpots.Step(300, true, 2_000, recheckDue: true, stillAllowed: false), Is.EqualTo(BotKeepWallSpots.WalkStep.Abandon),
+                "an enemy noticed, a siege begun or a duty taken on the way: it leaves the wall alone");
+            Assert.That(BotKeepWallSpots.Step(10, false, 2_000, recheckDue: true, stillAllowed: false), Is.EqualTo(BotKeepWallSpots.WalkStep.Abandon),
+                "it never sits after an enemy appeared");
+            Assert.That(BotKeepWallSpots.Step(30, false, 2_000, false, true), Is.EqualTo(BotKeepWallSpots.WalkStep.Arrive));
+            Assert.That(BotKeepWallSpots.Step(30, true, 2_000, false, true), Is.EqualTo(BotKeepWallSpots.WalkStep.Walk), "still settling");
+            Assert.That(BotKeepWallSpots.Step(5, true, 2_000, false, true), Is.EqualTo(BotKeepWallSpots.WalkStep.Arrive));
+            Assert.That(BotKeepWallSpots.Step(300, true, BotKeepWallSpots.WalkTimeoutMs + 1, false, true),
+                Is.EqualTo(BotKeepWallSpots.WalkStep.GiveUp));
+            Assert.That(BotKeepWallSpots.RecheckMs, Is.EqualTo(1_000), "the keep and the watch are read about once a second");
+        });
+
+        [Test]
+        public void A_bot_keeps_its_wall_only_while_scope_and_decision_eleven_hold() => Assert.Multiple(() =>
+        {
+            Assert.That(BotKeepWallSpots.StillAllowed(true, true, false, false, false, false), Is.True);
+            Assert.That(BotKeepWallSpots.StillAllowed(false, true, false, false, false, false), Is.False, "the scope refuses it now");
+            Assert.That(BotKeepWallSpots.StillAllowed(true, true, true, false, false, false), Is.False, "a siege began");
+            Assert.That(BotKeepWallSpots.StillAllowed(true, true, false, true, false, false), Is.False, "an enemy is noticed");
+            Assert.That(BotKeepWallSpots.StillAllowed(true, false, false, false, false, false), Is.False, "the keep fell");
+            Assert.That(BotKeepWallSpots.StillAllowed(true, true, false, false, true, false), Is.False, "now a committed defender");
+            Assert.That(BotKeepWallSpots.StillAllowed(true, true, false, false, false, true), Is.False, "now a siege fighter");
+        });
     }
 }

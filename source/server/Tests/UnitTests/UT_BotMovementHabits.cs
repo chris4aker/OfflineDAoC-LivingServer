@@ -178,9 +178,9 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void An_overshoot_runs_fifteen_to_sixty_past_on_the_line_it_came_along() => Assert.Multiple(() =>
+        public void An_overshoot_runs_thirty_to_sixty_past_on_the_line_it_came_along() => Assert.Multiple(() =>
         {
-            Assert.That(BotMovementHabits.OvershootDistance(0), Is.EqualTo(15));
+            Assert.That(BotMovementHabits.OvershootDistance(0), Is.EqualTo(30));
             Assert.That(BotMovementHabits.OvershootDistance(0.999999), Is.EqualTo(60).Within(0.01));
             Vector2 from = new(0, 0), spot = new(300, 400);
             Vector2 past = BotMovementHabits.OvershootSpot(from, spot, 50);
@@ -322,6 +322,88 @@ namespace DOL.UnitTests
             Assert.That(BotPeopleScope.Refusal(free with { Rvr = free.Rvr with { AtObjective = true } }, BotPeopleRule.Movement),
                 Is.EqualTo(BotPeopleRefusal.AtObjective), "never in a fight at a keep");
             Assert.That(BotPeopleScope.Refusal(free with { InRaidDungeon = true }, BotPeopleRule.Movement), Is.EqualTo(BotPeopleRefusal.DungeonRaid));
+        });
+
+        // ---- hook points (the fixes of the WP5 review) --------------------------------------------------------------
+
+        [Test]
+        public void An_overshoot_always_clears_the_hangout_arrival_tolerance() => Assert.Multiple(() =>
+        {
+            Assert.That(BotMovementHabits.OvershootMinimum, Is.GreaterThan(AutonomousTownHangouts.ArriveTolerance),
+                "the end of an overshoot never counts as arrived at the spot");
+            for (int i = 0; i < 100; i++)
+                Assert.That(BotMovementHabits.OvershootDistance(i / 100.0), Is.GreaterThan(AutonomousTownHangouts.ArriveTolerance));
+        });
+
+        [Test]
+        public void The_town_routing_walks_on_past_steps_back_once_and_never_routes_over_the_step_back() => Assert.Multiple(() =>
+        {
+            var step = BotMovementHabits.HangoutStep.WalkToSpot;
+            // No overshoot: today's walk.
+            Assert.That(BotMovementHabits.Hangout(false, false, false, true, false), Is.EqualTo(step));
+            Assert.That(BotMovementHabits.Hangout(true, false, false, false, false), Is.EqualTo(BotMovementHabits.HangoutStep.Arrived));
+            // Pending: passing through the spot does not count, and a stop short of the spot past it walks on.
+            Assert.That(BotMovementHabits.Hangout(true, true, false, true, false), Is.EqualTo(BotMovementHabits.HangoutStep.WalkPast));
+            Assert.That(BotMovementHabits.Hangout(false, true, false, false, false), Is.EqualTo(BotMovementHabits.HangoutStep.WalkPast));
+            Assert.That(BotMovementHabits.Hangout(false, true, false, true, false), Is.EqualTo(BotMovementHabits.HangoutStep.WalkPast));
+            // At the spot past it: step back.
+            Assert.That(BotMovementHabits.Hangout(false, true, true, false, false), Is.EqualTo(BotMovementHabits.HangoutStep.StepBack));
+            // The step-back's legs own the walk (no IssuePath over them) until it stands at the spot.
+            Assert.That(BotMovementHabits.Hangout(false, false, false, true, true), Is.EqualTo(BotMovementHabits.HangoutStep.SteppingBack));
+            Assert.That(BotMovementHabits.Hangout(false, true, false, true, true), Is.EqualTo(BotMovementHabits.HangoutStep.SteppingBack),
+                "a step-back the watcher started is not routed back past");
+            Assert.That(BotMovementHabits.Hangout(true, false, false, true, true), Is.EqualTo(BotMovementHabits.HangoutStep.SteppingBack));
+            Assert.That(BotMovementHabits.Hangout(true, false, false, false, true), Is.EqualTo(BotMovementHabits.HangoutStep.Arrived));
+            // A stopped step-back short of the spot: walk to the spot as before.
+            Assert.That(BotMovementHabits.Hangout(false, false, false, false, false), Is.EqualTo(step));
+        });
+
+        [Test]
+        public void A_healers_face_back_keeps_its_kites_run() => Assert.Multiple(() =>
+        {
+            Vector2 self = new(0, 0);
+            foreach (float run in new[] { 220f, 275f, 330f })
+                foreach (double roll in new[] { 0.2, 0.8 })
+                {
+                    Vector2 spot = new(run * 0.6f, run * 0.8f);
+                    Vector2[] legs = BotMovementHabits.ArcLegsTo(self, spot, roll);
+                    Assert.That(legs.Length, Is.LessThanOrEqualTo(BotMovementHabits.FaceMaxLegs));
+                    Assert.That(Vector2.Distance(legs[^1], spot), Is.LessThan(0.01f), "it ends where its kite would have ended");
+                    Vector2 at = self;
+                    foreach (Vector2 leg in legs)
+                    {
+                        Assert.That(Vector2.Distance(at, leg), Is.LessThanOrEqualTo(BotMovementHabits.LegLength),
+                            "short legs: it keeps facing the attacker");
+                        at = leg;
+                    }
+                    Vector2 middle = legs[legs.Length / 2];
+                    Vector2 straight = spot * ((legs.Length / 2 + 1) / (float)legs.Length);
+                    Assert.That(Vector2.Distance(middle, straight), Is.GreaterThan(5), "an arc, not a straight run");
+                }
+            Assert.That(BotMovementHabits.FaceWalkTaken(16, 18, 270, 300, kite: true), Is.True);
+            Assert.That(BotMovementHabits.FaceWalkTaken(10, 18, 200, 300, kite: true), Is.False,
+                "blocked short of 80% of the run: it kites as today instead");
+            Assert.That(BotMovementHabits.FaceWalkTaken(1, 4, 20, 80, kite: false), Is.False, "a caster backed into a wall");
+            Assert.That(BotMovementHabits.FaceWalkTaken(2, 4, 40, 80, kite: false), Is.True);
+        });
+
+        [Test]
+        public void A_bot_has_one_tier_its_profile_once_profiles_exist() => Assert.Multiple(() =>
+        {
+            foreach (RvrSkillTier tier in Enum.GetValues<RvrSkillTier>())
+                Assert.That(BotMovementHabits.TierFor(tier, 123, RvrBotAwareness.Normal), Is.EqualTo(tier));
+            Assert.That(BotMovementHabits.TierFor(null, 123, RvrBotAwareness.Normal),
+                Is.EqualTo(BotMovementHabits.TierOf(123, RvrBotAwareness.Normal)), "no profile: the package's own roll");
+            Assert.That(BotMovementHabitsRuntime.ProfileTier, Is.Null, "unset until the skill profiles are on the branch");
+        });
+
+        [Test]
+        public void Only_formation_members_take_the_walls_the_wait_sites_only_sit() => Assert.Multiple(() =>
+        {
+            Assert.That(BotMovementHabitsRuntime.OffersWall(BotMovementHabitsRuntime.WaitSpot.Formation), Is.True);
+            Assert.That(BotMovementHabitsRuntime.OffersWall(BotMovementHabitsRuntime.WaitSpot.Group), Is.False,
+                "a wait site stops its bot every turn and a rendezvous pulls it back to its slot");
+            Assert.That(BotMovementHabitsRuntime.OffersWall(BotMovementHabitsRuntime.WaitSpot.Bank), Is.False);
         });
     }
 }
