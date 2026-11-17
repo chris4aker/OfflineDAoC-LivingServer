@@ -617,6 +617,7 @@ public static class SluaghbinderEpicQuestRuntime
 
         GameEventMgr.AddHandler(GamePlayerEvent.GameEntered, PlayerEntered);
         GameEventMgr.AddHandler(GamePlayerEvent.Quit, PlayerQuit);
+        _playerHandlersAdded = true;
 
         GameNPC[] npcs = WorldMgr.GetNPCsByName("Muirenn", eRealm.Hibernia);
         Muirenn = npcs.FirstOrDefault(npc => npc.CurrentRegionID == 201) ?? npcs.FirstOrDefault();
@@ -635,6 +636,7 @@ public static class SluaghbinderEpicQuestRuntime
         GameEventMgr.AddHandler(GamePlayerEvent.AcceptQuest, AcceptQuest);
         GameEventMgr.AddHandler(Muirenn, GameObjectEvent.Interact, TalkToMuirenn);
         GameEventMgr.AddHandler(Muirenn, GameLivingEvent.WhisperReceive, TalkToMuirenn);
+        _questGiverWired = Muirenn;
     }
 
     /// <summary>True when classes/enable_sluaghbinder is off (0.38); nothing of its quest line starts then.</summary>
@@ -642,22 +644,34 @@ public static class SluaghbinderEpicQuestRuntime
 
     private static GameNPC Muirenn;
 
+    // What ScriptLoaded actually added, so ScriptUnloaded removes only that. With the class off (or quests not loaded)
+    // nothing is added, and removing a handler that was never added threw at every server stop (1.2, class-off worlds).
+    private static bool _playerHandlersAdded;
+    private static GameNPC _questGiverWired;
+
     public static GameNPC QuestGiver => Muirenn;
 
     [ScriptUnloadedEvent]
     public static void ScriptUnloaded(DOLEvent e, object sender, EventArgs args)
     {
-        GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, PlayerEntered);
-        GameEventMgr.RemoveHandler(GamePlayerEvent.Quit, PlayerQuit);
-        if (Muirenn == null)
+        if (_playerHandlersAdded)
+        {
+            GameEventMgr.RemoveHandler(GamePlayerEvent.GameEntered, PlayerEntered);
+            GameEventMgr.RemoveHandler(GamePlayerEvent.Quit, PlayerQuit);
+            _playerHandlersAdded = false;
+        }
+
+        GameNPC giver = _questGiverWired;
+        _questGiverWired = null;
+        Muirenn = null;
+        if (giver == null)
             return;
 
         GameEventMgr.RemoveHandler(GamePlayerEvent.AcceptQuest, AcceptQuest);
-        GameEventMgr.RemoveHandler(Muirenn, GameObjectEvent.Interact, TalkToMuirenn);
-        GameEventMgr.RemoveHandler(Muirenn, GameLivingEvent.WhisperReceive, TalkToMuirenn);
+        GameEventMgr.RemoveHandler(giver, GameObjectEvent.Interact, TalkToMuirenn);
+        GameEventMgr.RemoveHandler(giver, GameLivingEvent.WhisperReceive, TalkToMuirenn);
         foreach (Type questType in Definitions.Keys)
-            Muirenn.RemoveQuestToGive(questType);
-        Muirenn = null;
+            giver.RemoveQuestToGive(questType);
     }
 
     private static void TalkToMuirenn(DOLEvent e, object sender, EventArgs args)

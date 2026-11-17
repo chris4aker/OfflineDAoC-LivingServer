@@ -425,14 +425,13 @@ namespace DOL.GS.PacketHandler.Client.v168
             // Sluaghbinder choice from character select.
             // Editions without the custom class (classes/enable_sluaghbinder off, as in 0.38) turn this off; the
             // slot is then the disabled native MaulerHib class again, and a direct request is refused below.
-            if (Properties.ENABLE_SLUAGHBINDER && (eRealm)ch.Realm == eRealm.Hibernia &&
-                (ch.Class == (int)eCharacterClass.MaulerHib ||
-                 ch.Class == (int)eCharacterClass.Sluaghbinder))
+            int mappedClass = MapCustomClassSlot(Properties.ENABLE_SLUAGHBINDER, (eRealm)ch.Realm, ch.Class);
+            if (mappedClass != ch.Class)
             {
                 if (log.IsDebugEnabled)
                     log.Debug($"Mapping Hibernian client class slot {eCharacterClass.MaulerHib} to experimental Acolyte (Sluaghbinder novice path)");
 
-                ch.Class = (int)eCharacterClass.Acolyte;
+                ch.Class = mappedClass;
             }
 
             // Set Account Slot, Gender
@@ -466,13 +465,14 @@ namespace DOL.GS.PacketHandler.Client.v168
             if (log.IsDebugEnabled)
                 log.Debug($"Creation {client.Version} character, class:{ch.Class}, realm:{ch.Realm}");
 
-            // A client asking for the custom class directly is refused when it is switched off.
-            if (!Properties.ENABLE_SLUAGHBINDER && (eRealm)ch.Realm == eRealm.Hibernia &&
-                (ch.Class == (int)eCharacterClass.Sluaghbinder || ch.Class == (int)eCharacterClass.Acolyte) &&
-                (ePrivLevel)client.Account.PrivLevel == ePrivLevel.Player)
+            // A client asking for the custom class is refused when it is switched off: the client's slot (62, the
+            // Hibernian Mauler slot the classic 0.37 client still lets a Celt pick), the Sluaghbinder (63) and its
+            // novice (16). Nothing is saved and the client gets its character list back without the new character.
+            if (IsCustomClassRefused(Properties.ENABLE_SLUAGHBINDER, (eRealm)ch.Realm, ch.Class, (ePrivLevel)client.Account.PrivLevel))
             {
-                if (log.IsDebugEnabled)
-                    log.Debug($"Client {client.Account.Name} tried to create the disabled custom Sluaghbinder class");
+                // Warn level so the owner's log shows it even when set to warnings only (like FORK_BUILD).
+                if (log.IsWarnEnabled)
+                    log.Warn($"CUSTOM_CLASS_REFUSED account={client.Account.Name} name={pdata.CharName} class={ch.Class} race={ch.Race} (classes/enable_sluaghbinder is off)");
 
                 return true;
             }
@@ -951,6 +951,34 @@ namespace DOL.GS.PacketHandler.Client.v168
 
             GameServer.Database.SaveObject(client.Account);
             AuditMgr.AddAuditEntry(client, AuditType.Character, AuditSubtype.CharacterDelete, string.Empty, character.Name);
+        }
+
+        /// <summary>
+        /// The class a creation request is saved as before validation: with the custom class on, a Hibernian request for
+        /// the client's Sluaghbinder slot (62) or the Sluaghbinder (63) becomes its novice (Acolyte, 16). Every other
+        /// request, every other realm (Albion's Acolyte included) and every request with the class off is unchanged.
+        /// </summary>
+        public static int MapCustomClassSlot(bool customClassOn, eRealm realm, int requestedClass)
+        {
+            if (customClassOn && realm == eRealm.Hibernia &&
+                (requestedClass == (int)eCharacterClass.MaulerHib || requestedClass == (int)eCharacterClass.Sluaghbinder))
+                return (int)eCharacterClass.Acolyte;
+
+            return requestedClass;
+        }
+
+        /// <summary>
+        /// True when a player's creation request asks for the custom Hibernian class while classes/enable_sluaghbinder
+        /// is off: the client's Sluaghbinder slot (62, MaulerHib), the Sluaghbinder (63) or its novice (Acolyte, 16).
+        /// GM accounts and the other realms are not refused here. With the class on, 62 and 63 are mapped to the
+        /// novice before this check, so it never refuses then.
+        /// </summary>
+        public static bool IsCustomClassRefused(bool customClassOn, eRealm realm, int requestedClass, ePrivLevel privLevel)
+        {
+            return !customClassOn && realm == eRealm.Hibernia && privLevel == ePrivLevel.Player &&
+                (requestedClass == (int)eCharacterClass.MaulerHib ||
+                 requestedClass == (int)eCharacterClass.Sluaghbinder ||
+                 requestedClass == (int)eCharacterClass.Acolyte);
         }
 
         /// <summary>
