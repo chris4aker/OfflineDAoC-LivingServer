@@ -122,11 +122,11 @@ public static class BotMovementHabitsRuntime
         BotMovementHabits.TierFor(ProfileTier?.Invoke(bot), bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID, Awareness);
 
     /// <summary>
-    /// The skill profile's tier of a bot, or null when it has none. Set where the skill profiles (work package 1) are
-    /// on the branch: <c>ProfileTier = bot =&gt; BotSkill.TryProfile(bot, out var profile) ? profile.Tier : null;</c>.
-    /// Unset, every bot takes the fallback roll.
+    /// The skill profile's tier of a bot (work package 1), or null when it has none (bot_skill_profiles off, or no
+    /// person). Tests may replace it; null here means every bot takes the fallback roll.
     /// </summary>
-    public static Func<GameBot, RvrSkillTier?> ProfileTier { get; set; }
+    public static Func<GameBot, RvrSkillTier?> ProfileTier { get; set; } =
+        static bot => BotSkill.TryProfile(bot, out BotSkillProfile profile) ? profile.Tier : null;
 
     /// <summary>The leg's end as the mesh walks it: same zone, dry ground, the bot's own floor; null when not (as
     /// BotBrain.ReachableLeg).</summary>
