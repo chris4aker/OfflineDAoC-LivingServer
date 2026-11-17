@@ -34,6 +34,8 @@ namespace DOL.GS
         private AutonomousTownHangouts.Kind _townHangoutKind;
         private GameObject _townHangoutFocus;
         private Vector2? _townHangoutFace;
+        // Bots as people 1.2 (WP5): the spot past the hangout an overshooting bot runs to before it steps back.
+        private Vector3? _townHangoutPast;
         private static long _nextTownHangoutSearch;
 
         private void ResetTownIdle()
@@ -106,6 +108,9 @@ namespace DOL.GS
                     bot.StopMovingOnPath();
                     bot.StopMoving();
                 }
+                // Bots as people 1.2 (WP5): idling at the bank, a long wait ends seated.
+                if (!_townHangoutWalking && _townHangoutFocus is GameVaultKeeper)
+                    BotMovementHabitsRuntime.WaitTurn(bot, BotMovementHabitsRuntime.WaitSpot.Bank);
                 if (brain.CheckHeals()) return true;
                 if (AutonomousRestPolicy.IsFullyRecovered(bot.HealthPercent, bot.ManaPercent, bot.EndurancePercent, bot.MaxMana > 0))
                     bot.WakeRecoveryRest();
@@ -318,10 +323,27 @@ namespace DOL.GS
             if (!_townHangoutWalking)
                 return false;
             Vector3 here = new(bot.X, bot.Y, bot.Z);
-            if (Vector2.DistanceSquared(new(here.X, here.Y), new(_townIdleDestination.Point.X, _townIdleDestination.Point.Y)) >
-                AutonomousTownHangouts.ArriveTolerance * AutonomousTownHangouts.ArriveTolerance)
+            const float tolerance = AutonomousTownHangouts.ArriveTolerance * AutonomousTownHangouts.ArriveTolerance;
+            Vector2 at = new(here.X, here.Y);
+            bool atSpot = Vector2.DistanceSquared(at, new(_townIdleDestination.Point.X, _townIdleDestination.Point.Y)) <= tolerance;
+            // Bots as people 1.2 (WP5): an overshooting bot walks on past the spot, steps back once, and that step-back is
+            // not routed over (BotMovementHabits.Hangout).
+            bool pending = _townHangoutPast != null && BotMovementHabitsRuntime.OvershootPending(bot);
+            bool atPast = _townHangoutPast is Vector3 past && Vector2.DistanceSquared(at, new(past.X, past.Y)) <= tolerance;
+            BotMovementHabits.HangoutStep step = BotMovementHabits.Hangout(atSpot, pending, atPast, bot.IsMoving,
+                BotMovementHabitsRuntime.SteppingBack(bot));
+            if (step == BotMovementHabits.HangoutStep.SteppingBack)
+                return true;
+            if (step == BotMovementHabits.HangoutStep.StepBack)
             {
-                if (IssuePath(bot, _townIdleDestination.Point))
+                _townHangoutPast = null;
+                BotMovementHabitsRuntime.StepBack(bot);
+                return true;
+            }
+            if (step is BotMovementHabits.HangoutStep.WalkPast or BotMovementHabits.HangoutStep.WalkToSpot)
+            {
+                Vector3 aim = step == BotMovementHabits.HangoutStep.WalkPast ? _townHangoutPast.Value : _townIdleDestination.Point;
+                if (IssuePath(bot, aim))
                 {
                     SetStatus(bot, $"Wandering over to the {AutonomousTownHangouts.Word(_townHangoutKind)}",
                         $"Idle in {_townIdleDestination.Town.Name}", "Town break: the bank and the usual crowd spots",
@@ -330,6 +352,11 @@ namespace DOL.GS
                 }
                 // No route after all: stand where it got to.
                 _townIdleDestination = _townIdleDestination with { Point = here };
+            }
+            if (_townHangoutPast != null)
+            {
+                _townHangoutPast = null;
+                BotMovementHabitsRuntime.CancelOvershoot(bot); // stopped at the spot itself, or the walk failed
             }
             _townHangoutWalking = false;
             bot.StopMovingOnPath();
@@ -367,6 +394,8 @@ namespace DOL.GS
             }
             _townHangoutAtUtc = now.AddMilliseconds(AutonomousTownHangouts.NextDwell(Random.Shared.NextDouble()));
             _townIdleDestination = current with { Point = point };
+            _townHangoutPast = BotMovementHabitsRuntime.Overshoot(bot, point,
+                past => InsideTown(current.Town, past) && !InLiveAggroRange(bot, past));
             _townHangoutKind = kind;
             _townHangoutFocus = focus;
             _townHangoutFace = face;
@@ -418,6 +447,26 @@ namespace DOL.GS
                 trainers.Count > 0, crowd, stations.Count > 0, Random.Shared.NextDouble());
             if (chosen is not AutonomousTownHangouts.Kind picked)
                 return false;
+            // Bots as people 1.2 (WP5): with a crowd at the vault keeper already, a crowd choice joins the bank's.
+            if (picked == AutonomousTownHangouts.Kind.Crowd && banks.Count > 0 &&
+                BotPeopleScope.Check(bot, BotPeopleRule.Movement, BotPeopleSwitches.Current.MovementHabits, out _) == BotPeopleRefusal.None)
+            {
+                int atBank = 0;
+                foreach (GameNPC bank in banks)
+                {
+                    int here = 0;
+                    foreach (Vector2 stander in standers)
+                        if (Vector2.DistanceSquared(stander, new(bank.X, bank.Y)) <= BotMovementHabits.BankCrowdRadius * BotMovementHabits.BankCrowdRadius)
+                            here++;
+                    atBank = Math.Max(atBank, here);
+                }
+                AutonomousTownHangouts.Kind leaned = BotMovementHabits.LeanToBank(picked, atBank, bankHere: true);
+                if (leaned != picked)
+                {
+                    picked = leaned;
+                    BotMovementHabitsRuntime.Count(BotMovementHabitsRuntime.Counter.BankLeans);
+                }
+            }
             kind = picked;
             GameObject target = null;
             if (picked == AutonomousTownHangouts.Kind.Station)

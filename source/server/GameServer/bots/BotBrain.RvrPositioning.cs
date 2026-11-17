@@ -119,6 +119,9 @@ namespace DOL.AI.Brain
             long now = GameLoop.GameLoopTime;
             if (bot?.Group == null || bot.Group.MemberCount < 2 || !bot.IsAlive || bot.CurrentRegion == null)
                 return false;
+            // Bots as people 1.2 (WP5): a strafe or a back-off facing the enemy (BotBrain.MovementHabits) owns the turn.
+            if (ContinueHabitLegs(bot, now))
+                return true;
             if (ContinueRvrPlaceWalk(bot, now))
                 return true;
             if (bot.IsCasting || bot.IsIncapacitated || bot.IsCrowdControlled || bot.MaxSpeed <= 0 || bot.IsStealthed ||
@@ -186,7 +189,11 @@ namespace DOL.AI.Brain
             if (kiting && RvrKiteTurn(bot, target, support, board, plan, slots, mine, positions, centre, enemy, now) is bool kited)
                 return kited;
             if (mine.Stand != RvrStand.Back)
-                return false;
+                return !support && TryRvrStrafe(bot, target, tier, now); // WP5: melee circle-strafe
+            // WP5: a caster with an enemy melee fighter on it faces it and backs off in an arc.
+            if (!IsHealer && !RvrPositioning.CountsAsHealer(me.Role, me.Class) &&
+                TryRvrCasterFace(bot, board, plan, me, RvrPositioning.Line(positions), now))
+                return true;
             // Heals first: a healer walks for its place only while nobody needs a heal.
             if (IsHealer)
                 foreach (RvrCombatant member in board.Members)
@@ -281,6 +288,12 @@ namespace DOL.AI.Brain
             }
             float distance = RvrPositioning.KiteDistance(tier, roll);
             Vector2 spot = RvrPositioning.KiteSpot(Flat(bot), RvrPeelPlan.At(attacker), refuge, distance);
+            // WP5: a healer that faces the enemy runs the same kite facing it, in short legs along an arc, then heals.
+            if (TryRvrFaceBack(bot, attacker.Living, refuge, tier, contact, spot))
+            {
+                _rvrKiteReadyAt = _habitUntil + RvrPositioning.KiteHealWindow(roll);
+                return true;
+            }
             if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Kite, now))
                 return false;
             _rvrKiteFrom = attacker.Living;

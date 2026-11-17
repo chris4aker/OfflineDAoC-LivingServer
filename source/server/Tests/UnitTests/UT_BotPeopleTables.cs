@@ -26,9 +26,9 @@ namespace DOL.UnitTests
             "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones",
         ];
 
-        /// <summary>The switches whose package is built: their description says what they do now (WP1: growth;
-        /// WP3: bot_place_knowledge).</summary>
-        public static readonly string[] Built = ["bot_skill_growth", "bot_place_knowledge"];
+        /// <summary>The switches whose package is built: their description says what they do now.</summary>
+        public static readonly string[] Built =
+            ["bot_skill_growth", "bot_place_knowledge", "bot_movement_habits", "bot_move_strafe", "bot_move_stick_line", "bot_move_sit_and_walls"];
 
         // ---- tables ----------------------------------------------------------------------------------------------------
 

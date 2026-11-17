@@ -356,6 +356,8 @@ namespace DOL.GS
 
         private void SetSeatedForClients(bool seated)
         {
+            if (!seated)
+                _seatedByHabit = false;
             if (_seatedForClients == seated)
                 return;
             _seatedForClients = seated;
@@ -363,6 +365,35 @@ namespace DOL.GS
                 return;
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                 player.Out.SendEmoteAnimation(this, seated ? SitEmote : StandEmote);
+        }
+
+        // Bots as people for 1.2, work package 5 (BotMovementHabits): an autonomous gamebot also sits while it waits (for
+        // its group, at a rendezvous, at the bank, on a held keep's wall). The same emote, visual only, and outside rest:
+        // it stands at once when it moves (NpcMovementComponent.WalkToInternal), casts (CastSpell), attacks (StartAttack),
+        // dies or is moved; a rest that begins takes the seat over. Only BotMovementHabitsRuntime sits a bot this way.
+        private bool _seatedByHabit;
+
+        /// <summary>Seated by a movement habit (not by resting).</summary>
+        public bool IsSeatedByHabit => _seatedByHabit;
+
+        /// <summary>Sits a standing, idle autonomous gamebot down by habit. False (nothing sent) when it may not sit now.</summary>
+        internal bool SitByHabit()
+        {
+            if (_seatedForClients || !IsAlive || !IsAutonomousWorldBot || IsTemporaryGroupHelper || IsMoving || IsCasting ||
+                IsAttacking || InCombat || IsStealthed || IsRecoveryResting || IsOnStableMasterRoute ||
+                ObjectState != eObjectState.Active)
+                return false;
+            SetSeatedForClients(true);
+            _seatedByHabit = true;
+            return true;
+        }
+
+        /// <summary>Stands a bot seated by habit (0xF1); a resting bot keeps its seat.</summary>
+        internal void StandFromHabit()
+        {
+            if (_seatedByHabit && !_recoveryRestLocked)
+                SetSeatedForClients(false);
+            _seatedByHabit = false;
         }
 
         #endregion
@@ -3037,6 +3068,7 @@ namespace DOL.GS
             StopMovingOnPath();
             StopMoving();
             _recoveryRestLocked = true;
+            _seatedByHabit = false;         // the rest takes over a seat taken by habit (WP5)
             SetSeatedForClients(true);      // sits down for the rest, visibly (0xF0)
             UpdateHealthManaEndu();
             StartEnhancedRecoveryTimers();
@@ -3077,7 +3109,8 @@ namespace DOL.GS
         public void WakeRecoveryRest()
         {
             _recoveryRestLocked = false;
-            SetSeatedForClients(false);     // stands up before it moves, casts or fights (0xF1)
+            if (!_seatedByHabit)            // a seat taken by habit (WP5) stands on the bot's own move, cast or attack
+                SetSeatedForClients(false); // stands up before it moves, casts or fights (0xF1)
         }
 
         /// <summary>
@@ -3171,6 +3204,8 @@ namespace DOL.GS
             // parked party is still recovering.
             if (target != null && IsRecoveryResting)
                 return;
+            if (target != null && _seatedByHabit)
+                StandFromHabit();           // stands to fight (WP5 sitting habit)
 
             // 1.2 epic rule (Funus with his weapon puzzle): a bot never starts an attack on a boss it must not hit (its hits
             // heal him to full), and an archer that may fight him with its distance weapon only starts with that weapon.
