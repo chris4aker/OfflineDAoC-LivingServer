@@ -2261,6 +2261,8 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.Recovery.Observe(RecoveryMembers(session, members, false), session.TaskClock.HasStarted))
         {
             session.Wipes++;
+            if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
+                RvrEngagement.RecordWipe(session.Group, GameLoop.GameLoopTime);   // 1.2 WP4: the group remembers its wipes
             // Beta 1.1.2, round 7: a wipe is a story one of the party may tell in /faction.
             if (members.Length > 0 && Random.Shared.NextDouble() < 0.5)
                 AutonomousBotChatCoordinator.TellStory("wipe", members[Random.Shared.Next(members.Length)]);

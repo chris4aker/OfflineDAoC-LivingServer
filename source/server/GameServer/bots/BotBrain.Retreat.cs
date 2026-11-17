@@ -56,6 +56,8 @@ namespace DOL.AI.Brain
             GameBot bot = BotBody;
             if (bot == null || !BotGroupRetreat.Enabled || !bot.IsAlive)
             {
+                if (bot?.IsAlive == true)
+                    RvrStanceRetreatOrder(null, GameLoop.GameLoopTime);   // 1.2 WP4: stances run without the retreat too
                 EndRetreat();
                 return false;
             }
@@ -79,6 +81,7 @@ namespace DOL.AI.Brain
             BotGroupRetreat.Order order = bot.IsAutonomousWorldBot && !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper
                 ? BotGroupRetreat.Active(bot.Group, now)
                 : null;
+            order = RvrStanceRetreatOrder(order, now);   // 1.2 WP4: the open-field stance (BotBrain.RvrTactics.cs)
             if (order != null && order.Region == bot.CurrentRegionID)
             {
                 id = order.Id;

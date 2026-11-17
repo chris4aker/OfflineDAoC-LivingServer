@@ -598,7 +598,7 @@ namespace DOL.GS
                 // the bot when movement actually takes over.
                 bool recoveringAtCurrentCamp = _camp != null && ReferenceEquals(_restingCamp, _camp);
                 if (bot.IsRecoveryResting && !recoveringAtCurrentCamp && !_dungeonRouteResting &&
-                    _groupDirective?.Phase != "Regrouping" && !_townIdleUntilUtc.HasValue)
+                    _groupDirective?.Phase != "Regrouping" && !_townIdleUntilUtc.HasValue && !RvrStanceRestHolds(nowTick))
                     bot.WakeRecoveryRest();
 
                 if (bot.IsCasting && !BotSongTwistPolicy.HasMobileSongCast(bot))
@@ -2591,7 +2591,8 @@ namespace DOL.GS
                 new AutonomousRvrEventLayer.Force(_groupDirective?.GroupId ?? $"rvr-{bot.DatabaseID}", bot.Realm,
                     warband.Length, averageLevel, healers, siegeReady,
                     (unchecked((ulong)(_groupDirective?.Leader?.DatabaseID ?? bot.DatabaseID)) * 2654435761UL % 100) < 30,
-                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level)),
+                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level),
+                    RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime)),
                 objectives, GameLoop.GameLoopTime, Random.Shared.NextDouble());
             _rvrSharedEvent = plan?.IsSharedEvent == true;
             _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
