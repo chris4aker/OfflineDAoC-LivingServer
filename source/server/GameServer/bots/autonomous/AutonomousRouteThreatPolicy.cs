@@ -154,6 +154,34 @@ namespace DOL.GS
         public static bool LegsClear(Vector3 start, Vector3 sidestep, Vector3 rejoin, Vector3 threat, float radius) =>
             SegmentDistance2D(start, sidestep, threat) >= radius && SegmentDistance2D(sidestep, rejoin, threat) >= radius;
 
+        /// <summary>Bots as people WP4 (owner decision 7): no wrong road within this distance of an aggressive monster far above the bot.</summary>
+        public const float WrongRoadThreatRadius = 1_500f;
+
+        /// <summary>A monster more than this many levels above the bot counts for a wrong road.</summary>
+        public const int WrongRoadLevelMargin = 2;
+
+        /// <summary>
+        /// Bots as people WP4: whether a wrong leg from <paramref name="from"/> to <paramref name="to"/> passes within 1,500
+        /// units of an aggressive monster more than 2 levels above the bot (owner decision 7). Pure.
+        /// </summary>
+        public static bool WrongLegThreatened(Vector3 from, Vector3 to, int botLevel, int monsterLevel, bool aggressive, Vector3 monster) =>
+            aggressive && monsterLevel > botLevel + WrongRoadLevelMargin && SegmentDistance2D(from, to, monster) <= WrongRoadThreatRadius;
+
+        /// <summary>
+        /// Bots as people WP4: whether a walk that owns the bot (tagging along, a wrong road) must hand it back because today's
+        /// guard would act on this monster: anything but a grey that is yellow or worse to the bot, a boss, or a pack the guard
+        /// would go around or give the camp up for (Decide for a solo bot). Green and blue singles the guard would only pull are
+        /// walked past, as a bot walking today's route does when it may not pull. Pure.
+        /// </summary>
+        public static bool WayWalkMustYield(ConColor con, int packSize, bool bossLike)
+        {
+            if (con <= ConColor.GREY && !bossLike)
+                return false;
+            if (bossLike || con >= ConColor.YELLOW)
+                return true;
+            return Decide(con, false, packSize, false, true, 0, true) is RouteThreatAction.Detour or RouteThreatAction.Retarget;
+        }
+
         public static float SegmentDistance2D(Vector3 a, Vector3 b, Vector3 p)
         {
             Vector2 a2 = new(a.X, a.Y), b2 = new(b.X, b.Y), p2 = new(p.X, p.Y), ab = b2 - a2;

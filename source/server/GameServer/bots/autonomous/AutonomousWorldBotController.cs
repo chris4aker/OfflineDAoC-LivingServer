@@ -323,6 +323,8 @@ namespace DOL.GS
         private static long _nextPocketNudgeLog;
         // Bots as people WP3: when the bot next looks at which zone it is in (BotPlaceKnowledge.Visit).
         private long _nextPlaceCheckTick;
+        // Bots as people WP4: its trips to places it does not know (ask the way, tag along, a wrong road).
+        private readonly BotWayTrip _way = new();
 
         /// <summary>Bots as people WP3: learn the places it has arrived in (nothing while zone and level are unchanged).</summary>
         private void VisitPlaces(GameBot bot, long nowTick)
@@ -388,6 +390,8 @@ namespace DOL.GS
                     if (stillInPocket) _nextPocketCheckTick = nowTick + 60_000;
                 }
                 VisitPlaces(bot, nowTick); // Bots as people WP3
+                // Bots as people WP4: a new trip is decided once (two compares while the destination is unchanged).
+                _way.Observe(bot, nowTick);
                 // A solo siege force is released at most a couple of seconds
                 // after its event ends; no need to take the event lock each turn.
                 if (bot.Group == null && nowTick >= _nextRvrReleaseCheckTick)
@@ -622,6 +626,17 @@ namespace DOL.GS
 
                 if (bot.IsCasting && !BotSongTwistPolicy.HasMobileSongCast(bot))
                     return true;
+
+                // Bots as people WP4: tagging along or a wrong road owns the walk for a while; when one ends the route is replanned.
+                if (_way.Walk(bot, nowTick, _issuedRouteDestination, out bool wayEnded))
+                    return true;
+                if (wayEnded)
+                {
+                    _nextMoveOrderTick = 0;
+                    _lastRouteProgressTick = 0;
+                    _routeRecoveryWaypoint = null;
+                    bot.ForcePathReplot();
+                }
 
                 if (HandleRealmRaidStableTravel(bot))
                     return true;

@@ -2710,13 +2710,13 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, work package 4.
 		/// </summary>
-		[ServerProperty("bots", "bot_ask_the_way", "Bots as people (1.2): a gamebot going somewhere it does not know may ask the way in /faction or /say (at most one ask in /faction per realm every 10 minutes), and a bot of its realm that knows the place answers truthfully; or it tags along behind a realm-mate going there. Needs bot_place_knowledge. Log: BOT_WAY_ASK, BOT_WAY_TOLD, BOT_WAY_FOLLOW. In this build it changes nothing yet (work package 4).", true)]
+		[ServerProperty("bots", "bot_ask_the_way", "Bots as people (1.2): a gamebot going somewhere it does not know may ask the way in /say near you or in /faction (at most one ask in /faction per realm every 10 minutes); only a bot of its realm that knows the place answers, truthfully, and the asker then half knows it. Or it tags along behind a realm-mate of about its level (2 levels at most) going there, and leaves it at the zone line, when the leader stops, or when a monster yellow or worse to it is on the way. Needs bot_place_knowledge. Log: BOT_WAY_ASK, BOT_WAY_TOLD, BOT_WAY_FOLLOW, BOT_WAY_SUMMARY.", true)]
 		public static bool BOT_ASK_THE_WAY = true;
 
 		/// <summary>
 		/// Bots as people, work package 4.
 		/// </summary>
-		[ServerProperty("bots", "bot_wrong_roads", "Bots as people (1.2): a gamebot going somewhere it does not know may take another branch at a road junction for a minute or two, then find its way (at most once a trip and 3 minutes; never on a stable ride, in an enemy frontier, in a dungeon or near monsters more than 2 levels above it). Needs bot_place_knowledge. Log: BOT_WAY_WRONG_ROAD, BOT_WAY_SUMMARY. In this build it changes nothing yet (work package 4).", true)]
+		[ServerProperty("bots", "bot_wrong_roads", "Bots as people (1.2): a gamebot going somewhere it does not know may take a wrong road for 600 to 1,500 units, look around and come back to its route. A wrong road follows the proven walking legs of the route network, which may cross open ground rather than a painted road. At most once a trip and 3 minutes; never on a stable ride, in a group, in a frontier, in a dungeon or near monsters more than 2 levels above it, and it turns back when a monster yellow or worse to it is on the way. Needs bot_place_knowledge. Log: BOT_WAY_WRONG_ROAD, BOT_WAY_SUMMARY.", true)]
 		public static bool BOT_WRONG_ROADS = true;
 
 		/// <summary>

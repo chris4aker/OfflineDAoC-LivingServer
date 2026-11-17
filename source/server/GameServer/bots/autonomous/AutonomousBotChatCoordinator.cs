@@ -11,7 +11,7 @@ namespace DOL.GS;
 /// Coordinates scarce, short bot conversations. Faction text stays broad;
 /// local text is allowed to mention the speaker's live task and surroundings.
 /// </summary>
-public static class AutonomousBotChatCoordinator
+public static partial class AutonomousBotChatCoordinator
 {
     private static readonly object Sync = new();
     private static readonly Dictionary<eRealm, long> LastFactionAmbient = new();
@@ -375,6 +375,14 @@ public static class AutonomousBotChatCoordinator
             AutonomousChatFieldTalk.MemoryOf(starter.Realm), random, GameLoop.GameLoopTime, AutonomousChatStance.Shared);
         if (said == null)
             return false;
+        return SayField(starter, channel, choice, reason, said, listeners);
+    }
+
+    /// <summary>Says a field line that was drawn (TryField) or is a bot's real question (Bots as people WP4, AskTheWay).</summary>
+    private static bool SayField(GameBot starter, string channel, AmbientChoice choice, string reason, AutonomousChatFieldTalk.Said said,
+        List<GamePlayer> listeners = null)
+    {
+        var random = Random.Shared;
         // 1.1.3 (owner's PC, RC3 and RC5 2026-11-09: most bot questions in /faction drew nothing): a question is asked only when
         // the channel has room for its answer too, under the ceiling and with fewer than three threads running.
         if (channel is "faction" or "say" && AutonomousChatFieldTalk.WantsAnswer(said) && !RoomToAnswer(starter, channel == "faction"))
@@ -441,7 +449,9 @@ public static class AutonomousBotChatCoordinator
             return;
         // 1.1.3: only a bot that can answer it says "me" (the role and levels it asks for: no "cab, 50" to "need a tank"); after
         // RC5, only one that has an answer at all ("any reavers on? quick q" is for a reaver).
-        Func<GameBot, bool> fits = bot => AutonomousChatFieldTalk.CanGiveAnswer(said, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, IsHealer(bot));
+        // Bots as people WP4: the way to a place only from a bot that knows it.
+        Func<GameBot, bool> fits = bot => AutonomousChatFieldTalk.CanGiveAnswer(said, bot.CharacterClass?.Name ?? bot.ClassName, bot.Level, IsHealer(bot)) &&
+                                          BotWayFinding.MayAnswer(bot, said);
         var spare = new List<GameBot>(4);
         (GameBot answerer, GameBot third) = Repliers(starter, faction, now, random, fits, spare,
             AutonomousChatFieldTalk.WantsAnswer(said) ? QuestionRegularShare : 1.0);
@@ -485,7 +495,8 @@ public static class AutonomousBotChatCoordinator
                                  (said.SameClass == null || string.Equals(bot.CharacterClass?.Name, answerer.CharacterClass?.Name, StringComparison.OrdinalIgnoreCase)) &&
                                  (said.Place == null || AtPlace(bot, said.Place) == AtPlace(answerer, said.Place)))
                 .ToArray();
-        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange, code, standIns);
+        PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange, code, standIns,
+            said.WayTo == null ? null : speaker => BotWayFinding.Told(starter, speaker, said));
     }
 
     /// <summary>How many bots of the speaker's realm <see cref="Repliers"/> looks at.</summary>
@@ -603,7 +614,7 @@ public static class AutonomousBotChatCoordinator
     /// (a third bot's chime is skipped instead), and so does a short line whose referent other talk has scrolled away.
     /// </summary>
     private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule, long exchange,
-        string code = null, GameBot[] answererStandIns = null)
+        string code = null, GameBot[] answererStandIns = null, Action<GameBot> onSaid = null)
     {
         if (steps == null || steps.Count == 0 || speakers[0] == null)
             return;
@@ -628,6 +639,7 @@ public static class AutonomousBotChatCoordinator
                     return false;
                 AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null,
                     code: code);
+                onSaid?.Invoke(bot);
                 return true;
             }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say,
             standIns: answererStandIns is { Length: > 0 } ? [null, answererStandIns] : null);
