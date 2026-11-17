@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using OfflineDaoc.Shared;
 
 namespace DOL.GS
 {
@@ -11,6 +14,12 @@ namespace DOL.GS
         public eSpecType SpecType;
         public bool Is2H;
         public List<BotSpecLine> SpecLines = new List<BotSpecLine>();
+        /// <summary>Era builds 1.2 (WP3): the era build this lifetime plan was made from (<see cref="EraBuild.Id"/>), saved with
+        /// the plan; empty for today's class-file builds and for every plan saved before 1.2.</summary>
+        public string EraBuildId = string.Empty;
+        /// <summary>The era build's role in the research's words (healer-cc, cc-mezzer, cc-root, tank...); empty for today's
+        /// builds. Read by the RvR eight's crowd-control slot (WP5, rvr_roster_build_roles).</summary>
+        public string EraRole = string.Empty;
 
         public BotSpec()
         { }
@@ -120,6 +129,79 @@ namespace DOL.GS
             IReadOnlyList<eSpecType> choices = GetSpecializationChoices(charClass);
             return choices[Util.Random(choices.Count - 1)];
         }
+
+        /// <summary>
+        /// Era builds 1.2 (WP3, docs/ERA-BUILDS-1.2.md "The build draw"): a lifetime plan from an era build. The class file
+        /// for the build's family sets the weapons, gear rules and <see cref="SpecType"/> as today; its weapon lines are
+        /// then moved to the ones the build trains (Polearm, Two Handed, Large Weapons...), and its spec lines are replaced by
+        /// the build's, each capped at the build's level with a derived levelling ratio (<see cref="EraBuildCatalog.DerivedRatio"/>).
+        /// <paramref name="specs"/> are the levels to train (the build's own, or after <see cref="EraBuildCatalog.Jitter"/>);
+        /// <paramref name="weaponLevels"/> optionally adds levels a bot already trained (the nearest-build case), so its
+        /// weapons follow its own points. Null for the custom class (bots never play it), an unknown family or a class
+        /// without a class file.
+        /// </summary>
+        public static BotSpec FromEraBuild(eCharacterClass charClass, EraBuild build,
+            IReadOnlyList<KeyValuePair<string, int>> specs = null, long botId = 0, Func<string, int> weaponLevels = null)
+        {
+            if (build == null || !BotCustomClassRule.BotsMayPlay((int)charClass) ||
+                !Enum.TryParse(build.Family, ignoreCase: false, out eSpecType family) || !Enum.IsDefined(family))
+                return null;
+            specs ??= build.Specs;
+            if (specs.Count == 0)
+                return null;
+            BotSpec plan = charClass switch
+            {
+                eCharacterClass.Bonedancer => new BonedancerBotSpec(family, botId, true),
+                eCharacterClass.Savage => new SavageBotSpec(family, SavageWeapon(specs)),
+                _ => GetSpec(charClass, family),
+            };
+            if (plan == null)
+                return null;
+
+            int Level(string line)
+            {
+                int level = 0;
+                foreach (KeyValuePair<string, int> entry in specs)
+                    if (string.Equals(entry.Key, line, StringComparison.Ordinal))
+                        level = entry.Value;
+                return Math.Max(level, weaponLevels?.Invoke(line) ?? 0);
+            }
+            eObjectType before = plan.WeaponOneType;
+            BotLifetimeBuild.AlignWithInvestedWeapons(plan, Level);
+            if (plan.WeaponOneType != before && plan.DamageType != 0)
+                plan.DamageType = DamageTypeOf(plan.WeaponOneType, plan.DamageType);
+
+            EraBuild trained = ReferenceEquals(specs, build.Specs) ? build : build with { Specs = specs };
+            plan.SpecLines = specs.Select(line => new BotSpecLine(line.Key, (uint)Math.Clamp(line.Value, 1, 50),
+                EraBuildCatalog.DerivedRatio(trained, line.Key))).ToList();
+            plan.EraBuildId = build.Id;
+            plan.EraRole = build.Role ?? string.Empty;
+            return plan;
+        }
+
+        /// <summary>The Savage's weapon from an era build's lines (Hand to Hand, Sword, Axe or Hammer; 0 = the class file's pick).</summary>
+        private static eObjectType SavageWeapon(IReadOnlyList<KeyValuePair<string, int>> specs)
+        {
+            foreach (KeyValuePair<string, int> line in specs)
+            {
+                switch (line.Key)
+                {
+                    case Specs.HandToHand: return eObjectType.HandToHand;
+                    case Specs.Sword: return eObjectType.Sword;
+                    case Specs.Axe: return eObjectType.Axe;
+                    case Specs.Hammer: return eObjectType.Hammer;
+                }
+            }
+            return 0;
+        }
+
+        private static eWeaponDamageType DamageTypeOf(eObjectType weapon, eWeaponDamageType fallback) => weapon switch
+        {
+            eObjectType.SlashingWeapon or eObjectType.Blades or eObjectType.Sword or eObjectType.Axe => eWeaponDamageType.Slash,
+            eObjectType.ThrustWeapon or eObjectType.Piercing or eObjectType.Spear => eWeaponDamageType.Thrust,
+            eObjectType.CrushingWeapon or eObjectType.Blunt or eObjectType.Hammer => eWeaponDamageType.Crush,
+            _ => fallback,
+        };
 
         public static eSpecType ChoosePersistentSpecialization(eCharacterClass charClass, long botId)
         {

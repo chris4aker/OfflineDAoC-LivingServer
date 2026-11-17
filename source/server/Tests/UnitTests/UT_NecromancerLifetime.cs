@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
@@ -89,6 +90,21 @@ namespace DOL.UnitTests
             Assert.That(pet.Deaths, Is.Zero);
             Assert.That(owner.ControlledBrain, Is.SameAs(brain));
             Assert.That(typeof(NecromancerPetBrain).GetField("_tetherTimer", Hidden).GetValue(brain), Is.Null);
+        }
+
+        [TestCase("necromancer-dsight-dserv", eSpecType.DeathsightNecro)]
+        [TestCase("necromancer-dserv-dsight", eSpecType.DeathServantNecro)]
+        [TestCase("necromancer-dsight-pain", eSpecType.DeathsightNecro)]
+        public void AnEraBuiltNecromancerKeepsItsStaffAndItsServantPlan(string id, eSpecType family)
+        {
+            // Era builds 1.2, WP3: the class file for the build's family still sets the Necromancer's staff and plan.
+            BotSpec necro = BotSpec.FromEraBuild(eCharacterClass.Necromancer, OfflineDaoc.Shared.EraBuildCatalog.Default.GetBuild(id));
+            Assert.That(necro, Is.InstanceOf<NecromancerBotSpec>());
+            Assert.That(necro.WeaponOneType, Is.EqualTo(eObjectType.Staff));
+            Assert.That(necro.Is2H, Is.True);
+            Assert.That(necro.SpecType, Is.EqualTo(family));
+            Assert.That(necro.EraBuildId, Is.EqualTo(id));
+            Assert.That(necro.SpecLines.Select(l => l.Spec), Does.Contain(Specs.Death_Servant).And.Contain(Specs.Deathsight));
         }
 
         [Test]

@@ -1418,7 +1418,7 @@ namespace DOL.GS
             if (bot.TrainPendingSpecializations(trainer))
             {
                 SetStatus(bot, $"Training with {trainer.Name}", "Train newly earned specialization points",
-                    $"Spent earned points through level {bot.Level} in the locked {bot.BotSpec?.SpecType} plan",
+                    $"Spent earned points through level {bot.Level} in the locked {EraLifetimeBuild.PlanName(bot.BotSpec)}",
                     trainer.Name, trainer.CurrentZone?.Description ?? string.Empty, true);
                 _trainingTrainer = null;
                 _nextPlanTick = GameLoop.GameLoopTime + 2_500;

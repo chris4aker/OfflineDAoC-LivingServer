@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DOL.Database;
+using DOL.GS.PlayerClass;
+using OfflineDaoc.Shared;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
@@ -253,6 +255,58 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousStarterGear.Describe(pieces),
                 Is.EqualTo("Torso:Studded Jerkin(L20), RightHand:Long 'Sword'(L21)"));
             Assert.That(AutonomousStarterGear.Describe(null), Is.Empty);
+        }
+
+        // ---- era builds
+
+        private static readonly eObjectType[] MeleeTypes =
+        [
+            eObjectType.Sword, eObjectType.Axe, eObjectType.Hammer, eObjectType.SlashingWeapon, eObjectType.ThrustWeapon,
+            eObjectType.CrushingWeapon, eObjectType.Blades, eObjectType.Blunt, eObjectType.Piercing, eObjectType.Spear,
+            eObjectType.HandToHand, eObjectType.Flexible, eObjectType.Scythe, eObjectType.Staff, eObjectType.TwoHandedWeapon,
+            eObjectType.PolearmWeapon, eObjectType.CelticSpear, eObjectType.LargeWeapons,
+        ];
+
+        [Test]
+        public void TheWeaponsAndTheStarterGearFollowTheBuildsWeaponLines()
+        {
+            // Era builds 1.2, WP3: an era-built arrival's starter weapon (and a kept level-50 kit weapon) is one its build
+            // trains: the plan's weapons come from the build's weapon lines (BotSpec.FromEraBuild).
+            using var language = new DOL.UnitTests.PetTestLanguageScope();
+            var classTypes = typeof(GameBot).Assembly.GetTypes()
+                .Select(t => (Type: t, Attr: t.GetCustomAttributes(typeof(CharacterClassAttribute), false).OfType<CharacterClassAttribute>().FirstOrDefault()))
+                .Where(x => x.Attr != null && !x.Type.IsAbstract)
+                .GroupBy(x => x.Attr.ID).ToDictionary(g => g.Key, g => g.First().Type);
+            foreach (EraBuild build in EraBuildCatalog.Default.Classes.SelectMany(c => c.Builds))
+            {
+                EraClass eraClass = EraBuildCatalog.Default.GetClass(build.ClassName);
+                var cls = (eCharacterClass)eraClass.ClassId;
+                var game = (ICharacterClass)Activator.CreateInstance(classTypes[eraClass.ClassId]);
+                var weaponLines = MeleeTypes.Select(SkillBase.ObjectTypeToSpec).Where(line => build.Level(line) > 1).ToHashSet();
+                for (int i = 0; i < 30; i++)
+                {
+                    BotSpec plan = BotSpec.FromEraBuild(cls, build, null, i);
+                    if (weaponLines.Count == 0)
+                        continue; // a caster or a healer with no weapon line: its staff or hammer, as today
+                    foreach (int level in new[] { 20, 50 })
+                    {
+                        // GameBot.PrimaryWeaponUsesTwoHands and PreferredPrimaryWeaponType, what the starter gear asks for
+                        bool twoHands = GameBot.ShouldUsePlannedTwoHandedPrimary(cls, level, plan.Is2H, plan.WeaponTwoType) ||
+                                        game.ClassType == eClassType.ListCaster ||
+                                        cls is eCharacterClass.Friar or eCharacterClass.Valewalker;
+                        eObjectType primary = BotWeaponStats.PrimaryType(plan.WeaponOneType, plan.WeaponTwoType, twoHands);
+                        if (cls == eCharacterClass.Savage)
+                            primary = plan.WeaponOneType; // the Savage's own weapon policy
+                        Assert.That(weaponLines, Does.Contain(SkillBase.ObjectTypeToSpec(primary)),
+                            $"{build.Id} at {level}: the starter weapon {primary} is a line the build trains");
+                        Assert.That(BotWeaponStats.MatchesBuild(plan, primary), Is.True, $"{build.Id}: a kit weapon of that type is kept");
+                    }
+                    if (plan.Is2H && plan.WeaponTwoType is eObjectType.TwoHandedWeapon or eObjectType.PolearmWeapon or
+                            eObjectType.LargeWeapons or eObjectType.CelticSpear)
+                        Assert.That(build.Level(SkillBase.ObjectTypeToSpec(plan.WeaponTwoType)), Is.GreaterThan(1),
+                            $"{build.Id}: its two-hander {plan.WeaponTwoType} is a line it trains");
+                }
+            }
         }
 
         private static string RepoRoot()

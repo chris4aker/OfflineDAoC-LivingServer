@@ -211,6 +211,7 @@ namespace DOL.UnitTests
             [
                 "private static volatile OfflineWorldBotRecord[] _cachedRoster",
                 "RetireCustomClassBots(_cachedRoster);",
+                "LogEraBuildCensus(_cachedRoster);",
                 "_cachedRoster = Array.Empty<OfflineWorldBotRecord>();",
                 "_cachedRoster = DOLDB<OfflineWorldBotRecord>",
                 "_loginRoster = CustomClassBotRetirement.LoginRoster(_cachedRoster);",

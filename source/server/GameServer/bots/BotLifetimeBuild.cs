@@ -26,6 +26,9 @@ namespace DOL.GS
             destination.SpecType = plan.SpecType;
             destination.Is2H = plan.Is2H;
             destination.SpecLines = plan.SpecLines;
+            // Era builds 1.2: a plan saved before 1.2 has neither field and reads as today's build (empty).
+            destination.EraBuildId = plan.EraBuildId ?? string.Empty;
+            destination.EraRole = plan.EraRole ?? string.Empty;
             return true;
         }
 
