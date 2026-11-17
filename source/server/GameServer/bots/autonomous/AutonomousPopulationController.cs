@@ -583,6 +583,7 @@ public static class AutonomousPopulationController
         if (AutonomousBotRegistry.TryGet(botId, out GameBot liveBot))
             liveBot.Delete();
         AutonomousBotStatusPersistence.Forget(botId);
+        BotPeopleStore.Current.Forget(BotPersonKey.Of(botId)); // Bots as people: a deleted bot's skill, places and arcs go too
 
         string ownerId = AutonomousBotEconomy.GetOwnerId(botId);
         DbInventoryItem[] items = DOLDB<DbInventoryItem>.SelectObjects(DB.Column("OwnerID").IsEqualTo(ownerId)).ToArray();

@@ -2680,13 +2680,13 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, item 2's master switch (work packages 1 and 2).
 		/// </summary>
-		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work packages 1 and 2).", true)]
+		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work package 2): the profiles are made, logged and grow, but no bot plays differently until the mistakes come.", true)]
 		public static bool BOT_SKILL_PROFILES = true;
 
 		/// <summary>
 		/// Bots as people, work package 1.
 		/// </summary>
-		[ServerProperty("bots", "bot_skill_growth", "Bots as people (1.2): a gamebot's skill grows with play (fights won, pulls made, buffs cast, deaths learned from), one tier at most in 1.2 (about 40 hours from the bottom of Casual to Average), and never falls. Needs bot_skill_profiles. Log: BOT_SKILL_GROWTH. In this build it changes nothing yet (work package 1).", true)]
+		[ServerProperty("bots", "bot_skill_growth", "Bots as people (1.2): a gamebot's skill grows with play: every fight it or a groupmate near it wins teaches all six facets (the time since its last fight, at most 3 minutes), and a death teaches positioning, standing in fire and reactions. One tier at most in 1.2 (about 40 hours of fighting from the bottom of Casual to Average), and it never falls. Saved in offline_bot_skill every 5 minutes and soon after a logout. Needs bot_skill_profiles. Log: BOT_SKILL_GROWTH, BOT_SKILL_BUDGET.", true)]
 		public static bool BOT_SKILL_GROWTH = true;
 
 		/// <summary>

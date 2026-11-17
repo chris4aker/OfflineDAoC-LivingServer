@@ -1088,6 +1088,7 @@ namespace DOL.GS
                     AutonomousBotGuildSocial.OnBotDeath(this);
                     AutonomousBotVoices.OnBotDeath(this, killer, attackers);
                     AutonomousLivingServer.OnBotDied(this, killer);
+                    BotSkill.OnDied(this); // Bots as people WP1: a death is a lesson (at most one in 10 minutes)
                 }
             }
             StartDeathRecoveryTimer();
@@ -1955,6 +1956,8 @@ namespace DOL.GS
             base.EnemyKilled(enemy);
             if (IsAutonomousWorldBot)
                 AutonomousLivingServer.OnBotKilled(this, enemy);
+            if (IsAutonomousWorldBot)
+                BotSkill.OnFightWon(this, enemy); // Bots as people WP1: it and its groupmates near it learn
             DOL.GS.CraftingEconomy.BotPotions.AfterKill(this); // Crafting 2.0 WP7: a draught with an add still on (bot_upkeep)
         }
 
