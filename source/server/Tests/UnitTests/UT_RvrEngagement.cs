@@ -766,6 +766,86 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void The_regroup_that_ends_a_relayed_retreat_is_not_passed_on()
+        {
+            RvrGroupState quiet = State(Facts(noticed: T0 - 60_000));
+            RvrFightPlan relayedRetreat = RvrFightPlan.Neutral(T0 - 60_000, quiet) with
+            {
+                Stance = RvrStance.Retreat, StanceSince = T0 - 20_000, StanceReason = "relayed retreat", StanceRelays = false,
+            };
+            RvrFightPlan ownRetreat = relayedRetreat with { StanceReason = "in contact: fight lost", StanceRelays = true };
+            var over = new RvrStanceDecision(RvrStance.Regroup, "retreat over", Relays: true);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrEngagement.EndsRelayedRetreat(relayedRetreat, over), Is.True);
+                Assert.That(RvrEngagement.EndsRelayedRetreat(ownRetreat, over), Is.False, "the group's own retreat");
+                Assert.That(RvrEngagement.EndsRelayedRetreat(relayedRetreat with { Stance = RvrStance.Engage }, over), Is.False);
+                Assert.That(RvrEngagement.EndsRelayedRetreat(relayedRetreat, over with { Stance = RvrStance.Engage }), Is.False);
+                Assert.That(RvrEngagement.EndsRelayedRetreat(null, over), Is.False);
+
+                RvrFightPlan next = RvrEngagement.PlanStance(relayedRetreat, Board(Eight(), []), quiet, RvrTacticsSwitches.AllOn, T0, true);
+                Assert.That((next.Stance, next.StanceReason, next.StanceRelays), Is.EqualTo((RvrStance.Regroup, "retreat over", false)),
+                    "a relayed retreat's regroup keeps the reason and is not passed on");
+                RvrFightPlan own = RvrEngagement.PlanStance(ownRetreat, Board(Eight(), []), quiet, RvrTacticsSwitches.AllOn, T0, true);
+                Assert.That((own.Stance, own.StanceReason, own.StanceRelays), Is.EqualTo((RvrStance.Regroup, "retreat over", true)),
+                    "the regroup after the group's own retreat still is");
+            });
+        }
+
+        [Test]
+        public void One_fight_reaches_the_warband_once_and_never_echoes_back()
+        {
+            // Owner's PC log on 1.2 test build 453e01a, 12:36:27-12:37:17 (Hibernia, region 200): 4891 retreats ("watched: bad
+            // odds"); 5219 and 4827 take it as "relayed retreat"; each one's "retreat over" relayed again (relayedTo=4 and 2),
+            // and 4891, the group that started it, got a "relayed regroup" back at 12:37:04. Three groups, all within reach,
+            // every relay heard (roll 0), boards once a second for a minute.
+            const string first = "4891", second = "5219", third = "4827";
+            string[] groups = [first, second, third];
+            var facts = groups.ToDictionary(g => g, _ => Facts(noticed: T0));
+            var plans = groups.ToDictionary(g => g, g => RvrFightPlan.Neutral(T0 - 60_000, State(facts[g])));
+            var lastRelay = groups.ToDictionary(g => g, _ => long.MinValue / 2);
+            var sent = new List<(string From, long At, RvrStance Stance)>();
+            var changes = new List<(string Group, long At, RvrStance Stance, string Why, bool Relays)>();
+            for (long t = T0; t <= T0 + 60_000; t += 1_000)
+                foreach (string g in groups)
+                {
+                    bool fighting = g == first && t < T0 + 2_000;
+                    List<RvrCombatant> enemies = fighting ? Enemies(40, contact: true) : t < T0 + 10_000 ? Enemies(6) : [];
+                    if (enemies.Count > 0)
+                        facts[g] = facts[g] with { LastNoticedAt = t };
+                    if (fighting)
+                        facts[g] = facts[g] with { LastContactAt = t, LastFightPoint = new Vector3(3_000, 0, 0) };
+                    RvrGroupState state = State(facts[g]);
+                    RvrFightPlan before = plans[g];
+                    plans[g] = RegionBoard(1, true, Eight(), enemies, t, state, before).Plan;
+                    if (plans[g].Stance == before.Stance)
+                        continue;
+                    changes.Add((g, t, plans[g].Stance, plans[g].StanceReason, plans[g].StanceRelays));
+                    if (!RvrEngagement.MayRelay(plans[g].StanceRelays, lastRelay[g], t))
+                        continue;
+                    lastRelay[g] = t;
+                    sent.Add((g, t, plans[g].Stance));
+                    foreach (string other in groups.Where(o => o != g))
+                        facts[other] = facts[other] with { Relay = RvrEngagement.RelayTo(plans[g].Stance, t, 0) };
+                }
+            string story = string.Join("; ", changes);
+            Assert.Multiple(() =>
+            {
+                Assert.That(sent, Is.EqualTo(new[] { (first, T0, RvrStance.Retreat) }), "one relay: the fight's own retreat. " + story);
+                foreach (string g in new[] { second, third })
+                {
+                    Assert.That(changes.Any(c => c.Group == g && c.Stance == RvrStance.Retreat && c.Why == "relayed retreat"), Is.True,
+                        $"{g} runs with the group that fought. {story}");
+                    Assert.That(changes.Where(c => c.Group == g && c.Why == "retreat over").Select(c => c.Relays), Is.EqualTo(new[] { false }),
+                        $"{g}: its regroup is not passed on. {story}");
+                }
+                Assert.That(changes.Where(c => c.Group == first && c.Why.StartsWith("relayed", StringComparison.Ordinal)), Is.Empty,
+                    "nothing echoes back to the group that fought. " + story);
+                Assert.That(changes.Count(c => c.Group == first && c.Why == "retreat over"), Is.EqualTo(1), story);
+            });
+        }
+
+        [Test]
         public void Nothing_in_view_after_a_fight_at_good_health_and_power_goes_back_to_roaming()
         {
             var facts = Facts(noticed: T0 - 30_000) with { LastContactAt = T0 - 5_000, LastFightPoint = new Vector3(1_000, 1_000, 0) };
