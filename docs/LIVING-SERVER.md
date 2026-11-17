@@ -40,11 +40,36 @@ stopped; they are used at the next start. The server keys (category `bots`) are:
 | Leeroy in raids | `bot_living_leeroy` | True (Beta 1.1) |
 | Bots remember each other | `bot_group_bonds` | True (server key only; not in the launcher tab yet) |
 | Bots dress up | `bot_cosmetics`, `bot_cosmetics_price_percent` | True, 100 = the game's prices (1.2; server keys only, not in the launcher tab yet) |
+| Personal milestones (Bots as people) | `bot_living_milestones` | True (1.2; card **BOTS AS PEOPLE**; nothing yet in this build, see below) |
 
 Every part is on by default since 1.2 (owner 2026-11-16: "all our living server features should be in by default if
 someone downloads our installer"). A world from an earlier build moves once, only where a row still holds the old
 default the server wrote; a value set in the tab is kept. **ALL OFF** in the tab switches every part off, along with
 the other Living Server features.
+
+### Bots as people (1.2)
+
+[BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md): skill that varies and improves, knowing only what a player would know,
+movement that doesn't look scripted, and personal milestones. The launcher's card **BOTS AS PEOPLE** has the four master
+switches; the others are server keys (category `bots`). All are on by default and new in 1.2 (no row in an older
+world, so no upgrade line). **In this build they change nothing yet** (work package 0 declares them; work packages 1 to
+6 fill them, each behind its own switch). The log line `BOT_PEOPLE_SUMMARY` every 5 minutes shows them, the rows saved
+and how often the scope let a rule act.
+
+| Switch | Key | Work package |
+|---|---|---|
+| Skill profiles (master) | `bot_skill_profiles` | 1, 2 |
+| Skill grows with play | `bot_skill_growth` | 1 |
+| Fewer mistakes in your group | `bot_skill_spare_player_group` | 2 |
+| Raids learn from their raiders | `raid_learns_from_raiders` | 2R |
+| Place knowledge (master) | `bot_place_knowledge` | 3 |
+| Asking the way, tagging along | `bot_ask_the_way` | 4 |
+| Wrong roads | `bot_wrong_roads` | 4 |
+| Movement habits (master) | `bot_movement_habits` | 5 |
+| Circle-strafing in RvR | `bot_move_strafe` | 5 |
+| /stick lines | `bot_move_stick_line` | 5 |
+| Sitting, and keep walls | `bot_move_sit_and_walls` | 5 |
+| Personal milestones (master) | `bot_living_milestones` | 6 |
 
 ## What each part does
 
