@@ -269,7 +269,8 @@ namespace DOL.UnitTests
                     "Retreat -> Regroup once clear");
                 RvrGroupState quiet = State(Facts(noticed: T0 - 60_000));
                 Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(health: 50), []), quiet, later).Stance, Is.EqualTo(RvrStance.Regroup), "resting");
-                Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(), []), quiet, later).Stance, Is.EqualTo(RvrStance.Engage), "Regroup -> Engage, rested");
+                Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(), []), quiet, T0 + RvrEngagement.AverageMinRegroupMilliseconds).Stance,
+                    Is.EqualTo(RvrStance.Engage), "Regroup -> Engage, rested (after the shortest regroup)");
                 Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(health: 50, spread: 900), []), quiet, T0 + RvrEngagement.MaxRegroupMilliseconds).Stance,
                     Is.EqualTo(RvrStance.Engage), "Regroup -> Engage, timed out");
                 Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(), Enemies(40, contact: true)), state, T0 + 100).Stance, Is.EqualTo(RvrStance.Retreat),
@@ -632,6 +633,159 @@ namespace DOL.UnitTests
                 BotGroupRetreat.Clear(group);
                 RvrFightBoards.Forget(group);
             }
+        }
+
+        // ---- the regroup flap (owner's PC log, 1.2 test build 19e7037) --------------------------------------------------
+
+        private static RvrFightBoard RegionBoard(ushort region, bool main, IEnumerable<RvrCombatant> members, IEnumerable<RvrCombatant> enemies,
+            long now, RvrGroupState state, RvrFightPlan previous)
+        {
+            RvrFightBoard board = RvrFightBoard.Build(now, region, eRealm.Albion, members, enemies) with { State = state, MainBody = main };
+            return board with { Plan = RvrEngagement.PlanStance(RvrFightPlanner.Carry(previous, state, now), board, state, RvrTacticsSwitches.AllOn, now, true) };
+        }
+
+        [Test]
+        public void A_group_split_over_two_regions_has_one_stance_from_its_main_body()
+        {
+            RvrMemberSpot[] split =
+            [
+                new(1, 100, 100, false), new(1, 200, 100, false), new(1, 300, 100, false), new(1, 400, 100, false), new(1, 500, 100, false),
+                new(100, 9_000, 9_000, true),
+            ];
+            RvrGroupBody body = RvrEngagement.MainBody(split);
+            RvrGroupState state = State(Facts(noticed: T0 - 60_000));
+            RvrFightPlan regrouping = RvrFightPlan.Neutral(T0 - 2_000, state) with { Stance = RvrStance.Regroup, StanceSince = T0 - 2_000 };
+            RvrFightBoard stray = RegionBoard(100, false, [Head(eRealm.Albion, eCharacterClass.Cleric, power: 0)], Enemies(40, contact: true), T0, state, regrouping);
+            Assert.Multiple(() =>
+            {
+                Assert.That(body.Region, Is.EqualTo(1), "most living members, even with the leader away");
+                Assert.That(body.Members, Is.EqualTo(5));
+                Assert.That(body.Centre, Is.EqualTo(new Vector2(300, 100)));
+                Assert.That(RvrEngagement.MainBody([new(1, 0, 0, false), new(1, 0, 0, false), new(100, 0, 0, true), new(100, 0, 0, false)]).Region,
+                    Is.EqualTo(100), "a tie goes to the leader's region");
+                Assert.That(RvrEngagement.MainBody([new(200, 0, 0, false), new(1, 0, 0, false)]).Region, Is.EqualTo(1),
+                    "a tie without the leader: the lowest region id");
+                Assert.That(RvrEngagement.MainBody([]).Members, Is.EqualTo(0));
+                Assert.That(stray.Plan.Stance, Is.EqualTo(RvrStance.Engage), "the stray's board has no stance of its own");
+                Assert.That(stray.Plan.StanceReason, Is.EqualTo("away from the main body"));
+                Assert.That(RvrEngagement.Track(RvrStanceLedger.Empty, stray).Acted, Is.False, "and never moves the group's runtime");
+                Assert.That(RegionBoard(1, true, Eight(), Enemies(40, contact: true), T0, state, RvrFightPlan.Neutral(T0 - 60_000, state)).Plan.Stance,
+                    Is.EqualTo(RvrStance.Retreat), "the main body's board decides");
+            });
+        }
+
+        [Test]
+        public void Alternating_boards_of_a_split_group_do_not_flap_its_regroup()
+        {
+            // Group 4110 in the log: 5 members in region 1, 1 (at 0 power) in region 100, a relayed regroup arriving at T0.
+            RvrStanceRelay relay = RvrEngagement.RelayTo(RvrStance.Regroup, T0 - RvrEngagement.RelayDelayMilliseconds, 0)!.Value;
+            RvrGroupState state = State(Facts(noticed: T0 - 60_000) with { Relay = relay });
+            RvrFightPlan main = RvrFightPlan.Neutral(T0 - 60_000, state), stray = main;
+            RvrStanceLedger ledger = RvrStanceLedger.Empty;
+            var changes = new List<(long At, RvrStance From, RvrStance To, string Why)>();
+            for (long t = T0; t <= T0 + 40_000; t += 1_000)
+            {
+                RvrFightBoard one = RegionBoard(1, true, Eight(), [], t, state, main);
+                RvrFightBoard hundred = RegionBoard(100, false, [Head(eRealm.Albion, eCharacterClass.Cleric, power: 0)], [], t + 300, state, stray);
+                (main, stray) = (one.Plan, hundred.Plan);
+                // The two records are acted on in either order, as members of both regions think.
+                foreach (RvrFightBoard board in (t / 1_000) % 2 == 0 ? new[] { one, hundred } : new[] { hundred, one })
+                {
+                    RvrStanceStep step = RvrEngagement.Track(ledger, board);
+                    if (step.Changed)
+                        changes.Add((board.BuiltAt, step.Previous, board.Plan.Stance, board.Plan.StanceReason));
+                    ledger = step.Next;
+                }
+            }
+            Assert.Multiple(() =>
+            {
+                Assert.That(changes.Count, Is.EqualTo(2), string.Join("; ", changes));
+                Assert.That(changes[0], Is.EqualTo((T0, RvrStance.Engage, RvrStance.Regroup, "relayed regroup")));
+                Assert.That(changes[1].To, Is.EqualTo(RvrStance.Engage));
+                Assert.That(changes[1].At - changes[0].At, Is.EqualTo(RvrEngagement.AverageMinRegroupMilliseconds), "it lasts the shortest regroup, no less");
+                Assert.That(ledger.Region, Is.EqualTo(1));
+                Assert.That(RvrEngagement.Track(ledger, RegionBoard(1, true, Eight(), [], ledger.LastBuild - 500, state, main)).Acted, Is.False,
+                    "an older build is not acted on");
+            });
+        }
+
+        [TestCase(RvrSkillTier.Casual, 10_000)]
+        [TestCase(RvrSkillTier.Average, 15_000)]
+        [TestCase(RvrSkillTier.Veteran, 20_000)]
+        public void A_regroup_lasts_its_tiers_shortest_time_unless_the_group_is_attacked(RvrSkillTier tier, long shortest)
+        {
+            RvrGroupState quiet = State(Facts(noticed: T0 - 60_000));
+            RvrFightBoard rested = Board(Eight(), []);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrEngagement.MinRegroupMilliseconds(tier), Is.EqualTo(shortest));
+                Assert.That(Step(RvrStance.Regroup, T0, rested, quiet, T0 + shortest - 1, tier).Stance, Is.EqualTo(RvrStance.Regroup), "rested, but too soon");
+                Assert.That(Step(RvrStance.Regroup, T0, rested, quiet, T0 + shortest - 1, tier).Reason, Is.EqualTo("regrouping"));
+                Assert.That(Step(RvrStance.Regroup, T0, rested, quiet, T0 + shortest, tier).Stance, Is.EqualTo(RvrStance.Engage));
+                Assert.That(Step(RvrStance.Regroup, T0, Board(Eight(), Enemies(3, contact: true)), State(Facts()), T0 + 100, tier).Stance,
+                    Is.EqualTo(RvrStance.Engage), "attacked: it fights at once");
+                Assert.That(Step(RvrStance.Regroup, T0, rested, quiet, T0 + RvrEngagement.MinStanceMilliseconds, tier,
+                    RvrEngagementOptions.AllOn with { Regroup = false }).Stance, Is.EqualTo(RvrStance.Engage), "switched off: over after the usual 5 s");
+            });
+        }
+
+        [Test]
+        public void Only_a_real_retreat_or_hurting_fight_is_passed_on_once_a_window_to_near_groups_in_the_region()
+        {
+            RvrGroupState quiet = State(Facts(noticed: T0 - 60_000));
+            var fought = Facts(noticed: T0 - 30_000) with { LastContactAt = T0 - 5_000, LastFightPoint = new Vector3(1_000, 1_000, 0) };
+            RvrStanceRelay relay = RvrEngagement.RelayTo(RvrStance.Regroup, T0 - 4_000, 0)!.Value;
+            RvrStanceRelay retreatRelay = RvrEngagement.RelayTo(RvrStance.Retreat, T0 - 4_000, 0)!.Value;
+            var here = new Vector2(10_000, 10_000);
+            Assert.Multiple(() =>
+            {
+                Assert.That(Step(RvrStance.Engage, T0 - 60_000, Board(Eight(), Enemies(40, contact: true)), State(Facts()), T0).Relays, Is.True, "a retreat from bad odds");
+                Assert.That(Step(RvrStance.Retreat, T0 - 20_000, Board(Eight(), []), quiet, T0).Relays, Is.True, "the regroup after a retreat");
+                Assert.That(Step(RvrStance.Engage, T0 - 20_000, Board(Eight(health: 50), []), State(fought), T0).Relays, Is.True, "a fight that hurt");
+                RvrStanceDecision relayed = Step(RvrStance.Engage, T0 - 60_000, Board(Eight(), []), State(Facts(noticed: T0 - 60_000) with { Relay = relay }), T0);
+                Assert.That((relayed.Stance, relayed.Relays), Is.EqualTo((RvrStance.Regroup, false)), "a relayed regroup is not passed on: no chains");
+                RvrStanceDecision relayedRetreat = Step(RvrStance.Engage, T0 - 60_000, Board(Eight(), Enemies(6)), State(Facts() with { Relay = retreatRelay }), T0);
+                Assert.That((relayedRetreat.Stance, relayedRetreat.Relays), Is.EqualTo((RvrStance.Retreat, false)), "nor a relayed retreat");
+                Assert.That(Step(RvrStance.Engage, T0 - 20_000, Board(Eight(), []), State(fought), T0).Relays, Is.False, "nothing in view");
+                RvrFightPlan plan = RvrEngagement.PlanStance(RvrFightPlan.Neutral(T0 - 60_000, quiet) with { Stance = RvrStance.Retreat, StanceSince = T0 - 20_000 },
+                    Board(Eight(), []), quiet, RvrTacticsSwitches.AllOn, T0, true);
+                Assert.That((plan.Stance, plan.StanceReason, plan.StanceRelays), Is.EqualTo((RvrStance.Regroup, "retreat over", true)), "the plan carries it");
+
+                Assert.That(RvrEngagement.MayRelay(false, long.MinValue / 2, T0), Is.False);
+                Assert.That(RvrEngagement.MayRelay(true, long.MinValue / 2, T0), Is.True);
+                Assert.That(RvrEngagement.MayRelay(true, T0, T0 + RvrEngagement.RelayWindowMilliseconds - 1), Is.False, "once per window");
+                Assert.That(RvrEngagement.MayRelay(true, T0, T0 + RvrEngagement.RelayWindowMilliseconds), Is.True);
+                Assert.That(RvrEngagement.RelayWindowMilliseconds, Is.EqualTo(60_000));
+
+                Assert.That(RvrEngagement.RelayRadius, Is.EqualTo(2_500));
+                Assert.That(RvrEngagement.RelayReaches(1, here, new RvrGroupBody(1, here + new Vector2(2_500, 0), 8)), Is.True);
+                Assert.That(RvrEngagement.RelayReaches(1, here, new RvrGroupBody(1, here + new Vector2(2_501, 0), 8)), Is.False, "too far");
+                Assert.That(RvrEngagement.RelayReaches(1, here, new RvrGroupBody(100, here, 8)), Is.False, "another region");
+                Assert.That(RvrEngagement.RelayReaches(1, here, default), Is.False, "nobody alive");
+            });
+        }
+
+        [Test]
+        public void Nothing_in_view_after_a_fight_at_good_health_and_power_goes_back_to_roaming()
+        {
+            var facts = Facts(noticed: T0 - 30_000) with { LastContactAt = T0 - 5_000, LastFightPoint = new Vector3(1_000, 1_000, 0) };
+            RvrGroupState state = State(facts);
+            Assert.Multiple(() =>
+            {
+                foreach (RvrStance from in new[] { RvrStance.Engage, RvrStance.Kite })
+                {
+                    RvrStanceDecision full = Step(from, T0 - 20_000, Board(Eight(), []), state, T0);
+                    Assert.That((full.Stance, full.Reason), Is.EqualTo((RvrStance.Engage, "nothing in view")), $"{from}: full health and power");
+                    Assert.That(Step(from, T0 - 20_000, Board(Eight(health: RvrEngagement.AfterFightHealth, power: RvrEngagement.AfterFightPower), []), state, T0).Stance,
+                        Is.EqualTo(RvrStance.Engage), $"{from}: at the thresholds");
+                    Assert.That(Step(from, T0 - 20_000, Board(Eight(health: RvrEngagement.AfterFightHealth - 1), []), state, T0).Stance,
+                        Is.EqualTo(RvrStance.Regroup), $"{from}: hurt");
+                    Assert.That(Step(from, T0 - 20_000, Board(Eight(power: RvrEngagement.AfterFightPower - 1), []), state, T0).Stance,
+                        Is.EqualTo(RvrStance.Regroup), $"{from}: out of power");
+                }
+                Assert.That(Step(RvrStance.Engage, T0 - 60_000, Board(Eight(), []), State(Facts(noticed: T0 - 60_000)), T0).Stance, Is.EqualTo(RvrStance.Engage),
+                    "no fight at all: on");
+            });
         }
 
         // ---- scope guard on the live hooks ---------------------------------------------------------------------------------

@@ -10,7 +10,8 @@ using DOL.Logging;
 namespace DOL.GS;
 
 /// <summary>
-/// The holders of the open-field fight boards (work package 0 of docs/RVR-FIELD-1.2.md): one per group and region, as
+/// The holders of the open-field fight boards (work package 0 of docs/RVR-FIELD-1.2.md): one per group and region (only
+/// the main body's region has a stance: <see cref="RvrFightBoard.MainBody"/>), as
 /// BotBrain's FightBoards are for <see cref="GroupFightBoard"/>. A board is built only when a consumer asks
 /// (<see cref="Get"/>), at most once a second per holder, by the first asker and under that holder's lock; everyone
 /// else gets the published snapshot. <see cref="Peek"/> never builds, for callers inside the group coordinator's lock.
@@ -260,11 +261,22 @@ public static class RvrFightBoards
         using var aiProfile = AiProfile.Scope(AiSystem.RvrFightBoard);
 
         List<GameLiving> members = new(8);
+        bool mainBody = true;
         if (asker.Group != null)
         {
+            // One stance per group: the board of a region other than the main body's (most living members, the
+            // leader's region on a tie) gets no stance and does not move the group's stance runtime.
+            GameLiving leader = asker.Group.LivingLeader;
+            var spots = new List<RvrMemberSpot>(8);
             foreach (GameLiving member in asker.Group.GetMembersInTheGroup())
-                if (member?.IsAlive == true && member.CurrentRegionID == asker.CurrentRegionID)
+            {
+                if (member?.IsAlive != true)
+                    continue;
+                spots.Add(new RvrMemberSpot(member.CurrentRegionID, member.X, member.Y, member == leader));
+                if (member.CurrentRegionID == asker.CurrentRegionID)
                     members.Add(member);
+            }
+            mainBody = spots.Count == 0 || RvrEngagement.MainBody(spots).Region == asker.CurrentRegionID;
         }
         else if (asker.IsAlive)
             members.Add(asker);
@@ -307,7 +319,7 @@ public static class RvrFightBoards
             state = UpdateState(KeyOf(asker), current => current.SkillTier.HasValue ? current : current with { SkillTier = tier });
         }
 
-        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with { State = state };
+        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with { State = state, MainBody = mainBody };
         return board with { Plan = RvrFightPlanner.Next(previous?.Plan, board, state, RvrTacticsSwitches.Current, now) };
     }
 
@@ -317,7 +329,7 @@ public static class RvrFightBoards
         GameLiving leader = asker?.Group?.LivingLeader ?? asker;
         long groupId = leader is GameBot bot ? bot.DatabaseID : leader?.ObjectID ?? 0;
         return $"RVR_FIGHT_BOARD group={groupId} leader=\"{leader?.Name}\" realm={GlobalConstants.RealmToName(board.Realm)} " +
-               $"region={board.RegionId} members={board.Friendly.Count} enemies={board.Enemy.Count} enemyPets={board.Enemy.Pets} " +
+               $"region={board.RegionId} main={board.MainBody} members={board.Friendly.Count} enemies={board.Enemy.Count} enemyPets={board.Enemy.Pets} " +
                $"friendlyHealers={board.Friendly.Healers} friendlyLevel={board.Friendly.AverageLevel} " +
                $"friendlyHealth={board.Friendly.HealthPercent} friendlyPower={board.Friendly.PowerPercent} " +
                $"enemyHealers={board.Enemy.Healers} enemyLevel={board.Enemy.AverageLevel} enemyHealth={board.Enemy.HealthPercent} " +
