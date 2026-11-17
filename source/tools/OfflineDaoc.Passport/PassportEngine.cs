@@ -126,6 +126,11 @@ public static class PassportTables
         // Hired companions (from True 1.65): a character's companions are bot rows of that world (offline_world_bots), so
         // they wait for the character there, as its /bot companions do.
         ["offline_hired_companions"] = new(PassportDecision.StaysInWorld, "The companions a character hired in that world; they are that world's bots and wait for the character at home.", true),
+        // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): what that world's gamebots have learned; no player is named.
+        ["offline_bot_skill"] = new(PassportDecision.StaysInWorld, "That world's gamebots' skill and how much they have played."),
+        ["offline_bot_places"] = new(PassportDecision.StaysInWorld, "The places that world's gamebots know."),
+        ["offline_bot_milestones"] = new(PassportDecision.StaysInWorld, "That world's gamebots' personal milestones (the Herald's Milestones of the Realm)."),
+        ["offline_bot_mechanics_seen"] = new(PassportDecision.StaysInWorld, "The raid mechanics that world's gamebots have seen."),
     };
 
     /// <summary>

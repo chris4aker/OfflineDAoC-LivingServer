@@ -70,6 +70,21 @@ class ReleaseServerSettings(unittest.TestCase):
             self.assertEqual(settings[key], "False", key)
         self.assertNotIn("enable_sluaghbinder", settings, "the edition switch is set by set_edition, per edition")
 
+    def test_the_bots_as_people_switches_ship_on_and_need_no_upgrade_line(self):
+        """docs/BOTS-AS-PEOPLE-1.2.md, "Settings": twelve new keys, all on in the code and in the release world. New keys,
+        so a world from an earlier build has no row and takes the code default: no LivingServerSettingsUpgrade line."""
+        keys = ("bot_skill_profiles", "bot_skill_growth", "bot_skill_spare_player_group", "raid_learns_from_raiders",
+                "bot_place_knowledge", "bot_ask_the_way", "bot_wrong_roads", "bot_movement_habits", "bot_move_strafe",
+                "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones")
+        defaults = code_defaults()
+        upgraded = set()
+        for since in ("1.1", "1.1.2", "1.1.2.1", "1.2", "1.2.0.1"):
+            upgraded |= set(upgrade_changes(since))
+        for key in keys:
+            self.assertEqual(defaults.get(key), "True", key)
+            self.assertEqual(SETTINGS_FILE["Settings"].get(key), "True", key)
+            self.assertNotIn(key, upgraded, key)
+
     def test_each_default_1_2_changed_is_shipped_at_its_new_value(self):
         changes = upgrade_changes("1.2.0.1")
         self.assertTrue(changes)

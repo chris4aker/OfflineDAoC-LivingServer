@@ -12,6 +12,7 @@
     "offline_bot_memory", "offline_bot_nemesis", "offline_server_firsts", "offline_bot_lines_heard",
     "offline_bot_ragequits", "offline_player_reputation", "offline_bot_storylines", "offline_bot_bonds",
     "offline_lore_memory", "passport_visits", "passport_trips",
+    "offline_bot_skill", "offline_bot_places", "offline_bot_milestones", "offline_bot_mechanics_seen",
     "offline_bot_types", "offline_bot_crafters", "offline_bot_craft_orders", "offline_exchange_index",
     "offline_economy_ledger", "offline_crafter_customers", "offline_hired_companions"],
   "ProgressFiles": ["realm-event-records.sqlite3"],
