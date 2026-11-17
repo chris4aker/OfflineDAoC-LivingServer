@@ -2308,13 +2308,13 @@ namespace DOL.GS
 
         private static void End(Raid raid, long now, string reason)
         {
-            bool stoppedByPlayer = reason.StartsWith(StoppedByPlayer);
-            string outcome = stoppedByPlayer ? "Stopped by player" :
+            bool stoppedByPlayer = !SetsCooldown(reason);
+            string outcome = StopOutcome(reason) ?? (
                 reason.StartsWith("Route blocked") ? "Route blocked" :
                 reason.StartsWith("Staging failed") ? "Failed rally" : reason.Contains("four-hour") || reason.StartsWith("Stalled") ? "Timed out" :
                 reason.StartsWith("Defeated at") ? "Defeated" : reason.StartsWith(BeatenPrefix) ? BeatenPrefix :
                 raid.Definition.IsDungeon ? raid.DungeonRoute?.Complete == true ? "Boss defeated" : "Ended (unconfirmed)" :
-                !raid.Boss.IsAlive ? "Boss defeated" : "Encounter unavailable";
+                !raid.Boss.IsAlive ? "Boss defeated" : "Encounter unavailable");
             // Partial success: the named encounters the raid killed before it was stopped are part of its record.
             string[] named = raid.DungeonRoute?.NamedDefeated.ToArray() ?? [];
             if (outcome != "Boss defeated" && named.Length > 0)
@@ -2370,7 +2370,7 @@ namespace DOL.GS
             raid.Support = [];
             Raids.Remove(raid.Definition.Id);
             BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RealmRaid, raid.Definition.Id);
-            // A player stop is not a failed attempt: no cooldown, so it can be restarted at once.
+            // A player stop or a supersede is not a failed attempt: no cooldown, so it can be restarted at once.
             if (!stoppedByPlayer)
                 Cooldowns[raid.Definition.Id] = now + (30 + Random.Shared.Next(61)) * 60_000L;
             // The talking update: a win or a defeat is news the realm's bots tell and talk about.
@@ -2436,6 +2436,26 @@ namespace DOL.GS
 
         private const string StoppedByPlayer = "Stopped by the player";
 
+        /// <summary>
+        /// The reason a forced expedition gives the realm's own raid it ends (SupersedeAutomatic). Owner's PC, 2026-11-17
+        /// (build ccba364, /epictest sweep): the realm's own Dodens Gruva raid, called at 01:12:54, ended at 01:15:55 as
+        /// "Stopped by player" when the sweep started its forced Summoner's Hall raid, although nobody pressed Stop. A
+        /// supersede is now its own outcome, "Superseded" (the word a superseded siege rally already uses); like a stop it
+        /// sets no cooldown and is no result for the raid's record.
+        /// </summary>
+        public static string SupersededReason(string forcedId) => $"{SupersededPrefix} by the forced {forcedId} expedition.";
+        private const string SupersededPrefix = "Superseded";
+
+        /// <summary>The outcome of a raid ended by the player or superseded by a forced expedition (pure), or null when
+        /// <paramref name="reason"/> is another ending.</summary>
+        public static string StopOutcome(string reason) =>
+            reason.StartsWith(StoppedByPlayer, StringComparison.Ordinal) ? "Stopped by player" :
+            reason.StartsWith(SupersededPrefix, StringComparison.Ordinal) ? "Superseded" : null;
+
+        /// <summary>A raid that ends for <paramref name="reason"/> waits out a cooldown before the realm calls it again (pure):
+        /// every ending but a player stop or a supersede.</summary>
+        public static bool SetsCooldown(string reason) => StopOutcome(reason) == null;
+
         /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
         /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now, int engaged = -1, int fallen = -1)
@@ -2472,7 +2492,7 @@ namespace DOL.GS
             {
                 foreach (Raid automatic in Raids.Values.Where(r => r.Definition.Realm == realm && !r.Forced && !r.Started &&
                              r.Definition.Id != forcedId).ToArray())
-                    End(automatic, GameLoop.GameLoopTime, $"{StoppedByPlayer}: superseded by the forced {forcedId} expedition.");
+                    End(automatic, GameLoop.GameLoopTime, SupersededReason(forcedId));
                 // 1.2: so is the realm's own raid that still waits for its tale.
                 if (PendingCalls.TryGetValue(realm, out PendingCall waiting) && !waiting.Forced && waiting.Id != forcedId)
                     CancelCall(waiting.Id, $"superseded by the forced {forcedId} expedition");

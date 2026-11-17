@@ -22,7 +22,7 @@ namespace DOL.GS
             "Defeated" => Pick($"We were beaten back at {name}. Carry the fallen home; we will be stronger when we return.",
                 $"{name} has broken our expedition. Fall back, companions, and remember what struck us down."),
             "Failed rally" => $"Not enough of our company reached {name} in time. The muster is called off; save your strength for another day.",
-            "Stopped by player" => $"The expedition to {name} is called off. Fall back and rest, companions.",
+            "Stopped by player" or "Superseded" => $"The expedition to {name} is called off. Fall back and rest, companions.",
             _ => $"The expedition at {name} has ended without a confirmed victory. Return safely, companions."
         };
 
