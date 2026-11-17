@@ -91,8 +91,14 @@ namespace DOL.GS
         {
             foreach (var learned in LearnedMechanics)
                 if (string.Equals(learned.Mechanic, mechanic, StringComparison.Ordinal)) return true;
-            return false;
+            string test = System.Threading.Volatile.Read(ref _learnedForTests);
+            return test != null && string.Equals(test, mechanic, StringComparison.Ordinal);
         }
+
+        private static string _learnedForTests;
+
+        /// <summary>Tests: one more mechanic is learned (a test boss's blast), or none (null).</summary>
+        public static void LearnForTests(string mechanic) => System.Threading.Volatile.Write(ref _learnedForTests, mechanic);
 
         /// <summary>The raid knows the mechanic as well as its record says once this share of the raiders present has seen it;
         /// with nobody it keeps <see cref="RosterFloor"/> of it (the record's calls and plans are still the realm's).</summary>

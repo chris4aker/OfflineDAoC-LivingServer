@@ -368,18 +368,18 @@ namespace DOL.UnitTests
             DateTime now = new(2026, 11, 20, 20, 0, 0, DateTimeKind.Utc);
 
             // Run 1 (unlearned, record 0.39 from three losses): nobody had seen the stomp.
-            double first = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 3, 0.39, false, raiders, now);
+            double first = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 103, 3, 0.39, false, raiders, now);
             Assert.That(RaidLearning.RosterOf(CrystalCave, Mechanic)?.SeenShare, Is.EqualTo(0));
             Assert.That(first, Is.EqualTo(0.39 * RaidDiscipline.RosterFloor).Within(1e-12));
             // Its later stomps: the same raid, nobody credited twice, the roster read before the raid stands.
-            double second = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 3, 0.39, false, raiders, now);
+            double second = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 103, 3, 0.39, false, raiders, now);
             Assert.That(second, Is.EqualTo(first));
             Assert.That(raiders.Select(r => SeenOf(store, r.Id)), Is.All.EqualTo(1));
             Assert.That(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 3, 1, first), Is.EqualTo(first).Within(1e-12), "all newcomers: the raid's");
 
             // Run 2 (the record moved on: seed 4): 45 of them again and 15 newcomers.
             RaidLearning.Learner[] again = raiders.Take(45).Concat(Enumerable.Range(100, 15).Select(i => Raider(i))).ToArray();
-            double learned = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 4, 0.52, false, again, now.AddHours(3));
+            double learned = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 104, 4, 0.52, false, again, now.AddHours(3));
             var roster = RaidLearning.RosterOf(CrystalCave, Mechanic).Value;
             Assert.That(roster.SeenShare, Is.EqualTo(0.75).Within(1e-12), "seenShare rises between the runs");
             Assert.That(learned, Is.EqualTo(0.52).Within(1e-12));
@@ -396,12 +396,107 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TwoForcedRunsWithTheSameSeedAreTwoRaids()
+        {
+            // A raid from the launcher (or any uncounted end) never joins the record, so both runs have the same seed: the
+            // raid's instance (its creation tick) tells them apart (review MUST FIX 1, the played check "Crystal Cave twice").
+            RaidLearning.ResetForTests();
+            var store = new BotPeopleStore(() => null);
+            DateTime now = new(2026, 11, 21, 23, 0, 0, DateTimeKind.Utc);
+            RaidLearning.Learner[] run1 = Enumerable.Range(1, 60).Select(i => Raider(i)).ToArray();
+            double first = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 5_000, 3, 0.39, false, run1, now);
+            Assert.That(RaidLearning.RosterOf(CrystalCave, Mechanic)?.SeenShare, Is.EqualTo(0));
+            // Run 2, same seed: 45 return, 15 new; the 15 who stayed away are not in this raid's roster.
+            RaidLearning.Learner[] run2 = run1.Take(45).Concat(Enumerable.Range(100, 15).Select(i => Raider(i))).ToArray();
+            double second = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 9_000_000, 3, 0.39, false, run2, now.AddHours(2));
+            var roster = RaidLearning.RosterOf(CrystalCave, Mechanic).Value;
+            Assert.Multiple(() =>
+            {
+                Assert.That(roster.Raiders, Is.EqualTo(60), "only the raiders of run 2");
+                Assert.That(roster.SeenShare, Is.EqualTo(0.75).Within(1e-12), "seenShare rises between the runs");
+                Assert.That(second, Is.GreaterThan(first));
+                Assert.That(second, Is.EqualTo(0.39).Within(1e-12));
+                Assert.That(SeenOf(store, 1), Is.EqualTo(2), "credited again in the second raid");
+                Assert.That(SeenOf(store, 50), Is.EqualTo(1));
+                Assert.That(SeenOf(store, 100), Is.EqualTo(1));
+                Assert.That(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 3, 100, second),
+                    Is.LessThan(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 3, 1, second)), "the newcomer below the veteran");
+            });
+            // Its later stomps (the same instance): nobody credited twice.
+            RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 9_000_000, 3, 0.39, false, run2, now.AddHours(2));
+            Assert.That(SeenOf(store, 1), Is.EqualTo(2));
+            RaidLearning.ResetForTests();
+        }
+
+        [Test]
+        public void ARealPlayerInThePartiesKeepsTheRecordExactly()
+        {
+            RaidLearning.ResetForTests();
+            var store = new BotPeopleStore(() => null);
+            RaidLearning.Learner[] raiders = Enumerable.Range(1, 30).Select(i => Raider(i)).ToArray();
+            double familiarity = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 7_000, 3, 0.61, true, raiders, DateTime.UtcNow);
+            Assert.That(familiarity, Is.EqualTo(0.61), "no learning lowers a player's own fight");
+            Assert.That(store.MechanicsSeen.Count, Is.EqualTo(0));
+            Assert.That(RaidLearning.RosterOf(CrystalCave, Mechanic), Is.Null);
+            Assert.That(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 3, 1, 0.61), Is.EqualTo(0.61));
+            RaidLearning.ResetForTests();
+        }
+
+        [Test]
+        public async System.Threading.Tasks.Task TheSeedingWaitsForTheRecordAndFailsSafely()
+        {
+            RaidLearning.ResetForTests(RaidLearning.SeedingState.Pending);
+            var store = new BotPeopleStore(() => null);
+            int looks = 0, ensured = 0;
+            var sources = new RaidLearning.SeedingSources
+            {
+                EnsureLoading = () => ensured++,
+                Loaded = () => ++looks >= 3,
+                Bots = () => UpgradedRealm(),
+                Encounters = () => [(CrystalCave, eRealm.Albion, "Xanxicar")],
+                RecordFamiliarity = _ => 0.39,
+                PollMilliseconds = 10, WaitMilliseconds = 5_000,
+            };
+            Assert.That(await RaidLearning.StartSeeding(store, true, sources), Is.EqualTo(RaidLearning.SeedingState.Done));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ensured, Is.EqualTo(1));
+                Assert.That(looks, Is.EqualTo(3), "it waited for the record");
+                Assert.That(RaidLearning.Seeding, Is.EqualTo(RaidLearning.SeedingState.Done));
+                Assert.That(store.MechanicsSeen.Count, Is.GreaterThan(0));
+            });
+            // Never loads: Failed, nothing written, the record's familiarity this run.
+            var empty = new BotPeopleStore(() => null);
+            var never = new RaidLearning.SeedingSources
+            {
+                EnsureLoading = () => { }, Loaded = () => false, Bots = () => UpgradedRealm(),
+                Encounters = () => [(CrystalCave, eRealm.Albion, "Xanxicar")], RecordFamiliarity = _ => 0.39,
+                PollMilliseconds = 10, WaitMilliseconds = 60,
+            };
+            Assert.That(await RaidLearning.StartSeeding(empty, true, never), Is.EqualTo(RaidLearning.SeedingState.Failed));
+            Assert.That(RaidLearning.Seeding, Is.EqualTo(RaidLearning.SeedingState.Failed));
+            Assert.That(empty.MechanicsSeen.Count, Is.EqualTo(0));
+            Assert.That(RaidLearning.FamiliarityAtCall(CrystalCave, Mechanic, [], null), Is.EqualTo(RaidDiscipline.FamiliarityOf(CrystalCave)));
+            // The roster can't be read: Failed too.
+            var broken = new RaidLearning.SeedingSources
+            {
+                EnsureLoading = () => { }, Loaded = () => true, Bots = () => throw new InvalidOperationException("no database"),
+                Encounters = () => [], RecordFamiliarity = _ => 0.39, PollMilliseconds = 10,
+            };
+            Assert.That(await RaidLearning.StartSeeding(empty, true, broken), Is.EqualTo(RaidLearning.SeedingState.Failed));
+            // The switch off at start: nothing runs, the seeding stays Pending.
+            Assert.That(await RaidLearning.StartSeeding(empty, false, sources), Is.EqualTo(RaidLearning.SeedingState.Pending));
+            Assert.That(RaidLearning.Seeding, Is.EqualTo(RaidLearning.SeedingState.Pending));
+        }
+
+        [Test]
         public void TheLogLinesCarryTheDesignsFields()
         {
             var roster = default(RaidDiscipline.RosterKnowledge).With(0).With(2).WithVeteran();
             string line = RaidLearning.LearnLine(CrystalCave, Mechanic, 0.78, roster, 0.78, 80);
             Assert.That(line, Does.StartWith($"RAID_LEARN raid={CrystalCave} mechanic={Mechanic} record=0.78 seenShare=0.67 familiarity=0.78 "));
             Assert.That(line, Does.Contain("raiders=3 seen=2 specialForces=1"));
+            Assert.That(line, Does.Contain(" newcomer=").And.Contain(" veteran=").And.EndWith(" health=80"));
             Assert.That(RaidLearning.SeenLine(CrystalCave, Mechanic, 60, 15, 80), Does.StartWith("RAID_MECHANIC_SEEN how=raid"));
             Assert.That(RaidLearning.SeedLine(new RaidLearning.SeedResult(CrystalCave, Mechanic, 1, 0.39, 0.8, 150, 121, false)),
                 Is.EqualTo($"RAID_MECHANIC_SEEN how=seeded raid={CrystalCave} mechanic={Mechanic} realm=1 record=0.39 chance=0.80 level50=150 seeded=121"));
@@ -415,7 +510,7 @@ namespace DOL.UnitTests
             DateTime now = new(2026, 11, 20, 20, 0, 0, DateTimeKind.Utc);
             // A wipe's retry: 24 Special Forces beside 16 raiders who never saw him.
             RaidLearning.Learner[] raiders = Enumerable.Range(1, 24).Select(i => SpecialForce(i)).Concat(Enumerable.Range(1, 16).Select(i => Raider(i))).ToArray();
-            double familiarity = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 6, 0.6, false, raiders, now);
+            double familiarity = RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 106, 6, 0.6, false, raiders, now);
             var roster = RaidLearning.RosterOf(CrystalCave, Mechanic).Value;
             Assert.Multiple(() =>
             {
@@ -428,10 +523,10 @@ namespace DOL.UnitTests
                     Is.GreaterThan(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 6, 1, familiarity)));
                 // A whole raid of them: the record's familiarity.
                 RaidLearning.ResetForTests();
-                Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 7, 0.6, false, raiders.Take(24).ToArray(), now), Is.EqualTo(0.6).Within(1e-12));
+                Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 107, 7, 0.6, false, raiders.Take(24).ToArray(), now), Is.EqualTo(0.6).Within(1e-12));
                 // The Special Forces' and buffbots' bots have no person (BotPersonKey.Of(GameBot) is None for in-memory bots).
                 Assert.That(new RaidLearning.Learner(5, default, false).Person.IsNone, Is.True);
-                Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 8, 0.6, false, [new RaidLearning.Learner(5, default, false)], now),
+                Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 108, 8, 0.6, false, [new RaidLearning.Learner(5, default, false)], now),
                     Is.EqualTo(0.6), "nobody counted: the record's");
             });
             RaidLearning.ResetForTests();
@@ -452,20 +547,22 @@ namespace DOL.UnitTests
                 double today = RaidDiscipline.FamiliarityOf(CrystalCave);
                 Assert.Multiple(() =>
                 {
-                    Assert.That(RaidLearning.AtCall(store, false, CrystalCave, Mechanic, 3, today, false, raiders, now), Is.EqualTo(today));
+                    Assert.That(RaidLearning.AtCall(store, false, CrystalCave, Mechanic, 103, 3, today, false, raiders, now), Is.EqualTo(today));
                     Assert.That(store.MechanicsSeen.Count, Is.EqualTo(0), "off: nothing remembered");
                     Assert.That(RaidLearning.ForRaider(false, CrystalCave, Mechanic, 3, 1, today), Is.EqualTo(today));
                     DOL.GS.ServerProperties.Properties.RAID_LEARNS_FROM_RAIDERS = false;
                     Assert.That(RaidLearning.FamiliarityAtCall(CrystalCave, Mechanic, [], null), Is.EqualTo(today));
                     DOL.GS.ServerProperties.Properties.RAID_LEARNS_FROM_RAIDERS = true;
-                    Assert.That(RaidLearning.FamiliarityAtCall(CrystalCave, Mechanic, [], null), Is.EqualTo(today), "on, no raider counted: the record's");
+                    Assert.That(RaidLearning.FamiliarityAtCall(CrystalCave, Mechanic, [], null), Is.EqualTo(today), "on, no running realm raid (a player's own group): the record's");
                     RaidLearning.Seeding = RaidLearning.SeedingState.Pending;
-                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 3, today, false, [], now), Is.EqualTo(today));
+                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 103, 3, today, false, [], now), Is.EqualTo(today));
                     Assert.That(RaidLearning.FamiliarityAtCall(CrystalCave, Mechanic, [], null), Is.EqualTo(today), "before the seeding: the record's");
-                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, "Myrddraxis/blast", 3, today, false, raiders, now), Is.EqualTo(today),
+                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, "Myrddraxis/blast", 103, 3, today, false, raiders, now), Is.EqualTo(today),
                         "a mechanic not learned keeps the record's");
                     RaidDiscipline.FamiliarityOverride = 0.9;
-                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 3, 0.9, true, raiders, now), Is.EqualTo(0.9), "a play test's override stands");
+                    Assert.That(RaidLearning.AtCall(store, true, CrystalCave, Mechanic, 103, 3, 0.9, false, raiders, now, overridden: true), Is.EqualTo(0.9),
+                        "a play test's override stands");
+                    Assert.That(store.MechanicsSeen.Count, Is.EqualTo(0), "and credits nobody: a forced familiarity is not a raid learned from");
                     Assert.That(RaidLearning.ForRaider(true, CrystalCave, Mechanic, 3, 1, 0.9, overridden: true), Is.EqualTo(0.9));
                 });
             }
