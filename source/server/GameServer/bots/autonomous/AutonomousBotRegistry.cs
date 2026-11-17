@@ -148,6 +148,7 @@ public static class AutonomousBotRegistry
             _snapshot = new(-1, []);
             AutonomousBotRealmGuilds.OnBotOnline(bot);
             BotFriends.OnBotOnline(bot); // Fork: friends hear when a bot comes online
+            BotSkill.OnLoggedIn(bot); // Bots as people WP1: its skill profile (BOT_SKILL_PROFILE)
         }
     }
 
