@@ -36,7 +36,7 @@ def add_played_bot_people(path: Path):
             INSERT INTO offline_bot_skill VALUES ('c:1', 1, 1, 2, 140.5), ('c:2', 2, 2, 0, 3);
             INSERT INTO offline_bot_places VALUES ('c:1', 1, 1, 'ff07', '10');
             INSERT INTO offline_bot_milestones VALUES ('c:1', 1, 'Aldwin', 'ding50', 'reached');
-            INSERT INTO offline_bot_mechanics_seen VALUES ('c:1', 'xanxicar.stomp', 1, 4);
+            INSERT INTO offline_bot_mechanics_seen VALUES ('c:1', 'Xanxicar/blast', 1, 4);
             """)
         con.commit()
 

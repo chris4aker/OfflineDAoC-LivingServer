@@ -93,7 +93,7 @@ namespace DOL.UnitTests
                 store.Places.Change((a, 1), () => new OfflineBotPlacesRecord { PersonKey = a.ToString(), Realm = 1, CharacterId = 11 },
                     row => row.Known = BotPeopleBits.With(row.Known, 4));
                 store.Milestones.Change((a, 11, "ding50"), () => new OfflineBotMilestoneRecord { PersonKey = a.ToString(), CharacterId = 11, Arc = "ding50", Name = "Aldwin" }, _ => { });
-                store.MechanicsSeen.Change((b, "xanxicar.stomp"), () => new OfflineBotMechanicSeenRecord { PersonKey = b.ToString(), CharacterId = 12, Mechanic = "xanxicar.stomp" },
+                store.MechanicsSeen.Change((b, "Xanxicar/blast"), () => new OfflineBotMechanicSeenRecord { PersonKey = b.ToString(), CharacterId = 12, Mechanic = "Xanxicar/blast" },
                     row => row.Seen++);
                 store.Flush(wait: true);
                 store.Skill.Change(a, () => SkillRow(a), row => row.PullsXp += 3);
@@ -105,7 +105,7 @@ namespace DOL.UnitTests
                 Assert.That(reloaded.Skill.TryGet(a, out var skill) && skill.PullsXp == 5, Is.True, "a change after the first insert is saved");
                 Assert.That(reloaded.Places.TryGet((a, 1), out var places) && BotPeopleBits.Has(places.Known, 4), Is.True);
                 Assert.That(reloaded.Milestones.TryGet((a, 11, "ding50"), out var arc) && arc.State == OfflineBotMilestoneRecord.Active, Is.True);
-                Assert.That(reloaded.MechanicsSeen.TryGet((b, "xanxicar.stomp"), out var seen) && seen.Seen == 1, Is.True);
+                Assert.That(reloaded.MechanicsSeen.TryGet((b, "Xanxicar/blast"), out var seen) && seen.Seen == 1, Is.True);
 
                 Assert.That(reloaded.Forget(a), Is.EqualTo(3));
                 reloaded.Flush(wait: true);

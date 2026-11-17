@@ -19,25 +19,58 @@ namespace DOL.GS;
 /// which it saw a mechanic in <c>offline_bot_mechanics_seen</c> (one row per person and mechanic, written only through
 /// <see cref="BotPeopleStore.MechanicsSeen"/>, saved off the game loop).
 /// <list type="bullet">
+/// <item>Only in a running realm raid with no real player in its parties. A player's own group (no realm raid) and a
+/// raid the player sits in keep the record's familiarity exactly, as before.</item>
 /// <item>Raiders: saved autonomous gamebots (BotPeopleScope rule Record). The Epic Special Forces have no person and count as
-/// having seen everything. Real players, companions, /raid helpers and buffbots are not counted.</item>
-/// <item>A raider is credited once per raid (the record's seed), at the first call of the mechanic it is present for; what it
-/// had seen before this raid is what counts in this raid.</item>
+/// having seen everything. Companions (hired ones too), /raid helpers and buffbots are not counted.</item>
+/// <item>A raider is credited once per raid (the raid's instance: its id and when it was created, so two forced runs in one
+/// session are two raids), at the first call of the mechanic it is present for; what it had seen before this raid is
+/// what counts in this raid.</item>
+/// <item>The /epictest familiarity override stands as set and credits nobody: a play test's forced familiarity is not a
+/// raid the raiders learned from.</item>
 /// <item>An upgraded world is seeded once, off the game loop, after the store and the record have loaded
 /// (<see cref="Seed"/>); until then, and with the switch off, the familiarity is the record's exactly.</item>
 /// </list>
-/// Wired at one place, the stomp's call (EpicEncounterTactics.RaidCalls.cs). Logs RAID_LEARN (a raid's roster, when it
-/// changes: about one line a raid) and RAID_MECHANIC_SEEN (raiders credited, and the seeding).
+/// Wired at one place, the stomp's call (EpicEncounterTactics.RaidCalls.cs: the call and the raider's reaction). Logs
+/// RAID_LEARN (a raid's roster, when it changes: about one line a raid, with the newcomer's and the veteran's familiarity)
+/// and RAID_MECHANIC_SEEN (raiders credited, and the seeding).
 /// </summary>
 public static class RaidLearning
 {
     private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
+
+    /// <summary>A warning never breaks a raid or the seeding (a logger without its queue, in tests, throws).</summary>
+    private static void Warn(string message, Exception exception = null)
+    {
+        try
+        {
+            if (exception == null) Log.Warn(message);
+            else Log.Warn(message, exception);
+        }
+        catch (Exception)
+        {
+            // nothing to do: the state already says what happened
+        }
+    }
 
     /// <summary>Raiders of the raid's parties within this distance of the boss (same region, alive) are present.</summary>
     public const int PresentRange = 6_000;
 
     /// <summary>One raider as the learning sees it: its id, its person (none for an Epic Special Force) and whether it is one.</summary>
     public readonly record struct Learner(long Id, BotPersonKey Person, bool SpecialForce);
+
+    /// <summary>What a party member is to the learning.</summary>
+    public enum Seat
+    {
+        /// <summary>Not counted: a companion (hired too), a /raid helper, a buffbot, a test NPC.</summary>
+        Skip,
+        /// <summary>A saved autonomous gamebot: it remembers.</summary>
+        Raider,
+        /// <summary>An Epic Special Force: has seen everything, remembers nothing.</summary>
+        SpecialForce,
+        /// <summary>A real player: the raid keeps the record's familiarity.</summary>
+        Player,
+    }
 
     public enum SeedingState { Pending, Done, Failed }
 
@@ -53,6 +86,7 @@ public static class RaidLearning
     /// <summary>One raid's reading of one mechanic: its roster before this raid and the raiders already credited.</summary>
     private sealed class RaidState
     {
+        public long Instance;
         public int Seed;
         public double Record, Raid;
         public RaidDiscipline.RosterKnowledge Roster;
@@ -67,45 +101,82 @@ public static class RaidLearning
 
     /// <summary>
     /// The raid's familiarity at a new call of <paramref name="mechanic"/> (the one call site: the stomp's call). Switch off,
-    /// a mechanic that is not learned, no raid or the seeding not yet done: the record's (<see cref="RaidDiscipline.FamiliarityOf"/>),
-    /// exactly as before. Otherwise it reads the raiders present, credits the new ones and returns the roster's familiarity.
+    /// a mechanic that is not learned, no running realm raid, a real player in the parties, the play-test override or the
+    /// seeding not yet done: the record's (<see cref="RaidDiscipline.FamiliarityOf"/>), exactly as before. Otherwise it reads
+    /// the raiders present, credits the new ones and returns the roster's familiarity.
     /// </summary>
     public static double FamiliarityAtCall(string raidId, string mechanic, Group[] parties, GameNPC boss)
     {
         double record = RaidDiscipline.FamiliarityOf(raidId);
         if (!BotPeopleSwitches.Current.RaidLearnsFromRaiders || !RaidDiscipline.IsLearned(mechanic) || string.IsNullOrEmpty(raidId) ||
-            Seeding != SeedingState.Done)
+            Seeding != SeedingState.Done || RaidDiscipline.FamiliarityOverride.HasValue)
             return record;
         try
         {
-            List<Learner> raiders = Present(parties, boss);
-            return AtCall(BotPeopleStore.Current, true, raidId, mechanic, RaidDiscipline.SeedOf(raidId), record,
-                RaidDiscipline.FamiliarityOverride.HasValue, raiders, DateTime.UtcNow, threshold: boss?.HealthPercent ?? 0);
+            List<Learner> raiders = Present(parties, boss, out bool player);
+            if (player) return record;
+            long instance = InstanceOf(raidId);
+            if (instance == 0) return record;
+            return AtCall(BotPeopleStore.Current, true, raidId, mechanic, instance, RaidDiscipline.SeedOf(raidId), record, false, raiders,
+                DateTime.UtcNow, health: boss?.HealthPercent ?? 0);
         }
         catch (Exception exception)
         {
-            Log.Warn($"RAID_LEARN failed raid={raidId} mechanic={mechanic}: {exception.Message}");
+            Warn($"RAID_LEARN failed raid={raidId} mechanic={mechanic}: {exception.Message}");
             return record;
         }
     }
 
+    /// <summary>The running realm raid's instance (its creation tick), or 0 when no realm raid of that id runs (a player's own
+    /// group at the boss, a test).</summary>
+    private static long InstanceOf(string raidId)
+    {
+        foreach (eRealm realm in AutonomousRealmRaid.Definitions.Where(d => d.Id == raidId).Select(d => d.Realm).Distinct())
+            foreach (AutonomousRealmRaid.PlayerRaid raid in AutonomousRealmRaid.RaidsOfRealm(realm))
+                if (raid.Id == raidId) return raid.Created;
+        return 0;
+    }
+
+    /// <summary>What one party member is to the learning (reads the game, no position).</summary>
+    public static Seat SeatOf(GameLiving member, out Learner learner)
+    {
+        learner = default;
+        switch (member)
+        {
+            case GamePlayer:
+                return Seat.Player;
+            case GameBot { IsEpicSpecialForce: true } esf:
+                learner = new Learner(esf.DatabaseID, default, true);
+                return Seat.SpecialForce;
+            case GameBot bot when BotPeopleScope.Check(bot, BotPeopleRule.Record, true, out _) == BotPeopleRefusal.None:
+                learner = new Learner(bot.DatabaseID, BotPersonKey.Of(bot), false);
+                return Seat.Raider;
+            default:
+                return Seat.Skip;
+        }
+    }
+
     /// <summary>The raiders present: gamebots of the raid's parties, alive, in the boss's region and within
-    /// <see cref="PresentRange"/>, that the learning counts (a saved gamebot with a person, or an Epic Special Force).</summary>
-    private static List<Learner> Present(Group[] parties, GameNPC boss)
+    /// <see cref="PresentRange"/>, that the learning counts. <paramref name="player"/>: a real player is in a party.</summary>
+    private static List<Learner> Present(Group[] parties, GameNPC boss, out bool player)
     {
         var raiders = new List<Learner>();
+        player = false;
         foreach (Group group in parties ?? [])
         {
             if (group == null) continue;
             foreach (GameLiving member in group.GetMembersInTheGroup())
             {
+                if (member is GamePlayer)
+                {
+                    player = true;
+                    continue;
+                }
                 if (member is not GameBot bot || !bot.IsAlive || boss == null || bot.CurrentRegionID != boss.CurrentRegionID ||
                     !bot.IsWithinRadius(boss, PresentRange))
                     continue;
-                if (bot.IsEpicSpecialForce)
-                    raiders.Add(new Learner(bot.DatabaseID, default, true));
-                else if (BotPeopleScope.Check(bot, BotPeopleRule.Record, true, out _) == BotPeopleRefusal.None)
-                    raiders.Add(new Learner(bot.DatabaseID, BotPersonKey.Of(bot), false));
+                if (SeatOf(bot, out Learner learner) is Seat.Raider or Seat.SpecialForce)
+                    raiders.Add(learner);
             }
         }
         return raiders;
@@ -113,14 +184,14 @@ public static class RaidLearning
 
     /// <summary>
     /// The learning at a call (the game's state passed in, so tests can run it): reads what the raiders present had seen
-    /// before this raid, credits each new raider once for this raid (a row change through the store), logs, and returns the
-    /// raid's familiarity. With the switch off it returns <paramref name="record"/> and changes nothing; with the play-test
-    /// override it returns the override (the record's value here) but still credits the raiders.
+    /// before this raid instance, credits each new raider once for it (a row change through the store), logs, and returns
+    /// the raid's familiarity. The switch off, a real player present or the play-test override: <paramref name="record"/>,
+    /// and nothing changes.
     /// </summary>
-    public static double AtCall(BotPeopleStore store, bool switchOn, string raidId, string mechanic, int seed, double record,
-        bool overridden, IReadOnlyList<Learner> raiders, DateTime nowUtc, int threshold = 0)
+    public static double AtCall(BotPeopleStore store, bool switchOn, string raidId, string mechanic, long instance, int seed, double record,
+        bool playerPresent, IReadOnlyList<Learner> raiders, DateTime nowUtc, int health = 0, bool overridden = false)
     {
-        if (!switchOn || store == null || string.IsNullOrEmpty(raidId) || !RaidDiscipline.IsLearned(mechanic))
+        if (!switchOn || playerPresent || overridden || store == null || string.IsNullOrEmpty(raidId) || !RaidDiscipline.IsLearned(mechanic))
             return record;
         int credited = 0, firstTime = 0;
         string now = nowUtc.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture);
@@ -128,8 +199,9 @@ public static class RaidLearning
         double raid;
         lock (Sync)
         {
-            if (!Raids.TryGetValue((raidId, mechanic), out RaidState state) || state.Seed != seed)
-                Raids[(raidId, mechanic)] = state = new RaidState { Seed = seed };
+            if (!Raids.TryGetValue((raidId, mechanic), out RaidState state) || state.Instance != instance)
+                Raids[(raidId, mechanic)] = state = new RaidState { Instance = instance };
+            state.Seed = seed;
             foreach (Learner raider in raiders ?? [])
             {
                 if (state.SeenBefore.ContainsKey(raider.Id)) continue;
@@ -156,18 +228,18 @@ public static class RaidLearning
                 if (before == 0) firstTime++;
             }
             state.Record = record;
-            state.Raid = raid = overridden ? record : RaidDiscipline.RosterFamiliarity(record, state.Roster);
+            state.Raid = raid = RaidDiscipline.RosterFamiliarity(record, state.Roster);
             if (state.LoggedRaiders != state.Roster.Raiders || state.LoggedSeen != state.Roster.HaveSeen)
             {
                 state.LoggedRaiders = state.Roster.Raiders;
                 state.LoggedSeen = state.Roster.HaveSeen;
-                line = LearnLine(raidId, mechanic, record, state.Roster, raid, threshold, overridden);
+                line = LearnLine(raidId, mechanic, record, state.Roster, raid, health);
             }
         }
         if (Log.IsInfoEnabled)
         {
             if (line != null) Log.Info(line);
-            if (credited > 0) Log.Info(SeenLine(raidId, mechanic, credited, firstTime, threshold));
+            if (credited > 0) Log.Info(SeenLine(raidId, mechanic, credited, firstTime, health));
         }
         return raid;
     }
@@ -182,7 +254,8 @@ public static class RaidLearning
             : ForRaider(BotPeopleSwitches.Current.RaidLearnsFromRaiders, raidId, mechanic, seed, raider.DatabaseID, callFamiliarity,
                 RaidDiscipline.FamiliarityOverride.HasValue);
 
-    /// <summary>The same with the game's state passed in (tests).</summary>
+    /// <summary>The same with the game's state passed in (tests). The raid's current reading is the one this call made; a
+    /// call whose record seed differs from it is an older raid's and keeps its familiarity.</summary>
     public static double ForRaider(bool switchOn, string raidId, string mechanic, int seed, long raiderId, double callFamiliarity,
         bool overridden = false)
     {
@@ -209,16 +282,18 @@ public static class RaidLearning
         Seeding = seeding;
     }
 
-    /// <summary>RAID_LEARN raid= mechanic= record= seenShare= familiarity= (pure).</summary>
+    /// <summary>RAID_LEARN raid= mechanic= record= seenShare= familiarity=, with the familiarity a newcomer and a veteran of
+    /// this raid react with (pure).</summary>
     public static string LearnLine(string raidId, string mechanic, double record, RaidDiscipline.RosterKnowledge roster, double raid,
-        int threshold = 0, bool overridden = false) =>
+        int health = 0) =>
         $"RAID_LEARN raid={raidId} mechanic={mechanic} record={F(record)} seenShare={F(roster.SeenShare)} familiarity={F(raid)} " +
         $"raiders={roster.Raiders} seen={roster.HaveSeen} specialForces={roster.SpecialForces} knowledge={F(roster.MeanKnowledge)} " +
-        $"health={threshold}" + (overridden ? " override=true" : string.Empty);
+        $"newcomer={F(RaidDiscipline.RaiderFamiliarity(record, raid, 0, roster.MeanKnowledge))} " +
+        $"veteran={F(RaidDiscipline.RaiderFamiliarity(record, raid, 1, roster.MeanKnowledge))} health={health}";
 
     /// <summary>RAID_MECHANIC_SEEN for raiders credited at a call (pure).</summary>
-    public static string SeenLine(string raidId, string mechanic, int credited, int firstTime, int threshold = 0) =>
-        $"RAID_MECHANIC_SEEN how=raid raid={raidId} mechanic={mechanic} credited={credited} firstTime={firstTime} health={threshold}";
+    public static string SeenLine(string raidId, string mechanic, int credited, int firstTime, int health = 0) =>
+        $"RAID_MECHANIC_SEEN how=raid raid={raidId} mechanic={mechanic} credited={credited} firstTime={firstTime} health={health}";
 
     private static string F(double value) => value.ToString("0.00", CultureInfo.InvariantCulture);
 
@@ -287,48 +362,67 @@ public static class RaidLearning
     /// <summary>How long the seeding waits for the raid record to load before it gives up for this run.</summary>
     public const int SeedWaitMilliseconds = 10 * 60_000;
 
-    /// <summary>
-    /// Called once the store has loaded at server start (BotPeopleStore.OnServerStarted): runs the seeding on a pool
-    /// thread after the raid record has loaded. With the switch off at start nothing is seeded and the familiarity stays
-    /// the record's until a start with the switch on.
-    /// </summary>
-    public static void StartSeeding(BotPeopleStore store)
+    /// <summary>Where the seeding reads the world (the server's by default; tests pass their own).</summary>
+    public sealed class SeedingSources
     {
-        if (!BotPeopleSwitches.Current.RaidLearnsFromRaiders)
+        public Action EnsureLoading { get; init; } = RealmRaidRecord.EnsureLoading;
+        public Func<bool> Loaded { get; init; } = () => RealmRaidRecord.Loaded;
+        /// <summary>The saved level 50 gamebots: not retired, not a player's hired companion.</summary>
+        public Func<IEnumerable<RosterBot>> Bots { get; init; } = () =>
+            DOLDB<OfflineWorldBotRecord>.SelectObjects(DB.Column("Level").IsGreaterOrEqualTo(RaidDiscipline.SeedLevel))
+                .Where(b => !b.IsRetired && !HiredCompanions165.IsHired(b.BotId)).Select(b => new RosterBot(b.BotId, b.Realm, b.Level)).ToArray();
+        public Func<IEnumerable<(string RaidId, eRealm Realm, string BossType)>> Encounters { get; init; } = () => AutonomousRealmRaid.Definitions
+            .SelectMany(d => d.FinalTypes.Append(d.BossType).Distinct().Select(boss => (d.Id, d.Realm, boss))).ToArray();
+        public Func<string, double> RecordFamiliarity { get; init; } = id => RaidDiscipline.Familiarity(RealmRaidRecord.GetResults(id));
+        public int PollMilliseconds { get; init; } = 2_000;
+        public int WaitMilliseconds { get; init; } = SeedWaitMilliseconds;
+    }
+
+    /// <summary>
+    /// Called once the store has loaded at server start (BotPeopleStore.OnServerStarted): the seeding waits for the raid
+    /// record without holding a thread (a delayed continuation), then runs on a pool thread. With the switch off at start
+    /// nothing is seeded and the familiarity stays the record's until a start with the switch on.
+    /// </summary>
+    public static void StartSeeding(BotPeopleStore store) =>
+        _ = StartSeeding(store, BotPeopleSwitches.Current.RaidLearnsFromRaiders, new SeedingSources());
+
+    /// <summary>The same with the sources passed in (tests). The task ends with the seeding's state.</summary>
+    public static Task<SeedingState> StartSeeding(BotPeopleStore store, bool switchOn, SeedingSources sources)
+    {
+        if (!switchOn || store == null || sources == null)
         {
             Seeding = SeedingState.Pending;
-            return;
+            return Task.FromResult(SeedingState.Pending);
         }
-        Task.Run(() =>
+        Seeding = SeedingState.Pending;
+        return Task.Run(async () =>
         {
             try
             {
-                RealmRaidRecord.EnsureLoading();
-                long until = Environment.TickCount64 + SeedWaitMilliseconds;
-                while (!RealmRaidRecord.Loaded)
+                sources.EnsureLoading?.Invoke();
+                long until = Environment.TickCount64 + sources.WaitMilliseconds;
+                while (!sources.Loaded())
                 {
                     if (Environment.TickCount64 > until)
                     {
                         Seeding = SeedingState.Failed;
-                        Log.Warn("RAID_MECHANIC_SEEN how=seeded failed: the raid record did not load; raids keep the record's familiarity this run");
-                        return;
+                        Warn("RAID_MECHANIC_SEEN how=seeded failed: the raid record did not load; raids keep the record's familiarity this run");
+                        return SeedingState.Failed;
                     }
-                    Thread.Sleep(2_000);
+                    await Task.Delay(sources.PollMilliseconds).ConfigureAwait(false);
                 }
-                RosterBot[] bots = DOLDB<OfflineWorldBotRecord>.SelectObjects(DB.Column("Level").IsGreaterOrEqualTo(RaidDiscipline.SeedLevel))
-                    .Where(b => !b.IsRetired).Select(b => new RosterBot(b.BotId, b.Realm, b.Level)).ToArray();
-                var encounters = AutonomousRealmRaid.Definitions
-                    .SelectMany(d => d.FinalTypes.Append(d.BossType).Distinct().Select(boss => (d.Id, d.Realm, boss))).ToArray();
-                List<SeedResult> results = Seed(store, bots, encounters, id => RaidDiscipline.Familiarity(RealmRaidRecord.GetResults(id)),
-                    DateTime.UtcNow);
+                List<SeedResult> results = Seed(store, sources.Bots(), sources.Encounters(), sources.RecordFamiliarity, DateTime.UtcNow);
                 Seeding = SeedingState.Done;
-                foreach (SeedResult result in results)
-                    Log.Info(SeedLine(result));
+                if (Log.IsInfoEnabled)
+                    foreach (SeedResult result in results)
+                        Log.Info(SeedLine(result));
+                return SeedingState.Done;
             }
             catch (Exception exception)
             {
                 Seeding = SeedingState.Failed;
-                Log.Warn("RAID_MECHANIC_SEEN how=seeded failed; raids keep the record's familiarity this run", exception);
+                Warn("RAID_MECHANIC_SEEN how=seeded failed; raids keep the record's familiarity this run", exception);
+                return SeedingState.Failed;
             }
         });
     }
