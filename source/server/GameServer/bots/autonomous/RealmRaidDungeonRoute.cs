@@ -628,6 +628,13 @@ namespace DOL.GS
         /// <summary>Set by the raid each pulse: raiders stand at the way in, waiting to come back in together
         /// (RealmRaidReturnWave). The muster's "nobody reached it" clock waits for them.</summary>
         public bool ReturnGathering { get; set; }
+        /// <summary>A return wave walks this route together (RealmRaidReturnWave.WalkTogether): an epic or raid dungeon's own
+        /// route, not a neutral raid's objectives (Darkness Falls, Summoner's Hall) nor a gate on the way.</summary>
+        public bool WalksInWaves => _objectives == null && !IsGate;
+        /// <summary>The walk from where raiders come in to the front (<see cref="WalkBackOf"/>), for a return wave.</summary>
+        public Vector3[] ReturnWalk() => WalkBack(PathfindingProvider.Instance);
+        /// <summary>The raid is in an attempt on its encounter (a return wave's helpers stay with it).</summary>
+        public bool InAttempt => _musterEngaged;
         public bool Complete { get; private set; }
         public string Status { get; private set; } = "Entering dungeon";
         public GameNPC[] FinalBosses => _finals.Values.ToArray();
