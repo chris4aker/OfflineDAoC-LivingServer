@@ -146,7 +146,7 @@ namespace DOL.UnitTests
             Assert.That(profile.IsNone, Is.True);
             Assert.That(spared, Is.False);
             Assert.That(BotSkillHands.PullMistake(null, Array.Empty<GameNPC>()), Is.EqualTo(-1));
-            Assert.That(BotSkillHands.BuffLapse(null, null, null), Is.EqualTo(0));
+            Assert.That(BotSkillHands.BuffLapse(null, null, null, false), Is.EqualTo(0));
             Assert.That(BotSkillHands.PowerRestFloor(null), Is.EqualTo(AutonomousRestPolicy.PowerRestThreshold));
             Assert.That(BotSkillHands.ChooseSpell(null, Array.Empty<Spell>(), null), Is.Null);
             Assert.That(BotSkillHands.FireDelay(null, RvrSkillTier.Casual), Is.EqualTo(-1), "out of scope: it does not step out (today)");
@@ -266,6 +266,74 @@ namespace DOL.UnitTests
             Assert.That(BotSkillMistakes.ChooseAddPull(pair, Vector3.Zero, Party with { InDungeon = true }), Is.EqualTo(-1));
             Assert.That(BotSkillMistakes.ChooseAddPull([Mob(0, con: 0), Mob(100, con: 1)], Vector3.Zero, Party), Is.EqualTo(1),
                 "the orange one with a yellow add may be pulled; the yellow one with an orange add may not");
+        }
+
+        [Test]
+        public void The_world_scan_around_a_careless_pick_allows_exactly_one_safe_add()
+        {
+            BotPullView pick = Mob(0, con: 0);
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150)], 30), Is.True);
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150), Mob(-200)], 30), Is.False, "a second monster of another kind beside it");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150, named: true)], 30), Is.False, "a named next to the pick");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150, level: 33)], 30), Is.False, "over +2");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150, con: 1)], 30), Is.False, "a harder con");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [Mob(150), Mob(900)], 30), Is.True, "outside its aggro range: not an add");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, [], 30), Is.False, "no add after all: the clean pull");
+            Assert.That(BotSkillMistakes.AddScanAllows(pick, null, 30), Is.False);
+            Assert.That(BotSkillMistakes.AddScanAllows(Mob(0, aggro: 0), [Mob(10)], 30), Is.False);
+        }
+
+        [Test]
+        public void A_held_careless_pick_fires_only_while_the_scope_and_the_party_still_allow_it()
+        {
+            Assert.That(BotSkillMistakes.HeldPullStands(true, Party), Is.True);
+            Assert.That(BotSkillMistakes.HeldPullStands(false, Party), Is.False, "the scope refuses now (a raid muster...)");
+            Assert.That(BotSkillMistakes.HeldPullStands(true, Party with { AllAlive = false }), Is.False, "someone died meanwhile");
+            Assert.That(BotSkillMistakes.HeldPullStands(true, Party with { Size = 2 }), Is.False);
+            Assert.That(BotSkillMistakes.HeldPullStands(true, Party with { InDungeon = true }), Is.False);
+            Assert.That(BotSkillMistakes.LapseHolds(true, false, false), Is.True);
+            Assert.That(BotSkillMistakes.LapseHolds(false, false, false), Is.False);
+            Assert.That(BotSkillMistakes.LapseHolds(true, true, false), Is.False);
+            Assert.That(BotSkillMistakes.LapseHolds(true, false, true), Is.False);
+        }
+
+        [Test]
+        public void Stepping_out_of_fire_leaves_the_circle_and_never_heads_toward_the_enemy()
+        {
+            var random = new Random(17);
+            for (int i = 0; i < 20_000; i++)
+            {
+                Vector2 center = new((float)random.Next(-500, 500), (float)random.Next(-500, 500));
+                int radius = random.Next(150, 500);
+                double a = random.NextDouble() * Math.PI * 2;
+                float r = (float)(random.NextDouble() * radius);
+                Vector2 self = center + new Vector2((float)Math.Cos(a), (float)Math.Sin(a)) * r;
+                Vector2 enemy = new((float)random.Next(-3_000, 3_000), (float)random.Next(-3_000, 3_000));
+                Vector2 spot = BotSkillMistakes.FireStepSpot(self, center, radius, enemy, center);
+                Assert.That(Vector2.Distance(spot, center), Is.GreaterThanOrEqualTo(radius + BotSkillMistakes.FireStepMargin - 0.5f), "out of the circle");
+                Assert.That(Vector2.Distance(spot, enemy), Is.GreaterThanOrEqualTo(Vector2.Distance(self, enemy) - 0.5f), "never toward the enemy");
+            }
+            // An area centred on a groupmate west of the bot, the enemy east: the bot steps out west, behind its mate.
+            Vector2 west = BotSkillMistakes.FireStepSpot(new(100, 0), new(0, 0), 300, new(2_000, 0), new(0, 0));
+            Assert.That(west.X, Is.LessThan(0));
+            // No enemy known: straight out from the centre.
+            Assert.That(BotSkillMistakes.FireStepSpot(new(100, 0), new(0, 0), 300, null, new(0, 0)).X, Is.EqualTo(375).Within(0.5));
+        }
+
+        [Test]
+        public void A_running_lapse_is_dropped_when_it_is_no_longer_allowed()
+        {
+            var lapses = new BotBuffLapses<string>();
+            bool allowed = true;
+            Assert.That(lapses.Waits("tank", 7, 1_000, 0, _ => 60_000L, _ => allowed), Is.True);
+            Assert.That(lapses.Waits("tank", 7, 3_000, 0, _ => 60_000L, _ => allowed), Is.True);
+            allowed = false;
+            Assert.That(lapses.Waits("tank", 7, 5_000, 0, _ => 60_000L, _ => allowed), Is.False, "renewed now");
+            allowed = true;
+            Assert.That(lapses.Waits("tank", 7, 6_000, 0, _ => 60_000L, _ => allowed), Is.False, "no new roll right after");
+            int asked = 0;
+            Assert.That(lapses.Waits("healer", 7, 1_000, 0, _ => 0L, _ => { asked++; return false; }), Is.False);
+            Assert.That(asked, Is.EqualTo(0), "the re-check runs only while a lapse runs");
         }
 
         [Test]
