@@ -89,6 +89,7 @@
   "realm_raid_frontier_raid_post": "True",
   "realm_raid_hold_epic_respawn": "True",
   "realm_raid_release_at_staging": "True",
+  "realm_raid_return_wave_walk": "True",
   "realm_raid_return_waves": "True",
   "realm_raid_route_gates": "True",
   "realm_raid_tale_first": "True",

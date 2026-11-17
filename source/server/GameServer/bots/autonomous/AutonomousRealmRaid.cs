@@ -84,6 +84,12 @@ namespace DOL.GS
             /// <summary>Raiders walking back to the dungeon gather at the way in and go in together (RealmRaidReturnWave).</summary>
             public bool ReturnGathering;
             public long ReturnOpenUntil, ReturnWaitingSince;
+            /// <summary>The return wave walking in together now (RealmRaidReturnWave.WalkTogether), or null; how many have
+            /// formed; its last headway (the stall clock's, RealmRaidReturnWave.Stalled); and the returners waiting outside.</summary>
+            public ReturnWalk Walk;
+            public int WalksFormed;
+            public long LastHeadwayTick;
+            public int ReturnWaitingNow;
             /// <summary>Raiders seen inside the dungeon since the raid began. Only they are "on their way back"; a raider who
             /// has never been in is still on the way in and is never held at the way in.</summary>
             public readonly HashSet<long> BeenInside = new();
@@ -566,8 +572,10 @@ namespace DOL.GS
                     if (raid.Started && WatchProgress(raid, now))
                     {
                         Log.Info($"REALM_RAID_STALLED event={raid.Definition.Id} minutes={(now - raid.LastProgressTick) / 60_000} " +
-                                 $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest}");
-                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target and no wipe for {(raid.Clocked ? RealmRaidRecruitmentPolicy.StalledMilliseconds : RealmRaidRecruitmentPolicy.ForcedStalledMilliseconds) / 60_000} minutes.");
+                                 $"named={raid.ProgressNamed} wipes={raid.ProgressWipes} target=\"{raid.ProgressTarget}\" lowest={raid.ProgressLowest} " +
+                                 $"headway_minutes={(raid.LastHeadwayTick > 0 ? (now - raid.LastHeadwayTick) / 60_000 : -1)} " +
+                                 $"wave={(raid.Walk != null ? $"{raid.Walk.Number}@{raid.Walk.Step + 1}/{raid.Walk.Steps.Length}" : "none")}");
+                        End(raid, now, $"Stalled: no named or boss kill, no new low on its target, no wipe and no return-wave headway for {StallLimit(raid) / 60_000} minutes.");
                         continue;
                     }
                     if (!raid.Started)
@@ -646,6 +654,7 @@ namespace DOL.GS
                         RealmRaidDungeonRoute route = PulseRouteGate(raid, now);
                         route.Advance(raid.Support, now);
                         PulseReturnWave(raid, now);
+                        PulseReturnWalk(raid, now);
                         while (route.TryTakeWipe(out string wipedBy, out int failures, out int engaged, out int fallen))
                             OnWipe(raid, wipedBy, failures, now, engaged, fallen);
                         if (route.Defeated)
@@ -1063,6 +1072,10 @@ namespace DOL.GS
         private static Point3D LairHome(Raid raid) => raid.Definition.IsOpenWorld ? RealmRaidOpenWorld.Home(raid.Boss)
             : DragonLairPlacement.Home(raid.Definition.Realm);
 
+        /// <summary>The stall clock's limit: 60 minutes, a forced raid's 3 hours.</summary>
+        private static long StallLimit(Raid raid) =>
+            raid.Clocked ? RealmRaidRecruitmentPolicy.StalledMilliseconds : RealmRaidRecruitmentPolicy.ForcedStalledMilliseconds;
+
         /// <summary>True when a raid in battle has stalled. Notes any progress first: a named or boss down, a wipe, or the
         /// named, boss or dragon it fights at a new low.</summary>
         private static bool WatchProgress(Raid raid, long now)
@@ -1083,7 +1096,9 @@ namespace DOL.GS
             raid.ProgressTarget = name;
             // The first-hour trash clear is progress (owner, 2026-11-16): the stall clock starts when it ends.
             if (raid.DungeonRoute?.ClearingTrash(now) == true) raid.LastProgressTick = now;
-            return RealmRaidRecruitmentPolicy.Stalled(!raid.Clocked, now, raid.LastProgressTick);
+            // A return wave clearing its way back in is headway (owner, 2026-11-17): it restarts the clock, at most one limit
+            // beyond the last real progress (RealmRaidReturnWave.Stalled).
+            return RealmRaidReturnWave.Stalled(StallLimit(raid), now, raid.LastProgressTick, raid.LastHeadwayTick);
         }
 
         /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
@@ -1676,6 +1691,8 @@ namespace DOL.GS
                         new($"realm-event-{raid.Definition.Id}", raid.Definition.Name, raid.Hub.Name, raid.Hub.Region,
                             (int)wait.X, (int)wait.Y, (int)wait.Z, false, false, 50), true);
                 }
+                // Walking in with a return wave, or one of the main body sent back to meet it (RealmRaidReturnWave.WalkTogether).
+                if (raid.Definition.IsDungeon && WalkView(raid, group, bot) is { } walking) return walking;
                 // Walking back after a release while the raid gathers a return wave: it waits at its party's staging by the
                 // way in, as it did before the raid went in, and enters with the others (RealmRaidReturnWave).
                 if (raid.ReturnGathering && party.RallyView != null && (raid.Definition.IsDungeon
@@ -1704,6 +1721,8 @@ namespace DOL.GS
                 return;
             }
             int outside = 0, waiting = 0, fallen = 0;
+            bool walks = WalksTogether(raid);
+            var waitingBots = new List<GameBot>();
             // Owner's PC, 2026-11-12 (build ff5a8bc): Summoner's Hall's raid started from its staging town, and two minutes
             // later every raider still walking to the far entrance was counted as "on the way back" and sent back to the town:
             // nobody had reached the dungeon 7 minutes in. Only raiders who have been inside count now.
@@ -1718,14 +1737,21 @@ namespace DOL.GS
                 }
                 if (!raid.BeenInside.Contains(b.DatabaseID)) continue;
                 if (!b.IsAlive) { fallen++; continue; }
+                // Already walking in with the wave (on its way from the staging post to the door): not waiting for the next one.
+                if (raid.Walk?.Members.Contains(b.DatabaseID) == true) continue;
                 outside++;
-                if (IsStaged(raid, b)) waiting++;
+                if (IsStaged(raid, b)) { waiting++; waitingBots.Add(b); }
             }
+            raid.ReturnWaitingNow = walks ? waiting : 0;
             if (waiting == 0) raid.ReturnWaitingSince = 0;
             else if (raid.ReturnWaitingSince == 0) raid.ReturnWaitingSince = now;
             long waited = raid.ReturnWaitingSince == 0 ? 0 : now - raid.ReturnWaitingSince;
             string name = raid.Definition.Id;
-            switch (RealmRaidReturnWave.Next(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil))
+            // Walking in together (2026-11-17), a few on their way back gather too instead of walking in one by one.
+            RealmRaidReturnWave.Step step = walks
+                ? RealmRaidReturnWave.NextWalking(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil)
+                : RealmRaidReturnWave.Next(outside, fallen, waiting, waited, now < raid.ReturnOpenUntil);
+            switch (step)
             {
                 case RealmRaidReturnWave.Step.Gather:
                     if (!raid.ReturnGathering)
@@ -1742,8 +1768,12 @@ namespace DOL.GS
                     raid.ReturnGathering = false;
                     break;
             }
-            // While raiders stand at the way in waiting for their wave, the muster inside is not "unreachable".
-            route.ReturnGathering = raid.ReturnGathering && waiting > 0;
+            // The ones going in walk with the wave: a new one, or the one already walking (they follow it on the walk it cleared).
+            if (walks && waitingBots.Count > 0 && now < raid.ReturnOpenUntil) JoinWalk(raid, waitingBots, now);
+            // While raiders stand at the way in waiting for their wave, or a wave walks in making headway, the muster inside is
+            // not "unreachable".
+            route.ReturnGathering = raid.ReturnGathering && waiting > 0 ||
+                                    raid.Walk != null && !RealmRaidReturnWave.Stuck(raid.Walk.LastMove, now);
             if (raid.Transit != null) raid.Transit.ReturnGathering = route.ReturnGathering;
         }
 
