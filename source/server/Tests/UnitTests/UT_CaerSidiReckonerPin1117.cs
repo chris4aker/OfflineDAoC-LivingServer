@@ -211,6 +211,26 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TheSameLeadWalksAgainOnHisNextTripOutOrAfterTheBreakOffWindow()
+        {
+            var reckoner = Npc<TestReckoner>(Stuck);
+            var cabalist = Npc<Bot>(new(27300, 36300, 15389));
+            long trip = 7_000_000;
+            for (long now = trip; now <= trip + 31_000; now += 1_000) T.PublishSoulReckonerLeader(reckoner, cabalist, now, trip);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, trip + 31_000).Step, Is.EqualTo(T.ReckonerLeadStep.None), "its 30 s are up");
+            // The clock starts again after the break-off's window (150 s out): the same lead walks again.
+            long again = trip + 150_000;
+            T.PublishSoulReckonerLeader(reckoner, cabalist, again, again);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, again + 500).Step, Is.EqualTo(T.ReckonerLeadStep.Walk));
+            for (long now = again + 1_000; now <= again + 31_000; now += 1_000) T.PublishSoulReckonerLeader(reckoner, cabalist, now, again);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, again + 31_000).Step, Is.EqualTo(T.ReckonerLeadStep.None));
+            // Back in his room and out again, without the lead being cleared in between: a new trip, a new walk.
+            long next = again + 60_000;
+            T.PublishSoulReckonerLeader(reckoner, cabalist, next, next);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, next + 500).Step, Is.EqualTo(T.ReckonerLeadStep.Walk));
+        }
+
+        [Test]
         public void NoBotsPetTouchesHimOutOfHisRoomOnly()
         {
             var reckoner = Npc<TestReckoner>(Stuck);

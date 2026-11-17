@@ -360,7 +360,7 @@ namespace DOL.GS
         // The lead chosen by SoulReckonerLeadAct, acted on only by that bot on its own turn (ThinkSoulReckonerLead).
         private static GameLiving _reckonerLeader;
         private static GameNPC _reckonerLeading;
-        private static long _reckonerLeaderUntil, _reckonerLeaderSince;
+        private static long _reckonerLeaderUntil, _reckonerLeaderSince, _reckonerLeaderTrip;
         private static volatile bool _reckonerLeadPublished;
 
         /// <summary>The clock for this Soul Reckoner, brought up to date (one Reckoner lives at a time).</summary>
@@ -376,13 +376,16 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>Publishes the lead (<paramref name="leader"/>, null: none); a new lead starts its walk's clock.</summary>
-        public static void PublishSoulReckonerLeader(GameNPC reckoner, GameLiving leader, long now)
+        /// <summary>Publishes the lead (<paramref name="leader"/>, null: none) for his trip out that began at
+        /// <paramref name="outSince"/> (his clock, <see cref="SoulReckonerOutSince"/>). A new lead, or the same lead on a new trip
+        /// (he went back in and came out again, or the clock started again after a break-off's window), starts its walk's clock.</summary>
+        public static void PublishSoulReckonerLeader(GameNPC reckoner, GameLiving leader, long now, long outSince = 0)
         {
             lock (ReckonerLock)
             {
                 if (leader == null) { _reckonerLeader = null; _reckonerLeading = null; _reckonerLeadPublished = false; return; }
-                if (!ReferenceEquals(_reckonerLeader, leader)) _reckonerLeaderSince = now;
+                if (!ReferenceEquals(_reckonerLeader, leader) || _reckonerLeaderTrip != outSince) _reckonerLeaderSince = now;
+                _reckonerLeaderTrip = outSince;
                 _reckonerLeader = leader;
                 _reckonerLeading = reckoner;
                 _reckonerLeaderUntil = now + SoulReckonerLeadHoldMilliseconds;
@@ -415,6 +418,7 @@ namespace DOL.GS
             {
                 _reckonerSeen = null; _reckonerLeader = null; _reckonerLeading = null; _reckonerLeadPublished = false;
                 _reckonerOutSince = _reckonerObserved = _reckonerActTick = _reckonerLogTick = _reckonerLeaderUntil = _reckonerLeaderSince = 0;
+                _reckonerLeaderTrip = 0;
             }
         }
 
@@ -534,7 +538,7 @@ namespace DOL.GS
             GameBot[] ours = (live ?? []).OfType<GameBot>().Where(b => OursForReckoner(b, reckoner)).ToArray();
             GameLiving leader = SoulReckonerLeader(his, l => OursForReckoner(l, reckoner),
                 ours.Select(b => ((GameLiving)b, (float)b.GetDistanceTo(reckoner))));
-            PublishSoulReckonerLeader(reckoner, leader, now);
+            PublishSoulReckonerLeader(reckoner, leader, now, since);
             lock (ReckonerLock)
             {
                 if (now - _reckonerLogTick < 60_000) return;
