@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace DOL.GS
 {
@@ -22,6 +23,14 @@ namespace DOL.GS
         // A native channeled spell pays on each real pulse, not every AI tick.
         // Preserve the spell's native upkeep cost for bots and players alike.
         public static int PulseCost(GameLiving caster, Spell spell) => spell.PulsePower;
+
+        /// <summary>
+        /// The damage spell a gamebot casts, with its skill (Bots as people WP2, docs/BOTS-AS-PEOPLE-1.2.md, item 2: "Power
+        /// use"): <paramref name="picked"/>, today's choice, or by mistake its most expensive useful damage spell (Casual 30%
+        /// of casts, Average 15%, Veteran 5%; a quarter in a group with a real player), only while that leaves it 10% of its
+        /// power in a group and 40% alone. Out of scope or switched off: <paramref name="picked"/>.
+        /// </summary>
+        public static Spell WithSkill(GameBot bot, List<Spell> spells, Spell picked) => BotSkillHands.ChooseSpell(bot, spells, picked);
 
         public static int Cost(GameBot bot, Spell spell, SpellLine line)
         {

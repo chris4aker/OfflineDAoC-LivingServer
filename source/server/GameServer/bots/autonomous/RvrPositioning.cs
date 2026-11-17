@@ -547,15 +547,18 @@ public static class RvrPositioning
     /// Average 0.6-2.5 s, Veteran 0.3-1.5 s). Pure.</summary>
     public static long ReactionMilliseconds(RvrSkillTier tier, long memberId, long now)
     {
-        (long min, long max) = tier switch
-        {
-            RvrSkillTier.Casual => (1_000L, 4_000L),
-            RvrSkillTier.Veteran => (300L, 1_500L),
-            _ => (600L, 2_500L),
-        };
+        (long min, long max) = ReactionBand(tier);
         double roll = RvrPeelPlan.Roll(memberId, Math.DivRem(now, 1_000L).Quotient, DelaySalt);
         return min + (long)Math.Round((max - min) * roll);
     }
+
+    /// <summary>The band of <see cref="ReactionMilliseconds"/> for a tier (Bots as people WP2 spreads a member inside it). Pure.</summary>
+    public static (long Min, long Max) ReactionBand(RvrSkillTier tier) => tier switch
+    {
+        RvrSkillTier.Casual => (1_000L, 4_000L),
+        RvrSkillTier.Veteran => (300L, 1_500L),
+        _ => (600L, 2_500L),
+    };
 
     /// <summary>The points a walk from <paramref name="from"/> to <paramref name="to"/> is proven through on the mesh:
     /// pieces of at most <see cref="ChunkLength"/>, the last at <paramref name="to"/>. Pure.</summary>

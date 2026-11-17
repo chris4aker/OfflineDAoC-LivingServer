@@ -2705,7 +2705,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, item 2's master switch (work packages 1 and 2).
 		/// </summary>
-		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work package 2): the profiles are made, logged and grow, but no bot plays differently until the mistakes come.", true)]
+		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. Mistakes: Casual pulls an add in 10% of party pulls (Average 5%, Veteran 1.5%), lets 25% of expired buffs stay off 20-90 s (12%, 4%), casts its dearest nuke in 30% of casts (15%, 5%) and rests at 25% power (35%, today's 45%), circles into a monster's face in 12% of steps (6%, 2%), reacts x1.3 slower (x1.0, x0.75) and in open-field RvR steps out of an area effect after 2-5 s (1-3 s, 0.5-1.5 s; an RvR group keeps its group tier).", true)]
 		public static bool BOT_SKILL_PROFILES = true;
 
 		/// <summary>
@@ -2717,7 +2717,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, work package 2.
 		/// </summary>
-		[ServerProperty("bots", "bot_skill_spare_player_group", "Bots as people (1.2): in a group with you, a gamebot makes its mistakes at a quarter of its own rate (owner decision 4, 2026-11-17); its reactions are not quickened, so it still plays like a person, a careful one. Needs bot_skill_profiles. Log: BOT_SKILL_MISTAKE spared=true. In this build it changes nothing yet (work package 2).", true)]
+		[ServerProperty("bots", "bot_skill_spare_player_group", "Bots as people (1.2): in a group with you, a gamebot makes its mistakes at a quarter of its own rate (owner decision 4, 2026-11-17); its reactions are not quickened, so it still plays like a person, a careful one. Needs bot_skill_profiles. Log: BOT_SKILL_MISTAKE spared=true, BOT_SKILL_MISTAKES (rate_in against rate_out).", true)]
 		public static bool BOT_SKILL_SPARE_PLAYER_GROUP = true;
 
 		/// <summary>
