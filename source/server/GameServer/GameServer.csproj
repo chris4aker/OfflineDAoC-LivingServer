@@ -63,6 +63,7 @@
         <ProjectReference Include="..\CoreDatabase\CoreDatabase.csproj" Name="CoreDatabase" />
         <EmbeddedResource Include=".\config\*" />
         <EmbeddedResource Include=".\bots\autonomous\data\capnbry_classic_si_goals.json" />
+        <EmbeddedResource Include=".\bots\autonomous\data\rvr-checkspots.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\corpus.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\voices.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\places.json" />
