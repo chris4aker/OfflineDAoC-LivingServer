@@ -194,6 +194,8 @@ namespace DOL.GS
                     : NextSlotLevel(player.Level) is > 0 and var next ? $"Your next companion slot opens at level {next}." : "All your companion slots are taken.";
             if (d.Class == 0 || d.Race == 0)
                 return "Choose a race and class first.";
+            if (!OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay((int)d.Class))
+                return OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage;
             string name = d.Name?.Trim() ?? string.Empty;
             if (Hire165.NameProblem(name) is { } badName)
                 return badName;
@@ -265,6 +267,10 @@ namespace DOL.GS
             OfflineWorldBotRecord record = Record(hired.BotId);
             if (record == null)
                 return "That companion's record is missing.";
+            // Bots never play the custom class (owner 2026-11-17): a companion hired as a Sluaghbinder before 1.2 stays in
+            // the roster with its items, but never comes into the world.
+            if (!OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(record.ClassId))
+                return $"{record.Name} stays at the inn: {OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage}";
             if (!record.IsAlive)
                 return $"{record.Name} is dead. Any healer of your realm brings them back, free.";
             // GitHub #49: an earlier copy of this companion that is no longer in the world (a move that never finished)

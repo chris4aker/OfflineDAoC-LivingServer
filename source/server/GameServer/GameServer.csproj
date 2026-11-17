@@ -78,6 +78,8 @@
         <EmbeddedResource Include=".\bots\autonomous\data\darkness_falls_navigation_proofs.json" />
         <!-- RvR 1.2 lane catalog (docs/research/rvr-field-1.2/LANES-CATALOG.md), built by source/tools/build_rvr_lanes.py. -->
         <EmbeddedResource Include=".\bots\autonomous\data\rvr-lanes.json" />
+        <!-- Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md), made by source/tools/make_era_builds.py; the launcher embeds the same file. -->
+        <EmbeddedResource Include=".\bots\autonomous\data\era-builds-165.json" LogicalName="OfflineDaoc.era-builds-165.json" />
         <!-- The epic chains (EpicChainLinks): the data file tools/claude-version/epic_chains.py reads, built in. -->
         <EmbeddedResource Include="..\..\..\tools\claude-version\epic_chains_data.json" LogicalName="epic_chains_data.json" />
         <TranslationFiles Include=".\language\**\*.txt" />

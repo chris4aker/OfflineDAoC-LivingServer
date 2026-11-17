@@ -74,6 +74,9 @@ namespace DOL.GS
                 var profile = GameServer.Database.FindObjectByKey<BotProfile>(botId);
                 if (profile == null || profile.OwnerCharacterID != owner.ObjectId)
                     return null;
+                // Bots never play the custom class (owner 2026-11-17): a saved Sluaghbinder companion stays saved, unloaded.
+                if (!OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(profile.ClassId))
+                    return null;
 
                 // Create GameBot from profile
                 var bot = new GameBot(owner, profile.ClassId, profile.Name, profile.RaceId, profile.GenderId,
