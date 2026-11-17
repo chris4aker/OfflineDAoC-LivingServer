@@ -12,9 +12,10 @@ namespace DOL.GS;
 /// <list type="bullet">
 /// <item>Circle-strafe: a melee gamebot in an open-field RvR fight chains short side legs around its target every 3-8 s,
 /// out of the target's front and inside its own positional window. Casual 20% of fights, Average 50%, Veteran 85%.</item>
-/// <item>Face the enemy: a caster or healer with an enemy melee fighter on it backs off in an arc facing it ("run a bit,
-/// throw heal") instead of turning its back. Casual 30% of contacts, Average 60%, Veteran 90%.</item>
-/// <item>Overshoot: arriving on foot at the bank, a merchant, a trainer or a crowd in town, it runs 15-60 units past and
+/// <item>Face the enemy: a healer with an enemy melee fighter on it runs its kite facing it, in short legs along an arc
+/// ("run a bit, throw heal"), instead of turning its back; a caster backs off 80 units facing it. The kite's distance and
+/// speed are kept. Casual 30% of contacts, Average 60%, Veteran 90%.</item>
+/// <item>Overshoot: arriving on foot at the bank, a merchant, a trainer or a crowd in town, it runs 30-60 units past and
 /// steps back. Casual 25% of arrivals, Average 15%, Veteran 8%.</item>
 /// <item>Sit while waiting: waiting more than 30 s for its group, at a rendezvous or at the bank, it sits (emote 0xF0) and
 /// stands at once to move, cast or fight. The same for all tiers: 60% of waits, after 30-50 s.</item>
@@ -41,6 +42,11 @@ public static class BotMovementHabits
     public static RvrSkillTier TierOf(long botId, RvrBotAwareness awareness) =>
         RvrGroupSkill.TierForRoll(AutonomousBotPersonality.Mix(botId, TierSalt) % 10_000 / 100.0, 0,
             RvrGroupSkill.Shares(awareness));
+
+    /// <summary>The tier the habits use for a bot: its skill profile's when it has one (work package 1), else
+    /// <see cref="TierOf(long, RvrBotAwareness)"/>. Pure; BotMovementHabitsRuntime.TierOf is its one caller.</summary>
+    public static RvrSkillTier TierFor(RvrSkillTier? profileTier, long botId, RvrBotAwareness awareness) =>
+        profileTier ?? TierOf(botId, awareness);
 
     /// <summary>A fixed roll in [0, 1) for a bot, an occasion and a salt (no random number, no clock).</summary>
     public static double Roll(long botId, long occasion, ulong salt) =>
@@ -166,7 +172,9 @@ public static class BotMovementHabits
     // ---- overshoot (arrivals in town) -------------------------------------------------------------------------------
 
     public const double OvershootCasual = 0.25, OvershootAverage = 0.15, OvershootVeteran = 0.08;
-    public const float OvershootMinimum = 15f;
+    /// <summary>At least 30 past: farther than the hangout's 28-unit arrival (AutonomousTownHangouts.ArriveTolerance), so
+    /// the end of an overshoot never counts as arrived.</summary>
+    public const float OvershootMinimum = 30f;
     public const float OvershootMaximum = 60f;
     /// <summary>A walk shorter than this is a shuffle, not an arrival: no overshoot.</summary>
     public const float OvershootMinimumWalk = 150f;
@@ -183,6 +191,68 @@ public static class BotMovementHabits
 
     public static float OvershootDistance(double roll) =>
         OvershootMinimum + (float)Math.Clamp(roll, 0, 0.999999) * (OvershootMaximum - OvershootMinimum);
+
+    public enum HangoutStep { WalkToSpot, WalkPast, StepBack, SteppingBack, Arrived }
+
+    /// <summary>
+    /// One turn of the walk to a town hangout with an overshoot (AutonomousTownIdleRouting): while it steps back, the
+    /// step-back owns the walk (no new route over it) until it stands at the spot; with an overshoot pending it walks on
+    /// past the spot (passing through it does not count) and steps back once at the spot past it; with none it walks
+    /// to the spot as before. <paramref name="overshootPending"/>: an overshoot not yet stepped back. Pure.
+    /// </summary>
+    public static HangoutStep Hangout(bool atSpot, bool overshootPending, bool atPast, bool moving, bool steppingBack)
+    {
+        if (steppingBack)
+            return atSpot && !moving ? HangoutStep.Arrived : HangoutStep.SteppingBack;
+        if (overshootPending)
+        {
+            if (atPast)
+                return HangoutStep.StepBack;
+            if (moving || !atSpot)
+                return HangoutStep.WalkPast;
+        }
+        return atSpot ? HangoutStep.Arrived : HangoutStep.WalkToSpot;
+    }
+
+    /// <summary>
+    /// The face-and-back-off of a healer that would kite: the same run as its kite (from <paramref name="self"/> to the
+    /// kite's spot, 220-330 units), walked in legs of at most <see cref="FaceLegLength"/> facing the attacker, along a
+    /// slight arc (bulging up to <see cref="FaceArcBulge"/> of the run to the side of <paramref name="roll"/>). The habit
+    /// changes facing and the path's shape, never the safety distance. At most <see cref="FaceMaxLegs"/> legs. Pure.
+    /// </summary>
+    public static Vector2[] ArcLegsTo(Vector2 self, Vector2 spot, double roll)
+    {
+        float run = Vector2.Distance(self, spot);
+        if (run < 1)
+            return [];
+        Vector2 along = (spot - self) / run;
+        Vector2 side = new(-along.Y, along.X);
+        float bulge = run * FaceArcBulge * (roll < 0.5 ? 1 : -1);
+        // The arc is a little longer than the run; legs of the arc stay under FaceLegLength.
+        int legs = Math.Clamp((int)MathF.Ceiling(run * 1.05f / FaceLegLength), 1, FaceMaxLegs);
+        var points = new Vector2[legs];
+        for (int i = 1; i <= legs; i++)
+        {
+            float t = i / (float)legs;
+            points[i - 1] = self + (spot - self) * t + side * (bulge * 4 * t * (1 - t));
+        }
+        return points;
+    }
+
+    /// <summary>
+    /// Whether a proven face walk is taken: a healer's face-back only when the mesh allows at least
+    /// <see cref="FaceMinimumShare"/> of its kite's run (else it kites as today, part way allowed); a caster's back-off
+    /// with at least two legs (backed into a wall after one is no back-off). Pure.
+    /// </summary>
+    public static bool FaceWalkTaken(int provenLegs, int plannedLegs, float covered, float planned, bool kite) =>
+        kite ? provenLegs > 0 && planned > 0 && covered >= planned * FaceMinimumShare : provenLegs >= 2 && plannedLegs > 0;
+
+    /// <summary>A healer's face-back arc bulges at most this share of its run to the side.</summary>
+    public const float FaceArcBulge = 0.12f;
+    /// <summary>A face-back is at most this many legs (the longest kite, 330 units, takes 18 of 20).</summary>
+    public const int FaceMaxLegs = 20;
+    /// <summary>A face-back proven for less than this share of the kite's run is not taken: the bot kites as today.</summary>
+    public const float FaceMinimumShare = 0.8f;
 
     public static long StepBackDelay(double roll) =>
         StepBackMinimumMs + (long)(Math.Clamp(roll, 0, 0.999999) * (StepBackMaximumMs - StepBackMinimumMs));

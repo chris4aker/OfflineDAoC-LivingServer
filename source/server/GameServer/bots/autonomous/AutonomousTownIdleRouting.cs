@@ -324,12 +324,25 @@ namespace DOL.GS
                 return false;
             Vector3 here = new(bot.X, bot.Y, bot.Z);
             const float tolerance = AutonomousTownHangouts.ArriveTolerance * AutonomousTownHangouts.ArriveTolerance;
-            bool atSpot = Vector2.DistanceSquared(new(here.X, here.Y), new(_townIdleDestination.Point.X, _townIdleDestination.Point.Y)) <=
-                tolerance;
-            // An overshooting bot (WP5) walks to the spot past it; it has arrived at either.
-            Vector3 aim = _townHangoutPast ?? _townIdleDestination.Point;
-            if (!atSpot && Vector2.DistanceSquared(new(here.X, here.Y), new(aim.X, aim.Y)) > tolerance)
+            Vector2 at = new(here.X, here.Y);
+            bool atSpot = Vector2.DistanceSquared(at, new(_townIdleDestination.Point.X, _townIdleDestination.Point.Y)) <= tolerance;
+            // Bots as people 1.2 (WP5): an overshooting bot walks on past the spot, steps back once, and that step-back is
+            // not routed over (BotMovementHabits.Hangout).
+            bool pending = _townHangoutPast != null && BotMovementHabitsRuntime.OvershootPending(bot);
+            bool atPast = _townHangoutPast is Vector3 past && Vector2.DistanceSquared(at, new(past.X, past.Y)) <= tolerance;
+            BotMovementHabits.HangoutStep step = BotMovementHabits.Hangout(atSpot, pending, atPast, bot.IsMoving,
+                BotMovementHabitsRuntime.SteppingBack(bot));
+            if (step == BotMovementHabits.HangoutStep.SteppingBack)
+                return true;
+            if (step == BotMovementHabits.HangoutStep.StepBack)
             {
+                _townHangoutPast = null;
+                BotMovementHabitsRuntime.StepBack(bot);
+                return true;
+            }
+            if (step is BotMovementHabits.HangoutStep.WalkPast or BotMovementHabits.HangoutStep.WalkToSpot)
+            {
+                Vector3 aim = step == BotMovementHabits.HangoutStep.WalkPast ? _townHangoutPast.Value : _townIdleDestination.Point;
                 if (IssuePath(bot, aim))
                 {
                     SetStatus(bot, $"Wandering over to the {AutonomousTownHangouts.Word(_townHangoutKind)}",
@@ -339,18 +352,11 @@ namespace DOL.GS
                 }
                 // No route after all: stand where it got to.
                 _townIdleDestination = _townIdleDestination with { Point = here };
-                atSpot = true;
             }
             if (_townHangoutPast != null)
             {
                 _townHangoutPast = null;
-                if (!atSpot)
-                {
-                    // Ran past it: steps back (BotMovementHabitsRuntime does it as soon as the bot stops; once).
-                    BotMovementHabitsRuntime.StepBack(bot, _townIdleDestination.Point);
-                    return true;
-                }
-                BotMovementHabitsRuntime.CancelOvershoot(bot); // stopped at the spot itself on the way past
+                BotMovementHabitsRuntime.CancelOvershoot(bot); // stopped at the spot itself, or the walk failed
             }
             _townHangoutWalking = false;
             bot.StopMovingOnPath();

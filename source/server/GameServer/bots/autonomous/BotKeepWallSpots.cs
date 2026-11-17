@@ -32,6 +32,40 @@ public static class BotKeepWallSpots
     public const long WalkTimeoutMs = 20_000;
     /// <summary>It has arrived this close (2D) to its spot.</summary>
     public const float ArriveTolerance = 24f;
+    /// <summary>During the walk and while it sits, the bot checks the keep, its scope and its watch at most this often.</summary>
+    public const long RecheckMs = 1_000;
+
+    /// <summary>
+    /// Only a party member standing in formation around its standing leader takes the walls: its follow slot walks it
+    /// there and back (AutonomousGroupFormationFollow), with no order the wait sites stop. A leader, a bot at a
+    /// rendezvous and a soloer sit where they wait. Pure.
+    /// </summary>
+    public static bool Offered(bool formationMember) => formationMember;
+
+    /// <summary>
+    /// Whether a bot walking to or sitting on a wall keeps at it: its scope still allows it and decision 11 still holds
+    /// (held, no siege, no enemy noticed, not a committed defender or siege fighter). Checked each
+    /// <see cref="RecheckMs"/>. Pure.
+    /// </summary>
+    public static bool StillAllowed(bool scopeAllows, bool heldByRealm, bool siege, bool enemyNoticed, bool committedDefender,
+        bool siegeFighter) =>
+        scopeAllows && Allowed(heldByRealm, siege, enemyNoticed, committedDefender, siegeFighter);
+
+    public enum WalkStep { Walk, Arrive, Abandon, GiveUp }
+
+    /// <summary>
+    /// One turn of the walk to a wall spot <paramref name="distance"/> away (2D): abandoned when a re-check found it no
+    /// longer allowed, arrived within <see cref="ArriveTolerance"/> (+16 while still settling), given up after
+    /// <see cref="WalkTimeoutMs"/>, else walking on (its follow slot walks it; nothing is ordered here). Pure.
+    /// </summary>
+    public static WalkStep Step(float distance, bool moving, long walkedMs, bool recheckDue, bool stillAllowed)
+    {
+        if (recheckDue && !stillAllowed)
+            return WalkStep.Abandon;
+        if (distance <= ArriveTolerance + 16 && (!moving || distance <= 8))
+            return WalkStep.Arrive;
+        return walkedMs > WalkTimeoutMs ? WalkStep.GiveUp : WalkStep.Walk;
+    }
 
     /// <summary>A guard's floored position at a keep.</summary>
     /// <param name="Floor">The mesh floor under the guard (TryFloor), within 96 units of its height.</param>

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using DOL.GS;
@@ -76,6 +77,19 @@ namespace DOL.UnitTests
             var standing = BotStickLine.AimFor(self, new(0, 500), Vector2.Zero, 0, 120, running: true);
             Assert.That(standing.Point, Is.EqualTo(new Vector2(0, 500)), "the one ahead stands: aim at it");
             Assert.That(standing.Behind, Is.EqualTo(380).Within(0.01), "the catch-up is measured from the gap");
+        });
+
+        [Test]
+        public void The_line_is_worked_out_only_while_the_leader_walks_and_without_allocation() => Assert.Multiple(() =>
+        {
+            Assert.That(BotStickLine.Refreshes(true, true), Is.True);
+            Assert.That(BotStickLine.Refreshes(true, false), Is.False, "a standing group keeps its formation: no line work");
+            Assert.That(BotStickLine.Refreshes(false, true), Is.False);
+            bool[] line = [true, false, true, true, true];
+            Span<int> order = stackalloc int[line.Length];
+            BotStickLine.Order(line, 0, order);
+            Assert.That(order.ToArray(), Is.EqualTo(BotStickLine.Order(line, 0)), "the span form is the list form");
+            Assert.That(BotStickLine.Followers((ReadOnlySpan<int>)order), Is.EqualTo(3));
         });
     }
 }

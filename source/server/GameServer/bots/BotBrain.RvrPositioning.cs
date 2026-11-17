@@ -288,10 +288,10 @@ namespace DOL.AI.Brain
             }
             float distance = RvrPositioning.KiteDistance(tier, roll);
             Vector2 spot = RvrPositioning.KiteSpot(Flat(bot), RvrPeelPlan.At(attacker), refuge, distance);
-            // WP5: a healer that faces the enemy backs off in an arc facing it instead of turning away, then heals.
-            if (TryRvrFaceBack(bot, attacker.Living, refuge, tier, contact))
+            // WP5: a healer that faces the enemy runs the same kite facing it, in short legs along an arc, then heals.
+            if (TryRvrFaceBack(bot, attacker.Living, refuge, tier, contact, spot))
             {
-                _rvrKiteReadyAt = now + 1_500 + RvrPositioning.KiteHealWindow(roll);
+                _rvrKiteReadyAt = _habitUntil + RvrPositioning.KiteHealWindow(roll);
                 return true;
             }
             if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Kite, now))
