@@ -6,7 +6,7 @@ namespace DOL.GS;
 public enum RvrScopeRefusal : byte
 {
     None = 0,
-    /// <summary>A real player's /spawn companion or temporary helper, or anything that is not an autonomous gamebot.</summary>
+    /// <summary>A real player's /spawn companion, temporary helper or hired companion, or anything that is not an autonomous gamebot.</summary>
     NotAGamebot,
     /// <summary>A player leads the bot's group, or a player is in it.</summary>
     PlayerGroup,
@@ -32,7 +32,8 @@ public readonly record struct RvrScopeFacts
 {
     /// <summary>An autonomous gamebot (GameBot.IsAutonomousWorldBot), not a companion.</summary>
     public bool AutonomousGamebot { get; init; }
-    /// <summary>A /spawn companion or temporary helper bot (GameBot.IsTemporaryGroupHelper).</summary>
+    /// <summary>A /spawn companion or temporary helper bot (GameBot.IsTemporaryGroupHelper), or a player's hired companion
+    /// (GameBot.IsHiredCompanion: an autonomous bot row its player owns, in the player's group or waiting for them).</summary>
     public bool Companion { get; init; }
     /// <summary>A real player leads the bot's group (GameBot.IsPlayerLedGroup).</summary>
     public bool PlayerLedGroup { get; init; }
@@ -113,7 +114,7 @@ public static class RvrTacticsScope
     /// </summary>
     public static RvrScopeRefusal Refusal(GameBot bot)
     {
-        if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper)
+        if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsHiredCompanion)
             return RvrScopeRefusal.NotAGamebot;
         if (bot.IsPlayerLedGroup)
             return RvrScopeRefusal.PlayerGroup;
@@ -131,7 +132,7 @@ public static class RvrTacticsScope
     private static RvrScopeFacts OwnFactsOf(GameBot bot) => new()
     {
         AutonomousGamebot = bot.IsAutonomousWorldBot,
-        Companion = bot.IsTemporaryGroupHelper,
+        Companion = bot.IsTemporaryGroupHelper || bot.IsHiredCompanion,
         PlayerLedGroup = bot.IsPlayerLedGroup,
         Duty = BotDutyLeases.KindOf(bot),
         AtObjective = RvrAtObjective.Of(bot),

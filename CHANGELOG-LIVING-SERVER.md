@@ -8,7 +8,7 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Hired companions (branch `feat/hired-companions`, not in 1.2 until seen on the owner's PC)
+## Hired companions (1.2, owner 2026-11-17; tests only until seen on the owner's PC)
 
 Ported from shadowofze's Offline DAoC True 1.65 (v0.7, `f68cc75`; github.com/zomboden/OfflineDAoC-True165), GPL-3.0, via
 True165. **Tests only: nothing here has been played on the owner's PC.** Setting: `bots / hired_companions`, **on** by
@@ -39,12 +39,18 @@ companion is summoned, and the rows stay.
   launcher's economy page calls it "Companion hires") and a companion's repairs (`repair`), so the residual stays 0.
 - **Kept apart from the world's bots.** A hired companion is never in the gamebot population count, the planners'
   roster, raids, guild groups or world chat; the population never logs one in or out; the stuck watchdog never moves
-  one. `/spawn` and `/raid` are unchanged. The launcher's DELETE never deletes a player's companion (DELETE ALL keeps
+  one. Like a player-led group, it is outside the open-field RvR tactics (RvrTacticsScope: no stances, calls or lookers;
+  enemy bots notice it by the player rule), and it is no trader, crafter or craft-order buyer for the bot trade (only the
+  hire and the smith's repair move its coin). `/spawn` and `/raid` are unchanged. The launcher's DELETE never deletes a player's companion (DELETE ALL keeps
   them and deletes only orphans whose character is gone); a release build empties `offline_hired_companions`
   (progress-policy.json, checked by build_release_037.py); the Passport keeps them in their world.
 - Not yet: True 1.65's traveler's inns and innkeepers (they need a base-game world update), the courier, the Horn of
   Rallying, its 1.65 mode rules. The hire window's DebugMode 'H' protocol is kept byte for byte, but sent only to a
   client that asks for it (`/companionui protocol`); no client does yet, so nobody gets 'H' packets.
+- **Log lines** for the owner's PC check: `HIRED_COMPANION` (hired), `HIRED_COMPANION_SUMMONED` (why=hired, summon or
+  revived; grouped=), `HIRED_COMPANION_DISMISSED`, `HIRED_COMPANION_REVIVED` (body=lying or faded),
+  `HIRED_COMPANION_LOGOUT` and `HIRED_COMPANION_LOGIN`, `HIRE_WORD_165` (every /hire word or dialog link), `COMPANION_SKILLS_165`, `COMPANION_STATS_165`,
+  `COMPANION_OPTION_165`, `COMPANION_REPAIR_165`.
 
 ## 2.0: crafting and the economy
 

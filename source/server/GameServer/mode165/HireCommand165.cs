@@ -164,6 +164,9 @@ namespace DOL.GS.Commands
                 Say(player, "Unknown /hire word. /hire help lists them.");
                 return;
             }
+            // every word, typed or a dialog link (quiet), for the owner's PC log: the gear, stats, spec and options windows
+            if (Logger.IsInfoEnabled)
+                Logger.Info($"HIRE_WORD_165 player={player.Name} word={verb} args=\"{string.Join(' ', rest)}\" from={(quiet ? "dialog" : "typed")}");
             // rows are numbered from 1 in chat, from 0 in the window protocol
             int RowAt(int i) => rest.Length > i && int.TryParse(rest[i], out int n) ? n - 1 : -1;
             string Row(int i) => RowAt(i).ToString();

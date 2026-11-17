@@ -50,7 +50,8 @@ namespace DOL.AI.Brain
         /// </summary>
         public static bool RvrTacticsApplyTo(GameBot bot) =>
             Properties.RVR_BOT_FIELD_TACTICS && bot?.IsAutonomousWorldBot == true && !bot.IsPlayerLedGroup &&
-            !bot.IsTemporaryGroupHelper && AutonomousWorldBotController.IsBattleground(bot) && RvrTacticsScope.Allows(bot);
+            !bot.IsTemporaryGroupHelper && !bot.IsHiredCompanion && AutonomousWorldBotController.IsBattleground(bot) &&
+            RvrTacticsScope.Allows(bot);
 
         /// <summary>
         /// This bot's group's fight board, at most a second old, or null when the tactics do not apply to the bot. Asking

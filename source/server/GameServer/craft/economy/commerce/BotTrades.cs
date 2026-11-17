@@ -262,7 +262,9 @@ namespace DOL.GS.CraftingEconomy
             }
             if (!CanTradeWith(bot, player))
             {
-                why = bot.IsTemporaryGroupHelper ? $"{bot.Name} is your companion: give it gear with /bot." : $"{bot.Name} does not trade.";
+                why = bot.IsTemporaryGroupHelper ? $"{bot.Name} is your companion: give it gear with /bot." :
+                    bot.IsHiredCompanion ? $"{bot.Name} is a hired companion: hand it gear, or right-click it for its gear window." :
+                    $"{bot.Name} does not trade.";
                 return null;
             }
             if (player.TradeWindow is BotTradeWindow open && open.Bot == bot)
@@ -1343,7 +1345,7 @@ namespace DOL.GS.CraftingEconomy
             public void AtTaskBreak(GameBot bot, TaskBreakPoint point)
             {
                 if (point != TaskBreakPoint.Begin || !Enabled || bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper ||
-                    bot.DatabaseID <= 0 || BotCrafterVoice.ChatRate <= 0 || Random.Shared.NextDouble() >= AdvertChance * BotCrafterVoice.ChatRate)
+                    bot.IsHiredCompanion || bot.DatabaseID <= 0 || BotCrafterVoice.ChatRate <= 0 || Random.Shared.NextDouble() >= AdvertChance * BotCrafterVoice.ChatRate)
                     return;
                 try
                 {

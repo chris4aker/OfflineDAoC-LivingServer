@@ -308,6 +308,10 @@ namespace DOL.GS
                 hired.WithOwner = true;
                 Save(hired);
                 BotGroupInvite.TryInvite(player, bot);
+                // the owner's PC log proves the summon (hire, revive, login or the roster's button) and the group join
+                Log.Info($"HIRED_COMPANION_SUMMONED owner=\"{player.Name}\" bot={record.BotId} \"{record.Name}\" " +
+                         $"why={(firstTime ? "hired" : revived ? "revived" : "summon")} region={player.CurrentRegionID} " +
+                         $"grouped={bot.Group != null && bot.Group == player.Group} level={bot.Level}");
                 AutonomousBotGuilds.Present(bot);   // its player's guild name and emblem (owner 2026-11-05)
                 AutonomousBotStatusPersistence.Queue(bot, true);
                 Hire165.SendRosterNumbers(player);   // its object id and hair colour for the clients
@@ -367,6 +371,7 @@ namespace DOL.GS
             if (hired == null)
                 return "There is no companion in that row.";
             Park(hired, keepWithOwner);
+            Log.Info($"HIRED_COMPANION_DISMISSED owner=\"{player.Name}\" bot={hired.BotId} row={row} keepWithOwner={keepWithOwner}");
             return null;
         }
 
@@ -670,6 +675,8 @@ namespace DOL.GS
                 (int rx, int ry, int rz) = ArrivalSpot(player);
                 live.MoveTo(player.CurrentRegionID, rx, ry, rz, player.Heading);
                 live.OnResurrectedBy(player);
+                Log.Info($"HIRED_COMPANION_REVIVED owner=\"{player.Name}\" bot={hired.BotId} \"{live.Name}\" body=lying " +
+                         $"grouped={live.Group != null && live.Group == player.Group}");
                 return null;
             }
             OfflineWorldBotRecord record = Record(hired.BotId);
@@ -682,6 +689,7 @@ namespace DOL.GS
             record.Dirty = true; // its properties don't mark it changed; without this the save wrote nothing
             GameServer.Database.SaveObject(record);
             // straight back into the party (owner 2026-10-30: the inn is only for hiring and retrieving dismissed ones)
+            Log.Info($"HIRED_COMPANION_REVIVED owner=\"{player.Name}\" bot={hired.BotId} \"{record.Name}\" body=faded");
             string problem = Summon(player, row, revived: true);
             return problem == null ? null : $"{record.Name} lives again. {problem}";
         }
@@ -717,7 +725,10 @@ namespace DOL.GS
         {
             if (!HiredCompanionsMode.IsOn || sender is not GamePlayer player)
                 return;
-            foreach (OfflineHiredCompanionRecord hired in RosterOf(player).Where(h => h.WithOwner))
+            List<OfflineHiredCompanionRecord> withOwner = RosterOf(player).Where(h => h.WithOwner).ToList();
+            if (withOwner.Count > 0)
+                Log.Info($"HIRED_COMPANION_LOGIN owner=\"{player.Name}\" summoning={withOwner.Count}");
+            foreach (OfflineHiredCompanionRecord hired in withOwner)
                 Summon(player, hired.Row);
             Hire165.SendRosterNumbers(player);
         }
@@ -726,8 +737,11 @@ namespace DOL.GS
         {
             if (sender is not GamePlayer player)
                 return;
-            foreach (OfflineHiredCompanionRecord hired in RosterOf(player).Where(h => Live.ContainsKey(h.BotId)))
+            List<OfflineHiredCompanionRecord> live = RosterOf(player).Where(h => Live.ContainsKey(h.BotId)).ToList();
+            foreach (OfflineHiredCompanionRecord hired in live)
                 Park(hired, keepWithOwner: true);
+            if (live.Count > 0)
+                Log.Info($"HIRED_COMPANION_LOGOUT owner=\"{player.Name}\" parked={live.Count}");
         }
 
         /// <summary>
