@@ -59,3 +59,7 @@ Spots not on a circuit are reserve. Loops run 34,169 to 203,275 units.
    <out>`.
 5. A release check runs it on the embedded file with `OFFLINE_DAOC_CHECKSPOT_STRICT=1`. It fails on any failed walk or
    a hash mismatch.
+
+The `request` step picks each spot's own monsters by radius and level band. The first build picked them by cluster
+and name. A trial rebuild on the same tables passed every check (0 failed), but it moved 12 of 98 standing points:
+11 by one ring (about 400 units) and one by 2,624.
