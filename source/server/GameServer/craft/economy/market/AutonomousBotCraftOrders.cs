@@ -105,13 +105,16 @@ public static class AutonomousBotCraftOrders
     public static Action<GameBot, GameBot, CraftOrder> BotOrderDelivered = (_, _, _) => { };
 
     /// <summary>WP8: a player's open order (nothing made yet) is withdrawn; a made one stays to be handed over or to lapse.</summary>
-    public static bool TryCancelOpen(string orderId, string reason)
+    public static bool TryCancelOpen(string orderId, string reason) => TryCloseOpen(orderId, reason, "cancelled");
+
+    /// <summary>Ends an open order (nothing made yet) with this outcome; a paying buyer is refunded. False if it is gone or made.</summary>
+    internal static bool TryCloseOpen(string orderId, string reason, string outcome)
     {
         if (!Orders.TryGet(orderId, out OfflineBotCraftOrderRecord row) || row.State != OpenState || !Claimed.TryAdd(orderId, 0))
             return false;
         try
         {
-            Close(ToOrder(row), refund: true, reason, "cancelled");
+            Close(ToOrder(row), refund: true, reason, outcome);
             return true;
         }
         finally
@@ -494,12 +497,24 @@ public static class AutonomousBotCraftOrders
     /// commission. A buyer who is not in the world or has a full bag is tried again at the next break. A piece the
     /// crafter no longer has refunds the buyer. Returns how many were delivered.
     /// </summary>
-    public static int Deliver(GameBot crafter)
+    public static int Deliver(GameBot crafter) => Deliver(crafter, null);
+
+    /// <summary>
+    /// PC log 2026-11-17 (build 19e7037): 38 of the night's 244 lapsed commissions had been made and never handed over; the
+    /// trip that made them was cut short (a raid call, a logout) before the end of its break. The realm's piece needs no
+    /// buyer in the world, so it is handed over at the station as soon as it is made: the craft trip is the natural break.
+    /// A bot's or a player's order still waits for the end of the break. Returns how many were delivered.
+    /// </summary>
+    public static int DeliverCommissions(GameBot crafter) =>
+        BoardOn ? Deliver(crafter, order => order.Source == CraftOrderSource.Quartermaster) : 0;
+
+    private static int Deliver(GameBot crafter, Func<CraftOrder, bool> which)
     {
         if (crafter?.Inventory == null || crafter.DatabaseID <= 0)
             return 0;
         int delivered = 0;
-        foreach (CraftOrder order in OfCrafter(crafter.DatabaseID).Where(order => order.State == CraftOrderState.Made).ToArray())
+        foreach (CraftOrder order in OfCrafter(crafter.DatabaseID)
+                     .Where(order => order.State == CraftOrderState.Made && (which == null || which(order))).ToArray())
         {
             if (!Claimed.TryAdd(order.OrderId, 0))
                 continue;
@@ -606,7 +621,7 @@ public static class AutonomousBotCraftOrders
         bool escrowed = order.PayUpFront && order.BuyerBotId > 0 && order.EscrowCopper > 0;
         bool refunded = refund && escrowed && PayCoin(order.BuyerBotId, order.EscrowCopper, EconomyFlowKind.CraftOrder);
         if (order.Source == CraftOrderSource.Quartermaster)
-            QuartermasterCommissions.NoteExpired(order);
+            QuartermasterCommissions.NoteClosed(order, outcome);
         // A real player's escrow goes back to the player (WP8; BuyerBotId is 0, so the refund above never pays it).
         if (order.Source == CraftOrderSource.Player)
             PlayerOrderClosed?.Invoke(order, refund, outcome);

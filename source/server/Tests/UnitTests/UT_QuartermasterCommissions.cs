@@ -147,8 +147,106 @@ namespace DOL.UnitTests
             CraftingEconomyProperties.BOT_CRAFTERS = false;
             QuartermasterCommissions.ResetForTests();
             QuartermasterCommissions.CraftersOf = realm => _live.Values.Where(bot => bot.Realm == realm);
+            QuartermasterCommissions.ScheduledOnline = (_, _) => true;
             Assert.That(QuartermasterCommissions.PostIfDue(1, DateTime.UtcNow), Is.Zero, "bot_crafters off: the mode does nothing");
             Assert.That(AutonomousBotCraftOrders.Count, Is.Zero);
+        }
+
+        [Test]
+        public void ACrafterTheScheduleSendsOffSoonIsNotAsked()
+        {
+            Assert.That(QuartermasterCommissions.StaysOnline(true, true), Is.True);
+            Assert.That(QuartermasterCommissions.StaysOnline(true, false), Is.False, "gone before its trip would end");
+            Assert.That(QuartermasterCommissions.StaysOnline(false, true), Is.False, "leaving now");
+            Assert.That(QuartermasterCommissions.OnlineLookahead, Is.EqualTo(TimeSpan.FromMinutes(75)), "the 45-minute window and a trip");
+
+            _catalog.Recipes.Add(MakeRecipe(200, price: 30));
+            TestBot leaver = Bot("Leaver", "1|210;6|300", crafter: true);
+            TestBot stayer = Bot("Stayer", "1|210;6|300", crafter: true);
+            _purses[leaver.DatabaseID] = _purses[stayer.DatabaseID] = 10_000;
+            DateTime now = DateTime.UtcNow;
+            QuartermasterCommissions.ScheduledOnline = (bot, at) => bot != leaver || at < now + TimeSpan.FromMinutes(30);
+
+            Assert.That(QuartermasterCommissions.PostForRealm(eRealm.Albion, 100, now), Is.EqualTo(1), "one a crafter a pass");
+            Assert.That(QuartermasterCommissions.PostForRealm(eRealm.Albion, 0, now), Is.EqualTo(1));
+            Assert.That(AutonomousBotCraftOrders.All().Select(order => order.CrafterBotId).Distinct(), Is.EqualTo(new[] { stayer.DatabaseID }),
+                "the crafter logging off in half an hour gets none");
+        }
+
+        [Test]
+        public void AnOpenCommissionGoesBackWhenItsCrafterCannotComeForIt()
+        {
+            DateTime now = DateTime.UtcNow;
+            var order = new CraftOrder("q", eRealm.Albion, CraftOrderSource.Quartermaster, 0, "quartermaster:1", "Quartermaster of Albion",
+                7, eCraftingSkill.WeaponCrafting, "sword", "sword", 200, 0, 1, 300, false, CraftOrderState.Open, string.Empty,
+                now - TimeSpan.FromMinutes(20), now + TimeSpan.FromHours(2));
+            DateTime soon = now + TimeSpan.FromMinutes(30), late = now + TimeSpan.FromHours(2);
+
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, true, false, soon, true, now), Is.Null, "it can still come");
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, false, false, DateTime.MaxValue, false, now), Is.EqualTo("the crafter logged out"));
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, true, true, DateTime.MaxValue, true, now), Is.EqualTo("the crafter is in a group"));
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, true, false, late, true, now), Is.EqualTo("the crafter has no craft break soon"));
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, true, false, soon, false, now), Is.EqualTo("the crafter is logging out"));
+            Assert.That(QuartermasterCommissions.WithdrawReason(order, true, false, DateTime.MinValue, false, now), Is.Null,
+                "on its craft trip now: it is making it");
+            Assert.That(QuartermasterCommissions.WithdrawReason(order with { CreatedUtc = now - TimeSpan.FromMinutes(5) }, false, false,
+                DateTime.MaxValue, false, now), Is.Null, "never in its first ten minutes");
+            Assert.That(QuartermasterCommissions.WithdrawReason(order with { State = CraftOrderState.Made }, false, false, DateTime.MaxValue,
+                false, now), Is.Null, "a made piece waits for its hand-over");
+            Assert.That(QuartermasterCommissions.WithdrawReason(order with { Source = CraftOrderSource.Bot }, false, false, DateTime.MaxValue,
+                false, now), Is.Null, "a bot's paid order keeps DR's rules");
+        }
+
+        [Test]
+        public void AWithdrawnCommissionIsPostedAgainToACrafterThatCan()
+        {
+            _catalog.Recipes.Add(MakeRecipe(200, price: 30));
+            TestBot gone = Bot("Gone", "1|210;6|300", crafter: true);
+            _purses[gone.DatabaseID] = 10_000;
+            DateTime now = DateTime.UtcNow;
+            CraftOrder order = QuartermasterCommissions.Post(gone, now);
+            _live.Remove(gone.DatabaseID); // logged out
+            TestBot here = Bot("Here", "1|210;6|300", crafter: true);
+            _purses[here.DatabaseID] = 10_000;
+
+            Assert.That(QuartermasterCommissions.WithdrawUnavailable(now + TimeSpan.FromMinutes(5)), Is.Zero, "the grace");
+            Assert.That(QuartermasterCommissions.WithdrawUnavailable(now + TimeSpan.FromMinutes(11)), Is.EqualTo(1));
+            Assert.That(AutonomousBotCraftOrders.All().Any(each => each.OrderId == order.OrderId), Is.False);
+            Assert.That(_moves, Is.Empty, "nobody paid, nothing moves");
+
+            Assert.That(QuartermasterCommissions.PostForRealm(eRealm.Albion, 0, now + TimeSpan.FromMinutes(11)), Is.EqualTo(1),
+                "the realm has its order back to post");
+            Assert.That(AutonomousBotCraftOrders.All().Single().CrafterBotId, Is.EqualTo(here.DatabaseID));
+            string line = QuartermasterCommissions.HourLines(DateTime.UtcNow, reset: false).Single();
+            Assert.That(line, Does.Contain("posted=2 delivered=0 expired=0"));
+            Assert.That(line, Does.EndWith("withdrawn=1"));
+        }
+
+        [Test]
+        public void ACommissionIsHandedOverAtTheStationAsSoonAsItIsMade()
+        {
+            CraftRecipeInfo recipe = MakeRecipe(200, price: 30);
+            _catalog.Recipes.Add(recipe);
+            TestBot smith = Bot("Smith", "1|210;6|300", crafter: true);
+            TestBot buyer = Bot("Buyer");
+            _purses[smith.DatabaseID] = 10_000;
+            _purses[buyer.DatabaseID] = 10_000;
+            CraftOrder commission = QuartermasterCommissions.Post(smith, DateTime.UtcNow);
+            CraftOrder paid = AutonomousBotCraftOrders.Place(buyer, smith, recipe);
+            DbInventoryItem forRealm = OwnPiece(smith, "guard's sword");
+            DbInventoryItem forBuyer = OwnPiece(smith, "buyer's sword");
+            Assert.That(AutonomousBotCraftOrders.OnMade(smith, paid.OrderId, forBuyer), Is.True);
+            Assert.That(AutonomousBotCraftOrders.OnMade(smith, commission.OrderId, forRealm), Is.True);
+            _moves.Clear();
+
+            AutonomousBotCrafting.FinishSession(smith, new BotCraftingRules.Session(recipe, recipe.Skill, 1, commission.OrderId), [forRealm], 1,
+                "Finished at the station; made 1");
+
+            Assert.That(smith.Inventory.AllItems, Does.Not.Contain(forRealm), "the guards have it");
+            Assert.That(_moves, Is.EqualTo(new[] { (smith.DatabaseID, commission.EscrowCopper, EconomyFlowKind.Commission) }));
+            Assert.That(AutonomousBotCraftOrders.All().Single().OrderId, Is.EqualTo(paid.OrderId),
+                "a bot's order still waits for the end of the break, where its buyer is met");
+            Assert.That(smith.Inventory.AllItems, Does.Contain(forBuyer));
         }
 
         #endregion

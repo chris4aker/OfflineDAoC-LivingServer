@@ -135,6 +135,31 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void TheHourlyLineCountsTheCraftersPosts()
+        {
+            MarketPriceIndex index = MarketPriceIndex.Instance;
+            index.ResetForTests();
+            DbInventoryItem made = Sword("Made", 22), loot = Sword("Loot", 22), playerMade = Sword("Player made", 22);
+            foreach (DbInventoryItem listing in new[] { made, loot, playerMade })
+            {
+                listing.OwnerLot = RealmExchangeBroker.MidgardOwnerLot;
+                listing.SellPrice = 500;
+                listing.OwnerID = "offlinebot:5";
+                listing.RealmExchangeListedUtc = DateTime.UtcNow.ToString("O");
+            }
+            made.IsCrafted = playerMade.IsCrafted = true;
+            playerMade.OwnerID = "some-player-character";
+            index.Market = () => [made, loot, playerMade];
+            index.NoteListed(made);
+            index.NoteListed(loot);
+            index.NoteListed(playerMade);
+
+            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=1"),
+                "a gamebot's crafted listings, live and posted this hour; loot and players' listings are not counted");
+            Assert.That(index.Recount(DateTime.UtcNow).Single(), Does.EndWith("craftedListed=1 craftedPosted=0"), "the posts are an hour's");
+        }
+
+        [Test]
         public void TheIndexIsWP0sOnceRegistered()
         {
             MarketSeams.RegisterForTests();

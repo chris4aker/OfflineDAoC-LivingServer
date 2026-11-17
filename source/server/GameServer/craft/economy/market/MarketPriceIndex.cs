@@ -121,6 +121,9 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
     private readonly ConcurrentDictionary<MarketBand, BandState> _bands = new();
     /// <summary>The band of an item name per realm, from listings, so a sale (which carries only the name) finds its band.</summary>
     private readonly ConcurrentDictionary<(int Realm, string Name), MarketBand> _names = new();
+    /// <summary>Crafted pieces gamebots posted since the last hourly line, by realm (PC log 2026-11-17: the night showed only
+    /// crafted sales, exchange_crafted, so whether crafters posted at all could not be read).</summary>
+    private readonly int[] _craftedPosted = new int[4];
     private const int MaxNames = 50_000;
     private long _nextHourTick;
     private const long HourMilliseconds = 60 * 60_000;
@@ -230,6 +233,8 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
         MarketBand band = BandOf(item);
         RememberName(band, item.Name);
         ObserveListing(band, item.SellPrice);
+        if (item.IsCrafted && AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out _))
+            Interlocked.Increment(ref _craftedPosted[Math.Clamp((int)band.Realm, 0, 3)]);
     }
 
     /// <summary>A committed Exchange sale: its band by the item's name, when a listing of it was seen.</summary>
@@ -262,12 +267,15 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
     public IReadOnlyList<string> Recount(DateTime utcNow)
     {
         var stock = new Dictionary<MarketBand, int>();
+        var craftedListed = new int[4];
         foreach (DbInventoryItem item in Market() ?? [])
         {
             if (item == null || item.SellPrice <= 0 || !RealmExchangeBroker.IsExchangeOwnerLot(item.OwnerLot) ||
                 RealmExchangeExpiry.IsExpired(item, utcNow))
                 continue;
             MarketBand band = BandOf(item);
+            if (item.IsCrafted && AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out _))
+                craftedListed[Math.Clamp((int)band.Realm, 0, 3)]++;
             RememberName(band, item.Name);
             stock[band] = stock.GetValueOrDefault(band) + 1;
             stock[AllRealms(band)] = stock.GetValueOrDefault(AllRealms(band)) + 1;
@@ -284,7 +292,8 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
             lines.Add(EconomyLog.Line(EconomyLog.EconIndex, ("realm", realm), ("bands", bands.Length),
                 ("stock", bands.Sum(pair => pair.Value.Stock)), ("demand", bands.Sum(pair => pair.Value.Demand)),
                 ("sales", bands.Sum(pair => pair.Value.Sales)), ("medianFactor", factors[factors.Length / 2]),
-                ("flooded", factors.Count(f => f <= PriceIndexMath.MinFactor)), ("starved", factors.Count(f => f >= PriceIndexMath.MaxFactor))));
+                ("flooded", factors.Count(f => f <= PriceIndexMath.MinFactor)), ("starved", factors.Count(f => f >= PriceIndexMath.MaxFactor)),
+                ("craftedListed", craftedListed[(int)realm]), ("craftedPosted", Interlocked.Exchange(ref _craftedPosted[(int)realm], 0))));
         }
         if (Writes)
         {
@@ -404,6 +413,7 @@ public sealed class MarketPriceIndex : IPriceIndex, IEconomyStore
     {
         _bands.Clear();
         _names.Clear();
+        Array.Clear(_craftedPosted);
         _nextHourTick = 0;
         Rows = new LivingServerTable<string, OfflineExchangeIndexRecord>("exchange index", row => row.BandKey, StringComparer.Ordinal,
             database: () => null);

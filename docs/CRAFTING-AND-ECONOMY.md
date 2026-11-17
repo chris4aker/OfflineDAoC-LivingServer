@@ -494,3 +494,15 @@ broken recipes" is a case-sensitive audit (2 broken ignoring case, survey 2026-1
 with a default of 0, 5% as the documented option (owner 2026-11-15, decision 7); `bot_upkeep`, `bot_luxury_spending`
 and `bot_siege_supply` default off (on since 2026-11-16, like every bot-side switch; the "Off by default" notes in the
 build table above are as each package was built); the player pace key is True165's `crafting_skill_rate`.
+
+First owner's-PC night (2026-11-17, build 19e7037, 00:00-06:20): 227 commissions made and 244 lapsed. Of the lapsed,
+137 open ones belonged to crafters who had logged out (median 35 minutes after they were asked), 48 to crafters drawn
+into raids, groups and RvR (no task break), 38 had been made but never handed over (the trip was cut short before the
+end of its break) and 19 were open with a trip in the window. Changes (`fix/craft-orders-filled`): a commission is
+posted only to a crafter the schedule keeps online for 75 minutes (the 45-minute break window and a trip); an open
+commission whose crafter has logged out, joined a group, lost its craft break or is leaving on the schedule is withdrawn
+after 10 minutes (`ECON_ORDER outcome="withdrawn"`, `withdrawn=` on the hourly `ECON_COMMISSION` line) and the realm
+posts it again; the realm's piece is handed over at the station as soon as it is made. Crafted sales (`exchange_crafted`)
+count sales, not posts: the night's crafted pieces are mostly practice work below level 10 (about 90% of the own-work
+sessions are recipe level under 200), and the Exchange's upgrade buyers are level 20 and up; `ECON_INDEX` now carries
+`craftedListed` (live crafted bot listings) and `craftedPosted` (posted in the hour). Tests only.
