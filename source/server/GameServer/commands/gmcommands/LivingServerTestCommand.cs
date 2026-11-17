@@ -27,7 +27,8 @@ namespace DOL.GS.Commands;
     "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)",
     "/lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)",
     "/lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)",
-    "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)")]
+    "/lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)",
+    "/lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls")]
 public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICommandHandler
 {
     public void OnCommand(GameClient client, string[] args)
@@ -156,6 +157,9 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
                 return;
             }
             case "craft" or "wtb" or "commission": CraftEconomyTestCommandHandler.Run(client, args[1..]); return; // Crafting 2.0 (WP10)
+            case "skill" or "lost" or "ask" or "milestone" or "wall": // Bots as people (WP0 declares them; each package registers its own)
+                Say(client, BotPeopleTest.Run(sub, gm, gm.TargetObject as GameBot, args.Skip(2).ToArray()));
+                return;
             case "lore":
                 Say(client, LoreAtmosphere.TestHere(gm));
                 return;
@@ -278,6 +282,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
         $"  atmosphere lines {OnOff(Properties.LIVING_ATMOSPHERE_LINES)}, cosmetics {OnOff(Properties.BOT_COSMETICS)}",
         $"  holidays {OnOff(AutonomousHolidays.On)} (today: {(AutonomousHolidays.TestDate is DateTime d ? d.ToString("yyyy-MM-dd") + ", test date" : DateTime.Now.ToString("yyyy-MM-dd"))}), " +
         $"leeroy {OnOff(AutonomousRaidLeeroy.On)}{(AutonomousRaidLeeroy.ChargeNowArmed ? " (a \"now\" is armed)" : "")}",
+        BotPeopleTest.ListLine(BotPeopleSwitches.Current),
     ];
 
     private static string OnOff(bool on) => on ? "on" : "OFF";

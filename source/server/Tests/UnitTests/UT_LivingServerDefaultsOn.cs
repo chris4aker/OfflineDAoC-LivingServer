@@ -27,6 +27,14 @@ namespace DOL.GS.Tests
             "bot_crafter_commerce", "bot_crafting_social",
         ];
 
+        /// <summary>Bots as people (docs/BOTS-AS-PEOPLE-1.2.md, "Settings"): new 1.2 keys, on from the start, so no upgrade line.</summary>
+        public static readonly string[] BotsAsPeople =
+        [
+            "bot_skill_profiles", "bot_skill_growth", "bot_skill_spare_player_group", "raid_learns_from_raiders",
+            "bot_place_knowledge", "bot_ask_the_way", "bot_wrong_roads", "bot_movement_habits", "bot_move_strafe",
+            "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones",
+        ];
+
         /// <summary>Kept off, each for its reason (docs/CRAFTING.md, AGENTS.md).</summary>
         public static readonly string[] KeptOff =
         [
@@ -58,6 +66,10 @@ namespace DOL.GS.Tests
             Assert.That(defaults["bot_schedule_mode"], Is.EqualTo("clock"), "the real-clock schedule (RELEASE-TRAIN phase C)");
             foreach (string key in KeptOff)
                 Assert.That(defaults[key], Is.EqualTo(false), key + " stays off");
+            foreach (string key in BotsAsPeople)
+                Assert.That(defaults[key], Is.EqualTo(true), key + " (bots as people)");
+            Assert.That(Upgrade.Changes.Select(change => change.Key).Intersect(BotsAsPeople), Is.Empty,
+                "new keys: a world from an earlier build has no row, so it takes the code default without an upgrade line");
             Assert.That(defaults["exchange_tax_percent"], Is.EqualTo(0), "the tax stays 0 (owner 2026-11-15)");
             Assert.That(defaults["enable_sluaghbinder"], Is.EqualTo(true), "the edition switch is set by the edition, unchanged");
         }

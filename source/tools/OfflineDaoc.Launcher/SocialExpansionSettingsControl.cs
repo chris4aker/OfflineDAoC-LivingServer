@@ -79,6 +79,11 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly NumericUpDown _exchangeTax = Number(0, SocialExpansionSettings.MaxExchangeTaxPercent, "Realm Exchange tax");
     private readonly CheckBox _ledger = Switch("Economy ledger");
     private readonly CheckBox _level50Kit = Switch("Level-50 kit and gold");
+    // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): the four master switches; their parts are server keys only.
+    private readonly CheckBox _skillProfiles = Switch("Skill that grows");
+    private readonly CheckBox _placeKnowledge = Switch("Knowing the way");
+    private readonly CheckBox _movementHabits = Switch("Moving like people");
+    private readonly CheckBox _milestones = Switch("Personal milestones");
     private readonly RuneButton _economy = Action("ECONOMY PAGE", DaocTheme.Midgard);
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
     private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
@@ -232,6 +237,19 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         economy.Grid.Controls.Add(economyNote, 0, economy.Grid.RowCount - 1);
         economy.Grid.SetColumnSpan(economyNote, 3);
 
+        var people = Card("BOTS AS PEOPLE", DaocTheme.Gold, 5);
+        Add(people, _skillProfiles, null, "Each bot is Casual, Average or Veteran and gets better with play: a Casual one pulls an add or lets a buff run out now and then. In your group they are careful.");
+        Add(people, _placeKnowledge, null, "Bots know the places they have been. Going somewhere new they ask the way in /faction, tag along behind someone, or take a wrong road for a minute.");
+        Add(people, _movementHabits, null, "Melee bots circle-strafe in RvR, groups travel on /stick in a line, bots sit while they wait and on the walls of keeps their realm holds.");
+        Add(people, _milestones, null, "Bots chase the ding to 50, realm rank 5 or a dragon trophy, talk about it as they get close, and the Herald lists it.");
+        var peopleNote = new Label
+        {
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
+            Text = "Only autonomous gamebots, never your companions, raids or keep fights. Being built for 1.2: in this build these change nothing yet.",
+        };
+        people.Grid.Controls.Add(peopleNote, 0, people.Grid.RowCount - 1);
+        people.Grid.SetColumnSpan(peopleNote, 3);
+
         var xp = Card("XP BY LEVEL RANGE", DaocTheme.Gold, 5);
         xp = xp with { Height = TitleRow + 2 * (XpRow.Height + XpRow.ErrorHeight) + Row + CardPadding };
         _playerXp.AddTo(xp.Grid);
@@ -269,6 +287,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             (groups.Panel, groups.Height),
             (crafting.Panel, crafting.Height),
             (economy.Panel, economy.Height),
+            (people.Panel, people.Height),
             (xp.Panel, xp.Height),
         ];
         page.RowCount = parts.Length;
@@ -290,6 +309,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         foreach (var box in new[] { _guilds, _guildSocial, _guildRecruit, _guildClaims, _guildEconomy, _guildAlliances, _playerGuildEconomy, _manaHalved, _botGroupInvites, _botRaidInvites,
                      _craftEraStart, _craftSecondaryCaps, _coinByLevel, _classicQuality, _classicLosses,
                      _botCrafters, _craftOrders, _ledger, _level50Kit, _buffBotConcRange,
+                     _skillProfiles, _placeKnowledge, _movementHabits, _milestones,
                      _personalities, _voices, _debates,
                      _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
             box.CheckedChanged += (_, _) => Edited();
@@ -405,6 +425,10 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Level50Kit = _level50Kit.Checked,
         BuffBotPercent = (int)_buffBotPercent.Value,
         BuffBotEraConcRange = _buffBotConcRange.Checked,
+        BotSkillProfiles = _skillProfiles.Checked,
+        BotPlaceKnowledge = _placeKnowledge.Checked,
+        BotMovementHabits = _movementHabits.Checked,
+        LivingMilestones = _milestones.Checked,
     };
 
     private void SetValues(SocialExpansionSettings settings)
@@ -447,6 +471,10 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _level50Kit.Checked = settings.Level50Kit;
         _buffBotPercent.Value = Math.Clamp(settings.BuffBotPercent, 0, 100);
         _buffBotConcRange.Checked = settings.BuffBotEraConcRange;
+        _skillProfiles.Checked = settings.BotSkillProfiles;
+        _placeKnowledge.Checked = settings.BotPlaceKnowledge;
+        _movementHabits.Checked = settings.BotMovementHabits;
+        _milestones.Checked = settings.LivingMilestones;
         _personalities.Checked = settings.Personalities;
         _voices.Checked = settings.Voices;
         _debates.Checked = settings.Debates;
@@ -612,6 +640,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         if (s.BotGroupInvites) on.Add("bot leaders' invites");
         if (s.BotRaidInvites) on.Add("raid leaders' invites");
         if (s.BotCrafters) on.Add(s.BotCraftOrders ? "bot crafters and craft orders" : "bot crafters");
+        int people = new[] { s.BotSkillProfiles, s.BotPlaceKnowledge, s.BotMovementHabits, s.LivingMilestones }.Count(x => x);
+        if (people > 0) on.Add($"bots as people ({people} of 4)");
         if (s.PlayerXpByLevel != "" || s.BotXpByLevel != "") on.Add("XP by level");
         if (on.Count == 0)
             return "Settings are loaded from the saved server settings. Everything is off: the game plays like the normal release.";

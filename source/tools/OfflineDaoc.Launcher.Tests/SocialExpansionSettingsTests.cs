@@ -213,6 +213,28 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Defaults.AllOff().BotRaidInvites, Is.False);
     }
 
+    [Test] public void BotsAsPeopleSwitchesAreOnSavedReadAndTurnedOffWithAllOff()
+    {
+        // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md, "Settings"): the card's four master switches, on by default and in Setup.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.BotSkillProfiles && d.BotPlaceKnowledge && d.BotMovementHabits && d.LivingMilestones, Is.True);
+        var r = SocialExpansionSettings.Recommended;
+        Assert.That(r.BotSkillProfiles && r.BotPlaceKnowledge && r.BotMovementHabits && r.LivingMilestones, Is.True);
+        (d with { BotSkillProfiles = false, LivingMilestones = false }).Save(_database, d, () => _stopped);
+        var rows = Rows();
+        Assert.That((rows["bot_skill_profiles"], rows["bot_living_milestones"]), Is.EqualTo(("False", "False")));
+        Assert.That(rows.ContainsKey("bot_place_knowledge"), Is.False, "an unchanged default is not written");
+        var problems = new List<string>();
+        var loaded = SocialExpansionSettings.Load(_database, problems);
+        Assert.That((loaded.BotSkillProfiles, loaded.BotPlaceKnowledge, loaded.BotMovementHabits, loaded.LivingMilestones),
+            Is.EqualTo((false, true, true, false)));
+        Assert.That(problems, Is.Empty);
+        var off = d.AllOff();
+        Assert.That(off.AnyBotsAsPeople, Is.False);
+        Assert.That(off.IsAllOff, Is.True);
+        Assert.That((off with { BotMovementHabits = true }).IsAllOff, Is.False);
+    }
+
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
         // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).

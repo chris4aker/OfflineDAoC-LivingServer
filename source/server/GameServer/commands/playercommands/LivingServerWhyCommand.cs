@@ -20,7 +20,8 @@ namespace DOL.GS.Commands
 		"/lswhy me - why bots answered your own lines, or didn't",
 		"/lswhy held [count] - the last replies the reply budget held back in your realm",
 		"/lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now",
-		"/lswhy duty [name] - what has that gamebot's time (your target without a name): its duty lease and the last claims on it")]
+		"/lswhy duty [name] - what has that gamebot's time (your target without a name): its duty lease and the last claims on it",
+		"/lswhy skill [name] | way [name] - Bots as people: that gamebot's skill, or the places it knows and how it finds its way (your target without a name)")]
 	public class LivingServerWhyCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
 		public const int Shown = 6;
@@ -47,6 +48,12 @@ namespace DOL.GS.Commands
 			if (sub == "duty")
 			{
 				Duty(client, player, args.Length > 2 ? string.Join(" ", args.Skip(2)) : null, now);
+				return;
+			}
+			// Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): the scope line from WP0, the rest from WP1 (skill) and WP3/WP4 (way).
+			if (BotPeopleWhy.TryTopic(sub, out BotPeopleWhy.Topic topic))
+			{
+				People(client, player, topic, args.Length > 2 ? string.Join(" ", args.Skip(2)) : null);
 				return;
 			}
 			// 1.2: your own lines, with each answer's or silence's reason code.
@@ -117,6 +124,27 @@ namespace DOL.GS.Commands
 				return;
 			}
 			ShowDuty(client, player, bot, bot?.Name ?? name, now, Shown);
+		}
+
+		private void People(GameClient client, GamePlayer player, BotPeopleWhy.Topic topic, string name)
+		{
+			GameBot bot = null;
+			if (name == null)
+				bot = player.TargetObject as GameBot;
+			else
+				AutonomousBotRegistry.TryGetByName(name, out bot);
+			if (bot == null)
+			{
+				DisplayMessage(client, name == null ? "Target a gamebot, or name one." : $"No gamebot named {name} is online.");
+				return;
+			}
+			if (bot.Realm != player.Realm && client.Account.PrivLevel <= 1)
+			{
+				DisplayMessage(client, "You can only read your own realm's gamebots.");
+				return;
+			}
+			foreach (string line in BotPeopleWhy.Lines(topic, bot))
+				client.Out.SendMessage(line, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
 		private static void ShowDuty(GameClient client, GamePlayer player, GameBot bot, string name, long now, int count)

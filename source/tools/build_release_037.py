@@ -29,7 +29,9 @@ darkness_falls_raid_event_mobs.json exactly (Princess Nahemah, High Lord Saeor a
 every quest kill target in set_quest_target_respawns.ledger.json respawns within 300 seconds, the relic pad needs 8,
 and the navmesh road, seam and pocket files are present. Every Crafting 2.0 table (EconomyTables.All, read from the
 server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships;
-so is the hired companions' table (offline_hired_companions, read from mode165/HiredCompanions165.cs).
+so is the hired companions' table (offline_hired_companions, read from mode165/HiredCompanions165.cs). So must every
+"Bots as people" table (BotPeopleTables.All, read from bots/autonomous/BotPeopleTables.cs): they name the developer's
+bots (their skill, the places they know, their milestones, the raid mechanics they have seen).
 Every Living Server switch ships at its release value (release-server-settings.json: every feature on, owner 2026-11-16;
 diagnostics, the classic crafting rules and the epic encounter options off), written as both Value and DefaultValue so a
 later changed default still reaches the row, and checked in both editions' worlds.
@@ -201,6 +203,18 @@ def hired_companion_tables(repo: Path) -> list[str]:
     return tables
 
 
+def bot_people_tables(repo: Path) -> list[str]:
+    """BotPeopleTables.All, read from the server's own declaration (bots/autonomous/BotPeopleTables.cs): the saved-progress
+    tables of "Bots as people" (docs/BOTS-AS-PEOPLE-1.2.md: skill, places, milestones, raid mechanics seen)."""
+    source = (repo / "source/server/GameServer/bots/autonomous/BotPeopleTables.cs").read_text(encoding="utf-8")
+    constants = dict(re.findall(r'public const string (\w+) = "(\w+)";', source))
+    names = re.search(r"string\[\] All = \[([^\]]*)\]", source)
+    assert names, "BotPeopleTables.All not found in BotPeopleTables.cs"
+    tables = [constants[name.strip()] for name in names.group(1).split(",") if name.strip()]
+    assert tables, "BotPeopleTables.All is empty"
+    return tables
+
+
 def check_policy_covers(policy: dict, tables: list[str]):
     """Every saved-progress table the server declares is emptied by clean_world (it reads progress-policy.json), so no
     played economy ships: a table missing from the policy stops the build before anything is copied."""
@@ -218,7 +232,7 @@ def verify_tables_empty(con: sqlite3.Connection, tables: list[str]) -> dict:
             report[table] = "absent"
             continue
         rows = con.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0]
-        assert rows == 0, f"{table} still has {rows} row(s): a played economy would ship"
+        assert rows == 0, f"{table} still has {rows} row(s): played progress would ship"
         report[table] = 0
     return report
 
@@ -440,6 +454,9 @@ def main():
     # Hired companions (1.2 branch): their table is checked empty with the economy's.
     economy += hired_companion_tables(repo)
     check_policy_covers(policy, economy)
+    # Bots as people (1.2): every table naming the developer's bots must be emptied too.
+    bot_people = bot_people_tables(repo)
+    check_policy_covers(policy, bot_people)
     # Living Server 1.2 (owner 2026-11-16): every feature ships on, whatever the developer's install had.
     server_settings = release_server_settings(repo)
 
@@ -456,6 +473,7 @@ def main():
     world = clean_world(database, policy, defaults)
     with closing(sqlite3.connect(database)) as con:
         world["economy_tables"] = verify_tables_empty(con, economy)
+        world["bot_people_tables"] = verify_tables_empty(con, bot_people)
         world["server_settings"] = ship_server_settings(con, server_settings)
         world["server_settings_check"] = verify_server_settings(con, server_settings)
     world_data = check_world_data(database, repo)
