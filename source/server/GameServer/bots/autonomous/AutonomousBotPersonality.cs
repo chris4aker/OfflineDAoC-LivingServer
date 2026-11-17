@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.ServerProperties;
@@ -35,8 +34,8 @@ public static class AutonomousBotPersonality
     /// <summary>Type shares in percent, in enum order (sum 100).</summary>
     public static readonly int[] TypeSharePercent = [28, 20, 20, 16, 12, 4];
 
-    public const int ZoneMemoryCapacity = 32;
-    public static readonly TimeSpan ZoneFreshAfter = TimeSpan.FromHours(6);
+    public const int ZoneMemoryCapacity = BotPlaceKnowledge.RecentZoneCapacity;
+    public static readonly TimeSpan ZoneFreshAfter = BotPlaceKnowledge.RecentZoneFreshAfter;
 
     public static bool Enabled => Properties.BOT_PERSONALITIES_ENABLED;
 
@@ -345,44 +344,20 @@ public static class AutonomousBotPersonality
 
     #endregion
 
-    #region Zone memory (in memory; "lately" means since the server started, at most 32 zones)
+    #region Zone memory (moved to BotPlaceKnowledge, Bots as people WP3; unchanged: in memory, 6 hours, at most 32 zones)
 
-    private static readonly ConcurrentDictionary<long, ZoneMemory> Memories = new();
-
-    private sealed class ZoneMemory
-    {
-        private readonly Dictionary<string, DateTime> _visits = new(StringComparer.OrdinalIgnoreCase);
-
-        public void Visit(string zone, DateTime now)
-        {
-            lock (_visits)
-            {
-                _visits[zone] = now;
-                if (_visits.Count > ZoneMemoryCapacity)
-                    _visits.Remove(_visits.OrderBy(pair => pair.Value).First().Key);
-            }
-        }
-
-        public bool IsFresh(string zone, DateTime now)
-        {
-            lock (_visits)
-                return !_visits.TryGetValue(zone, out DateTime last) || now - last >= ZoneFreshAfter;
-        }
-    }
-
+    // Owner decision 9: camp choice does not read the saved places in 1.2, so the Explorers' taste keeps its "lately" list.
     public static void RememberZone(GameBot bot, string zone)
     {
         if (!Applies(bot) || string.IsNullOrWhiteSpace(zone))
             return;
-        Memories.GetOrAdd(bot.DatabaseID, _ => new ZoneMemory()).Visit(zone, DateTime.UtcNow);
+        BotPlaceKnowledge.RememberRecentZone(bot.DatabaseID, zone, DateTime.UtcNow);
     }
 
-    public static bool IsZoneFresh(long botId, string zone, DateTime now) =>
-        string.IsNullOrWhiteSpace(zone) || !Memories.TryGetValue(botId, out ZoneMemory memory) || memory.IsFresh(zone, now);
+    public static bool IsZoneFresh(long botId, string zone, DateTime now) => BotPlaceKnowledge.IsRecentZoneFresh(botId, zone, now);
 
     /// <summary>Tests only: a memory with fixed times.</summary>
-    public static void RememberZoneAt(long botId, string zone, DateTime when) =>
-        Memories.GetOrAdd(botId, _ => new ZoneMemory()).Visit(zone, when);
+    public static void RememberZoneAt(long botId, string zone, DateTime when) => BotPlaceKnowledge.RememberRecentZone(botId, zone, when);
 
     #endregion
 

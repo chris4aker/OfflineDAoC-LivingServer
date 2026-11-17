@@ -2704,7 +2704,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, item 4's master switch (work packages 3 and 4).
 		/// </summary>
-		[ServerProperty("bots", "bot_place_knowledge", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level and, from level 20, its border keep. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET. In this build it changes nothing yet (work package 3).", true)]
+		[ServerProperty("bots", "bot_place_knowledge", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level (and their towns) and, from level 20, its border keep. Dungeons, the frontier and the next zones are new ground until it goes there; it learns a place on arrival. Saved per bot; /lswhy way lists them. On its own it changes no route and no camp: asking the way and wrong roads read it. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET.", true)]
 		public static bool BOT_PLACE_KNOWLEDGE = true;
 
 		/// <summary>

@@ -321,6 +321,8 @@ namespace DOL.GS
 
         private long _nextPocketCheckTick;
         private static long _nextPocketNudgeLog;
+        // Bots as people WP3: when the bot next looks at which zone it is in (BotPlaceKnowledge.Visit).
+        private long _nextPlaceCheckTick;
 
         /// <summary>
         /// A bot standing in a listed walled-off pocket (navmesh/pockets.json) is put on the nearest real floor at once.
@@ -368,6 +370,12 @@ namespace DOL.GS
                         return true;
                     // A pocket with no real floor within reach: the normal escape handles it; do not re-search every 5 s.
                     if (stillInPocket) _nextPocketCheckTick = nowTick + 60_000;
+                }
+                // Bots as people WP3: learn the places it has arrived in (nothing while zone and level are unchanged).
+                if (nowTick >= _nextPlaceCheckTick)
+                {
+                    _nextPlaceCheckTick = nowTick + BotPlaceKnowledge.VisitCheckMilliseconds + bot.ObjectID % 1_000;
+                    BotPlaceKnowledge.Visit(bot);
                 }
                 // A solo siege force is released at most a couple of seconds
                 // after its event ends; no need to take the event lock each turn.

@@ -26,6 +26,9 @@ namespace DOL.UnitTests
             "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones",
         ];
 
+        /// <summary>The switches whose package is built (WP3: bot_place_knowledge).</summary>
+        public static readonly string[] Built = ["bot_place_knowledge"];
+
         // ---- tables ----------------------------------------------------------------------------------------------------
 
         [Test]
@@ -158,7 +161,10 @@ namespace DOL.UnitTests
                 Assert.That(attribute.DefaultValue, Is.EqualTo(true), attribute.Key);
                 Assert.That(field.GetValue(null), Is.EqualTo(true), attribute.Key + " starts at its default");
                 // A package that fills its switch replaces this sentence and updates this test (as the RvR switches do).
-                Assert.That(attribute.Description, Does.Contain("In this build it changes nothing yet (work package"), attribute.Key);
+                if (!Built.Contains(attribute.Key))
+                    Assert.That(attribute.Description, Does.Contain("In this build it changes nothing yet (work package"), attribute.Key);
+                else
+                    Assert.That(attribute.Description, Does.Not.Contain("changes nothing yet"), attribute.Key);
                 Assert.That(attribute.Description, Does.Not.Contain("\""), attribute.Key);
             }
             Assert.That(LivingServerSettingsUpgrade.Changes.Select(change => change.Key), Has.None.AnyOf(Keys),
