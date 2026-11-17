@@ -289,6 +289,59 @@ public static class BotSkillMistakes
         return best;
     }
 
+    /// <summary>
+    /// The second look a careless pick gets before it is allowed (review 2026-11-17): every monster that really stands
+    /// within the pick's aggro range (<paramref name="around"/>, from a radius scan of the world, not only the camp's own
+    /// monster) is counted. Exactly one, not named, at most <see cref="MaxLevelsAboveGroup"/> above the group's top and no
+    /// harder con than the pick: else the clean pull stands. Pure.
+    /// </summary>
+    public static bool AddScanAllows(in BotPullView pick, IReadOnlyList<BotPullView> around, int groupTopLevel)
+    {
+        if (around == null || pick.AggroRange <= 0)
+            return false;
+        float range = (float)pick.AggroRange * pick.AggroRange;
+        int count = 0;
+        BotPullView add = default;
+        foreach (BotPullView other in around)
+        {
+            if (Vector3.DistanceSquared(pick.Position, other.Position) > range)
+                continue;
+            if (++count > 1)
+                return false;
+            add = other;
+        }
+        return count == 1 && !add.Named && add.Level <= groupTopLevel + MaxLevelsAboveGroup && add.Con <= pick.Con;
+    }
+
+    /// <summary>A careless pick held from its decision (the window) still fires only while the scope allows it and the
+    /// party still qualifies (three or more, all alive, outside dungeons). Pure.</summary>
+    public static bool HeldPullStands(bool scopeAllows, in BotPullGroup group) =>
+        scopeAllows && group.Size >= MinPartyForAddPull && group.AllAlive && !group.InDungeon;
+
+    /// <summary>A lapse already running holds only while the scope still allows mistakes and no boss is near (dungeon, a
+    /// named target, pull or aggro of the bot or its group); else the buff is renewed now. Pure.</summary>
+    public static bool LapseHolds(bool scopeAllows, bool inDungeon, bool namedInPlay) =>
+        scopeAllows && BuffLapseAllowed(inDungeon, namedInPlay);
+
+    /// <summary>
+    /// Where a bot standing in an area effect walks: out of the circle, straight away from its centre, unless that heads
+    /// toward the enemy (an area centred on a groupmate, the enemy beyond the bot): then out on the circle's far side from
+    /// the enemy. The spot is never nearer the enemy than the bot is. <paramref name="from"/>: the caster, for a bot at the
+    /// very centre. Pure.
+    /// </summary>
+    public static Vector2 FireStepSpot(Vector2 self, Vector2 center, int radius, Vector2? enemy, Vector2 from)
+    {
+        float distance = Vector2.Distance(self, center);
+        Vector2 away = distance >= 1 ? (self - center) / distance
+            : Vector2.Distance(self, from) >= 1 ? Vector2.Normalize(self - from) : Vector2.UnitX;
+        if (enemy is Vector2 foe && Vector2.Distance(self, foe) >= 1 && Vector2.Dot(away, Vector2.Normalize(foe - self)) > 0)
+        {
+            Vector2 back = center - foe;
+            away = back.Length() >= 1 ? Vector2.Normalize(back) : -Vector2.Normalize(foe - self);
+        }
+        return center + away * (Math.Max(0, radius) + FireStepMargin);
+    }
+
     /// <summary>Whether a pull mistake may be decided now: the switch's scope allowed it and the last one is far enough back. Pure.</summary>
     public static bool PullCooledDown(long now, long lastMistakeAt) =>
         lastMistakeAt <= 0 || now - lastMistakeAt >= PullMistakeCooldownMilliseconds;
@@ -483,18 +536,23 @@ public static class BotSkillHands
 
     // ---- counting and the log ---------------------------------------------------------------------------------------------
 
-    /// <summary>Counts one decision (and the mistake, when made) for BOT_SKILL_MISTAKES; logs BOT_SKILL_MISTAKE for a mistake.</summary>
-    private static void Note(BotSkillMistakeKind kind, GameBot bot, in BotSkillProfile profile, bool spared, bool mistake, double chance,
-        string detail)
+    /// <summary>
+    /// Counts one decision (and the mistake, when made) for BOT_SKILL_MISTAKES. True when a BOT_SKILL_MISTAKE line may be
+    /// written for it now (a mistake, inside the per-minute budget): only then does the caller build its detail and call
+    /// <see cref="Write"/>, so nothing is formatted for a decision that logs nothing.
+    /// </summary>
+    private static bool Note(BotSkillMistakeKind kind, in BotSkillProfile profile, bool spared, bool mistake)
     {
         int index = BotSkillMistakes.CountIndex(kind, profile.Tier, spared);
         Interlocked.Increment(ref Decisions[index]);
         if (!mistake)
-            return;
+            return false;
         Interlocked.Increment(ref Mistakes[index]);
-        if (TakeLine())
-            Log.Info(BotSkillMistakes.MistakeLine(kind, spared, bot.Name, BotPersonKey.Of(bot), bot.Realm, profile.Tier, chance, detail));
+        return Log.IsInfoEnabled && TakeLine();
     }
+
+    private static void Write(BotSkillMistakeKind kind, GameBot bot, in BotSkillProfile profile, bool spared, double chance, string detail) =>
+        Log.Info(BotSkillMistakes.MistakeLine(kind, spared, bot.Name, BotPersonKey.Of(bot), bot.Realm, profile.Tier, chance, detail));
 
     private static bool TakeLine()
     {
@@ -542,8 +600,11 @@ public static class BotSkillHands
     }
 
     /// <summary>Counts a drawn reaction hold; a hold past the slowest an average person takes (<paramref name="late"/>) is a mistake.</summary>
-    public static void NoteReaction(GameBot bot, in BotSkillProfile profile, bool spared, bool late, int holdMilliseconds, double factor) =>
-        Note(BotSkillMistakeKind.Reaction, bot, profile, spared, late, 0, $"hold_ms={holdMilliseconds} factor={F(factor)}");
+    public static void NoteReaction(GameBot bot, in BotSkillProfile profile, bool spared, bool late, int holdMilliseconds, double factor)
+    {
+        if (Note(BotSkillMistakeKind.Reaction, profile, spared, late))
+            Write(BotSkillMistakeKind.Reaction, bot, profile, spared, 0, $"hold_ms={holdMilliseconds} factor={F(factor)}");
+    }
 
     // ---- positioning (BotBrain.CombatMovement) -------------------------------------------------------------------------------
 
@@ -555,7 +616,8 @@ public static class BotSkillHands
         using var scope = AiProfile.Scope(AiSystem.BotSkill);
         double chance = BotSkillMistakes.Chance(BotSkillMistakeKind.Position, profile, spared, true);
         bool mistake = BotSkillMistakes.Rolls(chance, Util.RandomDouble());
-        Note(BotSkillMistakeKind.Position, bot, profile, spared, mistake, chance, mistake ? $"monster=\"{monster?.Name}\"" : null);
+        if (Note(BotSkillMistakeKind.Position, profile, spared, mistake))
+            Write(BotSkillMistakeKind.Position, bot, profile, spared, chance, $"monster=\"{monster?.Name}\"");
         return mistake;
     }
 
@@ -577,7 +639,18 @@ public static class BotSkillHands
             return -1;
         long now = GameLoop.GameLoopTime;
         if (now < hands.PullDecidedUntil)
-            return hands.PullCareless ? Find(pool, hands.PullMistakeObject) : -1;
+        {
+            if (!hands.PullCareless)
+                return -1;
+            // A held careless pick is asked again before it fires: the scope (a raid muster, the player's lead...) and the
+            // party (everyone still alive, three or more, outside dungeons).
+            if (!BotSkillMistakes.HeldPullStands(Allows(puller, out _, out _), GroupOf(puller)))
+            {
+                hands.PullCareless = false;
+                return -1;
+            }
+            return Find(pool, hands.PullMistakeObject);
+        }
         if (!Allows(puller, out BotSkillProfile profile, out bool spared))
         {
             hands.PullDecidedUntil = now + BotSkillMistakes.PullDecisionWindowMilliseconds;
@@ -591,15 +664,62 @@ public static class BotSkillHands
             hands.LastPullCredit = now;
         double chance = BotSkillMistakes.Chance(BotSkillMistakeKind.Pull, profile, spared, true);
         bool careless = BotSkillMistakes.PullCooledDown(now, hands.PullMistakeAt) && BotSkillMistakes.Rolls(chance, Util.RandomDouble());
-        int index = careless ? BotSkillMistakes.ChooseAddPull(Views(puller, pool), new Vector3(puller.X, puller.Y, puller.Z), GroupOf(puller)) : -1;
-        Note(BotSkillMistakeKind.Pull, puller, profile, spared, index >= 0, chance,
-            index >= 0 ? $"monster=\"{pool[index].Name}\" level={pool[index].Level} group={puller.Group?.MemberCount ?? 1}" : null);
+        BotPullGroup group = GroupOf(puller);
+        int index = -1;
+        if (careless && BotSkillMistakes.HeldPullStands(true, group))
+        {
+            BotPullView[] views = Views(puller, pool);
+            index = BotSkillMistakes.ChooseAddPull(views, new Vector3(puller.X, puller.Y, puller.Z), group);
+            // The pool holds only the camp's own monster: look at what really stands around the pick before taking it.
+            if (index >= 0 && !ScanAllowsAdd(puller, pool[index], views[index], group.TopLevel))
+                index = -1;
+        }
+        if (Note(BotSkillMistakeKind.Pull, profile, spared, index >= 0))
+            Write(BotSkillMistakeKind.Pull, puller, profile, spared, chance,
+                $"monster=\"{pool[index].Name}\" level={pool[index].Level} group={puller.Group?.MemberCount ?? 1}");
         if (index < 0)
             return -1;
         hands.PullCareless = true;
         hands.PullMistakeObject = pool[index].ObjectID;
         hands.PullMistakeAt = now;
         return index;
+    }
+
+    /// <summary>World scans for a careless pick's neighbours, server-wide, per second at most (a pick is decided once per
+    /// 20 s per puller, so this is rarely reached; past it the clean pull stands).</summary>
+    public const int AddScansPerSecond = 8;
+
+    private static long _scanSecond, _scansThisSecond;
+
+    private static bool TakeScan()
+    {
+        long second = Environment.TickCount64 / 1_000;
+        if (Interlocked.Exchange(ref _scanSecond, second) != second)
+            Interlocked.Exchange(ref _scansThisSecond, 0);
+        return Interlocked.Increment(ref _scansThisSecond) <= AddScansPerSecond;
+    }
+
+    /// <summary>
+    /// One radius scan around the careless pick (its aggro range), at the decision only and rate-limited: every live
+    /// monster there (no realm, not a pet, not a bot, not peaceful), whatever its name, goes to
+    /// <see cref="BotSkillMistakes.AddScanAllows"/>.
+    /// </summary>
+    private static bool ScanAllowsAdd(GameBot puller, GameNPC pick, in BotPullView view, int groupTopLevel)
+    {
+        if (view.AggroRange <= 0 || !TakeScan())
+            return false;
+        var around = new List<BotPullView>(4);
+        foreach (GameNPC npc in pick.GetNPCsInRadius((ushort)Math.Min(view.AggroRange, ushort.MaxValue)))
+        {
+            if (npc == null || npc == pick || !npc.IsAlive || npc is GameBot || npc.Realm != eRealm.None ||
+                npc.Brain is DOL.AI.Brain.IControlledBrain || (npc.Flags & GameNPC.eFlags.PEACE) != 0)
+                continue;
+            around.Add(new BotPullView(new Vector3(npc.X, npc.Y, npc.Z), (npc.Brain as DOL.AI.Brain.IOldAggressiveBrain)?.AggroRange ?? 0,
+                npc.EffectiveLevel, (int)ConLevels.GetConColor(puller.GetConLevel(npc)), IsNamed(npc)));
+            if (around.Count > 1)
+                return false;
+        }
+        return BotSkillMistakes.AddScanAllows(view, around, groupTopLevel);
     }
 
     private static int Find(IReadOnlyList<GameNPC> pool, int objectId)
@@ -641,20 +761,43 @@ public static class BotSkillHands
 
     /// <summary>
     /// How long (ms) the bot lets this expired buff stay off: 0 renews it at once (today). Decided once per expiry (the
-    /// caller remembers it, <see cref="BotBuffLapses{T}"/>); never in a dungeon or with a named target.
+    /// caller remembers it, <see cref="BotBuffLapses{T}"/>); never in a dungeon or with a named in play (the brain's
+    /// <paramref name="namedInPlay"/>: its ordered or committed pull and aggro list; here its own and its groupmates' targets).
     /// </summary>
-    public static long BuffLapse(GameBot bot, GameLiving target, Spell spell)
+    public static long BuffLapse(GameBot bot, GameLiving target, Spell spell, bool namedInPlay)
     {
-        if (bot == null || !BotSkillMistakes.BuffLapseAllowed(bot.CurrentZone?.IsDungeon == true, IsNamed(bot.TargetObject as GameLiving)) ||
+        if (bot == null || !BotSkillMistakes.BuffLapseAllowed(bot.CurrentZone?.IsDungeon == true,
+                namedInPlay || IsNamed(bot.TargetObject as GameLiving) || GroupTargetsNamed(bot)) ||
             !Allows(bot, out BotSkillProfile profile, out bool spared))
             return 0;
         using var scope = AiProfile.Scope(AiSystem.BotSkill);
         double chance = BotSkillMistakes.Chance(BotSkillMistakeKind.Buff, profile, spared, true);
         bool mistake = BotSkillMistakes.Rolls(chance, Util.RandomDouble());
         long lapse = mistake ? BotSkillMistakes.BuffLapseMilliseconds(profile, Util.RandomDouble()) : 0;
-        Note(BotSkillMistakeKind.Buff, bot, profile, spared, mistake, chance,
-            mistake ? $"spell=\"{spell?.Name}\" target=\"{target?.Name}\" lapse_s={lapse / 1000}" : null);
+        if (Note(BotSkillMistakeKind.Buff, profile, spared, mistake))
+            Write(BotSkillMistakeKind.Buff, bot, profile, spared, chance, $"spell=\"{spell?.Name}\" target=\"{target?.Name}\" lapse_s={lapse / 1000}");
         return lapse;
+    }
+
+    /// <summary>
+    /// Asked at every maintenance pass while a lapse runs (BotBuffLapses): it holds only while the scope still allows
+    /// mistakes (no raid, assault, keep fight, ride...), the bot is not in a dungeon and no named is in play for it or its
+    /// group (<paramref name="namedInPlay"/>: targets, the ordered or committed pull and the aggro list, read by the brain).
+    /// False: the buff is renewed now.
+    /// </summary>
+    public static bool LapseStillAllowed(GameBot bot, bool namedInPlay) =>
+        bot != null && BotSkillMistakes.LapseHolds(Allows(bot, out _, out _), bot.CurrentZone?.IsDungeon == true,
+            namedInPlay || IsNamed(bot.TargetObject as GameLiving) || GroupTargetsNamed(bot));
+
+    /// <summary>Whether a groupmate's target is a named monster (a boss pull may be under way).</summary>
+    public static bool GroupTargetsNamed(GameBot bot)
+    {
+        if (bot?.Group == null)
+            return false;
+        foreach (GameLiving member in bot.Group.GetMembersInTheGroup())
+            if (member != bot && IsNamed(member.TargetObject as GameLiving))
+                return true;
+        return false;
     }
 
     /// <summary>A buff was cast: WP1's BuffCast lesson, at most once a minute.</summary>
@@ -701,8 +844,9 @@ public static class BotSkillHands
         bool solo = bot.Group is not { MemberCount: >= 2 };
         bool mistake = BotSkillMistakes.Rolls(chance, Util.RandomDouble()) &&
                        BotSkillMistakes.ExpensiveCastAllowed(bot.Mana, bot.MaxMana, dearestCost, solo);
-        Note(BotSkillMistakeKind.Power, bot, profile, spared, mistake, chance,
-            mistake ? $"spell=\"{dearest.Name}\" cost={dearestCost} instead=\"{picked.Name}\" cost_instead={pickedCost} power={bot.ManaPercent}" : null);
+        if (Note(BotSkillMistakeKind.Power, profile, spared, mistake))
+            Write(BotSkillMistakeKind.Power, bot, profile, spared, chance,
+                $"spell=\"{dearest.Name}\" cost={dearestCost} instead=\"{picked.Name}\" cost_instead={pickedCost} power={bot.ManaPercent}");
         return mistake ? dearest : picked;
     }
 
@@ -713,7 +857,7 @@ public static class BotSkillHands
     /// </summary>
     public static byte PowerRestFloor(GameBot bot)
     {
-        if (bot == null || bot.MaxMana <= 0 || !AllowsCached(bot, out BotSkillProfile profile, out bool spared))
+        if (bot == null || !AllowsCached(bot, out BotSkillProfile profile, out bool spared) || bot.MaxMana <= 0)
             return BotSkillMistakes.TodayPowerRestFloor;
         bool soloCaster = bot.Group is not { MemberCount: >= 2 } && BotSpellPower.IsOffensiveCaster(bot);
         int floor = BotSkillMistakes.PowerRestFloor(profile, spared, true, soloCaster);
@@ -743,8 +887,8 @@ public static class BotSkillHands
         using var scope = AiProfile.Scope(AiSystem.BotSkill);
         long delay = BotSkillMistakes.FireDelayMilliseconds(groupTier, profile.Position(BotSkillFacet.Fire), Util.RandomDouble());
         bool stood = delay >= BotSkillMistakes.FireMistakeMilliseconds;
-        Note(BotSkillMistakeKind.Fire, bot, profile, spared, stood, 0,
-            $"delay_ms={delay} group_tier={BotSkillProfile.TierName(groupTier)}");
+        if (Note(BotSkillMistakeKind.Fire, profile, spared, stood))
+            Write(BotSkillMistakeKind.Fire, bot, profile, spared, 0, $"delay_ms={delay} group_tier={BotSkillProfile.TierName(groupTier)}");
         return delay;
     }
 

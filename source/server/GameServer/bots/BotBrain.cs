@@ -2279,8 +2279,9 @@ namespace DOL.AI.Brain
                     GameLoop.GameLoopTime < _pendingMaintenancePetBuffUntil)
                     continue;
                 // Bots as people WP2: now and then a person lets an expired buff stay off a while (BotBuffLapses).
-                if (BuffLapses.Waits(target, spell.ID, GameLoop.GameLoopTime, (bot, target, spell),
-                        static s => BotSkillHands.BuffLapse(s.bot, s.target, s.spell)))
+                if (BuffLapses.Waits(target, spell.ID, GameLoop.GameLoopTime, (brain: this, bot, target, spell),
+                        static s => BotSkillHands.BuffLapse(s.bot, s.target, s.spell, s.brain.NamedInPlay()),
+                        static s => BotSkillHands.LapseStillAllowed(s.bot, s.brain.NamedInPlay())))
                     continue;
 
                 bool companionPerformerBuff = IsStationaryTemporaryCompanionPerformer();
@@ -2757,6 +2758,21 @@ namespace DOL.AI.Brain
 
         /// <summary>This caster's lapsed buffs (Bots as people WP2).</summary>
         private readonly BotBuffLapses<GameLiving> BuffLapses = new();
+
+        /// <summary>
+        /// Whether a named monster is in play for this bot (Bots as people WP2: no buff lapse at a boss): its ordered or
+        /// committed pull, or anything on its aggro list. BotSkillHands adds its own and its groupmates' targets. Read at a
+        /// lapse decision and while one runs only.
+        /// </summary>
+        internal bool NamedInPlay()
+        {
+            if (BotSkillHands.IsNamed(ActiveOrderedPullTarget) || BotSkillHands.IsNamed(_committedDungeonPull))
+                return true;
+            foreach (GameLiving living in AggroList.Keys)
+                if (BotSkillHands.IsNamed(living))
+                    return true;
+            return false;
+        }
 
         private GameLiving FindRandomMissingRealmBuffTarget(Spell spell, int minimumRange = 0)
         {

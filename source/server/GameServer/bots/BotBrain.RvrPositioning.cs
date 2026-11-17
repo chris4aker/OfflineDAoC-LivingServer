@@ -150,7 +150,8 @@ namespace DOL.AI.Brain
             RvrSkillTier tier = plan.SkillTier;
             // Bots as people WP2 ("Standing in fire"): a backline member hit by an enemy's area effect steps out of it after
             // the group tier's delay, moved by its own fire facet (owner decision 5).
-            if (RvrPositioning.StandFor(me.Role, me.Class) == RvrStand.Back && TryRvrStepOutOfFire(bot, tier, now))
+            if (RvrPositioning.StandFor(me.Role, me.Class) == RvrStand.Back &&
+                TryRvrStepOutOfFire(bot, tier, now, new Vector2(board.EnemyCentroid.Value.X, board.EnemyCentroid.Value.Y)))
                 return true;
             if ((IsHealer || RvrPositioning.CountsAsHealer(me.Role, me.Class)) && TryRvrKite(bot, board, plan, me, now))
                 return true;
@@ -280,7 +281,7 @@ namespace DOL.AI.Brain
         /// BotSkillHands.FireDelay, the group tier's band (Casual 2-5 s, Average 1-3 s, Veteran 0.5-1.5 s) moved by its fire
         /// facet. One step per episode, proven on the mesh like every place walk. Out of scope: today's rule (it stays).
         /// </summary>
-        private bool TryRvrStepOutOfFire(GameBot bot, RvrSkillTier tier, long now)
+        private bool TryRvrStepOutOfFire(GameBot bot, RvrSkillTier tier, long now, Vector2 enemy)
         {
             if (_rvrFireAt == 0 || now - _rvrFireAt > RvrFireMemoryMilliseconds)
                 return false;
@@ -298,9 +299,8 @@ namespace DOL.AI.Brain
             if (now < _rvrFireDueAt)
                 return false;
             _rvrFireDueAt = -1;
-            Vector2 away = distance >= 1 ? (self - _rvrFireCenter) / distance
-                : Vector2.Distance(self, _rvrFireFrom) >= 1 ? Vector2.Normalize(self - _rvrFireFrom) : Vector2.UnitX;
-            Vector2 spot = _rvrFireCenter + away * (_rvrFireRadius + BotSkillMistakes.FireStepMargin);
+            // Out of the circle, never toward the enemy (an area centred on a groupmate: out on the far side from them).
+            Vector2 spot = BotSkillMistakes.FireStepSpot(self, _rvrFireCenter, _rvrFireRadius, enemy, _rvrFireFrom);
             return StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now);
         }
 
