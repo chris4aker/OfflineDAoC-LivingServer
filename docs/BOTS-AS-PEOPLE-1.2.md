@@ -486,7 +486,7 @@ one; they are built as recommended. Decisions 12 and 13 are still open.
 | 4 | Mistakes in the player's group | **A quarter of the rate**, `bot_skill_spare_player_group` on |
 | 5 | RvR groups keep their group tier in 1.2 | **Built as recommended** (not asked separately): a member's own facet only spreads its delay inside the band |
 | 6 | Skill grows, never falls, one tier at most in 1.2 | **Yes**. `rvr_bot_awareness` shifts the per-bot mix too: it is the one difficulty knob (owner 2026-11-17 12:52: lowering it may drop a grown bot a tier, since the cap is today's start tier plus one; that is appropriate) |
-| 7 | Getting lost | **Yes, the limits as written**: once a trip, 3 minutes, roads only, never in an enemy frontier, a dungeon or near monsters more than 2 levels above; one ask in /faction per realm every 10 minutes |
+| 7 | Getting lost | **Yes, the limits as written**: once a trip, 3 minutes, roads only, never in an enemy frontier, a dungeon or near monsters more than 2 levels above; one ask in /faction per realm every 10 minutes. Note, owner 2026-11-17 12:46: wrong roads may follow proven walking legs across open ground |
 | 8 | What a bot knows at the start | **Built as recommended** (not asked separately): its capital, its home town, its realm's zones below its level and, from level 20, its border keep |
 | 9 | Camp choice by what the bot has seen | **Not in 1.2** (2.0): it would change levelling speed |
 | 10 | Arcs lean the next goal | **Built as recommended** (not asked separately), inside the allocator's exact mix |

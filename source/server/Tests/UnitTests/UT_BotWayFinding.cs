@@ -175,6 +175,25 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void A_walk_hands_the_bot_back_whenever_todays_route_guard_would_act()
+        {
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.GREY, 1, false), Is.False);
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.UNKNOWN, 1, false), Is.False);
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.GREEN, 1, false), Is.False, "a green single the guard would only pull");
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.BLUE, 2, false), Is.False);
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.BLUE, 3, false), Is.True, "a blue pack the guard goes around");
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.GREEN, 4, false), Is.True);
+            foreach (ConColor con in new[] { ConColor.YELLOW, ConColor.ORANGE, ConColor.RED, ConColor.PURPLE })
+                Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(con, 1, false), Is.True, con.ToString());
+            Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(ConColor.GREY, 1, true), Is.True, "a boss");
+            // Whatever the guard would do for a solo bot other than ignore or pull, the walk yields.
+            foreach (ConColor con in new[] { ConColor.GREEN, ConColor.BLUE, ConColor.YELLOW, ConColor.ORANGE, ConColor.RED })
+                for (int pack = 1; pack <= 6; pack++)
+                    if (AutonomousRouteThreatPolicy.Decide(con, false, pack, false, true, 0, true) is RouteThreatAction.Detour or RouteThreatAction.Retarget)
+                        Assert.That(AutonomousRouteThreatPolicy.WayWalkMustYield(con, pack, false), Is.True, $"{con} x{pack}");
+        }
+
+        [Test]
         public void A_wrong_leg_is_600_to_1500_units_and_never_costs_more_than_3_minutes_there_and_back()
         {
             for (int i = 0; i <= 100; i++)
@@ -325,13 +344,18 @@ namespace DOL.UnitTests
         [Test]
         public void A_bot_tags_along_only_behind_a_free_realm_mate_that_knows_the_place_and_keeps_300_to_600_behind()
         {
-            Assert.That(BotWayFinding.FollowFits(2_400, true, BotPlaceKnowing.Known, false, false, false), Is.True);
-            Assert.That(BotWayFinding.FollowFits(2_600, true, BotPlaceKnowing.Known, false, false, false), Is.False, "beyond 2,500");
-            Assert.That(BotWayFinding.FollowFits(500, false, BotPlaceKnowing.Known, false, false, false), Is.False, "going elsewhere");
-            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.HalfKnown, false, false, false), Is.False, "only told the way");
-            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, true, false, false), Is.False, "on a stable ride");
-            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, true, false), Is.False, "fighting");
-            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, true), Is.False, "in the player's group");
+            Assert.That(BotWayFinding.FollowFits(2_400, true, BotPlaceKnowing.Known, false, false, false, 0), Is.True);
+            Assert.That(BotWayFinding.FollowFits(2_600, true, BotPlaceKnowing.Known, false, false, false, 0), Is.False, "beyond 2,500");
+            Assert.That(BotWayFinding.FollowFits(500, false, BotPlaceKnowing.Known, false, false, false, 0), Is.False, "going elsewhere");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.HalfKnown, false, false, false, 0), Is.False, "only told the way");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, true, false, false, 0), Is.False, "on a stable ride");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, true, false, 0), Is.False, "fighting");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, true, 0), Is.False, "in the player's group");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, false, 2), Is.True, "2 levels above");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, false, -2), Is.True, "2 levels below");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, false, 3), Is.False,
+                "a leader 3 levels above walks past monsters harder for the follower");
+            Assert.That(BotWayFinding.FollowFits(500, true, BotPlaceKnowing.Known, false, false, false, -25), Is.False);
             Assert.That(BotWayFinding.FollowStep(250, 450), Is.EqualTo(-1), "too close: waits");
             Assert.That(BotWayFinding.FollowStep(450, 450), Is.Zero);
             Assert.That(BotWayFinding.FollowStep(451, 450), Is.EqualTo(1), "falls behind: catches up");
@@ -347,14 +371,14 @@ namespace DOL.UnitTests
             choices[0, 0] = 4; choices[0, 1] = 3; choices[0, 2] = 1; choices[0, 3] = 2;
             choices[2, 0] = 7;
             string line = BotWayFinding.SummaryLine(300, 30, 17, choices, 3, 1, 2, 0, 1, 2, 1, 1, 2, 90_000,
-                new Dictionary<BotWrongRoadRefusal, long> { [BotWrongRoadRefusal.Threat] = 2, [BotWrongRoadRefusal.Frontier] = 1 }, 0, 9, 0);
+                new Dictionary<BotWrongRoadRefusal, long> { [BotWrongRoadRefusal.Threat] = 2, [BotWrongRoadRefusal.Frontier] = 1 }, 0, 1, 9, 0);
             Assert.That(line, Does.StartWith("BOT_WAY_SUMMARY seconds=300 trips=30 unknown=17 "));
             Assert.That(line, Does.Contain("choices=casual:4/3/1/2,average:0/0/0/0,veteran:7/0/0/0"));
             Assert.That(line, Does.Contain("asks=said:3(say:1),capped:2,unheard:0,held:1 told=2 follows=1,none:1"));
             Assert.That(line, Does.Contain("wrong_roads=2 minutes_lost=1.5"));
             Assert.That(line, Does.Contain("refused=frontier:1,threat:2"));
-            Assert.That(line, Does.Contain("deaths_60s=0"));
-            Assert.That(BotWayFinding.SummaryLine(300, 0, 0, new long[3, 4], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, 0, 0, 0),
+            Assert.That(line, Does.Contain("deaths_60s=0 follow_deaths_60s=1"));
+            Assert.That(BotWayFinding.SummaryLine(300, 0, 0, new long[3, 4], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0),
                 Does.Contain("refused=none"));
         }
 
