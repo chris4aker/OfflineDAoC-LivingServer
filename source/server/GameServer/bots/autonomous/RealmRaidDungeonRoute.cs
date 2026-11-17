@@ -1563,6 +1563,104 @@ namespace DOL.GS
             return dangers;
         }
 
+        // ---- where raiders stand while the raid holds, and where a stranded raider is moved (owner's PC, 2026-11-17) ----------
+
+        private IReadOnlyList<BossDanger> _postDangers = [], _restingDangers = [];
+        private long _postDangersUntil, _restingDangersUntil;
+        public const long DangerCacheMilliseconds = 2_000;
+
+        /// <summary>
+        /// The spots no party's post around the hold point may stand in while the raid holds (AutonomousRealmRaid.TryBattlePost):
+        /// the muster's own dangers (<see cref="UntargetedBossDangers"/>). Owner's PC, build 453e01a, 2026-11-17, Tuscaran
+        /// Glacier: the muster for the hrimthursa icespine (15333,49257) lay 907 from Icelord Agmundr's spawn, just outside his
+        /// aggro + 300, but one party's post around it (formation slot 6) was 15022,49568, 546 from his spawn and inside his
+        /// aggro (600); he came at 12:20:11 while the muster stood at 66 of 67 and wiped the raid. Empty while the raid goes in.
+        /// </summary>
+        public IReadOnlyList<BossDanger> PostDangers()
+        {
+            if (!Hold || _target == null) return [];
+            long now = GameLoop.GameLoopTime;
+            if (now >= _postDangersUntil)
+            {
+                _postDangers = UntargetedBossDangers();
+                _postDangersUntil = now + DangerCacheMilliseconds;
+            }
+            return _postDangers;
+        }
+
+        /// <summary>
+        /// Every resting boss, named encounter, final and boss's linked monster (EpicEncounterTactics.ClearFirstOwner: Agmundr's
+        /// hrimthursa, the Crypt Lord's court) of the dungeon, the raid's own target included, with its aggro sphere
+        /// (<see cref="UntargetedBossMargin"/> included) at its spawn and where it stands, and the rules' muster dangers. A
+        /// stranded raider is never moved into one (<see cref="StrandedRegroupPoint"/>). A monster in combat is a fight already
+        /// on and is left out.
+        /// </summary>
+        private IReadOnlyList<BossDanger> RestingDangers()
+        {
+            long now = GameLoop.GameLoopTime;
+            if (now < _restingDangersUntil) return _restingDangers;
+            IReadOnlyList<GameNPC> live = _live;
+            var dangers = new List<BossDanger>();
+            foreach (GameNPC npc in live)
+            {
+                if (npc == null || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.InCombat ||
+                    npc.Realm != eRealm.None || (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain || IsEncounterHazard(npc))
+                    continue;
+                if (npc is not GameEpicBoss && npc is not IGameEpicNpc && !_finalTypes.Contains(npc.GetType().Name) &&
+                    EpicEncounterTactics.ClearFirstOwner(npc, live) == null)
+                    continue;
+                float radius = brain.AggroRange + UntargetedBossMargin;
+                var spawn = new Vector3(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z);
+                dangers.Add(new(npc.Name, spawn, radius));
+                var at = new Vector3(npc.X, npc.Y, npc.Z);
+                if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(npc.Name, at, radius));
+            }
+            dangers.AddRange(RuleMusterDangers(live));
+            _restingDangers = dangers;
+            _restingDangersUntil = now + DangerCacheMilliseconds;
+            return dangers;
+        }
+
+        /// <summary>
+        /// Where a raider stranded inside the dungeon is moved (pure; AutonomousRealmRaid.TryDungeonRegroupPoint). Owner's PC,
+        /// build 453e01a, 2026-11-17, Tuscaran Glacier: 159 stranded raiders were moved to the route's front, 15037,49914, 200 from
+        /// Icelord Agmundr's spawn and inside his aggro, while the raid regrouped at its muster, 15184,48849; he fought them at
+        /// home twice (12:25, 12:30) and the second fight was scored as the wipe that ended the raid. Now a raid that holds (a
+        /// muster, a regroup, a held skirmish) sends them to where it holds (<paramref name="destination"/>), and only a raid
+        /// going in sends them to its <paramref name="front"/>. Never a point inside one of <paramref name="dangers"/>: then the
+        /// muster, if clear; else null (nobody is moved).
+        /// </summary>
+        public static Vector3? StrandedRegroupPoint(bool holding, Vector3 front, Vector3 destination, Vector3? muster,
+            IReadOnlyList<BossDanger> dangers)
+        {
+            dangers ??= [];
+            Vector3 first = holding ? destination : front;
+            if (!InBossDanger(first, dangers)) return first;
+            if (muster is Vector3 m && !InBossDanger(m, dangers)) return m;
+            return null;
+        }
+
+        private long _nextRegroupRefusedLog;
+
+        /// <summary>The point a stranded raider is moved to now (<see cref="StrandedRegroupPoint"/>); false: none is clear.</summary>
+        public bool TryStrandedRegroupPoint(out Vector3 point)
+        {
+            Vector3? muster = _target != null && _musterTarget == _target ? _musterPoint : null;
+            Vector3? found = StrandedRegroupPoint(Hold, Front, Destination, muster, RestingDangers());
+            point = found ?? default;
+            if (found.HasValue) return true;
+            long now = GameLoop.GameLoopTime;
+            if (now >= _nextRegroupRefusedLog)
+            {
+                _nextRegroupRefusedLog = now + 60_000;
+                log.Warn($"REALM_EXPEDITION_REGROUP_REFUSED region={_region} target=\"{_target?.Name}\" hold={Hold} " +
+                         $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} destination={(int)Destination.X},{(int)Destination.Y},{(int)Destination.Z} " +
+                         $"reason=\"every regroup point is within a resting boss's aggro + {(int)UntargetedBossMargin}; the stranded raider is not moved\"");
+            }
+            return false;
+        }
+
         /// <summary>
         /// The spots a dungeon rule keeps musters from (EpicEncounterTactics.MusterDangersOf), the encounter mustered for
         /// included: owner's PC, build 1dc66b6, 2026-11-15, the raid's muster for the Crypt Lord was 27,960,40,280, 115 from his

@@ -281,6 +281,47 @@ public static class RealmRaidReturnWave
         return steps.ToArray();
     }
 
+    /// <summary>A raider joining a walking wave within this of the wave's step joins it there; one further back catches up
+    /// step by step (<see cref="JoinStep"/>).</summary>
+    public const float JoinReach = StepUnits * 1.5f;
+
+    /// <summary>
+    /// The step a raider joining a walking wave starts at (pure). Owner's PC, build 453e01a, 2026-11-17, Tuscaran Glacier: 82
+    /// raiders went in at the way in at 12:24 and joined a two-raider wave at its step 35 of 49; the walk straight there had no
+    /// navigable corridor, so they stood at the way in (atStep=0), failed their routes three times and were moved to the front
+    /// by the boss. Now a joiner within <see cref="JoinReach"/> of the wave's step joins it there; one further back starts at
+    /// the first step it stands at (<see cref="AtStepRadius"/>), else at the step nearest it, and walks the steps the wave has
+    /// cleared one at a time (each at most <see cref="StepUnits"/> on). <paramref name="inside"/> false (still outside, at the
+    /// way in): the first step, where raiders come in.
+    /// </summary>
+    public static int JoinStep(IReadOnlyList<Vector3> steps, Vector3 at, bool inside, int waveStep)
+    {
+        if (steps == null || steps.Count == 0) return 0;
+        waveStep = Math.Clamp(waveStep, 0, steps.Count - 1);
+        if (!inside) return 0;
+        if (Vector3.Distance(at, steps[waveStep]) <= JoinReach) return waveStep;
+        int nearest = 0;
+        float best = float.MaxValue;
+        for (int i = 0; i <= waveStep; i++)
+        {
+            float d = Vector3.Distance(at, steps[i]);
+            if (d <= AtStepRadius) return i;
+            if (d < best) { best = d; nearest = i; }
+        }
+        return nearest;
+    }
+
+    /// <summary>
+    /// A raider catching up with its wave (pure): standing at its step or a later one (<paramref name="atStep"/>: the latest
+    /// step it stands at, -1 for none), it goes on to the next. Returns its new step, or -1 once that is the wave's step (it
+    /// walks with the wave from there).
+    /// </summary>
+    public static int CatchUp(int step, int atStep, int waveStep)
+    {
+        int next = atStep >= step ? atStep + 1 : step;
+        return next >= waveStep ? -1 : next;
+    }
+
     public enum WaveMove { Wait, Fight, CallHelp, Advance, Arrived }
 
     /// <summary>Raiders of a wave of <paramref name="living"/> that make it "together" at a step.</summary>

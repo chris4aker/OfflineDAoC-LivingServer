@@ -10,8 +10,24 @@ namespace DOL.GS
     {
         public const float SharedPostRadius = 600;
 
+        /// <summary>The raw post (before the floor snap) of a party's <paramref name="slot"/> around <paramref name="center"/> on
+        /// its <paramref name="attempt"/>-th try: six spread tries (140 x the root of slot + 1 out, 70 more on odd tries), then
+        /// compact ones (100-420 out).</summary>
+        public static Vector3 RawPost(Vector3 center, int slot, int attempt)
+        {
+            bool compact = attempt >= 6;
+            double angle = (slot * 137.5 + attempt * (compact ? 47.5 : 30)) * Math.PI / 180;
+            float radius = compact ? 100 + (attempt - 6 + slot) % 5 * 80 :
+                slot == 0 && attempt == 0 ? 0 : 140 * MathF.Sqrt(slot + 1) + attempt % 2 * 70;
+            return center + new Vector3((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius, 0);
+        }
+
+        /// <summary><paramref name="dangers"/>: spots no post may stand in (RealmRaidDungeonRoute.PostDangers while the raid
+        /// holds: a resting boss's aggro + 300; owner's PC, build 453e01a, 2026-11-17, a post 546 from Icelord Agmundr's spawn
+        /// around a muster 907 from it pulled him). Null or empty: none.</summary>
         public static bool TryResolve(IPathfindingMgr nav, Zone zone, Vector3 center, int slot,
-            IReadOnlyCollection<Vector3> occupied, out Vector3 position)
+            IReadOnlyCollection<Vector3> occupied, out Vector3 position,
+            IReadOnlyList<RealmRaidDungeonRoute.BossDanger> dangers = null)
         {
             position = default;
             if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
@@ -19,16 +35,14 @@ namespace DOL.GS
             // Never a post inside a ground hazard (Orshom's Fire: PC 2026-11-09, the front 200 from it put parties in its 300).
             ushort region = zone.ZoneRegion?.ID ?? 0;
             bool Valid(Vector3 floor) => EpicEncounterTactics.HazardAt(region, floor) == null &&
+                (dangers == null || !RealmRaidDungeonRoute.InBossDanger(floor, dangers)) &&
                 nav.HasLineOfSight(zone, center, floor, nav.DefaultFilters) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, center, floor) &&
                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor, center);
             for (int attempt = 0; attempt < (epicInterior ? 22 : 6); attempt++)
             {
                 bool compact = attempt >= 6;
-                double angle = (slot * 137.5 + attempt * (compact ? 47.5 : 30)) * Math.PI / 180;
-                float radius = compact ? 100 + (attempt - 6 + slot) % 5 * 80 :
-                    slot == 0 && attempt == 0 ? 0 : 140 * MathF.Sqrt(slot + 1) + attempt % 2 * 70;
-                Vector3 raw = center + new Vector3((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius, 0);
+                Vector3 raw = RawPost(center, slot, attempt);
                 Vector3? floor = nav.GetClosestPoint(zone, raw, 48, 48, 128, nav.DefaultFilters);
                 if (!floor.HasValue || Math.Abs(floor.Value.Z - center.Z) > 128) continue;
                 bool overlaps = false;

@@ -36,6 +36,10 @@ namespace DOL.GS
             public int Kills, Helps, MostMembers;
             public bool StuckLogged;
             public View MemberView, HelperView;
+            /// <summary>Raiders who joined far behind the wave and walk its cleared steps one at a time to catch up with it
+            /// (RealmRaidReturnWave.JoinStep): the step each walks to now. Not counted in the wave's own "together".</summary>
+            public readonly Dictionary<long, int> Catching = new();
+            public readonly Dictionary<int, View> CatchingViews = new();
         }
 
         /// <summary>The raid's destination moved this far: the wave's steps are worked out again.</summary>
@@ -64,13 +68,24 @@ namespace DOL.GS
                          $"steps={walk.Steps.Length} walk={(int)walk.WalkLength} goal=\"{raid.DungeonRoute.TargetName}\"");
                 return;
             }
-            int joined = 0;
+            // Owner's PC, build 453e01a, 2026-11-17: 82 who went in at Tuscaran's way in joined a wave at its step 35 of 49, which
+            // no corridor reached from there. One far behind the wave walks its cleared steps from where it stands, one at a time.
+            int joined = 0, behind = 0, from = int.MaxValue;
             foreach (GameBot b in bots)
-                if (walk.Members.Add(b.DatabaseID)) joined++;
+            {
+                if (!walk.Members.Add(b.DatabaseID)) continue;
+                joined++;
+                int step = RealmRaidReturnWave.JoinStep(walk.Steps, new Vector3(b.X, b.Y, b.Z),
+                    b.CurrentRegionID == raid.DungeonRoute.Region, walk.Step);
+                if (step >= walk.Step) continue;
+                walk.Catching[b.DatabaseID] = step;
+                behind++;
+                from = Math.Min(from, step);
+            }
             if (joined == 0) return;
             walk.MostMembers = Math.Max(walk.MostMembers, walk.Members.Count);
             Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=joined wave={walk.Number} joined={joined} members={walk.Members.Count} " +
-                     $"at={walk.Step + 1}/{walk.Steps.Length}");
+                     $"at={walk.Step + 1}/{walk.Steps.Length} catching={behind}" + (behind > 0 ? $" from={from + 1}" : ""));
         }
 
         /// <summary>Under the raid lock: the wave's steps, from where raiders come in to where the raid's parties stand
@@ -81,13 +96,22 @@ namespace DOL.GS
             RealmRaidDungeonRoute route = raid.DungeonRoute;
             Vector3 goal = route.Destination;
             Vector3[] steps = RealmRaidReturnWave.WalkSteps(route.ReturnWalk(), goal);
-            int step = 0;
-            if (walk.Steps.Length > 0)
+            static int Nearest(Vector3[] steps, Vector3 was)
             {
-                Vector3 was = walk.Steps[walk.Step];
+                int step = 0;
                 for (int i = 1; i < steps.Length; i++)
                     if (Vector3.DistanceSquared(steps[i], was) < Vector3.DistanceSquared(steps[step], was)) step = i;
+                return step;
             }
+            int step = walk.Steps.Length > 0 ? Nearest(steps, walk.Steps[walk.Step]) : 0;
+            // Raiders catching up go on from the new step nearest the one they were walking to, behind the wave.
+            if (walk.Steps.Length > 0)
+                foreach (long member in walk.Catching.Keys.ToArray())
+                {
+                    int at = Nearest(steps, walk.Steps[Math.Min(walk.Catching[member], walk.Steps.Length - 1)]);
+                    if (at >= step) walk.Catching.Remove(member);
+                    else walk.Catching[member] = at;
+                }
             walk.Steps = steps;
             walk.Goal = goal;
             walk.Step = walk.BestStep = step;
@@ -108,6 +132,38 @@ namespace DOL.GS
             walk.MemberView = new(raid.Definition.Id,
                 $"RAID — walking back in with the return wave (step {walk.Step + 1} of {walk.Steps.Length})", camp, true);
             walk.HelperView = new(raid.Definition.Id, "RAID — going back to meet the return wave", camp, true);
+            walk.CatchingViews.Clear();
+        }
+
+        /// <summary>Under the raid lock: the view of a raider catching up with the wave, to its own step.</summary>
+        private static View CatchingView(Raid raid, ReturnWalk walk, int step)
+        {
+            if (walk.CatchingViews.TryGetValue(step, out View view)) return view;
+            Vector3 at = walk.Steps[step];
+            var camp = new AutonomousBotGroupCoordinator.SharedCamp($"realm-event-{raid.Definition.Id}", raid.Definition.Name,
+                raid.Definition.Name, raid.DungeonRoute.Region, (int)at.X, (int)at.Y, (int)at.Z, true, false, 50);
+            return walk.CatchingViews[step] = new(raid.Definition.Id,
+                $"RAID — catching up with the return wave (step {step + 1} of {walk.Steps.Length}; the wave is at {walk.Step + 1})", camp, true);
+        }
+
+        /// <summary>Under the raid lock: the wave has no raider of its own left walking (all fell, reached the raid or met the
+        /// main body) while some still catch up behind it: they are the wave now, from the step of the furthest of them.</summary>
+        private static bool RebaseOnCatching(Raid raid, ReturnWalk walk, long now, string why)
+        {
+            walk.Catching.Keys.Where(m => !walk.Members.Contains(m)).ToList().ForEach(m => walk.Catching.Remove(m));
+            if (walk.Catching.Count == 0) return false;
+            int to = walk.Catching.Values.Max();
+            foreach (long m in walk.Catching.Where(p => p.Value >= to).Select(p => p.Key).ToArray()) walk.Catching.Remove(m);
+            walk.Step = walk.BestStep = to;
+            walk.StepSince = 0;
+            walk.Closest = float.MaxValue;
+            walk.Target = null;
+            walk.Helpers.Clear();
+            walk.LastMove = now;
+            RefreshWalkViews(raid, walk);
+            Log.Info($"REALM_RAID_RETURN_WAVE event={raid.Definition.Id} step=rebased wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
+                     $"members={walk.Members.Count} catching={walk.Catching.Count} reason=\"{why}; the raiders catching up are the wave now\"");
+            return true;
         }
 
         /// <summary>Under the raid lock: the view of a raider walking with the wave, or of one of the main body sent back to meet
@@ -116,7 +172,9 @@ namespace DOL.GS
         {
             ReturnWalk walk = raid.Walk;
             if (walk == null || !bot.IsAlive) return null;
-            if (walk.Members.Contains(bot.DatabaseID)) return walk.MemberView;
+            if (walk.Members.Contains(bot.DatabaseID))
+                return walk.Catching.TryGetValue(bot.DatabaseID, out int step) && step < walk.Steps.Length
+                    ? CatchingView(raid, walk, step) : walk.MemberView;
             if (walk.Helpers.Contains(group) && bot.CurrentRegionID == raid.DungeonRoute.Region) return walk.HelperView;
             return null;
         }
@@ -160,6 +218,7 @@ namespace DOL.GS
             GameBot[] members = walk.Members.Select(m => byId[m]).ToArray();
             if (members.Length == 0)
             {
+                walk.Catching.Clear();
                 Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=lost wave={walk.Number} most={walk.MostMembers} kills={walk.Kills} " +
                          $"minutes={minutes} reason=\"every raider of the wave fell; they gather at the way in again\"");
                 EndWalk(raid);
@@ -168,6 +227,45 @@ namespace DOL.GS
             if (walk.Steps.Length == 0 || Vector3.DistanceSquared(route.Destination, walk.Goal) > WalkGoalMoved * WalkGoalMoved)
                 BuildSteps(raid, walk);
             ushort region = route.Region;
+            // A raider of the wave already standing with the raid (moved there by its stranded regroup) is there: it leaves the walk.
+            if (walk.Step < walk.Steps.Length - 1)
+            {
+                Vector3 end = walk.Steps[^1];
+                var endPoint = new Point3D((int)end.X, (int)end.Y, (int)end.Z);
+                foreach (GameBot b in members.Where(b => b.CurrentRegionID == region && b.IsWithinRadius(endPoint, RealmRaidReturnWave.AtStepRadius)))
+                {
+                    walk.Members.Remove(b.DatabaseID);
+                    walk.Catching.Remove(b.DatabaseID);
+                }
+                if (walk.Members.Count < members.Length)
+                {
+                    Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=ahead wave={walk.Number} reached={members.Length - walk.Members.Count} " +
+                             $"members={walk.Members.Count} at={walk.Step + 1}/{walk.Steps.Length} reason=\"already with the raid; they leave the walk\"");
+                    members = walk.Members.Select(m => byId[m]).ToArray();
+                    if (members.Length == 0) { EndWalk(raid); return; }
+                }
+            }
+            // Raiders catching up go on to their next step when they stand at it (or at a later one); at the wave's step they
+            // walk with it. Their walking is movement, not the wave's headway.
+            foreach (long m in walk.Catching.Keys.ToArray())
+            {
+                if (!walk.Members.Contains(m)) { walk.Catching.Remove(m); continue; }
+                GameBot b = byId[m];
+                int latest = -1;
+                if (b.CurrentRegionID == region)
+                    for (int i = walk.Steps.Length - 1; i >= 0; i--)
+                        if (b.IsWithinRadius(new Point3D((int)walk.Steps[i].X, (int)walk.Steps[i].Y, (int)walk.Steps[i].Z), RealmRaidReturnWave.AtStepRadius))
+                        { latest = i; break; }
+                int was = walk.Catching[m], next = RealmRaidReturnWave.CatchUp(was, latest, walk.Step);
+                if (next == was) continue;
+                walk.LastMove = now;
+                if (next < 0) walk.Catching.Remove(m);
+                else walk.Catching[m] = next;
+            }
+            // The wave itself: its raiders not catching up. None left: the furthest catching up are the wave now.
+            if (members.All(b => walk.Catching.ContainsKey(b.DatabaseID)))
+                RebaseOnCatching(raid, walk, now, "no raider of the wave walks at its step");
+            members = members.Where(b => !walk.Catching.ContainsKey(b.DatabaseID)).ToArray();
             Vector3 stepAt = walk.Steps[walk.Step];
             var stepPoint = new Point3D((int)stepAt.X, (int)stepAt.Y, (int)stepAt.Z);
             GameBot[] inside = members.Where(b => b.CurrentRegionID == region).ToArray();
@@ -199,7 +297,8 @@ namespace DOL.GS
                     Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=met wave={walk.Number} helpers={helpers.Length} near={near} " +
                              $"living={members.Length} kills={walk.Kills} at={walk.Step + 1}/{walk.Steps.Length} minutes={minutes} " +
                              $"reason=\"the main body came back to meet it; they go on to the raid together\"");
-                    EndWalk(raid);
+                    foreach (GameBot b in members) walk.Members.Remove(b.DatabaseID);
+                    if (!RebaseOnCatching(raid, walk, now, "the wave met the main body")) EndWalk(raid);
                     return;
                 }
             }
@@ -275,7 +374,8 @@ namespace DOL.GS
                         Log.Info($"REALM_RAID_RETURN_WAVE event={id} step=cleared wave={walk.Number} living={members.Length} most={walk.MostMembers} " +
                                  $"kills={walk.Kills} steps={walk.Steps.Length} helps={walk.Helps} minutes={minutes} " +
                                  $"reason=\"the wave reached the raid together\"");
-                        EndWalk(raid);
+                        foreach (GameBot b in members) walk.Members.Remove(b.DatabaseID);
+                        if (!RebaseOnCatching(raid, walk, now, "the wave reached the raid")) EndWalk(raid);
                         return;
                 }
             }
