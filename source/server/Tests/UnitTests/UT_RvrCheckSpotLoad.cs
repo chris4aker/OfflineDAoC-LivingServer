@@ -39,7 +39,7 @@ namespace DOL.UnitTests
             foreach (RvrFrontier frontier in catalog.Frontiers)
             {
                 eRealm owner = frontier.Region switch { 1 => eRealm.Albion, 100 => eRealm.Midgard, _ => eRealm.Hibernia };
-                Assert.That(frontier.Entries.Keys, Is.EquivalentTo(Enum.GetValues<eRealm>().Where(r => r is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia && r != owner)));
+                Assert.That(frontier.Entries.Keys, Is.EquivalentTo(new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia }.Where(r => r != owner)));
                 Assert.That(frontier.Circuits, Has.Length.EqualTo(6));
                 Assert.That(frontier.Circuits.All(c => c.Realm != owner), Is.True, "circuits are walked by the enemy realms");
                 Assert.That(frontier.Circuits.All(c => c.Spots.All(id => catalog.Spot(id)?.Region == frontier.Region)), Is.True);
