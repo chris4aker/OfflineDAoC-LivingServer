@@ -105,6 +105,9 @@ public static class AutonomousStuckWatchdog
     /// </summary>
     public static bool RepairInvalidLoginPosition(GameBot bot)
     {
+        // a hired companion goes where its player takes it: the watchdog never moves it (True 1.65, owner 2026-10-30)
+        if (bot.IsHiredCompanion)
+            return false;
         if (bot.IsAutonomousWorldBot && BotReleaseBindPoints.IsEnemyBindPosition(
                 bot.CurrentRegionID, bot.X, bot.Y, bot.Z, bot.Realm))
             return RelocateToSafeCapital(bot, DateTime.UtcNow, "saved at an enemy realm bindstone", false);
@@ -275,7 +278,7 @@ public static class AutonomousStuckWatchdog
     public static bool Observe(GameBot bot, DateTime? nowUtc = null)
     {
         if (bot?.IsAutonomousWorldBot != true || bot.DatabaseID <= 0 || bot.PersistentRecord == null ||
-            bot.ObjectState != GameObject.eObjectState.Active)
+            bot.ObjectState != GameObject.eObjectState.Active || bot.IsHiredCompanion)
             return false;
 
         DateTime now = nowUtc ?? DateTime.UtcNow;

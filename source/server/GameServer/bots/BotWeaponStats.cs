@@ -47,6 +47,10 @@ namespace DOL.GS
             BotSpec spec = bot.BotSpec;
             if (spec == null || spec.WeaponOneType == 0 && spec.WeaponTwoType == 0)
                 return HasConfiguredWeaponProficiency(bot, item);
+            // A hired companion's gear is its player's choice: any weapon its class can use, as for a player of that class
+            // (True 1.65, owner 2026-11-01); the build's weapon plan is only for what gamebots buy.
+            if (bot.IsHiredCompanion)
+                return HasConfiguredWeaponProficiency(bot, item);
 
             eObjectType type = (eObjectType)item.Object_Type;
             return MatchesBuild(spec, type);
@@ -70,7 +74,7 @@ namespace DOL.GS
             bot != null && item?.Template != null &&
             IsConfiguredMeleeWeapon(bot, item.Template) &&
             HasFunctionalMeleeStats(item) &&
-            item.LevelRequirement <= bot.Level &&
+            (item.LevelRequirement <= bot.Level || bot.IsHiredCompanion) &&   // a hired companion wields it as a player would
             HasConfiguredWeaponProficiency(bot, item.Template);
 
         /// <summary>
@@ -104,10 +108,11 @@ namespace DOL.GS
             if (slot is eInventorySlot.RightHandWeapon or eInventorySlot.LeftHandWeapon &&
                 (item.Item_Type == Slot.TWOHAND || item.Hand == 1)) return false;
             if (slot == eInventorySlot.TwoHandWeapon && item.Item_Type != Slot.TWOHAND) return false;
-            if (slot == eInventorySlot.LeftHandWeapon && bot.BotSpec?.SpecType == eSpecType.LeftAxe)
+            // a hired companion's hands are its player's choice (True 1.65): the left-axe plan binds gamebots only
+            bool leftAxePlan = bot.BotSpec?.SpecType == eSpecType.LeftAxe && !bot.IsHiredCompanion;
+            if (slot == eInventorySlot.LeftHandWeapon && leftAxePlan)
                 return item.Object_Type is (int)eObjectType.Axe or (int)eObjectType.LeftAxe;
-            if (slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon &&
-                bot.BotSpec?.SpecType == eSpecType.LeftAxe)
+            if (slot is eInventorySlot.RightHandWeapon or eInventorySlot.TwoHandWeapon && leftAxePlan)
                 return item.Object_Type == (int)bot.BotSpec.WeaponOneType;
             return true;
         }

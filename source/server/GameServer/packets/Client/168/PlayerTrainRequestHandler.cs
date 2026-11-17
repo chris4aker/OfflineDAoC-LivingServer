@@ -27,6 +27,19 @@ namespace DOL.GS.PacketHandler.Client.v168
             if (idLine <= 0)
                 return;
 
+            // Hired companions (from True 1.65): the same window, driven for one companion (CompanionWindows165,
+            // window ids 200 + roster row; 230 + row was True 1.65's realm ability window, never sent here).
+            if (HiredCompanionsMode.IsOn && idLine >= CompanionWindows165.RealmAbilityWindowBase)
+            {
+                CompanionWindows165.OnRealmAbilityClick(client.Player, idLine, (row - 1) * 10 + skillIndex - 1);
+                return;
+            }
+            if (HiredCompanionsMode.IsOn && idLine >= CompanionWindows165.TrainerWindowBase)
+            {
+                CompanionWindows165.OnTrainerClick(client.Player, idLine, row - 1, skillIndex - 1);
+                return;
+            }
+
             if (row <= 0 || skillIndex <= 0)
                 return;
 

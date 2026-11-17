@@ -259,7 +259,7 @@ public static class AutonomousBotCraftOrders
     /// <summary>Whether this gamebot may fill orders at all: a Crafter-type autonomous gamebot (never a companion) of the level.</summary>
     public static bool IsAbleCrafter(GameBot crafter) =>
         crafter != null && crafter.DatabaseID > 0 && crafter.IsAutonomousWorldBot && !crafter.IsTemporaryGroupHelper &&
-        crafter.Level >= BotCraftingRules.MinimumBotLevel && crafter.PersistentRecord != null;
+        !crafter.IsHiredCompanion && crafter.Level >= BotCraftingRules.MinimumBotLevel && crafter.PersistentRecord != null;
 
     /// <summary>The crafter of the buyer's realm to ask: able to fill it and at a craft break within
     /// <see cref="BreakWindow"/>; least busy first, then the soonest break, then the most skilled (DR).</summary>
@@ -351,7 +351,7 @@ public static class AutonomousBotCraftOrders
     /// </summary>
     public static void AtTaskBreak(GameBot bot, bool commission = true, Random random = null)
     {
-        if (!BoardOn || bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.DatabaseID <= 0)
+        if (!BoardOn || bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsHiredCompanion || bot.DatabaseID <= 0)
             return;
         try
         {
@@ -376,7 +376,8 @@ public static class AutonomousBotCraftOrders
     /// <summary>Orders the best upgrade a crafter of the realm can make, if the buyer has the coin (DR). Returns the order.</summary>
     public static CraftOrder TryCommission(GameBot buyer)
     {
-        if (!Enabled || buyer?.IsAutonomousWorldBot != true || buyer.IsTemporaryGroupHelper || buyer.DatabaseID <= 0 ||
+        if (!Enabled || buyer?.IsAutonomousWorldBot != true || buyer.IsTemporaryGroupHelper || buyer.IsHiredCompanion ||
+            buyer.DatabaseID <= 0 ||
             buyer.Inventory == null || OfBuyer(AutonomousBotEconomy.GetOwnerId(buyer.DatabaseID)).Count > 0)
             return null;
         GameBot[] crafters = CraftersOf(buyer.Realm).ToArray();

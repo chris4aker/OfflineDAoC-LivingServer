@@ -236,6 +236,7 @@ public static class EconomyPage
         "refund" => "Refunds",
         "playertrade" => "Trades with players",
         "launchergrant" => "Launcher grants",
+        "companionhire" => "Companion hires",
         "unattributed" => "Not yet named",
         _ => kind,
     };

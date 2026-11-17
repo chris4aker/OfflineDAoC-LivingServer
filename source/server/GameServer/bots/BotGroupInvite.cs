@@ -83,6 +83,13 @@ public static class BotGroupInvite
             return false;
         }
 
+        // Hired companions (from True 1.65): one follows only the player character who hired it.
+        if (bot.IsHiredCompanion && !HiredCompanions165.IsHiredBy(bot, player))
+        {
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is another player's hired companion and follows only them.");
+            return false;
+        }
+
         if (player.Group != null && player.Group.Leader != player)
         {
             ChatUtil.SendSystemMessage(player, BotLedGroups.BotLeadsMessageFor(player) ?? "You are not the leader of your group.");

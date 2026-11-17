@@ -95,6 +95,29 @@ class EconomyTablesShipEmpty(unittest.TestCase):
                                  {"offline_bot_types": 0, "offline_economy_ledger": "absent"})
 
 
+class HiredCompanionsShipEmpty(unittest.TestCase):
+    """Hired companions (from True 1.65): a character's companions own items and coin; release builds empty their table."""
+
+    def test_the_table_is_read_from_the_server_source_and_the_policy_covers_it(self):
+        self.assertEqual(release.hired_companion_tables(REPO), ["offline_hired_companions"])
+        release.check_policy_covers(POLICY, release.hired_companion_tables(REPO))
+
+    def test_clean_world_empties_a_played_roster(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "world.db"
+            played_world(db, economy_rows=False)
+            with closing(sqlite3.connect(db)) as con:
+                con.execute("CREATE TABLE offline_hired_companions (BotId INTEGER PRIMARY KEY, OwnerCharacterID TEXT)")
+                con.execute("INSERT INTO offline_hired_companions VALUES (1, 'chris-character')")
+                con.commit()
+            tables = release.hired_companion_tables(REPO)
+            with closing(sqlite3.connect(db)) as con, self.assertRaisesRegex(AssertionError, "offline_hired_companions still has 1"):
+                release.verify_tables_empty(con, tables)
+            release.clean_world(db, POLICY, {"Keep": {}, "Door": {}})
+            with closing(sqlite3.connect(db)) as con:
+                self.assertEqual(release.verify_tables_empty(con, tables), {"offline_hired_companions": 0})
+
+
 class PatchesNeverCarrySavedProgress(unittest.TestCase):
     """make_patch's world update and find_changes_since_release skip the optional progress tables too."""
 

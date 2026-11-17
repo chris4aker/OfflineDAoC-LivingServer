@@ -196,7 +196,7 @@ namespace DOL.GS.CraftingEconomy
         /// </summary>
         public static long FundMaterials(GameBot crafter, long copper)
         {
-            if (!On || crafter?.IsAutonomousWorldBot != true || crafter.IsTemporaryGroupHelper || copper <= 0)
+            if (!On || crafter?.IsAutonomousWorldBot != true || crafter.IsTemporaryGroupHelper || crafter.IsHiredCompanion || copper <= 0)
                 return 0;
             Guild guild = GuildOf(crafter);
             return IsCharter(guild, BotGuildCharter.Crafting) ? BankToMember(guild, crafter, copper, "materials") : 0;

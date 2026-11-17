@@ -1445,6 +1445,11 @@ namespace DOL.AI.Brain
             if (CompanionRaidSiege.Think(this))
                 return;
 
+            // A hired companion (HiredCompanions165, from True 1.65) never runs the world bots' goals: out of its player's
+            // group it rejoins them, with its player gone it waits. Inside the group it thinks as every companion does.
+            if (HiredCompanions165.KeepWithOwner(BotBody))
+                return;
+
             // Frontier enemies take priority over rally/follow/rest and optional
             // buffs, even on a PvE task. Horse travel above stays authoritative.
             if (BotBody?.IsAutonomousWorldBot == true && !BotBody.IsPlayerLedGroup)
@@ -1483,6 +1488,14 @@ namespace DOL.AI.Brain
             if (BotBody?.IsTemporaryGroupHelper == true &&
                 (BotBody.TryReturnTemporaryCompanionToLeader() || TryResurrectCompanionOwner()))
                 return;
+            // A hired healer raises its dead player first, as a /spawn helper does; one left far behind or stuck comes back
+            // to its player (True 1.65, owner 2026-10-30 / 2026-10-31).
+            if (BotBody?.IsHiredCompanion == true &&
+                (TryResurrectCompanionOwner() || HiredCompanions165.TryRecallToOwner(BotBody) || HiredCompanions165.TryUnstick(BotBody)))
+                return;
+            // Any move of a hired companion (MoveTo stops the brain) left it with no state: in its player's group it follows.
+            if (FSM.GetCurrentState() == null && BotBody?.IsHiredCompanion == true && BotBody.IsPlayerLedGroup)
+                FSM.SetCurrentState(eFSMStateType.FOLLOW);
 
             if (PlayerLedPullCoordinator.IsWaiting(BotBody))
             {
@@ -1672,12 +1685,25 @@ namespace DOL.AI.Brain
             if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
                 AutonomousBotGroupCoordinator.Pulse(BotBody);
 
-            MaybeAutonomousWorldChat();
+            // A hired companion speaks as a companion while it follows its player (CompanionChat165, rate-limited inside),
+            // never in the world bots' talk; and it never sells or shops on its own: what it carries is its player's to give.
+            if (BotBody?.IsHiredCompanion == true)
+            {
+                if (BotBody.IsPlayerLedGroup)
+                    CompanionChat165.TryAmbient(BotBody);
+            }
+            else
+            {
+                MaybeAutonomousWorldChat();
 
-            if (TryHandleAutonomousMerchantService())
-                return;
+                if (TryHandleAutonomousMerchantService())
+                    return;
 
-            if (TryHandleAutonomousRealmExchange())
+                if (TryHandleAutonomousRealmExchange())
+                    return;
+            }
+
+            if (HiredCompanions165.KeepWithOwner(BotBody))
                 return;
 
             if (BotBody?.IsAutonomousWorldBot == true && !BotBody.IsPlayerLedGroup)
@@ -5898,8 +5924,8 @@ namespace DOL.AI.Brain
         private bool TryResurrectCompanionOwner()
         {
             GameBot bot = BotBody;
-            if (bot?.IsTemporaryGroupHelper != true) return false;
-            GamePlayer owner = bot.Owner;
+            if (bot?.IsTemporaryGroupHelper != true && bot?.IsHiredCompanion != true) return false;
+            GamePlayer owner = bot.CompanionPlayer;
             Spell resurrection = bot.ResurrectionSpell;
             if (owner == null || owner.IsAlive || resurrection == null || owner.ObjectState != GameObject.eObjectState.Active ||
                 owner.CurrentRegionID != bot.CurrentRegionID ||

@@ -47,8 +47,9 @@ public sealed partial class AutonomousWorldBotController
         _ => RvrPerceivedKind.Other,
     };
 
-    // A /spawn companion, a temporary helper, or a gamebot in a player's group: it travels with the player.
-    private static bool IsPlayersBot(GameBot bot) => !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup;
+    // A /spawn companion, a temporary helper, a hired companion, or a gamebot in a player's group: it travels with the player.
+    private static bool IsPlayersBot(GameBot bot) =>
+        !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.IsHiredCompanion;
 
     private static long RvrTargetKey(GameLiving target) => RvrPartyKey.TargetKey(target);
 
@@ -71,7 +72,7 @@ public sealed partial class AutonomousWorldBotController
 
     /// <summary>Whether this bot may leave what it is doing to answer a mate's call (its duty lease).</summary>
     public static bool MayAnswerRvrCall(GameBot bot) =>
-        bot.IsAutonomousWorldBot && !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper &&
+        bot.IsAutonomousWorldBot && !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper && !bot.IsHiredCompanion &&
         AutonomousRvrPerception.MayAnswerCall(BotDutyLeases.KindOf(bot));
 
     /// <summary>
@@ -280,7 +281,8 @@ public sealed partial class AutonomousWorldBotController
 
     /// <summary>Whether a mate can hear the spotter's call at all: an autonomous gamebot of its realm, not one a player has.</summary>
     public static bool CanHearRvrCall(GameBot mate, GameBot spotter) =>
-        mate.IsAutonomousWorldBot && !mate.IsTemporaryGroupHelper && !mate.IsPlayerLedGroup && mate.DatabaseID > 0 &&
+        mate.IsAutonomousWorldBot && !mate.IsTemporaryGroupHelper && !mate.IsPlayerLedGroup && !mate.IsHiredCompanion &&
+        mate.DatabaseID > 0 &&
         mate.Realm == spotter.Realm;
 
     private static RvrSpotterMate SpotterMate(GameBot mate, GameBot spotter) =>

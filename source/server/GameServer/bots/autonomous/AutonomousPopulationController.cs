@@ -393,8 +393,12 @@ public static class AutonomousPopulationController
         // longer holds the shared write lock that game-loop transactions wait on.
         _cachedEnabled = ReadBool("population_enabled", false);
         _cachedRampMinutes = ReadInt("startup_ramp_minutes", 15);
+        // Players' hired companions (HiredCompanions165) are logged in by their players, never by the population: loaded
+        // first, so none is ever taken for a gamebot (if their table can't be read, this poll logs in nobody).
+        HiredCompanions165.EnsureLoaded();
         _cachedRoster = DOLDB<OfflineWorldBotRecord>
             .SelectObjects(DB.Column("IsRetired").IsEqualTo(false))
+            .Where(record => !HiredCompanions165.IsHired(record.BotId))
             .OrderBy(record => record.BotId)
             .ToArray();
         // A gamebot taken off the roster (launcher removal, retirement, test-roster rollback) leaves its guild.
@@ -544,6 +548,35 @@ public static class AutonomousPopulationController
     }
 
     private static void DeleteBot(long botId)
+    {
+        // A player's hired companion is released by its player in game (/hire release), never deleted by a launcher command.
+        if (HiredCompanions165.IsHired(botId))
+            throw new InvalidOperationException("A hired companion is released by its player in game (/hire release), not deleted from the launcher.");
+        DeleteBotData(botId);
+    }
+
+    /// <summary>A hired companion its player released for good (HiredCompanions165.AskRelease): its record and everything it
+    /// carries are deleted, as the launcher's delete does for a gamebot. Its hire row is already gone.</summary>
+    internal static void DeleteHiredCompanion(long botId)
+    {
+        try
+        {
+            DeleteBotData(botId);
+        }
+        catch (Exception exception)
+        {
+            Log.Error($"HIRED_COMPANION_DELETE_FAILED bot={botId}: its record stays, retired", exception);
+            if (DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(botId)) is { } record)
+            {
+                record.IsRetired = true;
+                record.Activity = "Released by its player";
+                record.Dirty = true;
+                GameServer.Database.SaveObject(record);
+            }
+        }
+    }
+
+    private static void DeleteBotData(long botId)
     {
         AutonomousBotGuilds.Remove(botId, null);
         OfflineWorldBotRecord record = DOLDB<OfflineWorldBotRecord>.SelectObject(DB.Column("BotId").IsEqualTo(botId));

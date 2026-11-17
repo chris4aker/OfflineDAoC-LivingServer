@@ -28,7 +28,8 @@ World data checks (the release fails if one is off): the Darkness Falls raid spa
 darkness_falls_raid_event_mobs.json exactly (Princess Nahemah, High Lord Saeor and High Lord Oro moved off their daises),
 every quest kill target in set_quest_target_respawns.ledger.json respawns within 300 seconds, the relic pad needs 8,
 and the navmesh road, seam and pocket files are present. Every Crafting 2.0 table (EconomyTables.All, read from the
-server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships.
+server source) must be in progress-policy.json and is checked empty in both editions' worlds, so no played economy ships;
+so is the hired companions' table (offline_hired_companions, read from mode165/HiredCompanions165.cs).
 Every Living Server switch ships at its release value (release-server-settings.json: every feature on, owner 2026-11-16;
 diagnostics, the classic crafting rules and the epic encounter options off), written as both Value and DefaultValue so a
 later changed default still reaches the row, and checked in both editions' worlds.
@@ -188,6 +189,15 @@ def economy_tables(repo: Path) -> list[str]:
     assert names, "EconomyTables.All not found in EconomyTables.cs"
     tables = [constants[name.strip()] for name in names.group(1).split(",") if name.strip()]
     assert tables, "EconomyTables.All is empty"
+    return tables
+
+
+def hired_companion_tables(repo: Path) -> list[str]:
+    """The hired companions' saved-progress table (from True 1.65), read from the server's own declaration
+    (mode165/HiredCompanions165.cs): a character's companions, which own items and coin, so a played roster never ships."""
+    source = (repo / "source/server/GameServer/mode165/HiredCompanions165.cs").read_text(encoding="utf-8")
+    tables = re.findall(r'\[DataTable\(TableName = "(\w+)"\)\]', source)
+    assert tables, "no DataTable in HiredCompanions165.cs"
     return tables
 
 
@@ -427,6 +437,8 @@ def main():
     defaults = json.loads((repo / "source/tools/release-world-defaults.json").read_text(encoding="utf-8"))
     # Crafting 2.0 (1.2): the economy's saved-progress tables must all be emptied (AGENTS.md, protect player data).
     economy = economy_tables(repo)
+    # Hired companions (1.2 branch): their table is checked empty with the economy's.
+    economy += hired_companion_tables(repo)
     check_policy_covers(policy, economy)
     # Living Server 1.2 (owner 2026-11-16): every feature ships on, whatever the developer's install had.
     server_settings = release_server_settings(repo)

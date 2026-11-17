@@ -2609,6 +2609,9 @@ internal sealed partial class MainForm : Form
         connection.Open();
         using var transaction = connection.BeginTransaction();
         bool serverRunning = IsServerRunning() || FindExactServerProcess() is not null;
+        // A player's hired companion is released in game, never deleted here (BotPurge.HiredRefusal).
+        if (BotPurge.IsKeptHiredCompanion(connection, transaction, botId))
+            throw new InvalidOperationException(BotPurge.HiredRefusal);
         if (serverRunning)
         {
             using var retire = connection.CreateCommand();
@@ -2645,14 +2648,17 @@ internal sealed partial class MainForm : Form
         string now = DateTime.UtcNow.ToString("O");
         if (serverRunning)
         {
+            // Players' hired companions stay (BotPurge.KeptHiredQuery): the running server never gets a Delete for one.
+            var tables = BotPurge.Tables(connection, transaction);
+            string keepHired = tables.Contains(BotPurge.HiredTable) ? $" AND BotId NOT IN ({BotPurge.KeptHiredQuery(tables)})" : string.Empty;
             using (var queue = connection.CreateCommand())
             {
                 queue.Transaction = transaction;
-                queue.CommandText = """
+                queue.CommandText = $"""
                     INSERT INTO offline_bot_commands (BotId, CommandType, RequestedUtc, State)
                     SELECT b.BotId, 'Delete', @now, 'Pending'
                     FROM offline_world_bots b
-                    WHERE b.IsRetired=0
+                    WHERE b.IsRetired=0{keepHired.Replace(" BotId", " b.BotId")}
                       AND NOT EXISTS (
                           SELECT 1 FROM offline_bot_commands c
                           WHERE c.BotId=b.BotId AND c.CommandType='Delete' AND c.State IN ('Pending','Processing'))
@@ -2663,7 +2669,7 @@ internal sealed partial class MainForm : Form
 
             using var retire = connection.CreateCommand();
             retire.Transaction = transaction;
-            retire.CommandText = "UPDATE offline_world_bots SET IsRetired=1, Activity='Deletion requested', CurrentGoal='', LastUpdateUtc=@now WHERE IsRetired=0";
+            retire.CommandText = "UPDATE offline_world_bots SET IsRetired=1, Activity='Deletion requested', CurrentGoal='', LastUpdateUtc=@now WHERE IsRetired=0" + keepHired;
             retire.Parameters.AddWithValue("@now", now);
             retire.ExecuteNonQuery();
         }
@@ -2688,7 +2694,10 @@ internal sealed partial class MainForm : Form
         using (var countCommand = connection.CreateCommand())
         {
             countCommand.Transaction = transaction;
-            countCommand.CommandText = "SELECT COUNT(*) FROM offline_world_bots WHERE IsRetired=0";
+            // the gamebot roster: players' hired companions are logged in by their players, never by the population target
+            countCommand.CommandText = "SELECT COUNT(*) FROM offline_world_bots WHERE IsRetired=0" +
+                (BotPurge.Tables(connection, transaction).Contains(BotPurge.HiredTable)
+                    ? $" AND BotId NOT IN (SELECT BotId FROM {BotPurge.HiredTable})" : string.Empty);
             count = Convert.ToInt32(countCommand.ExecuteScalar());
         }
         int target = count;

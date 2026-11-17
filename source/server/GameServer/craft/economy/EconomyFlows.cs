@@ -43,6 +43,9 @@ namespace DOL.GS.CraftingEconomy
         // WP8: coin between a real player and a gamebot (a sale in a trade window, a commission paid on delivery, change
         // given back). Both sides are in the money supply, so it is a transfer (EconomyFlowClassifier.IsTransfer).
         PlayerTrade,
+        // Hired companions (from True 1.65): the coin a player pays to hire a companion leaves the money supply (a sink).
+        // A player-side move (EconomyFlows.RecordPlayer); no bot purse moves.
+        CompanionHire,
     }
 
     /// <summary>Receives every gamebot coin move (WP2's ledger). Called outside the money lock; must be cheap and thread-safe.</summary>
@@ -57,6 +60,13 @@ namespace DOL.GS.CraftingEconomy
         /// the change in supply. The default records nothing.
         /// </summary>
         void RecordPlayerEscrow(int realm, long signedCopper) { }
+
+        /// <summary>
+        /// Hired companions: coin a real player paid to the world (negative) or got from it (positive) for a named reason
+        /// (a companion's hire, a companion's repairs). It leaves or enters the money supply but no bot purse, so it is
+        /// counted in the realm's flows and its kind's sum, never in the bots' own flows. The default records nothing.
+        /// </summary>
+        void RecordPlayer(int realm, long signedCopper, EconomyFlowKind kind) { }
     }
 
     /// <summary>
@@ -90,6 +100,16 @@ namespace DOL.GS.CraftingEconomy
             if (sink == null || signedCopper == 0)
                 return;
             try { sink.RecordPlayerEscrow((int)realm, signedCopper); }
+            catch { } // diagnostics never break a coin move
+        }
+
+        /// <summary>Hired companions: a player's coin paid to (negative) or received from (positive) the world.</summary>
+        public static void RecordPlayer(eRealm realm, long signedCopper, EconomyFlowKind kind)
+        {
+            IEconomyFlowSink sink = _sink;
+            if (sink == null || signedCopper == 0)
+                return;
+            try { sink.RecordPlayer((int)realm, signedCopper, kind); }
             catch { } // diagnostics never break a coin move
         }
 

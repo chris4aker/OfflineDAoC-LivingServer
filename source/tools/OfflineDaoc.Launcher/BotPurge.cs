@@ -23,6 +23,11 @@ namespace OfflineDaoc.Launcher;
 /// kept. The release build empties them (progress-policy.json).</item>
 /// </list>
 /// A table that does not exist yet (a world the 1.2 server has not started on) is skipped.
+///
+/// Hired companions (from True 1.65, offline_hired_companions): a player character's companions are bot rows too, but
+/// they are the player's, not the world's. DELETE never removes one whose character still exists: the one-bot delete
+/// refuses it (the player releases it in game, /hire release), and DELETE ALL leaves it and everything it owns. A hired
+/// companion whose character is gone (an orphan) is deleted like any bot, with its hire row.
 /// </summary>
 public static class BotPurge
 {
@@ -67,11 +72,47 @@ public static class BotPurge
 
     /// <summary>The statements for one bot, in order (the character record last), for the tables this world has.</summary>
     public static IReadOnlyList<string> OneBotStatements(ISet<string> tables) =>
-        [.. OneBotCore, .. Economy(tables, allBots: false), "DELETE FROM offline_world_bots WHERE BotId=@id"];
+        [.. OneBotCore, .. Economy(tables, allBots: false),
+         .. (tables.Contains(HiredTable) ? new[] { $"DELETE FROM {HiredTable} WHERE BotId=@id" } : []),
+         "DELETE FROM offline_world_bots WHERE BotId=@id"];
 
-    /// <summary>The statements for every bot, in order (the character records last), for the tables this world has.</summary>
-    public static IReadOnlyList<string> AllBotsStatements(ISet<string> tables) =>
-        [.. AllBotsCore, .. Economy(tables, allBots: true), "DELETE FROM offline_world_bots"];
+    /// <summary>The hired companions' table (HiredCompanions165, from True 1.65).</summary>
+    public const string HiredTable = "offline_hired_companions";
+
+    /// <summary>The hired companions a delete keeps: those whose player character still exists (every one when the world
+    /// has no character table to check against).</summary>
+    public static string KeptHiredQuery(ISet<string> tables) => tables.Contains("DOLCharacters")
+        ? $"SELECT BotId FROM {HiredTable} WHERE OwnerCharacterID IN (SELECT DOLCharacters_ID FROM DOLCharacters)"
+        : $"SELECT BotId FROM {HiredTable}";
+
+    /// <summary>The statements for every bot, in order (the character records last), for the tables this world has. With
+    /// hired companions in the world, every bot but the kept companions (the one-bot statements over a temporary list).</summary>
+    public static IReadOnlyList<string> AllBotsStatements(ISet<string> tables) => tables.Contains(HiredTable)
+        ? [
+            "DROP TABLE IF EXISTS temp.purge_bots",
+            $"CREATE TEMP TABLE purge_bots AS SELECT BotId FROM offline_world_bots WHERE BotId NOT IN ({KeptHiredQuery(tables)})",
+            .. OneBotStatements(tables).Select(ForPurgeList),
+            "DROP TABLE temp.purge_bots",
+        ]
+        : [.. AllBotsCore, .. Economy(tables, allBots: true), "DELETE FROM offline_world_bots"];
+
+    /// <summary>A one-bot statement over every bot of temp.purge_bots.</summary>
+    private static string ForPurgeList(string oneBot) => oneBot
+        .Replace("=@owner", " IN (SELECT 'offlinebot:' || BotId FROM temp.purge_bots)")
+        .Replace("=@id", " IN (SELECT BotId FROM temp.purge_bots)");
+
+    /// <summary>Whether this bot is a hired companion a delete must keep (its player character still exists).</summary>
+    public static bool IsKeptHiredCompanion(SQLiteConnection connection, SQLiteTransaction? transaction, long botId)
+    {
+        ISet<string> tables = Tables(connection, transaction);
+        if (!tables.Contains(HiredTable))
+            return false;
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = $"SELECT COUNT(*) FROM ({KeptHiredQuery(tables)}) WHERE BotId=@id";
+        command.Parameters.AddWithValue("@id", botId);
+        return Convert.ToInt32(command.ExecuteScalar()) > 0;
+    }
 
     private static IEnumerable<string> Economy(ISet<string> tables, bool allBots) =>
         EconomyDecisions.Where(d => d.Decision == Decision.DeleteBotRows && tables.Contains(d.Table))
@@ -80,6 +121,8 @@ public static class BotPurge
     /// <summary>Deletes one bot's data in the caller's transaction.</summary>
     public static void DeleteBot(SQLiteConnection connection, SQLiteTransaction transaction, long botId)
     {
+        if (IsKeptHiredCompanion(connection, transaction, botId))
+            throw new InvalidOperationException(HiredRefusal);
         foreach (string sql in OneBotStatements(Tables(connection, transaction)))
         {
             using var command = connection.CreateCommand();
@@ -102,6 +145,9 @@ public static class BotPurge
             command.ExecuteNonQuery();
         }
     }
+
+    /// <summary>What the launcher says when asked to delete a player's hired companion.</summary>
+    public const string HiredRefusal = "That character is a player's hired companion. Its player releases it in game (/hire release), so it is not deleted here.";
 
     public static HashSet<string> Tables(SQLiteConnection connection, SQLiteTransaction? transaction)
     {

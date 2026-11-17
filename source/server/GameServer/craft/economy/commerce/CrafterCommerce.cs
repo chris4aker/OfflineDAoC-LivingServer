@@ -147,9 +147,10 @@ namespace DOL.GS.CraftingEconomy
 
         #region Who and what (live facts)
 
-        /// <summary>An autonomous gamebot (never a /bot companion) the player may trade with: same realm, in the game.</summary>
+        /// <summary>An autonomous gamebot (never a /bot companion or a hired companion) the player may trade with: same realm,
+        /// in the game.</summary>
         public static bool IsCommerceBot(GameBot bot, GamePlayer player) =>
-            bot != null && bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && bot.DatabaseID > 0 && player != null &&
+            bot != null && bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper && !bot.IsHiredCompanion && bot.DatabaseID > 0 && player != null &&
             bot.Realm == player.Realm;
 
         /// <summary>The recipes this crafter makes surely, for its realm, with materials on sale there.</summary>
