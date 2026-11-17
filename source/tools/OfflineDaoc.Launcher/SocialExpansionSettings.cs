@@ -115,6 +115,16 @@ public sealed record SocialExpansionSettings
     /// <summary>Buffbots' concentration buffs have no range limit, the 2003 rule (bot_nolifer_buffbot_era_conc_range). On by default.</summary>
     public bool BuffBotEraConcRange { get; init; } = true;
 
+    // ---- Bots as people (docs/BOTS-AS-PEOPLE-1.2.md): the four master switches. The parts are server keys only. ----
+    /// <summary>Skill tiers and facets that vary and improve with play (bot_skill_profiles). On by default (1.2).</summary>
+    public bool BotSkillProfiles { get; init; } = true;
+    /// <summary>Bots know only the places they have been, ask the way and now and then take a wrong road (bot_place_knowledge). On by default (1.2).</summary>
+    public bool BotPlaceKnowledge { get; init; } = true;
+    /// <summary>Strafing, /stick lines, overshooting, sitting and keep walls (bot_movement_habits). On by default (1.2).</summary>
+    public bool BotMovementHabits { get; init; } = true;
+    /// <summary>Personal milestones bots chase and talk about, in the Herald (bot_living_milestones). On by default (1.2).</summary>
+    public bool LivingMilestones { get; init; } = true;
+
     public static readonly string[] UpkeepModes = ["classic", "light", "free"];
 
     /// <summary>The bot crafting paces the server knows (BotCraftingRules.PaceRate: anything but classic is xp).</summary>
@@ -163,6 +173,7 @@ public sealed record SocialExpansionSettings
         LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true,
+        BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -222,6 +233,10 @@ public sealed record SocialExpansionSettings
         ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world). Set in the launcher's Living Server tab."),
         ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),
         ("bot_nolifer_buffbot_era_conc_range", "bots", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range."),
+        ("bot_skill_profiles", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work packages 1 and 2)."),
+        ("bot_place_knowledge", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level and, from level 20, its border keep. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET. In this build it changes nothing yet (work package 3)."),
+        ("bot_movement_habits", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS. In this build it changes nothing yet (work package 5)."),
+        ("bot_living_milestones", "bots", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots chase a personal goal (the ding to 50, realm rank 5, a dragon trophy really won in a raid) and talk about it as they get close, in /faction, their guild, their group or /say; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's next plans. Log: BOT_MILESTONE_ARC, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED. In this build it changes nothing yet (work package 6)."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
@@ -293,6 +308,10 @@ public sealed record SocialExpansionSettings
         ["launcher_level50_kit"] = Bool(Level50Kit),
         ["bot_nolifer_buffbot_percent"] = BuffBotPercent.ToString(CultureInfo.InvariantCulture),
         ["bot_nolifer_buffbot_era_conc_range"] = Bool(BuffBotEraConcRange),
+        ["bot_skill_profiles"] = Bool(BotSkillProfiles),
+        ["bot_place_knowledge"] = Bool(BotPlaceKnowledge),
+        ["bot_movement_habits"] = Bool(BotMovementHabits),
+        ["bot_living_milestones"] = Bool(LivingMilestones),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -586,6 +605,10 @@ public sealed record SocialExpansionSettings
             Level50Kit = ReadCraftingBool("launcher_level50_kit", d.Level50Kit),
             BuffBotPercent = buffBotPercent,
             BuffBotEraConcRange = ReadBool("bot_nolifer_buffbot_era_conc_range", d.BuffBotEraConcRange),
+            BotSkillProfiles = ReadBool("bot_skill_profiles", d.BotSkillProfiles),
+            BotPlaceKnowledge = ReadBool("bot_place_knowledge", d.BotPlaceKnowledge),
+            BotMovementHabits = ReadBool("bot_movement_habits", d.BotMovementHabits),
+            LivingMilestones = ReadBool("bot_living_milestones", d.LivingMilestones),
         };
     }
 
@@ -599,8 +622,8 @@ public sealed record SocialExpansionSettings
                              LivingAtmosphere;
 
     /// <summary>
-    /// "All off": the three features, every Living Server part, bot leaders' invites, bot crafters and their craft orders, and
-    /// both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
+    /// "All off": the three features, every Living Server part, bot leaders' invites, bot crafters and their craft orders, the
+    /// four "Bots as people" master switches, and both XP ranges off. The share, lowest level and each part keep their values, so turning a feature back on later restores
     /// the player's own choices. Power regeneration and the loot share are rates, not features, and keep their values too, as
     /// do the crafting rules (they are the game's rules for your characters, not Living Server features), the Exchange tax, the
     /// economy ledger (it only counts) and the level-50 kit (a launcher option).
@@ -613,11 +636,15 @@ public sealed record SocialExpansionSettings
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
         LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
         BotCrafters = false, BotCraftOrders = false,
+        BotSkillProfiles = false, BotPlaceKnowledge = false, BotMovementHabits = false, LivingMilestones = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
     public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites &&
-                            !BotCrafters && !BotCraftOrders && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+                            !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
+
+    /// <summary>True when any "Bots as people" master switch is on.</summary>
+    public bool AnyBotsAsPeople => BotSkillProfiles || BotPlaceKnowledge || BotMovementHabits || LivingMilestones;
 
     /// <summary>Why these settings can't be saved, or null when they can.</summary>
     public string? Validate()
