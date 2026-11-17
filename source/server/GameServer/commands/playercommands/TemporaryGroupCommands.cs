@@ -13,13 +13,10 @@ namespace DOL.GS.Commands
 
         public static IEnumerable<(eCharacterClass CharacterClass, string Role)> ForRealm(eRealm realm)
         {
-            // /spawn offers the Sluaghbinder only when classes/enable_sluaghbinder is on (0.38b), in both the
-            // popup and the text form, even if the generated identity list is older.
-            IEnumerable<eCharacterClass> classes = AutonomousBotIdentityGenerator.GetEraClasses(realm);
-            if (!Properties.ENABLE_SLUAGHBINDER)
-                classes = classes.Where(c => c != eCharacterClass.Sluaghbinder);
-            else if (realm == eRealm.Hibernia && !classes.Contains(eCharacterClass.Sluaghbinder))
-                classes = classes.Append(eCharacterClass.Sluaghbinder);
+            // /spawn (and /raid, which fills through it) never offers the Sluaghbinder, in either edition, in the popup or
+            // the text form: bots never play the custom class (owner 2026-11-17, BotCustomClassRule).
+            IEnumerable<eCharacterClass> classes = AutonomousBotIdentityGenerator.GetEraClasses(realm)
+                .Where(c => OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay((int)c));
 
             return classes.Select(characterClass => (characterClass, BotPartyRoles.Label(characterClass)));
         }

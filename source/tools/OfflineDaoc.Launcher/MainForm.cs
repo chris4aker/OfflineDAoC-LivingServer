@@ -2301,7 +2301,9 @@ internal sealed partial class MainForm : Form
             while (reader.Read()) reserved.Add(reader.GetString(0));
         }
 
-        bool allowSluaghbinder = SluaghbinderEnabled(connection, transaction);
+        // Era builds 1.2: the batch draws the realm's 2003 class mix (bot_era_class_shares, on by default). The edition switch
+        // no longer matters here: bots never play the custom class (owner 2026-11-17).
+        bool eraClassShares = EraClassShares.IsOn(connection, transaction);
         // Crafting 2.0 (WP9): "+ Lv.50" bots get the quality-100 kit and 10,000 gold only with launcher_level50_kit on.
         bool level50Kit = Level50Kit.IsOn(connection, transaction);
         // The server's own bracket for that battleground: a Battleground table row replaces the period levels.
@@ -2312,7 +2314,7 @@ internal sealed partial class MainForm : Form
         var identities = new List<CreatedBot>(count);
         for (int index = 0; index < count; index++)
         {
-            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, allowSluaghbinder, rejected);
+            BotCharacterGenerator.Identity identity = BotCharacterGenerator.Generate(realm, reserved, eraClassShares, rejected);
             int botLevel = battleground == null ? level : BattlegroundBotLevels.RollLevel(battleground, Random.Shared);
             // Level 1 starts in a Classic/SI starting area. Higher levels start in their capital, where the realm's
             // teleporters (with the [Battlegrounds] choice) and every class trainer are.
