@@ -1387,6 +1387,8 @@ namespace DOL.GS
             if (!PostWatch.IsEmpty && ThinkPartyPost(bot, now)) return true;
             // A boss fought at home chasing this raider out of it: the raider leads it back, whatever it was doing.
             if (!HomeWatch.IsEmpty && ThinkLeadHome(bot, now)) return true;
+            // Soul Reckoner out of his room: the raider chosen to lead him back walks in, whatever it was doing (CaerSidi).
+            if (ThinkSoulReckonerLead(bot, now)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
                 System.Threading.Volatile.Read(ref _liveHazardCount) == 0)
                 return false;

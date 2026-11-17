@@ -33,7 +33,11 @@ namespace DOL.GS
             },
             new(nameof(SoulReckoner), [nameof(SoulReckoner), nameof(ReckonedSoul)], SoulReckonerInRoom)
             {
-                Summary = "Out of his room he takes no damage: the raid holds and his target leads him back in.",
+                Summary = "Out of his room he takes no damage: the raid holds, no pet touches him, and his target leads him back " +
+                          "in (when he fights a pet, its owner; when he fights none of the raid, the nearest raider, a tank " +
+                          "taunting first); after two minutes out the raid breaks off into his room and pulls him again there.",
+                Act = SoulReckonerLeadAct,
+                NoPets = SoulReckonerPetsOff,
             },
             new(nameof(CryptLord), [nameof(CryptLord)], CryptLordMeleeFirst)
             {
@@ -305,15 +309,168 @@ namespace DOL.GS
         public static int SoulReckonerRoomRadius => EpicEncounterMechanics.AllowSoulReckonerSmallRoom
             ? SoulReckonerBrain.OriginalRoomRadius : SoulReckonerBrain.RoomRadius;
 
+        /// <summary>Out of his room this long, the raid breaks off and walks into it (<see cref="SoulReckonerAdvice"/>)...</summary>
+        public const long SoulReckonerBreakOffMilliseconds = 2 * 60_000;
+        /// <summary>...for this long; then the clock starts again (the raid holds where it stands, and breaks off again later).</summary>
+        public const long SoulReckonerBreakOffWindowMilliseconds = 30_000;
+        /// <summary>Unobserved this long (nobody fought him or a soul), his clock starts again.</summary>
+        public const long SoulReckonerClockStaleMilliseconds = 5_000;
+        /// <summary>The one leading him walks in at most this long, and stops once within this of the room's middle.</summary>
+        public const long SoulReckonerLeadWalkMilliseconds = 30_000;
+        public const int SoulReckonerLeadArrival = 150;
+        /// <summary>The lead is chosen once a second; a choice not renewed this long lapses.</summary>
+        public const long SoulReckonerLeadHoldMilliseconds = 3_000;
+
+        /// <summary>He is past his room's radius: he takes no damage (pure).</summary>
+        public static bool SoulReckonerOutOfRoom(Vector3 reckoner, int roomRadius) => Flat(reckoner, SoulReckonerRoom) > roomRadius;
+
+        /// <summary>
+        /// The clock of his time out of his room (pure): it starts when he is out of it in a fight and stops (0) once he is back
+        /// in it or out of the fight. It starts again when it was last looked at more than
+        /// <see cref="SoulReckonerClockStaleMilliseconds"/> ago (<paramref name="lastObserved"/>, 0: never), and after a
+        /// break-off's window has passed.
+        /// </summary>
+        public static long SoulReckonerOutSince(long since, long lastObserved, bool outOfRoom, bool inCombat, long now)
+        {
+            if (!outOfRoom || !inCombat) return 0;
+            if (since <= 0 || lastObserved <= 0 || now - lastObserved > SoulReckonerClockStaleMilliseconds) return now;
+            return now - since >= SoulReckonerBreakOffMilliseconds + SoulReckonerBreakOffWindowMilliseconds ? now : since;
+        }
+
+        /// <summary>The raid breaks off now (pure): out of his room for two minutes, for the 30 s that follow.</summary>
+        public static bool SoulReckonerBreaksOff(long outSince, long now) =>
+            outSince > 0 && now - outSince >= SoulReckonerBreakOffMilliseconds &&
+            now - outSince < SoulReckonerBreakOffMilliseconds + SoulReckonerBreakOffWindowMilliseconds;
+
+        public enum ReckonerLeadStep { None, Walk, Arrived }
+
+        /// <summary>
+        /// The chosen lead's own turn (pure): it walks to the room's middle while chosen (<paramref name="chosenUntil"/>), for
+        /// at most <see cref="SoulReckonerLeadWalkMilliseconds"/> from <paramref name="leadSince"/>, until within
+        /// <see cref="SoulReckonerLeadArrival"/> of it; there it is released to heal or fight as usual.
+        /// </summary>
+        public static ReckonerLeadStep SoulReckonerLeadTurn(bool chosen, long chosenUntil, long leadSince, float fromMiddle, long now) =>
+            !chosen || now > chosenUntil || leadSince <= 0 || now - leadSince > SoulReckonerLeadWalkMilliseconds ? ReckonerLeadStep.None :
+            fromMiddle <= SoulReckonerLeadArrival ? ReckonerLeadStep.Arrived : ReckonerLeadStep.Walk;
+
+        private static readonly object ReckonerLock = new();
+        private static long _reckonerOutSince, _reckonerObserved;
+        private static long _reckonerActTick, _reckonerLogTick;
+        private static GameNPC _reckonerSeen;
+        // The lead chosen by SoulReckonerLeadAct, acted on only by that bot on its own turn (ThinkSoulReckonerLead).
+        private static GameLiving _reckonerLeader;
+        private static GameNPC _reckonerLeading;
+        private static long _reckonerLeaderUntil, _reckonerLeaderSince, _reckonerLeaderTrip;
+        private static volatile bool _reckonerLeadPublished;
+
+        /// <summary>The clock for this Soul Reckoner, brought up to date (one Reckoner lives at a time).</summary>
+        private static long ObserveReckoner(GameNPC reckoner, long now)
+        {
+            bool outOfRoom = Present(reckoner) && SoulReckonerOutOfRoom(At(reckoner), SoulReckonerRoomRadius);
+            lock (ReckonerLock)
+            {
+                if (!ReferenceEquals(_reckonerSeen, reckoner)) { _reckonerSeen = reckoner; _reckonerOutSince = _reckonerObserved = 0; }
+                _reckonerOutSince = SoulReckonerOutSince(_reckonerOutSince, _reckonerObserved, outOfRoom, reckoner.InCombat, now);
+                _reckonerObserved = now;
+                return _reckonerOutSince;
+            }
+        }
+
+        /// <summary>Publishes the lead (<paramref name="leader"/>, null: none) for his trip out that began at
+        /// <paramref name="outSince"/> (his clock, <see cref="SoulReckonerOutSince"/>). A new lead, or the same lead on a new trip
+        /// (he went back in and came out again, or the clock started again after a break-off's window), starts its walk's clock.</summary>
+        public static void PublishSoulReckonerLeader(GameNPC reckoner, GameLiving leader, long now, long outSince = 0)
+        {
+            lock (ReckonerLock)
+            {
+                if (leader == null) { _reckonerLeader = null; _reckonerLeading = null; _reckonerLeadPublished = false; return; }
+                if (!ReferenceEquals(_reckonerLeader, leader) || _reckonerLeaderTrip != outSince) _reckonerLeaderSince = now;
+                _reckonerLeaderTrip = outSince;
+                _reckonerLeader = leader;
+                _reckonerLeading = reckoner;
+                _reckonerLeaderUntil = now + SoulReckonerLeadHoldMilliseconds;
+                _reckonerLeadPublished = true;
+            }
+        }
+
+        /// <summary>What the lead does on its turn (<see cref="SoulReckonerLeadTurn"/>) for <paramref name="bot"/>, and him.</summary>
+        public static (ReckonerLeadStep Step, GameNPC Reckoner) SoulReckonerLeadFor(GameLiving bot, long now)
+        {
+            if (!_reckonerLeadPublished || bot == null) return (ReckonerLeadStep.None, null);
+            GameNPC reckoner;
+            long until, since;
+            bool chosen;
+            lock (ReckonerLock)
+            {
+                chosen = ReferenceEquals(_reckonerLeader, bot);
+                reckoner = _reckonerLeading;
+                until = _reckonerLeaderUntil;
+                since = _reckonerLeaderSince;
+            }
+            if (!chosen || reckoner == null) return (ReckonerLeadStep.None, null);
+            return (SoulReckonerLeadTurn(true, until, since, Flat(At(bot), SoulReckonerRoom), now), reckoner);
+        }
+
+        /// <summary>Forgets the clock and the lead (tests).</summary>
+        public static void ResetSoulReckonerForTests()
+        {
+            lock (ReckonerLock)
+            {
+                _reckonerSeen = null; _reckonerLeader = null; _reckonerLeading = null; _reckonerLeadPublished = false;
+                _reckonerOutSince = _reckonerObserved = _reckonerActTick = _reckonerLogTick = _reckonerLeaderUntil = _reckonerLeaderSince = 0;
+                _reckonerLeaderTrip = 0;
+            }
+        }
+
+        /// <summary>The raider leads him: it is his target, or its pet is (pure).</summary>
+        public static bool SoulReckonerChases(GameLiving raider, GameLiving reckonerTarget, Func<GameLiving, GameLiving> ownerOf = null) =>
+            raider != null && reckonerTarget != null &&
+            (reckonerTarget == raider || (ownerOf ?? PetOwner)(reckonerTarget) == raider);
+
+        /// <summary>The bot that owns this pet, or null (a pet of a pet: its root owner).</summary>
+        public static GameLiving PetOwner(GameLiving living) =>
+            living is GameNPC { Brain: IControlledBrain brain } && living is not GameBot ? brain.GetLivingOwner() : null;
+
+        /// <summary>
+        /// Who leads him back into his room (pure). Owner's PC, build 453e01a, 2026-11-17 (sweep 4): he stood 1,247 from its
+        /// middle at 27254,36125 from 12:41 to 15:14 and nobody was ever told to lead him (no "lead him back" line in 2.5
+        /// hours, 9,870 "hold" lines): his target was never one of the raid's members (the route, which turns on a boss fighting
+        /// the raid, never did; one raider-side victim took his hits each minute and never died: a raider's pet, healed). So:
+        /// <list type="bullet">
+        /// <item>his target, when it is one of ours (<paramref name="ours"/>: an autonomous raider), whatever it is doing (a
+        /// healer that never had a hostile target included);</item>
+        /// <item>a pet's owner, when he fights a pet (the pet comes off him and follows its owner in);</item>
+        /// <item>otherwise the nearest of ours (<paramref name="raiders"/>), who taunts him if it can.</item>
+        /// </list>
+        /// </summary>
+        public static GameLiving SoulReckonerLeader(GameLiving reckonerTarget, Func<GameLiving, bool> ours,
+            IEnumerable<(GameLiving Raider, float Distance)> raiders, Func<GameLiving, GameLiving> ownerOf = null)
+        {
+            if (reckonerTarget == null || ours == null) return null;
+            if (ours(reckonerTarget)) return reckonerTarget;
+            if ((ownerOf ?? PetOwner)(reckonerTarget) is { } owner && ours(owner)) return owner;
+            return (raiders ?? []).Where(r => r.Raider != null && r.Raider != reckonerTarget && ours(r.Raider))
+                .OrderBy(r => r.Distance).Select(r => r.Raider).FirstOrDefault();
+        }
+
+        private static bool OursForReckoner(GameLiving living, GameNPC reckoner) =>
+            living is GameBot { IsAlive: true, IsAutonomousWorldBot: true, IsPlayerLedGroup: false } bot &&
+            bot.CurrentRegionID == reckoner.CurrentRegionID;
+
         /// <summary>
         /// Soul Reckoner takes no damage once he is out of his room (900 from its middle with the original room on). Past the
         /// room's radius less 200 the raid stops hitting him (keeping him as its target) and the raider he chases walks back to
         /// the room's middle, so he follows it in. His souls (the catalog's required adds) shield him inside the room.
+        /// While he is out of it no bot's pet touches him (it does nothing to him there and would hold him there:
+        /// <see cref="SoulReckonerPetsOff"/>), whoever must lead him walks in (<see cref="SoulReckonerLeadAct"/>), and after
+        /// two minutes out the raiders fighting him break off into his room for 30 s, where they pull him again.
         /// </summary>
         private static Advice? SoulReckonerInRoom(RuleContext c)
         {
             if (c.Target.CurrentRegionID != 60) return null;
-            if (c.Target is SoulReckoner) return SoulReckonerAdvice(c.Raider, c.Target, SoulReckonerRoomRadius);
+            if (c.Target is SoulReckoner)
+                return SoulReckonerAdvice(c.Raider, c.Target, SoulReckonerRoomRadius,
+                    SoulReckonerBreaksOff(ObserveReckoner(c.Target, c.Now), c.Now));
             // Fighting one of his souls (play test 2026-11-07): he chases a raider that is busy with a soul, and that raider must
             // still lead him back (nobody did, and the souls, which spawn where he stands, drew him further out).
             return c.Find(nameof(SoulReckoner)) is { } reckoner ? SoulLeaderAdvice(c.Raider, reckoner, SoulReckonerRoomRadius) : null;
@@ -321,27 +478,106 @@ namespace DOL.GS
 
         /// <summary>
         /// The raid against Soul Reckoner (pure but for positions): inside his room less 200, fight him. The raider he chases
-        /// leads him back to the middle as soon as he is past that line. The others keep hitting him while he is still in the
-        /// room (he takes damage out to its radius: 900, or 1,500 without the original room), and hold, keeping him, only
-        /// beyond it. Play test 2026-11-07: the raid held from 700 on, so he stood 790 out (in the room, taking damage) with
-        /// nobody hitting him and nobody leading him back.
+        /// (or whose pet he chases) leads him back to the middle as soon as he is past that line. The others keep hitting him
+        /// while he is still in the room (he takes damage out to its radius: 900, or 1,500 without the original room), and
+        /// hold, keeping him, only beyond it. Play test 2026-11-07: the raid held from 700 on, so he stood 790 out (in the room,
+        /// taking damage) with nobody hitting him and nobody leading him back.
+        /// <para>The hold is bounded (owner's PC, build 453e01a, 2026-11-17: 2.5 hours at 1,247 from the middle): once he has been
+        /// out of his room <see cref="SoulReckonerBreakOffMilliseconds"/> (<paramref name="breakOff"/>), everyone walks into his
+        /// room's middle; he follows whoever he fights in, or walks home (inside his room) with nobody left on him, and is
+        /// pulled again there.</para>
         /// </summary>
-        public static Advice? SoulReckonerAdvice(GameLiving raider, GameNPC reckoner, int roomRadius)
+        public static Advice? SoulReckonerAdvice(GameLiving raider, GameNPC reckoner, int roomRadius, bool breakOff = false,
+            Func<GameLiving, GameLiving> ownerOf = null)
         {
             float fromMiddle = Flat(At(reckoner), SoulReckonerRoom);
             if (fromMiddle <= roomRadius - SoulReckonerRoomMargin) return null;
-            if (reckoner.TargetObject == raider)
+            if (SoulReckonerChases(raider, reckoner.TargetObject as GameLiving, ownerOf))
                 return new(BotAction.StandOff, reckoner, SoulReckonerRoom, "reckoner-room: lead him back into his room");
             if (fromMiddle <= roomRadius) return null;
+            if (breakOff)
+                return new(BotAction.StandOff, reckoner, SoulReckonerRoom,
+                    $"reckoner-room: out of his room ({roomRadius}) for {SoulReckonerBreakOffMilliseconds / 60_000} minutes; break off and pull him again in his room");
             return new(BotAction.Reposition, reckoner, At(raider), $"reckoner-room: out of his room ({roomRadius}) he takes no damage; hold");
         }
 
-        /// <summary>A raider fighting one of the souls whom Soul Reckoner chases leads him back once he is past the room's line
-        /// (pure but for positions); anyone else goes on with the soul.</summary>
-        public static Advice? SoulLeaderAdvice(GameLiving raider, GameNPC reckoner, int roomRadius) =>
-            reckoner.TargetObject == raider && Flat(At(reckoner), SoulReckonerRoom) > roomRadius - SoulReckonerRoomMargin
+        /// <summary>A raider fighting one of the souls whom Soul Reckoner chases (or whose pet he chases) leads him back once he
+        /// is past the room's line (pure but for positions); anyone else goes on with the soul.</summary>
+        public static Advice? SoulLeaderAdvice(GameLiving raider, GameNPC reckoner, int roomRadius, Func<GameLiving, GameLiving> ownerOf = null) =>
+            SoulReckonerChases(raider, reckoner.TargetObject as GameLiving, ownerOf) &&
+            Flat(At(reckoner), SoulReckonerRoom) > roomRadius - SoulReckonerRoomMargin
                 ? new(BotAction.StandOff, reckoner, SoulReckonerRoom, "reckoner-room: he chases me; lead him back into his room")
                 : null;
+
+        /// <summary>No bot's pet touches him while he is out of his room: there he takes nothing from it, and a pet on him held
+        /// him there (owner's PC, 2026-11-17). In his room pets fight him as before.</summary>
+        private static bool SoulReckonerPetsOff(GameNPC npc) =>
+            npc is SoulReckoner && npc.CurrentRegionID == 60 && SoulReckonerOutOfRoom(At(npc), SoulReckonerRoomRadius);
+
+        /// <summary>
+        /// Once a second, while he is out of his room, by whichever raider fighting him or a soul turns first: the one who must
+        /// lead him (<see cref="SoulReckonerLeader"/>) is chosen and published. Only that bot acts on it, on its own turn
+        /// (<see cref="ThinkSoulReckonerLead"/>, from ThinkBlast, which every autonomous raider runs first, a healer included):
+        /// brains run in parallel, so no bot taunts or calls off a pet for another. A line a minute says who he fights, how far
+        /// out he is and who leads.
+        /// </summary>
+        private static void SoulReckonerLeadAct(GameBot bot, GameNPC target, IReadOnlyList<GameNPC> live)
+        {
+            if (bot == null || target == null || target.CurrentRegionID != 60) return;
+            GameNPC reckoner = target as SoulReckoner ?? FindNear(target, live, nameof(SoulReckoner));
+            if (!Present(reckoner)) return;
+            long now = GameLoop.GameLoopTime;
+            long since = ObserveReckoner(reckoner, now);
+            lock (ReckonerLock)
+            {
+                if (now - _reckonerActTick < 1_000) return;
+                _reckonerActTick = now;
+            }
+            if (since == 0) { PublishSoulReckonerLeader(reckoner, null, now); return; }
+            GameLiving his = reckoner.TargetObject as GameLiving;
+            GameBot[] ours = (live ?? []).OfType<GameBot>().Where(b => OursForReckoner(b, reckoner)).ToArray();
+            GameLiving leader = SoulReckonerLeader(his, l => OursForReckoner(l, reckoner),
+                ours.Select(b => ((GameLiving)b, (float)b.GetDistanceTo(reckoner))));
+            PublishSoulReckonerLeader(reckoner, leader, now, since);
+            lock (ReckonerLock)
+            {
+                if (now - _reckonerLogTick < 60_000) return;
+                _reckonerLogTick = now;
+            }
+            GameLiving owner = PetOwner(his);
+            string kind = his == null ? "none" : owner != null ? "pet" : his is GameBot b2 ? (b2.IsAutonomousWorldBot ? "raider" : "bot") :
+                his is GamePlayer ? "player" : "other";
+            if (Log.IsInfoEnabled)
+                Log.Info($"EPIC_SOUL_RECKONER_OUT region={reckoner.CurrentRegionID} at={reckoner.X},{reckoner.Y},{reckoner.Z} " +
+                         $"fromMiddle={(int)Flat(At(reckoner), SoulReckonerRoom)} room={SoulReckonerRoomRadius} outSeconds={(now - since) / 1000} " +
+                         $"target=\"{his?.Name}\" kind={kind} owner=\"{owner?.Name}\" lead=\"{leader?.Name}\" " +
+                         $"breakOff={SoulReckonerBreaksOff(since, now)}");
+        }
+
+        /// <summary>
+        /// The chosen lead's own turn (ThinkBlast; true: turn used): it walks to his room's middle, whatever it was doing, for at
+        /// most 30 s and until it arrives (<see cref="SoulReckonerLeadTurn"/>). Its own pet comes off him; if it is neither his
+        /// target nor the owner of the pet he fights, a tank taunts him first. A heal it is casting is finished first.
+        /// </summary>
+        public static bool ThinkSoulReckonerLead(GameBot bot, long now)
+        {
+            if (!_reckonerLeadPublished) return false;
+            var (step, reckoner) = SoulReckonerLeadFor(bot, now);
+            if (step != ReckonerLeadStep.Walk || !Present(reckoner) || reckoner.CurrentRegionID != bot.CurrentRegionID) return false;
+            if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful != true) return false;
+            if (bot.IsCasting) bot.StopCurrentSpellcast();
+            GameLiving his = reckoner.TargetObject as GameLiving;
+            if (bot.ControlledBrain?.Body?.TargetObject == reckoner) bot.ControlledBrain.Disengage();
+            if (his != bot && PetOwner(his) != bot && IsTankLiving(bot) && bot.Brain is BotBrain tank &&
+                reckoner.IsWithinRadius(bot, TauntSearchRadius))
+                LogTaunt(bot, reckoner, tank.TauntForEncounter(reckoner));
+            else bot.StopAttack();
+            if (bot.FollowTarget != null) bot.StopFollowing();
+            if (!bot.IsMovingOnPath)
+                bot.PathTo(new Point3D((int)SoulReckonerRoom.X, (int)SoulReckonerRoom.Y, (int)SoulReckonerRoom.Z), bot.MaxSpeed);
+            LogDecision(bot, reckoner, new(BotAction.StandOff, reckoner, SoulReckonerRoom, "reckoner-room: I lead him back into his room"));
+            return true;
+        }
 
         // ---- the Crypt Lord: his court comes with him ---------------------------------------------------------------------
 
