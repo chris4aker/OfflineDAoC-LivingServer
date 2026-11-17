@@ -366,8 +366,14 @@ namespace DOL.UnitTests
                         Assert.That(bot.GetBaseSpecLevel(line.Spec), Is.EqualTo((int)line.SpecCap), $"{build.Id} {line.Spec}");
                     Assert.That(eraClass.Lines.Where(l => plan.SpecLines.All(p => p.Spec != l)).Select(bot.GetBaseSpecLevel),
                         Has.All.EqualTo(1), $"{build.Id}: nothing outside the build");
-                    Assert.That(Leftover(bot), Is.EqualTo(eraClass.PointBudget50 - EraBuildCatalog.BuildCost(
-                        plan.SpecLines.Select(l => new KeyValuePair<string, int>(l.Spec, (int)l.SpecCap)))), build.Id);
+                    // what a level 50 player of the class has left with the same lines (GamePlayer.VerifySpecPoints: every
+                    // point earned, less the lines' cost with the class's autotrain levels free)
+                    KeyValuePair<string, int>[] trainedLines =
+                        plan.SpecLines.Select(l => new KeyValuePair<string, int>(l.Spec, (int)l.SpecCap)).ToArray();
+                    Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, 50, false, trainedLines)), build.Id);
+                    Assert.That(Leftover(bot), Is.EqualTo(eraClass.PointBudget50 -
+                        EraBuildCatalog.BuildCost(trainedLines, eraClass.AutoTrainLines)), build.Id);
+                    Assert.That(Leftover(bot), Is.Not.Negative, build.Id);
                     string trained = EraLifetimeBuild.TrainedLine(bot.Name, bot.DatabaseID, 50, plan, bot.GetBaseSpecLevel);
                     Assert.That(trained, Does.EndWith("match=yes"), build.Id);
                 }

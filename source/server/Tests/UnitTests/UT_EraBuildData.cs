@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using DOL.UnitTests;
 using NUnit.Framework;
 using OfflineDaoc.Shared;
 
@@ -84,11 +85,20 @@ namespace DOL.GS.Tests
                 var game = (ICharacterClass)Activator.CreateInstance(classTypes[eraClass.ClassId]);
                 Assert.That(eraClass.SpecMultiplier, Is.EqualTo(game.SpecPointsMultiplier), eraClass.Name);
                 Assert.That(eraClass.PointBudget50, Is.EqualTo(EraBuildCatalog.PointBudget(game.SpecPointsMultiplier)));
+                // The budget is what a level 50 player of the class has earned, and a build fits when that player can pay
+                // for it: GamePlayer.VerifySpecPoints itself, autotrain lines included (owner 2026-11-17: "companions and
+                // bots should be the same as a player").
+                Assert.That(eraClass.PointBudget50, Is.EqualTo(PlayerSpecPointOracle.Earned(game, 50)), eraClass.Name);
+                Assert.That(eraClass.AutoTrainLines, Is.EqualTo(game.GetAutotrainableSkills().Where(eraClass.Lines.Contains)),
+                    $"{eraClass.Name}: the class's autotrain lines, in the game's order");
                 foreach (EraBuild build in eraClass.Builds)
                 {
                     Assert.That(build.Specs.Select(s => s.Key), Is.SubsetOf(eraClass.Lines), build.Id);
                     Assert.That(build.Specs.Select(s => s.Value), Has.All.InRange(1, 50), build.Id);
-                    Assert.That(build.Points, Is.LessThanOrEqualTo(eraClass.PointBudget50), build.Id);
+                    int left = PlayerSpecPointOracle.PointsLeft(game, 50, false, build.Specs);
+                    Assert.That(left, Is.Not.Negative, $"{build.Id}: a level 50 player can train it");
+                    Assert.That(build.Points, Is.EqualTo(eraClass.PointBudget50 - left), $"{build.Id}: what it costs a player");
+                    Assert.That(build.AutoTrain, Is.EqualTo(eraClass.AutoTrainLines), build.Id);
                 }
             }
         }
@@ -170,17 +180,25 @@ namespace DOL.GS.Tests
         public void EveryTrimOrFillSaysSoAndKeepsThePostedPoints()
         {
             var changed = Catalog.Classes.SelectMany(c => c.Builds).Where(b => b.Change != null).ToArray();
-            Assert.That(changed, Has.Length.EqualTo(19), "D7: 12 trimmed, 7 filled");
-            Assert.That(changed.Count(b => b.Change.StartsWith("trimmed to budget")), Is.EqualTo(12));
+            // D7's sheet trimmed 12 counting every level of every line; with a player's autotrain levels free, 3 of them fit
+            // as posted (Shadowblade Axe/Left Axe and Axe/CS, Ranger Archery/Pathfinding) and 9 are still trimmed.
+            Assert.That(changed, Has.Length.EqualTo(16), "D7: 9 trimmed, 7 filled");
+            Assert.That(changed.Count(b => b.Change.StartsWith("trimmed to budget")), Is.EqualTo(9));
+            foreach (string id in new[] { "shadowblade-axe-la", "shadowblade-axe-cs", "ranger-bow-path" })
+                Assert.That(Catalog.GetBuild(id)?.Change, Is.Null, $"{id} fits as posted");
             Assert.That(changed.Count(b => b.Change.StartsWith("filled:")), Is.EqualTo(7));
             foreach (EraBuild build in Catalog.Classes.SelectMany(c => c.Builds))
             {
                 bool differs = !build.Specs.OrderBy(s => s.Key).SequenceEqual(build.Posted.OrderBy(s => s.Key));
                 Assert.That(differs, Is.EqualTo(build.Change != null), build.Id);
                 Assert.That(build.SpecsSourced, Is.EqualTo(build.Change == null), build.Id);
+                // a trim is honest: a level 50 player of the class could not pay for the posted points
+                int postedLeft = PlayerSpecPointOracle.PointsLeft(
+                    PlayerSpecPointOracle.ClassOf(Catalog.GetClass(build.ClassName).ClassId), 50, false, build.Posted);
                 if (build.Change?.StartsWith("trimmed") == true)
-                    Assert.That(EraBuildCatalog.BuildCost(build.Posted),
-                        Is.GreaterThan(Catalog.GetClass(build.ClassName).PointBudget50), $"{build.Id} was over budget");
+                    Assert.That(postedLeft, Is.Negative, $"{build.Id} was over budget");
+                else if (build.Change == null)
+                    Assert.That(postedLeft, Is.Not.Negative, $"{build.Id} is as posted and fits");
             }
         }
 
@@ -207,11 +225,13 @@ namespace DOL.GS.Tests
                 Assert.That(Catalog.GetBuild("wizard-cold-earth").Weight, Is.EqualTo(0.15).Within(1e-9));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("wizard-cold-earth").Specs), Is.EqualTo("Cold Magic:50,Earth Magic:14,Fire Magic:14"));
                 // D7, one trim and one fill per realm
-                Assert.That(EraBuild.Format(Catalog.GetBuild("minstrel-inst-stl").Specs), Is.EqualTo("Instruments:50,Stealth:31,Slash:29"));
+                Assert.That(EraBuild.Format(Catalog.GetBuild("minstrel-inst-stl").Specs), Is.EqualTo("Instruments:50,Stealth:33,Slash:29"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("infiltrator-thrust-env").Specs),
                     Is.EqualTo("Thrust:50,Stealth:46,Envenom:36,Critical Strike:34,Dual Wield:10"));
+                // as posted since autotrain is counted (the sheet had Left Axe 43): Stealth's first 12 levels are free
                 Assert.That(EraBuild.Format(Catalog.GetBuild("shadowblade-axe-la").Specs),
-                    Is.EqualTo("Axe:44,Left Axe:43,Envenom:35,Stealth:35,Critical Strike:10"));
+                    Is.EqualTo("Axe:44,Left Axe:44,Envenom:35,Stealth:35,Critical Strike:10"));
+                Assert.That(EraBuild.Format(Catalog.GetBuild("runemaster-supp-dark").Specs), Is.EqualTo("Suppression:50,Darkness:20"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("warrior-axe-shld50").Specs), Is.EqualTo("Axe:50,Shields:50,Parry:28"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("champion-lw-valor-blades").Specs),
                     Is.EqualTo("Large Weapons:50,Blades:36,Valor:35,Parry:28"));

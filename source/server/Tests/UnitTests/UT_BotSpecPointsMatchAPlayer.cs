@@ -8,15 +8,18 @@ using DOL.Database;
 using DOL.GS;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
+using OfflineDaoc.Shared;
 
 namespace DOL.UnitTests
 {
     /// <summary>
     /// Owner 2026-11-17: "companions and bots should be the same as a player" for specialization points. Every bot kind's
-    /// points at levels 40, 45 and 50 for the x1.0/x1.5/x2.0 multipliers equal a player's of the same class and level. The
-    /// oracle is the player's own count, GamePlayer.VerifySpecPoints (levels 2-5, each level above 5, each half level
-    /// 40.5-49.5 passed, and the current half level at the second stage) on a player with no trained lines. Without the skill
-    /// tables a bot has no lines, so every point it earned is still unspent and is counted.
+    /// points at levels 40, 45 and 50 equal a player's of the same class and level with the same lines trained: the points
+    /// earned (half levels above 40 included) and what the lines cost (the class's autotrain lines free up to a quarter of
+    /// the level). The oracle is the player's own count, GamePlayer.VerifySpecPoints (PlayerSpecPointOracle), run with the
+    /// bot's real lines, so an Armsman's Slash and Thrust or an assassin's Stealth are held to the player's cost. The test
+    /// world has no skill tables: the lines are added by hand, and a bot made by its constructor alone has none, so every
+    /// point it earned is still unspent and is counted.
     /// </summary>
     [TestFixture, NonParallelizable]
     public sealed class UT_BotSpecPointsMatchAPlayer
@@ -39,19 +42,6 @@ namespace DOL.UnitTests
         {
             protected override IObjectDatabase DataBaseImpl => Empty;
             protected override GS.ServerRules.IServerRules ServerRulesImpl => new GS.ServerRules.NormalServerRules();
-        }
-
-        /// <summary>The oracle: a player of the class and level, with no trained lines, counted by GamePlayer itself.</summary>
-        private sealed class OraclePlayer : GamePlayer
-        {
-            private OraclePlayer() : base(null, null) { }
-            public byte TestLevel;
-            public bool TestSecondStage;
-            public ICharacterClass TestClass;
-            public override byte Level { get => TestLevel; set { } }
-            public override bool IsLevelSecondStage { get => TestSecondStage; set { } }
-            public override ICharacterClass CharacterClass => TestClass;
-            public override IList<Specialization> GetSpecList() => new List<Specialization>();
         }
 
         /// <summary>A hired companion whose test lines stay: without the skill tables the class's career is empty, and
@@ -110,44 +100,110 @@ namespace DOL.UnitTests
             _language.Dispose();
         }
 
+        // x1.0, x1.5 and x2.0 without autotrain lines and with them (Minstrel: Instruments; Armsman: Slash and Thrust), and
+        // the x2.5 assassin (Stealth).
         private static readonly object[] Classes =
         [
             new object[] { eCharacterClass.Wizard, 10 },
             new object[] { eCharacterClass.Friar, 15 },
+            new object[] { eCharacterClass.Minstrel, 15 },
             new object[] { eCharacterClass.Armsman, 20 },
+            new object[] { eCharacterClass.Infiltrator, 25 },
         ];
+
+        /// <summary>A training plan per class: line, cap, share of the level (0: trained last, at level 50 only).</summary>
+        private static readonly Dictionary<eCharacterClass, (string Line, int Cap, float Ratio)[]> Plans = new()
+        {
+            [eCharacterClass.Wizard] = [(Specs.Cold_Magic, 50, 1f), (Specs.Earth_Magic, 50, 0.4f), (Specs.Fire_Magic, 20, 0f)],
+            [eCharacterClass.Friar] = [(Specs.Enhancement, 50, 1f), (Specs.Staff, 50, 0.8f), (Specs.Rejuvenation, 50, 0.4f), (Specs.Parry, 20, 0f)],
+            [eCharacterClass.Minstrel] = [(Specs.Instruments, 50, 1f), (Specs.Slash, 50, 0.8f), (Specs.Stealth, 50, 0.3f)],
+            // Thrust is the Armsman's second autotrain line: left at 1 until 50, then its first 12 levels are free
+            [eCharacterClass.Armsman] = [(Specs.Slash, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Parry, 50, 0.5f), (Specs.Thrust, 20, 0f)],
+            [eCharacterClass.Infiltrator] = [(Specs.Thrust, 50, 1f), (Specs.Critical_Strike, 50, 0.8f), (Specs.Stealth, 50, 0.7f),
+                (Specs.Envenom, 50, 0.7f), (Specs.Dual_Wield, 50, 0.2f)],
+            [eCharacterClass.Cleric] = [(Specs.Enhancement, 50, 1f), (Specs.Rejuvenation, 50, 0.6f), (Specs.Smite, 20, 0f)],
+            [eCharacterClass.Shaman] = [(Specs.Augmentation, 50, 1f), (Specs.Mending, 50, 0.6f), (Specs.Subterranean, 20, 0f)],
+            [eCharacterClass.Druid] = [(Specs.Nurture, 50, 1f), (Specs.Regrowth, 50, 0.6f), (Specs.Nature, 20, 0f)],
+        };
 
         private static readonly int[] Levels = [40, 45, 50];
 
-        [TestCaseSource(nameof(Classes))]
-        public void TheOracleIsThePlayersOwnCount(eCharacterClass cls, int multiplier)
+        // ---- the oracle and the pure helpers
+
+        [Test]
+        public void TheOracleIsThePlayersOwnCountAndSeesAutotrain()
         {
-            ICharacterClass characterClass = ClassOf(cls);
-            Assert.That(characterClass.SpecPointsMultiplier, Is.EqualTo(multiplier), "the multiplier this case is about");
-            // The player's own count: at level 50 a player has the half levels 40.5-49.5 that no whole-level sum gives.
-            int wholeLevels = Enumerable.Range(2, 49).Sum(level => GameBot.SpecPointsForLevel(multiplier, level, false));
-            Assert.That(Player(characterClass, 50) - wholeLevels,
-                Is.EqualTo(new Dictionary<int, int> { [10] = 220, [15] = 330, [20] = 445 }[multiplier]));
-            foreach (int level in Levels)
-                Assert.That(GameBot.PlayerSpecPointTotal(multiplier, level, false), Is.EqualTo(Player(characterClass, level)), $"{level}");
-            foreach (int level in new[] { 40, 45, 49 })
-                Assert.That(GameBot.PlayerSpecPointTotal(multiplier, level, true), Is.EqualTo(Player(characterClass, level, true)), $"{level}.5");
+            ICharacterClass armsman = PlayerSpecPointOracle.ClassOf(eCharacterClass.Armsman);
+            ICharacterClass wizard = PlayerSpecPointOracle.ClassOf(eCharacterClass.Wizard);
+            Assert.That(armsman.GetAutotrainableSkills(), Is.EquivalentTo(new[] { Specs.Slash, Specs.Thrust }));
+            Assert.That(wizard.GetAutotrainableSkills(), Is.Empty);
+            int earned = PlayerSpecPointOracle.Earned(armsman, 50);
+            // a level 50 player pays nothing for an autotrain line at 12 (a quarter of 50), and 77 for any other line at 12
+            Assert.That(Left(armsman, 50, (Specs.Slash, 12)), Is.EqualTo(earned));
+            Assert.That(Left(armsman, 50, (Specs.Slash, 12), (Specs.Thrust, 12)), Is.EqualTo(earned));
+            Assert.That(Left(armsman, 50, (Specs.Shields, 12)), Is.EqualTo(earned - 77));
+            Assert.That(Left(armsman, 50, (Specs.Slash, 50)) - Left(armsman, 50, (Specs.Shields, 50)), Is.EqualTo(77));
+            Assert.That(Left(wizard, 50, (Specs.Cold_Magic, 12)), Is.EqualTo(PlayerSpecPointOracle.Earned(wizard, 50) - 77));
+            // and it reports an overspent player instead of resetting it
+            Assert.That(Left(wizard, 10, (Specs.Cold_Magic, 10), (Specs.Earth_Magic, 10)), Is.Negative);
         }
 
-        // ---- autonomous gamebots (already fixed in #326; kept here so every kind is checked against the player)
+        [TestCaseSource(nameof(Classes))]
+        public void TheBotsCostAndEarnedHelpersAreThePlayersAtEveryLevel(eCharacterClass cls, int multiplier)
+        {
+            ICharacterClass characterClass = PlayerSpecPointOracle.ClassOf(cls);
+            Assert.That(characterClass.SpecPointsMultiplier, Is.EqualTo(multiplier), "the multiplier this case is about");
+            IList<string> autoTrain = characterClass.GetAutotrainableSkills();
+            for (int level = 1; level <= 50; level++)
+            {
+                int earned = PlayerSpecPointOracle.Earned(characterClass, level);
+                Assert.That(GameBot.PlayerSpecPointTotal(multiplier, level, false), Is.EqualTo(earned), $"earned at {level}");
+                if (level is >= 40 and < 50)
+                    Assert.That(GameBot.PlayerSpecPointTotal(multiplier, level, true),
+                        Is.EqualTo(PlayerSpecPointOracle.Earned(characterClass, level, true)), $"earned at {level}.5");
+                foreach ((string line, _, _) in Plans[cls])
+                {
+                    bool free = autoTrain.Contains(line);
+                    for (int spec = 1; spec <= level; spec++)
+                    {
+                        int cost = earned - Left(characterClass, level, (line, spec));
+                        Assert.That(GameBot.LineCost(spec, level, free), Is.EqualTo(cost), $"{line} {spec} at level {level}");
+                        Assert.That(EraBuildCatalog.LineCost(spec, free, level), Is.EqualTo(cost), $"catalog: {line} {spec} at level {level}");
+                        if (spec < level)
+                            Assert.That(GameBot.NextLevelCost(spec, level, free),
+                                Is.EqualTo(Left(characterClass, level, (line, spec)) - Left(characterClass, level, (line, spec + 1))),
+                                $"{line} {spec}->{spec + 1} at level {level}");
+                        // what the same line cost the player a level earlier, less what it costs now
+                        if (free && spec < level)
+                            Assert.That(GameBot.AutoTrainRefundAtLevel(spec, level),
+                                Is.EqualTo(PlayerSpecPointOracle.Earned(characterClass, level - 1) -
+                                           Left(characterClass, level - 1, (line, spec)) - cost),
+                                $"{line} {spec}: back on reaching level {level}");
+                    }
+                }
+            }
+        }
+
+        // ---- autonomous gamebots
 
         [TestCaseSource(nameof(Classes))]
         public void AGamebotTrainedEveryLevelHasAPlayersPoints(eCharacterClass cls, int multiplier)
         {
+            GameBot bare = Gamebot(cls, 1);
             GameBot bot = Gamebot(cls, 1);
-            Leftover(bot, 0);
+            Leftover(bare, 0);
+            GivePlan(bot);
             for (byte level = 2; level <= 50; level++)
             {
-                bot.Level = level;
+                bare.Level = bot.Level = level;
+                bare.SpendSpecPoints(level, (byte)(level - 1));
                 bot.SpendSpecPoints(level, (byte)(level - 1));
-                if (Levels.Contains(level))
-                    Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                if (!Levels.Contains(level))
+                    continue;
+                Assert.That(Leftover(bare), Is.EqualTo(PlayerSpecPointOracle.Earned(bare.CharacterClass, level)), $"earned, level {level}");
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"x{multiplier / 10.0} level {level}");
             }
+            AssertThePlanWasTrained(bot);
         }
 
         [TestCaseSource(nameof(Classes))]
@@ -155,9 +211,39 @@ namespace DOL.UnitTests
         {
             foreach (int level in Levels)
             {
-                GameBot bot = Gamebot(cls, level); // "+ Lv.N": never saved, arrives trained
-                Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                GameBot bare = Gamebot(cls, level); // "+ Lv.N": never saved, the constructor trains it on arrival
+                Assert.That(Leftover(bare), Is.EqualTo(PlayerSpecPointOracle.Earned(bare.CharacterClass, level)), $"earned, level {level}");
+                GameBot bot = Gamebot(cls, level);
+                GivePlan(bot);
+                bot.SpendSpecPoints((byte)level, 1); // what the record constructor does for an arrival (ArrivesTrained)
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"x{multiplier / 10.0} level {level}");
+                if (level == 50)
+                    AssertThePlanWasTrained(bot);
             }
+        }
+
+        [Test]
+        public void AGamebotTrainedBeforeTheFixGetsNothingBackButTrainsItsNextLevelsAtAPlayersCost()
+        {
+            // An Armsman saved at 40 by the build before: Slash 40 with every level paid for (no autotrain).
+            GameBot bot = Gamebot(eCharacterClass.Armsman, 40);
+            GivePlan(bot);
+            bot.GetSpecializationByName(Specs.Slash).Level = 40;
+            Leftover(bot, PlayerSpecPointOracle.Earned(bot.CharacterClass, 40) - GameBot.PointsToTrain(40));
+            // a player with the same line has its ten free levels more
+            int paidForFreeLevelsBefore = GameBot.PointsToTrain(GameBot.AutoTrainLevel(40));
+            Assert.That(Left(bot.CharacterClass, 40, (Specs.Slash, 40)) - Leftover(bot), Is.EqualTo(paidForFreeLevelsBefore));
+            for (byte level = 41; level <= 50; level++)
+            {
+                bot.Level = level;
+                bot.SpendSpecPoints(level, (byte)(level - 1));
+            }
+            Assert.That(bot.GetBaseSpecLevel(Specs.Slash), Is.EqualTo(50), "never untrained");
+            // The levels 41-50 are a player's: the points of each level and half level, the 11th and 12th free level of
+            // Slash (at 44 and 48), and Thrust free up to 12. Only what it had already paid for at 40 is not given back.
+            Assert.That(bot.GetBaseSpecLevel(Specs.Thrust), Is.GreaterThanOrEqualTo(12));
+            Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, 50, false,
+                PlayerSpecPointOracle.Lines(bot)) - paidForFreeLevelsBefore));
         }
 
         // ---- hired companions (True 1.65): their player spends the points in the companion's spec window
@@ -169,7 +255,21 @@ namespace DOL.UnitTests
             {
                 GameBot bot = Hired(cls, level, GamePlayer.GetExperienceAmountForLevel(level - 1));
                 Assert.That(bot.IsHiredCompanion, Is.True);
-                Assert.That(bot.CompanionSpecPoints, Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                Assert.That(bot.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)), $"earned, level {level}");
+                // its player trains every line of the plan a little: the top line to 21, the others to 13 and 5
+                (string Line, int Cap, float Ratio)[] plan = Plans[cls];
+                for (int i = 0; i < plan.Length; i++)
+                {
+                    Specialization line = AddLine(bot, plan[i].Line);
+                    int target = i == 0 ? 21 : i % 2 == 1 ? 13 : 5;
+                    while (line.Level < target)
+                    {
+                        int before = bot.CompanionSpecPoints, cost = bot.CompanionTrainCost(line);
+                        Assert.That(bot.CompanionTrain(line), Is.Null, $"{line.KeyName} {line.Level + 1}");
+                        Assert.That(before - bot.CompanionSpecPoints, Is.EqualTo(cost), $"{line.KeyName} {line.Level}: the cost shown");
+                    }
+                    AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, $"x{multiplier / 10.0} level {level}, {line.KeyName} trained");
+                }
             }
         }
 
@@ -182,11 +282,11 @@ namespace DOL.UnitTests
                 long secondStage = 1 + current + (next - current) / 2; // GamePlayer.ExperienceForCurrentLevelSecondStage
                 GameBot before = Hired(cls, level, secondStage - 1);
                 GameBot at = Hired(cls, level, secondStage);
-                Assert.That(before.CompanionSpecPoints, Is.EqualTo(Player(before.CharacterClass, level)), $"{level}, before");
-                Assert.That(at.CompanionSpecPoints, Is.EqualTo(Player(at.CharacterClass, level, true)), $"{level}.5");
+                Assert.That(before.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(before.CharacterClass, level)), $"{level}, before");
+                Assert.That(at.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(at.CharacterClass, level, true)), $"{level}.5");
             }
             GameBot fifty = Hired(cls, 50, GamePlayer.GetExperienceAmountForLevel(50) - 1);
-            Assert.That(fifty.CompanionSpecPoints, Is.EqualTo(Player(fifty.CharacterClass, 50)), "no 50.5");
+            Assert.That(fifty.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(fifty.CharacterClass, 50)), "no 50.5");
         }
 
         [TestCaseSource(nameof(Classes))]
@@ -195,26 +295,33 @@ namespace DOL.UnitTests
             foreach (int level in Levels)
             {
                 GameBot bot = Hired(cls, level, GamePlayer.GetExperienceAmountForLevel(level - 1));
-                Specialization line = AddLine(bot, "TestLineA");
-                AddLine(bot, "TestLineB");
+                foreach ((string name, _, _) in Plans[cls])
+                    AddLine(bot, name);
+                Specialization top = bot.GetSpecializationByName(Plans[cls][0].Line);
                 for (int i = 0; i < 20; i++)
-                    Assert.That(bot.CompanionTrain(line), Is.Null, $"train {line.Level + 1}");
-                Assert.That(line.Level, Is.EqualTo(21));
-                Assert.That(bot.CompanionSpecPoints + GameBot.PointsToTrain(21), Is.EqualTo(Player(bot.CharacterClass, level)),
-                    "spent plus left is a player's total");
+                    Assert.That(bot.CompanionTrain(top), Is.Null, $"train {top.Level + 1}");
+                Assert.That(top.Level, Is.EqualTo(21));
+                AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, "trained");
+
                 bot.CompanionRespec();
-                Assert.That(bot.GetSpecList().All(spec => spec.Level == 1), Is.True);
-                Assert.That(bot.CompanionSpecPoints, Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                // as a player's respec leaves them (GamePlayer.RespecSingleLine): autotrain lines at a quarter of the level
+                foreach (Specialization spec in bot.GetSpecList())
+                    Assert.That(spec.Level, Is.EqualTo(bot.IsAutoTrainLine(spec) ? level / 4 : 1), spec.KeyName);
+                Assert.That(bot.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)),
+                    $"x{multiplier / 10.0} level {level}: every point back");
+                AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, "respecced");
             }
         }
 
         [TestCaseSource(nameof(Classes))]
         public void ASavedCompanionLoadsWithEveryTrainedPointAndAPlayersTotal(eCharacterClass cls, int multiplier)
         {
-            // Saved by the build before 1.2: trained at level 42 (no half-level points), now level 45 with 3 levels untrained.
+            // Saved by a build before 1.2: trained at level 42 with no half-level points and every line level paid for
+            // (now level 45, 3 levels untrained), or trained at its level.
+            string first = Plans[cls][0].Line, second = Plans[cls][1].Line;
             foreach ((int trainedAt, int level) in new[] { (42, 45), (50, 50), (45, 45) })
             {
-                const string specs = "TestLineA|30;TestLineB|12";
+                string specs = $"{first}|30;{second}|12";
                 int spent = GameBot.PointsToTrain(30) + GameBot.PointsToTrain(12);
                 int oldEarned = Enumerable.Range(2, trainedAt - 1).Sum(l => GameBot.SpecPointsForLevel(multiplier, l, false));
                 var record = HiredRecord(cls, level, GamePlayer.GetExperienceAmountForLevel(level - 1));
@@ -224,20 +331,18 @@ namespace DOL.UnitTests
                 record.LastSavedUtc = DateTime.UtcNow.ToString("O");
                 GameBot bot = Track(new LineBot(record));
                 // The skill tables give the lines; the constructor's own loader then restores the saved levels.
-                AddLine(bot, "TestLineA");
-                AddLine(bot, "TestLineB");
+                AddLine(bot, first);
+                AddLine(bot, second);
                 typeof(GameBot).GetMethod("LoadPersistedSpecs", Hidden).Invoke(bot, [record.SerializedSpecs]);
                 int oldToSpend = oldEarned - spent +
                     Enumerable.Range(trainedAt + 1, level - trainedAt).Sum(l => GameBot.SpecPointsForLevel(multiplier, l, false));
 
-                Assert.That(bot.GetBaseSpecLevel("TestLineA"), Is.EqualTo(30), "no trained point is lost");
-                Assert.That(bot.GetBaseSpecLevel("TestLineB"), Is.EqualTo(12), "no trained point is lost");
-                Assert.That(bot.CompanionSpecPoints, Is.EqualTo(Player(bot.CharacterClass, level) - spent), $"{trainedAt}->{level}");
-                Assert.That(bot.CompanionSpecPoints, Is.GreaterThanOrEqualTo(oldToSpend), "never fewer to spend than before");
-                Assert.That(bot.CompanionSpecPoints - oldToSpend,
-                    Is.EqualTo(Player(bot.CharacterClass, level) - Enumerable.Range(2, level - 1).Sum(l => GameBot.SpecPointsForLevel(multiplier, l, false))),
-                    "the half levels 40.5 to (level-1).5 are added");
-                Assert.That(bot.PrepareAutonomousStateSnapshot().SerializedSpecs, Is.EqualTo(specs), "saved again unchanged");
+                Assert.That(bot.GetBaseSpecLevel(first), Is.EqualTo(30), "no trained point is lost");
+                Assert.That(bot.GetBaseSpecLevel(second), Is.EqualTo(12), "no trained point is lost");
+                AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, $"{trainedAt}->{level}");
+                Assert.That(bot.CompanionSpecPoints, Is.GreaterThan(oldToSpend), "the half levels, and the autotrain levels, to spend");
+                Assert.That(bot.PrepareAutonomousStateSnapshot().SerializedSpecs.Split(';'), Is.EquivalentTo(specs.Split(';')),
+                    "saved again unchanged");
             }
         }
 
@@ -246,9 +351,10 @@ namespace DOL.UnitTests
         {
             // More trained than a player could have (a corrupt or hand-edited save): nothing is reset, nothing goes negative.
             GameBot bot = Hired(eCharacterClass.Wizard, 10, GamePlayer.GetExperienceAmountForLevel(9));
-            Specialization line = AddLine(bot, "TestLineA");
+            Specialization line = AddLine(bot, Specs.Cold_Magic);
             line.Level = 10;
-            AddLine(bot, "TestLineB").Level = 10;
+            AddLine(bot, Specs.Earth_Magic).Level = 10;
+            Assert.That(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, 10, false, PlayerSpecPointOracle.Lines(bot)), Is.Negative);
             Assert.That(bot.CompanionSpecPoints, Is.Zero);
             Assert.That(line.Level, Is.EqualTo(10));
         }
@@ -262,7 +368,10 @@ namespace DOL.UnitTests
             {
                 GameBot bot = OwnerBot(cls, ownerLevel: 50, botLevel: (byte)level, temporary: false);
                 Assert.That(bot.Level, Is.EqualTo(level));
-                Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)), $"earned, level {level}");
+                GivePlan(bot);
+                bot.SpendSpecPoints((byte)level, 0); // the constructor's training, now with lines to train
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"x{multiplier / 10.0} level {level}");
             }
         }
 
@@ -272,15 +381,20 @@ namespace DOL.UnitTests
             foreach (int level in Levels)
             {
                 GameBot bot = OwnerBot(cls, ownerLevel: (byte)level, botLevel: 0, temporary: true);
-                Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)), $"earned, level {level}");
+                GivePlan(bot);
+                bot.SpendSpecPoints((byte)level, 0);
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"x{multiplier / 10.0} level {level}");
             }
-            foreach (byte from in new byte[] { 40, 49 })
+            foreach (byte from in new byte[] { 40, 47, 49 })
             {
                 // TryApplyEndgameCompanionUpgrade's training step: before 1.2 a helper promoted from 49 missed the 49.5 points.
                 GameBot helper = OwnerBot(cls, ownerLevel: from, botLevel: 0, temporary: true);
+                GivePlan(helper);
+                helper.SpendSpecPoints(from, 0);
                 helper.Level = 50;
                 helper.SpendSpecPoints(50, from);
-                Assert.That(Leftover(helper), Is.EqualTo(Player(helper.CharacterClass, 50)), $"promoted from {from}");
+                AssertAPlayersPoints(helper, Leftover(helper), 50, $"promoted from {from}");
             }
         }
 
@@ -293,7 +407,10 @@ namespace DOL.UnitTests
             {
                 GameBot bot = Track(GameBot.CreateEpicSpecialForce(Record(cls, level, 0)));
                 Assert.That(bot.IsEpicSpecialForce, Is.True);
-                Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"x{multiplier / 10.0} level {level}");
+                Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)), $"earned, level {level}");
+                GivePlan(bot);
+                bot.SpendSpecPoints((byte)level, 0);
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"x{multiplier / 10.0} level {level}");
             }
         }
 
@@ -302,7 +419,7 @@ namespace DOL.UnitTests
         [TestCase(eCharacterClass.Druid)]
         public void ABuffbotHasAPlayersPoints(eCharacterClass cls)
         {
-            // Buffbots are only these classes, all x1.0.
+            // Buffbots are only these classes, all x1.0 and without autotrain lines.
             foreach (int level in Levels)
             {
                 OfflineWorldBotRecord record = Record(cls, level, 0);
@@ -311,23 +428,52 @@ namespace DOL.UnitTests
                 GameBot bot = Track(GameBot.CreateNoLiferBuffBot(record, 1));
                 Assert.That(bot.IsNoLiferBuffBot, Is.True);
                 Assert.That(bot.CharacterClass.SpecPointsMultiplier, Is.EqualTo(10));
-                Assert.That(Leftover(bot), Is.EqualTo(Player(bot.CharacterClass, level)), $"level {level}");
+                Assert.That(bot.CharacterClass.GetAutotrainableSkills(), Is.Empty);
+                Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)), $"earned, level {level}");
+                GivePlan(bot);
+                bot.SpendSpecPoints((byte)level, 0);
+                AssertAPlayersPoints(bot, Leftover(bot), level, $"level {level}");
             }
         }
 
         // ---- helpers
 
-        private static int Player(ICharacterClass cls, int level, bool secondStage = false)
+        /// <summary>The bot has, unspent, what a player of its class and level has with the same lines trained.</summary>
+        private static void AssertAPlayersPoints(GameBot bot, int unspent, int level, string what)
         {
-            var player = (OraclePlayer)RuntimeHelpers.GetUninitializedObject(typeof(OraclePlayer));
-            player.TestClass = cls;
-            player.TestLevel = (byte)level;
-            player.TestSecondStage = secondStage;
-            return player.VerifySpecPoints();
+            Assert.That(bot.Level, Is.EqualTo(level), what);
+            Assert.That(unspent, Is.EqualTo(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, level, false,
+                PlayerSpecPointOracle.Lines(bot))), $"{what}: {EraBuild.Format(PlayerSpecPointOracle.Lines(bot))}");
         }
 
-        private static ICharacterClass ClassOf(eCharacterClass cls) =>
-            ScriptMgr.FindCharacterClass((int)cls) ?? throw new InvalidOperationException(cls.ToString());
+        /// <summary>At 50 the plan is trained as far as the points go, and every autotrain line past its free levels - so the
+        /// comparison above did include them.</summary>
+        private static void AssertThePlanWasTrained(GameBot bot)
+        {
+            (string Line, int Cap, float Ratio)[] plan = Plans[(eCharacterClass)bot.CharacterClass.ID];
+            Assert.That(bot.GetBaseSpecLevel(plan[0].Line), Is.EqualTo(50), plan[0].Line);
+            foreach (Specialization spec in bot.GetSpecList().Where(bot.IsAutoTrainLine))
+                Assert.That(spec.Level, Is.GreaterThanOrEqualTo(GameBot.AutoTrainLevel(50)), spec.KeyName);
+            int cheapest = bot.GetSpecList().Where(spec => spec.Level < plan.First(p => p.Line == spec.KeyName).Cap)
+                .Select(spec => GameBot.NextLevelCost(spec.Level, 50, bot.IsAutoTrainLine(spec))).DefaultIfEmpty(int.MaxValue).Min();
+            Assert.That(Leftover(bot), Is.LessThan(cheapest), "nothing more it could have trained");
+        }
+
+        private static int Left(ICharacterClass cls, int level, params (string Line, int Level)[] lines) =>
+            PlayerSpecPointOracle.PointsLeft(cls, level, false, lines.Select(l => new KeyValuePair<string, int>(l.Line, l.Level)));
+
+        /// <summary>The class's lines at 1, its plan, and nothing unspent: ready for the bot's own training.</summary>
+        private static void GivePlan(GameBot bot)
+        {
+            var plan = new BotSpec();
+            foreach ((string line, int cap, float ratio) in Plans[(eCharacterClass)bot.CharacterClass.ID])
+            {
+                plan.SpecLines.Add(new BotSpecLine(line, (byte)cap, ratio));
+                AddLine(bot, line);
+            }
+            typeof(GameBot).GetProperty(nameof(GameBot.BotSpec)).SetValue(bot, plan);
+            Leftover(bot, 0);
+        }
 
         private static OfflineWorldBotRecord Record(eCharacterClass cls, int level, long botId) => new()
         {
@@ -335,7 +481,7 @@ namespace DOL.UnitTests
             RaceId = (int)eRace.Briton, Level = level, Health = 100, Mana = 10, Endurance = 100,
         };
 
-        private GameBot Gamebot(eCharacterClass cls, int level) => Construct(Record(cls, level, 0));
+        private GameBot Gamebot(eCharacterClass cls, int level) => Track(new GameBot(Record(cls, level, 0)));
 
         private OfflineWorldBotRecord HiredRecord(eCharacterClass cls, int level, long experience)
         {
@@ -354,8 +500,6 @@ namespace DOL.UnitTests
             owner.Level = ownerLevel;
             return Track(new GameBot(owner, (byte)cls, $"Points{cls}", (byte)eRace.Briton, temporaryGroupHelper: temporary, botLevel: botLevel));
         }
-
-        private GameBot Construct(OfflineWorldBotRecord record) => Track(new GameBot(record));
 
         private GameBot Track(GameBot bot)
         {

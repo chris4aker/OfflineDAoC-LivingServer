@@ -28,10 +28,47 @@ class MakeEraBuilds(unittest.TestCase):
         # the design's check: Minstrel Instruments 50 / Stealth 50 / Slash 29 was 759 over
         self.assertEqual(era.build_cost({"Instruments": 50, "Stealth": 50, "Slash": 29}) - era.point_budget(15), 759)
 
-    def test_twelve_trims_seven_fills_and_the_rest_as_posted(self):
+    def test_a_players_autotrain_levels_are_free(self):
+        # GamePlayer.GetAutoTrainPoints: an autotrain line costs nothing up to a quarter of the level, 12 at 50 (77 points)
+        self.assertEqual(era.AUTOTRAIN_LEVEL_50, 12)
+        self.assertEqual([era.line_cost(n, True) for n in (1, 8, 12, 13, 50)], [0, 0, 0, 13, 1274 - 77])
+        self.assertEqual(era.line_cost(50), 1274)
+        minstrel = {"Instruments": 50, "Stealth": 50, "Slash": 29}
+        self.assertEqual(era.build_cost(minstrel, ["Instruments"]) - era.point_budget(15), 759 - 77)
+        self.assertEqual(era.build_cost({"Slash": 50, "Thrust": 5, "Shields": 42}, ["Slash", "Thrust"]),
+                         era.build_cost({"Slash": 50, "Shields": 42}) - 77)
+        for cls, lines in era.AUTOTRAIN.items():
+            self.assertTrue(set(lines) <= set(era.CLASSES[cls][3]), cls)
+            self.assertEqual(self.data["classes"][cls]["autotrain"], lines)
+        self.assertNotIn("Hunter", era.AUTOTRAIN)   # the game's Hunter list is commented out
+        self.assertEqual(sum(1 for c in self.data["classes"].values() if c["autotrain"]), 11)
+
+    def test_the_builds_autotrain_lets_fit_are_as_posted_again(self):
+        builds = {b["id"]: (cls, b) for cls, c in self.data["classes"].items() for b in c["builds"]}
+        for build_id in ("shadowblade-axe-la", "shadowblade-axe-cs", "ranger-bow-path"):
+            cls, b = builds[build_id]
+            info = self.data["classes"][cls]
+            self.assertIsNone(b["change"], build_id)
+            self.assertEqual(b["specs"], b["posted"], build_id)
+            self.assertGreater(era.build_cost(b["posted"]), info["pointBudget50"], f"{build_id}: over, every level counted")
+            self.assertLessEqual(era.build_cost(b["posted"], info["autotrain"]), info["pointBudget50"], build_id)
+        # the two Minstrel builds are still over: the same line is trimmed, by less, to the most that fits
+        for build_id, line, level in (("minstrel-inst-stl", "Stealth", 33), ("minstrel-inst-slash", "Slash", 42)):
+            cls, b = builds[build_id]
+            info = self.data["classes"][cls]
+            self.assertEqual(b["specs"][line], level, build_id)
+            self.assertLessEqual(era.build_cost(b["specs"], info["autotrain"]), info["pointBudget50"])
+            self.assertGreater(era.build_cost({**b["specs"], line: level + 1}, info["autotrain"]), info["pointBudget50"])
+        # every trim left is one a player's points still need
+        for cls, c in self.data["classes"].items():
+            for b in c["builds"]:
+                if (b["change"] or "").startswith("trimmed"):
+                    self.assertGreater(era.build_cost(b["posted"], c["autotrain"]), c["pointBudget50"], b["id"])
+
+    def test_nine_trims_seven_fills_and_the_rest_as_posted(self):
         builds = [b for c in self.data["classes"].values() for b in c["builds"]]
         self.assertEqual(len(builds), 106)
-        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("trimmed")), 12)
+        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("trimmed")), 9)
         self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("filled")), 7)
         for b in builds:
             draft = next(d for d in self.draft["classes"][b["id"].split("-")[0].capitalize()] if d["label"] == b["label"])

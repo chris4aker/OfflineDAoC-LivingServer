@@ -72,6 +72,11 @@ current gear rules), realm abilities, races, spells, the class AI, any raid code
   759 over), Theurgist Earth, Wizard Ice, Shadowblade (two), Runemaster and Spiritmaster Suppression, Champion
   Valor/Blades, Ranger Archery, Eldritch Mana, Mentalist Mentalism. Posted totals likely include +skill items from
   "SC templates"; the posts don't say. Proposed: trim the lower lines to the budget (D7).
+  - **Corrected 2026-11-17 (autotrain):** that check counted every level of every line. A player pays nothing for an
+    autotrain line up to level 12 at 50 (77 points a line; `GamePlayer.VerifySpecPoints`), and bots now pay the same.
+    Counted so, the two Shadowblade builds and Ranger Archery (37, 27 and 25 over) fit as posted and are no longer
+    trimmed; the two Minstrel builds are still over (682 and 83) and lose fewer points from the same line (Stealth
+    50->33, not 31; Slash 44->42, not 40). **9 builds are trimmed.** The data file lists each class's `autotrain` lines.
 - **7 builds leave 260-700 points unspent** (Paladin two-handed, Mercenary Thrust, both Infiltrator CS builds, Scout
   melee, Warrior Axe/Shield 50, Warden Nurture/Regrowth); the posts listed only the main lines. Proposed: the rest goes
   to a named line (D7; every fill is an estimate).
@@ -427,8 +432,9 @@ Each is in the server code, the launcher's `SocialExpansionSettings.Defaults` an
   log and notes; one data file, so a 1.2.x can re-weight without code.
 - **No raid has been fought by an era-mix world.** Raid code is unchanged, but a new install's raids meet a new mix
   (more healers, fewer pets, more PBAE). Mitigation: played check 6; notes keep the raid bar on the owner's world.
-- **Over-budget trims and fills are mine, not the posters'.** 19 builds; each marked `change` in the data and `*` on the
-  review sheet.
+- **Over-budget trims and fills are mine, not the posters'.** 19 builds on the review sheet, 16 since autotrain is
+  counted as a player's (9 trims, 7 fills); each marked `change` in the data and `*` on the review sheet. The two
+  Minstrel trims are no longer the sheet's numbers (Stealth 33, Slash 42).
 - **A wrong family or weapon mapping** gives a bot a build it can't wield (a shield build without a shield line).
   Mitigation: the validation rules and `UT_StarterGearForTrainedArrivals`; the gear rules themselves don't change.
 - **Level-50 kit weapons** (`offline_level50_loadouts`, by class) may not match the drawn build's weapon line, as
@@ -451,7 +457,7 @@ is taken as recommended.
 | D4 | One class-share table for all batches, or the draft's two (RvR and levelling) | **One** (the RvR table) |
 | D5 | Variety: off-meta share and per-bot jitter | **10% and 2 points** |
 | D6 | Sluaghbinder's share in the 0.37b edition | ~~5% of Hibernia~~ **Replaced by the owner (2026-11-17): bots never play the custom class, in any edition** ([rule](#bots-never-play-the-custom-class)) |
-| D7 | Trim the 12 over-budget builds, fill the 7 under-budget ones | **Yes**, as listed on the sheet |
+| D7 | Trim the 12 over-budget builds, fill the 7 under-budget ones | **Yes**, as listed on the sheet. Since autotrain is counted as a player's (owner 2026-11-17 18:11), 3 of the 12 fit as posted, 2 Minstrel trims are smaller, 9 trims remain |
 | D8 | Wizard weights | **Fire 60, Earth 25, Ice PBAE 15** |
 | D9 | RvR eights prefer a crowd-control build for the CC slot (WP5) | **Yes** |
 | D10 | A Wayback job for 2003 class census pages (aggregate counts, no names), as an exception to "no population harvesting" | **Yes, counts only, after 1.2** |

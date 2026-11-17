@@ -13,7 +13,10 @@ class, that should never be played by bots". Applied here:
   D3 A'  Midgard's shares moved toward the sourced Excalibur count of 2003-01-22, healers kept (MIDGARD_A_PRIME).
   D4     one class-share table per realm: the draft's RvR table (its levelling table stays in the research doc).
   D5     offMetaPercent 10, jitterPoints 2.
-  D7     the 12 builds over the level-50 point budget trimmed, the 7 under it filled (SPEC_CHANGES).
+  D7     the builds over the level-50 point budget trimmed, the 7 under it filled (SPEC_CHANGES). The review sheet
+         counted every level of every line and trimmed 12. A player's autotrain lines are free up to level 12 at 50
+         (AUTOTRAIN; owner 2026-11-17 18:11: "companions and bots should be the same as a player"), so 3 of the 12 fit
+         as posted and are no longer trimmed, 2 are trimmed less, and 9 trims remain.
   D8     Wizard Fire 60 / Earth 25 / Ice PBAE 15 (WEIGHT_CHANGES).
   Owner rule (replaces D6): bots never play the Sluaghbinder, in any edition. It has no share and no builds here, and
          the loader refuses it (excludedClasses).
@@ -79,6 +82,24 @@ CLASSES = {
     "Valewalker": (56, "Hibernia", 15, ["Scythe", "Arboreal Path", "Parry"]),
 }
 
+# The class's autotrain lines among the lines above (GetAutotrainableSkills in playerclasses/, in its order; Archery is
+# not a 1.65 line, and the Hunter's list is commented out there). A player pays nothing for them up to a quarter of the
+# level, whenever they are trained (GamePlayer.GetAutoTrainPoints, VerifySpecPoints): 77 points a line at 50.
+AUTOTRAIN = {
+    "Paladin": ["Slash", "Chants"],
+    "Armsman": ["Slash", "Thrust"],
+    "Scout": ["Longbows"],
+    "Minstrel": ["Instruments"],
+    "Infiltrator": ["Stealth"],
+    "Mercenary": ["Slash", "Thrust"],
+    "Reaver": ["Slash", "Flexible"],
+    "Warrior": ["Axe", "Hammer", "Sword"],
+    "Shadowblade": ["Stealth"],
+    "Nightshade": ["Stealth"],
+    "Ranger": ["Recurve Bow"],
+}
+AUTOTRAIN_LEVEL_50 = 50 // 4
+
 # The owner's rule of 2026-11-17 (replaces D6): no gamebot, companion or helper is ever made as the custom class.
 EXCLUDED = {
     "Sluaghbinder": {
@@ -93,27 +114,24 @@ EXCLUDED = {
 MIDGARD_A_PRIME = {"Thane": 0.08, "Runemaster": 0.09, "Berserker": 0.08, "Shadowblade": 0.10, "Hunter": 0.05,
                    "Savage": 0.06}
 
-# D7: (class, posted specs as a dict) -> (specs trained, why). The 12 over the level-50 budget lose points from their
-# lower lines; the 7 under it give the rest to a named line. Every one is the review sheet's line (marked *).
+# D7: (class, posted specs as a dict) -> (specs trained, why). The builds over the level-50 budget lose points from
+# their lower lines; the 7 under it give the rest to a named line. Every one is the review sheet's line (marked *),
+# except where a player's autotrain changes it: the two Minstrel builds keep the sheet's line and lose fewer points from it
+# (the sheet had Stealth 50->31 and Slash 44->40), and Shadowblade Axe/Left Axe, Shadowblade Axe/CS and Ranger
+# Archery/Pathfinding (the sheet's Left Axe 44->43, Critical Strike 39->38, Pathfinding 40->39) fit as posted.
 SPEC_CHANGES = {
-    ("Minstrel", "Instruments/Stealth/Slash"): ({"Instruments": 50, "Stealth": 31, "Slash": 29},
-                                                 "trimmed to budget: Stealth 50->31"),
-    ("Minstrel", "Instruments/Slash (no stealth)"): ({"Instruments": 44, "Slash": 40, "Stealth": 28},
-                                                      "trimmed to budget: Slash 44->40"),
+    ("Minstrel", "Instruments/Stealth/Slash"): ({"Instruments": 50, "Stealth": 33, "Slash": 29},
+                                                 "trimmed to budget: Stealth 50->33"),
+    ("Minstrel", "Instruments/Slash (no stealth)"): ({"Instruments": 44, "Slash": 42, "Stealth": 28},
+                                                      "trimmed to budget: Slash 44->42"),
     ("Theurgist", "Earth (PBT)"): ({"Earth Magic": 50, "Cold Magic": 17, "Wind Magic": 11},
                                    "trimmed to budget: Cold Magic 26->17"),
     ("Wizard", "Ice PBAE"): ({"Cold Magic": 50, "Earth Magic": 14, "Fire Magic": 14},
                              "trimmed to budget: Earth Magic 20->14, Fire Magic 20->14"),
-    ("Shadowblade", "Axe/Left Axe"): ({"Axe": 44, "Left Axe": 43, "Stealth": 35, "Envenom": 35, "Critical Strike": 10},
-                                      "trimmed to budget: Left Axe 44->43"),
-    ("Shadowblade", "Axe/CS"): ({"Axe": 44, "Critical Strike": 38, "Envenom": 34, "Stealth": 34, "Left Axe": 25},
-                                "trimmed to budget: Critical Strike 39->38"),
     ("Runemaster", "Suppression (PBT)"): ({"Suppression": 50, "Darkness": 20}, "trimmed to budget: Darkness 24->20"),
     ("Spiritmaster", "Suppression (PBAE)"): ({"Suppression": 49, "Darkness": 22}, "trimmed to budget: Darkness 25->22"),
     ("Champion", "Large Weapons/Valor/Blades"): ({"Large Weapons": 50, "Blades": 36, "Valor": 35, "Parry": 28},
                                                  "trimmed to budget: Valor 40->35, Blades 39->36"),
-    ("Ranger", "Archery/Pathfinding"): ({"Recurve Bow": 42, "Stealth": 40, "Pathfinding": 39, "Piercing": 30},
-                                        "trimmed to budget: Pathfinding 40->39"),
     ("Eldritch", "Mana (PBAE \"manabomb\")"): ({"Mana": 50, "Light": 19, "Void": 6}, "trimmed to budget: Light 20->19"),
     ("Mentalist", "Mentalism (heals)"): ({"Mentalism": 45, "Light": 21, "Mana": 21},
                                          "trimmed to budget: Light 25->21, Mana 25->21"),
@@ -253,13 +271,16 @@ def point_budget(multiplier: int, level: int = 50) -> int:
     return points
 
 
-def line_cost(level: int) -> int:
-    """Points to raise a line from 1 to level (2 + 3 + ... + level)."""
-    return level * (level + 1) // 2 - 1 if level > 1 else 0
+def line_cost(level: int, autotrain: bool = False) -> int:
+    """Points a level 50 pays to raise a line from 1 to level (2 + 3 + ... + level); an autotrain line's levels up to 12
+    are free (GamePlayer.VerifySpecPoints, EraBuildCatalog.LineCost)."""
+    cost = level * (level + 1) // 2 - 1 if level > 1 else 0
+    return cost - line_cost(min(AUTOTRAIN_LEVEL_50, level)) if autotrain else cost
 
 
-def build_cost(specs: dict) -> int:
-    return sum(line_cost(v) for v in specs.values())
+def build_cost(specs: dict, autotrain=()) -> int:
+    """What the lines cost a level 50 whose class autotrains `autotrain` (none: every level is paid for)."""
+    return sum(line_cost(v, k in autotrain) for k, v in specs.items())
 
 
 def ordered(specs: dict) -> dict:
@@ -324,6 +345,8 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
     for cls, builds in draft["classes"].items():
         class_id, realm, multiplier, lines = CLASSES[cls]
         budget = point_budget(multiplier)
+        autotrain = AUTOTRAIN.get(cls, [])
+        assert all(line in lines for line in autotrain), cls
         out_builds = []
         for build, build_id in zip(builds, make_ids(cls, builds)):
             label = build["label"]
@@ -333,7 +356,7 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
                 specs, change = SPEC_CHANGES[(cls, label)]
                 specs = ordered(specs)
                 changes.append(f"build {build_id}: {fmt(posted)} -> {fmt(specs)} ({change}; "
-                               f"{build_cost(posted)} -> {build_cost(specs)} of {budget} points)")
+                               f"{build_cost(posted, autotrain)} -> {build_cost(specs, autotrain)} of {budget} points)")
             weight, weight_basis = build["weight"], "estimate from forumMentions and period wording"
             if (cls, label) in WEIGHT_CHANGES:
                 weight, note = WEIGHT_CHANGES[(cls, label)]
@@ -362,6 +385,7 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
             "specMultiplier": multiplier,
             "pointBudget50": budget,
             "lines": lines,
+            "autotrain": autotrain,
             "builds": out_builds,
         }
 
@@ -374,6 +398,8 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
                      "Sluaghbinder (docs/ERA-BUILDS-1.2.md)",
         "estimates": "every share and every weight is an estimate from 2002-2003 forum posts (European servers); "
                      "spec points come from dated posts unless 'change' says they were trimmed or filled",
+        "points": "a build fits when a level 50 player of the class can pay for it: every level of every line, less a "
+                  "class's 'autotrain' lines up to level 12 (free for a player, 77 points a line)",
         "generatedBy": "source/tools/make_era_builds.py from docs/research/bot-builds.draft.json",
         "offMetaPercent": OFF_META_PERCENT,
         "jitterPoints": JITTER_POINTS,
@@ -408,8 +434,11 @@ def validate(data: dict) -> list[str]:
             problems.append(f"{cls}: weights sum to {total:.4f}")
         if cls not in data["realms"][info["realm"]]["classShare"]:
             problems.append(f"{cls}: no share in {info['realm']}")
+        for line in info.get("autotrain", []):
+            if line not in info["lines"]:
+                problems.append(f"{cls}: autotrain line {line} is not a {cls} line")
         for b in info["builds"]:
-            cost = build_cost(b["specs"])
+            cost = build_cost(b["specs"], info.get("autotrain", []))
             if cost > info["pointBudget50"]:
                 problems.append(f"{b['id']}: {cost} points, budget {info['pointBudget50']}")
             for line, value in b["specs"].items():
@@ -419,6 +448,9 @@ def validate(data: dict) -> list[str]:
                     problems.append(f"{b['id']}: {line} {value}")
             if (b["specs"] != b["posted"]) != (b["change"] is not None):
                 problems.append(f"{b['id']}: specs differ from posted without a change note (or the reverse)")
+            if (b["change"] or "").startswith("trimmed") and \
+                    build_cost(b["posted"], info.get("autotrain", [])) <= info["pointBudget50"]:
+                problems.append(f"{b['id']}: trimmed, but the posted points fit the budget")
     return problems
 
 

@@ -5,6 +5,7 @@
   "approved": "2026-11-17",
   "decisions": "owner 2026-11-17 09:48: D1-D5, D7-D12 as recommended; D6 replaced: bots never play the Sluaghbinder (docs/ERA-BUILDS-1.2.md)",
   "estimates": "every share and every weight is an estimate from 2002-2003 forum posts (European servers); spec points come from dated posts unless 'change' says they were trimmed or filled",
+  "points": "a build fits when a level 50 player of the class can pay for it: every level of every line, less a class's 'autotrain' lines up to level 12 (free for a player, 77 points a line)",
   "generatedBy": "source/tools/make_era_builds.py from docs/research/bot-builds.draft.json",
   "offMetaPercent": 10,
   "jitterPoints": 2,
@@ -263,6 +264,10 @@
         "Parry",
         "Crossbows"
       ],
+      "autotrain": [
+        "Slash",
+        "Thrust"
+      ],
       "builds": [
         {
           "id": "armsman-pole-shld-slash",
@@ -414,6 +419,10 @@
         "Two Handed",
         "Shields",
         "Parry",
+        "Chants"
+      ],
+      "autotrain": [
+        "Slash",
         "Chants"
       ],
       "builds": [
@@ -570,6 +579,10 @@
         "Shields",
         "Parry"
       ],
+      "autotrain": [
+        "Slash",
+        "Thrust"
+      ],
       "builds": [
         {
           "id": "mercenary-dw-thrust",
@@ -682,6 +695,10 @@
         "Parry",
         "Soulrending"
       ],
+      "autotrain": [
+        "Slash",
+        "Flexible"
+      ],
       "builds": [
         {
           "id": "reaver-flex-shld",
@@ -763,6 +780,7 @@
         "Enhancement",
         "Smite"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "cleric-rejuv-enh",
@@ -872,6 +890,7 @@
         "Staff",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "friar-enh-staff44",
@@ -956,6 +975,9 @@
         "Stealth",
         "Instruments"
       ],
+      "autotrain": [
+        "Instruments"
+      ],
       "builds": [
         {
           "id": "minstrel-inst-stl",
@@ -968,7 +990,7 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Instruments": 50,
-            "Stealth": 31,
+            "Stealth": 33,
             "Slash": 29
           },
           "posted": {
@@ -976,7 +998,7 @@
             "Stealth": 50,
             "Slash": 29
           },
-          "change": "trimmed to budget: Stealth 50->31",
+          "change": "trimmed to budget: Stealth 50->33",
           "specsSourced": false,
           "forumMentions": 25,
           "sources": [
@@ -1001,7 +1023,7 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Instruments": 44,
-            "Slash": 40,
+            "Slash": 42,
             "Stealth": 28
           },
           "posted": {
@@ -1009,7 +1031,7 @@
             "Slash": 44,
             "Stealth": 28
           },
-          "change": "trimmed to budget: Slash 44->40",
+          "change": "trimmed to budget: Slash 44->42",
           "specsSourced": false,
           "forumMentions": 5,
           "sources": [
@@ -1068,6 +1090,9 @@
         "Critical Strike",
         "Stealth",
         "Envenom"
+      ],
+      "autotrain": [
+        "Stealth"
       ],
       "builds": [
         {
@@ -1195,6 +1220,9 @@
         "Longbows",
         "Stealth"
       ],
+      "autotrain": [
+        "Longbows"
+      ],
       "builds": [
         {
           "id": "scout-bow-shld-stl-thrust",
@@ -1308,6 +1336,7 @@
         "Cold Magic",
         "Wind Magic"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "theurgist-wind-earth",
@@ -1418,6 +1447,7 @@
         "Cold Magic",
         "Fire Magic"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "wizard-fire-earth",
@@ -1528,6 +1558,7 @@
         "Body Magic",
         "Mind Magic"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "sorcerer-mind-body",
@@ -1634,6 +1665,7 @@
         "Body Magic",
         "Spirit Magic"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "cabalist-matter-body",
@@ -1767,6 +1799,7 @@
         "Death Servant",
         "Painworking"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "necromancer-dsight-dserv",
@@ -1869,6 +1902,7 @@
         "Augmentation",
         "Pacification"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "healer-pac-mend-aug",
@@ -1983,6 +2017,7 @@
         "Augmentation",
         "Subterranean"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "shaman-cave-aug",
@@ -2099,6 +2134,7 @@
         "Parry",
         "Battlesongs"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "skald-battle-axe",
@@ -2214,6 +2250,11 @@
         "Parry",
         "Thrown Weapons"
       ],
+      "autotrain": [
+        "Axe",
+        "Hammer",
+        "Sword"
+      ],
       "builds": [
         {
           "id": "warrior-axe-shld42",
@@ -2328,6 +2369,7 @@
         "Left Axe",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "berserker-axe-la",
@@ -2437,6 +2479,7 @@
         "Savagery",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "savage-h2h-sav",
@@ -2519,6 +2562,7 @@
         "Parry",
         "Stormcalling"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "thane-storm-hammer",
@@ -2603,6 +2647,9 @@
         "Stealth",
         "Envenom"
       ],
+      "autotrain": [
+        "Stealth"
+      ],
       "builds": [
         {
           "id": "shadowblade-axe-la",
@@ -2615,7 +2662,7 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Axe": 44,
-            "Left Axe": 43,
+            "Left Axe": 44,
             "Envenom": 35,
             "Stealth": 35,
             "Critical Strike": 10
@@ -2627,8 +2674,8 @@
             "Stealth": 35,
             "Critical Strike": 10
           },
-          "change": "trimmed to budget: Left Axe 44->43",
-          "specsSourced": false,
+          "change": null,
+          "specsSourced": true,
           "forumMentions": 12,
           "sources": [
             "https://forums.freddyshouse.com/threads/about-my-spec.140177/",
@@ -2687,7 +2734,7 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Axe": 44,
-            "Critical Strike": 38,
+            "Critical Strike": 39,
             "Envenom": 34,
             "Stealth": 34,
             "Left Axe": 25
@@ -2699,8 +2746,8 @@
             "Stealth": 34,
             "Left Axe": 25
           },
-          "change": "trimmed to budget: Critical Strike 39->38",
-          "specsSourced": false,
+          "change": null,
+          "specsSourced": true,
           "forumMentions": 20,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-with-sb-spec.147706/",
@@ -2727,6 +2774,7 @@
         "Beastcraft",
         "Stealth"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "hunter-bow-spear",
@@ -2810,6 +2858,7 @@
         "Suppression",
         "Runecarving"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "runemaster-dark-supp26",
@@ -2914,6 +2963,7 @@
         "Suppression",
         "Summoning"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "spiritmaster-supp-dark",
@@ -3016,6 +3066,7 @@
         "Suppression",
         "Bone Army"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "bonedancer-supp-dark",
@@ -3093,6 +3144,7 @@
         "Nurture",
         "Nature"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "druid-regrow-nurt",
@@ -3203,6 +3255,7 @@
         "Nurture",
         "Music"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "bard-music-nurt",
@@ -3284,6 +3337,7 @@
         "Nurture",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "warden-nurt-regrow",
@@ -3370,6 +3424,7 @@
         "Shields",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "hero-lw-shld",
@@ -3480,6 +3535,7 @@
         "Shields",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "champion-lw-valor-parry",
@@ -3562,6 +3618,7 @@
         "Shields",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "blademaster-blades-cd",
@@ -3670,6 +3727,9 @@
         "Critical Strike",
         "Stealth",
         "Envenom"
+      ],
+      "autotrain": [
+        "Stealth"
       ],
       "builds": [
         {
@@ -3788,6 +3848,9 @@
         "Pathfinding",
         "Stealth"
       ],
+      "autotrain": [
+        "Recurve Bow"
+      ],
       "builds": [
         {
           "id": "ranger-bow-path",
@@ -3800,8 +3863,8 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Recurve Bow": 42,
+            "Pathfinding": 40,
             "Stealth": 40,
-            "Pathfinding": 39,
             "Piercing": 30
           },
           "posted": {
@@ -3810,8 +3873,8 @@
             "Stealth": 40,
             "Piercing": 30
           },
-          "change": "trimmed to budget: Pathfinding 40->39",
-          "specsSourced": false,
+          "change": null,
+          "specsSourced": true,
           "forumMentions": 19,
           "sources": [
             "https://forums.freddyshouse.com/threads/ranger-spec-questions-again.140520/",
@@ -3873,6 +3936,7 @@
         "Mana",
         "Void"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "eldritch-mana-light",
@@ -3981,6 +4045,7 @@
         "Mana",
         "Enchantments"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "enchanter-mana-light",
@@ -4083,6 +4148,7 @@
         "Mana",
         "Mentalism"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "mentalist-light-mana",
@@ -4189,6 +4255,7 @@
         "Arboreal Path",
         "Parry"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "valewalker-scythe-arb",
@@ -4231,6 +4298,7 @@
         "Creeping Path",
         "Verdant Path"
       ],
+      "autotrain": [],
       "builds": [
         {
           "id": "animist-arb-creep",

@@ -32,6 +32,31 @@ namespace DOL.GS.Tests
             Assert.That(EraBuildCatalog.LineCost(50), Is.EqualTo(1274));
         }
 
+        [Test]
+        public void AnAutotrainLineIsFreeUpToAQuarterOfTheLevel()
+        {
+            // as a player's (GamePlayer.GetAutoTrainPoints; UT_BotSpecPointsMatchAPlayer holds every level to the player)
+            Assert.That(EraBuildCatalog.AutoTrainLevel(), Is.EqualTo(12));
+            Assert.That(EraBuildCatalog.LineCost(12, true), Is.Zero);
+            Assert.That(EraBuildCatalog.LineCost(8, true), Is.Zero);
+            Assert.That(EraBuildCatalog.LineCost(50, true), Is.EqualTo(1274 - 77));
+            Assert.That(EraBuildCatalog.LineCost(50, false), Is.EqualTo(1274));
+            Assert.That(EraBuildCatalog.LineCost(20, true, 40), Is.EqualTo(EraBuildCatalog.LineCost(20) - EraBuildCatalog.LineCost(10)));
+            Assert.That(EraBuildCatalog.LineCost(3, true, 3), Is.EqualTo(5), "below level 8 nothing is free");
+            var armsman = new[] { new KeyValuePair<string, int>("Slash", 50), new KeyValuePair<string, int>("Thrust", 5),
+                new KeyValuePair<string, int>("Shields", 42) };
+            Assert.That(EraBuildCatalog.BuildCost(armsman) - EraBuildCatalog.BuildCost(armsman, ["Slash", "Thrust"]),
+                Is.EqualTo(77 + EraBuildCatalog.LineCost(5)));
+            EraClass shadowblade = Catalog.GetClass("Shadowblade");
+            Assert.That(shadowblade.AutoTrainLines, Is.EqualTo(new[] { "Stealth" }));
+            Assert.That(Catalog.GetClass("Wizard").AutoTrainLines, Is.Empty);
+            Assert.That(Catalog.GetClass("Hunter").AutoTrainLines, Is.Empty, "the game's Hunter has no autotrain list");
+            EraBuild build = Catalog.GetBuild("shadowblade-axe-la");
+            Assert.That(build.Points, Is.EqualTo(EraBuildCatalog.BuildCost(build.Specs) - 77));
+            Assert.That(EraBuildCatalog.BuildCost(build.Specs), Is.GreaterThan(shadowblade.PointBudget50), "over, counting every level");
+            Assert.That(build.Points, Is.LessThanOrEqualTo(shadowblade.PointBudget50), "a player can pay for it");
+        }
+
         [TestCase("Albion")]
         [TestCase("Midgard")]
         [TestCase("Hibernia")]
@@ -119,7 +144,7 @@ namespace DOL.GS.Tests
                     var before = build.Specs.ToDictionary(s => s.Key, s => s.Value);
                     var after = specs.ToDictionary(s => s.Key, s => s.Value);
                     Assert.That(after.Keys, Is.EquivalentTo(before.Keys), build.Id);
-                    Assert.That(EraBuildCatalog.BuildCost(specs), Is.LessThanOrEqualTo(eraClass.PointBudget50), build.Id);
+                    Assert.That(EraBuildCatalog.BuildCost(specs, eraClass.AutoTrainLines), Is.LessThanOrEqualTo(eraClass.PointBudget50), build.Id);
                     Assert.That(after.Values, Has.All.InRange(1, 50), build.Id);
                     Assert.That(after[build.Specs[0].Key], Is.EqualTo(build.Specs[0].Value), $"{build.Id}: the top line never moves");
                     int shift = before.Sum(kv => Math.Abs(kv.Value - after[kv.Key]));

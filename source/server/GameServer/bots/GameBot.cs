@@ -115,10 +115,11 @@ namespace DOL.GS
                     return false;
                 int points = m_leftOverSpecPoints;
                 for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
-                    points += GetSpecPointsForLevel(level);
+                    points += GetSpecPointsForLevel(level) + AutoTrainRefundAtLevel(level);
                 return BotSpec.SpecLines.Any(line => (line.levelRatio > 0 || Level >= 50) &&
                     GetSpecializationByName(line.Spec) is Specialization spec && spec.Trainable &&
-                    spec.Level < Math.Min(Level, line.SpecCap) && points >= spec.Level + 1);
+                    spec.Level < Math.Min(Level, line.SpecCap) &&
+                    points >= NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec)));
             }
         }
         public long Experience { get; private set; }
@@ -3746,10 +3747,12 @@ namespace DOL.GS
         /// <summary>
         /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
         /// player of its class has earned at its level - levels 2-5, each level above 5, each half level 40.5-49.5 it has
-        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost.
+        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost a
+        /// player: the class's autotrain lines are free up to a quarter of its level (LineCost).
         /// Owner 2026-11-17: "companions and bots should be the same as a player". Before Living Server 1.2 a hired
-        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0); counting from its level
-        /// gives a saved companion those points to spend, and never takes a trained point away.
+        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0) and paid for its autotrain
+        /// levels (77 points a line at 50); counting from its level gives a saved companion those points to spend, and
+        /// never takes a trained point away.
         /// </summary>
         public int CompanionSpecPoints => Math.Max(0, CompanionEarnedSpecPoints - TrainedSpecPointCost());
 
@@ -3757,8 +3760,52 @@ namespace DOL.GS
         private int CompanionEarnedSpecPoints =>
             PlayerSpecPointTotal(CharacterClass.SpecPointsMultiplier, Level, ReachedSecondStage(Level, Experience));
 
-        /// <summary>What the trainable lines cost to train from 1 to their levels now.</summary>
-        private int TrainedSpecPointCost() => GetSpecList().Where(spec => spec.Trainable).Sum(spec => PointsToTrain(spec.Level));
+        /// <summary>What the trainable lines cost a player of this class and level to train from 1 to their levels now.</summary>
+        private int TrainedSpecPointCost() =>
+            GetSpecList().Where(spec => spec.Trainable).Sum(spec => LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
+
+        // ---- autotrain, as a player's (GamePlayer.GetAutoTrainPoints, VerifySpecPoints and /train): the class's autotrain
+        // lines (ICharacterClass.GetAutotrainableSkills: Slash and Thrust for an Armsman, Stealth for the assassins...) are
+        // free up to a quarter of the character's level, whenever they are trained. This server's rule is the later
+        // "autotrain refund" (its code says patch 1.87): nothing is raised by itself and nothing is lost by training early.
+        // In 1.65 itself only a line left untrained got the free levels; the most a 1.65 player could have is what every
+        // player has here, 77 points a line at 50.
+
+        /// <summary>One of this class's autotrain lines (the player's own list and comparison).</summary>
+        public bool IsAutoTrainLine(Specialization spec) =>
+            spec != null && CharacterClass?.GetAutotrainableSkills() is { Count: > 0 } lines && lines.Contains(spec.KeyName);
+
+        /// <summary>The level an autotrain line is free up to: a quarter of the character's level, at least 1. Pure.</summary>
+        public static int AutoTrainLevel(int characterLevel) => Math.Max(1, characterLevel / 4);
+
+        /// <summary>What a line at <paramref name="specLevel"/> costs a player of <paramref name="characterLevel"/>: the
+        /// points to train it, less the autotrain levels of an autotrain line (GamePlayer.VerifySpecPoints). Pure.</summary>
+        public static int LineCost(int specLevel, int characterLevel, bool autoTrain) =>
+            PointsToTrain(specLevel) - (autoTrain ? PointsToTrain(Math.Min(AutoTrainLevel(characterLevel), specLevel)) : 0);
+
+        /// <summary>What the next level of a line costs a player of <paramref name="characterLevel"/>: nothing while an
+        /// autotrain line is below a quarter of the level (/train), else the new level. Pure.</summary>
+        public static int NextLevelCost(int specLevel, int characterLevel, bool autoTrain) =>
+            autoTrain && specLevel < characterLevel / 4 ? 0 : specLevel + 1;
+
+        /// <summary>The points an autotrain line already at <paramref name="specLevel"/> gets back on reaching
+        /// <paramref name="characterLevel"/>: at every fourth level the free level rises by one, and a line already there
+        /// has paid for it (the step in GamePlayer.GetAutoTrainPoints mode 0 from one level to the next). Pure.</summary>
+        public static int AutoTrainRefundAtLevel(int specLevel, int characterLevel) =>
+            LineCost(specLevel, characterLevel - 1, true) - LineCost(specLevel, characterLevel, true);
+
+        /// <summary>The points this bot's autotrain lines get back on reaching <paramref name="characterLevel"/>.</summary>
+        private int AutoTrainRefundAtLevel(int characterLevel) =>
+            characterLevel < 2 || CharacterClass?.GetAutotrainableSkills() is not { Count: > 0 } ? 0 :
+                GetSpecList().Where(spec => spec.Trainable && IsAutoTrainLine(spec))
+                    .Sum(spec => AutoTrainRefundAtLevel(spec.Level, characterLevel));
+
+        /// <summary>What the next level of this line costs the companion (0 for a free autotrain level).</summary>
+        public int CompanionTrainCost(Specialization spec) => NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec));
+
+        /// <summary>What raising this line to <paramref name="specLevel"/> costs the companion.</summary>
+        public int CompanionTrainCost(Specialization spec, int specLevel) =>
+            Math.Max(0, LineCost(specLevel, Level, IsAutoTrainLine(spec)) - LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
 
         /// <summary>The points to train a line from 1 to <paramref name="specLevel"/> (2 + 3 + ... + level), as
         /// GamePlayer.VerifySpecPoints counts them. Pure.</summary>
@@ -3796,22 +3843,23 @@ namespace DOL.GS
                 return $"{spec.Name} can't go above {Name}'s level ({Level}).";
             m_leftOverSpecPoints = CompanionSpecPoints;
             _lastAutonomousTrainedLevel = Level;
-            int cost = spec.Level + 1;
+            int cost = CompanionTrainCost(spec);
             if (m_leftOverSpecPoints < cost)
-                return $"{spec.Name} {cost} needs {cost} points; {Name} has {m_leftOverSpecPoints}.";
+                return $"{spec.Name} {spec.Level + 1} needs {cost} points; {Name} has {m_leftOverSpecPoints}.";
             m_leftOverSpecPoints -= cost;
             spec.Level++;
             AfterCompanionTraining();
             return null;
         }
 
-        /// <summary>The free respec (owner rule): every trainable line back to 1, all the points back to spend - a player's
-        /// total for the level, half levels included.</summary>
+        /// <summary>The free respec (owner rule): every trainable line back to 1 - an autotrain line to its free level from
+        /// level 8, as a player's respec leaves it (GamePlayer.RespecSingleLine) - and all the points back to spend: a
+        /// player's total for the level, half levels included.</summary>
         public void CompanionRespec()
         {
             foreach (Specialization spec in GetSpecList().Where(s => s.Trainable))
-                spec.Level = 1;
-            m_leftOverSpecPoints = CompanionEarnedSpecPoints;
+                spec.Level = Level >= 8 && IsAutoTrainLine(spec) ? Level / 4 : 1;
+            m_leftOverSpecPoints = CompanionSpecPoints;
             _lastAutonomousTrainedLevel = Level;
             AfterCompanionTraining();
         }
@@ -4145,7 +4193,8 @@ namespace DOL.GS
                 spentPoints = true;
                 spendLeftOverPoints = false;
 
-                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i) + leftOverSpecPoints;
+                // The level's points, and what a player's autotrain lines get back at this level (every fourth).
+                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i) + AutoTrainRefundAtLevel(i) + leftOverSpecPoints;
 
                 while (spentPoints)
                 {
@@ -4167,7 +4216,8 @@ namespace DOL.GS
                                 if (!spendLeftOverPoints && spec.Level >= specRatio)
                                     continue;
 
-                                int totalCost = spec.Level + 1;
+                                // A player's cost at this level: an autotrain line is free below a quarter of it.
+                                int totalCost = NextLevelCost(spec.Level, i, IsAutoTrainLine(spec));
 
                                 if (totalSpecPointsThisLevel >= totalCost)
                                 {
