@@ -2673,6 +2673,82 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "rvr_group_pet_cap", "When gamebots form an RvR group (a roaming warband or a siege party), at most this many pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist, Sluaghbinder) join a group of five or more, and half as many (at least 1) a group of four or fewer. The others wait for the next group. Groups you lead or join are never changed. 0 turns the cap off.", 2)]
 		public static int RVR_GROUP_PET_CAP;
 
+		// ---- Bots as people (docs/BOTS-AS-PEOPLE-1.2.md; 1.2 work package 0 declares every switch, each package fills its own).
+		// All on by default (owner 2026-11-16): new keys, so a world from an earlier build has no row and takes the code default
+		// (no LivingServerSettingsUpgrade line). Each starts at its default so code that runs before InitProperties sees it.
+
+		/// <summary>
+		/// Bots as people, item 2's master switch (work packages 1 and 2).
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_profiles", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. In this build it changes nothing yet (work packages 1 and 2).", true)]
+		public static bool BOT_SKILL_PROFILES = true;
+
+		/// <summary>
+		/// Bots as people, work package 1.
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_growth", "Bots as people (1.2): a gamebot's skill grows with play (fights won, pulls made, buffs cast, deaths learned from), one tier at most in 1.2 (about 40 hours from the bottom of Casual to Average), and never falls. Needs bot_skill_profiles. Log: BOT_SKILL_GROWTH. In this build it changes nothing yet (work package 1).", true)]
+		public static bool BOT_SKILL_GROWTH = true;
+
+		/// <summary>
+		/// Bots as people, work package 2.
+		/// </summary>
+		[ServerProperty("bots", "bot_skill_spare_player_group", "Bots as people (1.2): in a group with you, a gamebot makes its mistakes at a quarter of its own rate (owner decision 4, 2026-11-17); its reactions are not quickened, so it still plays like a person, a careful one. Needs bot_skill_profiles. Log: BOT_SKILL_MISTAKE spared=true. In this build it changes nothing yet (work package 2).", true)]
+		public static bool BOT_SKILL_SPARE_PLAYER_GROUP = true;
+
+		/// <summary>
+		/// Bots as people, work package 2R.
+		/// </summary>
+		[ServerProperty("bots", "raid_learns_from_raiders", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything. A played world is seeded once so its familiarity stays the same on average. Log: RAID_LEARN, RAID_MECHANIC_SEEN. In this build it changes nothing yet (work package 2R).", true)]
+		public static bool RAID_LEARNS_FROM_RAIDERS = true;
+
+		/// <summary>
+		/// Bots as people, item 4's master switch (work packages 3 and 4).
+		/// </summary>
+		[ServerProperty("bots", "bot_place_knowledge", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level and, from level 20, its border keep. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET. In this build it changes nothing yet (work package 3).", true)]
+		public static bool BOT_PLACE_KNOWLEDGE = true;
+
+		/// <summary>
+		/// Bots as people, work package 4.
+		/// </summary>
+		[ServerProperty("bots", "bot_ask_the_way", "Bots as people (1.2): a gamebot going somewhere it does not know may ask the way in /faction or /say (at most one ask in /faction per realm every 10 minutes), and a bot of its realm that knows the place answers truthfully; or it tags along behind a realm-mate going there. Needs bot_place_knowledge. Log: BOT_WAY_ASK, BOT_WAY_TOLD, BOT_WAY_FOLLOW. In this build it changes nothing yet (work package 4).", true)]
+		public static bool BOT_ASK_THE_WAY = true;
+
+		/// <summary>
+		/// Bots as people, work package 4.
+		/// </summary>
+		[ServerProperty("bots", "bot_wrong_roads", "Bots as people (1.2): a gamebot going somewhere it does not know may take another branch at a road junction for a minute or two, then find its way (at most once a trip and 3 minutes; never on a stable ride, in an enemy frontier, in a dungeon or near monsters more than 2 levels above it). Needs bot_place_knowledge. Log: BOT_WAY_WRONG_ROAD, BOT_WAY_SUMMARY. In this build it changes nothing yet (work package 4).", true)]
+		public static bool BOT_WRONG_ROADS = true;
+
+		/// <summary>
+		/// Bots as people, item 5's master switch (work package 5).
+		/// </summary>
+		[ServerProperty("bots", "bot_movement_habits", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS. In this build it changes nothing yet (work package 5).", true)]
+		public static bool BOT_MOVEMENT_HABITS = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_strafe", "Bots as people (1.2): in an open-field RvR fight, melee gamebots circle-strafe their target and casters and healers face the enemy and back off in an arc, more often the better the bot. Needs bot_movement_habits and rvr_bot_field_tactics. Log: BOT_MOVE_STRAFE. In this build it changes nothing yet (work package 5).", true)]
+		public static bool BOT_MOVE_STRAFE = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_stick_line", "Bots as people (1.2): bot-only groups travelling in the open world run on /stick, each member following the one above it, so the group runs as a strung-out line; now and then one loses stick and catches up. Not on stable rides, raids, battleground waves or sieges. Needs bot_movement_habits. Log: BOT_MOVE_STICK_LOST. In this build it changes nothing yet (work package 5).", true)]
+		public static bool BOT_MOVE_STICK_LINE = true;
+
+		/// <summary>
+		/// Bots as people, work package 5.
+		/// </summary>
+		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL. In this build it changes nothing yet (work package 5).", true)]
+		public static bool BOT_MOVE_SIT_AND_WALLS = true;
+
+		/// <summary>
+		/// Bots as people, item 6 (work package 6).
+		/// </summary>
+		[ServerProperty("bots", "bot_living_milestones", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots chase a personal goal (the ding to 50, realm rank 5, a dragon trophy really won in a raid) and talk about it as they get close, in /faction, their guild, their group or /say; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's next plans. Log: BOT_MILESTONE_ARC, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED. In this build it changes nothing yet (work package 6).", true)]
+		public static bool BOT_LIVING_MILESTONES = true;
+
 		/// <summary>
 		/// Autonomous gamebots speak lines from the bot-voices corpus in their own writing style.
 		/// </summary>

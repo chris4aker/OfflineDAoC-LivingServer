@@ -390,7 +390,7 @@ namespace DOL.GS.Tests
                 Assert.Ignore("docs/LIVING-SERVER.md not found beside the tests.");
             string doc = File.ReadAllText(Path.Combine(dir, "docs", "LIVING-SERVER.md"));
             foreach (string key in new[] { "bot_living_memory", "bot_living_grats", "bot_living_firsts", "bot_living_death",
-                         "bot_living_alarms", "bot_living_nemesis", "bot_schedule_mode", "bot_living_breaks" })
+                         "bot_living_alarms", "bot_living_nemesis", "bot_schedule_mode", "bot_living_breaks", "bot_living_milestones" })
                 Assert.That(doc, Does.Contain(key));
         }
 

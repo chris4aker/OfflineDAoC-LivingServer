@@ -45,6 +45,7 @@ systems are timed:
 | Routes | `route.stable_find_best`, `route.stable_portal`, `route.raid_dungeon`, `route.df_chain`, `route.zone_step` (outermost step only), `route.corridor`, `route.road`, `route.rvr_rally_check` | the route planners |
 | Navmesh queries | `nav.path`, `nav.closest_point`, `nav.other` | the native Detour calls `NavQueryProfile` counts |
 | Frontier | `frontier.threat_scan`, `frontier.rvr_fight_board`, `frontier.rvr_tactics` | the RvR threat scan, not its cheap skip checks; building an open-field fight board (`RvrFightBoards`, its area search included); the open-field tactics hooks (nothing measures the last one until 1.2 work packages 1-6 fill the hooks) |
+| Bots as people | `people.skill`, `people.places`, `people.way_finding`, `people.movement`, `people.milestones` | skill profiles, growth and mistakes; place knowledge; asking the way and wrong roads; movement habits; milestones ([BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md); nothing measures them until work packages 1 to 6 fill them) |
 | Combat AI | `combat.spells`, `combat.heals`, `combat.style`, `combat.movement` | `BotBrain.CheckSpells`, `CheckHeals`, the melee style choice, a melee bot's circle and a caster's step (`BotBrain.CombatMovement`, only when one is due) |
 | Pets | `pets.maintain`, `pets.sync` | `AutonomousPetSupport` |
 | Persistence | `db.status_batch`, `db.inventory_batch` | the bot status and inventory batch writes |

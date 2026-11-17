@@ -129,6 +129,14 @@ namespace DOL.GS
         EconomyUpkeep,    // WP7: wear, repairs, consumables, luxury, governor
         CraftCommerce,    // WP8: the player's trade with crafter gamebots
 
+        // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md, work package 0), appended likewise. Each package wraps its own
+        // work in its scope; nothing measures these until it is merged.
+        BotSkill,         // WP1, WP2: skill profiles, growth and mistakes
+        PlaceKnowledge,   // WP3: places known, seeding, learning
+        WayFinding,       // WP4: asking the way, tagging along, wrong roads
+        MovementHabits,   // WP5: strafe, stick line, overshoot, sitting, keep walls
+        Milestones,       // WP6: arcs, talk, the goal tilt
+
         /// <summary>Not a system: the number of built-in systems. Names given to <see cref="AiProfile.Scope(string)"/>
         /// take the slots from here up to <see cref="AiProfile.MaxSystems"/>.</summary>
         BuiltInCount,
@@ -277,6 +285,11 @@ namespace DOL.GS
             AiSystem.EconomyLedger => "economy.ledger",
             AiSystem.EconomyUpkeep => "economy.upkeep",
             AiSystem.CraftCommerce => "craft.commerce",
+            AiSystem.BotSkill => "people.skill",
+            AiSystem.PlaceKnowledge => "people.places",
+            AiSystem.WayFinding => "people.way_finding",
+            AiSystem.MovementHabits => "people.movement",
+            AiSystem.Milestones => "people.milestones",
             _ => throw new ArgumentOutOfRangeException(nameof(system), system, "Every built-in AI system needs a name."),
         };
     }
