@@ -34,7 +34,11 @@ public static class RealmRaidStaging
         }
         return false;
     }
-    public static bool TryDragonPost(IPathfindingMgr nav, Zone zone, Vector3 home, int slot, IReadOnlyCollection<Vector3> occupied, out Vector3 staging)
+    /// <param name="inner">The ring's inner radius (3,600; an open-world boss's starts past its reach,
+    /// RealmRaidTetherReach.OpenWorldStagingInner).</param>
+    /// <param name="safe">Refuses a post (out of the reach of the monsters around it); null: every post.</param>
+    public static bool TryDragonPost(IPathfindingMgr nav, Zone zone, Vector3 home, int slot, IReadOnlyCollection<Vector3> occupied, out Vector3 staging,
+        float inner = RealmRaidTetherReach.DefaultStagingInner, Func<Vector3, bool> safe = null)
     {
         staging = default;
         if (slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots || nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
@@ -48,12 +52,13 @@ public static class RealmRaidStaging
         for (int attempt = 0; attempt < 36; attempt++)
         {
             double angle = (attempt * 47.5 + slot * 137.5) * Math.PI / 180;
-            float radius = 3600 + attempt % 6 * 500;
+            float radius = inner + attempt % 6 * 500;
             var raw = home + new Vector3((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius, 0);
             var floor = nav.GetClosestPoint(zone, raw, 96, 96, 4096, nav.DefaultFilters);
             if (!floor.HasValue || Math.Abs(floor.Value.Z - home.Z) > 768 ||
                 lairArea.HasValue && AutonomousZoneRoads.AreaAt(zone, floor.Value) is int area && area != lairArea.Value ||
                 occupied.Any(p => Vector3.DistanceSquared(p, floor.Value) < 600 * 600) ||
+                safe?.Invoke(floor.Value) == false ||
                 !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) ||
                 !WalksToHome(nav, zone, floor.Value, home, ref foot, ref footLooked) ||
                 !HasOpenPartySpace(nav, zone, floor.Value)) continue;

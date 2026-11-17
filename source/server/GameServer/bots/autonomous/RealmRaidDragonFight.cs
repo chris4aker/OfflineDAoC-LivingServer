@@ -80,10 +80,16 @@ public sealed class RealmRaidDragonFight
     private long _regroupEmptySince;
     private readonly Queue<int> _wipes = new();
 
-    public RealmRaidDragonFight(string dragon)
+    public RealmRaidDragonFight(string dragon, bool openWorld = false)
     {
         _dragon = dragon;
+        _openWorld = openWorld;
     }
+
+    // An open-world boss's raid (RealmRaidOpenWorld): its attempt is not ended on "no damage" while raiders still fight it
+    // (RealmRaidTetherReach.HoldsAttemptWhileFought). The dragons keep their rule.
+    private readonly bool _openWorld;
+    private bool _heldLogged;
 
     /// <summary>The raid is gathering at its staging ring after a wipe.</summary>
     public bool Regrouping { get; private set; }
@@ -115,6 +121,17 @@ public sealed class RealmRaidDragonFight
     /// </summary>
     public static bool AttemptOver(bool dragonInCombat, long attemptMilliseconds, long sinceProgressMilliseconds) =>
         dragonInCombat ? sinceProgressMilliseconds >= NoProgressMilliseconds : attemptMilliseconds >= EngageGraceMilliseconds;
+
+    /// <summary>
+    /// As above, except that an open-world boss in combat with raiders (<paramref name="raidersAtBoss"/> standing at it) is
+    /// never "no damage for five minutes": owner's PC, 2026-11-16 (build ccba364), Marfoirwort's attempt 1 ended so with
+    /// raiders on him (lowest 79%), and he killed 103 more while the raid regrouped with no attempt open. The attempt now ends
+    /// when he leaves combat (RealmRaidTetherReach.HoldsAttemptWhileFought).
+    /// </summary>
+    public static bool AttemptOver(bool dragonInCombat, long attemptMilliseconds, long sinceProgressMilliseconds, bool openWorld,
+        int raidersAtBoss) =>
+        !RealmRaidTetherReach.HoldsAttemptWhileFought(openWorld, dragonInCombat, raidersAtBoss) &&
+        AttemptOver(dragonInCombat, attemptMilliseconds, sinceProgressMilliseconds);
 
     /// <summary>The regroup goes in again: rested at least five minutes, enough of the roster at the ring, the dragon landed.</summary>
     public static bool GoesInAgain(int staged, int roster, long regroupMilliseconds, bool landed) =>
@@ -155,13 +172,25 @@ public sealed class RealmRaidDragonFight
         // region is standing again seconds later, but it fell all the same.
         foreach (Raider raider in raiders)
             if (!raider.Standing && _engaged.Contains(raider.Id)) _fell.Add(raider.Id);
-        if (!AttemptOver(dragon.InCombat, now - _attemptSince, now - _progressTick)) return;
+        int atBoss = raiders.Count(r => r.AtDragon);
+        if (!AttemptOver(dragon.InCombat, now - _attemptSince, now - _progressTick, _openWorld, atBoss))
+        {
+            if (_openWorld && !_heldLogged && dragon.InCombat && now - _progressTick >= NoProgressMilliseconds && Log.IsInfoEnabled)
+            {
+                _heldLogged = true;
+                Log.Info($"REALM_RAID_DRAGON_ATTEMPT_HELD dragon=\"{_dragon}\" engaged={_engaged.Count} fallen={_fell.Count} atBoss={atBoss} " +
+                         $"health={dragon.HealthPercent} lowest={_attemptLowestPercent} reason=\"no damage for five minutes, but raiders still " +
+                         "fight it: the attempt stays open until it leaves combat\"");
+            }
+            return;
+        }
         EndAttempt(raiders, dragon, now, dragon.InCombat ? "no damage for five minutes" : "left combat");
     }
 
     private void BeginAttempt(IEnumerable<long> raiders, Dragon dragon, long now)
     {
         _attempt = true;
+        _heldLogged = false;
         _attemptSince = _progressTick = now;
         _engaged.Clear();
         _engaged.UnionWith(raiders);
