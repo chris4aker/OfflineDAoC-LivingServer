@@ -1620,6 +1620,8 @@ namespace DOL.GS
                 directive.SharedGoal, leaderStaging
                     ? "The leader arrived; inviting the remaining members to form around this position"
                     : $"Waiting in formation for {directive.BotMemberCount:N0} bot members");
+            // Bots as people 1.2 (WP5): a long wait at the rendezvous ends seated.
+            BotMovementHabitsRuntime.WaitTurn(bot, BotMovementHabitsRuntime.WaitSpot.Group);
             return true;
         }
 
