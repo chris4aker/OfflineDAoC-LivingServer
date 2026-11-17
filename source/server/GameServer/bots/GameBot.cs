@@ -4092,16 +4092,32 @@ namespace DOL.GS
             }
         }
 
-        private int GetSpecPointsForLevel(int level, bool botCreation)
+        private int GetSpecPointsForLevel(int level, bool botCreation) =>
+            SpecPointsForLevel(CharacterClass.SpecPointsMultiplier, level, botCreation || EarnsHalfLevelPoints);
+
+        /// <summary>
+        /// An autonomous gamebot earns the half-level points above level 40 whether it trains every level or catches up
+        /// several at once. Players get them at each "x.5" second stage (GamePlayer.OnLevelSecondStage, multiplier x level
+        /// / 20); gamebots have no second stage, and before 1.2 only a bot catching up more than one level (or made above
+        /// level 1) was given them, so a gamebot that trained every level reached 50 with 220/330/445 points fewer (x1.0,
+        /// x1.5, x2.0) than one the launcher made at 50, and could not finish an era build sized to the level-50 budget
+        /// (review of era builds WP0-2, 2026-11-17). Hired companions keep their own count: their player places their
+        /// points (True 1.65), and /spawn and /bot companions are made trained.
+        /// </summary>
+        private bool EarnsHalfLevelPoints => IsAutonomousWorldBot && !IsHiredCompanion;
+
+        /// <summary>The spec points for reaching <paramref name="level"/>; with <paramref name="halfLevel"/>, above level 40,
+        /// also the half level before it (level - 1).5. Pure; the sum over levels 2-50 with half levels is
+        /// OfflineDaoc.Shared.EraBuildCatalog.PointBudget.</summary>
+        public static int SpecPointsForLevel(int multiplier, int level, bool halfLevel)
         {
             int specpoints = 0;
 
-            if (botCreation)
-                if (level > 40)
-                    specpoints += CharacterClass.SpecPointsMultiplier * (level - 1) / 20;
+            if (halfLevel && level > 40)
+                specpoints += multiplier * (level - 1) / 20;
 
             if (level > 5)
-                specpoints += CharacterClass.SpecPointsMultiplier * level / 10;
+                specpoints += multiplier * level / 10;
             else if (level >= 2)
                 specpoints = level;
 

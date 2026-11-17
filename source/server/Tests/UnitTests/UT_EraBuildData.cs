@@ -94,6 +94,28 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void EveryLineIsOneTheClassTrains()
+        {
+            // Review of WP0-2 (2026-11-17): a real Specs constant is not enough, the class must train it (the D7 fills,
+            // Scout Longbows and Warden Blades, most of all). The data file's "lines" came from make_era_builds.py, so the
+            // check is against the server's own class files: every line some build of the class trains today (each family,
+            // every random variant and weapon). SkillBase (the class files' weapon lines) needs the test language tables.
+            using var language = new DOL.UnitTests.PetTestLanguageScope();
+            foreach (EraClass eraClass in Catalog.Classes)
+            {
+                var cls = (eCharacterClass)eraClass.ClassId;
+                var trained = new HashSet<string>(StringComparer.Ordinal);
+                foreach (eSpecType family in BotSpec.GetSpecializationChoices(cls))
+                    for (int i = 0; i < 400; i++)
+                        foreach (BotSpecLine line in BotSpec.GetSpec(cls, family).SpecLines)
+                            trained.Add(line.Spec);
+                foreach (EraBuild build in eraClass.Builds)
+                    foreach (string line in build.Specs.Select(s => s.Key))
+                        Assert.That(trained, Does.Contain(line), $"{build.Id}: {line} is not a line any {eraClass.Name} build trains");
+            }
+        }
+
+        [Test]
         public void EveryFamilyIsOneOfTheClassFilesBuildsAndMatchesItsWeaponLines()
         {
             string[] dualLines = [Specs.Dual_Wield, Specs.Left_Axe, Specs.Celtic_Dual, Specs.HandToHand];
