@@ -324,7 +324,7 @@ New bots are named the way a 2003 server's players named themselves:
 - **Who gets them:** bots made by the launcher's + buttons and by the server. Bots you already have keep their names.
 - **Details:** the research and the mix are in [research/BOT-NAMES-2003.md](research/BOT-NAMES-2003.md).
 
-### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_group_pet_cap`)
+### RvR perception (`rvr_bot_perception`, `rvr_bot_awareness`, `rvr_bot_spotters`, `rvr_bot_perception_bots`, `rvr_bot_group_lookers`, `rvr_group_pet_cap`)
 
 Added for 1.2 (owner Chris, 2026-11-01) after a player's report on r/daoc: gamebots in the frontier saw you from
 5,000 units, instantly and all at once, whenever you were in their line of sight. Now they notice you the way players
@@ -333,10 +333,17 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
 [BOT-BUILDS-AND-RVR.md](BOT-BUILDS-AND-RVR.md) (from the `plan/rvr-builds` branch, PR #52).
 
 - **Who it changes:** autonomous gamebots in the frontier, the battlegrounds and Darkness Falls, when they pick an enemy
-  player, a player's companion or a player's pet. Enemy gamebots, siege engines, keep guards, doors and monsters are
-  acquired as before, and so are targets of bots holding a keep or working a siege. A bot that is hit, or whose
-  realm-mates near it or group are attacked, fights back at once (`bot_incoming_fire_reaction` handles that delay).
-  Your own companions and the gamebots in your group never scan for enemies this way and never hear these calls.
+  player, a player's companion or a player's pet. Since 1.2 work package 1 (`rvr_bot_perception_bots`, below) enemy
+  gamebots and their pets are noticed the same way. Siege engines, keep guards, doors and monsters are acquired as
+  before, and so are the targets of bots at a keep they hold or besiege. A bot that is hit, or whose realm-mates near
+  it or group are attacked, fights back at once (`bot_incoming_fire_reaction` handles that delay). Your own companions
+  and the gamebots in your group never scan for enemies this way and never hear these calls.
+- **At a keep means near it (1.2):** a bot counts as at its keep only within 9,500 units of it (the ring the siege
+  camps stand in, which the siege code already counts as "there"), or while it works a siege engine. Until 1.2 a whole
+  army counted as at the keep from the moment its warband chose to attack or defend it, so a column on the road saw
+  everything at once. Now a marching column, attackers and defenders alike, notices like everyone else until it is
+  9,500 units from the keep. In the lane survey's 165 main routes that is most of each march (about 85% of the
+  distance; 70% for the short keep-to-keep hops).
 - **Noticing:** within 1,000 units a bot always notices you; beyond 3,500 it never notices on its own. In between it
   is a chance on each scan, set so that one bot looking on its own needs this long (the median) for a plain sighting
   (you alone, moving, not fighting or casting, not in front of it):
@@ -351,11 +358,31 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
   is worked out from the real time since the bot's last scan, so the times hold if bots scan more slowly under load.
   Fighting halves the time, casting and a group of 3 or more divide it by 1.5, being in the bot's 120° view by 1.75,
   and standing still out of combat doubles it. Line of sight and stealth still apply first.
-- **The observer cap:** at most 3 bots of a realm (easy 2, veteran 5) look for the same enemy in each second. The
-  others don't roll at all: they learn of you only from a call. Bots within 1,000 units don't need a slot. In the
-  audit's spread-out crowd (50 bots in groups of 8 between 1,000 and 3,500 units) about a third have engaged after
-  5 s and two thirds after 10 s, against 90% after 5 s without the cap; someone still notices you within 5 s 94% of
-  the time.
+- **The observer cap:** at most 3 bots of a realm (easy 2, veteran 5) look for the same enemy group in each second
+  (until 1.2: the same enemy). The others don't roll at all: they learn of you only from a call. Bots within 1,000 units
+  don't need a slot. A bot looks at a group once per scan, for the member it is most likely to notice, and noticing
+  one member notices that member's group mates within 1,500 units of it; a mate who walks up later, near one already
+  noticed, is noticed then. In the audit's spread-out crowd (50 bots in groups of 8 between 1,000 and 3,500 units)
+  about a third have engaged after 5 s and three fifths after
+  10 s (two lookers per group: 33% and 59%; every bot looking, as before 1.2: 35% and 62%), against 90% after 5 s
+  without the cap; someone still notices you within 5 s 96% of the time (94% before).
+- **Lookers (`rvr_bot_group_lookers`, 1.2):** away from keeps, two members of each gamebot group look for enemies,
+  you included, and the pair changes every 10 seconds; a soloer or a pair looks for itself. The others run no scan
+  until something wakes them: a mate calls an enemy, a group mate is fighting, or the group's plan has a target. The
+  table above is one bot looking on its own, so it holds for each looker and each soloer; a group of 8 now first
+  notices you in about half the table's time (two lookers), where
+  every member looking under the cap took about a quarter (normal: 0.8 s at 1,500, 2.9 s at 2,500 and 10.3 s at 3,400,
+  against 0.2, 1.4 and 5.5 s).
+- **How far (1.2):** away from keeps a bot looks only as far as it could notice anyone: 3,500 units on normal (easy
+  2,600, veteran 4,500), not 5,000. That is about half the area. Bots at a keep, raids and battleground assaults still
+  look 5,000.
+- **Stealth (1.2, part of `rvr_bot_perception_bots`):** until 1.2 a bot never saw a stealthed enemy until it struck.
+  Now a bot may notice one, player or bot, by chance on each scan, never better than a player in its place: only
+  within the range the server gives a player to see that stealther ((level - stealth spec) x 20 + 125, wider with
+  Detect Hidden or See Hidden, never through Vanish), and never beyond 350 units. Within 125 units the chance rises to
+  about 50% a second at point blank (veteran 60%, easy 35%); from 125 it falls to nothing at 350 or at the player's
+  range, whichever is nearer. A bot fighting someone else never notices, line of sight is needed, and its mates are
+  not told (they cannot see it). These numbers are a first cut, not from a source.
 - **Reacting:** a bot that notices you engages 0.5-2 seconds later. Higher level bots and bold personalities
   (Daredevils, then high Risk) are faster.
 - **Spotters (`rvr_bot_spotters`):** the bot that notices you tells its group mates within 2,500 units, and each of them
@@ -375,22 +402,38 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
   Druids and Hunters don't count. Groups you lead or join are never changed. 0 turns the cap off. Which classes
   gamebots play is unchanged; a cap across a whole warband is not done yet.
 - **Settings:** `rvr_bot_perception` on, `rvr_bot_awareness` normal, `rvr_bot_spotters` on and `rvr_group_pet_cap` 2 by
-  default. With `rvr_bot_perception` off bots see as before.
-- **Log:** `RVR_NOTICE` for each sighting (bot, target, distance, the factors, the chance, `time_since_first_los_ms`,
-  the delay) and `RVR_SPOT` for each call (`told` in the group, `relayed` to other groups, `held` by their duty, and
-  where it was said). The medians in the table can be checked against `time_since_first_los_ms`.
+  default. With `rvr_bot_perception` off bots see as before. `rvr_bot_perception_bots` and `rvr_bot_group_lookers`
+  are on by default and need `rvr_bot_perception` and the master switch `rvr_bot_field_tactics`; they apply only to
+  gamebots away from keeps and not on a raid, in a battleground assault or in a group with a player. With
+  `rvr_bot_perception_bots` off enemy gamebots are acquired at once again, up to 5,000 units, and stealthers are never
+  seen; with `rvr_bot_group_lookers` off every bot looks.
+- **Log:** `RVR_NOTICE` for each sighting (bot, target, `kind` = Player, PlayerCompanion, PlayerPet, EnemyBot or
+  EnemyBotPet, `party` (solo or the enemy group), `partyNoticed` (members noticed with it), distance, the factors
+  (Party for a mate noticed with another, Stealth for a stealther, with its `stealthLimit`), the chance,
+  `time_since_first_los_ms`, the delay), one line per group noticed, and `RVR_SPOT` for each call (`kind`, `noticed`,
+  `told` in the group, `relayed` to other groups, `held` by their duty, and where it was said). Once a minute
+  `RVR_SCAN_BUDGET` per realm: scans, which bots scanned (lookers, solo, woken, everyone), idle non-lookers, notice
+  rolls, rolls refused by the cap, rays, notices and stealth rolls. The medians in the table can be checked against
+  `time_since_first_los_ms`.
 - **Cost:** the frontier scan still casts at most 8 line-of-sight rays per scan (`VisibilityBudget`), and now casts
-  none at a player a bot couldn't notice on that scan (beyond 3,500 units, or over the observer cap). In a test with
-  900 gamebots of one realm around a player, rays at the player fell from 99 to 11 a second; with 2,700 bots of three
-  realms in one zone the scan casts about 18,700 rays a second, as before (`UT_RvrPerceptionCalibration`).
+  none at a target a bot couldn't notice on that scan (beyond the outer range, or over the observer cap for a group it
+  is not already watching). In a test with 900 gamebots of one realm around a player, rays at the player fell from 99
+  to 11 a second; with 2,700 bots of three realms in one zone the scan casts about 18,700 rays a second, as before
+  (`UT_RvrPerceptionCalibration`). With 1.2 work package 1, in the scene the RvR design assumed (300 gamebots per
+  realm, 80% in groups of five, nobody fighting, 10 s from a cold start) scans fell from 782 to 754 a second and rays
+  from 6,262 to 5,797 in a 24,000-unit square, and from 782 to 685 scans and 5,875 to 4,054 rays in a 48,000-unit
+  square. That is an upper bound: in the test nobody fights, so the bots woken by a call keep scanning; the design's
+  estimate of about 416 scans and 2,000 rays a second is for a quiet field. Not measured in game.
 - **Owner's decisions (confirmed by the owner, 2026-11-05):** easy is twice the normal times and veteran half; bots
   within 1,000 units are outside the observer cap; gamebot-group members answer calls; other groups of a warband hear
   a call half the time, 4 seconds later; the pet-class list above (Druids and Hunters out, the Sluaghbinder in) with a
   cap of 2; a median of 0.75 s just outside 1,000 units (normal).
 - **Checked:** automated tests only (`UT_RvrPerception`, `UT_RvrPerceptionCalibration`, `UT_RvrPerceptionDuty`,
-  `UT_RvrPetCap`). Noticing was seen on the owner's PC on build `3d67b6f` (2026-11-15: bots noticed the owner's
-  character at 516-1,575 units, by chance and after a delay). The spotter call (`RVR_SPOT`) and the pet cap have not
-  been seen yet. Bots noticing enemy bots by the same rule is designed in [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md).
+  `UT_RvrPetCap`; for 1.2 work package 1 `UT_RvrPerceptionBots`). Noticing was seen on the owner's PC on build
+  `3d67b6f` (2026-11-15: bots noticed the owner's character at 516-1,575 units, by chance and after a delay). The
+  spotter call (`RVR_SPOT`) and the pet cap have not been seen yet. The 1.2 work package 1 parts (enemy gamebots and
+  their groups, lookers, the radius, "at a keep" by position, stealth, `RVR_SCAN_BUDGET`) are tests only: not seen in a
+  log on the owner's PC yet. The design is [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md).
 
 ### Playing with friends: bots and companions (`companion_budget_total`, `companion_budget_per_player`)
 
