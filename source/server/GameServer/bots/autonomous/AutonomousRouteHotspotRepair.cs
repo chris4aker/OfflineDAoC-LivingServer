@@ -37,7 +37,10 @@ public static class AutonomousRouteHotspotRepair
         float Radius,
         Vector3 Escape,
         Vector3 NetworkWitness,
-        float? SourceZ = null);
+        float? SourceZ = null,
+        // True where connected ground at the same height shares the footprint: the actor must also have no corridor
+        // to the escape, so a bot already on the real network is never moved.
+        bool RequireDisconnectedSource = false);
 
     private readonly record struct AuditedCampPocket(
         ushort RegionId,
@@ -123,6 +126,13 @@ public static class AutonomousRouteHotspotRepair
         // Camelot after three failed recoveries (runs 24-27: 43 give-ups, 14 trips home). Escape: the portal arrival in
         // the keep yard, which routes to the whole frontier.
         new(100, new(596640, 632288), 650, new(596364, 631509, 5971), new(600862, 628700, 5769), 5976),
+        // Fort Gwyntell (Dales of Devwy, zone 53): a separate flat floor of 27 polygons at 5,715 (x 425,856-426,675,
+        // y 416,704-417,613; every vertex within 456 of the centre) joins nothing; the fort's own ground beside it is
+        // also at 5,715 and above it at 5,782. Lordmuffin logged in on it and failed the epic-albion hub route three
+        // times before release (owner PC, 2026-11-17, 453e01a); XBloodX was released on its edge on 11-16. Escape:
+        // the hub centre; witness: the fort bind point. Both are on the connected ground, outside the circle.
+        new(51, new(426265, 417158), 500, new(426905, 416817, 5712), new(426604, 416383, 5715), 5715,
+            RequireDisconnectedSource: true),
         new(200, new(312250, 472500), 4_000, ConnachtMainRoad, ConnachtMainNetworkWitness),
 
         // Four measured Lough Derg terrain pockets are locally present but do
@@ -431,10 +441,32 @@ public static class AutonomousRouteHotspotRepair
                 !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) ||
                 !AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor.Value, witness.Value))
                 return false;
+            if (pocket.RequireDisconnectedSource &&
+                (region.GetZone((int)position.X, (int)position.Y) != zone ||
+                 AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, position, floor.Value)))
+                return false;
             escape = floor.Value;
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// A group member whose route to its formation slot failed while it stands in an audited terminal pocket (the
+    /// Fort Gwyntell floor, 2026-11-17) is moved to that pocket's escape, but only when the escape itself has a full
+    /// corridor to the slot. Otherwise the move would fix nothing and the ordinary failure report goes ahead.
+    /// </summary>
+    public static bool TryGetHubRouteEscape(IPathfindingMgr nav, Region region, ushort regionId,
+        Vector3 position, Vector3 formation, out Vector3 escape)
+    {
+        if (!TryGetImmediateEscape(nav, region, regionId, position, out escape) ||
+            Vector3.DistanceSquared(position, escape) <= 64 * 64)
+            return false;
+        Zone zone = region.GetZone((int)escape.X, (int)escape.Y);
+        if (zone == null || zone != region.GetZone((int)formation.X, (int)formation.Y))
+            return false;
+        Vector3? slot = nav.GetClosestPoint(zone, formation, 96, 96, 512, nav.DefaultFilters);
+        return slot.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, escape, slot.Value);
     }
 
     /// <summary>
