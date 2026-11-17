@@ -2608,21 +2608,21 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_POSITIONING;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): watch and size up before engaging.
+		/// 1.2 work package 4 (stances, RvrEngagement): watch and size up before engaging.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_size_up", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group that sees an enemy group, or a fight between the other two realms, watches first and counts heads, healers, levels, health and power. A bot that is hit always fights back. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_size_up", "Open-field RvR (1.2): size-up. A bot-only group in the open field that notices an enemy group, or a fight between the other two realms, stops and watches first (about 6 s casual, 9 s average, 12 s veteran, shorter for an impatient leader) and counts heads, healers, levels, health and power; then it engages at fair odds, kites or retreats. A bot that is hit always fights back. Raids, battleground assaults, keep fights and groups with a player keep today's rules. Needs rvr_bot_field_tactics. Log: RVR_SIZE_UP, RVR_WATCH, RVR_STANCE.", true)]
 		public static bool RVR_BOT_SIZE_UP;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): kite and retreat from bad odds.
+		/// 1.2 work package 4 (stances, RvrEngagement): kite and retreat from bad odds (needs bot_veteran_retreat for the retreat).
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_disengage", "Does nothing yet: reserved for 1.2 work package 4. When built: a bot group facing bad odds or losing a fight kites or retreats, raggedly, as people do. It uses the group retreat, so bot_veteran_retreat off also turns it off. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_disengage", "Open-field RvR (1.2): disengage. A bot-only group facing bad odds or losing its fight kites (fights while backing away) or retreats: drops its targets, sprints and runs, raggedly (members react 0.3-2 s apart, some never run, and one caught in melee fights back). Half of the warband's other groups hear of a retreat 4 s later. The retreat uses the group retreat, so bot_veteran_retreat off also turns the RvR retreat off (kiting stays). Needs rvr_bot_field_tactics. Log: RVR_RETREAT, RVR_STANCE.", true)]
 		public static bool RVR_BOT_DISENGAGE;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 4 (stances): regroup after a retreat or a wipe.
+		/// 1.2 work package 4 (stances, RvrEngagement): hold, regroup and rest, the chase leash, wipe memory.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_regroup", "Does nothing yet: reserved for 1.2 work package 4. When built: after a retreat or a wipe a bot group meets at a rally point, rests, re-forms and goes back out, and remembers its recent wipes. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_regroup", "Open-field RvR (1.2): regroup. After a retreat, or after a fight that left it hurt, a bot-only group meets at a rally point, rests and goes back out; veteran groups leave the fight's spot to rest, casual ones rest where they fought. Members strung out when an enemy is noticed wait for the rest. A member gives up a chase past its leash (bold bots chase much further). A group remembers its wipes; after three in ten minutes it roams before it hunts again. Needs rvr_bot_field_tactics. Log: RVR_REGROUP, RVR_CHASE, RVR_STANCE.", true)]
 		public static bool RVR_BOT_REGROUP;
 
 		/// <summary>
