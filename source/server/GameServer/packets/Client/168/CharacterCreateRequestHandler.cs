@@ -425,14 +425,13 @@ namespace DOL.GS.PacketHandler.Client.v168
             // Sluaghbinder choice from character select.
             // Editions without the custom class (classes/enable_sluaghbinder off, as in 0.38) turn this off; the
             // slot is then the disabled native MaulerHib class again, and a direct request is refused below.
-            if (Properties.ENABLE_SLUAGHBINDER && (eRealm)ch.Realm == eRealm.Hibernia &&
-                (ch.Class == (int)eCharacterClass.MaulerHib ||
-                 ch.Class == (int)eCharacterClass.Sluaghbinder))
+            int mappedClass = MapCustomClassSlot(Properties.ENABLE_SLUAGHBINDER, (eRealm)ch.Realm, ch.Class);
+            if (mappedClass != ch.Class)
             {
                 if (log.IsDebugEnabled)
                     log.Debug($"Mapping Hibernian client class slot {eCharacterClass.MaulerHib} to experimental Acolyte (Sluaghbinder novice path)");
 
-                ch.Class = (int)eCharacterClass.Acolyte;
+                ch.Class = mappedClass;
             }
 
             // Set Account Slot, Gender
@@ -955,10 +954,19 @@ namespace DOL.GS.PacketHandler.Client.v168
         }
 
         /// <summary>
-        /// Verify whether created character is valid
+        /// The class a creation request is saved as before validation: with the custom class on, a Hibernian request for
+        /// the client's Sluaghbinder slot (62) or the Sluaghbinder (63) becomes its novice (Acolyte, 16). Every other
+        /// request, every other realm (Albion's Acolyte included) and every request with the class off is unchanged.
         /// </summary>
-        /// <param name="ch">The character to check</param>
-        /// <returns>True if valid</returns>
+        public static int MapCustomClassSlot(bool customClassOn, eRealm realm, int requestedClass)
+        {
+            if (customClassOn && realm == eRealm.Hibernia &&
+                (requestedClass == (int)eCharacterClass.MaulerHib || requestedClass == (int)eCharacterClass.Sluaghbinder))
+                return (int)eCharacterClass.Acolyte;
+
+            return requestedClass;
+        }
+
         /// <summary>
         /// True when a player's creation request asks for the custom Hibernian class while classes/enable_sluaghbinder
         /// is off: the client's Sluaghbinder slot (62, MaulerHib), the Sluaghbinder (63) or its novice (Acolyte, 16).
@@ -973,6 +981,11 @@ namespace DOL.GS.PacketHandler.Client.v168
                  requestedClass == (int)eCharacterClass.Acolyte);
         }
 
+        /// <summary>
+        /// Verify whether created character is valid
+        /// </summary>
+        /// <param name="ch">The character to check</param>
+        /// <returns>True if valid</returns>
         public static bool IsCharacterValid(DbCoreCharacter ch)
         {
             bool valid = true;

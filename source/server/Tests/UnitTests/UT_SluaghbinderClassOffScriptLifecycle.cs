@@ -166,6 +166,67 @@ namespace DOL.GS.Tests
                 "class on: the slot makes the novice");
         }
 
+        /// <summary>
+        /// The class decisions of CreateCharacter in its order: the class-on slot mapping, the custom-class refusal, then
+        /// IsCharacterValid (realm, starting class, race, stats, gender). A player's request with legal stats (race base
+        /// plus 10 in each of three stats: the 30-point budget). The world's disabled_classes list is not part of it.
+        /// </summary>
+        private static bool PlayerCreationAccepted(bool classOn, eRealm realm, eRace race, eCharacterClass requested, out int savedClass)
+        {
+            savedClass = CharacterCreateRequestHandler.MapCustomClassSlot(classOn, realm, (int)requested);
+            if (CharacterCreateRequestHandler.IsCustomClassRefused(classOn, realm, savedClass, ePrivLevel.Player))
+                return false;
+
+            var stats = GlobalConstants.STARTING_STATS_DICT[race];
+            var ch = new DbCoreCharacter
+            {
+                Realm = (int)realm, Race = (int)race, Class = savedClass, Level = 1, Gender = 0, AccountName = "classoff-test",
+                Strength = stats[eStat.STR] + 10, Constitution = stats[eStat.CON] + 10, Dexterity = stats[eStat.DEX] + 10,
+                Quickness = stats[eStat.QUI], Intelligence = stats[eStat.INT], Piety = stats[eStat.PIE],
+                Empathy = stats[eStat.EMP], Charisma = stats[eStat.CHR],
+            };
+            return CharacterCreateRequestHandler.IsCharacterValid(ch);
+        }
+
+        // Class 16 is also Albion's Acolyte (Cleric, Friar, Heretic): the class-off refusal is for Hibernia only.
+        [TestCase(eRace.Briton)]
+        [TestCase(eRace.Avalonian)]
+        [TestCase(eRace.Highlander)]
+        public void AlbionAcolyteIsAcceptedOnBothEditions(eRace race)
+        {
+            foreach (bool classOn in new[] { false, true })
+            {
+                Assert.That(PlayerCreationAccepted(classOn, eRealm.Albion, race, eCharacterClass.Acolyte, out int saved), Is.True,
+                    $"{race} Acolyte, class {(classOn ? "on" : "off")}");
+                Assert.That(saved, Is.EqualTo((int)eCharacterClass.Acolyte));
+            }
+        }
+
+        [TestCase(eCharacterClass.MaulerHib)]
+        [TestCase(eCharacterClass.Sluaghbinder)]
+        [TestCase(eCharacterClass.Acolyte)]
+        public void ClassOff_HibernianCustomClassPathIsRefused(eCharacterClass requested)
+        {
+            Assert.That(PlayerCreationAccepted(false, eRealm.Hibernia, eRace.Celt, requested, out int saved), Is.False);
+            Assert.That(saved, Is.EqualTo((int)requested), "class off: nothing is mapped");
+        }
+
+        [TestCase(eCharacterClass.MaulerHib)]
+        [TestCase(eCharacterClass.Sluaghbinder)]
+        public void ClassOn_TheSlotStillMakesTheNovice(eCharacterClass requested)
+        {
+            Assert.That(PlayerCreationAccepted(true, eRealm.Hibernia, eRace.Celt, requested, out int saved), Is.True);
+            Assert.That(saved, Is.EqualTo((int)eCharacterClass.Acolyte));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ClassicHibernianClassIsAcceptedOnBothEditions(bool classOn)
+        {
+            Assert.That(PlayerCreationAccepted(classOn, eRealm.Hibernia, eRace.Celt, eCharacterClass.Naturalist, out int saved), Is.True);
+            Assert.That(saved, Is.EqualTo((int)eCharacterClass.Naturalist));
+        }
+
         [Test]
         public void ClassOff_MaulerSlotIsNotAHibernianStartingClassEither()
         {
