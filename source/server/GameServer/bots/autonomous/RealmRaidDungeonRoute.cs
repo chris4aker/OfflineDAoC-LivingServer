@@ -397,6 +397,19 @@ namespace DOL.GS
         public static bool IsResetWithRaidStanding(int engaged, int fallen, int healthPercent, int lowestPercent) =>
             engaged >= MinimumRaidersAtTarget && fallen * 4 < engaged && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent;
         public const int FreeEncounterResets = 2;
+
+        /// <summary>
+        /// The attempt's encounter was killed and has come back since the attempt's pull (pure): its SpawnTick, set by every
+        /// respawn (GameNPC.Spawn), is later than the pull. Then that attempt was won, and nothing about the new life (at full
+        /// health, out of combat) is a reset or a wipe. Owner's PC, 2026-11-16 (build ccba364, /epictest sweep, Darkness
+        /// Falls Albion): Chthonic Knight Ukobat, on the raid's trail, was killed about nine times; each time he came back
+        /// (3-4 minutes later) the route still held the attempt of his last life open and scored his 100% against that life's
+        /// low: two free resets (22:37:13 lowest=18, 22:46:23 lowest=66), then REALM_EXPEDITION_WIPE failures=1 engaged=54
+        /// fallen=0 lowest=14 (22:55:28) and failures=2 engaged=68 fallen=2 lowest=68 (23:07:42), and the raid ended
+        /// "Defeated at Chthonic Knight Ukobat" with 87 of 88 alive. Each followed a REALM_EXPEDITION_TARGET_DEFEATED.
+        /// </summary>
+        public static bool KilledSinceAttempt(long attemptStartTick, long spawnTick) =>
+            attemptStartTick > 0 && spawnTick > attemptStartTick;
         private readonly Dictionary<string, int> _freeResets = new(StringComparer.Ordinal);
 
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
@@ -1090,6 +1103,14 @@ namespace DOL.GS
         /// </summary>
         private bool MusterForFinal(GameLiving[] participants, long now)
         {
+            // The encounter died and came back since this attempt's pull: that attempt was won, and the new life is a new
+            // muster (KilledSinceAttempt; Chthonic Knight Ukobat, 2026-11-16).
+            if (_musterTarget == _target && _musterEngaged && KilledSinceAttempt(_musterEngagedTick, _target.SpawnTick))
+            {
+                log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={_engaged.Count} " +
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"killed; it came back since\" wipe=False");
+                _musterTarget = null;
+            }
             // The muster was placed while the encounter was out chasing raiders; it is home again, so the muster follows it
             // (Aidon the Archwizard, 2026-11-05: the muster went 2,600 from his home, on the ramp the chase had reached).
             if (_musterTarget == _target && !_target.InCombat && MusterReference(_target) is var home &&
@@ -1841,6 +1862,19 @@ namespace DOL.GS
             IsWipe(standingInside + fallen, fallen, 100, 100, livingRaid + fallen);
 
         /// <summary>
+        /// Raid-wide deaths outside an attempt count as a wipe once per fight (pure): <see cref="IsRouteWipe"/> as before (half
+        /// of the raiders inside fell within the window, so at least half of those at the fight did too), and the fight was not
+        /// already counted: the boss that scored the last such wipe has not left combat since (<paramref name="fightAlreadyCounted"/>). Owner's PC, 2026-11-16 (build ccba364, Tuscaran Glacier): one unplanned
+        /// fight with Queen Kula and King Tuscar during a regroup was counted twice in 111 s as wipes at King Tuscar
+        /// (20:39:59 engaged=129 fallen=65, 20:41:50 engaged=76 fallen=38, both lowest=100), and the second ended the raid.
+        /// </summary>
+        public static bool CountsRouteWipe(int fallen, int standingInside, int livingRaid, bool fightAlreadyCounted) =>
+            !fightAlreadyCounted && IsRouteWipe(fallen, standingInside, livingRaid);
+
+        /// <summary>The boss the last raid-wide wipe outside an attempt was scored at, while that fight goes on.</summary>
+        private GameNPC _routeWipeKiller;
+
+        /// <summary>
         /// Owner's PC, 2026-11-14 (build e3b8238): Icelord Agmundr, set aside after a stalled muster, killed 80 raiders at the
         /// harrower's muster beside his spawn in two minutes, and nothing scored it: no attempt was open, so the raid ended on
         /// the stall clock with "wipes=1". Deaths of raiders inside while no attempt is open are now counted; a raid-wide
@@ -1855,6 +1889,8 @@ namespace DOL.GS
             foreach (GameLiving p in participants)
                 if (p.IsAlive && p.CurrentRegionID == _region) _standingInside.Add(p);
             while (_routeDeaths.Count > 0 && now - _routeDeaths.Peek().At > RouteDeathWindowMilliseconds) _routeDeaths.Dequeue();
+            // The fight a route wipe was scored in ends when its boss leaves combat (or dies).
+            if (_routeWipeKiller != null && (!_routeWipeKiller.IsAlive || !_routeWipeKiller.InCombat)) _routeWipeKiller = null;
             if (_musterEngaged) { _routeDeaths.Clear(); return; }
             int fallen = _routeDeaths.Count;
             if (fallen < MinimumRaidersAtTarget) return;
@@ -1868,6 +1904,13 @@ namespace DOL.GS
                             Vector3.Distance(new Vector3(n.X, n.Y, n.Z), centre) <= RouteKillerRadius)
                 .OrderBy(n => Vector3.DistanceSquared(new Vector3(n.X, n.Y, n.Z), centre)).FirstOrDefault();
             _routeDeaths.Clear();
+            if (killer != null && !CountsRouteWipe(fallen, _standingInside.Count, livingRaid, _routeWipeKiller != null))
+            {
+                log.Warn($"REALM_EXPEDITION_ROUTE_LOSSES region={_region} fallen={fallen} inside={_standingInside.Count} raid={livingRaid} " +
+                         $"killer=\"{killer.Name}\" at={(int)centre.X},{(int)centre.Y},{(int)centre.Z} target=\"{TargetName}\" " +
+                         $"reason=\"this fight was already counted as a wipe at {_routeWipeKiller?.Name}; no attempt used\"");
+                return;
+            }
             if (killer == null)
             {
                 log.Warn($"REALM_EXPEDITION_ROUTE_LOSSES region={_region} fallen={fallen} inside={_standingInside.Count} raid={livingRaid} " +
@@ -1875,6 +1918,7 @@ namespace DOL.GS
                          $"reason=\"half the raid inside fell outside an attempt and no boss was fighting there; no attempt used\"");
                 return;
             }
+            _routeWipeKiller = killer;
             int failures = _failedAttempts[killer.Name] = FailedAttempts(killer.Name) + 1;
             _wipes.Enqueue((killer.Name, failures, _standingInside.Count + fallen, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{killer.Name}\" level={killer.Level} failures={failures} " +
