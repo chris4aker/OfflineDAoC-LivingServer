@@ -145,7 +145,7 @@ public static class RvrFightPlanner
     public static RvrFightPlan PlanInterrupts(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
         RvrTacticsSwitches switches, long now) => RvrInterruptPlan.Plan(plan, board, switches, now, RvrFieldReader.Of(board));
 
-    /// <summary>Work package 3: who guards whom. Reserved; returns the plan unchanged.</summary>
+    /// <summary>Work package 3: who guards whom (<see cref="RvrPeelPlan.Protect"/>: one tank per healer, then casters).</summary>
     public static RvrFightPlan PlanProtect(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
-        RvrTacticsSwitches switches, long now) => plan;
+        RvrTacticsSwitches switches, long now) => RvrPeelPlan.Protect(plan, board, switches, now);
 }

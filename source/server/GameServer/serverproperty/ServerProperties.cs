@@ -2596,15 +2596,15 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_INTERRUPTS;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 3 (protect): tanks guard their healers against players and bots.
+		/// 1.2 work package 3 (protect): tanks guard their healers against players and bots.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_peel", "Does nothing yet: reserved for 1.2 work package 3. When built: a bot group's shield tanks guard a named healer or caster and peel attackers off it when the attacker is a player or a bot, not only a monster. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_peel", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, the plan names one tank per healer (then casters) as its guard; peeling now triggers when a player or a bot, not only a monster, hits a healer or caster. A guard keeps Protect and, with a shield, Guard on his charge, Intercepts for it below half health, pulls off only the enemies on his own charge (so the tanks do not all chase one attacker) and slams it with a stun style when his class has one usable (the server's 1.65 stun immunity applies). Human errors by skill tier: tanks over-extend and leave the healer (Casual 35%, Average 15%, Veteran 5% of the time; design values). Log: RVR_PEEL. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_PEEL;
 
 		/// <summary>
-		/// Reserved for 1.2 work package 3 (protect): backline, spread and kiting.
+		/// 1.2 work package 3 (protect): backline, spread and kiting.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_positioning", "Does nothing yet: reserved for 1.2 work package 3. When built: in an open-field fight casters and healers stand behind the tanks, members keep apart so one mez cannot catch two healers, and healers kite. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_positioning", "Open-field RvR (1.2): in a fight against players or bots, a bot-only group's casters and healers stand behind the tanks relative to the enemy and keep more than 350 units apart, so one mez cannot catch two healers (450 on incoming); a guard stays beside his charge; a healer with an enemy melee fighter on it kites (runs a bit, then heals). Every walk is proven on dry ground on the bot's own floor first. Human errors by skill tier (design values): healers too close together (Casual 30%, Average 10%, Veteran 3%), healers charging with the tanks (15% / 4% / 1%), a healer that does not kite (60% / 30% / 10%), a ragged spread. Log: RVR_BACKLINE, RVR_KITE. Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_POSITIONING;
 
 		/// <summary>
