@@ -115,8 +115,8 @@ public static class BotMovementHabitsRuntime
 
     /// <summary>
     /// The one place the movement habits read a bot's own tier (the overshoot; in an RvR fight the group's tier counts,
-    /// owner decision 5): the tier of its skill profile when <see cref="ProfileTier"/> gives one, else this package's own
-    /// roll (<see cref="BotMovementHabits.TierOf"/>, salt "MOVE"), so a bot never has two tiers once profiles exist.
+    /// owner decision 5): the tier of its skill profile when <see cref="ProfileTier"/> gives one, else the profile's start
+    /// roll (<see cref="BotMovementHabits.TierOf"/>, salt "BSKL"), so a bot never has two tiers (work package 7).
     /// </summary>
     public static RvrSkillTier TierOf(GameBot bot) =>
         BotMovementHabits.TierFor(ProfileTier?.Invoke(bot), bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID, Awareness);

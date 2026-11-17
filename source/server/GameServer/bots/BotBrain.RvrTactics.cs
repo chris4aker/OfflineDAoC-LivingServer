@@ -169,7 +169,9 @@ namespace DOL.AI.Brain
                 }
                 _rvrCallSeen = called;
                 _rvrCallSeenAt = plan.CalledAt;
-                _rvrFollowAt = mainAssist ? now : plan.CalledAt + RvrAssist.FollowDelay(tier, BotBody.DatabaseID, plan.CalledAt);
+                // Bots as people (WP7): the member's reactions facet moves its delay inside the group tier's band (D5).
+                _rvrFollowAt = mainAssist ? now : plan.CalledAt + BotSkillHands.RvrFollowDelay(BotBody, tier,
+                    RvrAssist.FollowDelay(tier, BotBody.DatabaseID, plan.CalledAt));
                 _rvrCallAggroAdded = false;
                 _rvrSwitchLogged = false;
                 LogRvrCall(plan, now);

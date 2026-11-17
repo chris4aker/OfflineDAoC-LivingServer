@@ -422,39 +422,90 @@ class EraBuilds(unittest.TestCase):
 
 
 class BotsAsPeople(unittest.TestCase):
-    def profiles(self, log, casual, average, veteran):
+    """The fixtures are the lines as the server writes them (the C# format strings of WP0-WP5 and WP2R, 2026-11-17)."""
+
+    def profiles(self, log, casual, average, veteran, grown="average"):
         n = 0
         for tier, count in (("casual", casual), ("average", average), ("veteran", veteran)):
             for _ in range(count):
                 n += 1
-                log.add(at(1), f"BOT_SKILL_PROFILE name=B{n} person=b:{n} realm=Albion level=50 tier={tier} "
-                               f"start={tier} place=0.42 xp_h=1.0 awareness=normal")
+                # tier= may have grown with play; the shares are judged on start=
+                log.add(at(1), f"BOT_SKILL_PROFILE name=Bot{n} person=c:{n} realm=alb level=50 tier={grown} start={tier} "
+                               f"place=0.42 reactions=1.20 positioning=1.31 pulls=1.18 fire=1.02 buffs=1.40 power=1.25 "
+                               f"xp_h=0.0 awareness=normal")
 
-    def test_people_rows(self):
+    @staticmethod
+    def mistakes(out=(10, 100), inside=(1, 40)):
+        """BOT_SKILL_MISTAKES with every chance kind at these counts (casual column; average and veteran zero)."""
+        parts = ["BOT_SKILL_MISTAKES seconds=300"]
+        for kind in ("reaction", "position", "pull", "fire", "buff", "power"):
+            parts.append(f"out.{kind}=c{out[0]}/{out[1]},a0/0,v0/0")
+            parts.append(f"in.{kind}=c{inside[0]}/{inside[1]},a0/0,v0/0")
+        parts.append("rate_out=0.100 rate_in=0.025 lines=12 suppressed=0")
+        return " ".join(parts)
+
+    def played_session(self):
         log = Log().start(at(0))
-        log.add(at(1), "BOT_PEOPLE_SUMMARY seconds=300 skill=on rows=skill_profiles:10 scope: x logouts=0")
+        log.add(at(1), "BOT_PEOPLE_SUMMARY seconds=300 skill=on growth=on spare=on raidLearn=on places=on ask=on "
+                       "wrongRoads=on movement=on strafe=on stick=on sit=on milestones=on "
+                       "rows=skill:120,places:120,milestones:0,mechanics_seen:0 scope: records=500/0 mistakes=900/40 "
+                       "way=30/2 movement=200/10 refused=player_group:12,realm_raid:40 logouts=3")
         self.profiles(log, 31, 49, 20)
-        log.add(at(2), "BOT_SKILL_GROWTH name=B1 person=b:1 realm=Albion from=casual to=average start=casual xp_h=9.0")
-        log.add(at(2), "BOT_SKILL_MISTAKE kind=pull spared=true name=B2 person=b:2 realm=Albion tier=casual chance=0.050")
-        log.add(at(3), "RAID_LEARN raid=dungeon-albion-crystal mechanic=xanxicar-breath record=1 seenShare=0.40 familiarity=0.5")
-        log.add(at(3), "BOT_PLACE_LEARNED how=seeded bot=B3 id=3 realm=Albion level=35 place=x")
-        log.add(at(4), "BOT_PLACE_LEARNED how=visited bot=B3 id=3 realm=Albion level=35 place=y")
-        log.add(at(4), 'BOT_WAY_ASK bot=B4 id=4 realm=Albion level=30 tier=casual dest="Snowdonia" channel=faction said=asked')
-        log.add(at(4), 'BOT_WAY_TOLD asker=B4 id=4 answerer=B5 answererId=5 realm=Albion place="x" dest="y"')
-        log.add(at(5), 'BOT_WAY_WRONG_ROAD bot=B4 id=4 realm=Albion level=30 tier=casual dest="x" cost_s=95.0 result=back')
-        log.add(at(5), "BOT_MOVE_HABITS seconds=300 strafe=3")
-        log.add(at(5), 'BOT_MOVE_WALL bot="B6" id=6 region=1 keep="Caer Benowyc"')
-        log.add(at(6), "BOT_MILESTONE_REACHED bot=B7 arc=ding50")
-        log.add(at(6), "BOT_MILESTONE_TALK bot=B7 arc=ding50 line=halfway")
+        log.add(at(2), "BOT_SKILL_GROWTH name=Bot1 person=c:1 realm=alb from=casual to=average start=casual xp_h=41.0")
+        log.add(at(2), "BOT_SKILL_MISTAKE kind=pull spared=true name=Bot2 person=c:2 realm=alb tier=casual chance=0.025 "
+                       "group=4 add=1")
+        log.add(at(3), self.mistakes())
+        log.add(at(3), "RAID_LEARN raid=albion-crystal-cave mechanic=Xanxicar/blast record=0.39 seenShare=0.00 "
+                       "familiarity=0.29 raiders=60 seen=0 specialForces=0 knowledge=0.00 newcomer=0.29 veteran=0.29 health=100")
+        log.add(at(5), "RAID_LEARN raid=albion-crystal-cave mechanic=Xanxicar/blast record=0.39 seenShare=0.75 "
+                       "familiarity=0.39 raiders=62 seen=46 specialForces=0 knowledge=0.37 newcomer=0.22 veteran=0.48 health=100")
+        log.add(at(3), 'BOT_PLACE_LEARNED how=seeded bot=Bot3 id=3 realm=Albion level=35 places=24 at="Camelot City"')
+        log.add(at(4), 'BOT_PLACE_LEARNED how=visited bot=Bot3 id=3 realm=Albion level=35 place="Llyn Barfog" '
+                       'zone="Llyn Barfog"')
+        log.add(at(4), 'BOT_WAY_ASK bot=Bot4 id=4 realm=Albion level=30 tier=casual dest="Snowdonia" channel=faction said=said')
+        log.add(at(4), 'BOT_WAY_TOLD asker=Bot4 id=4 answerer=Bot5 answererId=5 realm=Albion place="Snowdonia" '
+                       'dest="Snowdonia"')
+        log.add(at(5), 'BOT_WAY_WRONG_ROAD bot=Bot4 id=4 realm=Albion level=30 tier=casual dest="Snowdonia" '
+                       'zone="Black Mountains South" cost_s=95.0 length=1100 look_s=6.0 result=back at=1,2,3')
+        log.add(at(5), "BOT_MOVE_HABITS seconds=300 strafeFights=2 strafes=3 faces=1 stickTurns=40 stickLost=1 "
+                       "overshoots=2 stepBacks=2 sits=9 wallWalks=1 wallSits=1 wallStands=1 wallGivenUp=0 bankLeans=1 "
+                       "refusedLegs=0 busyDrops=0 budgetDrops=0")
+        log.add(at(5), 'BOT_MOVE_SIT bot="Bot6" id=6 region=1 where=group waited_s=41')
+        log.add(at(5), 'BOT_MOVE_WALL bot="Bot6" id=6 region=1 keep="Caer Benowyc" x=1 y=2 z=3 waited_s=38')
+        return log
+
+    def test_people_rows_from_the_lines_the_server_writes(self):
+        log = self.played_session()
         sec = only(log.run()[1])
-        for cid in ("summary", "skill_profile", "skill_growth", "mistakes", "raid_learn", "places", "way", "movement",
-                    "milestones"):
+        for cid in ("summary", "skill_profile", "skill_growth", "mistakes", "raid_learn", "places", "way", "movement"):
             self.assertEqual(check(sec, cid)["status"], pcl.SEEN, cid)
+        self.assertEqual(check(sec, "milestones")["status"], pcl.NOT_SEEN, "work package 6 is not built")
         self.assertIn("100 profiles: 31/49/20", check(sec, "skill_profile")["detail"])
-        log.add(at(7), 'BOT_WAY_WRONG_ROAD bot=B8 id=8 realm=Albion tier=casual dest="x" cost_s=240.5 result=on')
+        self.assertIn("in/out=0.25", check(sec, "mistakes")["detail"])
+        self.assertIn("rose in albion-crystal-cave", check(sec, "raid_learn")["detail"])
+        self.assertIn("sits=9", check(sec, "movement")["detail"])
+        log.add(at(7), 'BOT_WAY_WRONG_ROAD bot=Bot8 id=8 realm=Albion level=30 tier=casual dest="x" zone="y" cost_s=240.5 '
+                       'length=900 look_s=5.0 result=back at=1,2,3')
         way = check(only(log.run()[1]), "way")
         self.assertEqual(way["status"], pcl.CONTRADICTED)
         self.assertIn("cost_s=240.5", way["line"])
+
+    def test_mistakes_in_the_players_group_at_the_strangers_rate_contradict(self):
+        log = Log().start(at(0))
+        log.add(at(1), "BOT_SKILL_MISTAKE kind=buff spared=true name=Bot2 person=c:2 realm=alb tier=casual chance=0.062")
+        log.add(at(2), self.mistakes(out=(10, 100), inside=(9, 100)))
+        self.assertEqual(check(only(log.run()[1]), "mistakes")["status"], pcl.CONTRADICTED)
+        log = Log().start(at(0))
+        log.add(at(2), self.mistakes(out=(10, 100), inside=(0, 5)))
+        mistakes = check(only(log.run()[1]), "mistakes")
+        self.assertEqual(mistakes["status"], pcl.NOT_SEEN)
+        self.assertIn("too few decisions", mistakes["detail"])
+
+    def test_raid_learning_without_a_rise_is_not_seen(self):
+        log = Log().start(at(0))
+        log.add(at(3), "RAID_LEARN raid=albion-crystal-cave mechanic=Xanxicar/blast record=0.39 seenShare=0.40 "
+                       "familiarity=0.33 raiders=60 seen=24 specialForces=0 knowledge=0.20 newcomer=0.29 veteran=0.40 health=100")
+        self.assertEqual(check(only(log.run()[1]), "raid_learn")["status"], pcl.NOT_SEEN)
 
     def test_skill_shares_off_the_mark(self):
         log = Log().start(at(0))

@@ -165,7 +165,7 @@ A few friends can now join your bot world from their own PCs, with the original 
   never bother, some wear one tidy colour, a few are peacocks in the dearest shades, many lean on their realm's colours,
   and a guild often wears one. Bots never buy glows: glowing weapons still come from epic and dragon drops and the
   Darkness Falls merchants. The server setting `bot_cosmetics` (on by default) turns it off.
-- **[if it lands: era builds] New bots are built like 2003 players.** The launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50`
+- **New bots are built like 2003 players.** The launcher's `+ Lv.1`, `+ Lv.20` and `+ Lv.50`
   buttons now make each realm's 2003 class mix (Cleric 12% of Albion, Healer 15% of Midgard, Druid 12% of Hibernia),
   and each new gamebot keeps one of its class's period builds for life: a Mind/Body Sorcerer more often than a Matter
   one, a Pacification Healer more often than a Mending one, with a little per-bot variation, and one bot in ten on an
@@ -178,6 +178,36 @@ A few friends can now join your bot world from their own PCs, with the original 
 - **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own
   budget. In the automated playtester's runs (10 gamebots a realm, two half-hour listens each, on a development machine) it went from 1.20 and 1.33
   lines a minute to 0.87 and 0.97. A full server is not quieter: its channels were rebalanced, not cut.
+
+### Bots as people (tests only)
+
+Gamebots play like people of 2003, not like perfect machines. All of it is on by default, touches only autonomous
+gamebots (never your companions, raids, battleground keep assaults or fights at a keep), and has been **tested
+automatically only: none of it has been seen on a played world yet**. The four switches are on the Living Server tab's
+**BOTS AS PEOPLE** card.
+
+- **Skill that varies.** Each gamebot is Casual, Average or Veteran (about 30/50/20; **RvR bot awareness** moves the mix).
+  It keeps that one tier everywhere: in fights, finding its way and moving.
+- **Mistakes, mostly on strangers.** A Casual bot now and then pulls an add, lets a buff run out, spends its power on its
+  dearest nuke, rests on less power or reacts late; a Veteran rarely does. No mistake ever takes on a named or a monster
+  more than 2 levels above the group. In a group with you they make a quarter as many. In open-field RvR a member steps
+  out of an area effect and follows its group's call after a delay that fits its group's skill.
+- **Skill that grows.** Bots get better with play, by one tier at most: about 40 hours of fighting from Casual to
+  Average. They never get worse by playing.
+- **Raids learn from their raiders** (Xanxicar's stomp only). The raid knows the stomp as well as the raiders who have
+  seen it, so a newcomer slips more than the veteran beside him. A world updated from 1.1.x starts with the raiders it
+  would have had, so its raids don't forget the boss.
+- **Bots know the places they've been:** their capital, a home town, the zones they levelled through and, from level 20,
+  their border keep. They learn a place by going there.
+- **Asking the way.** Heading somewhere new, a bot may ask "how do i get to ..." in /say or /faction (one /faction ask
+  per realm every 10 minutes); only bots that know the place answer. Or it tags along behind a realm-mate going there, or
+  takes a wrong road for a minute or two (never more than 3) and walks back.
+- **Movement that looks like people.** Melee bots circle-strafe in RvR and casters face their attacker as they back
+  off; bot groups travel on /stick in a line; bots overshoot where they stop, sit when they wait, crowd the bank, and
+  sit on the walls of keeps their realm holds, standing as an enemy comes near. Whether the original client shows a
+  sitting bot is still to be checked.
+- **Not yet in this build:** personal milestones (the ding to 50, realm rank 5, a dragon trophy). Its switch is there and
+  changes nothing yet.
 
 ### Questing and battlegrounds
 
@@ -284,7 +314,7 @@ only".
   on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, the
   loremasters and books, a session played together with a friend, and a character passport trip between two PCs. Real
   play may still find cases the tests miss.
-- **[if it lands: era builds] No raid has been fought by an era-built world yet.** The raid results above come from
+- **No raid has been fought by an era-built world yet.** The raid results above come from
   the owner's world, whose bots keep their earlier builds. A new install's bots have more healers and fewer pet classes;
   the raids haven't been played with that mix. Era builds have been tested automatically only.
 - **Dragon fights can fall apart partway.** In the play tests a raid on Cuuldurach collapsed at 69% and one on

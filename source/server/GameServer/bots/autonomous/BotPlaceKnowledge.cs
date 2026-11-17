@@ -480,10 +480,12 @@ public static class BotPlaceKnowledge
         Watch watch = Watches.GetOrAdd(person, static _ => new Watch());
         if (watch.ZoneId == zone.ID && watch.CheckedLevel == bot.Level)
             return;
-        watch.ZoneId = zone.ID;
-        watch.CheckedLevel = bot.Level;
+        // The zone is kept only once the switch and the scope allow it, so a bot refused here learns the zone later
+        // without leaving it (work package 7).
         if (BotPeopleScope.Check(bot, BotPeopleRule.Record, On, out _) != BotPeopleRefusal.None)
             return;
+        watch.ZoneId = zone.ID;
+        watch.CheckedLevel = bot.Level;
         using var aiProfile = AiProfile.Scope(AiSystem.PlaceKnowledge); // AI_PROFILE: measures only
         Arrive(BotPlaceSubject.Of(bot, person), zone.Description, bot.CurrentRegion?.Description);
     }

@@ -393,7 +393,7 @@ namespace DOL.UnitTests
             foreach (RvrSkillTier tier in Enum.GetValues<RvrSkillTier>())
                 Assert.That(BotMovementHabits.TierFor(tier, 123, RvrBotAwareness.Normal), Is.EqualTo(tier));
             Assert.That(BotMovementHabits.TierFor(null, 123, RvrBotAwareness.Normal),
-                Is.EqualTo(BotMovementHabits.TierOf(123, RvrBotAwareness.Normal)), "no profile: the package's own roll");
+                Is.EqualTo(BotMovementHabits.TierOf(123, RvrBotAwareness.Normal)), "no profile: the skill profile's start roll (WP7)");
             Assert.That(BotMovementHabitsRuntime.ProfileTier, Is.Not.Null, "wired to the skill profiles (WP1): one tier per bot");
         });
 

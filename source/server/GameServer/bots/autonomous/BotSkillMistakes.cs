@@ -195,6 +195,19 @@ public static class BotSkillMistakes
         return SpreadInBand(min, max, roll, memberPosition);
     }
 
+    /// <summary>
+    /// The delay (ms) before a member of an RvR group follows its group's call (work package 7): inside the group tier's band
+    /// (RvrAssist.FollowDelayRange: Casual 1-4 s, Average 0.6-2.5 s, Veteran 0.3-1.5 s), moved by the member's reactions facet
+    /// (owner decision 5). <paramref name="todayDelay"/> is today's fixed draw in that band; its place in the band is kept as
+    /// the roll, so the group's mean delay stays today's. Pure.
+    /// </summary>
+    public static long FollowDelayMilliseconds(RvrSkillTier groupTier, double memberPosition, long todayDelay)
+    {
+        var (min, max) = RvrAssist.FollowDelayRange(groupTier);
+        double roll = max > min ? Math.Clamp((todayDelay - min) / (double)(max - min), 0, 1) : 0.5;
+        return SpreadInBand(min, max, roll, memberPosition);
+    }
+
     /// <summary>How long (ms) a lapsed buff stays off: Casual 20-90 s, Average 10-45 s, Veteran 5-20 s, spread in the band. Pure.</summary>
     public static long BuffLapseMilliseconds(in BotSkillProfile profile, double roll)
     {
@@ -902,6 +915,18 @@ public static class BotSkillHands
             return today;
         var (min, max) = RvrPositioning.ReactionBand(groupTier);
         return BotSkillMistakes.SpreadInBand(min, max, Util.RandomDouble(), profile.Position(BotSkillFacet.Positioning));
+    }
+
+    /// <summary>
+    /// The delay (ms) before a member of an RvR group follows the group's call (BotBrain.RvrTactics): RvrAssist's band for the
+    /// group's tier, moved by the member's reactions facet (owner decision 5; work package 7). <paramref name="today"/> out
+    /// of scope or with no profile.
+    /// </summary>
+    public static long RvrFollowDelay(GameBot bot, RvrSkillTier groupTier, long today)
+    {
+        if (!AllowsCached(bot, out BotSkillProfile profile, out _))
+            return today;
+        return BotSkillMistakes.FollowDelayMilliseconds(groupTier, profile.Position(BotSkillFacet.Reactions), today);
     }
 
     // ---- life cycle ---------------------------------------------------------------------------------------------------------

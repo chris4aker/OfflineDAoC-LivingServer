@@ -220,6 +220,14 @@ public readonly struct BotSkillProfile : IEquatable<BotSkillProfile>
     public static RvrSkillTier StartTierFor(double roll, (int Casual, int Average, int Veteran) shares) =>
         RvrGroupSkill.TierForRoll(roll, 0, shares);
 
+    /// <summary>
+    /// A person's start tier: its own roll (<see cref="Roll"/>, salt "BSKL") on RVR-FIELD-1.2's shares moved by
+    /// rvr_bot_awareness. The one roll every package falls back to when a bot has no profile (bot_skill_profiles off), so a
+    /// bot never has two tiers (work package 7). Pure.
+    /// </summary>
+    public static RvrSkillTier StartTierOf(BotPersonKey person, RvrBotAwareness awareness) =>
+        StartTierFor(Roll(person), RvrGroupSkill.Shares(awareness));
+
     /// <summary>Where a roll sits inside its tier's slice of the shares, 0 to just under 1. Pure.</summary>
     public static double BandPositionFor(double roll, RvrSkillTier tier, (int Casual, int Average, int Veteran) shares)
     {

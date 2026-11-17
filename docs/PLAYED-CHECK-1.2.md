@@ -304,7 +304,7 @@ below). Then `4be6fab`, 06:18-06:48.
 | Sieges still happen and keeps change hands | must | **Seen** on `19e7037`: 4 sieges started (02:03, 03:16, 04:05, 04:55), 2 keeps taken: Caer Erasleigh by Midgard (02:15), then back by Albion (03:39) |
 | Catalogs rebuilt from a clean release world | must | Loaded and walked on `19e7037`: 98 check spots and 18 circuits (400 walks, 0 failed), 318 of 332 lanes validated (14 rejected). Whether the shipped catalogs were built from a clean release world is not in the log. Open |
 
-## Era builds (branch `feat/era-builds-wp3-5`, not merged yet)
+## Era builds (merged into 1.2 in #326)
 
 The plan is [ERA-BUILDS-1.2.md](ERA-BUILDS-1.2.md) (WP0-WP5; the checks are its WP6). Everything is tests only. The owner
 sets which rows are must. Each row is checked on the era candidate's build, from the owner's log; checks 1, 2, 4 and 6
@@ -319,6 +319,28 @@ need a test copy (new batches; 1 and 2 a fresh world with no other gamebots), ch
 | 5. Battleground: Thidranki with `+ Lv.20` era bots. `RVR_PARTY_FORMED` lines with a crowd-control role filled (`cc=Healer(healer-cc)`, `cc=Sorcerer(cc-mezzer)`, `cc=Bard(cc-mezzer)`); the pet count chasing the player against the 2026-11 numbers (BOT-BUILDS-AND-RVR, "How we'll know") |  | Not run (tests only) |
 | 6. One raid per realm on an era-mix world (owner's review D12): a dragon per realm forced with `/epictest start`, era-built bots only. Reported as era-mix results, apart from the raid bar |  | Not run. Optional (D12: if Sunday allows; otherwise the notes say it wasn't done) |
 | The install checks again on the era candidate (D11): the launcher changed |  | Not run |
+
+## Bots as people (in 1.2 since #316-#328)
+
+The plan is [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md) ("Played checks"). Work packages 1-5 and 2R are merged; 6
+(milestones) is not built yet. Everything is tests only. The owner sets which rows are must. Every switch is on (the
+default). Rows 1-5 and 7 need a **fresh test world**: no other gamebots, **Bot schedule Off** in the launcher's Living
+Server tab (with `clock` only the bots scheduled online log in), a GM character for `/lstest` and a non-GM one for what
+a player sees. The log is read with `python3 source/tools/played_check_log.py <server.log> --build <commit>`; its
+`people` checks are named in each row. Every tag below is written as the server writes it (checked against the code on
+2026-11-17).
+
+| What | Must | Status |
+|---|---|---|
+| 1. Skill tiers (WP1): `+ Lv.50 ×100` per realm, start and let them all log in. `BOT_SKILL_PROFILE` lines (at most 30 a minute; the rest are counted in `BOT_SKILL_BUDGET`) with `start=` shares within 5 points of 30/50/20 (check `skill_profile`), and `BOT_SKILL_BUDGET start=` near 30/50/20 in each realm. `/lstest skill` on five bots shows different tiers. Growth: after an overnight on the same world, `BOT_SKILL_GROWTH` lines (check `skill_growth`) and more experience in `/lswhy skill` than the evening before |  | Not run (tests only) |
+| 2. Mistakes, spared in your group (WP2): the same world, `+ Lv.20 ×100` per realm as well; play an hour in a bot-led group (accept a gamebot leader's invite) while the others level. `BOT_SKILL_MISTAKES`, summed over the session, has `rate_in` about a quarter of `rate_out` (check `mistakes`: in/out at most 0.5, with 100 or more decisions in your group), with `BOT_SKILL_MISTAKE spared=true` lines from your group and `kind=pull` lines with `group=` 3 or more. The log review compares gamebot deaths within 30 s of a `kind=pull` mistake against the session's other pulls |  | Not run (tests only) |
+| 3. Raid learning (WP2R): the same fresh world, so nobody has seen Xanxicar (no seeding on a world without a counted attempt): Crystal Cave forced twice at the game's raid size with `/epictest start` (Albion level 50s, 60 or more), **bots only**: a raid with a player in its parties keeps the record's familiarity and credits nobody. `RAID_LEARN` with `seenShare` near 0 in run 1 and higher in run 2 (check `raid_learn`; a forced run never joins the record, so `record=` and the familiarity stay low on a fresh world), `RAID_MECHANIC_SEEN how=raid` crediting the raiders in each run; both runs end in a win or a loss the log review calls correct, never a stall. On an upgraded world (the owner's), `RAID_MECHANIC_SEEN how=seeded` once at the first start |  | Not run (tests only) |
+| 4. Place knowledge (WP3): `BOT_PLACE_LEARNED how=seeded` lines at the first start, then `how=visited` as bots travel (check `places`), and `BOT_PLACE_BUDGET` every 5 minutes. `/lswhy way` on a level 35 bot names its capital, home town and the zones of levels below 35, no dungeon and no frontier |  | Not run (tests only) |
+| 5. Way finding (WP4): `/lstest ask` on a gamebot shows "how do i get to ..." in /faction or /say, answered by another bot; `/lstest lost` on one shows it standing off its road, then going on. In the log: `BOT_WAY_ASK said=said` followed by `BOT_WAY_TOLD`, `BOT_WAY_FOLLOW`, and `BOT_WAY_WRONG_ROAD` with `cost_s` 180 or less and `result=back` (check `way`); `BOT_WAY_SUMMARY` every 5 minutes. No rise in `AUTONOMOUS_STUCK_15M_RECOVERY` and the other stuck-watchdog recoveries against a session on the same world with `bot_ask_the_way` and `bot_wrong_roads` False |  | Not run (tests only) |
+| 6. The sit emote (WP5, first): a gamebot seated by a wait (`BOT_MOVE_SIT`) is seen sitting in the original client. If it is not, the sitting habits are for the new client only and the notes say so |  | Not run (tests only) |
+| 7. Movement habits (WP5): screenshots of a bot group running in a line, bots crowding the vault keeper, bots sitting at a wait, and a melee bot circling in an open-field RvR fight. At a keep its realm holds, bots sitting on the wall (`/lstest wall`), standing when Claude's enemy character comes within 2,500. `BOT_MOVE_HABITS` every 5 minutes with `sits`, `stickLost` and `overshoots` above 0 (check `movement`, which sums them), `strafes` above 0 after the RvR fight and `wallSits` after the keep; `BOT_MOVE_WALL` and `BOT_MOVE_SIT` lines; no rise in stuck-watchdog recoveries |  | Not run (tests only) |
+| 8. The 5-minute summaries: every 5 minutes one `BOT_PEOPLE_SUMMARY` (all twelve switches `=on`, the rows saved, the scope's answers), then one each of `BOT_MOVE_HABITS`, `BOT_PLACE_BUDGET`, `BOT_SKILL_BUDGET`, `BOT_SKILL_MISTAKES` and `BOT_WAY_SUMMARY` (check `summary`); the AI_PROFILE report names `people.skill`, `people.places`, `people.way_finding` and `people.movement` |  | Not run (tests only) |
+| 9. Personal milestones (WP6) |  | Not built yet: work package 6 |
 
 ## Crafting and the economy (in 1.2 since #270)
 

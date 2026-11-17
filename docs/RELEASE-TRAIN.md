@@ -202,6 +202,8 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 | Movement, flanking and style choice; ports from other forks and True 1.65 | Merged | Tests only |
 | Every big boss (in 1.2 since 2026-11-14): the Darkness Falls raid AI, Legion, Behemoth, the level 70+ bosses with no plan yet, the open-world bosses | Being built: Legion; the rest of Darkness Falls; then the epic dungeons' remaining bosses and the open-world bosses | Before this work, on `e3b8238`: Midgard's raid killed Legion in one attempt; Hibernia's lost to him twice |
 | Install: 1.1.4 updated through Setup; a new install | Built | Not done |
+| Bots as people (moved from 2.0, owner 2026-11-17; [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md)): item 2 skill that varies and improves (WP1, WP2, raid learning WP2R), item 4 knowing only what a player would know (WP3, WP4), item 5 movement that doesn't look scripted (WP5) | Merged (#316-#318, #322, #324, #327, #328); item 6, personal milestones (WP6), in progress | Tests only |
+| Era builds: the 2003 class mix and period builds for new gamebots (moved from 2.0) | Merged (#326) | Tests only |
 
 Back in 1.2 (owner, 2026-11-14, evening: "Put Darkness Falls raid AI and Legion back in", then "No ALL big bosses are
 in"): the Darkness Falls raid AI, Legion, Behemoth and every other big boss, the open-world ones included.
@@ -216,6 +218,12 @@ Changed 2026-11-15 (owner, answers to the roadmap review; all 23 are recorded in
   most 5 of 1.0 s or more an hour, over 8 hours), and it stands in for the L600 baseline, which moves to after 1.2.
 - **The new client (0.37c) is maintenance-only:** fixes only, no new features, and no rows on the gate.
 - Nothing of the economy ledger is in 1.2 (it is 2.0's first milestone).
+
+Changed 2026-11-17 (owner, 07:58 and 08:22): 1.2 moves about a week, to ship about 24 November, and takes in "bots as
+people" items 2, 4, 5 and 6 from 2.0, and the era builds. Items 1 and 3 stay in 2.0, and so do three parts of the items
+that moved: epic armour as a milestone (decision 2), camp choice by the places a bot has seen (decision 9) and bots on
+the walls of a keep under siege (decision 11: in 1.2 only at keeps the realm holds with no siege). The decisions are in
+[BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md), "Owner decisions".
 
 Left, in order (2026-11-15):
 1. Merge Beta 1.1.4 (`main`) into `integration/1.2` (owner decision 1).
@@ -414,10 +422,12 @@ here.
 - [ ] A crowded prime time: the era's channels with reach, a "2003 server" population preset, crowd targets, the
       chat benchmark's second blind round
 - [ ] A server with a past: the shared world-history record, the Herald as dated stories, "since you last played"
-- [ ] Era builds from the Wayback research (#76's fetcher; #55's build weights and class shares, provisional until
-      checked against the period pages)
+- [x] Era builds from the Wayback research: **moved to 1.2** (owner 2026-11-17; merged in #326, tests only)
 
-**Bots as people (owner 2026-11-07: "I like options 1-6").** Each item is a 2003 player habit, never random noise:
+**Bots as people (owner 2026-11-07: "I like options 1-6").** Items 2, 4 and 5 moved to 1.2 and item 6 is being built
+for it (owner 2026-11-17; [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md)). What stays here: items 1 and 3, epic armour
+as a milestone (decision 2), camp choice by the places a bot has seen (decision 9), bots on the walls of a keep under
+siege (decision 11) and RvR group tiers made from their members (decision 5). Each item is a 2003 player habit, never random noise:
 "more human" must not mean "worse". Items 1 and 3 share one data model (a bot player who owns characters and has
 friends) and go with the guild social package.
 - [ ] **1. Bot players own characters (the alt roster, designed 2026-10-12, never built).** Up to 3 characters per bot
@@ -425,18 +435,21 @@ friends) and go with the guild social package.
       A bot player picks which character to log in each session and shares a personality, schedule and friends across
       them, so its "on my alt" chat becomes true. Unblocks crafter alts (CRAFTING-AND-ECONOMY.md, row Q). Check
       low-level combat first (LOG-ERROR-BACKLOG.md: new characters can barely fight).
-- [ ] **2. Skill that varies and improves.** A lasting skill profile per bot player (reactions, positioning, pulls,
+- [x] **2. Skill that varies and improves.** **Moved to 1.2** (WP1, WP2, WP2R; merged, tests only). A lasting skill profile per bot player (reactions, positioning, pulls,
       standing in fire, buffs, power use) that gets better with play. Raids learn a boss's mechanic after enough of
       their people have seen it (the "secrets had to be learned" idea, owner 2026-11-07). Mistakes fall mostly on
       strangers, not the player's own group, with a switch.
 - [ ] **3. Friends, regulars and grudges.** A relationship graph that drives who groups with whom: bots seek people
       they grouped with before, form static groups, hold a grudge after a gank, leave a guild after a bad night, argue
       over loot. Builds on "bots remember you", the rage-quit records and mod-pbc's relationship scoring.
-- [ ] **4. Knowing only what a player would know, in PvE too.** A per-bot memory of places visited; a bot that has never
+- [x] **4. Knowing only what a player would know, in PvE too.** **Moved to 1.2** (WP3, WP4; merged, tests only;
+      choosing camps by the places seen stays here, decision 9). A per-bot memory of places visited; a bot that has never
       been somewhere asks the way, follows someone and can get lost (extends 1.2's RvR perception).
-- [ ] **5. Movement that doesn't look scripted.** Strafing, sitting to regen, /stick, overshooting, idling at the bank
+- [x] **5. Movement that doesn't look scripted.** **Moved to 1.2** (WP5; merged, tests only; keep walls only at held
+      keeps with no siege, decision 11: walls in a siege stay here). Strafing, sitting to regen, /stick, overshooting, idling at the bank
       and crowding town spots, sitting on keep walls. Touches pathing: no navmesh changes without evidence (AGENTS.md).
-- [ ] **6. Personal milestones that get talked about.** A goal arc per bot player (epic armour, realm rank 5, an
+- [ ] **6. Personal milestones that get talked about.** **In progress for 1.2** (WP6; the artifact becomes a dragon
+      trophy, decision 3; epic armour stays here, decision 2). A goal arc per bot player (epic armour, realm rank 5, an
       artifact, the ding to 50) that chat and the Herald pick up; feeds "a server with a past".
 - [ ] **Measured by a played "who's real?" session:** the owner and a friend play an evening and tag every bot that gave
       itself away, before and after. The blind chat read tests lines only.
@@ -540,6 +553,13 @@ Open, each listed with its options in the design document named:
   button; the classic rules; bots' gear wearing.
 
 ## Status
+
+On 2026-11-17:
+
+| Stop | State |
+|---|---|
+| 1.2 | Moved to ship about 24 November with bots as people items 2, 4 and 5 (merged, tests only), item 6 in progress, and the era builds (merged, tests only); held until [PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md) is met |
+| 2.0 | Planned: the economy ledger first, then a living realm (was 1.3), bots as people items 1 and 3 with what 1.2 left (epic armour, camp choice by places seen, walls in a siege), the complete realm |
 
 On 2026-11-15:
 

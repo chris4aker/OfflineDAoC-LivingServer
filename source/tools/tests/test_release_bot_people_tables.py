@@ -99,3 +99,28 @@ class BotPeopleTablesShipEmpty(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BotPeopleDescriptionsMatch(unittest.TestCase):
+    """The launcher copies the four master switches' descriptions from the server (WP0); they stay equal (WP7)."""
+
+    MASTERS = ["bot_skill_profiles", "bot_place_knowledge", "bot_movement_habits", "bot_living_milestones"]
+
+    def test_the_launcher_and_the_server_describe_each_master_switch_alike(self):
+        server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
+        launcher = (HERE / "OfflineDaoc.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
+        server_text = dict(re.findall(r'\[ServerProperty\("bots", "(\w+)", "([^"]*)"', server))
+        launcher_text = dict(re.findall(r'\("(\w+)", "bots", "([^"]*)"\)', launcher))
+        for key in self.MASTERS:
+            self.assertIn(key, server_text, key)
+            self.assertIn(key, launcher_text, key)
+            self.assertEqual(launcher_text[key], server_text[key], key)
+
+    def test_only_milestones_still_say_they_change_nothing_yet(self):
+        server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
+        card = (HERE / "OfflineDaoc.Launcher/SocialExpansionSettingsControl.cs").read_text(encoding="utf-8")
+        server_text = dict(re.findall(r'\[ServerProperty\("bots", "(\w+)", "([^"]*)"', server))
+        waiting = sorted(key for key, text in server_text.items() if "changes nothing yet" in text)
+        self.assertEqual(waiting, ["bot_living_milestones"], "work package 6 is the one not built")
+        self.assertNotIn("these change nothing yet", card)
+

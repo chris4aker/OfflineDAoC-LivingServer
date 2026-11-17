@@ -51,25 +51,56 @@ the other Living Server features.
 
 [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md): skill that varies and improves, knowing only what a player would know,
 movement that doesn't look scripted, and personal milestones. The launcher's card **BOTS AS PEOPLE** has the four master
-switches; the others are server keys (category `bots`). All are on by default and new in 1.2 (no row in an older
-world, so no upgrade line). **In this build they change nothing yet** (work package 0 declares them; work packages 1 to
-6 fill them, each behind its own switch). The log line `BOT_PEOPLE_SUMMARY` every 5 minutes shows them, the rows saved
-and how often the scope let a rule act.
+switches; the others are server keys (category `bots`). **All twelve are on by default** and new in 1.2 (no row in an
+older world, so no upgrade line). A master switch turned off turns its sub-switches off with it; **ALL OFF** turns the
+four masters off with the rest. Work packages 1 to 5 and 2R are built; personal milestones (work package 6) are not yet,
+so `bot_living_milestones` changes nothing in this build. **Everything here is tests only** until it is seen in the
+owner's PC log ([PLAYED-CHECK-1.2.md](PLAYED-CHECK-1.2.md), "Bots as people").
 
-| Switch | Key | Work package |
+Only autonomous gamebots are touched. Companions (hired ones too), real players, `/spawn` and `/raid` helpers, Epic
+Special Forces and buffbots keep today's rules, and so do realm raids (apart from `raid_learns_from_raiders`), raid
+dungeons, battleground keep assaults, fights at a keep, siege jobs, relic carriers and stable rides. One test,
+`BotPeopleScope`, guards every rule. In a group with a real player, mistakes come at a quarter of the rate; way finding
+and the movement habits don't happen there at all.
+
+**One tier per bot.** Each gamebot is Casual, Average or Veteran (30/50/20, shifted by `rvr_bot_awareness`, the one
+difficulty knob), rolled from its own id. Every package reads that one tier: its skill profile's tier, which can grow by
+one tier with play, or the same start roll when `bot_skill_profiles` is off. In an RvR group the group's tier counts
+(owner decision 5); a member's own facets only move its delays inside the group tier's band.
+
+| Switch | Key | What it does (default True) |
 |---|---|---|
-| Skill profiles (master) | `bot_skill_profiles` | 1, 2 |
-| Skill grows with play | `bot_skill_growth` | 1 |
-| Fewer mistakes in your group | `bot_skill_spare_player_group` | 2 |
-| Raids learn from their raiders | `raid_learns_from_raiders` | 2R |
-| Place knowledge (master) | `bot_place_knowledge` | 3 |
-| Asking the way, tagging along | `bot_ask_the_way` | 4 |
-| Wrong roads | `bot_wrong_roads` | 4 |
-| Movement habits (master) | `bot_movement_habits` | 5 |
-| Circle-strafing in RvR | `bot_move_strafe` | 5 |
-| /stick lines | `bot_move_stick_line` | 5 |
-| Sitting, and keep walls | `bot_move_sit_and_walls` | 5 |
-| Personal milestones (master) | `bot_living_milestones` | 6 |
+| Skill profiles (master) | `bot_skill_profiles` | Each bot gets its tier and six facets (reactions, positioning, pulls, standing in fire, buffs, power) and makes the mistakes its tier gives it: a pulled add in 10/5/1.5% of party pulls (Casual/Average/Veteran), a buff left off in 25/12/4% of expiries, its dearest nuke in 30/15/5% of casts, resting at 25/35/45% power, a circle step into a monster's face in 12/6/2%, reactions x1.3/1.0/0.75. Caps: never a named, never a monster more than 2 levels above, never in a dungeon for pulls and buffs. In open-field RvR a backline member steps out of an area effect after 2-5/1-3/0.5-1.5 s, and a member follows its group's call after a delay in the group tier's band, moved by its reactions |
+| Skill grows with play | `bot_skill_growth` | Fights won (the bot or a gamebot groupmate within 3,000), deaths, pulls, buffs and rests add experience; about 40 hours of fighting moves a bot from one band's bottom to the next. One tier at most, and it never falls (lowering `rvr_bot_awareness` can pull a grown bot down, owner 2026-11-17) |
+| Fewer mistakes in your group | `bot_skill_spare_player_group` | In a group with a real player, mistakes come at a quarter of the rate and the rest floor moves most of the way back to today's 45%. Delays are not shortened |
+| Raids learn from their raiders | `raid_learns_from_raiders` | Xanxicar's stomp only: the raid's familiarity comes from the raiders who have seen it (full from 60% of them, a quarter with none), so a newcomer lapses more than the veteran beside him. An upgraded world is seeded once so its average stays its record's. Off: the record's familiarity, exactly as before |
+| Place knowledge (master) | `bot_place_knowledge` | Each bot knows its capital, a home town, its realm's zones below its level and, from level 20, its border keep; never a dungeon, a frontier zone or another realm's place at the start. It learns a place when it arrives. Routes and camp choice are unchanged |
+| Asking the way, tagging along | `bot_ask_the_way` | Going somewhere it doesn't know, a bot may ask in /say or /faction (one /faction ask per realm per 10 minutes, inside the chat budgets); only bots that know the place answer, and the asker then half knows it. Or it follows a realm-mate within 2 levels going there, until the zone line, and stops at any threat |
+| Wrong roads | `bot_wrong_roads` | Sometimes (15/8/2% of unknown trips) a bot walks 600-1,500 units along another proven walking leg, looks around and walks back: at most 3 minutes, once a trip, never in a frontier, a dungeon, a group or below 80% health, and never toward a yellow or worse |
+| Movement habits (master) | `bot_movement_habits` | Overshoot at town spots (25/15/8%: 30-60 units past, then a step back), and the bank crowd |
+| Circle-strafing in RvR | `bot_move_strafe` | Melee bots circle-strafe their target (20/50/85% of fights, never into its front); casters and healers face a melee enemy and back off, healers along their usual kite (also needs `rvr_bot_field_tactics`) |
+| /stick lines | `bot_move_stick_line` | A travelling bot group follows in a line at 80-200 units, with now and then a lost stick for 3-10 s |
+| Sitting, and keep walls | `bot_move_sit_and_walls` | After 30-50 s of waiting, most waits sit (wait sites, rendezvous, the bank). At a keep the realm holds, with no siege and no enemy noticed, formation members sit on the guard archers' floors and stand within 1 s when an enemy comes within 2,500 |
+| Personal milestones (master) | `bot_living_milestones` | Work package 6, not built yet: in this build it changes nothing |
+
+**Log tags** (each event line is rate-limited; the summaries come every 5 minutes, one `BOT_PEOPLE_SUMMARY` line with the
+switches, the rows saved and the scope's answers, then one line per package):
+
+| Package | Per event | Every 5 minutes |
+|---|---|---|
+| All | | `BOT_PEOPLE_SUMMARY` |
+| 1 Skill profiles | `BOT_SKILL_PROFILE` (at login), `BOT_SKILL_GROWTH` (a tier gained) | `BOT_SKILL_BUDGET` |
+| 2 Skill in the hands | `BOT_SKILL_MISTAKE kind= spared=` | `BOT_SKILL_MISTAKES` (`rate_out=`, `rate_in=`) |
+| 2R Raid learning | `RAID_LEARN raid= mechanic= record= seenShare= familiarity=`, `RAID_MECHANIC_SEEN how=raid\|seeded` | |
+| 3 Place knowledge | `BOT_PLACE_LEARNED how=seeded\|visited\|told` | `BOT_PLACE_BUDGET` |
+| 4 Way finding | `BOT_WAY_ASK`, `BOT_WAY_TOLD`, `BOT_WAY_FOLLOW`, `BOT_WAY_WRONG_ROAD cost_s=` | `BOT_WAY_SUMMARY` |
+| 5 Movement habits | `BOT_MOVE_STRAFE kind=circle\|face`, `BOT_MOVE_STICK_LOST`, `BOT_MOVE_OVERSHOOT`, `BOT_MOVE_SIT`, `BOT_MOVE_WALL` | `BOT_MOVE_HABITS` |
+
+AI_PROFILE times the packages as `people.skill`, `people.places`, `people.way_finding` and `people.movement`
+(`people.milestones` is reserved for work package 6). GM checks: `/lstest skill`, `/lstest lost`, `/lstest ask`,
+`/lstest wall`; every player: `/lswhy skill [name]`, `/lswhy way [name]`. The saved tables (`offline_bot_skill`,
+`offline_bot_places`, `offline_bot_milestones`, `offline_bot_mechanics_seen`) are saved progress: a release ships them
+empty.
 
 ## What each part does
 
