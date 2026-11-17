@@ -1,3 +1,4 @@
+using System;
 using DOL.GS;
 using DOL.GS.ServerProperties;
 using DOL.GS.Styles;
@@ -65,30 +66,312 @@ namespace DOL.AI.Brain
 
         // ---- work package 2: assist, crowd control, interrupts ------------------------------------------------------
 
+        #region work package 2: assist, crowd control, interrupts (rvr_bot_assist, rvr_bot_cc_plan, rvr_bot_interrupts)
+
+        // The member's side of the plan (docs/RVR-FIELD-1.2.md "Hands"): its own delay to follow a call, whether it
+        // tunnels this fight, its crowd-control subject and its interrupt subject with the look cadence. Per-member state
+        // lives here, in the member's own brain (ARCHITECTURE.md, threading). Rules: RvrAssist, RvrCrowdControlPlan,
+        // RvrInterruptPlan (pure, tested).
+        private GameLiving _rvrCallSeen;
+        private long _rvrCallSeenAt;
+        private long _rvrLastCallSeenAt = long.MinValue / 2;
+        private long _rvrFightId;
+        private bool _rvrTunnels;
+        private long _rvrFollowAt;
+        private bool _rvrCallAggroAdded;
+        private bool _rvrSwitchLogged;
+        private long _rvrLastSwitchLogAt = long.MinValue / 2;
+        private GameLiving _rvrInterruptSubject;
+        private bool _rvrInterruptAggroAdded;
+        private long _rvrInterruptLookAt;
+        private bool _rvrInterruptSawCasting;
+        private long _rvrLastInterruptLogAt = long.MinValue / 2;
+        private GameLiving _rvrCcSubject;
+        private int _rvrCcCasts;
+        private long _rvrLastCcLogAt = long.MinValue / 2;
+
+        /// <summary>An enemy player, bot or pet of theirs (the kind of target the plan is about).</summary>
+        private bool RvrPvpEnemy(GameLiving living) =>
+            living != null && living.Realm != Body.Realm && living.Realm != eRealm.None && BotPvpCrowdControl.PlayerLike(living);
+
+        /// <summary>The bot is in an open-field fight: it has a player-like enemy in hand, or its group has a fresh plan.</summary>
+        private bool RvrInPvpFight(GameLiving picked, GameLiving attacker) =>
+            RvrPvpEnemy(picked) || RvrPvpEnemy(attacker) || RvrPvpEnemy(Body.TargetObject as GameLiving) || PeekRvrPlan() != null;
+
+        private RvrSkillTier RvrTier(RvrFightPlan plan) => plan?.SkillTier ?? RvrSkillTier.Average;
+
+        private double RvrBoldness() => AutonomousRvrPerception.Boldness(
+            AutonomousBotPersonality.Applies(BotBody) ? AutonomousBotPersonality.For(BotBody) : null);
+
+        private long RvrGroupLogId()
+        {
+            GameLiving leader = Body.Group?.LivingLeader ?? Body;
+            return leader is GameBot bot ? bot.DatabaseID : leader?.ObjectID ?? 0;
+        }
+
+        /// <summary>
+        /// Whether this bot may go for a planned enemy now: alive, visible, a legal enemy, not held by a group mate's
+        /// crowd control, near enough, and not one it gave up on (IgnoresTarget: unreachable or stalemated, which it
+        /// reports so the group never calls it again).
+        /// </summary>
+        private bool RvrMayGoFor(GameLiving enemy, long now)
+        {
+            if (enemy == null || !enemy.IsAlive || enemy.ObjectState != GameObject.eObjectState.Active || enemy.IsStealthed)
+                return false;
+            if (_autonomousWorldController?.IgnoresTarget(enemy) == true)
+            {
+                RvrFieldReader.ReportUnreachable(RvrFightBoards.KeyOf(Body), enemy, now);
+                return false;
+            }
+            return BotSiegeRuntime.LegalEnemy(Body, enemy) && !BotPvpCrowdControl.Protected(Body, enemy) &&
+                Body.IsWithinRadius(enemy, RvrAssist.CallRadius + 500);
+        }
+
         /// <summary>
         /// Hook: AttackMostWanted, right after the target pick. The target the group's plan wants this bot on, or null
         /// for no opinion (the pick stands). <paramref name="picked"/> is what the brain chose;
-        /// <paramref name="protectionTarget"/> and <paramref name="directAttacker"/> are the two it ranks first.
-        /// Reserved for work package 2 (rvr_bot_assist).
+        /// <paramref name="protectionTarget"/> and <paramref name="directAttacker"/> are the two it ranks first. A tank
+        /// pulling an enemy off a group mate keeps doing so (work package 3's ground). Otherwise an interrupter goes for
+        /// its caster, and a member follows the call after its own delay unless it tunnels this fight.
         /// </summary>
         public GameLiving RvrTacticsTarget(GameLiving picked, GameLiving protectionTarget, GameLiving directAttacker)
         {
-            if (!RvrTacticsActive() || !Properties.RVR_BOT_ASSIST)
+            if (!RvrTacticsActive() || !(Properties.RVR_BOT_ASSIST || Properties.RVR_BOT_INTERRUPTS))
                 return null;
-            return null;
+            if (Body.CurrentRegion == null || protectionTarget != null || !RvrInPvpFight(picked, directAttacker))
+                return null;
+            // AI_PROFILE: the plan read (and the board build when it is a second old), the member's follow decision.
+            using var aiProfile = AiProfile.Scope(AiSystem.RvrTactics);
+            RvrFightPlan plan = RvrPlan();
+            if (plan == null)
+                return null;
+            long now = GameLoop.GameLoopTime;
+            if (Properties.RVR_BOT_INTERRUPTS && RvrInterruptTarget(plan, now) is { } subject)
+                return subject;
+            return Properties.RVR_BOT_ASSIST ? RvrAssistTarget(plan, now) : null;
+        }
+
+        private GameLiving RvrAssistTarget(RvrFightPlan plan, long now)
+        {
+            GameLiving called = plan.CalledTarget;
+            if (called == null)
+                return null;
+            RvrSkillTier tier = RvrTier(plan);
+            bool mainAssist = ReferenceEquals(plan.MainAssist, Body);
+            if (!ReferenceEquals(called, _rvrCallSeen))
+            {
+                long fight = RvrAssist.FightId(_rvrFightId, _rvrLastCallSeenAt, plan.CalledAt);
+                if (fight != _rvrFightId)
+                {
+                    _rvrFightId = fight;
+                    _rvrTunnels = RvrAssist.Tunnels(tier, BotBody.DatabaseID, fight, RvrBoldness());
+                }
+                _rvrCallSeen = called;
+                _rvrCallSeenAt = plan.CalledAt;
+                _rvrFollowAt = mainAssist ? now : plan.CalledAt + RvrAssist.FollowDelay(tier, BotBody.DatabaseID, plan.CalledAt);
+                _rvrCallAggroAdded = false;
+                _rvrSwitchLogged = false;
+                LogRvrCall(plan, now);
+            }
+            _rvrLastCallSeenAt = now;
+            // The main assist never tunnels: his target is the call.
+            if (_rvrTunnels && !mainAssist)
+            {
+                LogRvrSwitch(called, now - _rvrCallSeenAt, false, tier, now);
+                return null;
+            }
+            if (now < _rvrFollowAt || !RvrMayGoFor(called, now))
+                return null;
+            if (!_rvrCallAggroAdded)
+            {
+                // As protection targets are (BotBrain.AttackMostWanted): the call goes onto the aggro list with a high weight.
+                AddToAggroList(called, RvrAssist.CalledAggro);
+                _rvrCallAggroAdded = true;
+            }
+            LogRvrSwitch(called, Math.Max(0, _rvrFollowAt - _rvrCallSeenAt), true, tier, now);
+            return called;
+        }
+
+        /// <summary>The interrupter's subject, as it last looked (every 1.5-3 s by tier), when it may go for it now.</summary>
+        private GameLiving RvrInterruptTarget(RvrFightPlan plan, long now)
+        {
+            RvrInterruptLook(plan, now);
+            GameLiving subject = _rvrInterruptSubject;
+            if (subject == null || !RvrMayGoFor(subject, now))
+                return null;
+            if (!_rvrInterruptAggroAdded)
+            {
+                AddToAggroList(subject, RvrAssist.CalledAggro);
+                _rvrInterruptAggroAdded = true;
+            }
+            return subject;
+        }
+
+        private void RvrInterruptLook(RvrFightPlan plan, long now)
+        {
+            if (now < _rvrInterruptLookAt)
+                return;
+            RvrSkillTier tier = RvrTier(plan);
+            _rvrInterruptLookAt = now + RvrInterruptPlan.LookMilliseconds(tier, BotBody.DatabaseID, now);
+            GameLiving subject = RvrFightPlan.SubjectFor(plan.Interrupts, Body);
+            if (!ReferenceEquals(subject, _rvrInterruptSubject))
+            {
+                _rvrInterruptSubject = subject;
+                _rvrInterruptAggroAdded = false;
+                if (subject != null)
+                    LogRvrInterrupt(subject, "assign", tier, now);
+            }
+            _rvrInterruptSawCasting = subject?.IsCasting == true;
         }
 
         /// <summary>
         /// Hook: the entry of TryPvpCrowdControl. Null for no opinion (today's crowd control runs); true when the plan
-        /// cast its crowd control and the turn is used; false when the plan wants no crowd control from this bot now.
-        /// Reserved for work package 2 (rvr_bot_cc_plan, rvr_bot_interrupts).
+        /// cast its crowd control (or an interrupt) and the turn is used; false when the plan wants no crowd control from
+        /// this bot now. With a call or a crowd-control job in the plan, only the plan's subject is controlled, so the
+        /// kill target is never mezzed.
         /// </summary>
         public bool? RvrTacticsCrowdControl()
         {
             if (!RvrTacticsActive() || !(Properties.RVR_BOT_CC_PLAN || Properties.RVR_BOT_INTERRUPTS))
                 return null;
-            return null;
+            if (Body.CurrentRegion == null || !RvrInPvpFight(Body.TargetObject as GameLiving, null))
+                return null;
+            // AI_PROFILE: the plan read, the interrupt spell and the planned crowd control.
+            using var aiProfile = AiProfile.Scope(AiSystem.RvrTactics);
+            RvrFightPlan plan = RvrPlan();
+            if (plan == null)
+                return null;
+            long now = GameLoop.GameLoopTime;
+            if (Properties.RVR_BOT_INTERRUPTS && TryRvrInterruptSpell(plan, now))
+                return true;
+            if (!Properties.RVR_BOT_CC_PLAN || plan.CalledTarget == null && plan.CrowdControl.IsEmpty)
+                return null;
+            GameLiving subject = RvrFightPlan.SubjectFor(plan.CrowdControl, Body);
+            RvrSkillTier tier = RvrTier(plan);
+            if (!ReferenceEquals(subject, _rvrCcSubject))
+            {
+                _rvrCcSubject = subject;
+                _rvrCcCasts = 0;
+                if (subject != null)
+                    LogRvrCrowdControl(subject, RvrControlKind.None, "assign", plan.CalledTarget, tier, now);
+            }
+            if (subject == null)
+                return false;
+            if (!TryPlannedCrowdControl(subject, plan.CalledTarget, out RvrControlKind kind))
+                return false;
+            LogRvrCrowdControl(subject, kind, ++_rvrCcCasts == 1 ? "open" : "recast", plan.CalledTarget, tier, now);
+            return true;
         }
+
+        /// <summary>
+        /// An interrupter that saw its caster casting at its last look fires an instant harmful spell at it (any hit
+        /// interrupts: the server's own rule and 1.65 values). One spell per look.
+        /// </summary>
+        private bool TryRvrInterruptSpell(RvrFightPlan plan, long now)
+        {
+            RvrInterruptLook(plan, now);
+            GameLiving subject = _rvrInterruptSubject;
+            if (!_rvrInterruptSawCasting || subject?.IsCasting != true || Body.IsCasting || Body.IsIncapacitated ||
+                Body.castingComponent?.HasPendingSkillRequests == true || !Body.CanCastInstantHarmfulSpells ||
+                !RvrMayGoFor(subject, now))
+                return false;
+            foreach (Spell spell in Body.InstantHarmfulSpells)
+            {
+                if (spell == null || spell.Level > Body.Level || Body.GetSkillDisabledDuration(spell) > 0 ||
+                    Body.Mana < BotBody.PowerCost(spell) || spell.Radius > 0 ||
+                    !Body.IsWithinRadius(subject, spell.CalculateEffectiveRange(Body)) || LivingHasEffect(subject, spell))
+                    continue;
+                GameObject previous = Body.TargetObject;
+                Body.TargetObject = subject;
+                if (!CheckOffensiveSpells(spell))
+                {
+                    Body.TargetObject = previous;
+                    continue;
+                }
+                _rvrInterruptSawCasting = false;
+                LogRvrInterrupt(subject, "spell", RvrTier(plan), now);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Hook: BotBrain.AreaSpells, for an enemy the blast would reach that is mezzed or held by a breakable root. True
+        /// when this bot's area damage goes ahead anyway: the human error "AE breaks the mez", by tier (Casual 25%,
+        /// Average 12%, Veteran 4% per caster, enemy and 10 s). Only for player-like enemies in an open-field fight.
+        /// </summary>
+        public bool RvrTacticsBlastIgnoresMez(GameLiving controlled)
+        {
+            if (!Properties.RVR_BOT_CC_PLAN || !RvrPvpEnemy(controlled) || !RvrTacticsActive())
+                return false;
+            RvrFightPlan plan = PeekRvrPlan();
+            return plan != null && RvrCrowdControlPlan.AreaDamageBreaksMez(plan.SkillTier, BotBody.DatabaseID,
+                RvrFieldReader.KeyOf(controlled), GameLoop.GameLoopTime);
+        }
+
+        // ---- the log lines (rate-limited) -----------------------------------------------------------------------------
+
+        private void LogRvrCall(RvrFightPlan plan, long now)
+        {
+            if (!log.IsInfoEnabled)
+                return;
+            RvrFieldReader.Memory memory = RvrFieldReader.MemoryOf(RvrFightBoards.KeyOf(Body));
+            if (memory == null)
+                return;
+            lock (memory.Lock)
+            {
+                if (!RvrAssist.ShouldLogCall(memory.LoggedCall, plan.CalledTarget, now, memory.LastCallLogAt))
+                    return;
+                memory.LoggedCall = plan.CalledTarget;
+                memory.LastCallLogAt = now;
+            }
+            RvrFightBoard board = RvrFightBoards.Peek(Body);
+            RvrCombatant enemy = null;
+            if (board != null)
+                foreach (RvrCombatant listed in board.Enemies)
+                    if (ReferenceEquals(listed.Living, plan.CalledTarget))
+                        enemy = listed;
+            RvrEnemyFacts facts = RvrFieldReader.Of(board).Enemy(enemy);
+            double score = enemy == null ? 0 : RvrAssist.CallScore(enemy, facts, plan.SkillTier, RvrAssist.GroupSeed(board), plan.CalledAt);
+            GameLiving target = plan.CalledTarget;
+            log.Info($"RVR_ASSIST_CALL group={RvrGroupLogId()} realm={GlobalConstants.RealmToName(Body.Realm)} region={Body.CurrentRegionID} " +
+                     $"mainAssist=\"{plan.MainAssist?.Name}\" target=\"{target.Name}\" targetRealm={GlobalConstants.RealmToName(target.Realm)} " +
+                     $"targetClass={enemy?.Class} role={RvrTargetPriority.KillRole(enemy)} score={score:0.#} tier={plan.SkillTier} " +
+                     $"rising={facts.Rising} hold={RvrAssist.HoldMilliseconds(RvrAssist.GroupSeed(board), plan.CalledAt)}");
+        }
+
+        private void LogRvrSwitch(GameLiving called, long delay, bool followed, RvrSkillTier tier, long now)
+        {
+            if (_rvrSwitchLogged || !log.IsInfoEnabled || now - _rvrLastSwitchLogAt < 4_000)
+                return;
+            _rvrSwitchLogged = true;
+            _rvrLastSwitchLogAt = now;
+            log.Info($"RVR_ASSIST_SWITCH group={RvrGroupLogId()} member=\"{Body.Name}\" target=\"{called.Name}\" delay={delay} " +
+                     $"result={(followed ? "followed" : "tunnelled")} tier={tier}");
+        }
+
+        private void LogRvrCrowdControl(GameLiving subject, RvrControlKind kind, string action, GameLiving killTarget,
+            RvrSkillTier tier, long now)
+        {
+            if (!log.IsInfoEnabled || action != "assign" && now - _rvrLastCcLogAt < 3_000)
+                return;
+            _rvrLastCcLogAt = now;
+            log.Info($"RVR_CC_ASSIGN group={RvrGroupLogId()} member=\"{Body.Name}\" subject=\"{subject.Name}\" " +
+                     $"subjectClass={(subject as GameBot)?.CharacterClass?.Name ?? (subject as GamePlayer)?.CharacterClass?.Name ?? "pet"} " +
+                     $"kind={kind} action={action} killTarget=\"{killTarget?.Name}\" tier={tier}");
+        }
+
+        private void LogRvrInterrupt(GameLiving subject, string action, RvrSkillTier tier, long now)
+        {
+            if (!log.IsInfoEnabled || now - _rvrLastInterruptLogAt < 3_000)
+                return;
+            _rvrLastInterruptLogAt = now;
+            log.Info($"RVR_INTERRUPT group={RvrGroupLogId()} member=\"{Body.Name}\" subject=\"{subject.Name}\" " +
+                     $"subjectClass={(subject as GameBot)?.CharacterClass?.Name ?? (subject as GamePlayer)?.CharacterClass?.Name ?? "pet"} " +
+                     $"action={action} casting={subject.IsCasting} tier={tier}");
+        }
+
+        #endregion
 
         /// <summary>
         /// Hook: the support turn (PerformGroupSupport), after the bot stopped attacking and before heals and crowd

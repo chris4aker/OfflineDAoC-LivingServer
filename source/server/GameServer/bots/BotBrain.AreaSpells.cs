@@ -70,10 +70,11 @@ namespace DOL.AI.Brain
                 IsUntargetable(living) || !GameServer.ServerRules.IsAllowedToAttack(Body, living, true))
                 return;
             // Mesmerized, or rooted by a root that damage breaks: the blast would free it.
+            // (1.2 open-field RvR: a bot's damage blast sometimes frees a mezzed enemy anyway, RvrTacticsBlastIgnoresMez.)
             // A boss this bot must not hit at all (Funus while his puzzle is on) vetoes the blast like a mesmerized monster,
             // and so does one the blast's damage type would heal (1.2: a cold area spell aimed at Kvasir's adds reaches him).
             _blastCandidates.Add(new(center.GetDistanceTo(living), IsEngagedEnemy(living),
-                IsBreakablyControlled(living) || EpicEncounterTactics.MustNotHit(BotBody, living) ||
+                IsBreakablyControlled(living) && (IsMezSpell(spell) || !RvrTacticsBlastIgnoresMez(living)) || EpicEncounterTactics.MustNotHit(BotBody, living) ||
                 EpicEncounterTactics.ForbidsSpell(BotBody, living, spell)));
         }
 
