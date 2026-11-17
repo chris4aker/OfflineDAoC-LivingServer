@@ -27,8 +27,8 @@ namespace DOL.UnitTests
         ];
 
         /// <summary>The switches whose package is built: their description says what they do now (WP1: growth;
-        /// WP3: bot_place_knowledge).</summary>
-        public static readonly string[] Built = ["bot_skill_growth", "bot_place_knowledge"];
+        /// WP2: bot_skill_profiles, bot_skill_spare_player_group; WP3: bot_place_knowledge).</summary>
+        public static readonly string[] Built = ["bot_skill_growth", "bot_place_knowledge", "bot_skill_profiles", "bot_skill_spare_player_group"];
 
         // ---- tables ----------------------------------------------------------------------------------------------------
 

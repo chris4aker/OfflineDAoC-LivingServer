@@ -484,6 +484,7 @@ namespace DOL.AI.Brain
 
             if (ad.GeneratesAggro)
             {
+                NoteRvrFire(ad); // Bots as people WP2: an area effect the bot may have to step out of (BotBrain.RvrPositioning)
                 if (BotBody?.IsRecoveryResting == true)
                     BotBody.WakeRecoveryRest();
                 ConvertDamageToAggroAmount(ad.Attacker, Math.Max(1, ad.Damage + ad.CriticalDamage));
@@ -2277,6 +2278,10 @@ namespace DOL.AI.Brain
                 if (target == bot.ControlledBrain?.Body && spell.ID == _pendingMaintenancePetBuffId &&
                     GameLoop.GameLoopTime < _pendingMaintenancePetBuffUntil)
                     continue;
+                // Bots as people WP2: now and then a person lets an expired buff stay off a while (BotBuffLapses).
+                if (BuffLapses.Waits(target, spell.ID, GameLoop.GameLoopTime, (bot, target, spell),
+                        static s => BotSkillHands.BuffLapse(s.bot, s.target, s.spell)))
+                    continue;
 
                 bool companionPerformerBuff = IsStationaryTemporaryCompanionPerformer();
                 if (companionPerformerBuff)
@@ -2292,6 +2297,8 @@ namespace DOL.AI.Brain
                 bot.TargetObject = previousTarget;
                 if (cast && companionPerformerBuff)
                     _companionPerformerBuffBatch = true;
+                if (cast)
+                    BotSkillHands.NoteBuffCast(bot);
                 bool isMainPetTarget = target == bot.ControlledBrain?.Body;
                 // Pet effects can be applied asynchronously. The just-cast pet buff
                 // is skipped for 15 seconds unless its effect appears (the
@@ -2747,6 +2754,9 @@ namespace DOL.AI.Brain
         }
 
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, BotBuffReservations<GameLiving>> BuffClaims = new();
+
+        /// <summary>This caster's lapsed buffs (Bots as people WP2).</summary>
+        private readonly BotBuffLapses<GameLiving> BuffLapses = new();
 
         private GameLiving FindRandomMissingRealmBuffTarget(Spell spell, int minimumRange = 0)
         {
@@ -4393,7 +4403,7 @@ namespace DOL.AI.Brain
                             .ThenByDescending(spell => spell.Level).First()
                         : BotBody.IsEndgameCompanion
                         ? TemporaryCompanionBalance.HighestSpell(spellsToCast)
-                        : spellsToCast[Util.Random(spellsToCast.Count - 1)]);
+                        : BotSpellPower.WithSkill(BotBody, spellsToCast, spellsToCast[Util.Random(spellsToCast.Count - 1)]));
 
                     if (spellToCast.Uninterruptible || !Body.IsBeingInterrupted)
                         casted = CheckOffensiveSpells(spellToCast);

@@ -145,6 +145,10 @@ namespace DOL.AI.Brain
             // AI_PROFILE: the layout and the walk proof (the board's build is timed by its own system).
             using var aiProfile = AiProfile.Scope(AiSystem.RvrTactics);
             RvrSkillTier tier = plan.SkillTier;
+            // Bots as people WP2 ("Standing in fire"): a backline member hit by an enemy's area effect steps out of it after
+            // the group tier's delay, moved by its own fire facet (owner decision 5).
+            if (RvrPositioning.StandFor(me.Role, me.Class) == RvrStand.Back && TryRvrStepOutOfFire(bot, tier, now))
+                return true;
             if ((IsHealer || RvrPositioning.CountsAsHealer(me.Role, me.Class)) && TryRvrKite(bot, board, plan, me, now))
                 return true;
 
@@ -206,9 +210,10 @@ namespace DOL.AI.Brain
                 _rvrPlaceDueAt = 0;
                 return false;
             }
-            // A person notices he stands wrong a moment later (the tier's delay).
+            // A person notices he stands wrong a moment later (the tier's delay; Bots as people WP2: the member's positioning
+            // facet moves it inside the group tier's band, owner decision 5).
             if (_rvrPlaceDueAt == 0)
-                _rvrPlaceDueAt = now + RvrPositioning.ReactionMilliseconds(tier, bot.DatabaseID, now);
+                _rvrPlaceDueAt = now + BotSkillHands.RvrPlaceDelay(bot, tier, RvrPositioning.ReactionMilliseconds(tier, bot.DatabaseID, now));
             if (now < _rvrPlaceDueAt)
                 return false;
             Vector2 spot = mine.Spot;
@@ -219,6 +224,77 @@ namespace DOL.AI.Brain
             _rvrPlaceDueAt = 0;
             LogRvrBackline(reason, line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, front) : 0, tier, now);
             return true;
+        }
+
+        // ---- standing in fire (Bots as people WP2) ---------------------------------------------------------------------------
+
+        /// <summary>A hit from an area effect older than this ends the episode (the bot is no longer standing in it).</summary>
+        public const long RvrFireMemoryMilliseconds = 3_000;
+
+        private long _rvrFireAt;
+        private long _rvrFireFirstAt;
+        private long _rvrFireDueAt;
+        private Vector2 _rvrFireCenter;
+        private Vector2 _rvrFireFrom;
+        private int _rvrFireRadius;
+
+        /// <summary>
+        /// Every hit (OnAttackedByEnemy): notes an enemy player's (or bot's, or their pet's) area effect on an autonomous
+        /// gamebot: where it lands and how wide. A new place or a gap of 3 s starts a new episode (a new delay).
+        /// </summary>
+        private void NoteRvrFire(AttackData ad)
+        {
+            if (BotBody is not { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsPlayerLedGroup: false } ||
+                !BotIncomingFireReaction.IsAreaEffect(ad) || ad.Attacker is not GameLiving caster ||
+                caster.CurrentRegionID != Body.CurrentRegionID || BotIncomingFireReaction.Fighter(caster) == null)
+                return;
+            Spell spell = ad.SpellHandler.Spell;
+            Vector2 center;
+            if (spell.Target == eSpellTarget.AREA && caster.GroundTarget.IsValid)
+                center = new(caster.GroundTarget.X, caster.GroundTarget.Y);
+            else if (spell.IsPBAoE || spell.Range <= 0 || ad.SpellHandler.Target is not GameLiving primary)
+                center = Flat(caster);
+            else
+                center = Flat(primary);
+            long now = GameLoop.GameLoopTime;
+            if (now - _rvrFireAt > RvrFireMemoryMilliseconds || Vector2.Distance(center, _rvrFireCenter) > Math.Max(50, spell.Radius / 2))
+            {
+                _rvrFireFirstAt = now;
+                _rvrFireDueAt = 0;
+            }
+            _rvrFireAt = now;
+            _rvrFireCenter = center;
+            _rvrFireFrom = Flat(caster);
+            _rvrFireRadius = spell.Radius;
+        }
+
+        /// <summary>
+        /// A backline member still inside the area it was hit by in the last 3 s walks out of it once its delay has passed:
+        /// BotSkillHands.FireDelay, the group tier's band (Casual 2-5 s, Average 1-3 s, Veteran 0.5-1.5 s) moved by its fire
+        /// facet. One step per episode, proven on the mesh like every place walk. Out of scope: today's rule (it stays).
+        /// </summary>
+        private bool TryRvrStepOutOfFire(GameBot bot, RvrSkillTier tier, long now)
+        {
+            if (_rvrFireAt == 0 || now - _rvrFireAt > RvrFireMemoryMilliseconds)
+                return false;
+            Vector2 self = Flat(bot);
+            float distance = Vector2.Distance(self, _rvrFireCenter);
+            if (distance > _rvrFireRadius + 25 || _rvrFireDueAt < 0)
+                return false;
+            if (_rvrFireDueAt == 0)
+            {
+                long delay = BotSkillHands.FireDelay(bot, tier);
+                _rvrFireDueAt = delay < 0 ? -1 : _rvrFireFirstAt + Math.Max(1, delay);
+                if (delay < 0)
+                    return false;
+            }
+            if (now < _rvrFireDueAt)
+                return false;
+            _rvrFireDueAt = -1;
+            Vector2 away = distance >= 1 ? (self - _rvrFireCenter) / distance
+                : Vector2.Distance(self, _rvrFireFrom) >= 1 ? Vector2.Normalize(self - _rvrFireFrom) : Vector2.UnitX;
+            Vector2 spot = _rvrFireCenter + away * (_rvrFireRadius + BotSkillMistakes.FireStepMargin);
+            return StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now);
         }
 
         /// <summary>
