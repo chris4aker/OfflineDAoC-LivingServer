@@ -220,7 +220,7 @@ public class SocialExpansionSettingsTests
         Assert.That(d.BotSkillProfiles && d.BotPlaceKnowledge && d.BotMovementHabits && d.LivingMilestones, Is.True);
         var r = SocialExpansionSettings.Recommended;
         Assert.That(r.BotSkillProfiles && r.BotPlaceKnowledge && r.BotMovementHabits && r.LivingMilestones, Is.True);
-        (d with { BotSkillProfiles = false, LivingMilestones = false }).Save(_database, null, () => _stopped);
+        (d with { BotSkillProfiles = false, LivingMilestones = false }).Save(_database, d, () => _stopped);
         var rows = Rows();
         Assert.That((rows["bot_skill_profiles"], rows["bot_living_milestones"]), Is.EqualTo(("False", "False")));
         Assert.That(rows.ContainsKey("bot_place_knowledge"), Is.False, "an unchanged default is not written");
