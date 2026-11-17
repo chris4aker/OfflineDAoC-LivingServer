@@ -832,7 +832,7 @@ namespace DOL.GS
                     if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(candidate.Hub.Region), PathfindingProvider.Instance, realm,
                             origin, destination, out candidate.OutboundSeams, candidate.Hub.Via))
                     {
-                        reason = "No complete connected hub-to-encounter route was found. No party was assigned.";
+                        reason = StartUnavailableReason(staged, posted);
                         Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} hub=\"{hub.Name}\" staging={staged} hubPost={posted} " +
                                  $"entrance={candidate.DungeonRoute?.Entrance?.Id} route=\"{(staged && posted ? RealmRaidMuster.LastRouteFailure : "not tried")}\"");
                         continue;
@@ -1018,6 +1018,16 @@ namespace DOL.GS
             }
             return false;
         }
+
+        /// <summary>
+        /// Why a raid could not start at a hub (pure). Owner's PC, 2026-11-16: Curengkur's raid failed with "No complete connected
+        /// hub-to-encounter route was found" while the route was never tried (staging=False): no staging post round the
+        /// encounter could be placed. The reason now says which part failed.
+        /// </summary>
+        public static string StartUnavailableReason(bool staged, bool posted) =>
+            !staged ? "No staging post with a walk to the encounter could be placed. No party was assigned." :
+            !posted ? "No muster post could be placed at the hub. No party was assigned." :
+            "No complete connected hub-to-encounter route was found. No party was assigned.";
 
         /// <summary>The running raid's muster hub (region and centre), for the play test.</summary>
         public static bool TryGetHub(string id, out RealmRaidMuster.Hub hub)
