@@ -602,11 +602,25 @@ public static class RvrEngagement
         RvrSizeUp sizeUp = SizeUp(board, facts, plan.SkillTier);
         RvrStanceDecision decision = Decide(plan.Stance, plan.StanceSince, sizeUp, facts, state, options, plan.SkillTier, now);
         if (decision.Stance != plan.Stance)
-            plan = plan with { Stance = decision.Stance, StanceSince = now, StanceReason = decision.Reason, StanceRelays = decision.Relays };
+            plan = plan with
+            {
+                Stance = decision.Stance, StanceSince = now, StanceReason = decision.Reason,
+                StanceRelays = decision.Relays && !EndsRelayedRetreat(plan, decision),
+            };
         if (decision.Stance == RvrStance.Regroup && decision.Rally is { } rally)
             plan = plan with { RallyPoint = rally, RallyRegion = board.RegionId };
         return plan;
     }
+
+    /// <summary>
+    /// The regroup that ends a relayed retreat is part of that relayed stance and is not passed on: the group that fought
+    /// already told the warband. Without this a relayed retreat's "retreat over" relayed again, so one fight reached a
+    /// second ring of groups and echoed back to the group that started it (owner's PC log on 1.2 test build 453e01a,
+    /// 11:33-14:00: 42 of the 75 "retreat over" relays ended a relayed retreat). Pure.
+    /// </summary>
+    public static bool EndsRelayedRetreat(RvrFightPlan before, RvrStanceDecision next) =>
+        before != null && before.Stance == RvrStance.Retreat && next.Stance == RvrStance.Regroup &&
+        (before.StanceReason ?? string.Empty).StartsWith("relayed", StringComparison.Ordinal);
 
     private static RvrFightPlan Neutral(RvrFightPlan plan, long now, string reason) =>
         plan.Stance == RvrStance.Engage ? plan
