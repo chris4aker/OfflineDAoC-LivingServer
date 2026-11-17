@@ -98,8 +98,6 @@ namespace DOL.UnitTests
             typeof(GameObject).GetField("_objectInRadiusCachesLock", Hidden)?.SetValue(npc, Activator.CreateInstance(
                 typeof(GameObject).GetField("_objectInRadiusCachesLock", Hidden).FieldType));
             if (flying) typeof(GameNPC).GetField("m_flags", Hidden).SetValue(npc, GameNPC.eFlags.FLYING);
-            // Its brain list, as the constructor makes it (the fight-at-home rule asks whether a boss's target is a pet).
-            typeof(GameNPC).GetField("m_brains", Hidden)?.SetValue(npc, new System.Collections.ArrayList());
             npc.CurrentRegion = _region;
             npc.movementComponent = new NpcMovementComponent(npc);
             ((GameLiving)npc).movementComponent = npc.movementComponent;
@@ -226,24 +224,6 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterTactics.Decide(other, boss, live, 0, true).Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
             Move(boss, 51000, 20000, 17000);
             Assert.That(EpicEncounterTactics.Decide(other, boss, live, 0, true).Action, Is.EqualTo(EpicEncounterTactics.BotAction.None));
-        }
-
-        [Test]
-        public void ABossDrawnFromHomeByAPetIsLedBackByItsOwner()
-        {
-            // Owner's PC, 2026-11-17 (Caer Sidi): a raider's pet held Soul Reckoner out of his room for 2.5 hours, nobody led.
-            var boss = Npc<TacticBoss>(50000, 20000, 17000);
-            var live = new List<GameNPC> { boss };
-            var owner = Npc<Raider>(51700, 20000, 17000);
-            var other = Npc<Raider>(51800, 20000, 17000);
-            var pet = Npc<Raider>(51650, 20000, 17000);
-            typeof(GameNPC).GetField("m_ownBrain", Hidden)!.SetValue(pet, new DOL.AI.Brain.ControlledMobBrain(owner) { Body = pet });
-            Move(boss, 51600, 20000, 17000);
-            boss.TargetObject = pet;
-            Assert.That(EpicEncounterTactics.Decide(owner, boss, live, 0, false).Action, Is.EqualTo(EpicEncounterTactics.BotAction.LeadHome),
-                "the pet's owner leads him home (its pet comes off him and follows)");
-            Assert.That(EpicEncounterTactics.Decide(other, boss, live, 0, true).Action, Is.EqualTo(EpicEncounterTactics.BotAction.StandOff));
-            Assert.That(EpicEncounterTactics.LeadsHome(1500, 1600, bossTargetsRaider: true, sameRegion: true, bossReturning: false), Is.True);
         }
 
         [Test]

@@ -155,17 +155,25 @@ namespace DOL.UnitTests
         // ---- the hold is bounded ----------------------------------------------------------------------------------------------
 
         [Test]
-        public void AfterTwoMinutesOutOfHisRoomTheRaidBreaksOffIntoIt()
+        public void AfterTwoMinutesOutOfHisRoomTheRaidBreaksOffIntoItFor30Seconds()
         {
-            long at1241 = 1_000_000;
-            long since = T.SoulReckonerOutSince(0, outOfRoom: true, inCombat: true, at1241);
-            Assert.That(since, Is.EqualTo(at1241));
-            Assert.That(T.SoulReckonerOutSince(since, true, true, at1241 + 60_000), Is.EqualTo(at1241), "the clock keeps its start");
-            Assert.That(T.SoulReckonerBreaksOff(since, at1241 + 119_000), Is.False);
-            Assert.That(T.SoulReckonerBreaksOff(since, at1241 + 120_000), Is.True, "two minutes out");
-            Assert.That(T.SoulReckonerBreaksOff(since, at1241 + 9_000_000), Is.True, "15:14: long past it (453e01a held 2.5 hours)");
-            Assert.That(T.SoulReckonerOutSince(since, outOfRoom: false, inCombat: true, at1241 + 130_000), Is.Zero, "back in his room");
-            Assert.That(T.SoulReckonerOutSince(since, outOfRoom: true, inCombat: false, at1241 + 130_000), Is.Zero, "reset: no fight");
+            long t = 1_000_000; // 12:41:22
+            long since = T.SoulReckonerOutSince(0, 0, outOfRoom: true, inCombat: true, t);
+            Assert.That(since, Is.EqualTo(t));
+            long seen = t;
+            for (long now = t + 1_000; now <= t + 119_000; now += 1_000) { since = T.SoulReckonerOutSince(since, seen, true, true, now); seen = now; }
+            Assert.That(since, Is.EqualTo(t), "observed every second: the clock keeps its start");
+            Assert.That(T.SoulReckonerBreaksOff(since, t + 119_000), Is.False);
+            Assert.That(T.SoulReckonerBreaksOff(since, t + 120_000), Is.True, "two minutes out");
+            Assert.That(T.SoulReckonerBreaksOff(since, t + 149_000), Is.True);
+            Assert.That(T.SoulReckonerBreaksOff(since, t + 150_000), Is.False, "the break-off lasts 30 s");
+            Assert.That(T.SoulReckonerOutSince(since, t + 149_000, true, true, t + 150_000), Is.EqualTo(t + 150_000),
+                "then the clock starts again: hold, and break off again two minutes later (453e01a held 2.5 hours)");
+            Assert.That(T.SoulReckonerOutSince(since, seen, outOfRoom: false, inCombat: true, t + 130_000), Is.Zero, "back in his room");
+            Assert.That(T.SoulReckonerOutSince(since, seen, outOfRoom: true, inCombat: false, t + 130_000), Is.Zero, "reset: no fight");
+            // Review 7: unobserved (the break-off clears everyone's target), a later trip out never breaks off at once.
+            Assert.That(T.SoulReckonerOutSince(since, t + 100_000, true, true, t + 106_000), Is.EqualTo(t + 106_000), "stale >5 s");
+            Assert.That(T.SoulReckonerOutSince(since, t + 100_000, true, true, t + 105_000), Is.EqualTo(t), "5 s is not stale");
 
             var reckoner = Npc<TestReckoner>(Stuck);
             var holder = Npc<Bot>(Body);
@@ -173,22 +181,78 @@ namespace DOL.UnitTests
             Assert.That(T.SoulReckonerAdvice(holder, reckoner, 900, breakOff: false)?.Action, Is.EqualTo(T.BotAction.Reposition));
             var broke = T.SoulReckonerAdvice(holder, reckoner, 900, breakOff: true);
             Assert.That((broke?.Action, broke?.StandAt), Is.EqualTo(((T.BotAction?)T.BotAction.StandOff, (Vector3?)T.SoulReckonerRoom)),
-                "everyone walks into his room: he follows whoever he fights in, or walks home, and is pulled again there");
+                "the raiders fighting him walk into his room: he follows whoever he fights in, or walks home, and is pulled again there");
             Assert.That(broke?.Reason, Does.Contain("break off"));
+        }
+
+        // ---- the lead's own turn --------------------------------------------------------------------------------------------
+
+        [Test]
+        public void TheChosenLeadWalksInOnItsOwnTurnUntilItArrivesOrFor30Seconds()
+        {
+            var reckoner = Npc<TestReckoner>(Stuck);
+            var cabalist = Npc<Bot>(new(27300, 36300, 15389));
+            var other = Npc<Bot>(Body);
+            long t = 5_000_000;
+            T.PublishSoulReckonerLeader(reckoner, cabalist, t);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, t + 500), Is.EqualTo((T.ReckonerLeadStep.Walk, (GameNPC)reckoner)));
+            Assert.That(T.SoulReckonerLeadFor(other, t + 500).Step, Is.EqualTo(T.ReckonerLeadStep.None),
+                "only the chosen bot acts on it, on its own turn (no bot taunts or calls off a pet for another)");
+            Assert.That(T.SoulReckonerLeadFor(cabalist, t + 3_500).Step, Is.EqualTo(T.ReckonerLeadStep.None), "not renewed: it lapses");
+            for (long now = t + 1_000; now <= t + 31_000; now += 1_000) T.PublishSoulReckonerLeader(reckoner, cabalist, now);
+            Assert.That(T.SoulReckonerLeadFor(cabalist, t + 31_000).Step, Is.EqualTo(T.ReckonerLeadStep.None),
+                "30 s of walking at most: it goes back to healing or fighting");
+            T.PublishSoulReckonerLeader(reckoner, other, t + 32_000);
+            Assert.That(T.SoulReckonerLeadFor(other, t + 32_500).Step, Is.EqualTo(T.ReckonerLeadStep.Walk), "a new lead: its own 30 s");
+            Assert.That(T.SoulReckonerLeadTurn(true, t + 40_000, t + 32_000, 140, t + 33_000), Is.EqualTo(T.ReckonerLeadStep.Arrived),
+                "at the room's middle it is released");
+            T.PublishSoulReckonerLeader(reckoner, null, t + 33_000);
+            Assert.That(T.SoulReckonerLeadFor(other, t + 33_100).Step, Is.EqualTo(T.ReckonerLeadStep.None), "back in his room: no lead");
+        }
+
+        [Test]
+        public void NoBotsPetTouchesHimOutOfHisRoomOnly()
+        {
+            var reckoner = Npc<TestReckoner>(Stuck);
+            var cabalist = Npc<Bot>(new(27300, 36300, 15389));
+            Pet simulacrum = PetOf(cabalist, new(27300, 36150, 15389));
+            Assert.That(T.PetMustNotHit(simulacrum, reckoner), Is.True, "1,247 out: the pet comes off him (it does nothing there)");
+            reckoner.X = (int)Spawn.X; reckoner.Y = (int)Spawn.Y; reckoner.Z = (int)Spawn.Z;
+            reckoner.movementComponent.ForceUpdatePosition();
+            Assert.That(T.PetMustNotHit(simulacrum, reckoner), Is.False, "in his room pets fight him as before");
+            Assert.That(T.PetMustNotHit(simulacrum, Npc<Pet>(Stuck)), Is.False, "only him");
         }
 
         // ---- the route ----------------------------------------------------------------------------------------------------------
 
+        public sealed class WonBoss : GameEpicBoss { public override bool IsAlive => true; }
+
         [Test]
-        public void ABossFightingARaidersPetIsFightingTheRaid()
+        public void SoulReckonerOnARaidersPetBesideTheRaidIsFightingTheRaid()
         {
+            var reckoner = Npc<TestReckoner>(Stuck);
             var cabalist = Npc<Bot>(new(27300, 36300, 15389));
             var raiders = new HashSet<GameLiving> { cabalist };
-            Assert.That(R.FightsTheRaid(cabalist, raiders), Is.True);
-            Assert.That(R.FightsTheRaid(PetOf(cabalist, Stuck), raiders), Is.True,
+            Assert.That(R.FightsTheRaid(reckoner, cabalist, raiders), Is.True);
+            Assert.That(R.FightsTheRaid(reckoner, PetOf(cabalist, Stuck), raiders), Is.True,
                 "12:42:22: his souls' fight over, the route saw no boss on the raid and walked 5,300 off to a soul on a late raider");
-            Assert.That(R.FightsTheRaid(PetOf(Npc<Bot>(Stuck), Stuck), raiders), Is.False, "someone else's pet");
-            Assert.That(R.FightsTheRaid(null, raiders), Is.False);
+            Assert.That(R.FightsTheRaid(reckoner, PetOf(Npc<Bot>(Stuck), Stuck), raiders), Is.False, "someone else's pet");
+            var trailing = Npc<Bot>(new(27254, 39000, 15389));
+            Assert.That(R.FightsTheRaid(reckoner, PetOf(trailing, Stuck), new HashSet<GameLiving> { trailing }), Is.False,
+                "a pet whose owner is 2,875 off (trailing): not yet");
+            Assert.That(R.FightsTheRaid(reckoner, null, raiders), Is.False);
+        }
+
+        [Test]
+        public void AWonRaidsBossAggroedEarlyByAPetDoesNotSwitchTheRoute()
+        {
+            // Krondon, Hall of the Corrupt, Avalon City and the rest: a trailing pet's natural aggro on another boss is answered as
+            // before, only once that boss is on a raider.
+            var boss = Npc<WonBoss>(new(40000, 40000, 15000));
+            var owner = Npc<Bot>(new(40100, 40000, 15000));
+            var raiders = new HashSet<GameLiving> { owner };
+            Assert.That(R.FightsTheRaid(boss, PetOf(owner, new(40050, 40000, 15000)), raiders), Is.False);
+            Assert.That(R.FightsTheRaid(boss, owner, raiders), Is.True, "on the raider itself: as before");
         }
 
         [Test]
@@ -203,16 +267,55 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheMusterWaitsOnlyForTheRaidThatCanCome()
+        public void TheMustersOwnNeedStaysTheWholeRaidsAndStallsWithThePinned()
         {
-            // 13:52:57 MUSTER_STALLED mustered=12 needed=60 living=120 pinnedBy="Soul Reckoner:78".
-            long after20 = R.FinalMusterPatienceMilliseconds;
-            Assert.That(R.FinalMusterNeeded(120, after20), Is.EqualTo(60), "453e01a: the pinned 78 were waited for");
-            Assert.That(R.MusterNeededLeavingPinned(120, 0, after20), Is.EqualTo(60), "nobody pinned: unchanged");
-            Assert.That(R.MusterNeededLeavingPinned(120, 78, after20), Is.EqualTo(21), "half of the 42 that can come");
-            Assert.That(R.MusterNeededLeavingPinned(120, 78, 0), Is.EqualTo(29), "70% of them before 20 minutes");
-            Assert.That(R.MusterNeededLeavingPinned(20, 18, 0), Is.EqualTo(R.MinimumRaidersAtTarget), "never under a party");
-            Assert.That(R.MusterNeededLeavingPinned(120, 500, 0), Is.EqualTo(R.MinimumRaidersAtTarget));
+            // 13:52:57 MUSTER_STALLED mustered=12 needed=60 living=120 pinnedBy="Soul Reckoner:78": the completion need is
+            // FinalMusterNeeded(living) as before (#195: 70%, half after 20 minutes), pinned or not.
+            Assert.That(R.FinalMusterNeeded(120, 0), Is.EqualTo(84));
+            Assert.That(R.FinalMusterNeeded(120, R.FinalMusterPatienceMilliseconds), Is.EqualTo(60));
+            var progress = new R.MusterProgress();
+            Assert.That(progress.Observe(12, 60, 0), Is.False);
+            Assert.That(progress.Observe(12, 60, R.MusterStalledMilliseconds), Is.True, "12 of 60 for 20 minutes: the stall");
+        }
+
+        [Test]
+        public void AnEarlyPullWithThePinnedLeftOutIsNeverLaxer()
+        {
+            // The early pull measures "inside" less the pinned against a muster's worth of the raid less them; whenever that
+            // commits, the old count (pinned included) committed too.
+            for (int living = 8; living <= 160; living += 4)
+                for (int pinned = 0; pinned <= living; pinned += 2)
+                    for (int free = 0; free <= living - pinned; free += 3)
+                    {
+                        bool now = T.ChooseEarlyPull(0, free, living, false, false, R.MusterNeededLeavingPinned(living, pinned, 0)) == T.EarlyPull.Commit;
+                        bool before = T.ChooseEarlyPull(0, free + pinned, living, false, false, R.FinalMusterNeeded(living, 0)) == T.EarlyPull.Commit;
+                        if (now) Assert.That(before, Is.True, $"living={living} pinned={pinned} free={free}");
+                    }
+        }
+
+        [Test]
+        public void PinnedRaidersNameThePinnerTheRouteMayTurnOn()
+        {
+            var reckoner = Npc<TestReckoner>(Stuck);
+            var bearer = Npc<WonBoss>(FatesBearer);
+            float bodyFromMuster = Vector3.Distance(Body, Muster), bodyFromBearer = Vector3.Distance(Body, FatesBearer);
+            var raiders = new List<(GameLiving, GameNPC, float, float)>();
+            // 76 at Soul Reckoner or one of his souls (each soul counts as him: RequiredAddOwner ?? npc), 12 at the muster.
+            for (int i = 0; i < 76; i++) raiders.Add((Npc<Bot>(Body), reckoner, bodyFromMuster, bodyFromBearer));
+            for (int i = 0; i < 12; i++) raiders.Add((Npc<Bot>(Muster), null, 0, Vector3.Distance(Muster, FatesBearer)));
+            var pinned = R.Pinned(raiders, _ => true);
+            Assert.That((pinned.By, pinned.Raiders.Count), Is.EqualTo(((GameNPC)reckoner, 76)));
+            Assert.That(R.TurnsOnPinner(pinned.Raiders.Count), Is.True, "a stall turns the route on him");
+            // Set aside, cleared, a hazard or a live boss's add (HostileEncounter's filters): never turned on.
+            var refused = R.Pinned(raiders, _ => false);
+            Assert.That((refused.By, refused.Raiders.Count), Is.EqualTo(((GameNPC)null, 76)), "still pinned, but nothing to turn on");
+            // Seven pinned elsewhere: fewer than a party, the stall sets aside as before.
+            var few = R.Pinned(raiders.Take(7), _ => true);
+            Assert.That(R.TurnsOnPinner(few.Raiders.Count), Is.False);
+            // A raider on him but beside the target (within 2,000) or at the muster is not pinned.
+            Assert.That(R.Pinned([(Npc<Bot>(Body), reckoner, bodyFromMuster, 1_900f)], _ => true).Raiders, Is.Empty);
+            Assert.That(R.Pinned([(Npc<Bot>(Body), reckoner, 1_400f, bodyFromBearer)], _ => true).Raiders, Is.Empty);
+            _ = bearer;
         }
 
         [Test]
@@ -226,7 +329,7 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void ThePinnedNeitherCommitNorCountAsEngaged()
+        public void ThePinnedLeaveTheEarlyPullsCountsTheLoggedCommitStands()
         {
             // 13:16:53 EARLY_PULL forerunner near=12 inside=108 raid=120 needed=84 decision=Commit, with 76 at Soul Reckoner.
             Assert.That(T.ChooseEarlyPull(12, 108, 120, false, false, R.FinalMusterNeeded(120, 0)), Is.EqualTo(T.EarlyPull.Commit),
