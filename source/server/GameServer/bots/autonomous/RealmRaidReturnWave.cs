@@ -281,6 +281,105 @@ public static class RealmRaidReturnWave
         return steps.ToArray();
     }
 
+    /// <summary>A raider joining a walking wave within this of the wave's step joins it there; one further back catches up
+    /// step by step (<see cref="JoinStep"/>).</summary>
+    public const float JoinReach = StepUnits * 1.5f;
+
+    /// <summary>
+    /// The step a raider joining a walking wave starts at (pure). Owner's PC, build 453e01a, 2026-11-17, Tuscaran Glacier: 82
+    /// raiders went in at the way in at 12:24 and joined a two-raider wave at its step 35 of 49; the walk straight there had no
+    /// navigable corridor, so they stood at the way in (atStep=0), failed their routes three times and were moved to the front
+    /// by the boss. Now a joiner within <see cref="JoinReach"/> of the wave's step joins it there; one further back starts at
+    /// the first step it stands at (<see cref="AtStepRadius"/>), else at the step nearest it, and walks the steps the wave has
+    /// cleared one at a time (each at most <see cref="StepUnits"/> on). <paramref name="inside"/> false (still outside, at the
+    /// way in): the first step, where raiders come in.
+    /// </summary>
+    public static int JoinStep(IReadOnlyList<Vector3> steps, Vector3 at, bool inside, int waveStep)
+    {
+        if (steps == null || steps.Count == 0) return 0;
+        waveStep = Math.Clamp(waveStep, 0, steps.Count - 1);
+        if (!inside) return 0;
+        if (Vector3.Distance(at, steps[waveStep]) <= JoinReach) return waveStep;
+        int nearest = 0;
+        float best = float.MaxValue;
+        for (int i = 0; i <= waveStep; i++)
+        {
+            float d = Vector3.Distance(at, steps[i]);
+            if (d <= AtStepRadius) return i;
+            if (d < best) { best = d; nearest = i; }
+        }
+        return nearest;
+    }
+
+    /// <summary>
+    /// A raider catching up with its wave (pure): standing at its step or a later one (<paramref name="atStep"/>: the latest
+    /// step it stands at, -1 for none), it goes on to the next. Returns its new step, or -1 once that is the wave's step (it
+    /// walks with the wave from there).
+    /// </summary>
+    public static int CatchUp(int step, int atStep, int waveStep)
+    {
+        int next = atStep >= step ? atStep + 1 : step;
+        return next >= waveStep ? -1 : next;
+    }
+
+    /// <summary>The latest of <paramref name="steps"/> a raider at <paramref name="at"/> stands at (within <see cref="AtStepRadius"/>),
+    /// or -1 (pure; <see cref="CatchUp"/>).</summary>
+    public static int LatestStepAt(IReadOnlyList<Vector3> steps, Vector3 at)
+    {
+        for (int i = (steps?.Count ?? 0) - 1; i >= 0; i--)
+            if (Vector3.DistanceSquared(at, steps[i]) <= AtStepRadius * AtStepRadius) return i;
+        return -1;
+    }
+
+    /// <summary>A raider of a wave that has not reached the raid already stands with it (at the last step: moved there by its
+    /// stranded regroup): it leaves the walk (pure; step=ahead).</summary>
+    public static bool WithTheRaid(IReadOnlyList<Vector3> steps, int waveStep, Vector3 at) =>
+        steps is { Count: > 1 } && waveStep < steps.Count - 1 && Vector3.DistanceSquared(at, steps[^1]) <= AtStepRadius * AtStepRadius;
+
+    /// <summary>
+    /// The wave's steps were worked out again (the raid's destination moved): each raider catching up goes on from the new step
+    /// nearest the one it walked to; one at or past the wave's new step <paramref name="waveStep"/> walks with the wave (pure).
+    /// </summary>
+    public static void RemapCatching(IReadOnlyList<Vector3> oldSteps, IReadOnlyList<Vector3> newSteps, IDictionary<long, int> catching,
+        int waveStep)
+    {
+        if (oldSteps == null || oldSteps.Count == 0 || newSteps == null || newSteps.Count == 0) { catching.Clear(); return; }
+        foreach (long member in new List<long>(catching.Keys))
+        {
+            Vector3 was = oldSteps[Math.Clamp(catching[member], 0, oldSteps.Count - 1)];
+            int at = Nearest(newSteps, was);
+            if (at >= waveStep) catching.Remove(member);
+            else catching[member] = at;
+        }
+    }
+
+    /// <summary>The index of the step of <paramref name="steps"/> nearest <paramref name="was"/> (the first on a tie).</summary>
+    public static int Nearest(IReadOnlyList<Vector3> steps, Vector3 was)
+    {
+        int step = 0;
+        for (int i = 1; i < steps.Count; i++)
+            if (Vector3.DistanceSquared(steps[i], was) < Vector3.DistanceSquared(steps[step], was)) step = i;
+        return step;
+    }
+
+    /// <summary>
+    /// The wave has no raider of its own left walking while some catch up behind it (pure): they are the wave now, from the step
+    /// of the furthest of them, which is returned (those at it leave <paramref name="catching"/>); -1 when none catch up. The
+    /// wave's best step is kept (review of 27abe6e78: steps walked again are no headway, <see cref="Headway"/>).
+    /// </summary>
+    public static int Rebase(IDictionary<long, int> catching)
+    {
+        if (catching.Count == 0) return -1;
+        int to = int.MinValue;
+        foreach (int s in catching.Values) to = Math.Max(to, s);
+        foreach (long member in new List<long>(catching.Keys))
+            if (catching[member] >= to) catching.Remove(member);
+        return to;
+    }
+
+    /// <summary>A step the wave reaches is headway (the stall clock) only past the furthest it has been (pure).</summary>
+    public static bool Headway(int step, int bestStep) => step > bestStep;
+
     public enum WaveMove { Wait, Fight, CallHelp, Advance, Arrived }
 
     /// <summary>Raiders of a wave of <paramref name="living"/> that make it "together" at a step.</summary>
@@ -318,6 +417,28 @@ public static class RealmRaidReturnWave
     public static bool InTheWay(bool byNamed, bool setAside, bool onWalk, bool aggressive, float distanceToWave, float heightToWave) =>
         !byNamed && !setAside && distanceToWave <= LookAheadUnits &&
         (onWalk || aggressive && distanceToWave <= NearUnits && Math.Abs(heightToWave) <= RealmRaidRouteGate.FloorBand);
+
+    /// <summary>At most this many kills of monsters off the walk at one step: then those no longer hold it (what attacks the wave
+    /// and what stood on the walk when it arrived always do).</summary>
+    public const int StepKillCap = 12;
+    /// <summary>A monster off the walk is in the way only within its own aggro range plus this of the wave.</summary>
+    public const float OffWalkAggroMargin = 300f;
+
+    /// <summary>
+    /// A monster <see cref="InTheWay"/> still holds the wave at its step (pure). Owner's PC, build 453e01a, 2026-11-17, Tur Suil:
+    /// the wave of 8 (later 40) stood at its step 4 from 12:57 to past 14:00 and killed 216 balorians (aonghus, conall,
+    /// einion: levels 49-51, aggro 350-380, respawn 3 minutes; 32 of them in the hall at 36,900-39,200 x 29,600-33,600), one
+    /// every 20 s, while the hall refilled about ten a minute: there was always one "in the way", so it never went on. Now the
+    /// wave clears what blocks the way when it reaches a step, then goes on: a monster attacking the wave always holds it (its
+    /// raiders never walk on mid-fight); one that stood on the walk when the wave arrived holds it until it is dead; one that
+    /// came back while the wave stood there (<paramref name="cameBackAtStep"/>) never does; one off the walk only within its
+    /// own aggro + <see cref="OffWalkAggroMargin"/> of the wave (a balorian 1,200 off never comes to it), and only until the
+    /// wave has made <see cref="StepKillCap"/> kills at the step (re-review of 06b9cb2c0: the cap never skips what attacks
+    /// the wave or an original blocker on the walk).
+    /// </summary>
+    public static bool StillBlocks(bool attacking, bool cameBackAtStep, int killsAtStep, bool onWalk, float distanceToWave, int aggroRange) =>
+        attacking ||
+        !cameBackAtStep && (onWalk || killsAtStep < StepKillCap && distanceToWave <= aggroRange + OffWalkAggroMargin);
 
     /// <summary>No headway, no damage on its monster and nobody closer to its step for <see cref="StuckMilliseconds"/>.</summary>
     public static bool Stuck(long lastMovement, long now) => now - lastMovement >= StuckMilliseconds;

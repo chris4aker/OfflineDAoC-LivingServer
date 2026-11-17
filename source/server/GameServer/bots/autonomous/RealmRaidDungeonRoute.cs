@@ -1563,6 +1563,136 @@ namespace DOL.GS
             return dangers;
         }
 
+        // ---- where raiders stand while the raid holds, and where a stranded raider is moved (owner's PC, 2026-11-17) ----------
+
+        private IReadOnlyList<BossDanger> _postDangers, _restingDangers;
+
+        /// <summary>A danger's edge is this soft for posts and stranded regroups: a point is inside only when it is more than this
+        /// within the sphere (the floor snap moves a point up to 48 across; a muster placed at exactly aggro + 300, Summoner Roesia's
+        /// 900, stays clear).</summary>
+        public const float FloorSnapTolerance = 64f;
+
+        /// <summary>Inside a danger by more than <see cref="FloorSnapTolerance"/> (posts and stranded regroups).</summary>
+        public static bool InBossDangerStrict(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            dangers.Any(d => Vector3.Distance(point, d.At) < d.Radius - FloorSnapTolerance);
+
+        /// <summary>
+        /// The spots no party's post around the hold point may stand in while the raid holds (AutonomousRealmRaid.TryBattlePost):
+        /// the muster's own dangers (<see cref="UntargetedBossDangers"/>). Owner's PC, build 453e01a, 2026-11-17, Tuscaran
+        /// Glacier: the muster for the hrimthursa icespine (15333,49257) lay 907 from Icelord Agmundr's spawn, just outside his
+        /// aggro + 300, but one party's post around it (formation slot 6) was 15022,49568, 546 from his spawn and inside his
+        /// aggro (600); he came at 12:20:11 while the muster stood at 66 of 67 and wiped the raid. Empty while the raid goes in.
+        /// Worked out at most once a route turn (AdvanceCore), and only when asked.
+        /// </summary>
+        public IReadOnlyList<BossDanger> PostDangers()
+        {
+            if (!Hold || _target == null) return [];
+            return _postDangers ??= UntargetedBossDangers();
+        }
+
+        /// <summary>A living NPC of the dungeon as the stranded-regroup guard sees it (<see cref="RestingDangersOf"/>).</summary>
+        public readonly record struct DangerCandidate(string Name, Vector3 Spawn, Vector3 At, int AggroRange, bool InCombat,
+            bool Hazard, bool BossOrNamed, bool LinkedPack, bool OfTheTarget);
+
+        /// <summary>
+        /// The dangers a stranded raider is never moved into (pure): every resting boss, named encounter and final with its aggro
+        /// sphere and <see cref="UntargetedBossMargin"/>, and every boss's linked monster (EpicEncounterTactics.ClearFirstOwner:
+        /// Agmundr's hrimthursa, the Crypt Lord's court, Drihten's students) with its own aggro sphere, each at its spawn and where
+        /// it stands. Left out: one in combat (a fight already on), a ground hazard, and the raid's own target and what goes with
+        /// it (OfTheTarget: what it covers, its required adds, and the other linked monsters of the boss it is linked to): the raid
+        /// goes to them, and a holding raid never sends anyone to its front (review of 27abe6e78: with the target in, every
+        /// stranded raider of a clear-first target without a muster, Krondon's Drihten students, was refused).
+        /// </summary>
+        public static List<BossDanger> RestingDangersOf(IEnumerable<DangerCandidate> candidates)
+        {
+            var dangers = new List<BossDanger>();
+            foreach (DangerCandidate c in candidates)
+            {
+                if (c.InCombat || c.Hazard || c.OfTheTarget || c.AggroRange <= 0 || !c.BossOrNamed && !c.LinkedPack) continue;
+                float radius = c.BossOrNamed ? c.AggroRange + UntargetedBossMargin : c.AggroRange;
+                dangers.Add(new(c.Name, c.Spawn, radius));
+                if (Vector3.DistanceSquared(c.At, c.Spawn) > 64 * 64) dangers.Add(new(c.Name, c.At, radius));
+            }
+            return dangers;
+        }
+
+        /// <summary>A living NPC goes with the raid's target (left out of <see cref="RestingDangersOf"/>; pure): it is the target,
+        /// the target covers it or it is the target's required add, or it is linked to the same boss as the target
+        /// (<paramref name="owner"/> == <paramref name="targetOwner"/>, both EpicEncounterTactics.ClearFirstOwner: a fellow student of
+        /// Drihten Elreden while the raid clears one; Drihten himself is no fellow and stays a danger).</summary>
+        public static bool GoesWithTarget(bool isTarget, bool coveredByTarget, bool requiredAddOfTarget, object owner, object targetOwner) =>
+            isTarget || coveredByTarget || requiredAddOfTarget || owner != null && targetOwner != null && ReferenceEquals(owner, targetOwner);
+
+        /// <summary><see cref="RestingDangersOf"/> for this turn's NPCs, and the rules' muster dangers; worked out at most once a
+        /// route turn, and only when asked.</summary>
+        private IReadOnlyList<BossDanger> RestingDangers()
+        {
+            if (_restingDangers != null) return _restingDangers;
+            IReadOnlyList<GameNPC> live = _live;
+            var candidates = new List<DangerCandidate>();
+            GameNPC targetOwner = _target == null ? null : EpicEncounterTactics.ClearFirstOwner(_target, live);
+            foreach (GameNPC npc in live)
+            {
+                if (npc == null || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.InCombat ||
+                    npc.Realm != eRealm.None || (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+                    npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain)
+                    continue;
+                bool boss = npc is GameEpicBoss || npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name);
+                GameNPC owner = boss ? null : EpicEncounterTactics.ClearFirstOwner(npc, live);
+                bool pack = owner != null;
+                if (!boss && !pack) continue;
+                bool ofTarget = _target != null && GoesWithTarget(npc == _target, EpicEncounterTactics.Covers(npc, _target, live),
+                    EpicEncounterTactics.RequiredAddOwner(npc, live) == _target, owner, targetOwner);
+                candidates.Add(new(npc.Name, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), new(npc.X, npc.Y, npc.Z),
+                    brain.AggroRange, false, IsEncounterHazard(npc), boss, pack, ofTarget));
+            }
+            List<BossDanger> dangers = RestingDangersOf(candidates);
+            dangers.AddRange(RuleMusterDangers(live));
+            return _restingDangers = dangers;
+        }
+
+        /// <summary>
+        /// Where a raider stranded inside the dungeon is moved (pure; AutonomousRealmRaid.TryDungeonRegroupPoint). Owner's PC,
+        /// build 453e01a, 2026-11-17, Tuscaran Glacier: 159 stranded raiders were moved to the route's front, 15037,49914, 200 from
+        /// Icelord Agmundr's spawn and inside his aggro, while the raid regrouped at its muster, 15184,48849; he fought them at
+        /// home twice (12:25, 12:30) and the second fight was scored as the wipe that ended the raid. Now a raid that holds (a
+        /// muster, a regroup, a held skirmish) sends them to where it holds (<paramref name="destination"/>), and only a raid
+        /// going in sends them to its <paramref name="front"/>. Never a point inside one of <paramref name="dangers"/>: then the
+        /// muster, if clear; else null (nobody is moved).
+        /// </summary>
+        public static Vector3? StrandedRegroupPoint(bool holding, Vector3 front, Vector3 destination, Vector3? muster,
+            IReadOnlyList<BossDanger> dangers)
+        {
+            dangers ??= [];
+            Vector3 first = holding ? destination : front;
+            if (!InBossDangerStrict(first, dangers)) return first;
+            if (muster is Vector3 m && !InBossDangerStrict(m, dangers)) return m;
+            return null;
+        }
+
+        private long _nextRegroupRefusedLog;
+
+        /// <summary>A point inside one of the stranded-regroup dangers (<see cref="RestingDangers"/>, strict edge).</summary>
+        public bool InRegroupDanger(Vector3 point) => InBossDangerStrict(point, RestingDangers());
+
+        /// <summary>The point a stranded raider is moved to now (<see cref="StrandedRegroupPoint"/>); false: none is clear.</summary>
+        public bool TryStrandedRegroupPoint(out Vector3 point)
+        {
+            Vector3? muster = _target != null && _musterTarget == _target ? _musterPoint : null;
+            Vector3? found = StrandedRegroupPoint(Hold, Front, Destination, muster, RestingDangers());
+            point = found ?? default;
+            if (found.HasValue) return true;
+            long now = GameLoop.GameLoopTime;
+            if (now >= _nextRegroupRefusedLog)
+            {
+                _nextRegroupRefusedLog = now + 60_000;
+                log.Warn($"REALM_EXPEDITION_REGROUP_REFUSED region={_region} target=\"{_target?.Name}\" hold={Hold} " +
+                         $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} destination={(int)Destination.X},{(int)Destination.Y},{(int)Destination.Z} " +
+                         $"reason=\"every regroup point is within a resting boss's aggro + {(int)UntargetedBossMargin}; the stranded raider is not moved\"");
+            }
+            return false;
+        }
+
         /// <summary>
         /// The spots a dungeon rule keeps musters from (EpicEncounterTactics.MusterDangersOf), the encounter mustered for
         /// included: owner's PC, build 1dc66b6, 2026-11-15, the raid's muster for the Crypt Lord was 27,960,40,280, 115 from his
@@ -2320,6 +2450,8 @@ namespace DOL.GS
             if (_routeStartTick == 0) _routeStartTick = now;
             GameNPC[] live = WorldMgr.GetRegion(_region)?.Objects.OfType<GameNPC>().ToArray() ?? [];
             _live = live;
+            // The guards' dangers are worked out again this turn, when asked (PostDangers, RestingDangers).
+            _postDangers = _restingDangers = null;
             EpicFightLedger.Watch(_region, now);
             // Raiders step out of a ground hazard and no battle post goes in one (EpicEncounterTactics.ObserveHazards).
             EpicEncounterTactics.ObserveHazards(live);

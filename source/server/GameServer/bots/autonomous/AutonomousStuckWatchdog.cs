@@ -551,8 +551,18 @@ public static class AutonomousStuckWatchdog
     /// walking back into the same spot (AutonomousRealmRaid.TryRecoverInsideRaid; Krondon, PC 2026-11-11).</summary>
     private static bool TryRecoverInsideRaid(GameBot bot, DateTime now, string reason)
     {
-        if (!bot.IsAlive || !AutonomousRealmRaid.TryRecoverInsideRaid(bot, out ushort region, out Vector3 spot, out string near))
-            return false;
+        if (!bot.IsAlive) return false;
+        if (!AutonomousRealmRaid.TryRecoverInsideRaid(bot, out ushort region, out Vector3 spot, out string near, out bool stays))
+        {
+            if (!stays) return false;
+            // Inside its raid's dungeon with every regroup point by a resting boss: it stays (the watchdog asks again later),
+            // never its capital (RealmRaidStuckRecovery.StaysInside).
+            Log.Warn($"AUTONOMOUS_RAID_STUCK_RECOVERY bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} reason=\"{ForLog(reason)}\" " +
+                     $"at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} to=stay instead=\"the capital\" " +
+                     $"why=\"every regroup point is in a resting boss's aggro\"");
+            MarkProgress(bot, eAutonomousProgressKind.Recovery, now);
+            return true;
+        }
         ushort oldRegion = bot.CurrentRegionID;
         int oldX = bot.X, oldY = bot.Y, oldZ = bot.Z;
         string oldActivity = bot.PersistentRecord?.Activity ?? string.Empty;
