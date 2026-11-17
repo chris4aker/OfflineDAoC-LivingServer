@@ -23,6 +23,12 @@ public sealed record RvrGroupState
     /// <summary>Where the group meets after a retreat or a wipe; null: none set.</summary>
     public Vector3? RallyPoint { get; init; }
     public ushort RallyRegion { get; init; }
+    /// <summary>
+    /// Work package 4 (stances): what the group's stance machine remembers between boards: who leads it, when it last
+    /// noticed or touched an enemy, where it last fought, its last retreat and a relayed retreat or regroup. The wipes
+    /// themselves are <see cref="RecentWipes"/> (written by the group coordinator when the party wipes).
+    /// </summary>
+    public RvrEngagementFacts Engagement { get; init; } = RvrEngagementFacts.Empty;
 
     public static RvrGroupState Empty { get; } = new();
 
@@ -47,6 +53,13 @@ public sealed record RvrGroupState
         while (wipes.Count > MaxWipes)
             wipes.RemoveAt(0);
         return this with { RecentWipes = wipes.ToImmutable() };
+    }
+
+    /// <summary>This state with its engagement facts changed. Pure.</summary>
+    public RvrGroupState WithEngagement(System.Func<RvrEngagementFacts, RvrEngagementFacts> change)
+    {
+        RvrEngagementFacts next = change?.Invoke(Engagement ?? RvrEngagementFacts.Empty) ?? RvrEngagementFacts.Empty;
+        return next == Engagement ? this : this with { Engagement = next };
     }
 
     /// <summary>This state with the rally point set (null clears it). Pure.</summary>

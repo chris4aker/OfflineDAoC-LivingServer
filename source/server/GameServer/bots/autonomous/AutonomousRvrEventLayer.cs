@@ -39,8 +39,11 @@ public static partial class AutonomousRvrEventLayer
 
     public enum Intent { Roam, HuntEnemy, AssaultKeep, AssaultRelicKeep, DefendEvent }
 
+    /// <summary>A warband choosing its next objective. RecentWipes: its group's wipes in the last ten minutes (1.2 WP4,
+    /// RvrEngagement.RecentWipes); with <see cref="RvrEngagement.RepeatedWipes"/> or more it does not go hunting.</summary>
     public sealed record Force(string GroupId, eRealm Realm, int MemberCount, int AverageLevel, int HealerCount,
-        bool CanSupplySiege = true, bool RoamingReserve = false, long[] MemberIds = null, int MinimumMemberLevel = 50);
+        bool CanSupplySiege = true, bool RoamingReserve = false, long[] MemberIds = null, int MinimumMemberLevel = 50,
+        int RecentWipes = 0);
     public sealed record LiveObjective(string Id, string Name, Intent Kind, eRealm OwningRealm, ushort RegionId,
         int X, int Y, int Z, bool IsRelicKeep, int EnemyCount, int FriendlyCount, int GuardStrength, int ClosedDoors,
         bool IsRelicCarrier = false, bool IsPortalKeep = false, bool UnderAttack = false);
@@ -403,6 +406,9 @@ public static partial class AutonomousRvrEventLayer
     public static Intent ChooseIntent(Force force, bool hasEnemy, bool hasOrdinaryKeep, bool hasRelicKeep, double roll)
     {
         roll = Math.Clamp(roll, 0d, 1d);
+        // AutonomousRvrDirector's wipe rule (1.2 WP4): a force that wiped repeatedly regroups (roams) before it hunts again.
+        if (RvrEngagement.WipedRepeatedly(force.RecentWipes))
+            return Intent.Roam;
         if (force.MemberCount < 4 || force.AverageLevel < 50 || !force.CanSupplySiege)
             return hasEnemy ? Intent.HuntEnemy : Intent.Roam;
 

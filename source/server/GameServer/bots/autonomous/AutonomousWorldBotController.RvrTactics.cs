@@ -37,13 +37,13 @@ public sealed partial class AutonomousWorldBotController
     /// <summary>
     /// Hook: the RvR turn, before the group's hold for a new pull (HoldBeforeNewGroupPull). True when the tactics own
     /// this turn (the group holds for stragglers, or regroups at its rally point after a retreat or a wipe); false for
-    /// no opinion. Reserved for work package 4 (rvr_bot_regroup).
+    /// no opinion. Work package 4 (rvr_bot_size_up, rvr_bot_regroup): AutonomousWorldBotController.RvrEngagement.cs.
     /// </summary>
     private bool RvrTacticsTravelHold(BotBrain brain, GameBot bot)
     {
-        if (brain?.RvrTacticsActive() != true || !Properties.RVR_BOT_REGROUP)
+        if (brain?.RvrTacticsActive() != true || !(Properties.RVR_BOT_REGROUP || Properties.RVR_BOT_SIZE_UP))
             return false;
-        return false;
+        return RvrStanceTravelHold(brain, bot);
     }
 
     /// <summary>
