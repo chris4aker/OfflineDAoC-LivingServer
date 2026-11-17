@@ -33,18 +33,16 @@ public static class BotMovementHabits
 
     // ---- the bot's own tier (outside RvR) ---------------------------------------------------------------------------
 
-    private const ulong TierSalt = 0x4D4F5645; // "MOVE"
-
     /// <summary>
-    /// The movement tier of a bot outside an RvR fight: RVR-FIELD-1.2's shares (30/50/20, moved by rvr_bot_awareness)
-    /// rolled from the bot's id with this package's own salt, so it does not follow its group's tier. Pure.
+    /// The movement tier of a bot with no skill profile (bot_skill_profiles off): its skill profile's start roll
+    /// (<see cref="BotSkillProfile.StartTierOf"/>, salt "BSKL", RVR-FIELD-1.2's shares moved by rvr_bot_awareness), so a bot
+    /// has one tier in every package and it does not follow its group's tier (work package 7). Pure.
     /// </summary>
     public static RvrSkillTier TierOf(long botId, RvrBotAwareness awareness) =>
-        RvrGroupSkill.TierForRoll(AutonomousBotPersonality.Mix(botId, TierSalt) % 10_000 / 100.0, 0,
-            RvrGroupSkill.Shares(awareness));
+        BotSkillProfile.StartTierOf(BotPersonKey.Of(botId), awareness);
 
     /// <summary>The tier the habits use for a bot: its skill profile's when it has one (work package 1), else
-    /// <see cref="TierOf(long, RvrBotAwareness)"/>. Pure; BotMovementHabitsRuntime.TierOf is its one caller.</summary>
+    /// <see cref="TierOf(long, RvrBotAwareness)"/> (the same start roll). Pure; BotMovementHabitsRuntime.TierOf is its one caller.</summary>
     public static RvrSkillTier TierFor(RvrSkillTier? profileTier, long botId, RvrBotAwareness awareness) =>
         profileTier ?? TierOf(botId, awareness);
 

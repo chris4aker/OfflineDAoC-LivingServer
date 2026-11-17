@@ -178,9 +178,6 @@ public static class BotWayFinding
     /// <summary>BOT_WAY_* event lines at most per minute server-wide (the rest are counted in BOT_WAY_SUMMARY).</summary>
     public const int EventLinesPerMinute = 30;
 
-    /// <summary>WP1's tier roll salt ("BSKL"): a bot's way-finding tier is its skill profile's start tier.</summary>
-    public const ulong SkillRollSalt = 0x42534B4C;
-
     // ---- the rules (pure) -------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -346,15 +343,13 @@ public static class BotWayFinding
     /// rvr_bot_awareness). A live bot uses its grown profile tier (<see cref="TierOf(GameBot)"/>). Pure.
     /// </summary>
     public static RvrSkillTier TierOf(BotPersonKey person, RvrBotAwareness awareness) =>
-        RvrGroupSkill.TierForRoll(AutonomousBotPersonality.Mix(person.Id, SkillRollSalt + (ulong)person.Kind) % 1_000_000 / 10_000.0, 0,
-            RvrGroupSkill.Shares(awareness));
+        BotSkillProfile.StartTierOf(person, awareness);
 
     /// <summary>
-    /// A live gamebot's tier for way finding: its skill profile's tier (WP1, grown by play) when skill profiles are on, else
-    /// the same start roll (<see cref="TierOf(BotPersonKey, RvrBotAwareness)"/>).
+    /// A live gamebot's tier for way finding: the one tier every package reads (<see cref="BotSkill.TierOf"/>: its skill
+    /// profile's tier, grown by play, else the same start roll).
     /// </summary>
-    public static RvrSkillTier TierOf(GameBot bot) =>
-        BotSkill.TryProfile(bot, out BotSkillProfile profile) ? profile.Tier : TierOf(BotPersonKey.Of(bot), Awareness);
+    public static RvrSkillTier TierOf(GameBot bot) => BotSkill.TierOf(bot);
 
     public static string ChoiceName(BotWayChoice choice) => choice switch
     {

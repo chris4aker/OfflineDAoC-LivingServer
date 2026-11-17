@@ -12,7 +12,7 @@ people" items from 2.0 ([RELEASE-TRAIN.md](RELEASE-TRAIN.md), 2.0, "Bots as peop
 | 6. Personal milestones that get talked about | Yes, with two arcs changed (owner decisions 2 and 3) |
 | 1. Bot players own alts; 3. Friends, regulars and grudges | No: they need the bot-player data model. Items 2, 4, 5 and 6 are keyed so they can move to it later (section "One key for later") |
 
-**Status: decided 2026-11-17 08:22 (section "Owner decisions"); WP0 (foundation) in build. Nothing here is seen in game.** This document follows
+**Status: decided 2026-11-17 08:22 (section "Owner decisions"); WP0-WP5 and WP2R merged on `integration/1.2`, WP6 (milestones) in build, WP7 (integration) under way. Nothing here is seen in game.** This document follows
 [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md): the same principles, pure rule classes, skill tiers and proof rules.
 
 ## What changes for you

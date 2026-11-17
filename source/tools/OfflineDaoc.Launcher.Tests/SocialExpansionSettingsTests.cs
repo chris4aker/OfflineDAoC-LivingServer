@@ -235,6 +235,23 @@ public class SocialExpansionSettingsTests
         Assert.That((off with { BotMovementHabits = true }).IsAllOff, Is.False);
     }
 
+    [Test] public void RaidLearningIsOnByDefaultAndAllOffTurnsItOff()
+    {
+        // Bots as people WP7 (coordinator's decision, 2026-11-17): ALL OFF is the classic server, so it also turns
+        // raid_learns_from_raiders off, a server key under no master switch.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.RaidLearnsFromRaiders && SocialExpansionSettings.Recommended.RaidLearnsFromRaiders, Is.True);
+        var off = d.AllOff();
+        Assert.That(off.RaidLearnsFromRaiders, Is.False);
+        Assert.That(off.IsAllOff, Is.True);
+        Assert.That((off with { RaidLearnsFromRaiders = true }).IsAllOff, Is.False, "raid learning on is not ALL OFF");
+        off.Save(_database, d, () => _stopped);
+        Assert.That(Rows()["raid_learns_from_raiders"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).RaidLearnsFromRaiders, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void TheChatRateIsSavedReadAndChecked()
     {
         // Beta 1.1.2: bot_voices_chat_rate in the tab; 2 by default (owner 2026-11-04, after the playtest).

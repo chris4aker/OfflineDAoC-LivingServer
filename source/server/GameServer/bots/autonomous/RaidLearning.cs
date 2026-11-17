@@ -233,7 +233,7 @@ public static class RaidLearning
             {
                 state.LoggedRaiders = state.Roster.Raiders;
                 state.LoggedSeen = state.Roster.HaveSeen;
-                line = LearnLine(raidId, mechanic, record, state.Roster, raid, health);
+                line = LearnLine(raidId, mechanic, record, state.Roster, raid, health, instance);
             }
         }
         if (Log.IsInfoEnabled)
@@ -283,13 +283,14 @@ public static class RaidLearning
     }
 
     /// <summary>RAID_LEARN raid= mechanic= record= seenShare= familiarity=, with the familiarity a newcomer and a veteran of
-    /// this raid react with (pure).</summary>
+    /// this raid react with, and run= the raid instance (its creation tick), so a log reader compares runs, not roster
+    /// changes inside one run (pure).</summary>
     public static string LearnLine(string raidId, string mechanic, double record, RaidDiscipline.RosterKnowledge roster, double raid,
-        int health = 0) =>
+        int health = 0, long run = 0) =>
         $"RAID_LEARN raid={raidId} mechanic={mechanic} record={F(record)} seenShare={F(roster.SeenShare)} familiarity={F(raid)} " +
         $"raiders={roster.Raiders} seen={roster.HaveSeen} specialForces={roster.SpecialForces} knowledge={F(roster.MeanKnowledge)} " +
         $"newcomer={F(RaidDiscipline.RaiderFamiliarity(record, raid, 0, roster.MeanKnowledge))} " +
-        $"veteran={F(RaidDiscipline.RaiderFamiliarity(record, raid, 1, roster.MeanKnowledge))} health={health}";
+        $"veteran={F(RaidDiscipline.RaiderFamiliarity(record, raid, 1, roster.MeanKnowledge))} run={run} health={health}";
 
     /// <summary>RAID_MECHANIC_SEEN for raiders credited at a call (pure).</summary>
     public static string SeenLine(string raidId, string mechanic, int credited, int firstTime, int health = 0) =>

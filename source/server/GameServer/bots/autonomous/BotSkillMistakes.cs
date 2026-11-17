@@ -157,8 +157,9 @@ public static class BotSkillMistakes
 
     /// <summary>
     /// A delay inside a band [<paramref name="min"/>, <paramref name="max"/>]: a member's place in its band (1 the best)
-    /// moves the middle of its draws, the roll spreads them around it; never outside the band, and over members spread
-    /// evenly the mean stays the band's middle (owner decision 5: the RvR field's measures stay readable). Pure.
+    /// moves the middle of its draws, the roll spreads them around it; never outside the band (owner decision 5). The mean
+    /// stays the band's middle only while members' places average the middle of their bands: places rise with growth, so a
+    /// group of grown members is up to about a quarter of the band quicker, still inside it. Pure.
     /// </summary>
     public static long SpreadInBand(long min, long max, double roll, double position)
     {
@@ -192,6 +193,20 @@ public static class BotSkillMistakes
     public static long FireDelayMilliseconds(RvrSkillTier groupTier, double memberPosition, double roll)
     {
         var (min, max) = FireBand(groupTier);
+        return SpreadInBand(min, max, roll, memberPosition);
+    }
+
+    /// <summary>
+    /// The delay (ms) before a member of an RvR group follows its group's call (work package 7): inside the group tier's band
+    /// (RvrAssist.FollowDelayRange: Casual 1-4 s, Average 0.6-2.5 s, Veteran 0.3-1.5 s), moved by the member's reactions facet
+    /// (owner decision 5). <paramref name="todayDelay"/> is today's fixed draw in that band; its place in the band is kept as
+    /// the roll. The group's mean stays today's only for members at mid-band; members who have grown follow sooner (up to
+    /// about a quarter of the band), still inside the group tier's band. Pure.
+    /// </summary>
+    public static long FollowDelayMilliseconds(RvrSkillTier groupTier, double memberPosition, long todayDelay)
+    {
+        var (min, max) = RvrAssist.FollowDelayRange(groupTier);
+        double roll = max > min ? Math.Clamp((todayDelay - min) / (double)(max - min), 0, 1) : 0.5;
         return SpreadInBand(min, max, roll, memberPosition);
     }
 
@@ -902,6 +917,18 @@ public static class BotSkillHands
             return today;
         var (min, max) = RvrPositioning.ReactionBand(groupTier);
         return BotSkillMistakes.SpreadInBand(min, max, Util.RandomDouble(), profile.Position(BotSkillFacet.Positioning));
+    }
+
+    /// <summary>
+    /// The delay (ms) before a member of an RvR group follows the group's call (BotBrain.RvrTactics): RvrAssist's band for the
+    /// group's tier, moved by the member's reactions facet (owner decision 5; work package 7). <paramref name="today"/> out
+    /// of scope or with no profile.
+    /// </summary>
+    public static long RvrFollowDelay(GameBot bot, RvrSkillTier groupTier, long today)
+    {
+        if (!AllowsCached(bot, out BotSkillProfile profile, out _))
+            return today;
+        return BotSkillMistakes.FollowDelayMilliseconds(groupTier, profile.Position(BotSkillFacet.Reactions), today);
     }
 
     // ---- life cycle ---------------------------------------------------------------------------------------------------------

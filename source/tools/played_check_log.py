@@ -79,6 +79,9 @@ EVENT_REGIONS = {
 OUTCOMES = {"Boss defeated": "won", "Defeated": "lost", "Timed out": "timed out (stall)", "Superseded": "superseded",
             "Stopped by player": "stopped by player", "Failed rally": "failed rally"}
 SKILL_SHARES = (30.0, 50.0, 20.0)   # casual / average / veteran (BOTS-AS-PEOPLE-1.2, WP1 played check)
+MISTAKES_MIN_IN_GROUP = 100         # chance decisions in the player's group before the quarter rate is judged
+MISTAKES_MAX_RATIO = 0.5            # rate_in / rate_out above this contradicts "about a quarter" (WP2 played check)
+MISTAKES_MIN_RATIO = 0.1            # below this, too few mistakes in the player's group to call it "about a quarter"
 
 
 # ---- Lines -------------------------------------------------------------------------------------------------------
@@ -385,8 +388,8 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE", "REAL
        "HIRE_WORD_165", "HIRED_COMPANION", "HIRED_COMPANION_SUMMONED", "HIRED_COMPANION_DISMISSED",
        "HIRED_COMPANION_REVIVED", "HIRED_COMPANION_RELEASED", "HIRED_COMPANION_ORPHAN",
        "HIRED_COMPANION_DELETE_FAILED", "BOT_CUSTOM_CLASS_RETIRED", "BOT_PEOPLE_SUMMARY", "BOT_SKILL_BUDGET",
-       "BOT_SKILL_GROWTH", "BOT_SKILL_MISTAKES", "RAID_MECHANIC_SEEN", "BOT_PLACE_BUDGET", "BOT_WAY_FOLLOW",
-       "BOT_WAY_SUMMARY", "BOT_MOVE_HABITS", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST", "BOT_MOVE_OVERSHOOT",
+       "BOT_SKILL_GROWTH", "RAID_MECHANIC_SEEN", "BOT_PLACE_BUDGET", "BOT_WAY_FOLLOW",
+       "BOT_WAY_SUMMARY", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST", "BOT_MOVE_OVERSHOOT",
        "BOT_MOVE_SIT", "BOT_MOVE_WALL", "BOT_MILESTONE_ARC", "BOT_MILESTONE_PROGRESS", "BOT_MILESTONE_REACHED",
        "BOT_MILESTONE_TALK", "ERA_BUILDS_INVALID")
 
@@ -401,6 +404,8 @@ def _raid_started(sec, t, message, level, near):
     run.started = t
     run.present, run.required, run.forced = f.get("present"), f.get("required"), f.get("forced")
     sec.ev["REALM_RAID_STARTED"].add(t, message)
+    sec.n[f"raid_starts.{event}"] += 1
+    sec.n["raid_starts"] += 1
 
 
 @handles("REALM_RAID_ENDED")
@@ -746,7 +751,23 @@ def _era_census(sec, t, message, level, near):
 def _skill_profile(sec, t, message, level, near):
     f = kv(message)
     sec.ev["BOT_SKILL_PROFILE"].add(t, message)
-    sec.n[f"tier.{f.get('tier', '?')}"] += 1
+    # The start tier is the roll the 30/50/20 shares are about; tier= has grown with play (a played world).
+    sec.n[f"tier.{f.get('start', f.get('tier', '?'))}"] += 1
+
+
+MISTAKE_COUNTS_RE = re.compile(r"\b(out|in)\.(pull|buff|power|position)=c(\d+)/(\d+),a(\d+)/(\d+),v(\d+)/(\d+)")
+
+
+@handles("BOT_SKILL_MISTAKES")
+def _skill_mistakes(sec, t, message, level, near):
+    """The 5-minute counts: mistakes/decisions of the chance kinds (pull, buff, power, position) out of and in the
+    player's group, summed over the session for the quarter-rate check (BOTS-AS-PEOPLE-1.2, WP2 played check)."""
+    sec.ev["BOT_SKILL_MISTAKES"].add(t, message)
+    for m in MISTAKE_COUNTS_RE.finditer(message):
+        side = m.group(1)
+        values = [int(x) for x in m.groups()[2:]]
+        sec.n[f"mistakes.{side}.m"] += values[0] + values[2] + values[4]
+        sec.n[f"mistakes.{side}.d"] += values[1] + values[3] + values[5]
 
 
 @handles("BOT_SKILL_MISTAKE")
@@ -757,11 +778,29 @@ def _skill_mistake(sec, t, message, level, near):
         sec.ev["mistake.spared"].add(t, message)
 
 
+MOVE_COUNTERS = ("strafes", "faces", "stickLost", "overshoots", "sits", "wallSits", "wallStands")
+MOVE_REQUIRED = ("sits", "stickLost", "overshoots")   # PLAYED-CHECK-1.2 Bots as people row 7
+
+
+@handles("BOT_MOVE_HABITS")
+def _move_habits(sec, t, message, level, near):
+    """The 5-minute counts of the movement habits, summed over the session (WP5 played check)."""
+    sec.ev["BOT_MOVE_HABITS"].add(t, message)
+    f = kv(message)
+    for name in MOVE_COUNTERS:
+        sec.n[f"move.{name}"] += int(num(f.get(name)))
+
+
 @handles("RAID_LEARN")
 def _raid_learn(sec, t, message, level, near):
     f = kv(message)
     sec.ev["RAID_LEARN"].add(t, message)
-    sec.lists["raid_learn"].append((f.get("raid"), num(f.get("seenShare"))))
+    raid = f.get("raid")
+    # The run: the raid instance the line names (run=, since WP7), else the count of REALM_RAID_STARTED lines for that
+    # raid so far (or of any raid, when the ids differ). RAID_LEARN is logged again whenever the roster changes in a run.
+    run = f.get("run") if f.get("run") not in (None, "0") else \
+        f"start{sec.n[f'raid_starts.{raid}'] or sec.n['raid_starts']}"
+    sec.lists["raid_learn"].append((raid, num(f.get("seenShare")), run))
 
 
 @handles("BOT_PLACE_LEARNED")
@@ -1104,14 +1143,41 @@ def people(j: Judge, sec: Section, c):
               detail + ("" if n >= 100 else ": too few to judge"))
     j.seen_if("people", "skill_growth", "A bot that played grows a tier (BOT_SKILL_GROWTH)", "BOT_SKILL_GROWTH",
               f"{c('BOT_SKILL_GROWTH')} line(s)", note="\"after the overnight\" is the session's length")
-    j.seen_if("people", "mistakes", "Mistakes, spared in the player's group (BOT_SKILL_MISTAKE spared=true, "
-              "BOT_SKILL_MISTAKES)", "mistake.spared",
-              f"{c('BOT_SKILL_MISTAKE')} mistakes, {c('mistake.spared')} spared, {c('BOT_SKILL_MISTAKES')} summaries",
-              note="the quarter rate and the deaths after a pull are compared by the log review")
+    out_m, out_d, in_m, in_d = (sec.n[k] for k in ("mistakes.out.m", "mistakes.out.d", "mistakes.in.m", "mistakes.in.d"))
+    rate_out = out_m / out_d if out_d else 0.0
+    rate_in = in_m / in_d if in_d else 0.0
+    ratio = rate_in / rate_out if rate_out else None
+    mistakes_detail = (f"{c('BOT_SKILL_MISTAKE')} mistakes, {c('mistake.spared')} spared, {c('BOT_SKILL_MISTAKES')} "
+                       f"summaries; rate_out={rate_out:.3f} ({out_m}/{out_d}) rate_in={rate_in:.3f} ({in_m}/{in_d})"
+                       + (f", in/out={ratio:.2f} (about 0.25 wanted)" if ratio is not None else ""))
+    if ratio is None or in_d < MISTAKES_MIN_IN_GROUP:
+        status = NOT_SEEN
+        mistakes_detail += f": too few decisions in the player's group to judge (under {MISTAKES_MIN_IN_GROUP})" \
+            if rate_out else ""
+    elif ratio > MISTAKES_MAX_RATIO:
+        status = CONTRADICTED
+    elif ratio < MISTAKES_MIN_RATIO:
+        status = NOT_SEEN
+        mistakes_detail += f": below {MISTAKES_MIN_RATIO} (the quarter rate wants mistakes in the group too)"
+    else:
+        status = SEEN if c("mistake.spared") else NOT_SEEN
+    j.add("people", "mistakes", "Mistakes at about a quarter of the strangers' rate in the player's group "
+          "(BOT_SKILL_MISTAKES rate_in against rate_out; BOT_SKILL_MISTAKE spared=true)", status,
+          j.ev("mistake.spared") if c("mistake.spared") else (j.ev("BOT_SKILL_MISTAKES") if c("BOT_SKILL_MISTAKES") else None),
+          mistakes_detail, note="the deaths within 30 s of a pull mistake are compared by the log review")
     learn = sec.lists["raid_learn"]
-    j.seen_if("people", "raid_learn", "Raid learning (RAID_LEARN seenShare)", "RAID_LEARN",
-              f"{len(learn)} line(s)" + (f", seenShare {min(x[1] for x in learn):.2f}-{max(x[1] for x in learn):.2f}"
-                                          if learn else ""))
+    runs = {}                   # raid -> [(run, seenShare at the run's first line)], in log order
+    for raid, share, run in learn:
+        if run not in (r for r, _ in runs.setdefault(raid, [])):
+            runs[raid].append((run, share))
+    rose = sorted(raid for raid, firsts in runs.items() if any(share > firsts[0][1] for _, share in firsts[1:]))
+    j.add("people", "raid_learn", "Raid learning: RAID_LEARN seenShare rising between runs", SEEN if rose else NOT_SEEN,
+          j.ev("RAID_LEARN") if learn else None,
+          f"{len(learn)} line(s) in {sum(len(r) for r in runs.values())} run(s)"
+          + (f", seenShare {min(x[1] for x in learn):.2f}-{max(x[1] for x in learn):.2f}" if learn else "")
+          + (f", rose between runs in {', '.join(rose)}" if rose else ", no rise between runs yet"),
+          note="each run is compared by its first RAID_LEARN line; that both runs ended in a correct win or loss is the "
+               "log review's")
     both = c("place.seeded") and c("place.visited")
     j.add("people", "places", "Places known: BOT_PLACE_LEARNED how=seeded, then how=visited",
           SEEN if both else NOT_SEEN, j.ev("place.visited") if both else None,
@@ -1124,11 +1190,14 @@ def people(j: Judge, sec: Section, c):
           f"{c('BOT_WAY_ASK')} asks, {c('BOT_WAY_TOLD')} told, {c('BOT_WAY_FOLLOW')} follows, "
           f"{c('BOT_WAY_WRONG_ROAD')} wrong roads ({long.count} over 180 s)",
           note="stuck-watchdog recoveries against the session before are compared by the log review")
-    moves = c("BOT_MOVE_HABITS") and (c("BOT_MOVE_WALL") or c("BOT_MOVE_SIT"))
-    j.add("people", "movement", "Movement habits: BOT_MOVE_HABITS with BOT_MOVE_WALL / BOT_MOVE_SIT",
+    moves = c("BOT_MOVE_HABITS") and (c("BOT_MOVE_WALL") or c("BOT_MOVE_SIT")) and \
+        all(sec.n[f"move.{name}"] > 0 for name in MOVE_REQUIRED)
+    j.add("people", "movement", "Movement habits: BOT_MOVE_HABITS with sits, stickLost and overshoots above 0, and "
+          "BOT_MOVE_WALL / BOT_MOVE_SIT",
           SEEN if moves else NOT_SEEN, j.ev("BOT_MOVE_WALL") if c("BOT_MOVE_WALL") else (j.ev("BOT_MOVE_SIT") if moves else None),
           ", ".join(f"{t[9:].lower()}={c(t)}" for t in ("BOT_MOVE_HABITS", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST",
-                                                         "BOT_MOVE_OVERSHOOT", "BOT_MOVE_SIT", "BOT_MOVE_WALL")),
+                                                         "BOT_MOVE_OVERSHOOT", "BOT_MOVE_SIT", "BOT_MOVE_WALL"))
+          + "; counted " + " ".join(f"{name}={sec.n['move.' + name]}" for name in MOVE_COUNTERS),
           note="the sit emote in the client is a screen check")
     ms = c("BOT_MILESTONE_TALK") and c("BOT_MILESTONE_REACHED")
     j.add("people", "milestones", "Milestones talked about: BOT_MILESTONE_TALK and BOT_MILESTONE_REACHED",

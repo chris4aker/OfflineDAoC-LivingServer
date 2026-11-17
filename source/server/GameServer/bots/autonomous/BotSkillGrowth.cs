@@ -112,6 +112,15 @@ public static class BotSkillGrowth
         }
     }
 
+    /// <summary>
+    /// Where a bot's clock for one kind of lesson starts at login: a fight credits the time since login (so it starts now);
+    /// every other kind only has a gap, so the first one after login counts (a death in the first 10 minutes online teaches
+    /// too; work package 7). Pure.
+    /// </summary>
+    public static long ClockStart(BotSkillEvent kind, long nowMs) =>
+        kind == BotSkillEvent.FightWon ? nowMs : nowMs - Math.Max(DeathGapMilliseconds, Math.Max(RestGapMilliseconds,
+            Math.Max(PullGapMilliseconds, BuffGapMilliseconds)));
+
     /// <summary>The experience after one event: each facet plus its gain (never less than before); the tier unchanged. Pure.</summary>
     public static BotSkillExperience Step(in BotSkillExperience experience, BotSkillEvent kind, long sinceLastMilliseconds) =>
         Add(experience, Gain(kind, sinceLastMilliseconds));
@@ -185,7 +194,8 @@ public static class BotSkill
         {
             Realm = realm;
             Last = new long[kinds];
-            Array.Fill(Last, nowMs);
+            for (int kind = 0; kind < kinds; kind++)
+                Last[kind] = BotSkillGrowth.ClockStart((BotSkillEvent)kind, nowMs);
         }
 
         public readonly int Realm;
@@ -229,6 +239,19 @@ public static class BotSkill
         return true;
     }
 
+    /// <summary>
+    /// A gamebot's own tier, the one every package reads (work package 7): its profile's tier (grown by play) when
+    /// <see cref="TryProfile"/> gives one, else its start roll (<see cref="BotSkillProfile.StartTierOf"/>), so switching
+    /// bot_skill_profiles off never gives a bot a second tier. A bot with no person rolls on its object id. Counts nothing.
+    /// </summary>
+    public static RvrSkillTier TierOf(GameBot bot)
+    {
+        if (TryProfile(bot, out BotSkillProfile profile))
+            return profile.Tier;
+        BotPersonKey person = BotPersonKey.Of(bot);
+        return BotSkillProfile.StartTierOf(person.IsNone ? BotPersonKey.Character(bot?.ObjectID ?? 0) : person, Awareness);
+    }
+
     /// <summary>The profile of a person from the store (online or not; /lswhy and tests). None for no person.</summary>
     public static BotSkillProfile ProfileOf(BotPersonKey person, BotPersonality? personality, RvrBotAwareness awareness, BotPeopleStore store = null)
     {
@@ -245,7 +268,8 @@ public static class BotSkill
     {
         if (Bots.TryGetValue(person, out Online entry) && entry.Current != null)
             return entry;
-        entry = Bots.GetOrAdd(person, _ => new Online((int)(bot?.Realm ?? 0), GameLoop.GameLoopTime, EventKinds));
+        // The factory takes the bot as its argument: no closure, so a cached read allocates nothing.
+        entry = Bots.GetOrAdd(person, static (_, b) => new Online((int)(b?.Realm ?? 0), GameLoop.GameLoopTime, EventKinds), bot);
         if (entry.Current == null)
             Interlocked.CompareExchange(ref entry.Current, new Snapshot(ProfileOf(person, PersonalityOf(bot), Awareness)), null);
         return entry;
@@ -277,7 +301,9 @@ public static class BotSkill
             return;
         foreach (GameLiving member in bot.Group.GetMembersInTheGroup())
         {
-            if (member is GameBot mate && mate != bot && mate.IsAlive && mate.CurrentRegionID == bot.CurrentRegionID &&
+            // Active only: a groupmate that just logged out must not get its entry made again (nothing would remove it).
+            if (member is GameBot mate && mate != bot && mate.IsAlive && mate.ObjectState == GameObject.eObjectState.Active &&
+                mate.CurrentRegionID == bot.CurrentRegionID &&
                 mate.IsWithinRadius(bot, GroupCreditRange) &&
                 BotPeopleScope.Check(mate, BotPeopleRule.Record, true, out _) == BotPeopleRefusal.None)
                 Credit(mate, BotSkillEvent.FightWon);
