@@ -15,7 +15,7 @@
 A: {q} healer or shaman for a group's main heals?
 B: healer. bigger heals, group heals, and pac mez on top
 C: shaman heals fine and the buffs make every fight shorter
-B: shorter fights do not matter if the tank falls over
+B: shorter fights dont matter if the tank falls over
 C: with my buffs and end regen the tank falls over a lot later
 D: take both and stop arguing, you two are the best pair in midgard
 A: fair, healer and shaman it is
@@ -30,7 +30,7 @@ B: subterranean is diseases and damage over time, it changes the whole fight
 C: groups want heals from a shaman, not dots
 B: groups want things dead. a diseased target heals for less
 C: tell that to the tank at a quarter health
-A: maybe half and half? mending and cave
+B: the tank was at a quarter because the mob lived too long
 
 @topic skald_role
 @levels 20-50
@@ -42,7 +42,7 @@ B: battlesongs is more than speed, the shouts hurt
 C: in a group the speed is the reason we invite you
 B: i know, and i will play it, but let me swing sometimes
 C: swing all you want, just keep the song up
-A: speed on, axes out. everyone happy
+B: deal. song up, axes out
 
 @topic thane_identity
 @levels 20-50
@@ -56,32 +56,6 @@ B: the master of none still kills you while you think about it
 C: fair, the lightning is no joke
 A: thane life sounds fun honestly
 
-@topic zerker_savage
-@levels 20-50
-@scene zerker_or_savage
-@role B class=Berserker
-@role C class=Savage
-@role D type=*
-A: zerker or savage for a new alt?
-B: zerker, two axes and berserk style, classic midgard
-C: savage, the self buffs and hand to hand are the new hotness
-B: those buffs eat your own health
-C: and the extra swings make up for it
-D: either way you will die first, it is tradition
-A: lol. savage, i want to try the new class
-
-@topic bonedancer
-@levels 20-50
-@scene bonedancer
-@role B class=Bonedancer
-@role C type=NoLifer
-A: bonedancers in the frontier, good or just lag?
-B: three pets doing damage while i stay safe, good
-C: kill the commander and the army falls apart
-B: then i resummon from behind the wall
-C: and we are back to lag
-A: bring the army, i like the chaos
-
 @topic sm_rm
 @levels 35-50
 @scene sm_or_rm
@@ -92,7 +66,7 @@ B: spiritmaster, the pet tanks and keeps the adds off us
 C: runemaster, the damage is the reason fights end
 B: fights end faster when nobody gets added on
 C: fights end fastest when the target is already dead
-A: one of each then, perfect
+B: fine. dead things dont add, i give you that
 
 @topic shadowblade_weapons
 @levels 20-50
@@ -102,7 +76,7 @@ A: one of each then, perfect
 A: left axe or two-handed for a shadowblade?
 B: left axe, the extra swings stack the poison faster
 C: the big two-hander opener drops casters before they move
-B: one big hit, then you are just a weak fighter in the open
+B: one big hit, then youre just a weak fighter in the open
 C: one big hit is all you need on a caster
 A: left axe, i like stabbing a lot
 
@@ -115,7 +89,7 @@ A: are warriors the most boring class in midgard?
 B: boring is the group never dying because i hold everything
 C: you hit buttons and get hit, where is the excitement
 B: the excitement is watching you live because of me
-C: ok that is a good comeback
+C: ok thats a good comeback
 A: respect the warrior
 
 @topic mid_40s
@@ -128,7 +102,7 @@ B: spindelhalla, the halls are packed with camps and the xp is steady
 C: varulvhamn, fewer groups fighting over the same pulls
 B: fewer groups because the wolves hit like trains
 C: and drop like trains too
-A: spindel tonight, varulv when i am braver
+B: enjoy the corpse runs
 
 @topic aegir
 @levels 30-50
@@ -145,32 +119,6 @@ A: trying gripklosa this weekend, will report back
 # ======================= Albion =======================
 @realm alb
 
-@topic cleric_spec
-@levels 20-50
-@scene smite_or_rejuv
-@role B class=Cleric
-@role C type=*
-@role D class=Armsman,Paladin,Mercenary,Reaver
-A: smite cleric or rejuv cleric?
-B: smite, i can solo and still heal the group
-C: rejuv, a group needs heals more than another damage dealer
-D: as the guy getting hit, i vote rejuv
-B: you would vote for anything that keeps you alive
-D: correct
-A: rejuv for groups, smite for solo, settled
-
-@topic armsman_weapon
-@levels 20-50
-@scene polearm_or_twohand
-@role B class=Armsman
-@role C type=NoLifer
-A: polearm or two handed on an armsman?
-B: polearm, the reach and the styles feel right
-C: two handed has better follow-ups in some fights
-B: both hit like a falling tree, honestly
-C: and both need a cleric behind you
-A: polearm it is, i like the reach
-
 @topic paladin
 @levels 20-50
 @scene paladin_worth
@@ -179,21 +127,9 @@ A: polearm it is, i like the reach
 A: is a paladin worth inviting over another fighter?
 B: the chants carry the whole group, endurance alone wins long fights
 C: the damage is low though
-B: the damage is low because i am busy keeping you running
+B: the damage is low because im busy keeping you running
 C: twisting chants is hard to do well
 A: a good paladin is gold then
-
-@topic necromancer
-@levels 20-50
-@scene necro
-@role B class=Necromancer
-@role C type=NoLifer,Daredevil
-A: necromancers, overpowered or just strange?
-B: strange. i am the pet, the pet is me, everyone is confused
-C: confused until the shade drains them to nothing
-B: and then someone kills the pet and i am a ghost in a robe
-C: fair, it is a weird class
-A: the new classes are all weird and i love it
 
 @topic albion_casters
 @levels 35-50
@@ -241,7 +177,7 @@ A: trying reaver, i like weird
 A: barrows or the avalon isle camps for the 40s?
 B: stonehenge barrows, everyone knows the pulls and the xp is fast
 C: avalon isle, the drakoran camps are open and the view is better
-B: the view does not give you levels
+B: the view doesnt give you levels
 C: the empty camp does
 A: barrows tonight, avalon on the weekend
 
@@ -267,7 +203,7 @@ A: so the advice to the enemy is take cover. noted
 @role D class=Warden
 A: druid, bard or warden as the group healer?
 B: druid, the heals are biggest and the pet helps in a pinch
-C: bard heals and mezzes and gives speed, that is three jobs
+C: bard heals and mezzes and gives speed, thats three jobs
 D: warden can heal and still take a hit in melee
 B: three jobs means none done perfectly
 C: none done perfectly beats one done alone
@@ -281,7 +217,7 @@ A: two of the three then. bard always
 A: why is every hib group built around a bard?
 B: speed home, mez on the adds, heals in a pinch. we do it all
 C: and you get focused first in every fight because of it
-B: which means i am important
+B: which means im important
 C: which means you die first
 A: protect the bard, always
 
@@ -293,21 +229,9 @@ A: protect the bard, always
 A: is enchanter area damage too strong in dungeons?
 B: pull the room to me and watch it vanish
 C: until something resists and the whole room eats you
-B: that is what the bard's mez is for
+B: thats what the bard's mez is for
 C: and what the druid's rez is for
 A: pull carefully then, and stand near the druid
-
-@topic eldritch
-@levels 20-50
-@scene eld_spec
-@role B class=Eldritch
-@role C type=*
-A: void, light or mana eldritch?
-B: void, the biggest single hits hibernia has
-C: light, steadier damage and a few tricks void does not have
-B: tricks are nice, a dead target is nicer
-C: a target that cannot see straight cannot hit our healer
-A: void for groups, light for solo maybe
 
 @topic hib_tanks
 @levels 20-50
@@ -321,19 +245,7 @@ C: champion, my debuffs make the whole group hit harder
 D: blademaster, two blades and the damage to end it
 B: and who takes the hits while you both do damage?
 C: you, obviously
-A: one of each, it is a party
-
-@topic hib_stealth
-@levels 20-50
-@scene ns_or_ranger
-@role B class=Nightshade
-@role C class=Ranger
-A: nightshade or ranger for hunting the frontier?
-B: nightshade, close in, crit strike, gone before they turn around
-C: ranger, i hit them from range and they never see me at all
-B: until they close the gap
-C: they have to find me first
-A: either way, someone is getting stabbed
+A: one of each, its a party
 
 @topic animist
 @levels 20-50
@@ -347,18 +259,6 @@ B: a slow enemy is a dead enemy
 C: a slow ally is also a dead ally
 A: shrooms on the walls, effects off, everyone happy
 
-@topic valewalker
-@levels 20-50
-@scene valewalker
-@role B class=Valewalker
-@role C type=*
-A: what does a valewalker actually do?
-B: a scythe, arboreal path, and a lot of confused looks
-C: i grouped with one, still not sure what it did
-B: it kept you alive, you just did not notice
-C: maybe, the fights did go well
-A: mysterious class, i like it
-
 @topic hib_dungeons
 @levels 15-25
 @scene spraggon_or_muire
@@ -368,7 +268,7 @@ A: spraggon den or muire tomb at this level?
 B: spraggon den, the pulls are clean and the respawn is fast
 C: muire tomb, the mummy hags give great xp
 B: and hit like a falling tree
-C: that is what the druid is for
+C: thats what the druid is for
 A: den tonight, tomb next week
 
 @realm *

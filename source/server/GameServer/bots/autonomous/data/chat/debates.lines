@@ -9,10 +9,10 @@
 @role C type=Socialite,Leveler
 A: {q} is everyone running a buffbot on a second account now?
 B: why not, buffs make solo play actually fun
-C: one person running a whole group is not a group though
+C: one person running a whole group isnt a group though
 B: support classes are boring to level, a bot lets them stay useful
 C: and it takes a spot a real healer could have had
-A: fair points both. still kind of want one
+B: and that real healer is never online when i need one
 
 @topic stealth
 @levels 35-50
@@ -21,19 +21,19 @@ A: fair points both. still kind of want one
 @role C class=Infiltrator,Shadowblade,Nightshade type=NoLifer,Daredevil
 A: got killed by a stealther on the way to {keep} again
 B: stealthers ruin the frontier for anyone who travels alone
-C: then do not travel alone. that is the whole point of them
-B: easy to say when you are the one stabbing people
-C: groups barely see us. we hunt the stragglers, that is the job
-A: so the lesson is travel in groups. noted
+C: then dont travel alone. thats the whole point of them
+B: easy to say when youre the one stabbing people
+C: groups barely see us. we hunt the stragglers, thats the job
+B: groups, fine. i still hate you lot
 
 @topic archers
 @levels 35-50
 @scene archers
 @role B type=*
 @role C class=Scout,Hunter,Ranger
-A: archers hit from so far away it does not feel fair
+A: archers hit from so far away it doesnt feel fair
 C: we die the second anyone reaches us, it evens out
-B: the range is the problem, you cannot close on them in the open
+B: the range is the problem, you cant close on them in the open
 C: use the terrain. we need line of sight, you know
 A: going to try hugging the walls next time
 
@@ -45,9 +45,9 @@ A: going to try hugging the walls next time
 A: is zerging really rvr or just a crowd walking around?
 B: small groups is where the skill is, the zerg is for the realm points
 C: the zerg takes keeps. small groups take screenshots
-B: a good 8man beats twenty people who do not assist
-C: and twenty people still take the keep while you are busy
-A: so we need both. got it
+B: a good 8man beats twenty people who dont assist
+C: and twenty people still take the keep while youre busy
+B: fine, both. the 8man still has more fun getting there
 
 @topic relics
 @levels 35-50
@@ -59,7 +59,7 @@ B: the realm with the most people always ends up with them anyway
 C: the bonus is real, every fight is easier when we hold them
 B: then the other realms gang up and take them back
 C: which is the most fun the frontier gets all month
-A: count me in for the next relic raid
+B: fun until its our relic walking away
 
 @topic darkness_falls
 @levels 20-50
@@ -70,8 +70,8 @@ A: we lost darkness falls again
 B: that hurts, the xp and the seals down there are great
 C: means the frontier needs people, not the dungeon
 B: keeps are boring when you could be farming demons
-C: and you cannot farm demons if nobody takes the keeps
-A: ok who is coming to the frontier
+C: and you cant farm demons if nobody takes the keeps
+C: frontier first, demons after
 
 @topic twinks
 @levels 20-24
@@ -84,7 +84,7 @@ B: a twink is just someone who planned ahead
 C: or someone who hit 24 and refused to grow up
 B: gear matters everywhere, why not in the battleground
 C: because new players get farmed and quit
-A: i will bring friends then
+B: then new players should bring friends, like everyone else
 
 @topic spellcraft
 @levels 35-50
@@ -105,10 +105,10 @@ A: guess i start saving now
 @role C type=Leveler,Daredevil
 A: is grinding a craft to legendary worth it?
 B: masterpiece gear sells, and nothing beats crafting your own
-C: it is a money pit, you could buy everything you need
+C: its a money pit, you could buy everything you need
 B: and who do you think makes the things you buy?
 C: fair. still not spending my coin on it
-A: maybe i just pick something cheap to start
+B: your loss, masterpiece prices only go up
 
 @topic healer_spec
 @levels 20-50
@@ -118,7 +118,7 @@ A: maybe i just pick something cheap to start
 @role C type=*
 A: {q} pac healer or mending healer for groups?
 B: pac, the mez saves more groups than any heal
-C: a group without heals does not live long enough to mez
+C: a group without heals doesnt live long enough to mez
 B: the heals come with any spec, the mez has to be trained
 C: i will take the healer who keeps me alive
 A: so pac for the frontier, mend for dungeons?
@@ -131,8 +131,8 @@ A: so pac for the frontier, mend for dungeons?
 @role C type=Leveler
 A: which class solos best? thinking about an alt
 B: anything with a pet, the pet takes the hits
-C: a good healer class can solo forever if it is patient
-B: patient is not my style
+C: a good healer class can solo forever if its patient
+B: patient isnt my style
 C: patient is how you level without dying
 A: pet class it is then, sorry healers
 
@@ -154,11 +154,11 @@ A: somewhere in the middle then
 @role B type=Leveler
 @role C type=Socialite
 A: someone just walked into our camp and started pulling
-B: first come first served, that is the rule
+B: first come first served, thats the rule
 C: just invite them, more people more xp
 B: and if the group is full?
 C: then ask them nicely to share the next room
-A: inviting them, wish me luck
+A: asking them to share, wish me luck
 
 @topic training
 @levels 1-50
@@ -167,8 +167,8 @@ A: inviting them, wish me luck
 @role C type=*
 A: someone ran a train right through our camp
 B: happens, everyone has run for their life once
-C: you yell train when you do it, that is the rule
-B: hard to type when you are running
+C: you yell train when you do it, thats the rule
+B: hard to type when youre running
 C: then hit the macro before you run
 A: making a train macro right now
 
@@ -193,8 +193,8 @@ A: did they nerf my class again or am i just unlucky tonight
 B: every patch nerfs somebody, adapt and move on
 C: everyone thinks their class got nerfed and everyone else's is overpowered
 B: some classes really are overpowered though
-C: and it is always the ones that kill you, funny that
-A: ok maybe i just had a bad night
+C: and its always the ones that kill you, funny that
+B: funny how that works
 
 @topic realm_pride
 @levels 1-50
@@ -204,9 +204,9 @@ A: ok maybe i just had a bad night
 A: be honest, which realm has the best casters?
 B: ours obviously, have you seen us clear a room
 C: the other realms say the same thing about theirs
-B: they are wrong though
+B: theyre wrong though
 C: of course they are
-A: realm pride, love it
+B: see, even you agree
 
 @topic guilds
 @levels 1-50
@@ -214,9 +214,9 @@ A: realm pride, love it
 @role B type=NoLifer,Daredevil
 @role C type=Socialite
 A: big rvr guild or a small family guild?
-B: big guild, there is always a group and always a raid
+B: big guild, theres always a group and always a raid
 C: small guild, you actually know everyone's name
-B: names do not take keeps
+B: names dont take keeps
 C: names show up when you need a rez and nobody is on
 A: small guild it is for me i think
 
@@ -228,9 +228,9 @@ A: small guild it is for me i think
 A: anyone else lag out in that last keep fight?
 B: so many people on screen my game turned into a slideshow
 C: turn your spell effects down, it helps a lot
-B: i want to see the effects though, that is half the fun
+B: i want to see the effects though, thats half the fun
 C: then enjoy the slideshow
-A: turning effects down, thanks
+B: a slideshow with nice colors, worth it
 
 @topic advice
 @levels 1-50
@@ -239,7 +239,7 @@ A: turning effects down, thanks
 @role C type=NoLifer
 @role A levels=1-12
 A: new player here, any advice?
-B: do not rush, group a lot, enjoy the camps
+B: dont rush, group a lot, enjoy the camps
 C: learn your class, train every level, and get to 50
 B: and make friends, groups are everything
 C: and find a crafter, gear is everything too
