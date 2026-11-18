@@ -174,7 +174,11 @@ A few friends can now join your bot world from their own PCs, with the original 
   (a mezzing Healer, Sorcerer or Bard) for its crowd controller. A gamebot that trains every level also gets the
   half-level spec points above 40 now, as you do, and so do hired companions (their spec window shows the points a
   player of their class and level has; a companion you already trained keeps its lines and gets the missing points to
-  spend) and `/spawn` helpers. Bots never play the Sluaghbinder, in either edition; a gamebot that
+  spend) and `/spawn` helpers. Bots also pay what you pay for a class's autotrain lines (free up to a quarter of the
+  level, 77 points a line at 50), and every era build is fully trained on a 1.65 template (the Uthgard 1.65 server's and period guides, tuned back to
+  1.65; the 2002-2003 posts where nothing better exists), with every autotrain line at its free 12 and each build's
+  source in the data. A levelling era bot spends what its build can take at every trainer visit, and gamebots you
+  already have get back the points a player of their level would have. Bots never play the Sluaghbinder, in either edition; a gamebot that
   already is one is kept with its items but no longer logs in. Switches: "2003 class mix" and "2003 builds" in the
   Living Server tab.
 - **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own

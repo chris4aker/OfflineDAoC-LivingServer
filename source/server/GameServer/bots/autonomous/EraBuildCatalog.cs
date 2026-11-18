@@ -23,7 +23,8 @@ namespace OfflineDaoc.Shared;
 /// </para>
 /// <para>
 /// Validation at load: a build with a line its class doesn't train, a line outside 1-50, more points than a level 50 has
-/// (<see cref="PointBudget"/>), no family or no weight is dropped and named in <see cref="Problems"/>
+/// (<see cref="PointBudget"/>; the class's autotrain lines cost a player nothing up to level 12, <see cref="BuildCost"/>),
+/// no family or no weight is dropped and named in <see cref="Problems"/>
 /// (<c>ERA_BUILDS_INVALID</c>); a class left with no build is dropped (callers fall back to today's picker for it); a file
 /// that doesn't parse gives an empty catalog (<see cref="IsLoaded"/> false). Bots never stop loading over data.
 /// </para>
@@ -147,12 +148,16 @@ public sealed class EraBuildCatalog
                 StringComparer.Ordinal);
             int multiplier = info.GetProperty("specMultiplier").GetInt32();
             int budget = PointBudget(multiplier);
+            // The class's autotrain lines (the game's GetAutotrainableSkills; UT_EraBuildData ties the two together).
+            string[] autoTrain = info.TryGetProperty("autotrain", out JsonElement autoTrainLines)
+                ? autoTrainLines.EnumerateArray().Select(line => line.GetString() ?? "").Where(lines.Contains).ToArray()
+                : Array.Empty<string>();
             if (info.TryGetProperty("pointBudget50", out JsonElement statedBudget) && statedBudget.GetInt32() != budget)
                 _problems.Add($"class={name} build=* reason=\"pointBudget50 {statedBudget.GetInt32()} is not {budget}, used {budget}\"");
             var builds = new List<EraBuild>();
             foreach (JsonElement buildElement in info.GetProperty("builds").EnumerateArray())
             {
-                EraBuild build = ReadBuild(name, buildElement);
+                EraBuild build = ReadBuild(name, buildElement) with { AutoTrain = autoTrain };
                 string? problem = Check(build, lines, budget);
                 if (problem != null || _builds.ContainsKey(build.Id))
                 {
@@ -171,7 +176,7 @@ public sealed class EraBuildCatalog
             if (Math.Abs(weights - 1) > 0.005)
                 _problems.Add($"class={name} build=* reason=\"weights sum to {weights.ToString("0.000", CultureInfo.InvariantCulture)}, drawn in proportion\"");
             var eraClass = new EraClass(name, classId, info.GetProperty("realm").GetString() ?? "", multiplier, budget,
-                lines.ToArray(), builds);
+                lines.ToArray(), builds) { AutoTrainLines = autoTrain };
             _classes[name] = eraClass;
             _classesById[classId] = eraClass;
             foreach (EraBuild build in builds)
@@ -251,13 +256,15 @@ public sealed class EraBuildCatalog
             if (level is < 1 or > 50)
                 return $"{line} {level} is outside 1-50";
         }
-        int points = BuildCost(build.Specs);
+        int points = build.Points;
         return points > budget ? $"{points} points, a level 50 has {budget}" : null;
     }
 
     private static string Clean(string text) => text.Replace('"', '\'').Replace('\n', ' ').Replace('\r', ' ');
 
-    // ---- the point budget (GameBot.GetSpecPointsForLevel with the half levels above 40, as arrival training spends)
+    // ---- the point budget (GameBot.GetSpecPointsForLevel with the half levels above 40, as arrival training spends) and
+    // what a build costs a player: an autotrain line is free up to a quarter of the level (GamePlayer.VerifySpecPoints,
+    // GameBot.LineCost), 77 points a line at 50
 
     /// <summary>Spec points a character with this multiplier has spent by <paramref name="level"/> (levels 2 to level).</summary>
     public static int PointBudget(int specMultiplier, int level = 50)
@@ -275,7 +282,66 @@ public sealed class EraBuildCatalog
     /// <summary>Points to raise a line from 1 to <paramref name="level"/> (2 + 3 + ... + level).</summary>
     public static int LineCost(int level) => level > 1 ? level * (level + 1) / 2 - 1 : 0;
 
-    public static int BuildCost(IEnumerable<KeyValuePair<string, int>> specs) => specs.Sum(line => LineCost(line.Value));
+    /// <summary>The level an autotrain line is free up to: a quarter of the character's level, at least 1 (12 at 50).</summary>
+    public static int AutoTrainLevel(int characterLevel = 50) => Math.Max(1, characterLevel / 4);
+
+    /// <summary>What a line at <paramref name="level"/> costs a player of <paramref name="characterLevel"/>: an autotrain
+    /// line's levels up to <see cref="AutoTrainLevel"/> are free.</summary>
+    public static int LineCost(int level, bool autoTrain, int characterLevel = 50) =>
+        LineCost(level) - (autoTrain ? LineCost(Math.Min(AutoTrainLevel(characterLevel), level)) : 0);
+
+    /// <summary>What the lines cost a player of <paramref name="characterLevel"/> whose class autotrains
+    /// <paramref name="autoTrain"/> (none: every level is paid for).</summary>
+    public static int BuildCost(IEnumerable<KeyValuePair<string, int>> specs, IReadOnlyCollection<string>? autoTrain = null,
+        int characterLevel = 50) =>
+        specs.Sum(line => LineCost(line.Value, autoTrain != null && autoTrain.Contains(line.Key), characterLevel));
+
+    /// <summary>What the next level of a line costs a player of <paramref name="characterLevel"/>: nothing while an
+    /// autotrain line is below a quarter of the level, else the new level (GameBot.NextLevelCost).</summary>
+    public static int NextLevelCost(int level, bool autoTrain, int characterLevel = 50) =>
+        autoTrain && level < characterLevel / 4 ? 0 : level + 1;
+
+    /// <summary>The points a level 50 has left after the lines (negative when it can't pay for them).</summary>
+    public static int PointsLeft(IEnumerable<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null) => budget - BuildCost(specs, autoTrain);
+
+    /// <summary>Fully trained (owner 2026-11-17 18:59: "bots should be fully trained"): a level 50 can pay for the lines,
+    /// and what is left buys no further level in any of them.</summary>
+    public static bool IsFullyTrained(IReadOnlyList<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null)
+    {
+        int left = PointsLeft(specs, budget, autoTrain);
+        return left >= 0 && specs.Where(line => line.Value < 50)
+            .All(line => NextLevelCost(line.Value, autoTrain != null && autoTrain.Contains(line.Key)) > left);
+    }
+
+    /// <summary>
+    /// The rest of a level 50's points go into the cheapest next level of the lines - the lowest line, the first listed on
+    /// a tie - a level at a time, until what is left buys none (make_era_builds.py's spend_rest: where the period guides
+    /// put spare points, "the remainder in parry"). The order of the lines is kept.
+    /// </summary>
+    public static KeyValuePair<string, int>[] SpendRest(IReadOnlyList<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null, int cap = 50)
+    {
+        KeyValuePair<string, int>[] result = specs.ToArray();
+        int left = PointsLeft(result, budget, autoTrain);
+        while (true)
+        {
+            int best = -1, bestCost = int.MaxValue;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i].Value >= cap)
+                    continue;
+                int cost = NextLevelCost(result[i].Value, autoTrain != null && autoTrain.Contains(result[i].Key));
+                if (cost < bestCost || cost == bestCost && result[i].Value < result[best].Value)
+                    (best, bestCost) = (i, cost);
+            }
+            if (best < 0 || bestCost > left)
+                return result;
+            result[best] = new KeyValuePair<string, int>(result[best].Key, result[best].Value + 1);
+            left -= bestCost;
+        }
+    }
 
     // ---- lookups
 
@@ -350,8 +416,10 @@ public sealed class EraBuildCatalog
 
     /// <summary>
     /// The build's specs with up to <see cref="JitterPoints"/> levels moved from one of its lower lines to another (never
-    /// the top line), from a seed; inside 1-50 and the class's level-50 budget. <paramref name="moves"/> says what moved
-    /// ("Body Magic+1,Matter Magic-1"; empty when nothing did). A build with fewer than two lower lines never moves.
+    /// the top line), from a seed; inside 1-50 and the class's level-50 budget. A move that frees points is followed by
+    /// <see cref="SpendRest"/>, so the result is as fully trained as the build. <paramref name="moves"/> says what moved
+    /// ("Body Magic+1,Matter Magic-1", and "Parry+2" for the rest; empty when nothing did). A build with fewer than two
+    /// lower lines never moves.
     /// </summary>
     public IReadOnlyList<KeyValuePair<string, int>> Jitter(EraBuild build, ulong seed, out string moves, int? points = null)
     {
@@ -382,9 +450,24 @@ public sealed class EraBuildCatalog
             var result = build.Specs.ToArray();
             result[from] = new KeyValuePair<string, int>(result[from].Key, fromLevel);
             result[to] = new KeyValuePair<string, int>(result[to].Key, toLevel);
-            if (BuildCost(result) > budget)
+            if (BuildCost(result, build.AutoTrain) > budget)
                 continue;
-            moves = $"{result[to].Key}+{k},{result[from].Key}-{k}";
+            // A fully trained build stays fully trained: the points the move freed go where the build's own rest went,
+            // its lowest lines (never the top line, and never above it).
+            if (IsFullyTrained(build.Specs, budget, build.AutoTrain))
+            {
+                KeyValuePair<string, int>[] rest = SpendRest(result.Skip(1).ToArray(),
+                    budget - LineCost(result[0].Value, build.AutoTrain.Contains(result[0].Key)), build.AutoTrain, top);
+                for (int i = 0; i < rest.Length; i++)
+                    result[i + 1] = rest[i];
+            }
+            // what moved against the build, the raised lines first ("Body Magic+1,Matter Magic-1")
+            moves = string.Join(",", Enumerable.Range(1, result.Length - 1)
+                .Select(i => (Line: result[i].Key, Change: result[i].Value - build.Specs[i].Value))
+                .Where(entry => entry.Change != 0).OrderBy(entry => entry.Change < 0)
+                .Select(entry => $"{entry.Line}{(entry.Change > 0 ? "+" : "")}{entry.Change}"));
+            if (moves.Length == 0)
+                return build.Specs;
             // The top line stays first, even when a lower line now ties it (DerivedRatio gives the first line 1.0).
             return result.Take(1).Concat(result.Skip(1).OrderByDescending(line => line.Value)
                 .ThenBy(line => line.Key, StringComparer.Ordinal)).ToArray();
@@ -488,7 +571,11 @@ public sealed record EraClassShare(string ClassName, int ClassId, double Share, 
 
 /// <summary>A class and its era builds.</summary>
 public sealed record EraClass(string Name, int ClassId, string Realm, int SpecMultiplier, int PointBudget50,
-    IReadOnlyList<string> Lines, IReadOnlyList<EraBuild> Builds);
+    IReadOnlyList<string> Lines, IReadOnlyList<EraBuild> Builds)
+{
+    /// <summary>The class's autotrain lines among <see cref="Lines"/>: free for a player up to a quarter of the level.</summary>
+    public IReadOnlyList<string> AutoTrainLines { get; init; } = Array.Empty<string>();
+}
 
 /// <summary>
 /// One period build. <see cref="Specs"/> is what bots train, highest line first; <see cref="Posted"/> what the posts said;
@@ -499,7 +586,11 @@ public sealed record EraBuild(string Id, string ClassName, string Label, string 
     double Weight, bool WeightSourced, IReadOnlyList<KeyValuePair<string, int>> Specs,
     IReadOnlyList<KeyValuePair<string, int>> Posted, string? Change, bool SpecsSourced, int ForumMentions)
 {
-    public int Points => EraBuildCatalog.BuildCost(Specs);
+    /// <summary>The class's autotrain lines (<see cref="EraClass.AutoTrainLines"/>).</summary>
+    public IReadOnlyList<string> AutoTrain { get; init; } = Array.Empty<string>();
+
+    /// <summary>What the build costs a level 50 player of the class (its autotrain lines free up to 12).</summary>
+    public int Points => EraBuildCatalog.BuildCost(Specs, AutoTrain);
 
     public int Level(string line) =>
         Specs.FirstOrDefault(entry => string.Equals(entry.Key, line, StringComparison.Ordinal)).Value;

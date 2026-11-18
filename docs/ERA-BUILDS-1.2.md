@@ -72,9 +72,16 @@ current gear rules), realm abilities, races, spells, the class AI, any raid code
   759 over), Theurgist Earth, Wizard Ice, Shadowblade (two), Runemaster and Spiritmaster Suppression, Champion
   Valor/Blades, Ranger Archery, Eldritch Mana, Mentalist Mentalism. Posted totals likely include +skill items from
   "SC templates"; the posts don't say. Proposed: trim the lower lines to the budget (D7).
+  - **Corrected 2026-11-17 (autotrain):** that check counted every level of every line. A player pays nothing for an
+    autotrain line up to level 12 at 50 (77 points a line; `GamePlayer.VerifySpecPoints`), and bots now pay the same.
+    Counted so, the two Shadowblade builds and Ranger Archery (37, 27 and 25 over) fit as posted; the two Minstrel
+    builds are still over (682 and 83). **9 builds ask for more than a level 50 has.** The data file lists each
+    class's `autotrain` lines.
 - **7 builds leave 260-700 points unspent** (Paladin two-handed, Mercenary Thrust, both Infiltrator CS builds, Scout
   melee, Warrior Axe/Shield 50, Warden Nurture/Regrowth); the posts listed only the main lines. Proposed: the rest goes
   to a named line (D7; every fill is an estimate).
+  - **Replaced 2026-11-17 18:59** by the owner's "fully trained" decision: see
+    [The period sources, checked](#the-period-sources-checked-2026-11-17).
 - **One weight contradicts its own source text:** Wizard Ice PBAE 35% from one post, while the threads say Albion was
   short of Ice wizards and full of Fire wizards. Proposed 15% (D8).
 - **Midgard's draft shares stray from the one sourced table** (level 50s on Excalibur, 2003-01-22): Thane 5% against
@@ -82,6 +89,103 @@ current gear rules), realm abilities, races, spells, the class AI, any raid code
 - Thin classes (3 posts or fewer per build): Wizard, Necromancer, Valewalker, Animist, Blademaster, and single builds
   elsewhere (listed in the research doc, section 4). Valewalker and Animist have one era build each.
 - The sources are European (GOA ran US patches weeks to months late). No US 2003 spec or census source is cited.
+
+### The period sources, checked (2026-11-17)
+
+Owner, 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and Wayback build scraping showed". This is
+WP0's check, done late, and it replaces D7's trims and fills. The per-build table (posted points, trained points,
+points left, every source) is generated: [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+
+**What the two scrapes hold**
+
+| Source | What it is | What it gives |
+|---|---|---|
+| FreddysHouse forums (the 1.65 crawl of 2026-11-01, `research/ERA-BUILDS-1.65.md`) | 2,666 builds in dated posts, February 2002 to 8 October 2003, European servers | The posted points of all 106 builds, with post counts, links and dates. Not re-read for this check: the forum can't be reached from the build environment |
+| Allakhazam class guides (Wayback, captured 2002-11-12 to 2003-06-04): Shaman (Seraphym), Warden (Hoode Wynk, v1.1b of 29 May 2002), Blademaster (Melkio), Hero, Ranger, Eldritch | Guides of 2002 | Point templates for the Shaman (12) and the Ranger; spec rules in words for the Warden, Hero and Blademaster, with where spare points go; no points for the Eldritch |
+| Allakhazam class and skill pages, reader comments (Wayback, captured 2004-09-19 to 2005-12-08) | Comments dated 2001-11 to 2003-12 | Cleric builds (four), one Healer build, the Sorcerer's Mind 34/35 stop |
+| Allakhazam forum, "Good Specs?" (Wayback, captured 2005-03-20) | Posts of 2004-10-21 to 2005-01-26, **after the era** (New Frontiers) | The standard Infiltrator ("35 stealth, 35 env, 50 thrust, 34 cs, rest dual wield"), "CS to 36 and pierce or thrust to 50" for the assassins, and Stealth above 35 as not worth its points |
+| Classes of Camelot (Wayback, captured 2003-07-25 to 2005-12-10): the Albion class pages, the FAQ, the news archive | Class reference pages | No builds. The autotrain rule and each class's autotrain lines |
+| Camelot Herald class and "Autotraining" pages (Wayback, captured 2005-02-09) | Reference pages at 1.74 | No builds. The autotrain table (level 48-50: 12) and lines |
+
+**The check**
+
+- **All 106 builds have dated period posts** for their posted points (FreddysHouse). None was added, none dropped.
+- **22 are also in the Wayback scrape**: 9 match a Wayback build within 4 points on their top two lines (Shaman
+  Aug/Cave and Aug/Mend, Cleric Rejuvenation and Smite, Infiltrator Thrust/CS and "5-spec", Nightshade Piercing/CS,
+  Warden Nurture/Blades, Blademaster Blades/Celtic Dual); 12 have the same lines with another split (the Wayback
+  guides are a year older than most posts); 1 (Minstrel Instruments/Stealth/Slash) only has its trim line named.
+- **84 are not in the Wayback scrape** (28 classes have nothing there: the scrape has six class guides and two
+  comment boards). They rest on the dated forum posts alone and stay marked so (`wayback: []`).
+- **No build contradicts a Wayback source.** One differs in kind: Warden Nurture/Regrowth trains no weapon and
+  Regrowth 33, where the 2002 guide's Wardens take a weapon to 34 and stop Regrowth at 20; it has 7 dated posts of
+  2003 and stays.
+- The two Infiltrator CS builds and the "5-spec" are the same build to a level or two once fully trained (the posts
+  of the first listed only its main lines; the thread says "rest dual wield"). They stay three entries.
+
+**Fully trained**
+
+- A build is trained with a level 50 player's whole budget on this server (autotrain counted). 57 builds are already
+  that as posted.
+- **Where the rest goes (40 builds):** into the build's remainder line, its lowest posted line, a level at a time.
+  The period guides say this in words: the Shaman guide ("places the remaining points in Cave", "the rest in Aug"),
+  the Warden guide ("the remainder in parry"), the Blademaster guide ("the last points go into parry") and the
+  Infiltrator thread ("rest dual wield"). For 3 builds a source names the line for that build (`changeSourced`: both
+  Infiltrator CS builds, Warden Nurture/Regrowth); for the other 37 it is the general practice applied to the
+  build's own posted lines (`changeSourced: false`). 31 of the 40 are in classes with autotrain lines, and
+  20 of those were fully trained as posted in 1.65 terms: they have points to spare only because this server refunds
+  the autotrain levels (77 a line) their posters had paid for.
+- **Where points come from (9 builds):** out of the same line, until a level 50 can pay; lines posted at the same
+  level come down together. Minstrel Instruments/Stealth/Slash (682 over) loses them from Stealth instead, the line
+  the thread calls not worth its points above 35.
+- **Never:** a new line, a line above 50 or below 1, or a point left that the build could take. What is left is 0 to
+  42 points, always less than the next level of any of the build's lines (`pointsLeft`; `validate()` and
+  `UT_EraBuildData` refuse anything else, the tests with the player's own count).
+- The 2-point per-bot variation keeps a build fully trained (the points a move frees go to the remainder line), and
+  a levelling era bot spends everything its build can take at each trainer visit, the lines of 10 or less included.
+
+**Autotrain in 1.65** (for the owner; the server's rule stays, because it is the player's)
+
+- Classes of Camelot's FAQ "Training" (the autotrain section written 2002-09-30 and corrected that October,
+  captured 2005-03-06): a line is raised for free to 25% of the level, and "your trainer will not auto-train a skill
+  unless the skill is less than 25% of your level"; "if you did not autotrain from the get go, you will not get the
+  benefit of autotrain points". The Herald's "Classes and Races: Autotraining" table (captured 2005-02-09) gives
+  the same levels: 12 at 48-50.
+- So a 1.65 level 50 had the same earned points as here, plus 77 for each autotrain line it had left untrained to
+  48 and nothing for one trained early. This server refunds the 77 for every autotrain line at 12 or more.
+- By class, the most this server gives over a 1.65 character who trained those lines early: Armsman, Mercenary,
+  Paladin, Reaver 154 (two lines); Warrior 231 (three); Scout, Minstrel, Infiltrator, Shadowblade, Nightshade 77;
+  Ranger 77 that the period's Ranger did not have (Classes of Camelot's Ranger page, captured 2005-12-25, lists no
+  autotrain line; the server's has Recurve Bow). Era builds use one or two of those lines. A 1.65 character who did leave the line to 48 had the same.
+- When autotrain arrived is not in the scrape (no patch note for it); its earliest mention is a Classes of Camelot
+  news item of September 2002.
+
+**The modern base, tuned back to 1.65 (owner, 2026-11-17 19:43)**
+
+"Use more recent discussions and templates as a base and then tune back towards what you directionally know about
+1.65." The research (PERIOD-BUILDS-RESEARCH, 2026-11-17) takes the Uthgard forum as the base: a patch 1.65 freeshard
+(Classic + Shrouded Isles, no ToA, CL or ML) with this server's spec budget, whose best autotrain case is this
+server's 77 points a line, plus period guides reposted there (ZAM Warden and Ranger guides, the June 2003 Mentalist
+TL report, the Champion TL guide). `source/tools/era_research.py` holds its templates with their links and dates.
+
+- Where its confidence for a class is high or medium, a build is the research's template, cited per build in the
+  data (`citations`, `base`, `confidence`, `note`); otherwise it is the posted build, fully trained as above. The
+  Necromancer (low) stays as posted with `sourced: false`.
+- Every autotrain line is at its free 12, listed in the build or not (Armsman Thrust, Warrior's other weapons, a melee
+  Scout's bow...), as on Uthgard and as a player has it here.
+- The fallback no longer refills a line it trimmed; a fill of more than 10 levels needs a source (`validate()`).
+- Where the research and the class review of 1f3dcefe2 differ, the research's Uthgard-sourced template is used and the
+  build's `note` says why: Warden Nurture 49 / Regrowth 33 / Blades 29 / Parry 3 (review: Blades 25 Parry 14);
+  Champion Valor 50 / Shields 42 / Blades 39 / Parry 6 (review: the base LW 50 Blades 36 Valor 35); Theurgist Earth 48 /
+  Cold 24 / Wind 6 (review: Earth 50 Cold 17 Wind 11); Infiltrator Thrust 50 / CS 39 / Stealth 36 / Envenom 36 / DW 27
+  (review: Stealth 48); melee Scout Longbows 21 / Stealth 35 (review: Longbows 36 Stealth 20).
+- 7 builds are added (Paladin hybrid two-hander, Mercenary DW/Shield, Cabalist tri-spec, Healer tri-spec, Shaman Aug
+  group, Berserker bi-spec, Valewalker 34 Arboreal), each with its source; weights move only where the research gives
+  a reason (Theurgist Air 0.5 -> 0.3, Healer Pac 48 0.45 -> 0.25, Mentalist Mana first...). Build ids are the draft's:
+  a build whose template changed keeps its id (and a new label), so saved plans keep reading.
+- The full table: [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+
+**Class shares** stay estimates. The scrape has no class counts: `7-realms-classes` holds ten Herald pages for
+Merlin (realm rankings, guild, alliance and crafter lists with character names), which the fetcher's rule excludes.
 
 ### Can the Wayback tooling source class shares now?
 
@@ -270,6 +374,7 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
   change for the review).
 - **Check first:** the 21 period class guides in the local scrape (`3-builds-specs`, 2002-2003) against the Albion and
   Hibernia build lists, for any build they call rare or wrong. Findings go in the research doc, not into weights.
+  **Done 2026-11-17**, after the merge: [The period sources, checked](#the-period-sources-checked-2026-11-17).
 - **Tests:** `UT_EraBuildData` (every rule of [Validation](#the-data-file), every class covered, every `change` set
   where `specs` differ from `posted`, `weightSourced`/`sharesSourced` present everywhere).
 - **Settings, log tags:** none.
@@ -427,8 +532,8 @@ Each is in the server code, the launcher's `SocialExpansionSettings.Defaults` an
   log and notes; one data file, so a 1.2.x can re-weight without code.
 - **No raid has been fought by an era-mix world.** Raid code is unchanged, but a new install's raids meet a new mix
   (more healers, fewer pets, more PBAE). Mitigation: played check 6; notes keep the raid bar on the owner's world.
-- **Over-budget trims and fills are mine, not the posters'.** 19 builds; each marked `change` in the data and `*` on the
-  review sheet.
+- **Trims and fills are mine, not the posters'.** 49 builds since the owner's "fully trained" decision (9 trimmed, 40
+  filled), each marked `change` in the data with its `changeBasis`; only 4 have a source naming the line for that build.
 - **A wrong family or weapon mapping** gives a bot a build it can't wield (a shield build without a shield line).
   Mitigation: the validation rules and `UT_StarterGearForTrainedArrivals`; the gear rules themselves don't change.
 - **Level-50 kit weapons** (`offline_level50_loadouts`, by class) may not match the drawn build's weapon line, as
@@ -451,7 +556,7 @@ is taken as recommended.
 | D4 | One class-share table for all batches, or the draft's two (RvR and levelling) | **One** (the RvR table) |
 | D5 | Variety: off-meta share and per-bot jitter | **10% and 2 points** |
 | D6 | Sluaghbinder's share in the 0.37b edition | ~~5% of Hibernia~~ **Replaced by the owner (2026-11-17): bots never play the custom class, in any edition** ([rule](#bots-never-play-the-custom-class)) |
-| D7 | Trim the 12 over-budget builds, fill the 7 under-budget ones | **Yes**, as listed on the sheet |
+| D7 | Trim the 12 over-budget builds, fill the 7 under-budget ones | ~~Yes, as listed on the sheet~~ **Replaced by the owner (2026-11-17 18:59): "bots should be fully trained on what our 1.65 and Wayback build scraping showed"** ([the check](#the-period-sources-checked-2026-11-17)) |
 | D8 | Wizard weights | **Fire 60, Earth 25, Ice PBAE 15** |
 | D9 | RvR eights prefer a crowd-control build for the CC slot (WP5) | **Yes** |
 | D10 | A Wayback job for 2003 class census pages (aggregate counts, no names), as an exception to "no population harvesting" | **Yes, counts only, after 1.2** |

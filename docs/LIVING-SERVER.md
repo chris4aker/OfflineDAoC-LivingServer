@@ -406,14 +406,44 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
   either edition.
 - **Level 41-50 points:** since 1.2 a gamebot that trains every level gets the half-level spec points above 40 that a
   player gets at each "x.5", so it reaches 50 with the same points as a `+ Lv.50` bot. Points it missed before 1.2 are
-  not given back (its trained levels don't change on the update).
+  given back at load since the owner's 2026-11-17 19:43 decision (below); its trained levels never go down.
 - **Every bot has a player's points** (owner, 2026-11-17: "companions and bots should be the same as a player"). A hired
   companion's spec window counts its points as yours are counted: every level, every half level above 40 it has
-  passed, and the current one once its bar reaches the half. A companion saved before 1.2 keeps every trained line
-  and gets its missing half-level points to spend (up to 220/330/445 at level 50 for x1.0/x1.5/x2.0 classes); its free
-  respec gives back the same total. `/spawn` helpers promoted from 49 to 50 now get the 49.5 points too. A gamebot gets
-  each "x.5" point with its next level's training, so it matches a player at every whole level. Tests only until seen
-  on the owner's PC.
+  passed, and the current one once its bar reaches the half, less what its lines cost you. A companion saved before
+  1.2 keeps every trained line and gets its missing half-level points to spend (up to 220/330/445 at level 50 for
+  x1.0/x1.5/x2.0 classes); its free respec gives back the same total. `/spawn` helpers promoted from 49 to 50 now get
+  the 49.5 points too. A gamebot gets each "x.5" point with its next level's training, so it matches a player at every
+  whole level. Tests only until seen on the owner's PC.
+- **Autotrain, as yours.** Eleven classes have autotrain lines (Armsman and Mercenary: Slash, Thrust; Paladin: Slash,
+  Chants; Reaver: Slash, Flexible; Scout: Longbows; Minstrel: Instruments; Warrior: Sword, Axe, Hammer; Infiltrator,
+  Shadowblade and Nightshade: Stealth; Ranger: Recurve Bow; this server's Hunter has none). You pay nothing for those
+  lines up to a quarter of your level, whenever you train them: 77 points a line at 50. Every bot now pays the same.
+  - This server's rule is the later "autotrain refund" one (its code names patch 1.87): nothing rises by itself and
+    training a line early loses nothing. **In 1.65 it was stricter** (Wayback scrape of 2026-11-13: Classes of Camelot's
+    FAQ "Training", its autotrain section written 2002-09-30 and corrected that October, captured 2005-03-06; the
+    Herald's "Classes and Races: Autotraining" table, captured 2005-02-09): the trainer raised an autotrain line for free only while it was below a quarter of the
+    level ("will not auto-train a skill unless the skill is less than 25% of your level"), and "if you did not autotrain
+    from the get go, you will not get the benefit of autotrain points". So a 1.65 player got the 77 points only for a
+    line left untrained to level 48, and none for a line trained from level 5; here every player and bot gets them. The
+    scrape has no patch note for when autotrain arrived; its earliest mention is a site news item of September 2002.
+  - The same sources list the period's autotrain lines: this server's, except that Classes of Camelot's Ranger page
+    (captured 2005-12-25) lists none (the server's Ranger has Recurve Bow, 77 points). The Hunter had none then and
+    has none here.
+  - A hired companion's free levels show "next: 0 points"; one saved before gets the points back to spend (77 a line at
+    50), and its respec leaves autotrain lines at a quarter of its level, as yours does.
+  - Era builds are **fully trained** on the **modern 1.65 templates** (owner, 2026-11-17 18:59 and 19:43): the Uthgard
+    1.65 freeshard's templates and period guides reposted there, tuned back to 1.65, wherever the research is
+    confident; the dated 2002-2003 posts elsewhere. Each build cites its source; 113 builds, the Necromancer's 3 not
+    sourced. Every autotrain line is at its free 12. What is left (0-29 points) buys no further level. The list:
+    [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+  - A levelling era bot trains toward its build at every trainer visit and keeps no points its build can take;
+    the per-bot variation (2 points) keeps the build fully trained; `ERA_BUILD_TRAINED` ends with `unspent=`.
+  - **Existing gamebots** are counted as a player at load (owner 2026-11-17 19:43): a bot saved with fewer points
+    than a player of its level and lines (the autotrain refund, half levels it never had) gets the difference,
+    `AUTONOMOUS_SPEC_REFUND` in the log; a bot at the level it trained at spends them at once. No line is lowered. This
+    replaces #326's "points missed before 1.2 are not given back".
+  - An era bot made by an earlier 1.2 test build keeps the plan it saved.
+  - Tests only until seen on the owner's PC.
 - **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so
   for each share and weight, and a later data update can re-weight them.
 - **Log:** `ERA_BUILDS_LOADED` at start; `ERA_BUILD_ASSIGNED` when a bot's plan is first saved (`draw=era`, `offmeta`,

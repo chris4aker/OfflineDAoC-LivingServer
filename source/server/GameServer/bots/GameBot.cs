@@ -115,10 +115,12 @@ namespace DOL.GS
                     return false;
                 int points = m_leftOverSpecPoints;
                 for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
-                    points += GetSpecPointsForLevel(level);
-                return BotSpec.SpecLines.Any(line => (line.levelRatio > 0 || Level >= 50) &&
+                    points += GetSpecPointsForLevel(level) + AutoTrainRefundAtLevel(level);
+                return BotSpec.SpecLines.Any(line =>
+                    (line.levelRatio > 0 || Level >= 50 || !string.IsNullOrEmpty(BotSpec.EraBuildId)) &&
                     GetSpecializationByName(line.Spec) is Specialization spec && spec.Trainable &&
-                    spec.Level < Math.Min(Level, line.SpecCap) && points >= spec.Level + 1);
+                    spec.Level < Math.Min(Level, line.SpecCap) &&
+                    points >= NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec)));
             }
         }
         public long Experience { get; private set; }
@@ -2876,12 +2878,14 @@ namespace DOL.GS
                 _lastAutonomousTrainedLevel = Level;
                 MarkAutonomousStateDirty();
                 if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, arrivalTrainedFrom, Level))
-                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
+                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
                 if (AutonomousDiagnosticsProperties.Training)
                     log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
                              $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
                              $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
             }
+            else if (!IsInMemoryOnly && !hiredCompanion && _lastAutonomousTrainedLevel > 1)
+                ApplySavedSpecPointRefund();
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -3746,10 +3750,18 @@ namespace DOL.GS
         /// <summary>
         /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
         /// player of its class has earned at its level - levels 2-5, each level above 5, each half level 40.5-49.5 it has
-        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost.
+        /// passed, and the current one once its experience reaches the second stage - less what its trained lines cost a
+        /// player: the class's autotrain lines are free up to a quarter of its level (LineCost).
         /// Owner 2026-11-17: "companions and bots should be the same as a player". Before Living Server 1.2 a hired
-        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0); counting from its level
-        /// gives a saved companion those points to spend, and never takes a trained point away.
+        /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0) and paid for its autotrain
+        /// levels (77 points a line at 50); counting from its level gives a saved companion those points to spend, and
+        /// never takes a trained point away.
+        /// <para>
+        /// A hired companion never trains as a gamebot again, so a half level its player has spent is not earned twice by
+        /// SpendSpecPoints at a later level: dismissing only parks it (it stays hired), releasing deletes its record
+        /// (HiredCompanions165.AskRelease; a delete that fails retires it, and a retired bot never logs in), and the
+        /// launcher deletes a hire row only together with its bot (BotPurge).
+        /// </para>
         /// </summary>
         public int CompanionSpecPoints => Math.Max(0, CompanionEarnedSpecPoints - TrainedSpecPointCost());
 
@@ -3757,8 +3769,52 @@ namespace DOL.GS
         private int CompanionEarnedSpecPoints =>
             PlayerSpecPointTotal(CharacterClass.SpecPointsMultiplier, Level, ReachedSecondStage(Level, Experience));
 
-        /// <summary>What the trainable lines cost to train from 1 to their levels now.</summary>
-        private int TrainedSpecPointCost() => GetSpecList().Where(spec => spec.Trainable).Sum(spec => PointsToTrain(spec.Level));
+        /// <summary>What the trainable lines cost a player of this class and level to train from 1 to their levels now.</summary>
+        private int TrainedSpecPointCost() =>
+            GetSpecList().Where(spec => spec.Trainable).Sum(spec => LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
+
+        // ---- autotrain, as a player's (GamePlayer.GetAutoTrainPoints, VerifySpecPoints and /train): the class's autotrain
+        // lines (ICharacterClass.GetAutotrainableSkills: Slash and Thrust for an Armsman, Stealth for the assassins...) are
+        // free up to a quarter of the character's level, whenever they are trained. This server's rule is the later
+        // "autotrain refund" (its code says patch 1.87): nothing is raised by itself and nothing is lost by training early.
+        // In 1.65 itself only a line left untrained got the free levels; the most a 1.65 player could have is what every
+        // player has here, 77 points a line at 50.
+
+        /// <summary>One of this class's autotrain lines (the player's own list and comparison).</summary>
+        public bool IsAutoTrainLine(Specialization spec) =>
+            spec != null && CharacterClass?.GetAutotrainableSkills() is { Count: > 0 } lines && lines.Contains(spec.KeyName);
+
+        /// <summary>The level an autotrain line is free up to: a quarter of the character's level, at least 1. Pure.</summary>
+        public static int AutoTrainLevel(int characterLevel) => Math.Max(1, characterLevel / 4);
+
+        /// <summary>What a line at <paramref name="specLevel"/> costs a player of <paramref name="characterLevel"/>: the
+        /// points to train it, less the autotrain levels of an autotrain line (GamePlayer.VerifySpecPoints). Pure.</summary>
+        public static int LineCost(int specLevel, int characterLevel, bool autoTrain) =>
+            PointsToTrain(specLevel) - (autoTrain ? PointsToTrain(Math.Min(AutoTrainLevel(characterLevel), specLevel)) : 0);
+
+        /// <summary>What the next level of a line costs a player of <paramref name="characterLevel"/>: nothing while an
+        /// autotrain line is below a quarter of the level (/train), else the new level. Pure.</summary>
+        public static int NextLevelCost(int specLevel, int characterLevel, bool autoTrain) =>
+            autoTrain && specLevel < characterLevel / 4 ? 0 : specLevel + 1;
+
+        /// <summary>The points an autotrain line already at <paramref name="specLevel"/> gets back on reaching
+        /// <paramref name="characterLevel"/>: at every fourth level the free level rises by one, and a line already there
+        /// has paid for it (the step in GamePlayer.GetAutoTrainPoints mode 0 from one level to the next). Pure.</summary>
+        public static int AutoTrainRefundAtLevel(int specLevel, int characterLevel) =>
+            LineCost(specLevel, characterLevel - 1, true) - LineCost(specLevel, characterLevel, true);
+
+        /// <summary>The points this bot's autotrain lines get back on reaching <paramref name="characterLevel"/>.</summary>
+        private int AutoTrainRefundAtLevel(int characterLevel) =>
+            characterLevel < 2 || CharacterClass?.GetAutotrainableSkills() is not { Count: > 0 } ? 0 :
+                GetSpecList().Where(spec => spec.Trainable && IsAutoTrainLine(spec))
+                    .Sum(spec => AutoTrainRefundAtLevel(spec.Level, characterLevel));
+
+        /// <summary>What the next level of this line costs the companion (0 for a free autotrain level).</summary>
+        public int CompanionTrainCost(Specialization spec) => NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec));
+
+        /// <summary>What raising this line to <paramref name="specLevel"/> costs the companion.</summary>
+        public int CompanionTrainCost(Specialization spec, int specLevel) =>
+            Math.Max(0, LineCost(specLevel, Level, IsAutoTrainLine(spec)) - LineCost(spec.Level, Level, IsAutoTrainLine(spec)));
 
         /// <summary>The points to train a line from 1 to <paramref name="specLevel"/> (2 + 3 + ... + level), as
         /// GamePlayer.VerifySpecPoints counts them. Pure.</summary>
@@ -3796,22 +3852,24 @@ namespace DOL.GS
                 return $"{spec.Name} can't go above {Name}'s level ({Level}).";
             m_leftOverSpecPoints = CompanionSpecPoints;
             _lastAutonomousTrainedLevel = Level;
-            int cost = spec.Level + 1;
+            int cost = CompanionTrainCost(spec);
             if (m_leftOverSpecPoints < cost)
-                return $"{spec.Name} {cost} needs {cost} points; {Name} has {m_leftOverSpecPoints}.";
+                return $"{spec.Name} {spec.Level + 1} needs {cost} points; {Name} has {m_leftOverSpecPoints}.";
             m_leftOverSpecPoints -= cost;
             spec.Level++;
             AfterCompanionTraining();
             return null;
         }
 
-        /// <summary>The free respec (owner rule): every trainable line back to 1, all the points back to spend - a player's
-        /// total for the level, half levels included.</summary>
+        /// <summary>The free respec (owner rule): every trained line back to 1 - an autotrain line to its free level from
+        /// level 8, as a player's respec leaves it (GamePlayer.RespecSingleLine; a line still at 1 is left alone, as
+        /// RespecAllLines leaves it) - and all the points back to spend: a player's total for the level, half levels
+        /// included.</summary>
         public void CompanionRespec()
         {
-            foreach (Specialization spec in GetSpecList().Where(s => s.Trainable))
-                spec.Level = 1;
-            m_leftOverSpecPoints = CompanionEarnedSpecPoints;
+            foreach (Specialization spec in GetSpecList().Where(s => s.Trainable && s.Level >= 2))
+                spec.Level = Level >= 8 && IsAutoTrainLine(spec) ? Level / 4 : 1;
+            m_leftOverSpecPoints = CompanionSpecPoints;
             _lastAutonomousTrainedLevel = Level;
             AfterCompanionTraining();
         }
@@ -3872,7 +3930,7 @@ namespace DOL.GS
             SpendSpecPoints(Level, previous);
             _lastAutonomousTrainedLevel = Level;
             if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, previous, Level))
-                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
+                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -4124,7 +4182,106 @@ namespace DOL.GS
             }
         }
 
-        public void SpendSpecPoints(byte level, byte previousLevel)
+        /// <summary>
+        /// A saved gamebot's points are counted again as a player's are, from the level it last trained at
+        /// (GamePlayer.VerifySpecPoints; owner 2026-11-17: "companions and bots should be the same as a player"): every point
+        /// a player of its class has earned there - half levels included - less what its lines cost a player there, with
+        /// the autotrain levels free. When that is more than it saved (a bot trained before the autotrain refund, or before
+        /// the half levels, #326), it gets the difference; a trained point is never taken away. A bot standing at the level
+        /// it trained at spends the points now, as it would at the trainer (gamebots at 50 never train again); one with
+        /// levels still to train spends them at its next trainer visit.
+        /// </summary>
+        private void ApplySavedSpecPointRefund()
+        {
+            int trainedAt = _lastAutonomousTrainedLevel;
+            int owed = SavedSpecPointsOwed(CharacterClass.SpecPointsMultiplier, trainedAt,
+                GetSpecList().Where(spec => spec.Trainable).Select(spec => (spec.Level, IsAutoTrainLine(spec))));
+            if (owed <= m_leftOverSpecPoints)
+                return;
+            int saved = m_leftOverSpecPoints;
+            m_leftOverSpecPoints = owed;
+            if (trainedAt == Level && BotSpec != null)
+                SpendSpecPoints(Level, Level, addLevelPoints: false);
+            MarkAutonomousStateDirty();
+            SpecRefundLog.Record(ClassName, owed - saved,
+                $"{SpecRefundLog.Tag} bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                $"trainedAt={trainedAt} saved={saved} owed={owed} unspent={m_leftOverSpecPoints}");
+        }
+
+        /// <summary>
+        /// AUTONOMOUS_SPEC_REFUND without a flood on a world's first load after the update (thousands of bots): one line
+        /// each for the first <see cref="PerBotLines"/> bots refunded, then <see cref="Summary"/> once the start-up ramp
+        /// has finished, and again for any refunded later: <c>AUTONOMOUS_SPEC_REFUND_SUMMARY bots=812 points=61234
+        /// shown=30 classes="Armsman:90/9810,Warrior:85/..."</c> (bots/points by class).
+        /// </summary>
+        public static class SpecRefundLog
+        {
+            public const string Tag = "AUTONOMOUS_SPEC_REFUND";
+            public const int PerBotLines = 30;
+            private static readonly object Gate = new();
+            private static readonly Dictionary<string, (int Bots, long Points)> ByClass = new(StringComparer.Ordinal);
+            private static int _shown;
+
+            public static void Record(string className, int points, string line)
+            {
+                bool show;
+                lock (Gate)
+                {
+                    ByClass[className ?? "?"] = ByClass.TryGetValue(className ?? "?", out var seen)
+                        ? (seen.Bots + 1, seen.Points + points) : (1, points);
+                    show = _shown < PerBotLines;
+                    if (show)
+                        _shown++;
+                }
+                if (show)
+                    log.Info(line);
+            }
+
+            /// <summary>The summary of the refunds since the last one, or null when there were none. Pure but for the
+            /// counts it resets.</summary>
+            public static string Summary()
+            {
+                lock (Gate)
+                {
+                    if (ByClass.Count == 0)
+                        return null;
+                    int bots = ByClass.Values.Sum(entry => entry.Bots);
+                    long points = ByClass.Values.Sum(entry => entry.Points);
+                    string classes = string.Join(",", ByClass.OrderByDescending(entry => entry.Value.Points)
+                        .ThenBy(entry => entry.Key, StringComparer.Ordinal)
+                        .Select(entry => $"{entry.Key}:{entry.Value.Bots}/{entry.Value.Points}"));
+                    string line = $"{Tag}_SUMMARY bots={bots} points={points} shown={_shown} classes=\"{classes}\"";
+                    ByClass.Clear();
+                    return line;
+                }
+            }
+
+            /// <summary>Logs the summary, if there is one.</summary>
+            public static void Flush()
+            {
+                if (Summary() is { } line)
+                    log.Info(line);
+            }
+
+            public static void ResetForTests()
+            {
+                lock (Gate)
+                {
+                    ByClass.Clear();
+                    _shown = 0;
+                }
+            }
+        }
+
+        /// <summary>The points a player of <paramref name="trainedAt"/> has left with these lines: earned less their cost
+        /// (autotrain lines free up to a quarter of the level). Pure.</summary>
+        public static int SavedSpecPointsOwed(int multiplier, int trainedAt, IEnumerable<(int Level, bool AutoTrain)> lines) =>
+            PlayerSpecPointTotal(multiplier, trainedAt, false) - lines.Sum(line => LineCost(line.Level, trainedAt, line.AutoTrain));
+
+        /// <summary>Spends the points of levels <paramref name="previousLevel"/>+1 to <paramref name="level"/> (and what is
+        /// left over) along the bot's plan. With <paramref name="addLevelPoints"/> false and the two levels equal, it spends
+        /// only what is left over, at the bot's level (a saved bot's refund).</summary>
+        public void SpendSpecPoints(byte level, byte previousLevel, bool addLevelPoints = true)
         {
             if (BotSpec == null)
                 return;
@@ -4134,6 +4291,7 @@ namespace DOL.GS
             int leftOverSpecPoints = m_leftOverSpecPoints;
             bool spentPoints = true;
             bool spendLeftOverPoints = false;
+            bool trainsEveryPoint = !string.IsNullOrEmpty(BotSpec.EraBuildId);
 
             byte index = (byte)(previousLevel + 1);
 
@@ -4145,7 +4303,14 @@ namespace DOL.GS
                 spentPoints = true;
                 spendLeftOverPoints = false;
 
-                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i) + leftOverSpecPoints;
+                // The level's points, and what a player's autotrain lines get back at this level (every fourth).
+                int totalSpecPointsThisLevel = (addLevelPoints ? GetSpecPointsForLevel(i) + AutoTrainRefundAtLevel(i) : 0) +
+                    leftOverSpecPoints;
+                // Every autotrain line at its free level, trained or not: a player pays nothing for it (GamePlayer
+                // .GetAutoTrainPoints), and 1.65 trained it by itself (research finding 1, review of 1f3dcefe2 item 3).
+                foreach (Specialization autoTrain in GetSpecList())
+                    if (autoTrain.Trainable && IsAutoTrainLine(autoTrain) && autoTrain.Level < AutoTrainLevel(i) && i >= 8)
+                        autoTrain.Level = AutoTrainLevel(i);
 
                 while (spentPoints)
                 {
@@ -4153,7 +4318,11 @@ namespace DOL.GS
 
                     foreach (BotSpecLine specLine in BotSpec.SpecLines)
                     {
-                        if (specLine.levelRatio <= 0 && Level < 50)
+                        // A line with no levelling share waits for level 50 - except in an era build, whose lines are
+                        // capped at the build's points: there the points nothing else can take go into it at once, so
+                        // the bot is always as trained as its points allow, as a player following a template is (owner
+                        // 2026-11-17 18:59). The build still ends at its points: no line passes its cap.
+                        if (specLine.levelRatio <= 0 && Level < 50 && !(spendLeftOverPoints && trainsEveryPoint))
                             continue;
 
                         Specialization spec = GetSpecializationByName(specLine.Spec);
@@ -4167,7 +4336,8 @@ namespace DOL.GS
                                 if (!spendLeftOverPoints && spec.Level >= specRatio)
                                     continue;
 
-                                int totalCost = spec.Level + 1;
+                                // A player's cost at this level: an autotrain line is free below a quarter of it.
+                                int totalCost = NextLevelCost(spec.Level, i, IsAutoTrainLine(spec));
 
                                 if (totalSpecPointsThisLevel >= totalCost)
                                 {

@@ -79,7 +79,9 @@ namespace DOL.GS
                 int next = spec.Level + 1;
                 ListText(player, 2 + 3 * k, spec.Name ?? spec.KeyName);
                 ListText(player, 3 + 3 * k, $"level {spec.Level}");
-                ListText(player, 4 + 3 * k, spec.Level >= bot.Level ? (bot.Level >= 50 ? "max" : $"needs level {next}") : $"next: {next} points");
+                // an autotrain line's free levels cost nothing, as a player's (GameBot.CompanionTrainCost)
+                ListText(player, 4 + 3 * k, spec.Level >= bot.Level ? (bot.Level >= 50 ? "max" : $"needs level {next}")
+                    : $"next: {bot.CompanionTrainCost(spec)} points");
             }
         }
 
@@ -690,7 +692,7 @@ namespace DOL.GS
                     pak.WriteByte(NativeItemKind);
                     pak.WriteShortLowEndian(skill.Icon);
                     pak.WritePascalString($"{skill.Name} ({level})");
-                    pak.WriteByte(lines[i].Level >= level ? (byte)1 : CostTo(lines[i].Level, level) <= points && level <= bot.Level ? (byte)2 : (byte)0);
+                    pak.WriteByte(lines[i].Level >= level ? (byte)1 : bot.CompanionTrainCost(lines[i], level) <= points && level <= bot.Level ? (byte)2 : (byte)0);
                     pak.WriteByte(0);   // no attached skills
                 }
             }
@@ -720,14 +722,6 @@ namespace DOL.GS
             SendTrainerWindow(player, row, bot);
             SendStatsText(player, row, hired, bot);
             Hire165.Refresh(player);
-        }
-
-        private static int CostTo(int from, int to)
-        {
-            int cost = 0;
-            for (int l = from + 1; l <= to; l++)
-                cost += l;
-            return cost;
         }
 
         /// <summary>The 10 unlocks of a line the native window shows: the last one trained, then the next ones (clicks map
@@ -927,7 +921,7 @@ namespace DOL.GS
             for (int i = 0; i < lines.Count; i++)
             {
                 Specialization spec = lines[i];
-                int cost = spec.Level + 1;
+                int cost = bot.CompanionTrainCost(spec);   // 0 for an autotrain line's free level
                 var body = new byte[73];
                 body[0] = (byte)row; body[1] = (byte)i; body[2] = (byte)lines.Count;
                 body[3] = (byte)spec.Level; body[4] = (byte)bot.Level;

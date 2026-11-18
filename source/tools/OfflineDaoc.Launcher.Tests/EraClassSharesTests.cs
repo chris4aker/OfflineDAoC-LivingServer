@@ -31,7 +31,7 @@ public sealed class EraClassSharesTests
         Assert.That(catalog.IsLoaded, Is.True, string.Join("; ", catalog.Problems));
         Assert.That(catalog.Problems, Is.Empty);
         Assert.That(catalog.Classes, Has.Count.EqualTo(39));
-        Assert.That(catalog.BuildCount, Is.EqualTo(106));
+        Assert.That(catalog.BuildCount, Is.EqualTo(113));
     }
 
     [TestCase(1)]
