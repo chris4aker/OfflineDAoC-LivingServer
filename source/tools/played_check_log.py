@@ -41,6 +41,7 @@ from pathlib import Path
 SEEN = "Seen"
 NOT_SEEN = "Not seen"
 CONTRADICTED = "Contradicted"
+NOT_APPLICABLE = "Not applicable"
 
 GATE_HOURS = 8.0
 HARD_STALL_MS = 2000.0
@@ -52,6 +53,14 @@ QUOTE_CHARS = 160
 # 300 of the fix in RAID-TUSCARAN-1117. Changed with --near.
 RESTING_BOSS_NEAR = 900.0
 STATUS_STALE_SECONDS = 15 * 60
+# A boss is engaged (not resting) from a FINAL_ENGAGE, an EARLY_PULL Commit, a TARGET_CALLED, fight-ledger damage or a
+# required-adds switch for it until its next wipe, defeat or heal, and for at most this long after the last such line.
+ENGAGED_LAPSE_SECONDS = 15 * 60
+# Return-wave steps that show headway after a step=stuck line (the wave recovered).
+RETURN_WAVE_HEADWAY = ("moving", "ahead", "cleared", "met", "passable")
+# The regroup row's share bar (docs/PLAYED-CHECK-1.2.md, "Regroups no longer flap", reasoning there).
+RELAY_SHARE_BAR = 10.0
+RETIRED_ACT_RE = re.compile(r'\bbot="?([^"\s]+)"? id=(\d+)')
 
 LEVELS = {"TRC", "DBG", "INF", "WRN", "ERR", "FTL"}
 KV_RE = re.compile(r'(\w+)=("([^"]*)"|\S+)')
@@ -234,9 +243,17 @@ class Section:
         self.err_custom_class = Evidence()
         self.stop_play = Evidence()
         self.pending_critical = None
+        self.engaged = defaultdict(dict)  # region -> boss -> (first, last) line showing it in the raid's fight
+        self.engage_lines = defaultdict(dict)  # region -> boss -> time of its last FINAL_ENGAGE or EARLY_PULL
+        self.add_owner = defaultdict(dict)     # region -> required add -> its boss (from REALM_EXPEDITION_TACTIC)
+        self.no_engage = {}                    # (region, boss) -> first line of a pull that logged no engage
+        self.waves = {}                        # (event, wave) -> "stuck" or "recovered"
+        self.retired = {}                      # custom-class bot id -> name (BOT_CUSTOM_CLASS_RETIRED)
         self.last_retreat = {}            # group -> reason of its last RVR_RETREAT
         self.relay_sends = {}             # group -> times it relayed (relayedTo>0) in the last 60 s
         self.recent_sends = deque()       # (time, group, (realm, region)) of relays in the last 60 s
+        self.last_retreat_from = {}       # group -> from= of its last RVR_RETREAT (a relayed one's sender)
+        self.send_origin = {}             # group -> (time, the group whose relay started the stance it sent, or None)
 
     @property
     def commit7(self):
@@ -327,6 +344,8 @@ def read_log(path: Path, since: dt.datetime | None = None, year: int | None = No
             if level in ("ERR", "FTL"):
                 on_error(sec, t, level, logger, message)
             m = TAG_RE.match(message)
+            if sec.retired and "id=" in message and not message.startswith("BOT_CUSTOM_CLASS_RETIRED"):
+                retired_acts(sec, t, message)
             if m:
                 handler = HANDLERS.get(m.group(0))
                 if handler is not None:
@@ -387,7 +406,7 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE", "REAL
        "RVR_KITE", "RVR_STEALTH_OPEN", "RVR_PARTY_FORMED", "CRAFT_SESSION_START", "ECON_SUPPLY",
        "HIRE_WORD_165", "HIRED_COMPANION", "HIRED_COMPANION_SUMMONED", "HIRED_COMPANION_DISMISSED",
        "HIRED_COMPANION_REVIVED", "HIRED_COMPANION_RELEASED", "HIRED_COMPANION_ORPHAN",
-       "HIRED_COMPANION_DELETE_FAILED", "BOT_CUSTOM_CLASS_RETIRED", "BOT_PEOPLE_SUMMARY", "BOT_SKILL_BUDGET",
+       "HIRED_COMPANION_DELETE_FAILED", "BOT_PEOPLE_SUMMARY", "BOT_SKILL_BUDGET",
        "BOT_SKILL_GROWTH", "RAID_MECHANIC_SEEN", "BOT_PLACE_BUDGET", "BOT_WAY_FOLLOW",
        "BOT_WAY_SUMMARY", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST", "BOT_MOVE_OVERSHOOT",
        "BOT_MOVE_SIT", "BOT_MOVE_WALL", "BOT_MILESTONE_ARC", "BOT_MILESTONE_PROGRESS", "BOT_MILESTONE_REACHED",
@@ -461,6 +480,10 @@ def _raid_started(sec, t, message, level, near):
     sec.open_raids[event] = run
     run.started = t
     run.present, run.required, run.forced = f.get("present"), f.get("required"), f.get("forced")
+    region = sec.region_events.get(event)
+    if region is not None:   # a new raid in this region: engages of an earlier one do not count for it
+        for table in (sec.engage_lines, sec.engaged, sec.add_owner):
+            table.pop(str(region), None)
     sec.ev["REALM_RAID_STARTED"].add(t, message)
     sec.n[f"raid_starts.{event}"] += 1
     sec.n["raid_starts"] += 1
@@ -505,14 +528,23 @@ def _raid_stalled(sec, t, message, level, near):
 
 @handles("REALM_RAID_RETURN_WAVE")
 def _return_wave(sec, t, message, level, near):
+    """The gather-and-go-in claim (#195) and stuck waves are told apart: a stuck wave is its own row, and one that makes
+    headway again afterwards (moving, ahead, cleared, met, passable) counts as recovered."""
     f = kv(message)
     step = f.get("step")
+    key = (f.get("event", "?"), f.get("wave"))
     if step == "stuck":
         run = sec.raid(f.get("event", "?"), t)
         run.stuck_waves += 1
         sec.ev["return.stuck"].add(t, message)
-    elif step in ("formed", "moving", "joined") or "waited_s" in f:
+        sec.waves[key] = ("stuck", t, message)
+        return
+    if step in RETURN_WAVE_HEADWAY and sec.waves.get(key, ("",))[0] == "stuck":
+        sec.waves[key] = ("recovered", t, message)
+    if step in ("formed", "moving", "joined") or "waited_s" in f:
         sec.ev["return.wave"].add(t, message)
+    if step in ("moving", "ahead", "cleared", "met"):
+        sec.ev["return.went_in"].add(t, message)
 
 
 @handles("REALM_EXPEDITION_ENCOUNTER_RESET")
@@ -523,6 +555,36 @@ def _encounter_reset(sec, t, message, level, near):
         sec.ev["raid.reset_other"].add(t, message)
 
 
+def engage(sec, region, boss, t):
+    if region is not None and boss:
+        start, _ = sec.engaged[region].get(boss, (t, t))
+        sec.engaged[region][boss] = (start, t)
+
+
+def disengage(sec, region, boss):
+    """The fight with a boss ended (its wipe, defeat or heal). A TARGET_STATUS from before that fight began says nothing
+    about it now, so it is dropped: the boss counts as resting again from its next status line."""
+    if region is None or not boss:
+        return
+    fight = sec.engaged[region].pop(boss, None)
+    status = sec.bosses.get(region, {}).get(boss)
+    if fight and status and status[3] < fight[0]:
+        sec.bosses[region].pop(boss, None)
+
+
+def engaged_now(sec, region, boss, t) -> bool:
+    fight = sec.engaged.get(region, {}).get(boss)
+    return fight is not None and (t - fight[1]).total_seconds() <= ENGAGED_LAPSE_SECONDS
+
+
+def pull_without_engage(sec, t, region, boss, message):
+    """A pull of a mustered encounter that logged no FINAL_ENGAGE or EARLY_PULL for it (DIAG-5378-galladoria E)."""
+    if region is None or not boss or boss in sec.engage_lines.get(region, {}) or (region, boss) in sec.no_engage:
+        return
+    sec.no_engage[(region, boss)] = t
+    sec.ev["pull.no_engage"].add(t, message)
+
+
 @handles("REALM_EXPEDITION_FINAL_ENGAGE")
 def _final_engage(sec, t, message, level, near):
     f = kv(message)
@@ -530,6 +592,67 @@ def _final_engage(sec, t, message, level, near):
         sec.ev["pull.at_needed"].add(t, message)
     else:
         sec.ev["pull.below_needed"].add(t, message)
+    engage(sec, f.get("region"), f.get("target"), t)
+    if f.get("region") is not None and f.get("target"):
+        sec.engage_lines[f["region"]][f["target"]] = t
+
+
+@handles("REALM_EXPEDITION_EARLY_PULL")
+def _early_pull(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("region") is not None and f.get("target"):
+        sec.engage_lines[f["region"]][f["target"]] = t
+    if f.get("decision") == "Commit":
+        engage(sec, f.get("region"), f.get("target"), t)
+
+
+@handles("REALM_EXPEDITION_TARGET_CALLED")
+def _target_called(sec, t, message, level, near):
+    f = kv(message)
+    engage(sec, f.get("region"), f.get("target"), t)
+
+
+@handles("EPIC_FIGHT_LEDGER")
+def _fight_ledger(sec, t, message, level, near):
+    """Every NPC named in raid_dealt (the raid hit it) or raid_took (it hit the raid) is in the fight this minute."""
+    f = kv(message)
+    region = f.get("region")
+    for field in ("raid_dealt", "raid_took"):
+        for entry in (f.get(field) or "").split(","):
+            name = entry.rsplit(":", 1)[0].strip()
+            if name and ":" in entry:
+                engage(sec, region, name, t)
+
+
+@handles("REALM_EXPEDITION_TACTIC")
+def _tactic(sec, t, message, level, near):
+    """A required-adds switch (`reason="required-adds of "<boss>" ..."`) means the boss's fight is on. Pulled with no
+    FINAL_ENGAGE or EARLY_PULL for the boss, it is a pull the 70% row cannot see."""
+    f = kv(message)
+    region, boss, add = f.get("region"), f.get("from"), f.get("to")
+    if not boss or "required-adds of" not in message:
+        return
+    engage(sec, region, boss, t)
+    if add:
+        sec.add_owner[region][add] = boss
+    pull_without_engage(sec, t, region, boss, message)
+
+
+@handles("REALM_EXPEDITION_WIPE")
+def _expedition_wipe(sec, t, message, level, near):
+    f = kv(message)
+    region, target = f.get("region"), f.get("target")
+    if f.get("how") == "raid-wide deaths outside an attempt":
+        owner = sec.add_owner.get(region, {}).get(target, target)
+        if target not in sec.engage_lines.get(region, {}):
+            pull_without_engage(sec, t, region, owner, message)
+    disengage(sec, region, target)
+
+
+@handles("REALM_EXPEDITION_TARGET_HEALED")
+def _target_healed(sec, t, message, level, near):
+    f = kv(message)
+    disengage(sec, f.get("region"), f.get("target"))
 
 
 @handles("REALM_EXPEDITION_ROUTE_GATE")
@@ -554,6 +677,7 @@ def _target_status(sec, t, message, level, near):
 def _target_defeated(sec, t, message, level, near):
     f = kv(message)
     sec.bosses[f.get("region")].pop(f.get("target"), None)
+    disengage(sec, f.get("region"), f.get("target"))
 
 
 @handles("REALM_EXPEDITION_STRANDED_REGROUP")
@@ -564,7 +688,7 @@ def _stranded(sec, t, message, level, near):
     if to is None:
         return
     for target, (in_combat, health, at, seen, lvl) in sec.bosses.get(region, {}).items():
-        if in_combat or (t - seen).total_seconds() > STATUS_STALE_SECONDS:
+        if in_combat or (t - seen).total_seconds() > STATUS_STALE_SECONDS or engaged_now(sec, region, target, t):
             continue
         distance = math.dist(to, at)
         if distance <= near:
@@ -609,16 +733,27 @@ def _sweep(sec, t, message, level, near):
 @handles("RVR_REGROUP", "RVR_RETREAT")
 def _rvr_stance(sec, t, message, level, near):
     """The regroup row's criterion (PLAYED-CHECK-1.2.md, corrected 2026-11-17): one hop, no echo. #304 lets a group
-    relay its own retreat or its own regroup once; a relayed stance is never passed on again."""
+    relay its own retreat or its own regroup once; a relayed stance is never passed on again.
+
+    (c), a relay back at its sender: a relayed start names its sender (`from=<group>`, logged since the fix of
+    DIAG-5378-misc 1). It is an echo when the sender passed on a stance that this group's own relay had started
+    (a relayed stance, or the regroup ending a relayed retreat). Lines without from= (earlier builds) fall back to the
+    old pattern, which is not proof of an echo: in a fight of several groups every group's own retreat reaches the
+    others (DIAG-5378-misc 1), so it is reported as relays among the groups of one fight and does not contradict."""
     regroup = message.startswith("RVR_REGROUP ")
     f = kv(message)
     if regroup and f.get("phase") != "start":
+        # a relayed regroup that contact ended within a second: a start that did nothing (DIAG-5378-misc 1)
+        if (f.get("phase") == "end" and (f.get("started") or "").startswith("relayed") and
+                (f.get("reason") or "").startswith("contact while regrouping") and 0 <= num(f.get("seconds"), -1) <= 1):
+            sec.ev["regroup.relay_flash"].add(t, message)
         return
     group, reason = f.get("group", "?"), f.get("reason") or ""
     where = (f.get("realm"), f.get("region"))
     relayed = reason.startswith("relayed")
     sends = f.get("relay") == "sent" or num(f.get("relayedTo")) > 0
     reached = num(f.get("relayedTo")) > 0
+    sender = f.get("from") if relayed else None
     if regroup:
         sec.ev["RVR_REGROUP"].add(t, message)
         if relayed:
@@ -629,16 +764,28 @@ def _rvr_stance(sec, t, message, level, near):
     # (b) the regroup that ends this group's relayed retreat relays again (the echo source)
     if regroup and reason == "retreat over" and sends and sec.last_retreat.get(group) == "relayed retreat":
         sec.ev["regroup.b_echo_source"].add(t, message)
-    # (c) a relay back at its sender within 60 s: this group sent one, another group here sent one since, and now
-    # this group takes up a relayed stance
-    if relayed:
+    # (c) a relay back at its sender within 60 s
+    if relayed and sender is not None:
+        sec.n["relay.named"] += 1
+        origin = sec.send_origin.get(sender)
+        if origin and origin[1] == group and 0 <= (t - origin[0]).total_seconds() <= 60:
+            sec.ev["regroup.c_returned"].add(t, f"{message.rstrip()} [sender {sender} passed on a stance group {group}'s "
+                                                f"relay started, at {stamp(origin[0])[6:]}]")
+    elif relayed:
         mine = [s for s in sec.relay_sends.get(group, ()) if 0 < (t - s).total_seconds() <= 60]
         if mine:
             first = min(mine)
             if any(g != group and w == where and first < s and (t - s).total_seconds() <= 15
                    for s, g, w in sec.recent_sends):
-                sec.ev["regroup.c_returned"].add(t, f"{message.rstrip()} [group {group} relayed at {stamp(first)[6:]}]")
+                sec.ev["regroup.c_one_fight"].add(t, f"{message.rstrip()} [group {group} relayed at {stamp(first)[6:]}]")
     if reached:
+        if relayed:
+            started_by = sender
+        elif regroup and reason == "retreat over" and sec.last_retreat.get(group) == "relayed retreat":
+            started_by = sec.last_retreat_from.get(group)
+        else:
+            started_by = None
+        sec.send_origin[group] = (t, started_by)
         sec.relay_sends.setdefault(group, []).append(t)
         sec.relay_sends[group] = [s for s in sec.relay_sends[group] if (t - s).total_seconds() <= 60]
         sec.recent_sends.append((t, group, where))
@@ -646,6 +793,7 @@ def _rvr_stance(sec, t, message, level, near):
             sec.recent_sends.popleft()
     if not regroup:
         sec.last_retreat[group] = reason
+        sec.last_retreat_from[group] = sender
 
 
 @handles("RVR_NOTICE")
@@ -799,10 +947,31 @@ def _era_trained(sec, t, message, level, near):
 
 @handles("ERA_BUILD_CENSUS")
 def _era_census(sec, t, message, level, near):
+    """The census counts the whole roster, retired custom-class bots included (LogEraBuildCensus(roster)); the check
+    holds the count against BOT_CUSTOM_CLASS_RETIRED (DIAG-5378-misc 2)."""
     sec.ev["ERA_BUILD_CENSUS"].add(t, message)
     m = re.search(r"\bSluaghbinder=(\d+)", message)
     if m and int(m.group(1)) > 0:
         sec.ev["era.census_custom"].add(t, message)
+        if int(m.group(1)) > sec.n["era.census_custom_max"]:
+            sec.n["era.census_custom_max"] = int(m.group(1))
+            sec.lists["era.census_custom_line"] = [(t, message)]
+
+
+@handles("BOT_CUSTOM_CLASS_RETIRED")
+def _custom_retired(sec, t, message, level, near):
+    sec.ev["BOT_CUSTOM_CLASS_RETIRED"].add(t, message)
+    f = kv(message)
+    if f.get("id"):
+        sec.retired[f["id"]] = f.get("bot")
+
+
+def retired_acts(sec, t, message):
+    """A retired custom-class bot that logs a line of its own (bot=<name> id=<id>, the two matching): it plays."""
+    for name, bot_id in RETIRED_ACT_RE.findall(message):
+        if sec.retired.get(bot_id) == name:
+            sec.ev["era.retired_acts"].add(t, message)
+            return
 
 
 @handles("BOT_SKILL_PROFILE")
@@ -1013,13 +1182,34 @@ def raids(j: Judge, sec: Section, c):
               note="the notice and horn on screen are a screen check")
     j.seen_if("raids", "schedule", "Raids every four hours per realm (REALM_RAID_SIZED / SCHEDULED, #192)",
               "REALM_RAID_SCHEDULED", f"{c('REALM_RAID_SCHEDULED')} scheduled, {c('REALM_RAID_SIZED')} sized")
-    j.seen_if("raids", "return_wave", "After a wipe the raiders gather at the way in and go back in together (#195)",
-              "return.wave", f"{c('return.wave')} return-wave lines, {c('return.stuck')} stuck",
-              against="return.stuck", against_detail=f"{c('return.stuck')} return wave(s) stuck "
-                                                      f"({c('return.wave')} other return-wave lines)")
-    j.seen_if("raids", "pull_70", "A pull waits for 70% of the living raid (#195)", "pull.at_needed",
-              f"{c('pull.at_needed')} final engages at the needed count, {c('pull.below_needed')} below it",
-              against="pull.below_needed")
+    went_in = j.ev("return.went_in")
+    j.add("raids", "return_wave", "After a wipe the raiders gather at the way in and go back in together (#195)",
+          SEEN if went_in.count else NOT_SEEN, went_in if went_in.count else None,
+          f"{c('return.wave')} gather/form/join lines, {went_in.count} of a wave going in (moving, ahead, cleared, met); "
+          f"stuck waves are the next row")
+    stuck = [v for v in sec.waves.values() if v[0] == "stuck"]
+    recovered = [v for v in sec.waves.values() if v[0] == "recovered"]
+    stuck_detail = (f"{c('return.stuck')} step=stuck line(s), {len(sec.waves)} wave(s) stuck at least once: "
+                    f"{len(recovered)} made headway again, {len(stuck)} never did")
+    if stuck:
+        bad = Evidence()
+        first = min(stuck, key=lambda v: v[1])
+        bad.add(first[1], first[2])
+        j.add("raids", "return_stuck", "A stuck return wave makes headway again (REALM_RAID_RETURN_WAVE step=stuck)",
+              CONTRADICTED, bad, stuck_detail, note="why a wave stuck (navmesh, a refused regroup, help calls) is the "
+                                                    "log review's call")
+    else:
+        j.add("raids", "return_stuck", "A stuck return wave makes headway again (REALM_RAID_RETURN_WAVE step=stuck)",
+              SEEN if recovered else NOT_SEEN, j.ev("return.stuck") if recovered else None, stuck_detail, must=False)
+    no_engage = j.ev("pull.no_engage")
+    pull_detail = (f"{c('pull.at_needed')} final engages at the needed count, {c('pull.below_needed')} below it, "
+                   f"{no_engage.count} pull(s) with no FINAL_ENGAGE or EARLY_PULL (a required-adds switch or a wipe "
+                   f"outside an attempt)" + (f": {', '.join(b for _, b in sec.no_engage)}" if sec.no_engage else ""))
+    if c("pull.below_needed") or no_engage.count:
+        bad = min((e for e in (j.ev("pull.below_needed"), no_engage) if e.count), key=lambda e: e.first_t)
+        j.add("raids", "pull_70", "A pull waits for 70% of the living raid (#195)", CONTRADICTED, bad, pull_detail)
+    else:
+        j.seen_if("raids", "pull_70", "A pull waits for 70% of the living raid (#195)", "pull.at_needed", pull_detail)
     j.seen_if("raids", "reset_no_attempt", "A boss that resets while the raid still stands costs no attempt (#195)",
               "raid.reset_no_attempt", f"{c('raid.reset_no_attempt')} reset(s)")
     j.seen_if("raids", "route_boss", "A living boss on a raid's way in is fought as an objective (#213)",
@@ -1037,8 +1227,9 @@ def raids(j: Judge, sec: Section, c):
           CONTRADICTED if near.count else (SEEN if c("stranded.all") else NOT_SEEN),
           near if near.count else j.ev("stranded.all"),
           f"{c('stranded.all')} stranded regroups, {near.count} within {sec.near:.0f} of a boss whose last "
-          f"TARGET_STATUS had inCombat=False",
-          note="a boss's state is its last TARGET_STATUS (one a minute, the raid's targets only)")
+          f"TARGET_STATUS had inCombat=False and that was not engaged",
+          note="a boss rests from its last TARGET_STATUS inCombat=False unless engaged: from a FINAL_ENGAGE, EARLY_PULL "
+               "Commit, TARGET_CALLED, fight-ledger damage or required-adds switch until its wipe, defeat or heal")
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
@@ -1052,20 +1243,28 @@ def rvr(j: Judge, sec: Section, c):
     starts, relay_started = c("RVR_REGROUP"), c("regroup.relay_started")
     share = 100 * relay_started / starts if starts else 0.0
     counts = {k: c(f"regroup.{k}") for k in ("a_relayed_sends", "b_echo_source", "c_returned")}
-    over = starts and share > 10
+    named, one_fight = sec.n["relay.named"], c("regroup.c_one_fight")
+    over = starts and share > RELAY_SHARE_BAR
+    c_text = (f"(c) relay back at its sender within 60 s: {counts['c_returned']} (exact, from= on {named} relayed "
+              f"start(s))" if named else
+              f"(c) relay back at its sender within 60 s: not judged (no from= on relayed starts, a build before the "
+              f"sender was logged); relays among the groups of one fight: {one_fight}")
+    if named and one_fight:
+        c_text += f"; {one_fight} relayed start(s) without from= among the groups of one fight"
     detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
-              f"a relay ({share:.1f}%, at most 10%); (a) relayed stance relayed again: {counts['a_relayed_sends']}, "
-              f"(b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, (c) relay back at its sender "
-              f"within 60 s: {counts['c_returned']}")
+              f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:.0f}%); (a) relayed stance relayed again: "
+              f"{counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, "
+              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}")
     bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
     if over:
         bad.append(j.ev("regroup.relay_started"))
-    row = "Regroups no longer flap: one hop, no echo, relay-started regroups 10% of starts or less (RVR_REGROUP)"
+    row = (f"Regroups no longer flap: one hop, no echo, relay-started regroups {RELAY_SHARE_BAR:.0f}% of starts or less "
+           f"(RVR_REGROUP)")
+    note = "relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop)"
     if bad:
-        j.add("rvr", "regroup", row, CONTRADICTED, min(bad, key=lambda e: e.first_t), detail,
-              note="relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop)")
+        j.add("rvr", "regroup", row, CONTRADICTED, min(bad, key=lambda e: e.first_t), detail, note=note)
     elif starts:
-        j.add("rvr", "regroup", row, SEEN, j.ev("RVR_REGROUP"), detail)
+        j.add("rvr", "regroup", row, SEEN, j.ev("RVR_REGROUP"), detail, note=note)
     else:
         j.add("rvr", "regroup", row, NOT_SEEN, None, detail)
     delays = sorted(sec.lists["notice_delay"])
@@ -1171,11 +1370,31 @@ def era(j: Judge, sec: Section, c):
     j.seen_if("era", "assigned", "New bots are era-built (ERA_BUILD_ASSIGNED, about 10% draw=offmeta)",
               "ERA_BUILD_ASSIGNED", f"{total} assigned ({offmeta}" + (f"; {by_draw})" if by_draw else ")"),
               against="era.custom_assigned", against_detail="a Sluaghbinder was given an era build")
-    j.seen_if("era", "trained", "ERA_BUILD_TRAINED match=yes", "era.trained_yes",
-              f"{c('era.trained_yes')} match=yes, {c('era.trained_no')} not", against="era.trained_no")
-    j.seen_if("era", "census", "No custom-class bots: ERA_BUILD_CENSUS Sluaghbinder=0", "ERA_BUILD_CENSUS",
-              f"{c('ERA_BUILD_CENSUS')} census line(s), {c('era.census_custom')} with Sluaghbinder above 0",
-              against="era.census_custom")
+    era_draws = draws.get("era", 0)
+    trained_detail = f"{c('era.trained_yes')} match=yes, {c('era.trained_no')} not; {era_draws} draw=era assignment(s)"
+    if era_draws == 0 and not (c("era.trained_yes") or c("era.trained_no")):
+        # TRAINED is written only for a draw=era build reaching 50 (EraLifetimeBuild.FirstTrainedAtFifty)
+        j.add("era", "trained", "ERA_BUILD_TRAINED match=yes", NOT_APPLICABLE, None,
+              trained_detail + ": only a draw=era bot logs it", note="judged on a world with draw=era bots (criterion 1)")
+    else:
+        j.seen_if("era", "trained", "ERA_BUILD_TRAINED match=yes", "era.trained_yes", trained_detail,
+                  against="era.trained_no")
+    counted, retired, acts = sec.n["era.census_custom_max"], len(sec.retired), j.ev("era.retired_acts")
+    census_row = "No custom-class bots play: ERA_BUILD_CENSUS Sluaghbinder= no more than BOT_CUSTOM_CLASS_RETIRED"
+    census_detail = (f"{c('ERA_BUILD_CENSUS')} census line(s); Sluaghbinder counted {counted}, retired {retired}; "
+                     f"{acts.count} line(s) of a retired one playing")
+    census_note = "the census counts retired custom-class bots too; Sluaghbinder=0 is for a world with none"
+    if acts.count:
+        j.add("era", "census", census_row, CONTRADICTED, acts, census_detail, note=census_note)
+    elif counted > retired:
+        bad = Evidence()
+        bad.add(*sec.lists["era.census_custom_line"][0])
+        j.add("era", "census", census_row, CONTRADICTED, bad, census_detail + f": {counted - retired} not retired",
+              note=census_note)
+    elif c("ERA_BUILD_CENSUS"):
+        j.add("era", "census", census_row, SEEN, j.ev("ERA_BUILD_CENSUS"), census_detail, note=census_note)
+    else:
+        j.add("era", "census", census_row, NOT_SEEN, None, census_detail, note=census_note)
     j.seen_if("era", "retired", "Custom-class gamebots kept and not played (BOT_CUSTOM_CLASS_RETIRED)",
               "BOT_CUSTOM_CLASS_RETIRED", f"{c('BOT_CUSTOM_CLASS_RETIRED')} line(s)", must=False,
               note="only on a world that has Sluaghbinder gamebots")
@@ -1339,6 +1558,8 @@ def status_text(check, build):
         return f"Seen in log on build {build} ({check['at'][6:]})" if check["at"] else f"Seen in log on build {build}"
     if check["status"] == CONTRADICTED:
         return f"Contradicted in log on build {build}" + (f" ({check['at'][6:]})" if check["at"] else "")
+    if check["status"] == NOT_APPLICABLE:
+        return f"Not applicable on build {build}"
     return f"Not seen in log on build {build}"
 
 

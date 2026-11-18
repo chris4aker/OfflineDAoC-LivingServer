@@ -33,6 +33,19 @@ namespace DOL.GS
     /// </summary>
     public static class EpicPlaytestSweep
     {
+        /// <summary>
+        /// A realm as the sweep's lines write it: by name (GlobalConstants.RealmToName, "None" for no guest). eRealm gives
+        /// one value several names (Albion is also _FirstPlayerRealm, None is _First), and its ToString picked the alias on
+        /// the owner's PC log (5378dbe: realm=_FirstPlayerRealm, guestRealm=_First).
+        /// </summary>
+        public static string RealmWord(eRealm realm) => GlobalConstants.RealmToName(realm);
+
+        /// <summary>The EPIC_SWEEP_RAID_START line.</summary>
+        public static string RaidStartLine(string id, string name, eRealm realm, int size, int tries, int toHub, string reason,
+            string lane) =>
+            $"EPIC_SWEEP_RAID_START event={id} name=\"{name}\" realm={RealmWord(realm)} size={size} try={tries} " +
+            $"toHub={toHub} reason=\"{reason}\" lane={lane}";
+
         private static readonly Logging.Logger Log = Logging.LoggerManager.Create(typeof(EpicPlaytestSweep));
         private static readonly object Sync = new();
 
@@ -319,7 +332,7 @@ namespace DOL.GS
                 _running = true;
                 string capWord = capMs > 0 ? (capMs / 60_000).ToString() : "off";
                 Log.Info($"EPIC_SWEEP_START raids={ids.Length} lanes={lanes.Length} cap={capWord} " +
-                         $"order={string.Join("|", lanes.Select(l => string.Join(",", l.Ids)))} guest=\"{guest?.Name}\" guestRealm={_guestHomeRealm} " +
+                         $"order={string.Join("|", lanes.Select(l => string.Join(",", l.Ids)))} guest=\"{guest?.Name}\" guestRealm={RealmWord(_guestHomeRealm)} " +
                          $"guestLevel={guest?.Level} guestPlaysAsPlayer={_guestHomePrivLevel > 0} guestHomePrivLevel={_guestHomePrivLevel}");
                 string capText = capMs > 0 ? $"each stopped after {capWord} minutes at most" : "no cap (each raid's own clocks end it)";
                 return lanes.Length == 1
@@ -578,8 +591,7 @@ namespace DOL.GS
                 moved = recruits.Length;
                 EpicPlaytestCommandHandler.MoveTo(definition.Id, hub.Name, hub.Region, hub.Center, recruits);
             }
-            Log.Info($"EPIC_SWEEP_RAID_START event={definition.Id} name=\"{definition.Name}\" realm={definition.Realm} size={size} try={step.Tries} " +
-                     $"toHub={moved} reason=\"{reason}\" lane={lane.Name}");
+            Log.Info(RaidStartLine(definition.Id, definition.Name, definition.Realm, size, step.Tries, moved, reason, lane.Name));
             SeatGuest(definition, hub);
         }
 
@@ -801,7 +813,7 @@ namespace DOL.GS
                     }, (live, home, homePrivLevel, account));
                 }
             }
-            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{characterName}\" guestRealm={home} guestPrivLevel={homePrivLevel} " +
+            Log.Info($"EPIC_SWEEP_END why=\"{why}\" results={results.Length} guest=\"{characterName}\" guestRealm={RealmWord(home)} guestPrivLevel={homePrivLevel} " +
                      $"guestOnline={live != null} | {string.Join(" | ", results)}");
         }
 

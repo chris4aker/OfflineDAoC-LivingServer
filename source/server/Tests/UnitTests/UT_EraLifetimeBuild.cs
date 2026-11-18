@@ -485,6 +485,23 @@ namespace DOL.UnitTests
             Assert.That(_logs.Lines.Any(l => l.StartsWith("ERA_BUILD_")), Is.False);
         }
 
+        [Test]
+        public void ABuffbotIsNeverSavedAsARosterRow()
+        {
+            // 5378dbe on the owner's PC: each BUFFBOT_LOGOUT inserted an offline_world_bots row (Eilriorrin's logout at
+            // 22:26:05, then roster bot 5876 "Eilriorrin", a level 50 Druid, ERA_BUILD_ASSIGNED draw=nearest at 22:26:34).
+            // The fixture's database throws on any write, so a save that reached it fails this test.
+            OfflineWorldBotRecord record = Record(eCharacterClass.Druid, 50, NoLiferBuffBots.FirstBotId + 5147);
+            GameBot buffbot = GameBot.CreateNoLiferBuffBot(record, 5147);
+            _constructed.Add(buffbot);
+            buffbot.MarkAutonomousStateDirty();
+            Assert.That(buffbot.IsInMemoryOnly, Is.True);
+            Assert.That(buffbot.SaveAutonomousState(true), Is.True, "nothing to save");
+            Assert.That(record.IsPersisted, Is.False, "no row was added");
+            Assert.That(buffbot.AutonomousStateDirty, Is.False);
+            Assert.That(buffbot.BotSpec.EraBuildId, Is.Empty, "and it keeps its buff spec");
+        }
+
         // ---- the census
 
         [Test]

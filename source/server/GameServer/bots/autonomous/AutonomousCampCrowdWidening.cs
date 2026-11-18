@@ -37,6 +37,16 @@ namespace DOL.GS
         public const int MaxBusyCamps = 6;
         public const long SummaryMilliseconds = 10 * 60_000;
 
+        /// <summary>
+        /// The AUTONOMOUS_CAMP_WIDENED line. The realm is written by name (GlobalConstants.RealmToName): eRealm gives one
+        /// value several names (Albion is also _FirstPlayerRealm), and its ToString picked the alias on the owner's PC log.
+        /// </summary>
+        public static string WidenedLine(string bot, long id, eRealm realm, int level, ConColor from, ConColor to,
+            ConColor natural, ConColor? diedTo, int strictCrowded, int widerQuiet) =>
+            $"AUTONOMOUS_CAMP_WIDENED bot={bot} id={id} realm={GlobalConstants.RealmToName(realm)} level={level} " +
+            $"from={from} to={to} natural={natural} died_to={(diedTo?.ToString() ?? "none")} " +
+            $"strict_crowded={strictCrowded} wider_quiet={widerQuiet}";
+
         /// <summary>One con step above <paramref name="current"/>, or null: already at the natural ceiling, or the step
         /// would reach the con the bot died to (<paramref name="diedTo"/>, null for none or a road death).</summary>
         public static ConColor? WidenedCeiling(ConColor current, ConColor natural, ConColor? diedTo)

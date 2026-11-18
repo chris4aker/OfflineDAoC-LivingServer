@@ -714,6 +714,33 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **Fixes from sweep 5 (build `5378dbe`, the owner's PC log of 2026-11-17/18; tests only until seen on the PC):**
+  - **No Lifer buffbots were saved as gamebots.** When a buffbot logged out with its main, its in-memory record was
+    written to the roster as a new row, and that row logged in as an ordinary level-50 healer gamebot with an era
+    build. Examples: `BUFFBOT_LOGOUT "Eilriorrin"` at 22:26:05, then roster bot 5876 "Eilriorrin" `ERA_BUILD_ASSIGNED` at
+    22:26:34. All 13 `ERA_BUILD_ASSIGNED` lines of that log were such copies, and names repeated across restarts. A
+    buffbot is now never saved, like the Epic Special Forces. The buffbots themselves always kept their buff specs.
+    The copies already in a world stay there as gamebots. `UT_EraLifetimeBuild`.
+  - **RvR: no relayed regroup in contact.** A group in contact and inside its own 60 s retreat cooldown that heard a
+    relayed retreat took a "relayed" regroup, and the next board ended it ("contact while regrouping"). That happened
+    123 times, 121 of them lasting 1 s. In contact the group now fights its own fight, and the relay still regroups it
+    if contact ends while the relay is valid. Relayed `RVR_REGROUP` and `RVR_RETREAT` starts now log their sender
+    (`from=<group>`). `UT_RvrEngagement`.
+  - **Realm names in three log lines:** `AUTONOMOUS_CAMP_WIDENED`, `EPIC_SWEEP_RAID_START` and `EPIC_SWEEP_START`/`_END`
+    printed `realm=_FirstPlayerRealm` and `guestRealm=_First` (aliases of Albion and None). They now print the realm's
+    name. `UT_AutonomousCampCrowdWidening`, `UT_EpicPlaytestSweep`.
+  - **The played-check log reader** (`source/tools/played_check_log.py`):
+    - A boss counts as engaged from a `FINAL_ENGAGE`, an `EARLY_PULL` Commit, a `TARGET_CALLED`, fight-ledger damage
+      or a required-adds switch until its wipe, defeat or heal. It used to count only the last `TARGET_STATUS`, so
+      teleports "near a resting boss" went from 305 to 36 on `5378dbe`. The 36 left are Conservator's 34 and Xaga's 2,
+      before their muster, which were real.
+    - Stuck return waves have their own row, apart from the gather-and-go-in claim.
+    - A pull that logged no engage (a required-adds switch, or a wipe outside an attempt) now contradicts the 70% row:
+      on `5378dbe` that was Aroon and Xaga.
+    - `ERA_BUILD_CENSUS Sluaghbinder=` is held against the number of `BOT_CUSTOM_CLASS_RETIRED` lines.
+    - `ERA_BUILD_TRAINED` reads "Not applicable" when no bot drew `draw=era`.
+    - (c) "back at its sender" is exact from `from=`.
+    - `source/tools/tests/test_played_check_log.py`.
 - **Every Living Server feature is on by default** (owner 2026-11-16: "They should be on by default - all our living
   server features should be in by default if someone downloads our installer"; this replaces the rule that bot-side
   switches default off). Tests only: nothing of this change has been seen on the owner's PC.

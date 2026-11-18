@@ -3983,9 +3983,13 @@ namespace DOL.GS
 
         public bool SaveAutonomousState(bool includeInventory)
         {
-            if (IsEpicSpecialForce)
+            if (IsInMemoryOnly)
             {
-                AutonomousStateDirty = false; // nothing about a Special Forces member is ever saved
+                // Nothing about a Special Forces member or a No Lifer's buffbot is ever saved. A buffbot's record is not a
+                // roster row, so saving it would insert one: on 5378dbe every BUFFBOT_LOGOUT added a new gamebot with the
+                // buffbot's name, class and level (BUFFBOT_LOGOUT "Eilriorrin" 22:26:05, then roster row 5876
+                // "Eilriorrin" logging in with ERA_BUILD_ASSIGNED at 22:26:34).
+                AutonomousStateDirty = false;
                 return true;
             }
             OfflineWorldBotRecord record = PrepareAutonomousStateSnapshot();
