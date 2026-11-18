@@ -46,10 +46,11 @@ public sealed class LauncherWindowSizeTests
         WithLauncher(1920, 1040, (root, form, type) =>
         {
             var stop = (Button)type.GetField("_stopButton", HiddenInstance)!.GetValue(form)!;
-            Control actions = stop.Parent;
-            var overlay = new Panel { BackColor = Color.Transparent, Bounds = actions.Parent.ClientRectangle };
-            actions.Parent.Controls.Add(overlay);
+            // Laid over the whole launcher (a layout panel in between would place it in a cell of its own).
+            var overlay = new Panel { BackColor = Color.Transparent, Bounds = root.ClientRectangle };
+            root.Controls.Add(overlay);
             overlay.BringToFront();
+            overlay.CreateControl();
             Point centre = root.PointToClient(stop.PointToScreen(new Point(stop.Width / 2, stop.Height / 2)));
             Assert.That(TopMostAt(root, centre), Is.SameAs(overlay));
         });
