@@ -147,6 +147,73 @@ namespace DOL.UnitTests
             });
         }
 
+        // ---- B: wipes are counted per encounter, and a counted fight is the encounter's -----------------------------------
+
+        [Test]
+        public void AWipeAtAnAddIsAWipeAtItsBoss()
+        {
+            var (xaga, beatha, tine, live) = Room();
+            Assert.Multiple(() =>
+            {
+                // 00:15:21 scored at "Beatha", 00:19:13 at "Tine", 00:23:38 and 00:27:47 at "Xaga": three names, four wipes.
+                Assert.That(RealmRaidDungeonRoute.WipeEncounter(beatha, live), Is.SameAs(xaga));
+                Assert.That(RealmRaidDungeonRoute.WipeEncounter(tine, live), Is.SameAs(xaga));
+                Assert.That(RealmRaidDungeonRoute.WipeEncounter(xaga, live), Is.SameAs(xaga));
+                Assert.That(RealmRaidDungeonRoute.WipeEncounter(null, live), Is.Null);
+            });
+            // An add whose boss is dead is its own encounter.
+            xaga.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.WipeEncounter(tine, live), Is.SameAs(tine));
+        }
+
+        [Test]
+        public void OneFightInXagasRoomIsCountedOnce()
+        {
+            var (xaga, beatha, tine, live) = Room();
+            // 00:09-00:15: the room fights the raid; the first raid-wide loss is scored, at Xaga (the encounter).
+            xaga.Fighting = beatha.Fighting = tine.Fighting = true;
+            GameNPC counted = RealmRaidDungeonRoute.WipeEncounter(beatha, live);
+            Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(counted, live), Is.True);
+            // 00:19:03 Beatha dies; 00:19:13 the next loss (killer Tine) is the same fight: not a second wipe.
+            beatha.Dead = true;
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(counted, live), Is.True);
+                Assert.That(RealmRaidDungeonRoute.CountsRouteWipe(68, 43, 111, fightAlreadyCounted: RealmRaidDungeonRoute.CountedFightGoesOn(counted, live)), Is.False);
+                // What 5378dbe did: the guard followed Beatha and let go at her death.
+                Assert.That(beatha.IsAlive && beatha.InCombat, Is.False, "the old guard was released here");
+            });
+            // 00:21:25 Tine resets (out of combat) while Xaga, dragged past her tether, still fights: the same fight.
+            tine.Fighting = false;
+            Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(counted, live), Is.True);
+            // Xaga leaves combat too, and so does Tine: the fight is over, and a new raid-wide loss is a new wipe at Xaga.
+            xaga.Fighting = false;
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(counted, live), Is.False);
+                Assert.That(RealmRaidDungeonRoute.CountsRouteWipe(65, 58, 123, fightAlreadyCounted: false), Is.True);
+                Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(null, live), Is.False);
+            });
+            // The encounter dead: nothing goes on.
+            xaga.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.CountedFightGoesOn(xaga, live), Is.False);
+        }
+
+        [Test]
+        public void TwoWipesInXagasRoomDefeatTheRaidAtXaga()
+        {
+            var (xaga, beatha, tine, live) = Room();
+            // Two attempts lost, one at Beatha and one at Tine: both are Xaga's, so the second is the raid's last.
+            var failures = new Dictionary<GameNPC, int>();
+            foreach (GameNPC at in new GameNPC[] { beatha, tine })
+            {
+                GameNPC encounter = RealmRaidDungeonRoute.WipeEncounter(at, live);
+                failures[encounter] = failures.GetValueOrDefault(encounter) + 1;
+            }
+            Assert.That(failures.Keys, Is.EqualTo(new GameNPC[] { xaga }));
+            Assert.That(failures.Values.Single(), Is.EqualTo(RealmRaidDungeonRoute.MaximumFailedAttempts), "defeated at the encounter");
+        }
+
         [Test]
         public void EveryBossWithRequiredAddsTheOwnerNamedHasAMuster()
         {

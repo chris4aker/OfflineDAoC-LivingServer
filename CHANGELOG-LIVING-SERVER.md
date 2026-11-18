@@ -765,6 +765,14 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
     with his spot, next point and closest approaches, so the next PC log can confirm it.
   - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+- **Wipes are counted per encounter, not per monster** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
+  One continuous 19-minute fight in Xaga's room (408 deaths) was scored as four wipes on three names: Beatha (00:15:21),
+  Tine (00:19:13, ten seconds after Beatha died), then Xaga twice, so the two-attempt rule ran per monster. A wipe at a
+  required add is now the wipe of the boss that owns it (`WipeEncounter`), in attempts and in raid-wide deaths outside
+  one, and the "already counted" guard follows that encounter until it and all its adds are out of combat
+  (`CountedFightGoesOn`), not one monster. The defeat and the wipe line name the boss (Xaga); the line adds
+  `killer="Beatha"` (outside an attempt) or `fought="..."` when they differ. Stricter: two tries per linked encounter.
+
 - **A boss with required adds is pulled as an attempt** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
   Neither Aroon the Urlamhai nor Xaga's room had a `FINAL_ENGAGE` or an `EARLY_PULL`: a Scaith in combat during Aroon's
   muster (0 of 86) and Beatha in combat during Xaga's (2 of 86) sent the route straight to the add with no attempt open,

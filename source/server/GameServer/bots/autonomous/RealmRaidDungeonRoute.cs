@@ -679,10 +679,12 @@ namespace DOL.GS
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False");
                 return false;
             }
+            // Counted per encounter: the boss that owns the adds (WipeEncounter), so one linked fight is one encounter's.
+            string encounter = WipeEncounter(_target, _live).Name;
             if (IsResetWithRaidStanding(engaged, fallen, _target.HealthPercent, _attemptLowestPercent) &&
-                _freeResets.GetValueOrDefault(_target.Name) < FreeEncounterResets)
+                _freeResets.GetValueOrDefault(encounter) < FreeEncounterResets)
             {
-                int resets = _freeResets[_target.Name] = _freeResets.GetValueOrDefault(_target.Name) + 1;
+                int resets = _freeResets[encounter] = _freeResets.GetValueOrDefault(encounter) + 1;
                 log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
                          $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\"");
@@ -702,15 +704,16 @@ namespace DOL.GS
                 _targetProgressTick = now;
                 return false;
             }
-            int failures = _failedAttempts[_target.Name] = FailedAttempts(_target.Name) + 1;
-            _wipes.Enqueue((_target.Name, failures, engaged, fallen));
-            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{_target.Name}\" level={_target.Level} failures={failures} " +
-                     $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"");
+            int failures = _failedAttempts[encounter] = FailedAttempts(encounter) + 1;
+            _wipes.Enqueue((encounter, failures, engaged, fallen));
+            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{encounter}\" level={_target.Level} failures={failures} " +
+                     $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"" +
+                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : ""));
             if (failures >= MaximumFailedAttempts)
             {
-                DefeatedAt = _target.Name;
+                DefeatedAt = encounter;
                 Hold = true;
-                Status = $"Defeated at {_target.Name}";
+                Status = $"Defeated at {encounter}";
                 return true;
             }
             _regrouping = true;
@@ -2409,8 +2412,24 @@ namespace DOL.GS
         public static bool CountsRouteWipe(int fallen, int standingInside, int livingRaid, bool fightAlreadyCounted) =>
             !fightAlreadyCounted && IsRouteWipe(fallen, standingInside, livingRaid);
 
-        /// <summary>The boss the last raid-wide wipe outside an attempt was scored at, while that fight goes on.</summary>
+        /// <summary>The encounter the last raid-wide wipe outside an attempt was scored at, while that fight goes on.</summary>
         private GameNPC _routeWipeKiller;
+
+        /// <summary>
+        /// The encounter a wipe is scored at (pure but for the lookup): the living boss whose required add
+        /// <paramref name="npc"/> is, else <paramref name="npc"/> itself. Owner's PC, build 5378dbe, 2026-11-17 (Galladoria):
+        /// one continuous 19-minute fight in Xaga's room was scored as four wipes on three names (Beatha 00:15:21, Tine 00:19:13
+        /// ten seconds after Beatha died, Xaga 00:23:38 and 00:27:47), so <see cref="MaximumFailedAttempts"/> ran per monster.
+        /// It is per encounter: Beatha's and Tine's wipes are Xaga's, and the defeat names her.
+        /// </summary>
+        public static GameNPC WipeEncounter(GameNPC npc, IReadOnlyList<GameNPC> live) =>
+            npc == null ? null : EpicEncounterTactics.RequiredAddOwner(npc, live ?? []) ?? npc;
+
+        /// <summary>The fight a route wipe was counted in goes on while its encounter or any of its required adds is in combat
+        /// (pure but for the lookups; <see cref="EpicEncounterTactics.FightOn"/>). It followed one monster: the guard let go when
+        /// Beatha died (00:19:03) and when Tine reset, while the fight with Xaga went on.</summary>
+        public static bool CountedFightGoesOn(GameNPC encounter, IReadOnlyList<GameNPC> live) =>
+            encounter != null && EpicEncounterTactics.FightOn(encounter, live ?? []);
 
         /// <summary>
         /// Owner's PC, 2026-11-14 (build e3b8238): Icelord Agmundr, set aside after a stalled muster, killed 80 raiders at the
@@ -2427,8 +2446,8 @@ namespace DOL.GS
             foreach (GameLiving p in participants)
                 if (p.IsAlive && p.CurrentRegionID == _region) _standingInside.Add(p);
             while (_routeDeaths.Count > 0 && now - _routeDeaths.Peek().At > RouteDeathWindowMilliseconds) _routeDeaths.Dequeue();
-            // The fight a route wipe was scored in ends when its boss leaves combat (or dies).
-            if (_routeWipeKiller != null && (!_routeWipeKiller.IsAlive || !_routeWipeKiller.InCombat)) _routeWipeKiller = null;
+            // The fight a route wipe was scored in ends when its encounter and all its adds are out of combat (or dead).
+            if (_routeWipeKiller != null && !CountedFightGoesOn(_routeWipeKiller, _live)) _routeWipeKiller = null;
             if (_musterEngaged) { _routeDeaths.Clear(); return; }
             int fallen = _routeDeaths.Count;
             if (fallen < MinimumRaidersAtTarget) return;
@@ -2456,18 +2475,20 @@ namespace DOL.GS
                          $"reason=\"half the raid inside fell outside an attempt and no boss was fighting there; no attempt used\"");
                 return;
             }
-            _routeWipeKiller = killer;
-            int failures = _failedAttempts[killer.Name] = FailedAttempts(killer.Name) + 1;
-            _wipes.Enqueue((killer.Name, failures, _standingInside.Count + fallen, fallen));
-            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{killer.Name}\" level={killer.Level} failures={failures} " +
-                     $"of={MaximumFailedAttempts} engaged={_standingInside.Count + fallen} fallen={fallen} health={killer.HealthPercent} " +
-                     $"lowest={killer.HealthPercent} how=\"raid-wide deaths outside an attempt\" raidTarget=\"{TargetName}\" " +
-                     $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z}");
+            // Scored at the encounter (the boss that owns the adds), and the fight is followed as the encounter's.
+            GameNPC encounter = WipeEncounter(killer, _live);
+            _routeWipeKiller = encounter;
+            int failures = _failedAttempts[encounter.Name] = FailedAttempts(encounter.Name) + 1;
+            _wipes.Enqueue((encounter.Name, failures, _standingInside.Count + fallen, fallen));
+            log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{encounter.Name}\" level={encounter.Level} failures={failures} " +
+                     $"of={MaximumFailedAttempts} engaged={_standingInside.Count + fallen} fallen={fallen} health={encounter.HealthPercent} " +
+                     $"lowest={encounter.HealthPercent} how=\"raid-wide deaths outside an attempt\" raidTarget=\"{TargetName}\" " +
+                     $"at={(int)centre.X},{(int)centre.Y},{(int)centre.Z} killer=\"{killer.Name}\"");
             if (failures >= MaximumFailedAttempts)
             {
-                DefeatedAt = killer.Name;
+                DefeatedAt = encounter.Name;
                 Hold = true;
-                Status = $"Defeated at {killer.Name}";
+                Status = $"Defeated at {encounter.Name}";
                 return;
             }
             _regrouping = true;
