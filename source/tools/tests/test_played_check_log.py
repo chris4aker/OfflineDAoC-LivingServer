@@ -557,22 +557,24 @@ class Rvr(unittest.TestCase):
         self.assertIn("32 regroup starts", row["detail"], "an end line is not a start")
 
     def test_d_relay_started_regroups_over_the_bar(self):
-        # Owner decision 2026-11-18: the bar is 11.5% (between one hop, about 10%, and two hops, about 12.7%).
-        self.assertEqual(pcl.RELAY_SHARE_BAR, 11.5)
+        # Owner decision 2026-11-18 18:19: the bar is 15% (it was 11.5%; dense warbands fan one hop out to 12-14%).
+        self.assertEqual(pcl.RELAY_SHARE_BAR, 15.0)
         log = self.stance_log(own_regroups=3)
         row = self.regroup(log)
         self.assertEqual(row["status"], pcl.CONTRADICTED)
-        self.assertIn("1 started by a relay (20.0%, at most 11.5%)", row["detail"])
+        self.assertIn("1 started by a relay (20.0%, at most 15%)", row["detail"])
         self.assertIn('reason="relayed retreat"', row["line"])
-        self.assertIn("relay-started regroups 11.5% of starts or less", row["row"])
-        # 1 of 8 (12.5%) is over the bar
-        self.assertEqual(self.regroup(self.stance_log(own_regroups=6))["status"], pcl.CONTRADICTED)
+        self.assertIn("relay-started regroups 15% of starts or less", row["row"])
+        # 1 of 6 (16.7%) is over the bar
+        self.assertEqual(self.regroup(self.stance_log(own_regroups=4))["status"], pcl.CONTRADICTED)
+        # 1 of 8 (12.5%) failed the old 11.5% bar and passes the owner's 15%
+        self.assertEqual(self.regroup(self.stance_log(own_regroups=6))["status"], pcl.SEEN)
 
     def test_d_a_share_between_ten_and_eleven_and_a_half_percent_passes(self):
-        # 1 of 9 (11.1%): failed the old 10% bar, under the owner's 11.5%
+        # 1 of 9 (11.1%): failed the old 10% bar, under the owner's 15%
         row = self.regroup(self.stance_log(own_regroups=7))
         self.assertEqual(row["status"], pcl.SEEN)
-        self.assertIn("1 started by a relay (11.1%, at most 11.5%)", row["detail"])
+        self.assertIn("1 started by a relay (11.1%, at most 15%)", row["detail"])
 
     def test_field_rows(self):
         log = Log().start(at(0))
