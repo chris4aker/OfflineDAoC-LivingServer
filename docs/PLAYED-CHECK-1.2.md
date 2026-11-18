@@ -378,6 +378,16 @@ details in [TALES.md](TALES.md).
 | Boss yells, atmosphere lines and kill broadcasts on screen | must | **Seen** on `1dc66b6`: realm first-kill lines (22:52, 23:07, 04:57), the Aidon win line (00:44), an atmosphere line on arriving in Avalon Marsh (02:20) and a boss yell in Krondon (03:35). An aggro yell at a boss's death was fixed in #231 (tests only) |
 | Loremasters, books, the Herald chronicle and bestiary |  | Partly on `1dc66b6`: the `/lore` window (23:25) and a loremaster standing in Camelot's library (01:05, his dialog not opened). Books, the Herald chronicle and the bestiary: no record |
 
+## Bot chat: promises to come (owner decision 2 of 2026-11-18, `fix/chat-promises-real`)
+
+A bot that says "omw", "coming", "on my way", "ill be there" or "heading there" must really go, and a bot that won't go
+must never say it (chat audit DESIGN-006, CORPUS-C-018, CORPUS-B2-047, LOG-019). The gate is `ChatPromises`; every line
+below is written as the server writes it. Checker: `chat` / `promises`.
+
+| What | Must | Status |
+|---|---|---|
+| A bot that says it is coming arrives. With a level 50 character in the frontier, type "inc <keep>" (a keep of your realm, e.g. "inc bled") and "free rps at <keep>" in /faction a few times over an hour, and "help" in /say beside a gamebot while a monster fights you. Each "omw" (or "coming", "on my way") on screen has a `CHAT_PROMISE made bot="<the bot>"` line within a second (`reason=`, `target=`, `eta=`, `deadline=`), then `CHAT_PROMISE kept ... after=<s>` before its deadline: the bot is seen at the keep (`/lswhy` shows "Defending keep" or "Entering friendly keep") or beside you, fighting your monster. Bots that don't go answer "how many?", "where are you?" or "might make it", and log `CHAT_PROMISE refused ... why=<code>` (`not_on_rvr`, `level`, `too_far`, `in_combat`, `on_realm_raid` and so on). The checker reads Seen with at least one kept promise and kept at 70% or more of kept plus timed-out; `broken why=died`, `taken`, `logged_out`, `keep_fell` and `asker_gone` are honest ends and not counted against. Contradicted by more than 30% `why=timeout` (5 or more judged), and, on screen, by any "omw" with no `CHAT_PROMISE made` for that bot | must | Not run (tests only: `UT_ChatPromises`, `test_played_check_log.py` ChatPromises). Which replies go through the gate depends on the chat branches that call it (`fix/chat-reading-replies` and the field-talk, news and scene fixes): until they merge, nothing calls it and no `CHAT_PROMISE` line is written |
+
 ## Beta 1.0 features never seen (must since 2026-11-15)
 
 Owner decision 11: the Beta 1.0 items that were never seen in game ([KNOWN-ISSUES.md](KNOWN-ISSUES.md), "Not yet seen

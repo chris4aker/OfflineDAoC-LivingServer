@@ -368,6 +368,8 @@ namespace DOL.GS
             GameBot bot = brain?.BotBody;
             if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper)
                 return false;
+            // A promise made in chat ("omw"): kept on arrival, broken at its deadline (ChatPromises; one read when none).
+            ChatPromises.Observe(bot);
             if (bot.IsPlayerLedGroup)
             {
                 // Bots as people WP3: a bot in a player's group still learns where it has been (data only; the Record
@@ -637,6 +639,10 @@ namespace DOL.GS
                     _routeRecoveryWaypoint = null;
                     bot.ForcePathReplot();
                 }
+
+                // A free gamebot that said it would come walks there (ChatPromises; help, a battleground keep).
+                if (ChatPromiseWalkTurn(brain, bot, nowTick))
+                    return true;
 
                 if (HandleRealmRaidStableTravel(bot))
                     return true;
@@ -2131,12 +2137,14 @@ namespace DOL.GS
                     _rvrApproachDestination = null;
                 }
             }
+            // A frontier promise made in chat ("omw bled") is this turn's destination (ChatPromise partial); no re-plan while it holds.
+            bool promised = ApplyChatPromiseRvr(bot);
             // 1.2 WP6: a roaming eight, soloer or stealther at its check spot looks, hunts and moves on (RvrTactics partial).
-            if (RvrTacticsRoamTurn(brain, bot)) return true;
-            if (_rvrDestination == null || _rvrDestination.RegionId == 0 ||
+            if (!promised && RvrTacticsRoamTurn(brain, bot)) return true;
+            if (!promised && (_rvrDestination == null || _rvrDestination.RegionId == 0 ||
                 (!_rvrSharedEvent && GameLoop.GameLoopTime >= _nextRvrPlanReview && !BotSiegeRuntime.Assigned(bot)) ||
                 (_rvrIntent == AutonomousRvrEventLayer.Intent.Roam && bot.CurrentRegionID == _rvrDestination.RegionId &&
-                 Distance(bot.X, bot.Y, _rvrDestination.X, _rvrDestination.Y) <= CampArrivalRadius))
+                 Distance(bot.X, bot.Y, _rvrDestination.X, _rvrDestination.Y) <= CampArrivalRadius)))
             {
                 _rvrDestination = ChooseRvrDestination(bot);
                 _nextRvrPlanReview = GameLoop.GameLoopTime + 45_000 + bot.ObjectID % 15_000;

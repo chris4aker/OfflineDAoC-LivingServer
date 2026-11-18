@@ -8,6 +8,22 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Bot chat audit fixes (1.2, 2026-11-18; tests only)
+
+- **"omw" is true** (owner decision 2 of 2026-11-18: "Make it real for 1.2"; audit DESIGN-006, CORPUS-C-018, CORPUS-B2-047,
+  LOG-019). `ChatPromises.TryPromiseCome` decides whether a gamebot can and will go now: alive, out of combat, not on a ride
+  or carrying a relic, not held by a raid, a siege force, a battleground rally, a bot group or a player's group, not already
+  promised elsewhere, not timid; for RvR an RvR gamebot of level 50 within 8 minutes of the keep (a porter hop counts), for a
+  battleground one in that battleground and its bracket; a call for help only from a free bot within 4,000 units; heals only
+  from a healer in your group; a rez as before (`WillComeRez`); "ill be there" to a raid time only from a bot already
+  reserved for the realm's raid. Yes gives the bot a duty with a deadline (half again its travel estimate plus two minutes,
+  3-15 minutes): an RvR bot's frontier turn takes the keep as its destination (its own realm's keep with the defence intent
+  and a verified defensive post; another realm's keep only as a patrol near it), a free bot walks to you and fights the
+  monster fighting you, and either stays three minutes. `CHAT_PROMISE made`, `kept` (arrived in time), `broken` (`why=timeout`,
+  `died`, `taken`, `logged_out`, `keep_fell`, `asker_gone`, `duty_ended`) and `refused` (`why=`) lines go to the server log;
+  `played_check_log.py` judges them (`chat` / `promises`, docs/PLAYED-CHECK-1.2.md). The replies that call the gate come with
+  the other chat fixes. Tests: `UT_ChatPromises`, `test_played_check_log.py`.
+
 ## Crafter replies and the crafter roster (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leofrunn, an Assistant Weaponcrafter at 499):

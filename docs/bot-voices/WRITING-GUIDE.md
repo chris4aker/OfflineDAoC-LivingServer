@@ -113,7 +113,10 @@ capitals there is a shut door: Camelot's bricked-up crypts and the Inconnu who n
 who hear picks below Jordheim, the Dream Trees' roots that go too deep. Ambient rumour lines are musings (rare /faction
 openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/tests/test_era_rumours.py`, `UT_EraRumours`.
 - Promises the server can't keep: a bot must not say it is inviting, trading or coming unless the line is
-  written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead).
+  written for a kind whose code does that (say "pst me", "inv me", "i might be free later" instead). "omw", "coming",
+  "on my way", "ill be there", "heading there", "porting", "count me in" and "on it" are said only through the promise
+  gate (`ChatPromises.TryPromiseCome` or `ChatPromises.Gate`, 1.2): saying one gives the bot a real duty to go there, and a
+  bot that can't go gets a line that promises nothing ("how many?", "where are you?", "might make it").
 
 ## World facts you can use
 - Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35.
