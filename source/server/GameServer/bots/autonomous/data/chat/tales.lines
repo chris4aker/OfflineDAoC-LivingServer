@@ -26,10 +26,10 @@ C: oh yes. everyone hush, {name_b} is telling the dartmoor one | shh all, golest
 ?E: we have heard the dartmoor one a hundred times lol | here we go, the bed of granite again
 D: go on {name_b}, please | pleeease {name_b}, the new ppl need to hear about gole
 B: fine, fine. sit down then | ok ok. once, and no talking over me
-B: south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the Bed
-B: she sleeps in it. and she and the Bed are one stone. hit her anywhere else and the granite takes the blow for her
+B: south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the bed
+B: she sleeps in it. and she and the bed are one stone. hit her anywhere else and the granite takes the blow for her
 ?F: so thats why nothing hurts her outside the lair? | wait, is that why we only fight her in the hollow
-B: thats why. and the giants in the heather are her children. shards of the Bed that got up and walked off
+B: and the giants in the heather are her children. shards of the bed that got up and walked off
 B: back in uther's day a roman lord named articus died out there with his whole house
 B: the duke of cornwall's son came home from it alone, burnt, and never once said what he saw
 ~ 8
@@ -38,7 +38,7 @@ B: sir arward rode south with thirty, the year the dragons woke. none of them ca
 B: but their scribe's journal fell out of a clear sky at prydwen keep. scorched. one word branded on the last page
 C: golestandt.
 B: an old roman armourer forged heat wards against her. held once. failed the second time
-B: camelot's armourers still sell those wards. only in pairs. one for her and one for you
+B: camelot's armourers still cut that ward into the rim of a shield. always twice. once for her and once for you
 ?E: ok that part still gets me | fine, the pairs bit is good, i admit it
 ~ 25
 F: ...i am never going near dartmoor again | i walk past that hollow every day. not anymore
@@ -56,11 +56,12 @@ A: thanks {name_b}. gets me every time | told it better than last time, {name_b}
 A: {name_b}, whats actually at the top of caer sidi? you know the story right | {name_b} tell them about the four riders of caer sidi
 C: quiet in faction for a minute, this one is worth it | hush everyone, caer sidi story
 D: yes please, i only know there are four horsemen up there | do tell {name_b}, i never got the riders explained
+B: ok. sit. this one is long | fine, but nobody talks over the riders
 B: alright. top cell of caer sidi. the first one arawn ever built
 B: the inconnu say whats in it is the end of the world. arawn couldnt destroy it. you cant end an ending, only keep it
 B: so he built the whole turning gaol under that one door to keep it
 ?F: and the four riders are the guards? | so the horsemen are its jailers
-B: not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue
+B: the four riders at that door are not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue
 B: and arawn's law binds them. they have to ASK you first. do you challenge fate
 B: arthur climbed to them once. he said no. came home with six men. thats the seven the bards sing about
 ~ 8
@@ -87,12 +88,13 @@ C: he asks everyone why they came early, they say. i would have no answer
 A: {name_b} is it true theres a dragon under avalon? someone said two heads | {name_b}, tell the one about the crystal cave
 C: shh, let {name_b} talk. this is the xanxicar one | everybody quiet, avalon story
 D: go ahead {name_b}, i always wondered whats under that isle | yes tell it, i have only seen the cave mouth
+B: alright alright. once | go on then, settle down
 B: ok. there is a map of avalon older than any other. it marks something at the heart of the isle. no name on it
 B: thats him. xanxicar. two heads, older than the map. the inconnu say even arawn wont go near him
 B: a surveyor called caradoc laid the first college's stone right on the warm ground above him
-B: and for three hundred years the college of stars sang over him on the longest night. the Quieting, they called it
+B: and for three hundred years the college of stars sang over him on the longest night. the quieting, they called it
 ?F: like a lullaby? for a dragon? | they sang a dragon to sleep every year
-B: a lullaby or a ward, nobody is sure which. it worked either way
+B: was it a lullaby or a ward? nobody is sure. it worked either way
 B: morgana sang it herself as a pupil. and that college is the first one she burned
 ~ 8
 D: so who woke him? | and then he woke up i guess?
@@ -102,7 +104,7 @@ B: dura'ek came up with the dragon's two breaths. so xanxicar fights with his we
 B: sir garan lost five companies of forty at the cave mouth. five
 B: the readers at caer gothwaite think he isnt even the power under avalon. just its keeper. lying on something worse
 ~ 25
-F: lying on something worse. great | so what is he keeping
+F: what did i miss? just logged in | so is anyone actually going down there this week
 A: nobody knows. thats the part i like | {name_b} always stops right there
 
 @realm mid
@@ -151,6 +153,7 @@ C: good telling {name_b}. the fire feels warmer now
 A: {name_b}, why does king tuscar shout for odin when hes losing? hes a giant | {name_b} tell the tuscar story, the one with the hammer
 C: listen up, this is a good one. the smith king | hush, {name_b} knows the tuscaran story
 D: yes! i always wondered about the odin thing | go on {name_b}, the glacier king
+B: ha. fill your horns then | sit down, all of you
 B: so. tuscar was a smith long before he was a king
 B: the rime giants say he was apprentice to the giant who built asgard's wall in one winter
 B: you know that one. loki cheated the builder of his wage and thor's hammer paid him instead
@@ -181,6 +184,7 @@ A: every time. thanks {name_b} | skal, {name_b}
 A: {name_b} whats the thing at the bottom of trollheim? the valkyn wont talk about it | {name_b}, tell the nosdoden one
 C: quiet a moment, trollheim story | everyone hush, this one is grim
 D: please do, i got lost down there once and heard things | tell it {name_b}, i want to know what i ran from
+B: aye, sit close | fine. the fire is warm enough for it
 B: alright. under the deepest holy hall of trollheim the troll fathers raised a mound
 B: thats where their dead were given back to the land. and the vaettir, the land spirits, gathered on it
 B: the fathers were famous for wisdom. this is where it came from. they asked the dead
@@ -228,7 +232,7 @@ D: why did it open though? | does anyone know why that summer?
 B: no one agrees. the druids of lough gur say the veil wore thin after the bargain broke in the cursed forest
 B: he warns once, from the sky. he keeps a chamberlain. his heir maldahar rides the borders
 B: conaing of howth took forty to his lair, the first to reach it. and found no blade would bite him once he left it
-B: the druids named that the King's Law. a king may not be wounded on ground that is not his
+B: the druids named that the king's law. a king may not be wounded on ground that is not his
 ?E: which is why we drag nobody anywhere. we fight him at home
 ~ 25
 F: a king may not be wounded on ground not his. i like that | cold light. i can almost see it
@@ -246,9 +250,10 @@ A: thank you {name_b}. lovely as ever | beautifully told, {name_b}
 A: {name_b} what is actually at the bottom of galladoria? the sylvan go quiet when i ask | {name_b}, tell us of the root
 C: hush, everyone, {name_b} has the galladoria tale | quiet now, this is the old one. older than us
 D: yes, tell it. i have only seen the first rooms | please {name_b}, the whole of it
-B: his name is olcasgean. the Root. he was old and angry before the first forest of hy brasil woke
+B: if you will be quiet, yes | very well. sit close
+B: his name is olcasgean. the root. he was old and angry before the first forest of hy brasil woke
 B: the sylvan will not call him a god. the scholars of tir na nog say titan
-B: in the Long Pushing the forest grew against him for an age and drove him back to world's end
+B: in the long pushing the forest grew against him for an age and drove him back to world's end
 ?F: the forest fought him? the trees themselves? | a forest can push?
 B: it set keeper trees to watch him. elro at the edge, who held. and aroon in the hollow below, who rotted
 B: but roots do not go away. they go down
@@ -259,10 +264,10 @@ B: everything that drank that water changed. the broodmother. the conservator. a
 B: last he took the isle's four elements, wind, water, fire and stone, and set them at the waterfall bridge to guard his sleep
 B: hibernia's first three hundred and forty broke on his first law. no one near him who does not stand where he allows
 ?E: we broke on it too, last month | two spots. he allows two spots. ask our guild
-B: orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. each with a full life
-B: they cut both
+B: orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. one life between them
+B: they cut both at once
 ~ 25
-F: they go down. i keep hearing that part | two trunks. of course there are two
+F: and when the forest stops pushing? nobody ever says | so what is he waiting for out there
 C: well told {name_b}. the wardens say he has grown hungrier since
 
 @topic tale_black-lady
@@ -277,6 +282,7 @@ C: well told {name_b}. the wardens say he has grown hungrier since
 A: {name_b}, who was the black lady before marfach? someone said she was a singer | {name_b} tell the keener's tale, the sad one
 C: quiet a while, friends. the marfach story | hush, this one deserves the silence
 D: i would like to hear it {name_b} | tell it, i have only fought her, never understood her
+B: very well. gently now | sit, friends. it is a sad one
 B: she was the eldest of three keeners. hired to sing the chieftain caimheul on, in the hills of breifine
 B: a keener sings facing the road. she never looks back at the grave. the eldest had kept that rule forty years
 B: but she had raised caimheul in her own house by the lake. his foster mother. and they asked her to keen him anyway
@@ -311,6 +317,7 @@ A: thank you {name_b} | i always go quiet after that one
 A: {name_b} tell them why its called legion. the df one | {name_b}, the legion story, before the next raid goes down
 C: everyone shut up a second, this is the darkness falls one | hush. {name_b} tells legion properly
 D: go on {name_b}, i only know it eats bubbles | please, i have always wanted the real story of that thing
+B: sure. get comfortable | fine. lights low, this one is grim
 B: right. the imps down there will talk for a candle end. this is what they say
 B: in the beginning two princes stood equal at the top of the demon court
 B: one killed the other. and ate him. and kept his voice
@@ -343,6 +350,7 @@ C: pray for the souls inside it, the priests say. pray later, i say
 A: {name_b}! the glutton hall story. the young ones havent heard it | {name_b} tell them about legion before they go down there
 C: quiet at the benches. {name_b} has the legion saga | hush, the glutton hall
 D: tell it {name_b}, i want to know what waits under mularn | aye, go on, i have only heard the name
+B: ha. sit, sit | ale first, then the saga
 B: the skalds call his lair the glutton hall. because it eats its guests
 B: there were two princes once, equal, at the top of the demon court
 B: one killed the other, ate him, and kept his voice for his own
@@ -358,7 +366,7 @@ B: it came down and did not stop at the enemy. it stays on its ledge now, and he
 ?E: saw the ledge once. did not look twice | the behemoth just sits up there watching. i hate it
 B: our roll names thane hrolf the tall as the first of midgard to break him
 ~ 25
-F: no seat in any hall | i will be very careful under mularn
+F: and does anyone ever ask the voices what they want | so how many voices is it now
 A: thats a whole saga right there. thanks {name_b}
 
 @realm hib
@@ -375,6 +383,7 @@ A: thats a whole saga right there. thanks {name_b}
 A: {name_b}, is it true the bards refuse to sing legion? why? | {name_b} tell the tale the bards will not
 C: hush, all of you. the one beneath connacht | quiet, friends. {name_b} will tell what the bards leave out
 D: i would hear it {name_b} | go on, i have wondered about that door in connacht
+B: if you will listen to the end, yes | very well. the bards will not, so i will
 B: the druids call him a lord made of his own subjects. here is why
 B: two princes stood equal at the head of the demon court
 B: one slew the other and ate him, and kept his voice
@@ -384,7 +393,7 @@ B: the druids say he is what the otherworld becomes with no law in it
 B: three doors lead to him. ours is in connacht. they open only to the realm that holds the most keeps
 ~ 8
 D: can he even be hurt? | how does anyone fight such a thing?
-B: only from inside the Choir. the ring where all his voices can hear each other. from beyond it, nothing lands
+B: only from inside the choir. the ring where all his voices can hear each other. from beyond it, nothing lands
 B: and each of us who falls in there mends him. he heals by eating
 B: he swallows the turning wards our druids set about the fighters, and pours them back as ruin
 ?E: we fed him well last time. shamefully well | stand close, die never. that is the whole of it
@@ -407,6 +416,7 @@ C: lets give them something to sing, then
 A: {name_b} who IS govannon anyway. the summoners hall boss | {name_b}, tell the one about the summoner and his debts
 C: shh, summoner's hall story, pay attention | quiet all. {name_b} knows this one from the camelot scholars
 D: go on {name_b}, i only know to kill the sacrifice first | tell it, i want to know why there is a sacrifice at all
+B: alright. pull up a chair | ok ok, i will tell it
 B: his name is a smith's name, from the old tales of the west. but what he makes is bargains
 B: camelot's scholars say he was a mage of the old britons who took that name for himself
 B: he came to an empty hall under all three frontiers and filled it with summoners. cunovinda was his first student
@@ -422,7 +432,7 @@ B: the priests in camelot say aelfgar was one of ours once. a knight
 B: and hurt govannon badly enough and he sheds the shape he was paid in. the demon steps out whole
 B: as if every wound before had been given to someone else
 ~ 25
-F: given to someone else. so who took them | he pays his debts with other people. got it
+F: so who holds his debts now? nobody ever says | right. two extra healers next time
 A: thanks {name_b}. i will never look at the sacrifice the same way
 
 @realm mid
@@ -439,6 +449,7 @@ A: thanks {name_b}. i will never look at the sacrifice the same way
 A: {name_b}, tell the young ones what was calling the dead in dodens gruva | {name_b}! the govannon story, with ormarr's miners in it
 C: quiet, this one is ours. dodens gruva | hush at the fire, {name_b} tells the summoner
 D: aye tell it. my uncle mined there | go on, i never knew the mine and the hall were one story
+B: aye, its ours to tell. sit | fine. pass the mead and listen
 B: there is a hall under all three frontiers. an empty sidhe hall, once. a summoner named govannon filled it
 B: jordheim's skalds say there is no one under his shape at all. just the shape
 B: he and his students call the dead. ours too. down through the floors of the frontier dungeons
@@ -450,7 +461,7 @@ D: so aros is not the villain there? | wait. aros was holding them back?
 B: he held them back. thats why the mine is full of bound dead. better bound than his
 B: govannon pays for every calling. a sacrifice and a demon walk to his feet. if both arrive, his creditor comes to collect
 B: and when he is hurt enough the shape comes off. the demon steps out whole
-?E: at half. heals to full. i have the scars | the half way trick. every single time
+?E: at half. most of his health back. i have the scars | the half way trick. every single time
 B: like every blow we ever landed went to somebody else
 ~ 25
 F: poor aros | i will look at dodens gruva differently now
@@ -470,11 +481,12 @@ A: thats for ormarr's miners. well told {name_b}
 A: {name_b}, why do the druids spit when they say govannon | {name_b} tell of the false sidhe under the frontier
 C: quiet now, friends. the summoner's tale | hush. {name_b} tells the one that shames us
 D: please. i have seen his face and it troubled me | tell it {name_b}, why does he look like one of the good folk
+B: i will. you will not like it | very well. it shames us, but i will
 B: because the face is stolen. the druids of tir na nog say he wears the shape of one of the sidhe
 B: the hall he sits in was a sidhe hall. the realms' old meeting place, under all three borders. it stood empty
 B: he filled it with summoners. cunovinda, lossren the gatherer, roesia the keeper of pain
 ?F: and they call the dead from there? | what do they summon
-B: the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him
+B: they call the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him
 B: the druids believe it was their calling that answered the black lady in marfach
 ~ 8
 D: and the shape? does it ever come off? | what is under the stolen face?
@@ -498,8 +510,8 @@ C: the false sidhe. tir na nog will sing when he falls
 @role B type=*
 A: you know why nothing hurts gole outside her hollow? | ever hear why the stone dragon only bleeds in her lair
 ?B: no? | go on then
-A: she and that hollow are one stone. the drovers call it the Bed. hit her anywhere else and the granite takes it
-A: the giants out here are her kids. bits of the Bed that got up and walked
+A: she and that hollow are one stone. the drovers call it the bed. hit her anywhere else and the granite takes it
+A: the giants out here are her kids. bits of the bed that got up and walked
 B: ...and we are sitting on dartmoor right now. great | so every giant we pulled today was family. nice
 A: {name_b} tells it way better than me. ask in faction sometime
 
@@ -512,7 +524,7 @@ A: know what the four riders up top have to do before they fight you? | fun fact
 ?B: what | ask for a toll?
 A: they have to ask. do you challenge fate. arawn's law. arthur said no and went home with six men
 A: thats the bards' seven. the ones who walked out
-B: and we said yes by walking in. cool. cool cool | so everyone in this group already answered
+B: and we said yes by walking in. great. just great | so everyone in this group already answered
 A: ask {name_b} for the full one sometime. the door shutting from the inside is the good part
 
 @topic fireside_xanxicar
@@ -522,7 +534,7 @@ A: ask {name_b} for the full one sometime. the door shutting from the inside is 
 @role B type=*
 A: they used to sing the thing under here to sleep. every year | did you know a whole college sang over this cave once
 ?B: sing what to sleep | who did
-A: the college of stars. three hundred years, longest night, a song called the Quieting. over xanxicar
+A: the college of stars. three hundred years, longest night, a song called the quieting. over xanxicar
 A: morgana sang it as a student. then burned that college first
 B: so nobody has sung it since. and here we are | that explains the mood down here
 A: {name_b} has the whole story if you catch them in faction
@@ -577,7 +589,7 @@ A: see how the grass is grey up here? it was green once | these hills were just 
 A: the glimmer king. one summer the sky tore and a pass opened that was not there the day before
 A: the sage tyldifyl says sheeroe was always his. only the door is new
 B: a door that opens can close. i hope | so we are trespassing. lovely
-A: {name_b} tells it far better. ask for the King's Law
+A: {name_b} tells it far better. ask for the king's law
 
 @topic fireside_olcasgean
 @levels 1-50
@@ -625,7 +637,7 @@ A: {name_b} tells the long version up top. worth asking
 A: the summoner at the bottom of this hall pays for everything he calls up | know what the sacrifice in the last room is for?
 ?B: pays who | i just kill it when told
 A: its a bargain. sacrifice and demon walk to his feet. if both get there, his creditor comes up through the floor to collect
-A: and hurt him enough and he drops the shape he wears. the demon steps out without a scratch
+A: and hurt him enough and he drops the shape he wears. the demon steps out with most of his wounds gone
 B: so kill the walkers. always | thats why everyone yells about the sacrifice
 A: {name_b} tells where the shape came from. depends which realm you ask
 
@@ -645,9 +657,10 @@ A: {name_b} tells where the shape came from. depends which realm you ask
 A: {name_b} who is the wizard on the stair in the hall of the corrupt | {name_b}, tell the aidon one
 C: hush all, academy story | quiet in faction, this ones about the archwizard
 D: go on {name_b}, my master wont say his name | please. the academy pretends he never existed
-B: aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists air
+B: alright, the academy one. once | ok. sit. this one runs long
+B: aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists' air
 B: magus cerwyn tested him. a brazier, a basin, a stone, an open window. she wrote she would not see it done again
-B: so the constable sent him to the pennine watch. to learn if the summoners wards on the road could be broken
+B: so the constable sent him to the pennine watch. to learn if the summoners' wards on the road could be broken
 ?F: had nobody tried before | and he was the first to try?
 B: magus idris tried before him. idris never came back
 B: aidon worked above the watch. two apprentices carrying candles up in boxes of a hundred
@@ -676,6 +689,7 @@ C: he still writes letters. that part gets me | promising to close the road. eve
 A: {name_b} why does the lord at the bottom of the hall of the corrupt face us and not the summoners | {name_b}, the gildas one
 C: quiet, this is the penhallow story | hush. hall of the corrupt tale
 D: tell it {name_b}. my guild wiped to his poleaxe last week | please, i want to know who he was
+B: fine. but no heckling this time | ok, quiet then
 B: gildas was second son of the house of penhallow. a squire at castle sauvage
 B: he once held a breach in its wall for a night and a day. because nobody had told him he could leave
 B: thats why the constable picked him for the pennine watch. he would hold the road and never act on his own judgment
@@ -689,11 +703,11 @@ B: that last winter his men began wandering from their posts. so he gave the ord
 B: the summoners only had to keep his order for him. forever
 B: thats why the dead watch cant be hurt a step past its posts. and why he is bound to the lowest point of the road
 ?E: pull them off their post and you hit air. ask me how i know | learned that one the expensive way
-B: he died there the last night. shield up, facing the summoners hall. waiting for visitors who were already behind him
+B: he died there the last night. shield up, facing the summoner's hall. waiting for visitors who were already behind him
 B: press him hard and he takes up the penhallow poleaxe. his family says you do that when only honour is left to guard
 B: his grand niece dame morwen led the first company to bring him down. she goes back every spring until he knows her
 ~ 25
-F: until he knows her. ok | nobody told him he could leave. twice
+F: sorry, was afk. what happened with the grand niece | did i miss the end? phone rang
 C: every spring. gods | i always go quiet at the grand niece
 
 @topic tale_orylle
@@ -708,6 +722,7 @@ C: every spring. gods | i always go quiet at the grand niece
 A: {name_b} tell the one about the queen of krondon | {name_b} why does orylle throw people
 C: shh, krondon story | quiet all, the ogre queen
 D: yes please. i got thrown into a fire and nobody explained | go on {name_b}, the krondon one
+B: ha, ok. sit down | alright, the krondon one. settle in
 B: orylle was born in the undercroft. the deepest seam of the ogres who dug under the isles before the hall folk built on them
 B: she was the first of her people to climb up and look at what they had been digging under
 B: she found krondon dying of age. its last elder counting empty chairs at the high table
@@ -724,7 +739,7 @@ B: orshom brong drank the great hearth the night she took the hall. she made him
 B: sir cador reached her first with twenty and was swept out. he came back with fifty chosen for stubbornness
 B: and ice mages for the fire on the stone. they walked back every time. with the stone cold she throws no one
 ~ 25
-F: chosen for stubbornness. my kind of raid | so you just walk back. every time
+F: noted. i stand well away from the fire next time | ok but where do you stand so you land somewhere safe
 C: they say she wants neither to serve nor to rule. only to keep | guest or enemy. she never did answer
 
 @topic tale_duraek-the-empowered
@@ -739,9 +754,10 @@ C: they say she wants neither to serve nor to rule. only to keep | guest or enem
 A: {name_b} whats wrong with the drakoran lord in avalon city. fire heals him?? | {name_b}, tell the one about dura'ek
 C: quiet please, avalon city story | hush, {name_b} is telling the empowered
 D: please. our wizard nuked him back to full last night | go on, i need to know what we did wrong
+B: sure. ears open | fine, fine. listen up
 B: dura'ek was one war lord among five when avalon burned. lord of the dry'ak, the clan that holds doors
 B: one thing set him apart. he kept more sworn protectors than any other lord. every one bound to die before he does
-B: morgana gave his clan the doors. he took the chancellors court at the heart of the city
+B: morgana gave his clan the doors. he took the chancellor's court at the heart of the city
 B: a woman saw him standing on the steps there. listening to the paving
 ?F: listening to what | whats under the paving
 B: under it lay the stair down to the crystal cave. and what sleeps there
@@ -753,7 +769,7 @@ B: the readers say he only touched something the dragon lay on. he came up at da
 B: xanxicar has two heads and no breath. dura'ek has two breaths now. fire and frost feed him
 ?E: no fire no frost. say it with me | NO FIRE NO FROST. every pull
 B: thats the cry sir kenrick brought him down to. and his six protectors died before him. as they had sworn
-B: he forbids the dragons name in his court. he wants to be a lord in his own right
+B: he forbids the dragon's name in his court. he wants to be a lord in his own right
 B: and every sentry on the stair below says it anyway
 ~ 25
 F: so our wizard healed him. great | no fire no frost. writing it on my hand
@@ -773,7 +789,8 @@ C: he forbids the name and they all say it. i like that bit | listening to the p
 A: {name_b} why does the spiritmaster in dodens gruva shout his own name | {name_b} tell the aros one
 C: hush, mine story | quiet all. dodens gruva
 D: tell it. i heard him yelling through two walls | {name_b} please, the mine one
-B: aros was jarl ormarrs spiritmaster. trained in the craft of hels servants. binding spirits to serve
+B: aye. benches, all of you | ha. alright, the mine one
+B: aros was jarl ormarr's spiritmaster. trained in the craft of hel's servants. binding spirits to serve
 B: he believed one thing above all. a good name never dies. and a name said aloud is a rope that holds a soul to the world
 B: every morning at the shaft he read the names of the shift. and promised none would be forgotten
 ?F: thats kind of nice actually | sounds like a good man to work for
@@ -805,7 +822,8 @@ C: none would be forgotten. he kept the promise. thats the awful part | every mo
 A: {name_b} who is the old woman in the iron wood really | {name_b}, the iarnvidiur one tonight?
 C: quiet, aegir story | hush all. the iron wood
 D: please. the dwarves spit when i ask | go on {name_b}, nobody on aegir will tell me
-B: depends who tells it. jordheims skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrirs kin
+B: sit down then. this one is cold | aye, gather by the fire
+B: depends who tells it. jordheim's skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrir's kin
 B: the iarn dwarves only say she was on aegir before their first clan
 B: and the narfi of her lair say she was young when the iron trees were silver and sang. before a rot they will not name
 ?F: so which came first, her or the rot | did she make the rot?
@@ -814,16 +832,16 @@ B: her first litter guards the lair. hati and skoll lie at her door. named for t
 B: above ground her servants walk the wood looking like anyone. and the dwarf clans lose children to them
 ~ 8
 D: has anyone killed her? | can she even be hurt?
-B: her plague is her blood. it eats everything near her and it closes her own wounds
-B: vemunds thirty were the first company in her lair. they could never wound her deeply enough to trouble her
-B: ragnheid grimsdottirs warband did it. with dwarf guides. they went down carrying more cures than weapons
+B: her plague is her blood. it eats everything near her, and on the sick a heal only half takes
+B: vemund's thirty were the first company in her lair. they could never wound her deeply enough to trouble her
+B: ragnheid grimsdottir's warband did it. with dwarf guides. they went down carrying more cures than weapons
 ?E: brewed from the bark of the iron trees. tastes like a forge | more cures than weapons. still true
 B: and she has a habit. anything that hurts her enough to be a nuisance she sets in the black water under the bridge
 B: the way a woman sets a pup back in its basket
 B: she comes back. the iron wood has always had an old one. she is waiting for the wolves to run at the end of the world
 ~ 25
-F: a pup back in its basket. thats what we are to her | more cures than weapons. ok
-C: some grandmothers say gjalpinulva is her daughter. just saying | waiting for the wolves. i hate that she is patient
+F: ok. off to buy cure potions. lots of them | how many cures is enough though? nobody ever says
+C: some grandmothers say gjalpinulva is her daughter. thats all i am saying | waiting for the wolves. i hate that she is patient
 
 @topic tale_queen-kula
 @levels 1-50
@@ -836,25 +854,26 @@ C: some grandmothers say gjalpinulva is her daughter. just saying | waiting for 
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} tell the one about the queen in the glacier | {name_b}, kula tonight?
 C: hush, tuscaran story | quiet all, the ice queen
-D: yes. i only know to kill her and the king together | please {name_b}, the long one
-B: kula is the youngest and coldest of bergelmirs line, the skalds say. the rime giant who stayed north when her brothers went south
+D: yes. i only know not to touch the king while she stands | please {name_b}, the long one
+B: ha. the long one it is | sit, all of you. it takes a while
+B: kula is the youngest and coldest of bergelmir's line, the skalds say. the rime giant who stayed north when her brothers went south
 B: why she stayed depends who you ask. jordheim says she wanted endless winter. her cast out sculptors say she was left behind
 B: the dwarves say she was sent
 ?F: sent by who | thats the worst of the three
 B: she found a dragon dead in the ice of delling crater. so vast nothing could thaw it
-B: and raised tuscarans citadel on its bones. cutting around a sleeper in the north wall
-B: a dead kings army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders
+B: and raised tuscaran's citadel on its bones. cutting around a sleeper in the north wall
+B: a dead king's army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders
 ~ 8
 D: and tuscar? | where does the king come in
 B: tuscar was a smith. he came courting with an axe and she married him
-B: for a time the two were bound so closely that a wound to one closed the others
+B: and the two are bound so closely that a wound to one closes the other's
 B: she ruled by one law. only the merciless live through a winter
-?E: which is why you burn them down together. ask any raid leader | together or not at all. yes
-B: and she keeps a cold older than the gods in reserve. the giants named it thors might. as a joke
+?E: which is why nobody splits damage. her first. ask any raid leader | one at a time, queen first. yes
+B: and she keeps a cold older than the gods in reserve. the giants named it thor's might. as a joke
 B: the first warband to reach the thrones was told to its face that her guardians were useless. and lost
-B: a hundred under bergljot steinsdottir won. the queens crown of ice hangs at bjarken. unmelted
+B: a hundred under bergljot steinsdottir won. the queen's crown of ice hangs at bjarken. unmelted
 ~ 25
-F: a wound to one closed the others. thats almost sweet | came courting with an axe. midgard
+F: a wound to one closes the other's. thats almost sweet | came courting with an axe. midgard
 C: when she dies the throne room cracks. the skalds say the ice remembers her name | unmelted. still
 
 @realm hib
@@ -869,8 +888,9 @@ C: when she dies the throne room cracks. the skalds say the ice remembers her na
 @role E type=NoLifer,Daredevil
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} who is the champion before the hall in marfach | {name_b} tell avartack tonight
-C: hush, breifine story | quiet in faction, the ferrymans son
+C: hush, breifine story | quiet in faction, the ferryman's son
 D: please. he would not die and i want to know why | tell it {name_b}, the ford and all
+B: very well. gather in, the ford is a long tale | if you will be quiet, i will
 B: avartack was the son of aed dub. the ferryman who kept the ford of the erne
 B: he grew up fighting in the water. where a man cannot step back or aside. only reach
 B: he was fostered beside the boy who became caimheul. the day caimheul was made chieftain he named his foster brother champion
@@ -882,14 +902,14 @@ B: his oath was this. i will stand before you until you have no need of me
 D: thats a fine oath. isnt it? | whats wrong with the oath?
 B: it has no word in it to end the watch
 B: the day caimheul died on the reed flats, avartack was away. holding the ford of the erne
-B: he came home to the bier. went under the hill first. and stood at his lords feet in the grave chamber, facing the door
+B: he came home to the bier. went under the hill first. and stood at his lord's feet in the grave chamber, facing the door
 B: he died on his feet in the third night. so on the fourth, when it happened, he did not need to stand up
 ?E: and he is whole again the moment nobody stands against him | someone always faces him. always
 B: he takes the floor before the hall for the ford. the first company came at him in a ring and broke at the back
-B: echna of ardee, a ferrymans daughter, faced him and never turned. her sister on her bank, her company at his sides
+B: echna of ardee, a ferryman's daughter, faced him and never turned. her sister on her bank, her company at his sides
 B: when he fell she said the old word that ends a watch. it did not hold. but the ferrymen call it over the water at night
 ~ 25
-F: no word to end the watch. oof | so you face him and you do not turn. ok
+F: gotta log, early start. good one | ok. i am never turning my back in marfach
 C: he did not need to stand up. every time | they call it over the water. i like that they still try
 
 @topic tale_chieftain-caimheul
@@ -904,8 +924,9 @@ C: he did not need to stand up. every time | they call it over the water. i like
 A: {name_b} tell the one about the chieftain in marfach | {name_b}, caimheul?
 C: quiet, this ones ours | hush. the crooked mouth
 D: go on. my grandfather called him ours and wouldnt say more | the chieftain, {name_b}. please
+B: our own chieftain. very well | gather in, then. quietly
 B: caimheul ruled the breifine hills before there were keeps on them
-B: thats not the name his mother gave him. a lake mans knife left his mouth crooked and the hills forgot the other
+B: thats not the name his mother gave him. a lake man's knife left his mouth crooked and the hills forgot the other
 B: he was a hard lord. burned booleys, kept hostages. his people loved him anyway
 B: because no reaver took a cow from his valleys that he did not take back twice over
 ?F: so a cattle lord? | hard how?
@@ -938,11 +959,12 @@ C: the keeners added a verse. asking him to find mochta and the nine and say he 
 A: {name_b} tell balor. the real one not the nursery one | {name_b} whats up in tur suil above the vale
 C: hush, the eye | quiet all, tur suil
 D: please. i know lugh and the stone. what came after | {name_b} tell the second verse
-B: you know the first verse. king of the fomorians. an eye poisoned by his fathers druids cauldron that destroyed whatever it saw
+B: the second verse. very well | if you will be quiet, yes. not the nursery one
+B: you know the first verse. king of the fomorians. an eye poisoned by his father's druids cauldron that destroyed whatever it saw
 B: he shut his daughter away on tory against a prophecy. her son lugh drove the eye out through his skull at mag tuired
 B: it fell facing his own host. and destroyed it
 ?F: everyone knows that part | and thats the end?
-B: the sylvan know a second verse. the eyes bearers wrapped it in seven hides and carried it west. walking backwards
+B: the sylvan know a second verse. the eye's bearers wrapped it in seven hides and carried it west. walking backwards
 B: the fomorians say it followed its people of its own will
 B: on the shore of hy brasil the hides slipped. it looked on a valley for one breath
 ~ 8
@@ -953,7 +975,7 @@ B: and grew a king around the eye again. with a household
 ?E: his hide turns everything and he wont bleed outside his chamber | and then the roof opens. you will see
 B: as he weakens an eye opens in the roof, beyond any weapon. it chooses one of those below and burns them until it shuts
 B: eochaidh of ardee was chosen at the last. fiachna of howth brought the king down the next spring
-B: carrying a smooth stone for lughs sake. every company that climbs tur suil carries one since
+B: carrying a smooth stone for lugh's sake. every company that climbs tur suil carries one since
 ~ 25
 F: i am finding a smooth stone tomorrow | it chooses one. great
 C: walls do not hold everything. thats how the book ends | and the vale glows red more often. they say
@@ -1031,7 +1053,7 @@ A: {name_b} tells it properly. bring a drink, its a sad one
 @role B type=*
 A: pack cures before we go further in. her plague is the fight | cures out. the old one down here is all disease
 ?B: cant we just heal through it | how bad
-A: her plague is her blood. it eats us and closes her wounds. the first warband to kill her carried more cures than weapons
+A: her plague is her blood. it eats us and our heals only half take. the first warband to kill her carried more cures than weapons
 A: and if she drops you in the black water under the bridge, come back up. she does that to nuisances
 B: nuisance. i can be that | cures. yes
 A: {name_b} tells who she might be. the skalds and the dwarves dont agree
@@ -1041,11 +1063,11 @@ A: {name_b} tells who she might be. the skalds and the dwarves dont agree
 @scene fireside_queen-kula
 @role A type=*
 @role B type=*
-A: the queen and the king up top are married. hurt one and it closes the others wounds | for the thrones. the two of them go down together
-?B: really? | so we split damage
+A: the queen and the king up top are married. hurt one and it closes the other's wounds | for the thrones. everyone on the queen. nobody touches the king
+?B: really? | so no splitting damage
 A: he was a smith who came courting with an axe. she married him
-A: and when shes angry a cold older than the gods answers every wound. the giants call it thors might
-B: together then | courting with an axe. sure
+A: and when shes angry a cold older than the gods answers every wound. the giants call it thor's might
+B: queen first then | courting with an axe. sure
 A: {name_b} tells how she built this place on a dead dragon
 
 @realm hib
@@ -1067,7 +1089,7 @@ A: {name_b} tells about his oath. it had no ending in it
 @scene fireside_chieftain-caimheul
 @role A type=*
 @role B type=*
-A: nobody stands at the chieftains side. he kills that one first | caimheul ahead. stay in front of him or well back
+A: nobody stands at the chieftain's side. he kills that one first | caimheul ahead. stay in front of him or well back
 ?B: why the side | first? why
 A: he taught his sons that in the dust of the yard. the man you cannot see dies first. long spear
 A: and when he throws the shield away hes hurt deep and thinks we are breaking. thats the moment

@@ -206,7 +206,8 @@ To measure a new blind set: `TALK_AUDIT_IN=<lines.json> TALK_AUDIT_OUT=<misses.t
 Researched from the era (patch notes up to 1.65, the last before Trials of Atlantis; zone lore; Allakhazam comments from
 2002-2003), with each item labelled documented, player rumour or invented. Bots state documented facts plainly and frame
 rumours and inventions as rumour ("heard that...", "my old guild swore..."). Only monsters that exist in this world are
-named (checked against the world database: not Yar, Apocalypse, Morgana as a monster, Flame or Beliathan); Legion,
+named (checked against the world database: not Morgana as a monster, Flame or Beliathan; Yar and Apocalypse, absent
+when this was written, now exist and are named by the 1.2 tales); Legion,
 Behemoth, Govannon and the dragons are lore only, and no bot claims to have killed a raid boss.
 
 - `lore_albion.lines`, `lore_midgard.lines`, `lore_hibernia.lines`: each realm's legends, named monsters, dungeon stories,
@@ -217,7 +218,10 @@ Behemoth, Govannon and the dragons are lore only, and no bot claims to have kill
 - `lore_shared.lines`: Darkness Falls (Legion's court, the imps and seals, Behemoth, Govannon), the tunnels under all three
   frontiers and "the third power", the three dragons compared, con colours that lie, drop superstitions, the world finding
   itself (passes out of mist, new islands), swimming to the edge, old maps; 12 debates.
-- Lore by weight per realm: 357 / 385 / 356 (alb / mid / hib); all realm talk 1,327 / 1,303 / 1,283.
+- Lore by weight per realm when written: 357 / 385 / 356 (alb / mid / hib); all realm talk 1,327 / 1,303 / 1,283. Since
+  round 5 none of the ambient lore lines is said unprompted (`AutonomousChatFiller` drops topic lore; CHAT-BUDGETS: lore
+  is never recited unasked). They are heard as answers to a question that names their place or boss
+  (`LoreChat.TryAnswer`, 1.2 chat audit LORE-001) and the debates still play.
 - **Second pass** (the owner found the first debates thin): every lore debate rewritten as a full conversation, 19-30
   beats with 5 speakers, concrete lore in nearly every line, evidence against counter-evidence, the old legend the game
   drew on (Arthurian, Norse, Irish) set against what the game shows, a newcomer who asks "wait, who is that?", and an

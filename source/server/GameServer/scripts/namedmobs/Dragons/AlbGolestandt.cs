@@ -257,7 +257,7 @@ namespace DOL.GS
 			if (EncounterTargets.AsRaider(enemy) is GameLiving player && EncounterTargets.ClassOf(player) != null)
 			{
 				foreach (GamePlayer otherPlayer in ClientService.Instance.GetPlayersOfZone(CurrentZone))
-					otherPlayer.Out.SendMessage($"{Name} roars in triumph as another {EncounterTargets.ClassOf(player).Name} falls before his might.", eChatType.CT_Say, eChatLoc.CL_ChatWindow);
+					otherPlayer.Out.SendMessage($"{Name} roars in triumph as another {EncounterTargets.ClassOf(player).Name} falls before her might.", eChatType.CT_Say, eChatLoc.CL_ChatWindow);
 			}
 
 			base.EnemyKilled(enemy);
@@ -753,9 +753,9 @@ namespace DOL.AI.Brain
 		List<string> breath_text = new List<string>()
 		{
 				"You feel a rush of air flow past you as {0} inhales deeply!",
-				"{0} takes another powerful breath as he prepares to unleash a raging inferno upon you!",
-				"{0} bellows in rage and glares at all of the creatures attacking him.",
-				"{0} noticeably winces from his wounds as he attempts to prepare for yet another life-threatening attack!"
+				"{0} takes another powerful breath as she prepares to unleash a raging inferno upon you!",
+				"{0} bellows in rage and glares at all of the creatures attacking her.",
+				"{0} noticeably winces from her wounds as she attempts to prepare for yet another life-threatening attack!"
 		};
 
 		private void DragonBreath()

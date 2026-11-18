@@ -446460,10 +446460,10 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "isle of glass is an old name for glastonbury, and glastonbury was always called avalon. just saying",
+   "text": "isle of glass is an old name for glastonbury, and glastonbury was always called avalon. thats all i am saying",
    "about": true,
-   "family": "b0c63ea919",
-   "id": "424b8419ecc6"
+   "family": "4bfa1fe64a",
+   "id": "1c2dc7be254c"
   },
   {
    "kind": "ambient",
@@ -446484,7 +446484,7 @@
    "invites": "chat",
    "text": "isle of glass is an old name for glastonbury, and glastonbury was always called avalon. draw your own lines",
    "about": true,
-   "family": "b0c63ea919",
+   "family": "4bfa1fe64a",
    "id": "af45f996757b"
   },
   {
@@ -446504,10 +446504,10 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "isle of glass is an old name for glastonbury, and glastonbury was always said to be avalon. just saying",
+   "text": "isle of glass is an old name for glastonbury, and glastonbury was always said to be avalon. thats all i am saying",
    "about": true,
-   "family": "b0c63ea919",
-   "id": "4afe97bb52dc"
+   "family": "4bfa1fe64a",
+   "id": "b0ca7d9b9efa"
   },
   {
    "kind": "ambient",
@@ -446528,7 +446528,7 @@
    "invites": "chat",
    "text": "isle of glass is an old name for glastonbury, and glastonbury was always said to be avalon. draw your own lines",
    "about": true,
-   "family": "b0c63ea919",
+   "family": "4bfa1fe64a",
    "id": "6c0b6508e727"
   },
   {
@@ -446548,10 +446548,10 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "isle of glass is an old name for glastonbury, and glastonbury has always been called avalon. just saying",
+   "text": "isle of glass is an old name for glastonbury, and glastonbury has always been called avalon. thats all i am saying",
    "about": true,
-   "family": "b0c63ea919",
-   "id": "925d5204b9ec"
+   "family": "4bfa1fe64a",
+   "id": "67501892ab52"
   },
   {
    "kind": "ambient",
@@ -446572,7 +446572,7 @@
    "invites": "chat",
    "text": "isle of glass is an old name for glastonbury, and glastonbury has always been called avalon. draw your own lines",
    "about": true,
-   "family": "b0c63ea919",
+   "family": "4bfa1fe64a",
    "id": "c696a2a1bce0"
   },
   {
@@ -446592,10 +446592,10 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "isle of glass is an old name for glastonbury, and glastonbury has always been said to be avalon. just saying",
+   "text": "isle of glass is an old name for glastonbury, and glastonbury has always been said to be avalon. thats all i am saying",
    "about": true,
-   "family": "b0c63ea919",
-   "id": "be096682ba39"
+   "family": "4bfa1fe64a",
+   "id": "df82973bcba4"
   },
   {
    "kind": "ambient",
@@ -446616,7 +446616,7 @@
    "invites": "chat",
    "text": "isle of glass is an old name for glastonbury, and glastonbury has always been said to be avalon. draw your own lines",
    "about": true,
-   "family": "b0c63ea919",
+   "family": "4bfa1fe64a",
    "id": "451771357d2a"
   },
   {
@@ -449807,9 +449807,9 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "the heralds call golestandt she, but half the raid stories i've heard still say he",
-   "family": "a37108f69c",
-   "id": "78e066b532ab"
+   "text": "the bards sing golestandt as she, but half the raid stories i've heard still say he",
+   "family": "bac20988fc",
+   "id": "aebb9db422b8"
   },
   {
    "kind": "ambient",
@@ -449826,9 +449826,9 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "the heralds call golestandt she, but half the raid stories i've heard swear it's a he",
-   "family": "a37108f69c",
-   "id": "0f1649a9a252"
+   "text": "the bards sing golestandt as she, but half the raid stories i've heard swear it's a he",
+   "family": "bac20988fc",
+   "id": "b125519178ec"
   },
   {
    "kind": "ambient",
@@ -449845,9 +449845,9 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "the heralds call golestandt she, and half the raid stories i've heard still say he",
-   "family": "a37108f69c",
-   "id": "39b6609bd9de"
+   "text": "the bards sing golestandt as she, and half the raid stories i've heard still say he",
+   "family": "bac20988fc",
+   "id": "3455070bec5e"
   },
   {
    "kind": "ambient",
@@ -449864,9 +449864,9 @@
    "mood": "",
    "weight": 0.3536,
    "invites": "chat",
-   "text": "the heralds call golestandt she, and half the raid stories i've heard swear it's a he",
-   "family": "a37108f69c",
-   "id": "161d044a874c"
+   "text": "the bards sing golestandt as she, and half the raid stories i've heard swear it's a he",
+   "family": "bac20988fc",
+   "id": "b729e5600c69"
   },
   {
    "kind": "ambient",
@@ -449884,7 +449884,7 @@
    "weight": 0.3536,
    "invites": "chat",
    "text": "golestandt is a she, ask any bard, but half the raid stories i've heard still say he",
-   "family": "a37108f69c",
+   "family": "bac20988fc",
    "id": "6cd02e900b68"
   },
   {
@@ -449903,7 +449903,7 @@
    "weight": 0.3536,
    "invites": "chat",
    "text": "golestandt is a she, ask any bard, but half the raid stories i've heard swear it's a he",
-   "family": "a37108f69c",
+   "family": "bac20988fc",
    "id": "4fd22db9d753"
   },
   {
@@ -449922,7 +449922,7 @@
    "weight": 0.3536,
    "invites": "chat",
    "text": "golestandt is a she, ask any bard, and half the raid stories i've heard still say he",
-   "family": "a37108f69c",
+   "family": "bac20988fc",
    "id": "635f0560b184"
   },
   {
@@ -449941,7 +449941,7 @@
    "weight": 0.3536,
    "invites": "chat",
    "text": "golestandt is a she, ask any bard, and half the raid stories i've heard swear it's a he",
-   "family": "a37108f69c",
+   "family": "bac20988fc",
    "id": "60366d1a89d0"
   },
   {
@@ -452658,32 +452658,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
+   "weight": 1.0,
    "invites": "chat",
-   "text": "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. wait too long and the cave fills with lightning",
+   "text": "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. old raiders swear the cave once filled with lightning",
    "about": true,
-   "family": "e0b551de03",
-   "id": "3862a48e7710"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    30,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.7071,
-   "invites": "chat",
-   "text": "a two-headed dragon called xanxicar sleeps in the crystal cave under avalon. dawdle and the cave fills with lightning",
-   "about": true,
-   "family": "e0b551de03",
-   "id": "4a67cdf796d8"
+   "id": "36b2d4123099"
   },
   {
    "kind": "ambient",
@@ -453259,9 +453238,9 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "caer sidi is a prison of souls, and something at the bottom keeps the count. i don't want to meet it",
+   "text": "caer sidi is a prison of souls, and something at the top keeps the count. i don't want to meet it",
    "about": true,
-   "id": "3d7580c85d76"
+   "id": "beab4d4b23e7"
   },
   {
    "kind": "ambient",
@@ -453467,12 +453446,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia pray to the same lord the inconnu serve. explain that one",
+   "text": "the arawnites in lyonesse pray to the same lord the inconnu serve. explain that one",
    "about": true,
-   "family": "87aefcb692",
-   "id": "8b6048cf4b94"
+   "family": "02b748b73e",
+   "id": "c2320f70d4f6"
   },
   {
    "kind": "ambient",
@@ -453487,12 +453466,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia pray to the same lord the inconnu serve. so whose side is arawn on",
+   "text": "the arawnites in lyonesse pray to the same lord the inconnu serve. so whose side is arawn on",
    "about": true,
-   "family": "87aefcb692",
-   "id": "c5c05d83426c"
+   "family": "02b748b73e",
+   "id": "2204ac3e681a"
   },
   {
    "kind": "ambient",
@@ -453507,12 +453486,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia pray to the same lord the inconnu answer to. explain that one",
+   "text": "the arawnites in lyonesse pray to the same lord the inconnu answer to. explain that one",
    "about": true,
-   "family": "87aefcb692",
-   "id": "c21efb4f4b45"
+   "family": "02b748b73e",
+   "id": "732f78d25090"
   },
   {
    "kind": "ambient",
@@ -453527,12 +453506,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia pray to the same lord the inconnu answer to. so whose side is arawn on",
+   "text": "the arawnites in lyonesse pray to the same lord the inconnu answer to. so whose side is arawn on",
    "about": true,
-   "family": "87aefcb692",
-   "id": "3688be1836c3"
+   "family": "02b748b73e",
+   "id": "3a1cfb3f8956"
   },
   {
    "kind": "ambient",
@@ -453547,12 +453526,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia serve the same lord the inconnu serve. explain that one",
+   "text": "the arawnites in lyonesse serve the same lord the inconnu serve. explain that one",
    "about": true,
-   "family": "87aefcb692",
-   "id": "78f3a416d7d0"
+   "family": "02b748b73e",
+   "id": "e627e3f37f24"
   },
   {
    "kind": "ambient",
@@ -453567,12 +453546,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia serve the same lord the inconnu serve. so whose side is arawn on",
+   "text": "the arawnites in lyonesse serve the same lord the inconnu serve. so whose side is arawn on",
    "about": true,
-   "family": "87aefcb692",
-   "id": "7f83811b7fc7"
+   "family": "02b748b73e",
+   "id": "0146d6778dc0"
   },
   {
    "kind": "ambient",
@@ -453587,12 +453566,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia serve the same lord the inconnu answer to. explain that one",
+   "text": "the arawnites in lyonesse serve the same lord the inconnu answer to. explain that one",
    "about": true,
-   "family": "87aefcb692",
-   "id": "a1a21e8cbf60"
+   "family": "02b748b73e",
+   "id": "661f37a8d8e2"
   },
   {
    "kind": "ambient",
@@ -453607,172 +453586,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.25,
+   "weight": 0.3536,
    "invites": "chat",
-   "text": "the arawnites in snowdonia serve the same lord the inconnu answer to. so whose side is arawn on",
+   "text": "the arawnites in lyonesse serve the same lord the inconnu answer to. so whose side is arawn on",
    "about": true,
-   "family": "87aefcb692",
-   "id": "60e0544179e5"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains pray to the same lord the inconnu serve. explain that one",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "1b9a93ac37cc"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains pray to the same lord the inconnu serve. so whose side is arawn on",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "d5c2b1c5e461"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains pray to the same lord the inconnu answer to. explain that one",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "b6c27a976196"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains pray to the same lord the inconnu answer to. so whose side is arawn on",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "451376079360"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains serve the same lord the inconnu serve. explain that one",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "e5b49591569a"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains serve the same lord the inconnu serve. so whose side is arawn on",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "77b55badc591"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains serve the same lord the inconnu answer to. explain that one",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "ac03e4165138"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.25,
-   "invites": "chat",
-   "text": "the arawnites in the black mountains serve the same lord the inconnu answer to. so whose side is arawn on",
-   "about": true,
-   "family": "87aefcb692",
-   "id": "cfaa6d98332c"
+   "family": "02b748b73e",
+   "id": "ab8315c80c44"
   },
   {
    "kind": "ambient",
@@ -463211,10 +463030,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath avalon city, and dont linger or the cave lights up with lightning",
+   "text": "the two headed dragon sleeps beneath avalon city, and the old raiders say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "ca0ad6110be5"
+   "family": "224fc7a68d",
+   "id": "3851ec131dd6"
   },
   {
    "kind": "ambient",
@@ -463231,10 +463050,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath avalon city, and dont linger or else the cave lights up with lightning",
+   "text": "the two headed dragon sleeps beneath avalon city, and the old raiders swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "a0e8a816c7f2"
+   "family": "224fc7a68d",
+   "id": "b792436038ea"
   },
   {
    "kind": "ambient",
@@ -463251,10 +463070,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath avalon city, so do not dawdle or else the cave fills with lightning",
+   "text": "the two headed dragon sleeps beneath avalon city, and veterans say the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "6eed32ce0fbd"
+   "family": "224fc7a68d",
+   "id": "79573a37171b"
   },
   {
    "kind": "ambient",
@@ -463271,9 +463090,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, and do not dawdle or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "8cbf27d173b0"
+   "text": "the two headed dragon sleeps beneath the ruins, but the old raiders say the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "9d4539d73798"
   },
   {
    "kind": "ambient",
@@ -463290,9 +463109,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, so do not dawdle or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "910d7b19608c"
+   "text": "the two headed dragon sleeps beneath the ruins, but veterans swear the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "9132b37179d4"
   },
   {
    "kind": "ambient",
@@ -463309,86 +463128,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, so dont dawdle or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "1141c34b367c"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, so dont dawdle or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "6e234726ad3f"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, so dont linger or the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "cf717f5781ac"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon sleeps beneath the ruins, so dont linger or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "a37fb61cf44b"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon sleeps under avalon city, and do not linger or the cave fills with lightning",
+   "text": "the two headed dragon sleeps under avalon city, but veterans swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "0f50990adbee"
+   "family": "224fc7a68d",
+   "id": "29b404739c50"
   },
   {
    "kind": "ambient",
@@ -463405,10 +463148,48 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps under avalon city, and dont linger or the cave lights up with lightning",
+   "text": "the two headed dragon sleeps under the ruins, and the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "58c5a1ea0519"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the two headed dragon sleeps under the ruins, but the old raiders say the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "5b1c26400791"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the two headed dragon waits beneath avalon city, but veterans say the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "4869f430f874"
+   "family": "224fc7a68d",
+   "id": "fca5058925fe"
   },
   {
    "kind": "ambient",
@@ -463425,10 +463206,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps under avalon city, so do not linger or else the cave fills with lightning",
+   "text": "the two headed dragon waits beneath avalon city, but veterans swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "0c43d208ebd1"
+   "family": "224fc7a68d",
+   "id": "8d9f292ba5e6"
   },
   {
    "kind": "ambient",
@@ -463445,9 +463226,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon sleeps under the ruins, and do not dawdle or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "e147c0a85663"
+   "text": "the two headed dragon waits beneath the ruins, and the old raiders say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "4334562cc566"
   },
   {
    "kind": "ambient",
@@ -463464,9 +463245,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits beneath the ruins, and do not dawdle or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "5a5d66c38ab0"
+   "text": "the two headed dragon waits beneath the ruins, and the old raiders swear the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "874c9afc2190"
   },
   {
    "kind": "ambient",
@@ -463483,9 +463264,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits beneath the ruins, and dont dawdle or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "4770fa797269"
+   "text": "the two headed dragon waits beneath the ruins, and veterans swear the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "96428ff6e2c2"
   },
   {
    "kind": "ambient",
@@ -463502,9 +463283,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits beneath the ruins, so dont linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "153f5ef82760"
+   "text": "the two headed dragon waits beneath the ruins, but veterans swear the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "8a9977f653ae"
   },
   {
    "kind": "ambient",
@@ -463521,10 +463302,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits under avalon city, and do not dawdle or the cave lights up with lightning",
+   "text": "the two headed dragon waits under avalon city, and the old raiders say the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "0241e9d87575"
+   "family": "224fc7a68d",
+   "id": "e2cd71295bb9"
   },
   {
    "kind": "ambient",
@@ -463541,10 +463322,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits under avalon city, and do not linger or else the cave fills with lightning",
+   "text": "the two headed dragon waits under avalon city, and the old raiders say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "cd4718afe0af"
+   "family": "224fc7a68d",
+   "id": "05deab65c614"
   },
   {
    "kind": "ambient",
@@ -463561,10 +463342,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits under avalon city, so do not linger or else the cave lights up with lightning",
+   "text": "the two headed dragon waits under avalon city, and the old raiders swear the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "cb73c5143d95"
+   "family": "224fc7a68d",
+   "id": "db8844ae7310"
   },
   {
    "kind": "ambient",
@@ -463581,10 +463362,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits under avalon city, so dont dawdle or the cave lights up with lightning",
+   "text": "the two headed dragon waits under avalon city, and the old raiders swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "f4c8d023ec1d"
+   "family": "224fc7a68d",
+   "id": "54a2dffd4ac9"
   },
   {
    "kind": "ambient",
@@ -463601,86 +463382,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the two headed dragon waits under the ruins, and do not dawdle or the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "eb93748da371"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon waits under the ruins, and do not linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "7b3cc8e227d1"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon waits under the ruins, and do not linger or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "f89ae77cdd7f"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the two headed dragon waits under the ruins, and dont dawdle or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "98f7258c89c8"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps beneath avalon city, and dont dawdle or the cave fills with lightning",
+   "text": "the two headed dragon waits under avalon city, and veterans say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "7403be8b1e60"
+   "family": "224fc7a68d",
+   "id": "cdff65ce9e67"
   },
   {
    "kind": "ambient",
@@ -463697,10 +463402,86 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar sleeps beneath avalon city, and dont dawdle or else the cave fills with lightning",
+   "text": "the two headed dragon waits under the ruins, and veterans swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "d365d13bdcf6"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the two headed dragon waits under the ruins, but the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "f65b71dcac29"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the two headed dragon waits under the ruins, but veterans say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "f2401081d8bf"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the two headed dragon waits under the ruins, but veterans swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "e9160eb4b8e2"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar sleeps beneath avalon city, and veterans say the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "4861a44c4b0b"
+   "family": "224fc7a68d",
+   "id": "a3a355a208c7"
   },
   {
    "kind": "ambient",
@@ -463717,48 +463498,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar sleeps beneath the ruins, and do not dawdle or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "3b85af4cbe83"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps beneath the ruins, and dont linger or the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "aa5b54813b04"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps under avalon city, and dont linger or else the cave fills with lightning",
+   "text": "xanxicar sleeps beneath avalon city, but the old raiders say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "96e78ee52b1b"
+   "family": "224fc7a68d",
+   "id": "82690f8b3d6c"
   },
   {
    "kind": "ambient",
@@ -463775,10 +463518,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar sleeps under avalon city, so do not dawdle or else the cave lights up with lightning",
+   "text": "xanxicar sleeps beneath avalon city, but veterans swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "38a1aac40bd4"
+   "family": "224fc7a68d",
+   "id": "9332d5d062e7"
   },
   {
    "kind": "ambient",
@@ -463795,10 +463538,48 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar sleeps under avalon city, so dont linger or the cave fills with lightning",
+   "text": "xanxicar sleeps beneath the ruins, but veterans say the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "22231775a462"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar sleeps beneath the ruins, but veterans swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "16ec90620719"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar sleeps under avalon city, and the old raiders say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "601608157d2b"
+   "family": "224fc7a68d",
+   "id": "98ca36bc6b5e"
   },
   {
    "kind": "ambient",
@@ -463815,86 +463596,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar sleeps under the ruins, and do not linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "881da2414df5"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps under the ruins, and do not linger or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "555efb5da67f"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps under the ruins, and dont linger or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "d8152ab78f04"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar sleeps under the ruins, so dont linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "ee63f9f8848d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "alb",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "xanxicar waits beneath avalon city, and do not linger or the cave lights up with lightning",
+   "text": "xanxicar sleeps under avalon city, and the old raiders swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "53930e97a6d1"
+   "family": "224fc7a68d",
+   "id": "2e7c61bccefd"
   },
   {
    "kind": "ambient",
@@ -463911,10 +463616,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits beneath avalon city, and do not linger or else the cave lights up with lightning",
+   "text": "xanxicar sleeps under avalon city, and veterans swear the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "e50397882385"
+   "family": "224fc7a68d",
+   "id": "3e0b4c59279a"
   },
   {
    "kind": "ambient",
@@ -463931,10 +463636,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits beneath avalon city, and dont linger or else the cave lights up with lightning",
+   "text": "xanxicar sleeps under avalon city, but the old raiders swear the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "121c28668ca2"
+   "family": "224fc7a68d",
+   "id": "777fe93dd4f4"
   },
   {
    "kind": "ambient",
@@ -463951,9 +463656,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits beneath the ruins, and do not linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "e72cbedd819d"
+   "text": "xanxicar sleeps under the ruins, and the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "1ef728ceace5"
   },
   {
    "kind": "ambient",
@@ -463970,9 +463675,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits beneath the ruins, and do not linger or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "dab52928a446"
+   "text": "xanxicar sleeps under the ruins, and the old raiders swear the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "ffe136d9af45"
   },
   {
    "kind": "ambient",
@@ -463989,9 +463694,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits beneath the ruins, and dont linger or the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "3f6f99b70ca0"
+   "text": "xanxicar sleeps under the ruins, but the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "def08cb2b784"
   },
   {
    "kind": "ambient",
@@ -464008,10 +463713,48 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under avalon city, and do not dawdle or else the cave lights up with lightning",
+   "text": "xanxicar sleeps under the ruins, but veterans say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "a955d11d282f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar sleeps under the ruins, but veterans swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "a878c90680f9"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar waits beneath avalon city, but the old raiders say the cave lights up with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "61c93ad2df33"
+   "family": "224fc7a68d",
+   "id": "4cb891922b5a"
   },
   {
    "kind": "ambient",
@@ -464028,10 +463771,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under avalon city, and do not linger or else the cave lights up with lightning",
+   "text": "xanxicar waits beneath avalon city, but veterans swear the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "42b37679131c"
+   "family": "224fc7a68d",
+   "id": "ce0f533429cd"
   },
   {
    "kind": "ambient",
@@ -464048,10 +463791,67 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under avalon city, and dont dawdle or else the cave lights up with lightning",
+   "text": "xanxicar waits beneath the ruins, and the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "f2a4d1a031a1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar waits beneath the ruins, and veterans say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "c47d54d6418e"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar waits beneath the ruins, but the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "9cf407360f5b"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar waits under avalon city, but veterans say the cave fills with lightning",
    "about": true,
-   "family": "e58f2f7ae2",
-   "id": "830cd91c0a0e"
+   "family": "224fc7a68d",
+   "id": "2348be5f6d4b"
   },
   {
    "kind": "ambient",
@@ -464068,10 +463868,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under avalon city, so do not dawdle or the cave fills with lightning",
-   "about": true,
-   "family": "e58f2f7ae2",
-   "id": "a9a5fdb8e156"
+   "text": "xanxicar waits under the ruins, and the old raiders say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "839facd0566f"
   },
   {
    "kind": "ambient",
@@ -464088,9 +463887,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under the ruins, and do not dawdle or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "68538b044354"
+   "text": "xanxicar waits under the ruins, and veterans say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "56fab3f5d3aa"
   },
   {
    "kind": "ambient",
@@ -464107,9 +463906,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under the ruins, so do not linger or else the cave fills with lightning",
-   "family": "e58f2f7ae2",
-   "id": "74d40ef0681a"
+   "text": "xanxicar waits under the ruins, but the old raiders say the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "5f6f6eca1d96"
   },
   {
    "kind": "ambient",
@@ -464126,9 +463925,28 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "xanxicar waits under the ruins, so do not linger or else the cave lights up with lightning",
-   "family": "e58f2f7ae2",
-   "id": "afe821a60fff"
+   "text": "xanxicar waits under the ruins, but the old raiders say the cave lights up with lightning",
+   "family": "224fc7a68d",
+   "id": "e6aa8e23eac9"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "alb",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "xanxicar waits under the ruins, but the old raiders swear the cave fills with lightning",
+   "family": "224fc7a68d",
+   "id": "a3a2020d43d6"
   },
   {
    "kind": "ambient",
@@ -479614,10 +479432,10 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "olcasgean was banished to world's end, and now his roots poison hy brasil. the trees out there look sick",
+   "text": "the sylvan say olcasgean was banished to world's end, and now his roots poison hy brasil. the trees out there look sick",
    "about": true,
-   "family": "415f7df6af",
-   "id": "436fe64e8115"
+   "family": "8ace64d444",
+   "id": "b472bcd7eae5"
   },
   {
    "kind": "ambient",
@@ -479634,10 +479452,10 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "olcasgean was banished to world's end, and now his roots poison hy brasil. you can see the rot",
+   "text": "the sylvan say olcasgean was banished to world's end, and now his roots poison hy brasil. you can see the rot",
    "about": true,
-   "family": "415f7df6af",
-   "id": "f40ecf3ea73e"
+   "family": "8ace64d444",
+   "id": "af630e63dc8a"
   },
   {
    "kind": "ambient",
@@ -479654,9 +479472,10 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "olcasgean is a child of gaea, older than the tuatha, and he has been sulking at the edge of the world ever since",
-   "family": "52196f654a",
-   "id": "231ff57cab12"
+   "text": "olcasgean is a child of gaea, the scholars in tir na nog say, older than the tuatha, and he sulks at the edge of the world",
+   "about": true,
+   "family": "c8d08ecafa",
+   "id": "5eec40ec73a2"
   },
   {
    "kind": "ambient",
@@ -479673,9 +479492,10 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "olcasgean is a child of gaea, older than any of us, and he has been sulking at the edge of the world ever since",
-   "family": "52196f654a",
-   "id": "170ad97ed5ab"
+   "text": "olcasgean is a child of gaea, the scholars in tir na nog say, older than any of us, and he sulks at the edge of the world",
+   "about": true,
+   "family": "c8d08ecafa",
+   "id": "61429faaebc4"
   },
   {
    "kind": "ambient",
@@ -526322,9 +526142,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for each fighter he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "a20260b20fee"
+   "text": "nosdoden keeps the spirit of each fighter he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "f68a020f8286"
   },
   {
    "kind": "ambient",
@@ -526341,9 +526161,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for each fighter he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "0a0997ff0f60"
+   "text": "nosdoden keeps the spirit of each fighter he kills. bring back your dead quick",
+   "family": "6de91fbf3c",
+   "id": "3cd303bdaed2"
   },
   {
    "kind": "ambient",
@@ -526360,9 +526180,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for each warrior he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "ce8488c0e3b9"
+   "text": "nosdoden keeps the spirit of each fighter he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "b7ce5fdee101"
   },
   {
    "kind": "ambient",
@@ -526379,9 +526199,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for each warrior he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "8861ee214514"
+   "text": "nosdoden keeps the spirit of each warrior he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "b49c5fd1d447"
   },
   {
    "kind": "ambient",
@@ -526398,9 +526218,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every fighter he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "5b360bb4b7cc"
+   "text": "nosdoden keeps the spirit of each warrior he kills. bring back your dead quick",
+   "family": "6de91fbf3c",
+   "id": "03283c442c83"
   },
   {
    "kind": "ambient",
@@ -526417,9 +526237,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every fighter he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "9069bb9b1d3c"
+   "text": "nosdoden keeps the spirit of each warrior he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "5a2a1b7cc322"
   },
   {
    "kind": "ambient",
@@ -526436,9 +526256,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every fighter he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "2caa61f7695c"
+   "text": "nosdoden keeps the spirit of each warrior he kills. rez your dead quick",
+   "family": "6de91fbf3c",
+   "id": "7f43340ee451"
   },
   {
    "kind": "ambient",
@@ -526455,9 +526275,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every fighter he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "4dfae5e7abf0"
+   "text": "nosdoden keeps the spirit of every fighter he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "f600e9c8117f"
   },
   {
    "kind": "ambient",
@@ -526474,9 +526294,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every warrior he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "3d5da74499b8"
+   "text": "nosdoden keeps the spirit of every fighter he kills. bring back your dead quick",
+   "family": "6de91fbf3c",
+   "id": "f9aacaa42cd9"
   },
   {
    "kind": "ambient",
@@ -526493,9 +526313,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden leaves a copy of himself for every warrior he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "b317479b742d"
+   "text": "nosdoden keeps the spirit of every fighter he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "a016594ddfa4"
   },
   {
    "kind": "ambient",
@@ -526512,9 +526332,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each fighter he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "6282c9115e33"
+   "text": "nosdoden keeps the spirit of every warrior he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "510f1a1e00b5"
   },
   {
    "kind": "ambient",
@@ -526531,9 +526351,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each fighter he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "cc4b4214de36"
+   "text": "nosdoden raises the spirit of each fighter he kills. bring back your dead quick",
+   "family": "6de91fbf3c",
+   "id": "faf60db221c8"
   },
   {
    "kind": "ambient",
@@ -526550,9 +526370,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each fighter he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "eab928a8e80e"
+   "text": "nosdoden raises the spirit of each fighter he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "d8bbc1bd76e9"
   },
   {
    "kind": "ambient",
@@ -526569,9 +526389,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each fighter he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "d3236ce2e41f"
+   "text": "nosdoden raises the spirit of each fighter he kills. rez your dead quick",
+   "family": "6de91fbf3c",
+   "id": "62bd844385d2"
   },
   {
    "kind": "ambient",
@@ -526588,9 +526408,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each warrior he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "a8f1ba81f325"
+   "text": "nosdoden raises the spirit of each warrior he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "1ed9c5ae10d3"
   },
   {
    "kind": "ambient",
@@ -526607,9 +526427,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each warrior he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "5388cc1de1d6"
+   "text": "nosdoden raises the spirit of each warrior he kills. bring back your dead quick",
+   "family": "6de91fbf3c",
+   "id": "439b87b569bd"
   },
   {
    "kind": "ambient",
@@ -526626,9 +526446,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for each warrior he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "2ef8cd513851"
+   "text": "nosdoden raises the spirit of each warrior he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "44ca59c22342"
   },
   {
    "kind": "ambient",
@@ -526645,9 +526465,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every fighter he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "cce6ac9c3f15"
+   "text": "nosdoden raises the spirit of each warrior he kills. rez your dead quick",
+   "family": "6de91fbf3c",
+   "id": "2b018b724f81"
   },
   {
    "kind": "ambient",
@@ -526664,9 +526484,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every fighter he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "badc4355562c"
+   "text": "nosdoden raises the spirit of every fighter he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "46a10f79f3db"
   },
   {
    "kind": "ambient",
@@ -526683,9 +526503,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every fighter he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "88a3fc7e8d1e"
+   "text": "nosdoden raises the spirit of every fighter he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "a1f4db8c3d79"
   },
   {
    "kind": "ambient",
@@ -526702,9 +526522,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every fighter he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "6a947b015faa"
+   "text": "nosdoden raises the spirit of every fighter he kills. rez your dead quick",
+   "family": "6de91fbf3c",
+   "id": "d072cd82ea1c"
   },
   {
    "kind": "ambient",
@@ -526721,9 +526541,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every warrior he kills. bring back your dead fast",
-   "family": "1ebfca2f68",
-   "id": "f20d0b39eb63"
+   "text": "nosdoden raises the spirit of every warrior he kills. bring back your dead fast",
+   "family": "6de91fbf3c",
+   "id": "e755b90c355c"
   },
   {
    "kind": "ambient",
@@ -526740,9 +526560,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every warrior he kills. bring back your dead quick",
-   "family": "1ebfca2f68",
-   "id": "5113695cce6a"
+   "text": "nosdoden raises the spirit of every warrior he kills. rez your dead fast",
+   "family": "6de91fbf3c",
+   "id": "51888467610f"
   },
   {
    "kind": "ambient",
@@ -526759,9 +526579,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every warrior he kills. rez your dead fast",
-   "family": "1ebfca2f68",
-   "id": "991e335dfdac"
+   "text": "nosdoden raises the spirit of every warrior he kills. rez your dead quick",
+   "family": "6de91fbf3c",
+   "id": "231d386223c5"
   },
   {
    "kind": "ambient",
@@ -526778,29 +526598,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "nosdoden makes a copy of himself for every warrior he kills. rez your dead quick",
-   "family": "1ebfca2f68",
-   "id": "069041d67be0"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [],
-   "realm": "mid",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each fighter he kills. bring back your dead quick",
+   "text": "the beast of trollheim keeps the spirit of each fighter he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "7b8d6051672a"
+   "family": "6de91fbf3c",
+   "id": "169c8dd24a68"
   },
   {
    "kind": "ambient",
@@ -526817,10 +526618,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each fighter he kills. rez your dead quick",
+   "text": "the beast of trollheim keeps the spirit of each fighter he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "f1a12e8a96cb"
+   "family": "6de91fbf3c",
+   "id": "f6645d50c64a"
   },
   {
    "kind": "ambient",
@@ -526837,10 +526638,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each warrior he kills. bring back your dead fast",
+   "text": "the beast of trollheim keeps the spirit of each warrior he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "201f98d1c44a"
+   "family": "6de91fbf3c",
+   "id": "00749b4a9744"
   },
   {
    "kind": "ambient",
@@ -526857,10 +526658,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each warrior he kills. bring back your dead quick",
+   "text": "the beast of trollheim keeps the spirit of each warrior he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "e441661104d8"
+   "family": "6de91fbf3c",
+   "id": "4a8706be5f6b"
   },
   {
    "kind": "ambient",
@@ -526877,10 +526678,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each warrior he kills. rez your dead fast",
+   "text": "the beast of trollheim keeps the spirit of each warrior he kills. rez your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "ce59e6fbfc2a"
+   "family": "6de91fbf3c",
+   "id": "1fdca3aaf2e9"
   },
   {
    "kind": "ambient",
@@ -526897,10 +526698,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for each warrior he kills. rez your dead quick",
+   "text": "the beast of trollheim keeps the spirit of each warrior he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "678f2b78dc0c"
+   "family": "6de91fbf3c",
+   "id": "23a94d4392f6"
   },
   {
    "kind": "ambient",
@@ -526917,10 +526718,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every fighter he kills. bring back your dead fast",
+   "text": "the beast of trollheim keeps the spirit of every fighter he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "5192f1d516e3"
+   "family": "6de91fbf3c",
+   "id": "0b0170c17585"
   },
   {
    "kind": "ambient",
@@ -526937,10 +526738,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every fighter he kills. bring back your dead quick",
+   "text": "the beast of trollheim keeps the spirit of every fighter he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "ae3c0f49c6ed"
+   "family": "6de91fbf3c",
+   "id": "3a5353d14025"
   },
   {
    "kind": "ambient",
@@ -526957,10 +526758,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every fighter he kills. rez your dead fast",
+   "text": "the beast of trollheim keeps the spirit of every warrior he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "4a79dc534c39"
+   "family": "6de91fbf3c",
+   "id": "251a871f54b6"
   },
   {
    "kind": "ambient",
@@ -526977,10 +526778,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every warrior he kills. bring back your dead fast",
+   "text": "the beast of trollheim keeps the spirit of every warrior he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "4b278df6c2a9"
+   "family": "6de91fbf3c",
+   "id": "8db10025e1bb"
   },
   {
    "kind": "ambient",
@@ -526997,10 +526798,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every warrior he kills. bring back your dead quick",
+   "text": "the beast of trollheim keeps the spirit of every warrior he kills. rez your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "b367efdf7960"
+   "family": "6de91fbf3c",
+   "id": "4de1602e0e16"
   },
   {
    "kind": "ambient",
@@ -527017,10 +526818,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim leaves a copy of himself for every warrior he kills. rez your dead quick",
+   "text": "the beast of trollheim raises the spirit of each fighter he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "8db4fee37c5b"
+   "family": "6de91fbf3c",
+   "id": "796f4d12df1d"
   },
   {
    "kind": "ambient",
@@ -527037,10 +526838,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for each fighter he kills. bring back your dead quick",
+   "text": "the beast of trollheim raises the spirit of each fighter he kills. rez your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "da802eb2d055"
+   "family": "6de91fbf3c",
+   "id": "93ad00dab86f"
   },
   {
    "kind": "ambient",
@@ -527057,10 +526858,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for each fighter he kills. rez your dead fast",
+   "text": "the beast of trollheim raises the spirit of each fighter he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "bd572608423c"
+   "family": "6de91fbf3c",
+   "id": "9b21ef0b29d0"
   },
   {
    "kind": "ambient",
@@ -527077,10 +526878,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for each warrior he kills. bring back your dead fast",
+   "text": "the beast of trollheim raises the spirit of each warrior he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "523f4c6526bf"
+   "family": "6de91fbf3c",
+   "id": "7aa4cb119d25"
   },
   {
    "kind": "ambient",
@@ -527097,10 +526898,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for each warrior he kills. bring back your dead quick",
+   "text": "the beast of trollheim raises the spirit of each warrior he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "c038a5a0db52"
+   "family": "6de91fbf3c",
+   "id": "da83a37b2724"
   },
   {
    "kind": "ambient",
@@ -527117,10 +526918,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every fighter he kills. bring back your dead fast",
+   "text": "the beast of trollheim raises the spirit of each warrior he kills. rez your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "eaf6ee8f5df7"
+   "family": "6de91fbf3c",
+   "id": "5c152115a2b6"
   },
   {
    "kind": "ambient",
@@ -527137,10 +526938,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every fighter he kills. bring back your dead quick",
+   "text": "the beast of trollheim raises the spirit of each warrior he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "111d1dd1b0c7"
+   "family": "6de91fbf3c",
+   "id": "e4b714f071ab"
   },
   {
    "kind": "ambient",
@@ -527157,10 +526958,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every fighter he kills. rez your dead fast",
+   "text": "the beast of trollheim raises the spirit of every fighter he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "ed68d2a0fa12"
+   "family": "6de91fbf3c",
+   "id": "3c5deca025cf"
   },
   {
    "kind": "ambient",
@@ -527177,10 +526978,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every fighter he kills. rez your dead quick",
+   "text": "the beast of trollheim raises the spirit of every fighter he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "b87937ca0c0f"
+   "family": "6de91fbf3c",
+   "id": "ffb4eb453ca9"
   },
   {
    "kind": "ambient",
@@ -527197,10 +526998,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every warrior he kills. bring back your dead fast",
+   "text": "the beast of trollheim raises the spirit of every fighter he kills. rez your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "aa0a0f483d4d"
+   "family": "6de91fbf3c",
+   "id": "3feabeef6ca2"
   },
   {
    "kind": "ambient",
@@ -527217,10 +527018,10 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every warrior he kills. rez your dead fast",
+   "text": "the beast of trollheim raises the spirit of every warrior he kills. bring back your dead fast",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "2430ae5ac9d4"
+   "family": "6de91fbf3c",
+   "id": "7edba166c6b1"
   },
   {
    "kind": "ambient",
@@ -527237,10 +527038,30 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the beast of trollheim makes a copy of himself for every warrior he kills. rez your dead quick",
+   "text": "the beast of trollheim raises the spirit of every warrior he kills. bring back your dead quick",
    "about": true,
-   "family": "1ebfca2f68",
-   "id": "8df282c844e8"
+   "family": "6de91fbf3c",
+   "id": "a8b92ef1f588"
+  },
+  {
+   "kind": "ambient",
+   "topic": "lore",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the beast of trollheim raises the spirit of every warrior he kills. rez your dead fast",
+   "about": true,
+   "family": "6de91fbf3c",
+   "id": "d4ec59e74027"
   },
   {
    "kind": "ambient",
@@ -541102,94 +540923,6 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.5,
-   "invites": "chat",
-   "text": "the old raiders say, leave govannon's shield node alone or every hit does one damage",
-   "family": "eea47a38e1",
-   "id": "c0f925fe1e5d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [
-    "NoLifer",
-    "Explorer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "chat",
-   "text": "the old raiders say, leave govannon's shield node alone or your swords might as well be sticks",
-   "family": "eea47a38e1",
-   "id": "79ecef2370a1"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [
-    "NoLifer",
-    "Explorer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "chat",
-   "text": "word is, leave govannon's shield node alone or every hit does one damage",
-   "family": "eea47a38e1",
-   "id": "2b2c557cf08d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [
-    "NoLifer",
-    "Explorer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "chat",
-   "text": "word is, leave govannon's shield node alone or your swords might as well be sticks",
-   "family": "eea47a38e1",
-   "id": "3d6a10d8ce0d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "lore",
-   "who": [
-    "NoLifer",
-    "Explorer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
    "weight": 1.0,
    "invites": "chat",
    "text": "heard a govannon fight runs forty minutes. bring food, and a spare healer",
@@ -541276,10 +541009,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "heard the deepest rooms of df lead to the summoner's hall, where all three realms come together",
-   "about": true,
-   "family": "8f4df0c2b5",
-   "id": "2aac1273e329"
+   "text": "heard every frontier tunnel has a stair down to the summoner's hall, where all three realms come together",
+   "family": "6674493624",
+   "id": "53f05876844c"
   },
   {
    "kind": "ambient",
@@ -541299,10 +541031,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "people say the deepest rooms of df lead to the summoner's hall, where all three realms come together",
-   "about": true,
-   "family": "8f4df0c2b5",
-   "id": "a5d0d98a6ba2"
+   "text": "people say every frontier tunnel has a stair down to the summoner's hall, where all three realms come together",
+   "family": "6674493624",
+   "id": "6dab2955204b"
   },
   {
    "kind": "ambient",
@@ -541322,8 +541053,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "i heard the summoner's hall was a sidhe place before legion's lot moved in",
-   "id": "b3f8665c6a21"
+   "text": "i heard the summoner's hall was a sidhe place before the summoners moved in",
+   "id": "9d12030cf703"
   },
   {
    "kind": "ambient",
@@ -724836,11 +724567,19 @@
      "optional": false
     },
     {
+     "role": "B",
+     "text": "and caer witrin stands in our marsh. witrin is the old word for glass. the isle of glass has a keep on the mainland",
+     "variants": [
+      "and caer witrin stands in our marsh. witrin is the old word for glass. the isle of glass has a keep on the mainland"
+     ],
+     "optional": false
+    },
+    {
      "role": "C",
      "text": "so you agree. avalon is the isle. across the water. not under your frogs",
      "variants": [
       "so you agree. avalon is the isle. across the water. not under your frogs",
-      "caer witrin, wearyall, all on the isle. you just proved my point"
+      "caer gothwaite, wearyall, all over the water. you just proved my point"
      ],
      "optional": false
     },
@@ -725298,10 +725037,10 @@
     },
     {
      "role": "B",
-     "text": "and the cave fills with lightning if you take too long. thats the part everyone remembers",
+     "text": "and the old raiders say the cave fills with lightning if you take too long. i never saw it. what i saw was the stomp",
      "variants": [
-      "and the cave fills with lightning if you take too long. thats the part everyone remembers",
-      "linger and the whole lair lights up with lightning. thats how most raids there end"
+      "and the old raiders say the cave fills with lightning if you take too long. i never saw it. what i saw was the stomp",
+      "they say linger and the lair lights up. what ends most raids i saw is his stomp"
      ],
      "optional": false
     },
@@ -725563,10 +725302,10 @@
     },
     {
      "role": "B",
-     "text": "albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every herald writes she",
+     "text": "albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every minstrel sings her as she",
      "variants": [
-      "albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every herald writes she",
-      "our dragon. south end of dartmoor, a dragon like living rock. and it's she, the heralds always wrote she"
+      "albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every minstrel sings her as she",
+      "our dragon. south end of dartmoor, a dragon like living rock. and it's she, the songs always said she"
      ],
      "optional": false
     },
@@ -725638,16 +725377,16 @@
      "text": "there you go. the only witness never said she. the heralds decided later",
      "variants": [
       "there you go. the only witness never said she. the heralds decided later",
-      "the one real witness never said. so \"she\" came from someone who wasnt there"
+      "the one real witness never said. so \"she\" came from a singer who wasnt there"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "the heralds wrote the dartmoor story. if anyone decides, it's them",
+     "text": "the minstrels had the dartmoor story first. if anyone decides, it's them",
      "variants": [
-      "the heralds wrote the dartmoor story. if anyone decides, it's them",
-      "the people who wrote her lore say she. thats as close to a witness as we get"
+      "the minstrels had the dartmoor story first. if anyone decides, it's them",
+      "the people who sing her say she. thats as close to a witness as we get"
      ],
      "optional": false
     },
@@ -725714,7 +725453,7 @@
      "text": "pendragon, chief dragon. and uther was a he, by the way",
      "variants": [
       "pendragon, chief dragon. and uther was a he, by the way",
-      "and uther was very much a he. just saying"
+      "and uther was very much a he. thats all i am saying"
      ],
      "optional": false
     },
@@ -726361,10 +726100,10 @@
     },
     {
      "role": "C",
-     "text": "our side. the arawnites in the black mountains pray to him too, and they ambush travellers on the road",
+     "text": "our side. the arawnites in lyonesse pray to him too, and they kill whoever walks in",
      "variants": [
-      "our side. the arawnites in the black mountains pray to him too, and they ambush travellers on the road",
-      "arawn has worshippers in the black mountains. arawnite warriors, headhunters, shamanesses. trust them too?"
+      "our side. the arawnites in lyonesse pray to him too, and they kill whoever walks in",
+      "arawn has worshippers in lyonesse. arawnite warriors, headhunters, shamanesses. trust them too?"
      ],
      "optional": false
     },
@@ -727010,9 +726749,9 @@
     },
     {
      "role": "C",
-     "text": "real talk, i've never met anyone with that famous hide in their bags. coin, some loot, a story",
+     "text": "honestly, i've never met anyone with that famous hide in their bags. coin, some loot, a story",
      "variants": [
-      "real talk, i've never met anyone with that famous hide in their bags. coin, some loot, a story",
+      "honestly, i've never met anyone with that famous hide in their bags. coin, some loot, a story",
       "honest answer: nobody i know ever came back with the scale or the hide. coin and a story"
      ],
      "optional": false
@@ -727595,10 +727334,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} want to hear how albion first learned the name golestandt?",
+     "text": "{q} want to hear how albion first learned the name golestandt? the short version, the way i remember it",
      "variants": [
-      "{q} want to hear how albion first learned the name golestandt?",
-      "here's the old dartmoor story. how we learned the dragon's name"
+      "{q} want to hear how albion first learned the name golestandt? the short version, the way i remember it",
+      "here's the old dartmoor story, or most of it. how we learned the dragon's name"
      ],
      "optional": false
     },
@@ -727613,28 +727352,28 @@
     },
     {
      "role": "A",
-     "text": "back when uther was king, a roman lord kept a house out on the moor. one season the letters stopped. household, servants, horses, gone",
+     "text": "back when uther was king, a roman lord named articus kept a house on the moor. one season the letters stopped. household, horses, gone",
      "variants": [
-      "back when uther was king, a roman lord kept a house out on the moor. one season the letters stopped. household, servants, horses, gone",
-      "in uther's day a roman lord lived on dartmoor with his whole household. one year they simply stopped answering"
+      "back when uther was king, a roman lord named articus kept a house on the moor. one season the letters stopped. household, horses, gone",
+      "in uther's day a roman lord, articus, lived on dartmoor with his whole household. one year they simply stopped answering"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "uther sent sir arward with thirty knights to find out why, and a scribe to write it all down",
+     "text": "the duke of cornwall's son rode after them and came home alone, burnt, silent. years later sir arward took thirty knights and a scribe",
      "variants": [
-      "uther sent sir arward with thirty knights to find out why, and a scribe to write it all down",
-      "so the king sent sir arward and thirty knights. and a scribe, because someone always has to keep the record"
+      "the duke of cornwall's son rode after them and came home alone, burnt, silent. years later sir arward took thirty knights and a scribe",
+      "the duke's son went looking and came back alone. long after, sir arward led thirty knights in, with a scribe to keep the record"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "thirty knights for one missing roman. that lord must have owed the crown a fortune",
+     "text": "thirty knights for one old story. somebody at court was bored",
      "variants": [
-      "thirty knights for one missing roman. that lord must have owed the crown a fortune",
-      "uther sent thirty knights for one roman? he must have owed uther money"
+      "thirty knights for one old story. somebody at court was bored",
+      "thirty knights to chase a rumour? arward must have wanted a song about himself"
      ],
      "optional": false
     },
@@ -727722,6 +727461,15 @@
       "if a burnt book ever hits me at prydwen keep i'll know who sent it"
      ],
      "optional": true
+    },
+    {
+     "role": "A",
+     "text": "thats how i remember it anyway. ask one of the realm's storytellers for the real one, i skip half",
+     "variants": [
+      "thats how i remember it anyway. ask one of the realm's storytellers for the real one, i skip half",
+      "or near enough. the storytellers in faction tell it properly, ask them sometime"
+     ],
+     "optional": false
     }
    ],
    "needs": []
@@ -728624,9 +728372,9 @@
     },
     {
      "role": "C",
-     "text": "she is level sixty seven and wipes groups that sit too close. mournful and locked out are not the same thing",
+     "text": "she cons purple to a fifty and wipes groups that sit too close. mournful and locked out are not the same thing",
      "variants": [
-      "she is level sixty seven and wipes groups that sit too close. mournful and locked out are not the same thing",
+      "she cons purple to a fifty and wipes groups that sit too close. mournful and locked out are not the same thing",
       "she cons purple to me and she has killed more explorers than any door ever has"
      ],
      "optional": false
@@ -730202,10 +729950,10 @@
     },
     {
      "role": "C",
-     "text": "we are not a realm of fire mages. our casters throw light and void. good luck searing a neck with that",
+     "text": "our fire is sun spells, one neck at a time. there are a lot of necks",
      "variants": [
-      "we are not a realm of fire mages. our casters throw light and void. good luck searing a neck with that",
-      "hibernia has no fire school worth the name. sear a neck with a sun spell and see what happens"
+      "our fire is sun spells, one neck at a time. there are a lot of necks",
+      "hibernia burns with light, one target at a time. count the heads and count your eldritch"
      ],
      "optional": false
     },
@@ -731250,10 +730998,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist",
+     "text": "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
      "variants": [
-      "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist",
-      "{q} the tale of the sheeroe pass, for anyone who never heard it. it is a good one"
+      "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
+      "{q} the tale of the sheeroe pass, for anyone who never heard it. my version, anyway"
      ],
      "optional": false
     },
@@ -731371,6 +731119,15 @@
      "variants": [
       "you and me both. i ride past the cullen fold every week and wait",
       "i check the bog of cullen every time i ride by"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "that is the short of it. ask one of the realm's storytellers for the real one, they tell it better",
+     "variants": [
+      "that is the short of it. ask one of the realm's storytellers for the real one, they tell it better",
+      "or so i remember it. the storytellers in faction have the whole of it"
      ],
      "optional": false
     }
@@ -731702,10 +731459,19 @@
     },
     {
      "role": "A",
-     "text": "so if you go to tur suil, never meet his eye, and remember who his grandson was",
+     "text": "so if you go to tur suil: when the eye opens over you, nothing reaches it. you outlast it. and remember who his grandson was",
      "variants": [
-      "so if you go to tur suil, never meet his eye, and remember who his grandson was",
-      "so: never meet his eye, aim for the lid, and remember who his grandson was"
+      "so if you go to tur suil: when the eye opens over you, nothing reaches it. you outlast it. and remember who his grandson was",
+      "so: when that eye opens there is nothing to hit. you live through it. and remember who his grandson was"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "and that is only the nursery verse. ask one of the realm's storytellers for the real one",
+     "variants": [
+      "and that is only the nursery verse. ask one of the realm's storytellers for the real one",
+      "that is the first verse. the storytellers in faction know what came after"
      ],
      "optional": false
     }
@@ -732035,6 +731801,24 @@
      "variants": [
       "elro the ancient waits out at world's end too. i like to think he is one of the jailers they left behind, still on watch",
       "and elro the ancient is out at world's end. i always wondered if he was the jailer, still keeping watch"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "you should ask one of the realm's storytellers for the whole of it",
+     "variants": [
+      "you should ask one of the realm's storytellers for the whole of it",
+      "the storytellers in faction tell it longer, right?"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "they do. i only have the sylvan's short version",
+     "variants": [
+      "they do. i only have the sylvan's short version",
+      "aye. mine is the half i remember"
      ],
      "optional": false
     }
@@ -734977,6 +734761,15 @@
       "thats what gran said, and she was never wrong about wolves"
      ],
      "optional": false
+    },
+    {
+     "role": "C",
+     "text": "gran's tale, mind. ask one of the realm's storytellers for the skalds' one",
+     "variants": [
+      "gran's tale, mind. ask one of the realm's storytellers for the skalds' one",
+      "thats the winter version. the storytellers in faction tell it the skalds' way"
+     ],
+     "optional": false
     }
    ],
    "needs": []
@@ -735111,10 +734904,10 @@
     },
     {
      "role": "C",
-     "text": "a dragon gone wrong at the bottom of trollheim. every adventurer he kills leaves an apparition of him until they're rezzed",
+     "text": "a dragon gone wrong at the bottom of trollheim. everyone he kills gets up as a spirit and fights for him until they're rezzed",
      "variants": [
-      "a dragon gone wrong at the bottom of trollheim. every adventurer he kills leaves an apparition of him until they're rezzed",
-      "a twisted dragon in the deepest hall. kill a man and an apparition of nosdoden stays until someone rezzes him"
+      "a dragon gone wrong at the bottom of trollheim. everyone he kills gets up as a spirit and fights for him until they're rezzed",
+      "a twisted dragon in the deepest hall. kill a man and his spirit fights for nosdoden until someone rezzes him"
      ],
      "optional": false
     },
@@ -735315,6 +735108,15 @@
      "variants": [
       "he says the dragon's skull sits behind her throne. i want to see that before i quit",
       "one day i'll reach the throne room and see if the skull is really behind her chair"
+     ],
+     "optional": false
+    },
+    {
+     "role": "A",
+     "text": "that is the skald's song as i half remember it. ask one of the realm's storytellers for the real one",
+     "variants": [
+      "that is the skald's song as i half remember it. ask one of the realm's storytellers for the real one",
+      "near enough. the storytellers in faction sing it better than i do"
      ],
      "optional": false
     }
@@ -735559,10 +735361,10 @@
     },
     {
      "role": "B",
-     "text": "the biggest thing in darkness falls. level ninety nine, a room to himself, and nothing you swing at him sticks",
+     "text": "the biggest thing in darkness falls. level ninety nine, a room to himself, and one swing from him ends you. guilds swear nothing sticks",
      "variants": [
-      "the biggest thing in darkness falls. level ninety nine, a room to himself, and nothing you swing at him sticks",
-      "a demon in df, level ninety nine, not a typo. he has his own room and every hit on him does nothing"
+      "the biggest thing in darkness falls. level ninety nine, a room to himself, and one swing from him ends you. guilds swear nothing sticks",
+      "a demon in df, level ninety nine, not a typo. whatever he hits dies. people say hits on him do nothing"
      ],
      "optional": false
     },
@@ -735685,10 +735487,10 @@
     },
     {
      "role": "C",
-     "text": "walls have doors. maybe its a phase thing like govannon's node. break something else first and he opens up",
+     "text": "walls have doors. maybe its like govannon's sacrifice. stop something else first and he opens up",
      "variants": [
-      "walls have doors. maybe its a phase thing like govannon's node. break something else first and he opens up",
-      "a mob that cant die is a puzzle. find the right thing to break first"
+      "walls have doors. maybe its like govannon's sacrifice. stop something else first and he opens up",
+      "a mob that cant die is a puzzle. find the right thing to kill first"
      ],
      "optional": false
     },
@@ -736335,19 +736137,19 @@
     },
     {
      "role": "B",
-     "text": "the heralds call the stone one she. golestandt is a she, every herald piece says so",
+     "text": "the albs sing the stone one as she. golestandt is a she in every alb song",
      "variants": [
-      "the heralds call the stone one she. golestandt is a she, every herald piece says so",
-      "golestandt is she. thats in the herald, written down, ask anyone who reads those"
+      "the albs sing the stone one as she. golestandt is a she in every alb song",
+      "golestandt is she. thats how the albs sing it, ask any of their minstrels"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "the herald calls her she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it",
+     "text": "sung as she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it",
      "variants": [
-      "the herald calls her she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it",
-      "written down as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she"
+      "sung as she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it",
+      "sung as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she"
      ],
      "optional": false
     },
@@ -736608,10 +736410,10 @@
     },
     {
      "role": "E",
-     "text": "and the frontier giants. glacier giant and evern listed in the seventies, the green knight at sixty, all three purple to everyone",
+     "text": "and the frontier giants. evern and the green knight listed in the seventies, the glacier giant in the eighties, all three purple to everyone",
      "variants": [
-      "and the frontier giants. glacier giant and evern listed in the seventies, the green knight at sixty, all three purple to everyone",
-      "the green knight is listed sixty, the glacier giant and evern in the seventies. same purple for all three. that colour covers a lot"
+      "and the frontier giants. evern and the green knight listed in the seventies, the glacier giant in the eighties, all three purple to everyone",
+      "the green knight and evern are listed in the seventies, the glacier giant in the eighties. same purple for all three. covers a lot"
      ],
      "optional": false
     },
@@ -737028,9 +736830,9 @@
     },
     {
      "role": "B",
-     "text": "but it moved. the islands last autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one",
+     "text": "but it moved. the islands this autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one",
      "variants": [
-      "but it moved. the islands last autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one",
+      "but it moved. the islands this autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one",
       "it isnt fixed though. one autumn three islands appeared out of nowhere, one per realm, and people swam out to them"
      ],
      "optional": false
@@ -737550,7 +737352,7 @@
      "text": "and that summer, tunnels under all three frontiers. then a whole new land across the sea that autumn. then the islands this year",
      "variants": [
       "and that summer, tunnels under all three frontiers. then a whole new land across the sea that autumn. then the islands this year",
-      "then tunnels under every frontier the next summer, new lands across the water that autumn, three islands last autumn"
+      "then tunnels under every frontier the next summer, new lands across the water that autumn, three islands this autumn"
      ],
      "optional": false
     },
@@ -737652,7 +737454,7 @@
    "needs": []
   },
   {
-   "id": "lore_shield_node",
+   "id": "lore_sacrifice_first",
    "topic": "lore_govannon",
    "realm": "*",
    "levels": [
@@ -737700,10 +737502,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "is the shield node story about govannon true",
+     "text": "{q} sacrifice or demon, which do you kill first at govannon",
      "variants": [
-      "is the shield node story about govannon true",
-      "{q} should you really leave govannon's shield node alone"
+      "{q} sacrifice or demon, which do you kill first at govannon",
+      "is it true you have to stop govannon's adds before they reach the middle"
      ],
      "optional": false
     },
@@ -737718,10 +737520,10 @@
     },
     {
      "role": "B",
-     "text": "grand summoner govannon. he holds the summoner's hall, past the deepest rooms of darkness falls. level eighty",
+     "text": "grand summoner govannon. he holds the summoner's hall, under the frontier tunnels. level eighty",
      "variants": [
-      "grand summoner govannon. he holds the summoner's hall, past the deepest rooms of darkness falls. level eighty",
-      "the boss of the summoner's hall, the hall you reach past legion's rooms in df. grand summoner, level eighty"
+      "grand summoner govannon. he holds the summoner's hall, under the frontier tunnels. level eighty",
+      "the boss of the summoner's hall, the hall at the bottom of the frontier dungeons. grand summoner, level eighty"
      ],
      "optional": false
     },
@@ -737736,64 +737538,82 @@
     },
     {
      "role": "E",
-     "text": "and the node thing?",
+     "text": "and the adds?",
      "variants": [
-      "and the node thing?",
-      "so whats the shield node"
+      "and the adds?",
+      "so what adds"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "there's a node next to him. the old raid leaders all say the same: kill it and he goes near invulnerable. leave it alone",
+     "text": "when he starts to hurt he calls two things, a sacrifice and a demon. they come in from both sides",
      "variants": [
-      "there's a node next to him. the old raid leaders all say the same: kill it and he goes near invulnerable. leave it alone",
-      "a thing called a shield node stands in his room. every raid leader i ever heard says dont touch it, or your hits do almost nothing"
-     ],
-     "optional": false
-    },
-    {
-     "role": "C",
-     "text": "everyone says leave it. nobody says they tested it. that's a rule somebody made after one bad wipe",
-     "variants": [
-      "everyone says leave it. nobody says they tested it. that's a rule somebody made after one bad wipe",
-      "sounds like one raid leader said it after a wipe and everyone copied it. nobody i know tested it"
-     ],
-     "optional": false
-    },
-    {
-     "role": "D",
-     "text": "it makes sense though, if you think about wards. a shield node feeds a shield. break the feeder and the ward snaps shut around him",
-     "variants": [
-      "it makes sense though, if you think about wards. a shield node feeds a shield. break the feeder and the ward snaps shut around him",
-      "from a caster's view it makes sense. a node that holds a ward open. break it, the ward closes on him, and he's sealed"
-     ],
-     "optional": false
-    },
-    {
-     "role": "C",
-     "text": "or break it and the shield drops. that's what a sensible node would do",
-     "variants": [
-      "or break it and the shield drops. that's what a sensible node would do",
-      "or kill the shield and he has no shield. thats what a name usually means"
-     ],
-     "optional": false
-    },
-    {
-     "role": "D",
-     "text": "and there are more nodes, people say. a healing node, a fire node. the room is a machine, not a fight",
-     "variants": [
-      "and there are more nodes, people say. a healing node, a fire node. the room is a machine, not a fight",
-      "i heard there's a healing node and a fire node too. the whole room works like a spell, and govannon is in the middle"
+      "when he starts to hurt he calls two things, a sacrifice and a demon. they come in from both sides",
+      "about four fifths down he calls two adds. a sacrifice from one side, a summoned demon from the other"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "and he changes shape. starts as an elf caster, grows taller, and by sixty percent he's a true demon",
+     "text": "neither one swings at you. they just walk to the middle of his room",
      "variants": [
-      "and he changes shape. starts as an elf caster, grows taller, and by sixty percent he's a true demon",
-      "three forms. an elf summoner, then something taller, and at sixty percent he drops the act and is a demon"
+      "neither one swings at you. they just walk to the middle of his room",
+      "they dont fight. they walk, slow, to the middle of the room, and thats all"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "walking adds. so whats the problem",
+     "variants": [
+      "walking adds. so whats the problem",
+      "if they dont hit, why does anyone care"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "if both of them get there a shade of aelfgar comes out and joins him",
+     "variants": [
+      "if both of them get there a shade of aelfgar comes out and joins him",
+      "both reach the middle and a shade of aelfgar walks out. then you fight two"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "so you only have to stop one. the shade needs the pair",
+     "variants": [
+      "so you only have to stop one. the shade needs the pair",
+      "one dead add is enough. it takes both of them arriving to call the shade"
+     ],
+     "optional": false
+    },
+    {
+     "role": "C",
+     "text": "then the question is which one. the demon or the sacrifice",
+     "variants": [
+      "then the question is which one. the demon or the sacrifice",
+      "so which do you burn, the sacrifice or the demon"
+     ],
+     "optional": false
+    },
+    {
+     "role": "D",
+     "text": "whichever your nukers reach first. they walk in from opposite ends",
+     "variants": [
+      "whichever your nukers reach first. they walk in from opposite ends",
+      "the one on your casters' side. they come from opposite doors"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "and he changes shape. starts as an elf caster, and at half health he's a true demon",
+     "variants": [
+      "and he changes shape. starts as an elf caster, and at half health he's a true demon",
+      "two shapes. an elf summoner, and at half he drops the act and is a demon"
      ],
      "optional": false
     },
@@ -737866,19 +737686,19 @@
     },
     {
      "role": "C",
-     "text": "and if you break the node, maybe ten minutes. thats the rumour i want tested",
+     "text": "and when he changes he gets most of his health back, and calls a new pair. kill one again",
      "variants": [
-      "and if you break the node, maybe ten minutes. thats the rumour i want tested",
-      "so leave the node and it's forty minutes, break it and maybe it's ten. someone has to find out"
+      "and when he changes he gets most of his health back, and calls a new pair. kill one again",
+      "after the change, two new adds and most of his health back. stop one, every time"
      ],
      "optional": false
     },
     {
      "role": "D",
-     "text": "or maybe a wipe in ten seconds and a long run back from the bind stone",
+     "text": "or let the shade out once and find out how long forty minutes can get",
      "variants": [
-      "or maybe a wipe in ten seconds and a long run back from the bind stone",
-      "or the ward shuts and you fight a wall until your healers run out of mana"
+      "or let the shade out once and find out how long forty minutes can get",
+      "or the shade gets out and you fight two until your healers run out of mana"
      ],
      "optional": false
     },
@@ -737887,25 +737707,25 @@
      "text": "i'm writing all this down for when i'm fifty",
      "variants": [
       "i'm writing all this down for when i'm fifty",
-      "i'll remember the node thing for when i'm old enough"
+      "i'll remember the adds thing for when i'm old enough"
      ],
      "optional": true
     },
     {
      "role": "B",
-     "text": "leave the node. thats my advice. i like my rules with a few wipes behind them",
+     "text": "one add dies, every time. thats my advice. i like my rules with a few wipes behind them",
      "variants": [
-      "leave the node. thats my advice. i like my rules with a few wipes behind them",
-      "node stays, nobody touch it. the old raiders learned that the slow way"
+      "one add dies, every time. thats my advice. i like my rules with a few wipes behind them",
+      "stop one add, nobody argues. the old raiders learned that the slow way"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "if i ever get in there, the node gets one hit from me. just one. for science",
+     "text": "if i ever get in there i want the demon. it has the better name",
      "variants": [
-      "if i ever get in there, the node gets one hit from me. just one. for science",
-      "one day i'll tap that node, just once, and we'll all know"
+      "if i ever get in there i want the demon. it has the better name",
+      "one day i'll be on the add team and i'll pick the demon. just to see"
      ],
      "optional": false
     }
@@ -738264,10 +738084,10 @@
     },
     {
      "role": "C",
-     "text": "and when the keeps got rebuilt this autumn every frontier map went stale overnight. the world changes, the ink doesnt",
+     "text": "and when the islands turned up this autumn every sea chart in the realm went stale overnight. the world changes, the ink doesnt",
      "variants": [
-      "and when the keeps got rebuilt this autumn every frontier map went stale overnight. the world changes, the ink doesnt",
-      "when the frontier keeps changed layout last autumn, every frontier map was wrong by the next morning"
+      "and when the islands turned up this autumn every sea chart in the realm went stale overnight. the world changes, the ink doesnt",
+      "when three islands appeared this autumn, every coast map was wrong by the next morning"
      ],
      "optional": false
     },
@@ -745103,17 +744923,17 @@
     },
     {
      "role": "B",
-     "text": "south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the Bed",
+     "text": "south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the bed",
      "variants": [
-      "south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the Bed"
+      "south end of dartmoor theres a warm hollow in the granite. the cornish drovers call it the bed"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "she sleeps in it. and she and the Bed are one stone. hit her anywhere else and the granite takes the blow for her",
+     "text": "she sleeps in it. and she and the bed are one stone. hit her anywhere else and the granite takes the blow for her",
      "variants": [
-      "she sleeps in it. and she and the Bed are one stone. hit her anywhere else and the granite takes the blow for her"
+      "she sleeps in it. and she and the bed are one stone. hit her anywhere else and the granite takes the blow for her"
      ],
      "optional": false
     },
@@ -745128,9 +744948,9 @@
     },
     {
      "role": "B",
-     "text": "thats why. and the giants in the heather are her children. shards of the Bed that got up and walked off",
+     "text": "and the giants in the heather are her children. shards of the bed that got up and walked off",
      "variants": [
-      "thats why. and the giants in the heather are her children. shards of the Bed that got up and walked off"
+      "and the giants in the heather are her children. shards of the bed that got up and walked off"
      ],
      "optional": false
     },
@@ -745197,9 +745017,9 @@
     },
     {
      "role": "B",
-     "text": "camelot's armourers still sell those wards. only in pairs. one for her and one for you",
+     "text": "camelot's armourers still cut that ward into the rim of a shield. always twice. once for her and once for you",
      "variants": [
-      "camelot's armourers still sell those wards. only in pairs. one for her and one for you"
+      "camelot's armourers still cut that ward into the rim of a shield. always twice. once for her and once for you"
      ],
      "optional": false
     },
@@ -745311,6 +745131,15 @@
     },
     {
      "role": "B",
+     "text": "ok. sit. this one is long",
+     "variants": [
+      "ok. sit. this one is long",
+      "fine, but nobody talks over the riders"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "alright. top cell of caer sidi. the first one arawn ever built",
      "variants": [
       "alright. top cell of caer sidi. the first one arawn ever built"
@@ -745344,9 +745173,9 @@
     },
     {
      "role": "B",
-     "text": "not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue",
+     "text": "the four riders at that door are not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue",
      "variants": [
-      "not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue"
+      "the four riders at that door are not jailers. heralds. fames, bellum, morbus, funus. the four roads to the dead, in the roman tongue"
      ],
      "optional": false
     },
@@ -745526,6 +745355,15 @@
     },
     {
      "role": "B",
+     "text": "alright alright. once",
+     "variants": [
+      "alright alright. once",
+      "go on then, settle down"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "ok. there is a map of avalon older than any other. it marks something at the heart of the isle. no name on it",
      "variants": [
       "ok. there is a map of avalon older than any other. it marks something at the heart of the isle. no name on it"
@@ -745550,9 +745388,9 @@
     },
     {
      "role": "B",
-     "text": "and for three hundred years the college of stars sang over him on the longest night. the Quieting, they called it",
+     "text": "and for three hundred years the college of stars sang over him on the longest night. the quieting, they called it",
      "variants": [
-      "and for three hundred years the college of stars sang over him on the longest night. the Quieting, they called it"
+      "and for three hundred years the college of stars sang over him on the longest night. the quieting, they called it"
      ],
      "optional": false
     },
@@ -745567,9 +745405,9 @@
     },
     {
      "role": "B",
-     "text": "a lullaby or a ward, nobody is sure which. it worked either way",
+     "text": "was it a lullaby or a ward? nobody is sure. it worked either way",
      "variants": [
-      "a lullaby or a ward, nobody is sure which. it worked either way"
+      "was it a lullaby or a ward? nobody is sure. it worked either way"
      ],
      "optional": false
     },
@@ -745641,10 +745479,10 @@
     },
     {
      "role": "F",
-     "text": "lying on something worse. great",
+     "text": "what did i miss? just logged in",
      "variants": [
-      "lying on something worse. great",
-      "so what is he keeping"
+      "what did i miss? just logged in",
+      "so is anyone actually going down there this week"
      ],
      "optional": false
     },
@@ -745958,6 +745796,15 @@
     },
     {
      "role": "B",
+     "text": "ha. fill your horns then",
+     "variants": [
+      "ha. fill your horns then",
+      "sit down, all of you"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "so. tuscar was a smith long before he was a king",
      "variants": [
       "so. tuscar was a smith long before he was a king"
@@ -746161,6 +746008,15 @@
      "variants": [
       "please do, i got lost down there once and heard things",
       "tell it {name_b}, i want to know what i ran from"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aye, sit close",
+     "variants": [
+      "aye, sit close",
+      "fine. the fire is warm enough for it"
      ],
      "optional": false
     },
@@ -746493,9 +746349,9 @@
     },
     {
      "role": "B",
-     "text": "the druids named that the King's Law. a king may not be wounded on ground that is not his",
+     "text": "the druids named that the king's law. a king may not be wounded on ground that is not his",
      "variants": [
-      "the druids named that the King's Law. a king may not be wounded on ground that is not his"
+      "the druids named that the king's law. a king may not be wounded on ground that is not his"
      ],
      "optional": false
     },
@@ -746606,9 +746462,18 @@
     },
     {
      "role": "B",
-     "text": "his name is olcasgean. the Root. he was old and angry before the first forest of hy brasil woke",
+     "text": "if you will be quiet, yes",
      "variants": [
-      "his name is olcasgean. the Root. he was old and angry before the first forest of hy brasil woke"
+      "if you will be quiet, yes",
+      "very well. sit close"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "his name is olcasgean. the root. he was old and angry before the first forest of hy brasil woke",
+     "variants": [
+      "his name is olcasgean. the root. he was old and angry before the first forest of hy brasil woke"
      ],
      "optional": false
     },
@@ -746622,9 +746487,9 @@
     },
     {
      "role": "B",
-     "text": "in the Long Pushing the forest grew against him for an age and drove him back to world's end",
+     "text": "in the long pushing the forest grew against him for an age and drove him back to world's end",
      "variants": [
-      "in the Long Pushing the forest grew against him for an age and drove him back to world's end"
+      "in the long pushing the forest grew against him for an age and drove him back to world's end"
      ],
      "optional": false
     },
@@ -746709,17 +746574,17 @@
     },
     {
      "role": "B",
-     "text": "orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. each with a full life",
+     "text": "orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. one life between them",
      "variants": [
-      "orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. each with a full life"
+      "orlaith of tir na nog brought a hundred and forty, stood where he allowed, and found he rises as two trunks. one life between them"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "they cut both",
+     "text": "they cut both at once",
      "variants": [
-      "they cut both"
+      "they cut both at once"
      ],
      "optional": false
     },
@@ -746729,10 +746594,10 @@
     },
     {
      "role": "F",
-     "text": "they go down. i keep hearing that part",
+     "text": "and when the forest stops pushing? nobody ever says",
      "variants": [
-      "they go down. i keep hearing that part",
-      "two trunks. of course there are two"
+      "and when the forest stops pushing? nobody ever says",
+      "so what is he waiting for out there"
      ],
      "optional": false
     },
@@ -746816,6 +746681,15 @@
      "variants": [
       "i would like to hear it {name_b}",
       "tell it, i have only fought her, never understood her"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "very well. gently now",
+     "variants": [
+      "very well. gently now",
+      "sit, friends. it is a sad one"
      ],
      "optional": false
     },
@@ -747029,6 +746903,15 @@
     },
     {
      "role": "B",
+     "text": "sure. get comfortable",
+     "variants": [
+      "sure. get comfortable",
+      "fine. lights low, this one is grim"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "right. the imps down there will talk for a candle end. this is what they say",
      "variants": [
       "right. the imps down there will talk for a candle end. this is what they say"
@@ -747236,6 +747119,15 @@
     },
     {
      "role": "B",
+     "text": "ha. sit, sit",
+     "variants": [
+      "ha. sit, sit",
+      "ale first, then the saga"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "the skalds call his lair the glutton hall. because it eats its guests",
      "variants": [
       "the skalds call his lair the glutton hall. because it eats its guests"
@@ -747351,10 +747243,10 @@
     },
     {
      "role": "F",
-     "text": "no seat in any hall",
+     "text": "and does anyone ever ask the voices what they want",
      "variants": [
-      "no seat in any hall",
-      "i will be very careful under mularn"
+      "and does anyone ever ask the voices what they want",
+      "so how many voices is it now"
      ],
      "optional": false
     },
@@ -747443,6 +747335,15 @@
     },
     {
      "role": "B",
+     "text": "if you will listen to the end, yes",
+     "variants": [
+      "if you will listen to the end, yes",
+      "very well. the bards will not, so i will"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "the druids call him a lord made of his own subjects. here is why",
      "variants": [
       "the druids call him a lord made of his own subjects. here is why"
@@ -747513,9 +747414,9 @@
     },
     {
      "role": "B",
-     "text": "only from inside the Choir. the ring where all his voices can hear each other. from beyond it, nothing lands",
+     "text": "only from inside the choir. the ring where all his voices can hear each other. from beyond it, nothing lands",
      "variants": [
-      "only from inside the Choir. the ring where all his voices can hear each other. from beyond it, nothing lands"
+      "only from inside the choir. the ring where all his voices can hear each other. from beyond it, nothing lands"
      ],
      "optional": false
     },
@@ -747650,6 +747551,15 @@
     },
     {
      "role": "B",
+     "text": "alright. pull up a chair",
+     "variants": [
+      "alright. pull up a chair",
+      "ok ok, i will tell it"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "his name is a smith's name, from the old tales of the west. but what he makes is bargains",
      "variants": [
       "his name is a smith's name, from the old tales of the west. but what he makes is bargains"
@@ -747765,10 +747675,10 @@
     },
     {
      "role": "F",
-     "text": "given to someone else. so who took them",
+     "text": "so who holds his debts now? nobody ever says",
      "variants": [
-      "given to someone else. so who took them",
-      "he pays his debts with other people. got it"
+      "so who holds his debts now? nobody ever says",
+      "right. two extra healers next time"
      ],
      "optional": false
     },
@@ -747852,6 +747762,15 @@
      "variants": [
       "aye tell it. my uncle mined there",
       "go on, i never knew the mine and the hall were one story"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aye, its ours to tell. sit",
+     "variants": [
+      "aye, its ours to tell. sit",
+      "fine. pass the mead and listen"
      ],
      "optional": false
     },
@@ -747943,9 +747862,9 @@
     },
     {
      "role": "E",
-     "text": "at half. heals to full. i have the scars",
+     "text": "at half. most of his health back. i have the scars",
      "variants": [
-      "at half. heals to full. i have the scars",
+      "at half. most of his health back. i have the scars",
       "the half way trick. every single time"
      ],
      "optional": true
@@ -748056,6 +747975,15 @@
     },
     {
      "role": "B",
+     "text": "i will. you will not like it",
+     "variants": [
+      "i will. you will not like it",
+      "very well. it shames us, but i will"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "because the face is stolen. the druids of tir na nog say he wears the shape of one of the sidhe",
      "variants": [
       "because the face is stolen. the druids of tir na nog say he wears the shape of one of the sidhe"
@@ -748089,9 +748017,9 @@
     },
     {
      "role": "B",
-     "text": "the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him",
+     "text": "they call the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him",
      "variants": [
-      "the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him"
+      "they call the dead of every realm. ours as well. through the floors of the frontier dungeons, down to him"
      ],
      "optional": false
     },
@@ -748212,17 +748140,17 @@
     },
     {
      "role": "A",
-     "text": "she and that hollow are one stone. the drovers call it the Bed. hit her anywhere else and the granite takes it",
+     "text": "she and that hollow are one stone. the drovers call it the bed. hit her anywhere else and the granite takes it",
      "variants": [
-      "she and that hollow are one stone. the drovers call it the Bed. hit her anywhere else and the granite takes it"
+      "she and that hollow are one stone. the drovers call it the bed. hit her anywhere else and the granite takes it"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "the giants out here are her kids. bits of the Bed that got up and walked",
+     "text": "the giants out here are her kids. bits of the bed that got up and walked",
      "variants": [
-      "the giants out here are her kids. bits of the Bed that got up and walked"
+      "the giants out here are her kids. bits of the bed that got up and walked"
      ],
      "optional": false
     },
@@ -748301,9 +748229,9 @@
     },
     {
      "role": "B",
-     "text": "and we said yes by walking in. cool. cool cool",
+     "text": "and we said yes by walking in. great. just great",
      "variants": [
-      "and we said yes by walking in. cool. cool cool",
+      "and we said yes by walking in. great. just great",
       "so everyone in this group already answered"
      ],
      "optional": false
@@ -748358,9 +748286,9 @@
     },
     {
      "role": "A",
-     "text": "the college of stars. three hundred years, longest night, a song called the Quieting. over xanxicar",
+     "text": "the college of stars. three hundred years, longest night, a song called the quieting. over xanxicar",
      "variants": [
-      "the college of stars. three hundred years, longest night, a song called the Quieting. over xanxicar"
+      "the college of stars. three hundred years, longest night, a song called the quieting. over xanxicar"
      ],
      "optional": false
     },
@@ -748675,9 +748603,9 @@
     },
     {
      "role": "A",
-     "text": "{name_b} tells it far better. ask for the King's Law",
+     "text": "{name_b} tells it far better. ask for the king's law",
      "variants": [
-      "{name_b} tells it far better. ask for the King's Law"
+      "{name_b} tells it far better. ask for the king's law"
      ],
      "optional": false
     }
@@ -748950,9 +748878,9 @@
     },
     {
      "role": "A",
-     "text": "and hurt him enough and he drops the shape he wears. the demon steps out without a scratch",
+     "text": "and hurt him enough and he drops the shape he wears. the demon steps out with most of his wounds gone",
      "variants": [
-      "and hurt him enough and he drops the shape he wears. the demon steps out without a scratch"
+      "and hurt him enough and he drops the shape he wears. the demon steps out with most of his wounds gone"
      ],
      "optional": false
     },
@@ -749050,9 +748978,18 @@
     },
     {
      "role": "B",
-     "text": "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists air",
+     "text": "alright, the academy one. once",
      "variants": [
-      "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists air"
+      "alright, the academy one. once",
+      "ok. sit. this one runs long"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists' air",
+     "variants": [
+      "aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists' air"
      ],
      "optional": false
     },
@@ -749066,9 +749003,9 @@
     },
     {
      "role": "B",
-     "text": "so the constable sent him to the pennine watch. to learn if the summoners wards on the road could be broken",
+     "text": "so the constable sent him to the pennine watch. to learn if the summoners' wards on the road could be broken",
      "variants": [
-      "so the constable sent him to the pennine watch. to learn if the summoners wards on the road could be broken"
+      "so the constable sent him to the pennine watch. to learn if the summoners' wards on the road could be broken"
      ],
      "optional": false
     },
@@ -749266,6 +749203,15 @@
     },
     {
      "role": "B",
+     "text": "fine. but no heckling this time",
+     "variants": [
+      "fine. but no heckling this time",
+      "ok, quiet then"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "gildas was second son of the house of penhallow. a squire at castle sauvage",
      "variants": [
       "gildas was second son of the house of penhallow. a squire at castle sauvage"
@@ -749369,9 +749315,9 @@
     },
     {
      "role": "B",
-     "text": "he died there the last night. shield up, facing the summoners hall. waiting for visitors who were already behind him",
+     "text": "he died there the last night. shield up, facing the summoner's hall. waiting for visitors who were already behind him",
      "variants": [
-      "he died there the last night. shield up, facing the summoners hall. waiting for visitors who were already behind him"
+      "he died there the last night. shield up, facing the summoner's hall. waiting for visitors who were already behind him"
      ],
      "optional": false
     },
@@ -749397,10 +749343,10 @@
     },
     {
      "role": "F",
-     "text": "until he knows her. ok",
+     "text": "sorry, was afk. what happened with the grand niece",
      "variants": [
-      "until he knows her. ok",
-      "nobody told him he could leave. twice"
+      "sorry, was afk. what happened with the grand niece",
+      "did i miss the end? phone rang"
      ],
      "optional": false
     },
@@ -749485,6 +749431,15 @@
      "variants": [
       "yes please. i got thrown into a fire and nobody explained",
       "go on {name_b}, the krondon one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "ha, ok. sit down",
+     "variants": [
+      "ha, ok. sit down",
+      "alright, the krondon one. settle in"
      ],
      "optional": false
     },
@@ -749613,10 +749568,10 @@
     },
     {
      "role": "F",
-     "text": "chosen for stubbornness. my kind of raid",
+     "text": "noted. i stand well away from the fire next time",
      "variants": [
-      "chosen for stubbornness. my kind of raid",
-      "so you just walk back. every time"
+      "noted. i stand well away from the fire next time",
+      "ok but where do you stand so you land somewhere safe"
      ],
      "optional": false
     },
@@ -749706,6 +749661,15 @@
     },
     {
      "role": "B",
+     "text": "sure. ears open",
+     "variants": [
+      "sure. ears open",
+      "fine, fine. listen up"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "dura'ek was one war lord among five when avalon burned. lord of the dry'ak, the clan that holds doors",
      "variants": [
       "dura'ek was one war lord among five when avalon burned. lord of the dry'ak, the clan that holds doors"
@@ -749722,9 +749686,9 @@
     },
     {
      "role": "B",
-     "text": "morgana gave his clan the doors. he took the chancellors court at the heart of the city",
+     "text": "morgana gave his clan the doors. he took the chancellor's court at the heart of the city",
      "variants": [
-      "morgana gave his clan the doors. he took the chancellors court at the heart of the city"
+      "morgana gave his clan the doors. he took the chancellor's court at the heart of the city"
      ],
      "optional": false
     },
@@ -749817,9 +749781,9 @@
     },
     {
      "role": "B",
-     "text": "he forbids the dragons name in his court. he wants to be a lord in his own right",
+     "text": "he forbids the dragon's name in his court. he wants to be a lord in his own right",
      "variants": [
-      "he forbids the dragons name in his court. he wants to be a lord in his own right"
+      "he forbids the dragon's name in his court. he wants to be a lord in his own right"
      ],
      "optional": false
     },
@@ -749930,9 +749894,18 @@
     },
     {
      "role": "B",
-     "text": "aros was jarl ormarrs spiritmaster. trained in the craft of hels servants. binding spirits to serve",
+     "text": "aye. benches, all of you",
      "variants": [
-      "aros was jarl ormarrs spiritmaster. trained in the craft of hels servants. binding spirits to serve"
+      "aye. benches, all of you",
+      "ha. alright, the mine one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "aros was jarl ormarr's spiritmaster. trained in the craft of hel's servants. binding spirits to serve",
+     "variants": [
+      "aros was jarl ormarr's spiritmaster. trained in the craft of hel's servants. binding spirits to serve"
      ],
      "optional": false
     },
@@ -750154,9 +750127,18 @@
     },
     {
      "role": "B",
-     "text": "depends who tells it. jordheims skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrirs kin",
+     "text": "sit down then. this one is cold",
      "variants": [
-      "depends who tells it. jordheims skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrirs kin"
+      "sit down then. this one is cold",
+      "aye, gather by the fire"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "depends who tells it. jordheim's skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrir's kin",
+     "variants": [
+      "depends who tells it. jordheim's skalds say she is the giantess of the old songs. east in the iron wood, breeding fenrir's kin"
      ],
      "optional": false
     },
@@ -750224,25 +750206,25 @@
     },
     {
      "role": "B",
-     "text": "her plague is her blood. it eats everything near her and it closes her own wounds",
+     "text": "her plague is her blood. it eats everything near her, and on the sick a heal only half takes",
      "variants": [
-      "her plague is her blood. it eats everything near her and it closes her own wounds"
+      "her plague is her blood. it eats everything near her, and on the sick a heal only half takes"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "vemunds thirty were the first company in her lair. they could never wound her deeply enough to trouble her",
+     "text": "vemund's thirty were the first company in her lair. they could never wound her deeply enough to trouble her",
      "variants": [
-      "vemunds thirty were the first company in her lair. they could never wound her deeply enough to trouble her"
+      "vemund's thirty were the first company in her lair. they could never wound her deeply enough to trouble her"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "ragnheid grimsdottirs warband did it. with dwarf guides. they went down carrying more cures than weapons",
+     "text": "ragnheid grimsdottir's warband did it. with dwarf guides. they went down carrying more cures than weapons",
      "variants": [
-      "ragnheid grimsdottirs warband did it. with dwarf guides. they went down carrying more cures than weapons"
+      "ragnheid grimsdottir's warband did it. with dwarf guides. they went down carrying more cures than weapons"
      ],
      "optional": false
     },
@@ -750285,18 +750267,18 @@
     },
     {
      "role": "F",
-     "text": "a pup back in its basket. thats what we are to her",
+     "text": "ok. off to buy cure potions. lots of them",
      "variants": [
-      "a pup back in its basket. thats what we are to her",
-      "more cures than weapons. ok"
+      "ok. off to buy cure potions. lots of them",
+      "how many cures is enough though? nobody ever says"
      ],
      "optional": false
     },
     {
      "role": "C",
-     "text": "some grandmothers say gjalpinulva is her daughter. just saying",
+     "text": "some grandmothers say gjalpinulva is her daughter. thats all i am saying",
      "variants": [
-      "some grandmothers say gjalpinulva is her daughter. just saying",
+      "some grandmothers say gjalpinulva is her daughter. thats all i am saying",
       "waiting for the wolves. i hate that she is patient"
      ],
      "optional": false
@@ -750369,18 +750351,27 @@
     },
     {
      "role": "D",
-     "text": "yes. i only know to kill her and the king together",
+     "text": "yes. i only know not to touch the king while she stands",
      "variants": [
-      "yes. i only know to kill her and the king together",
+      "yes. i only know not to touch the king while she stands",
       "please {name_b}, the long one"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "kula is the youngest and coldest of bergelmirs line, the skalds say. the rime giant who stayed north when her brothers went south",
+     "text": "ha. the long one it is",
      "variants": [
-      "kula is the youngest and coldest of bergelmirs line, the skalds say. the rime giant who stayed north when her brothers went south"
+      "ha. the long one it is",
+      "sit, all of you. it takes a while"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "kula is the youngest and coldest of bergelmir's line, the skalds say. the rime giant who stayed north when her brothers went south",
+     "variants": [
+      "kula is the youngest and coldest of bergelmir's line, the skalds say. the rime giant who stayed north when her brothers went south"
      ],
      "optional": false
     },
@@ -750419,17 +750410,17 @@
     },
     {
      "role": "B",
-     "text": "and raised tuscarans citadel on its bones. cutting around a sleeper in the north wall",
+     "text": "and raised tuscaran's citadel on its bones. cutting around a sleeper in the north wall",
      "variants": [
-      "and raised tuscarans citadel on its bones. cutting around a sleeper in the north wall"
+      "and raised tuscaran's citadel on its bones. cutting around a sleeper in the north wall"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "a dead kings army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders",
+     "text": "a dead king's army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders",
      "variants": [
-      "a dead kings army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders"
+      "a dead king's army came up from the south to take the bones. she stilled it with a touch and a breath of sleep. and gave it orders"
      ],
      "optional": false
     },
@@ -750456,9 +750447,9 @@
     },
     {
      "role": "B",
-     "text": "for a time the two were bound so closely that a wound to one closed the others",
+     "text": "and the two are bound so closely that a wound to one closes the other's",
      "variants": [
-      "for a time the two were bound so closely that a wound to one closed the others"
+      "and the two are bound so closely that a wound to one closes the other's"
      ],
      "optional": false
     },
@@ -750472,18 +750463,18 @@
     },
     {
      "role": "E",
-     "text": "which is why you burn them down together. ask any raid leader",
+     "text": "which is why nobody splits damage. her first. ask any raid leader",
      "variants": [
-      "which is why you burn them down together. ask any raid leader",
-      "together or not at all. yes"
+      "which is why nobody splits damage. her first. ask any raid leader",
+      "one at a time, queen first. yes"
      ],
      "optional": true
     },
     {
      "role": "B",
-     "text": "and she keeps a cold older than the gods in reserve. the giants named it thors might. as a joke",
+     "text": "and she keeps a cold older than the gods in reserve. the giants named it thor's might. as a joke",
      "variants": [
-      "and she keeps a cold older than the gods in reserve. the giants named it thors might. as a joke"
+      "and she keeps a cold older than the gods in reserve. the giants named it thor's might. as a joke"
      ],
      "optional": false
     },
@@ -750497,9 +750488,9 @@
     },
     {
      "role": "B",
-     "text": "a hundred under bergljot steinsdottir won. the queens crown of ice hangs at bjarken. unmelted",
+     "text": "a hundred under bergljot steinsdottir won. the queen's crown of ice hangs at bjarken. unmelted",
      "variants": [
-      "a hundred under bergljot steinsdottir won. the queens crown of ice hangs at bjarken. unmelted"
+      "a hundred under bergljot steinsdottir won. the queen's crown of ice hangs at bjarken. unmelted"
      ],
      "optional": false
     },
@@ -750509,9 +750500,9 @@
     },
     {
      "role": "F",
-     "text": "a wound to one closed the others. thats almost sweet",
+     "text": "a wound to one closes the other's. thats almost sweet",
      "variants": [
-      "a wound to one closed the others. thats almost sweet",
+      "a wound to one closes the other's. thats almost sweet",
       "came courting with an axe. midgard"
      ],
      "optional": false
@@ -750587,7 +750578,7 @@
      "text": "hush, breifine story",
      "variants": [
       "hush, breifine story",
-      "quiet in faction, the ferrymans son"
+      "quiet in faction, the ferryman's son"
      ],
      "optional": false
     },
@@ -750597,6 +750588,15 @@
      "variants": [
       "please. he would not die and i want to know why",
       "tell it {name_b}, the ford and all"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "very well. gather in, the ford is a long tale",
+     "variants": [
+      "very well. gather in, the ford is a long tale",
+      "if you will be quiet, i will"
      ],
      "optional": false
     },
@@ -750688,9 +750688,9 @@
     },
     {
      "role": "B",
-     "text": "he came home to the bier. went under the hill first. and stood at his lords feet in the grave chamber, facing the door",
+     "text": "he came home to the bier. went under the hill first. and stood at his lord's feet in the grave chamber, facing the door",
      "variants": [
-      "he came home to the bier. went under the hill first. and stood at his lords feet in the grave chamber, facing the door"
+      "he came home to the bier. went under the hill first. and stood at his lord's feet in the grave chamber, facing the door"
      ],
      "optional": false
     },
@@ -750721,9 +750721,9 @@
     },
     {
      "role": "B",
-     "text": "echna of ardee, a ferrymans daughter, faced him and never turned. her sister on her bank, her company at his sides",
+     "text": "echna of ardee, a ferryman's daughter, faced him and never turned. her sister on her bank, her company at his sides",
      "variants": [
-      "echna of ardee, a ferrymans daughter, faced him and never turned. her sister on her bank, her company at his sides"
+      "echna of ardee, a ferryman's daughter, faced him and never turned. her sister on her bank, her company at his sides"
      ],
      "optional": false
     },
@@ -750741,10 +750741,10 @@
     },
     {
      "role": "F",
-     "text": "no word to end the watch. oof",
+     "text": "gotta log, early start. good one",
      "variants": [
-      "no word to end the watch. oof",
-      "so you face him and you do not turn. ok"
+      "gotta log, early start. good one",
+      "ok. i am never turning my back in marfach"
      ],
      "optional": false
     },
@@ -750834,6 +750834,15 @@
     },
     {
      "role": "B",
+     "text": "our own chieftain. very well",
+     "variants": [
+      "our own chieftain. very well",
+      "gather in, then. quietly"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
      "text": "caimheul ruled the breifine hills before there were keeps on them",
      "variants": [
       "caimheul ruled the breifine hills before there were keeps on them"
@@ -750842,9 +750851,9 @@
     },
     {
      "role": "B",
-     "text": "thats not the name his mother gave him. a lake mans knife left his mouth crooked and the hills forgot the other",
+     "text": "thats not the name his mother gave him. a lake man's knife left his mouth crooked and the hills forgot the other",
      "variants": [
-      "thats not the name his mother gave him. a lake mans knife left his mouth crooked and the hills forgot the other"
+      "thats not the name his mother gave him. a lake man's knife left his mouth crooked and the hills forgot the other"
      ],
      "optional": false
     },
@@ -751074,9 +751083,18 @@
     },
     {
      "role": "B",
-     "text": "you know the first verse. king of the fomorians. an eye poisoned by his fathers druids cauldron that destroyed whatever it saw",
+     "text": "the second verse. very well",
      "variants": [
-      "you know the first verse. king of the fomorians. an eye poisoned by his fathers druids cauldron that destroyed whatever it saw"
+      "the second verse. very well",
+      "if you will be quiet, yes. not the nursery one"
+     ],
+     "optional": false
+    },
+    {
+     "role": "B",
+     "text": "you know the first verse. king of the fomorians. an eye poisoned by his father's druids cauldron that destroyed whatever it saw",
+     "variants": [
+      "you know the first verse. king of the fomorians. an eye poisoned by his father's druids cauldron that destroyed whatever it saw"
      ],
      "optional": false
     },
@@ -751107,9 +751125,9 @@
     },
     {
      "role": "B",
-     "text": "the sylvan know a second verse. the eyes bearers wrapped it in seven hides and carried it west. walking backwards",
+     "text": "the sylvan know a second verse. the eye's bearers wrapped it in seven hides and carried it west. walking backwards",
      "variants": [
-      "the sylvan know a second verse. the eyes bearers wrapped it in seven hides and carried it west. walking backwards"
+      "the sylvan know a second verse. the eye's bearers wrapped it in seven hides and carried it west. walking backwards"
      ],
      "optional": false
     },
@@ -751193,9 +751211,9 @@
     },
     {
      "role": "B",
-     "text": "carrying a smooth stone for lughs sake. every company that climbs tur suil carries one since",
+     "text": "carrying a smooth stone for lugh's sake. every company that climbs tur suil carries one since",
      "variants": [
-      "carrying a smooth stone for lughs sake. every company that climbs tur suil carries one since"
+      "carrying a smooth stone for lugh's sake. every company that climbs tur suil carries one since"
      ],
      "optional": false
     },
@@ -751628,9 +751646,9 @@
     },
     {
      "role": "A",
-     "text": "her plague is her blood. it eats us and closes her wounds. the first warband to kill her carried more cures than weapons",
+     "text": "her plague is her blood. it eats us and our heals only half take. the first warband to kill her carried more cures than weapons",
      "variants": [
-      "her plague is her blood. it eats us and closes her wounds. the first warband to kill her carried more cures than weapons"
+      "her plague is her blood. it eats us and our heals only half take. the first warband to kill her carried more cures than weapons"
      ],
      "optional": false
     },
@@ -751683,10 +751701,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "the queen and the king up top are married. hurt one and it closes the others wounds",
+     "text": "the queen and the king up top are married. hurt one and it closes the other's wounds",
      "variants": [
-      "the queen and the king up top are married. hurt one and it closes the others wounds",
-      "for the thrones. the two of them go down together"
+      "the queen and the king up top are married. hurt one and it closes the other's wounds",
+      "for the thrones. everyone on the queen. nobody touches the king"
      ],
      "optional": false
     },
@@ -751695,7 +751713,7 @@
      "text": "really?",
      "variants": [
       "really?",
-      "so we split damage"
+      "so no splitting damage"
      ],
      "optional": true
     },
@@ -751709,17 +751727,17 @@
     },
     {
      "role": "A",
-     "text": "and when shes angry a cold older than the gods answers every wound. the giants call it thors might",
+     "text": "and when shes angry a cold older than the gods answers every wound. the giants call it thor's might",
      "variants": [
-      "and when shes angry a cold older than the gods answers every wound. the giants call it thors might"
+      "and when shes angry a cold older than the gods answers every wound. the giants call it thor's might"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "together then",
+     "text": "queen first then",
      "variants": [
-      "together then",
+      "queen first then",
       "courting with an axe. sure"
      ],
      "optional": false
@@ -751829,9 +751847,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "nobody stands at the chieftains side. he kills that one first",
+     "text": "nobody stands at the chieftain's side. he kills that one first",
      "variants": [
-      "nobody stands at the chieftains side. he kills that one first",
+      "nobody stands at the chieftain's side. he kills that one first",
       "caimheul ahead. stay in front of him or well back"
      ],
      "optional": false

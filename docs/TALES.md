@@ -39,7 +39,8 @@ something small, and a little later a bot passes on a rumour about the same boss
 automatic raid, with its usual size, muster and notices. Its leader invites the player like any other raid.
 
 **The tale, then the call (the owner's idea, 2026-11-12). Tests only: not yet seen on the owner's PC.** Every raid of
-the realm now begins with its story. When the realm's own raid comes due (every four hours since this change; it was 2.5),
+the realm whose boss has a tale now begins with its story (the 17 open-world raids, such as the Green Knight's or the
+Glacier Giant's, have none and are called as before). When the realm's own raid comes due (every four hours since this change; it was 2.5),
 or the player forces one from the launcher, the storyteller first tells the tale of that raid's boss in /faction, to its
 end. About fifteen seconds after the last line the realm is called: the large line across the screen ("The horn sounds:
 Hibernia marches on Galladoria! Gather at ...") and a horn. Only then are bots recruited and the muster clock started.
@@ -48,22 +49,36 @@ The call takes the place of the tale's rumour.
 - It needs a player of that realm in the game; with nobody to hear the tale the raid forms at once, as before.
 - A raid is never lost to its tale. If no tale can start within six minutes (another /faction scene is running, no
   storyteller is on) the call goes out without it; a tale still running twelve minutes after it began does not hold the
-  raid; a tale cut short (the teller was pulled into a fight) calls the raid five seconds later.
+  raid; a tale cut short (the teller logged off) calls the raid five seconds later.
 - A raid with several bosses that have a tale (Marfach has three) gets the one the realm heard longest ago.
 - A tale told on its own, on an ordinary evening, still works as above, and a raid that opens after it is called with the
   same line and horn.
 - A play test's raid (`/epictest`) has no tale and keeps its plain line.
 
 **The storytellers are people.** Each realm has up to two, chosen once and kept across restarts. Other bots name them, and
-only they tell. If you ask for a tale while neither is online, a bot says so.
+only they tell, with one exception: a raid's tale, or one a player asks for, is told by another veteran of the realm
+when neither storyteller is on. That stand-in, and a storyteller too, must be able to stay: not due to log off within ten
+minutes (the schedule or a break), not dead in the last two minutes, and for a stand-in idle (chat audit LORE-004, tests
+only). The older lore scenes that retold a tale's subject (Arward's knights, the Sheeroe pass, Balor's eye, Olcasgean's
+banishment, the ice queen, Fenris's daughter) are now told as a half-remembered version that ends by sending the listener
+to the storytellers. If you ask for a tale while neither is online and no stand-in can tell it, a bot says so.
 
 **You can ask.** "tell the one about legion", "any stories tonight?" or "Maeve, tell us a tale" in /faction starts one
-within a few seconds (not within twenty minutes of the last). Ask a question while a tale runs and the storyteller answers
-you, at most twice a tale, then goes on. The answer and the rumour afterwards are never a sentence the tale itself tells.
+within a few seconds (not within twenty minutes of the last). A request needs a story word (story, stories, tale, tales,
+storytime; not "long story short", "fairy tale", "whats the story with...", or a wts/wtb line), or "tell" with a telling's
+object ("tell the one", "tell us about", "tell it again"), or "tell" with a tale's name or a storyteller's name. "can
+someone tell me what spec is good" or "i cant tell if df is open" is not one (chat audit LORE-002, tests only). Ask a
+question about the tale while it runs and the storyteller answers you, at most twice a tale, then goes on. A question
+that is the realm's everyday business (trade, a group, a rez, the way somewhere, a class question) or a long one that
+shares no word with the tale is not taken as a question for the teller: it goes to the ordinary replies (LORE-003, tests
+only). The teller passes on a rumour only when it shares a word with the question, else it deflects. The answer and the rumour afterwards are never a sentence the tale itself tells.
 
 **It can go wrong.** A storyteller pulled into a fight is waited for a little (45 seconds at most at one line, a minute
 and a half over the whole tale) and then types between pulls, as a player would. One who leaves the game ends the tale: a
-listener grumbles, and it is told another night. A listener who leaves is no loss: another one asks the next question. A
+listener says so ("aw, Maeve logged"), and it is told another night. One who leaves before its first line is replaced
+once: a listener says "{old} just logged. {new}, you know that one?" and the other storyteller, or a stand-in who can
+stay, tells it from the teller's first line (`TALE_HANDOVER`; chat audit LORE-004 and LOG-025, tests only). When nobody
+can, a listener closes it ("{teller} logged before it even started lol") and a raid waiting on it is called. A listener who leaves is no loss: another one asks the next question. A
 cynic may heckle. /faction's ceiling still holds: a tale waits for room like any scene.
 
 **Fireside tales.** Sit down out of combat in a boss's place (a dragon's zone, an epic dungeon, Darkness Falls, Summoner's
@@ -125,7 +140,8 @@ says why it could not form right now. `/lstest fireside` forgets today's firesid
 | The tale, then the call | `AutonomousRealmRaid.Call.cs` (the raid that waits, the call, the fail-safes), `AutonomousTales.TryStartForRaid`, `RealmRaidRecruitmentPolicy.CallStep` and `CallLine`, `RealmEventNotices.QueueScreen` (the line and the horn). |
 | Memory | `offline_lore_memory`, keys `tale:teller:<realm>:<slot>`, `tale:told:<realm>:<scene>`, `tale:last:<realm>`, `tale:fire:<character>:<scene>`. No new table. |
 
-Log lines: `TALE_TELLER`, `TALE_START`, `TALE_NOT_STARTED`, `TALE_END` (finished, lines, reason), `TALE_ASIDE`,
+Log lines: `TALE_TELLER`, `TALE_START`, `TALE_NOT_STARTED` (`kind=own` for the realm's own tale, with why it could not
+start), `TALE_END` (finished, lines, reason; `handover=1` when another teller takes it over), `TALE_HANDOVER`, `TALE_ASIDE`,
 `TALE_REQUEST`, `TALE_RUMOUR` (kind=raid or lore; `no_raid=` says why it was not a raid: the roll, or the raid's own
 reason), `TALE_RAID` (opened, reason), `TALE_FIRESIDE`. The scene's lines are
 `CHAT_LINE src=tale`; the lines after it (the rumour, a grumble when a tale is cut short) are `src=tale_after`: they are not

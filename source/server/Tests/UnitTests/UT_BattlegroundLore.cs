@@ -76,7 +76,9 @@ namespace DOL.GS.Tests
             Assert.That(Tales.LocalTale("thidranki", [], told), Is.EqualTo("thidranki"));
             Assert.That(Tales.LocalTale("dartmoor", ["golestandt"], told), Is.EqualTo("golestandt"), "a boss's place keeps its boss");
             Assert.That(Tales.LocalTale("caledon", [], told), Is.Null, "the realm has no tale of that field");
-            Assert.That(Tales.LocalTale("krondon", [], new HashSet<string> { "krondon" }), Is.Null, "a place that is no legend");
+            // Since the chat audit (LORE-028, tales_more.lines) a place may have its own tale: told for it, it is the local one.
+            Assert.That(Tales.LocalTale("krondon", [], new HashSet<string> { "krondon" }), Is.EqualTo("krondon"), "a place's own tale");
+            Assert.That(Tales.LocalTale("krondon", [], new HashSet<string> { "orylle" }), Is.Null, "no tale of that place");
             Assert.That(Tales.LocalTale("thidranki", [], null), Is.Null);
         }
 

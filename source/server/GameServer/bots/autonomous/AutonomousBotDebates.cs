@@ -1111,7 +1111,8 @@ public static class AutonomousBotDebates
                 if (running.StoryKey != null)
                     AutonomousBotStorylines.OnEpisodeEnded(realm, running.StoryKey, running.Scene.Id, reason == "finished", DateTime.UtcNow);
                 if (running.TaleTopic != null)
-                    AutonomousTales.OnTaleEnded(realm, running.Scene, reason == "finished", reason, running.Said.Count);
+                    AutonomousTales.OnTaleEnded(realm, running.Scene, reason == "finished", reason, running.Said.Count,
+                        running.Said.Count(said => said.Role == AutonomousTales.TellerRole));
             }
             Plan(realm, GameLoop.GameLoopTime, NextGapMs(Random.Shared));
         }

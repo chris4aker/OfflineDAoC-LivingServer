@@ -12,10 +12,12 @@ namespace DOL.GS;
 /// <list type="bullet">
 /// <item>a raid's leader posts one or two <c>briefing</c> lines for its boss in /faction as the raid leaves the muster;</item>
 /// <item>after the raid a veteran tells an <c>aftermathWin</c> or <c>aftermathLoss</c> line, then one of the place's lore lines;</item>
-/// <item>locations' <c>lore</c> and <c>rumour</c> lines and bosses' <c>rumour</c> lines join the corpus's lore pool
-/// (kind ambient, topic lore, about place, the location's realm);</item>
-/// <item>"what's in krondon?", "who is cuuldurach?" get a <c>tell</c> line (a place) or a rumour (a boss) through the
-/// knowledge route (AutonomousChatKnowledge).</item>
+/// <item>locations' <c>lore</c> and <c>rumour</c> lines and bosses' <c>rumour</c> lines are built into the corpus as
+/// ambient lines of topic lore (about place, the location's realm). Since round 5 no lore line is said unprompted
+/// (AutonomousChatFiller drops topic lore), so these lines, like the written lore_*.lines, are heard only as answers;</item>
+/// <item>"what's in krondon?", "who is cuuldurach?" get an answer through the knowledge route (AutonomousChatKnowledge):
+/// a written corpus lore line that names the subject when the bible has no <c>tell</c> line for it (and one time in
+/// three when it has), else the bible's <c>tell</c> line (a place) or a rumour (a boss). Chat audit LORE-001.</item>
 /// </list>
 /// Every line goes through the /faction chat budget: above the channel's ceiling it is not said.
 /// </summary>
@@ -45,7 +47,7 @@ public static class LoreChat
             string family = ways.Length > 1 ? "lore" + LoreText.StableHash(template).ToString("x8") : string.Empty;
             foreach (string said in ways)
             {
-                if (said.Length == 0 || said.Length > VC.MaxLength)
+                if (said.Length == 0 || said.Length > LoreBible.MaxBotLineLength)
                     continue;
                 string id = "lore-" + LoreText.StableHash(source + "|" + said).ToString("x8");
                 lines.Add(new VC.Line(id, "ambient", "lore", [], RealmCode(realm), [], 1, 50, [], string.Empty, string.Empty, 1.0, said)
@@ -77,9 +79,87 @@ public static class LoreChat
         return lines.GroupBy(l => l.Id).Select(g => g.First()).ToArray();
     }
 
-    /// <summary>"whats in krondon?" and the like: a lore answer, or false. Pure but for the random.</summary>
+    /// <summary>"whats in krondon?" and the like: a lore answer, or false.</summary>
     public static bool TryAnswer(string text, out string answer, eRealm realm = eRealm.None) =>
-        LoreBible.Current.TryAnswer(text, Random.Shared, out answer, realm);
+        TryAnswer(LoreBible.Current, AutonomousBotVoices.Corpus?.Lines, text, Random.Shared, out answer, realm);
+
+    /// <summary>
+    /// A lore answer (pure but for the random): a written lore line of the corpus (data/chat/lore_*.lines) that names the
+    /// asked place or boss, when the bible has no <c>tell</c> line for it or one time in three when it has; else the bible's
+    /// own answer (<see cref="LoreBible.TryAnswer"/>). Chat audit LORE-001: the 632 written lore lines were never heard,
+    /// since no lore line is said unprompted and the answers came only from the bible.
+    /// </summary>
+    public static bool TryAnswer(LoreBible bible, IEnumerable<VC.Line> corpus, string text, Random random, out string answer, eRealm realm = eRealm.None)
+    {
+        answer = string.Empty;
+        if (bible == null)
+            return false;
+        (LoreBible.Location location, LoreBible.Boss boss) = bible.Subject(text);
+        if (location == null && boss == null)
+            return false;
+        IEnumerable<string> names = location != null ? LoreBible.NamesOf(location.Name, location.Id, location.Aliases)
+            : LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases);
+        string[] written = WrittenLoreNaming(corpus, names, realm);
+        bool hasTell = location != null && location.TellFor(realm).Length > 0;
+        if (written.Length > 0 && (!hasTell || random.Next(3) == 0))
+        {
+            answer = written[random.Next(written.Length)];
+            return true;
+        }
+        return bible.TryAnswer(text, random, out answer, realm);
+    }
+
+    /// <summary>
+    /// The written lore lines (kind ambient, topic lore, not the bible's own "lore-" lines) of the realm that name one of
+    /// <paramref name="names"/> as words and can be said by anyone as they stand: no slot, no class, no condition. Pure.
+    /// </summary>
+    public static string[] WrittenLoreNaming(IEnumerable<VC.Line> corpus, IEnumerable<string> names, eRealm realm)
+    {
+        string[] wanted = (names ?? []).Select(Words).Where(n => n.Trim().Length >= 4).Distinct().ToArray();
+        if (wanted.Length == 0)
+            return [];
+        return (corpus ?? []).Where(line => line.Kind == "ambient" && line.Topic == "lore" && !line.Id.StartsWith("lore-", StringComparison.Ordinal) &&
+                                            VC.RealmFits(line.Realm, realm) && line.Classes.Length == 0 && line.Needs.Length == 0 &&
+                                            !line.Text.Contains('{') && line.Text.Length <= LoreBible.MaxBotLineLength)
+            .Where(line => wanted.Any(name => Words(line.Text).Contains(name, StringComparison.Ordinal)))
+            .Select(line => line.Text).Distinct().ToArray();
+    }
+
+    #region Placed lore (owner, 2026-11-18 09:14: "Lore should never be cut, find a way to properly have them in the language framework")
+
+    /// <summary>A player hears at most one placed lore line in this long.</summary>
+    public const long PlacedGapMs = 20 * 60_000;
+    /// <summary>How often the placed-lore check runs for each player, and its chance each time once the gap is over.</summary>
+    public const long PlacedCheckMs = 60_000;
+    public const double PlacedChance = 0.15;
+    /// <summary>The measured target: placed lore lines a player hears an hour while standing in a place with lore, out of a fight.</summary>
+    public const double PlacedTargetPerHour = 2.2;
+
+    /// <summary>Whether a placed lore line is due for a player (pure): the gap since the last one is over and the roll says now.</summary>
+    public static bool PlacedDue(long now, long lastHeard, double roll) => now - lastHeard >= PlacedGapMs && roll < PlacedChance;
+
+    /// <summary>
+    /// The lore a gamebot standing in <paramref name="here"/> may remark on (pure): the written lore lines (data/chat/lore_*.lines)
+    /// of the realm that name the place or one of its bosses, then the bible's own lore and rumour lines for the place, as
+    /// templates ("[a|b]" still in them), without those in <paramref name="heard"/>.
+    /// </summary>
+    public static string[] PlacedLines(LoreBible bible, IEnumerable<VC.Line> corpus, LoreBible.Location here, eRealm realm, ISet<string> heard = null)
+    {
+        if (bible == null || here == null)
+            return [];
+        IEnumerable<string> names = LoreBible.NamesOf(here.Name, here.Id, here.Aliases)
+            .Concat(bible.BossesAt(here.Id).SelectMany(boss => LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases)));
+        return WrittenLoreNaming(corpus, names, realm)
+            .Concat(here.LoreFor(realm)).Concat(here.RumourFor(realm))
+            .Where(line => !string.IsNullOrWhiteSpace(line) && heard?.Contains(line) != true)
+            .Distinct().ToArray();
+    }
+
+    #endregion
+
+    private static string Words(string text) =>
+        " " + string.Join(' ', new string((text ?? string.Empty).ToLowerInvariant().Replace('\'', ' ')
+            .Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()).Split(' ', StringSplitOptions.RemoveEmptyEntries)) + " ";
 
     /// <summary>Whether /faction has room for one more line for this realm now (the chat budget's ceiling).</summary>
     public static bool FactionHasRoom(eRealm realm)
