@@ -391,7 +391,65 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE", "REAL
        "BOT_SKILL_GROWTH", "RAID_MECHANIC_SEEN", "BOT_PLACE_BUDGET", "BOT_WAY_FOLLOW",
        "BOT_WAY_SUMMARY", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST", "BOT_MOVE_OVERSHOOT",
        "BOT_MOVE_SIT", "BOT_MOVE_WALL", "BOT_MILESTONE_ARC", "BOT_MILESTONE_PROGRESS", "BOT_MILESTONE_REACHED",
-       "BOT_MILESTONE_TALK", "ERA_BUILDS_INVALID")
+       "BOT_MILESTONE_SUMMARY", "ERA_BUILDS_INVALID")
+
+
+# Bots as people WP6: what a milestone line may claim, from the server's own tables (BotMilestones): experience from
+# level 45 to 50 (and where level 49 starts, for the bubbles), and realm rank 5's realm points.
+DING_FROM_XP, DING_49_XP, DING_TO_XP, RR5_POINTS = 53_999_999_950, 137_999_999_950, 169_999_999_950, 513_500
+TROPHY_TALK_KILLS = {50: 2, 90: 5}
+
+
+def milestone_bubbles_left(level: float, xp: float):
+    """Bubbles left to 50 for a level 49 (1-10, as BotMilestones.BubblesLeft), else None (pure)."""
+    if int(level) != 49:
+        return None
+    left = min(1.0, max(0.0, (DING_TO_XP - xp) / (DING_TO_XP - DING_49_XP)))
+    return min(10, max(1, math.ceil(left * 10 - 1e-9)))
+
+
+def milestone_claim_true(f: dict) -> bool:
+    """Whether a BOT_MILESTONE_TALK line says only what the bot's logged numbers back (pure): its talk point against
+    xp= / rp= / count=, the slot values the server filled (bubbles=, left_k=) against the same numbers, and the number in
+    the line itself. The typing styles write "to" as 2 and "for" as 4, so a line is only asked to contain its number,
+    never to contain no other."""
+    arc, point, topic = f.get("arc"), num(f.get("point")), f.get("topic", "")
+    line = f.get("line", "")
+    for name in (f.get("trophy"), f.get("source")):
+        if name:
+            line = line.replace(name, " ")
+    tokens = re.findall(r"\d+k?", line)
+    if arc == "rr5":
+        rp = num(f.get("rp"))
+        if rp < RR5_POINTS * min(point, 100) / 100 - 0.5:
+            return False
+        left = 0 if rp >= RR5_POINTS else max(1, math.ceil((RR5_POINTS - rp) / 1000))
+        if "left_k" in f and int(num(f["left_k"])) != left:
+            return False
+        return topic != "rr5_close" or all(int(t[:-1]) == left for t in tokens if t.endswith("k"))
+    if arc == "ding50":
+        level, xp = num(f.get("level")), num(f.get("xp"))
+        if not (level >= 50 or xp - DING_FROM_XP >= (DING_TO_XP - DING_FROM_XP) * point / 100 - 1):
+            return False
+        bubbles = milestone_bubbles_left(level, xp)
+        if bubbles is not None and "bubbles" in f and int(num(f["bubbles"])) != bubbles:
+            return False
+        return topic != "ding50_bubbles" or (bubbles is not None and str(bubbles) in tokens)
+    if arc == "dragon_trophy":
+        if point >= 100:
+            return bool(f.get("trophy")) and bool(f.get("source"))
+        count = int(num(f.get("count")))
+        if count < TROPHY_TALK_KILLS.get(int(point), 10 ** 9):
+            return False
+        return topic != "trophy_long" or str(count) in tokens
+    return False
+
+
+@handles("BOT_MILESTONE_TALK")
+def _milestone_talk(sec, t, message, level, near):
+    sec.ev["BOT_MILESTONE_TALK"].add(t, message)
+    if not milestone_claim_true(kv(message)):
+        sec.ev["milestone.false_claim"].add(t, message)
 
 
 @handles("REALM_RAID_STARTED")
@@ -1200,10 +1258,14 @@ def people(j: Judge, sec: Section, c):
           + "; counted " + " ".join(f"{name}={sec.n['move.' + name]}" for name in MOVE_COUNTERS),
           note="the sit emote in the client is a screen check")
     ms = c("BOT_MILESTONE_TALK") and c("BOT_MILESTONE_REACHED")
-    j.add("people", "milestones", "Milestones talked about: BOT_MILESTONE_TALK and BOT_MILESTONE_REACHED",
-          SEEN if ms else NOT_SEEN, j.ev("BOT_MILESTONE_TALK") if ms else None,
+    false_claims = c("milestone.false_claim")
+    j.add("people", "milestones", "Milestones talked about: BOT_MILESTONE_TALK and BOT_MILESTONE_REACHED, each talk "
+          "point true to the bot's logged experience or realm points",
+          CONTRADICTED if false_claims else (SEEN if ms else NOT_SEEN),
+          j.ev("milestone.false_claim") if false_claims else (j.ev("BOT_MILESTONE_TALK") if ms else None),
           f"arc={c('BOT_MILESTONE_ARC')} progress={c('BOT_MILESTONE_PROGRESS')} reached={c('BOT_MILESTONE_REACHED')} "
-          f"talk={c('BOT_MILESTONE_TALK')}", note="the Herald page is a screen check")
+          f"talk={c('BOT_MILESTONE_TALK')} summary={c('BOT_MILESTONE_SUMMARY')} false_claims={false_claims}",
+          note="the Herald page is a screen check")
 
 
 def stalls_and_errors(j: Judge, sec: Section, c):

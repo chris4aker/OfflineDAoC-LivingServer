@@ -352,7 +352,8 @@ public static class AutonomousObjectiveAssignments
                     AutonomousBotPersonality.Enabled
                         ? AutonomousBotPersonality.PlanGoals(pool.Select(AutonomousBotPersonality.PlannerType).ToArray(),
                             pool.Select(CanTakeBattleground).ToArray(), target.SoloPve - assignedSolo, target.GroupPve - assignedGroup,
-                            withRvr ? target.RvR - assignedRvr : 0, target.Battlegrounds - assignedBattleground, Random.Shared)
+                            withRvr ? target.RvR - assignedRvr : 0, target.Battlegrounds - assignedBattleground, Random.Shared,
+                            withRvr ? pool.Select(BotMilestoneLife.RvrLean).ToArray() : null) // Bots as people WP6: realm rank 5 leans to RvR
                         : new eAutonomousObjectiveKind?[pool.Length];
 
                 GameBot[] pvePool = members.Where(bot => !groupOwned.Contains(bot) && !HasActiveRvrTenure(bot.PersistentRecord, utcNow) &&

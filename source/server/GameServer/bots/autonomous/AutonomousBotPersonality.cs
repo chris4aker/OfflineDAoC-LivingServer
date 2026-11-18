@@ -190,9 +190,11 @@ public static class AutonomousBotPersonality
     /// takes which: RvR goes to the bots that want it most relative to their other choices, then battlegrounds,
     /// then groups versus solo. Still random (a weighted draw), never a fixed ranking. Types are null for bots
     /// without a personality (weight 1). Bots beyond the open slots get null (the caller's usual over-quota rule).
+    /// Bots as people WP6 (owner decision 10): <paramref name="rvrLean"/> (null = none) multiplies a bot's RvR weight, so a
+    /// bot chasing realm rank 5 is likelier to take one of the RvR slots; the number of slots is unchanged.
     /// </summary>
     public static eAutonomousObjectiveKind?[] PlanGoals(BotPersonalityType?[] types, bool[] canBattleground, int solo, int group,
-        int rvr, int battleground, Random random)
+        int rvr, int battleground, Random random, double[] rvrLean = null)
     {
         int count = types.Length;
         var plan = new eAutonomousObjectiveKind?[count];
@@ -234,7 +236,8 @@ public static class AutonomousBotPersonality
         Take(eAutonomousObjectiveKind.Battleground, open[3], i => canBattleground[i],
             i => Relative(i, eAutonomousObjectiveKind.Battleground, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve));
         Take(eAutonomousObjectiveKind.RvR, open[2], _ => true,
-            i => Relative(i, eAutonomousObjectiveKind.RvR, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve));
+            i => Relative(i, eAutonomousObjectiveKind.RvR, eAutonomousObjectiveKind.SoloPve, eAutonomousObjectiveKind.GroupPve) *
+                 (rvrLean != null && i < rvrLean.Length && rvrLean[i] > 0 ? rvrLean[i] : 1.0));
         Take(eAutonomousObjectiveKind.GroupPve, open[1], _ => true,
             i => Relative(i, eAutonomousObjectiveKind.GroupPve, eAutonomousObjectiveKind.SoloPve));
         Take(eAutonomousObjectiveKind.SoloPve, open[0], _ => true, _ => 1.0);
@@ -291,8 +294,14 @@ public static class AutonomousBotPersonality
 
     #region Live hooks (each returns today's behavior when personalities are off)
 
-    public static bool RollTownBreak(GameBot bot, double roll) =>
-        Applies(bot) ? roll >= 0 && roll < TownBreakChance(For(bot)) : AutonomousTownDowntime.RollAtTaskBoundary(roll);
+    /// <summary>A town break at a task boundary. Bots as people WP6 (owner decision 10): a bot within 2 levels of 50 on its
+    /// ding to 50 takes 40-60% of its breaks (BotMilestones.TownBreakFactor); 1 for every other bot.</summary>
+    public static bool RollTownBreak(GameBot bot, double roll)
+    {
+        double factor = BotMilestoneLife.TownBreakFactor(bot);
+        return Applies(bot) ? roll >= 0 && roll < TownBreakChance(For(bot)) * factor
+            : factor >= 1.0 ? AutonomousTownDowntime.RollAtTaskBoundary(roll) : AutonomousTownDowntime.RollAtTaskBoundary(roll / factor);
+    }
 
     public static TimeSpan? ScaleTownBreak(GameBot bot, TimeSpan? duration, TimeSpan remaining)
     {

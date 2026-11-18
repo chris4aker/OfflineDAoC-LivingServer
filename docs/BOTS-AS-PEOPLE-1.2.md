@@ -12,7 +12,7 @@ people" items from 2.0 ([RELEASE-TRAIN.md](RELEASE-TRAIN.md), 2.0, "Bots as peop
 | 6. Personal milestones that get talked about | Yes, with two arcs changed (owner decisions 2 and 3) |
 | 1. Bot players own alts; 3. Friends, regulars and grudges | No: they need the bot-player data model. Items 2, 4, 5 and 6 are keyed so they can move to it later (section "One key for later") |
 
-**Status: decided 2026-11-17 08:22 (section "Owner decisions"); WP0-WP5 and WP2R merged on `integration/1.2`, WP6 (milestones) in build, WP7 (integration) under way. Nothing here is seen in game.** This document follows
+**Status: decided 2026-11-17 08:22 (section "Owner decisions"); WP0-WP5 and WP2R merged on `integration/1.2`, WP6 (milestones) built, WP7 (integration) under way. Nothing here is seen in game.** This document follows
 [RVR-FIELD-1.2.md](RVR-FIELD-1.2.md): the same principles, pure rule classes, skill tiers and proof rules.
 
 ## What changes for you
@@ -286,7 +286,7 @@ target, which is how a strafe looks on screen. No navigation mesh changes.
 
 | Table | Key | Columns |
 |---|---|---|
-| `offline_bot_milestones` | `PersonKey`, `Arc` | `CharacterId`, `Realm`, `Name`, `ClassName`, `State` (active, reached, dropped), `StartedUtc`, `ReachedUtc`, `LastTalkUtc` |
+| `offline_bot_milestones` | `PersonKey`, `CharacterId`, `Arc` | `Realm`, `Name`, `ClassName`, `State` (active, reached, dropped), `StartedUtc`, `ReachedUtc`, `LastTalkUtc`; WP6 added `TalkPoint` (the highest talk point handled), `Count` (big raid kills without a drop), `Trophy` and `Source` (the item won and its boss) |
 
 ### Rules (pure classes, NUnit)
 
@@ -375,7 +375,7 @@ Each tag has a 5-minute summary line, so the log stays small, and one line per e
 | 3 | `BOT_PLACE_LEARNED how=visited\|told\|seeded` | `BOT_PLACE_BUDGET` |
 | 4 | `BOT_WAY_ASK`, `BOT_WAY_TOLD`, `BOT_WAY_FOLLOW`, `BOT_WAY_WRONG_ROAD cost_s=` | `BOT_WAY_SUMMARY` (choices by tier, minutes lost, deaths within 60 s of a wrong road) |
 | 5 | `BOT_MOVE_STRAFE`, `BOT_MOVE_STICK_LOST`, `BOT_MOVE_OVERSHOOT`, `BOT_MOVE_SIT`, `BOT_MOVE_WALL` | `BOT_MOVE_HABITS` (counts, refused legs) |
-| 6 | `BOT_MILESTONE_ARC`, `BOT_MILESTONE_PROGRESS`, `BOT_MILESTONE_REACHED`, `BOT_MILESTONE_TALK` | |
+| 6 | `BOT_MILESTONE_ARC`, `BOT_MILESTONE_PROGRESS`, `BOT_MILESTONE_REACHED`, `BOT_MILESTONE_TALK` | `BOT_MILESTONE_SUMMARY` (arcs active, chosen, points, talks by channel, reached, trophies) |
 
 GM test hooks, so a rare moment can be made due (`/lstest`, GM accounts): `/lstest skill` (the target's profile),
 `/lstest lost` (the target's next unknown trip takes a wrong road), `/lstest ask` (the target asks the way now),

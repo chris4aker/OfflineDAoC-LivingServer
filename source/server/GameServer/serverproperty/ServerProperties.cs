@@ -2771,7 +2771,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Bots as people, item 6 (work package 6).
 		/// </summary>
-		[ServerProperty("bots", "bot_living_milestones", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots chase a personal goal (the ding to 50, realm rank 5, a dragon trophy really won in a raid) and talk about it as they get close, in /faction, their guild, their group or /say; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's next plans. Log: BOT_MILESTONE_ARC, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED. In this build it changes nothing yet (work package 6).", true)]
+		[ServerProperty("bots", "bot_living_milestones", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): autonomous gamebots chase a personal goal (the ding to 50 from level 45; at 50 realm rank 5 if they lean to RvR, or a dragon trophy, an item really won from a dragon or epic boss raid's loot, if they lean to raids) and say so as they get close, in their group, in /say near you, in their guild or in /faction, within the chat budgets; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's plans (fewer town breaks near 50, more RvR near realm rank 5). Log: BOT_MILESTONE_ARC, BOT_MILESTONE_PROGRESS, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED, BOT_MILESTONE_SUMMARY.", true)]
 		public static bool BOT_LIVING_MILESTONES = true;
 
 		/// <summary>

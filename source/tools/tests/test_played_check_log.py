@@ -472,14 +472,68 @@ class BotsAsPeople(unittest.TestCase):
                        "refusedLegs=0 busyDrops=0 budgetDrops=0")
         log.add(at(5), 'BOT_MOVE_SIT bot="Bot6" id=6 region=1 where=group waited_s=41')
         log.add(at(5), 'BOT_MOVE_WALL bot="Bot6" id=6 region=1 keep="Caer Benowyc" x=1 y=2 z=3 waited_s=38')
+        log.add(at(5), 'BOT_MILESTONE_ARC bot="Bot7" id=7 person=c:7 realm=Albion level=46 class="Armsman" xp=60000000000 '
+                       'rr=1L0 rp=0 arc=ding50 state=active progress=5')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot7" id=7 person=c:7 realm=Albion level=48 class="Armsman" xp=115000000000 '
+                       'rr=1L0 rp=0 arc=ding50 point=50 topic=ding50_half channel=faction bubbles=0 left_k=514 count=0 tries=1 '
+                       'line="48 now, over halfway 2 50"')
+        log.add(at(6), 'BOT_MILESTONE_REACHED bot="Bot8" id=8 person=c:8 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=5L0 rp=513500 arc=rr5 trophy="" source="" dry_kills=0 sought=true announce=yes '
+                       'started="2026-11-17T10:00:00.0000000Z"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot8" id=8 person=c:8 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=5L0 rp=513500 arc=rr5 point=100 topic=rr5_reached channel=faction bubbles=0 left_k=0 count=0 '
+                       'trophy="" source="" line="finally rr5!"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot10" id=10 person=c:10 realm=Albion level=49 class="Wizard" xp=158400000000 '
+                       'rr=1L0 rp=0 arc=ding50 point=90 topic=ding50_bubbles channel=say bubbles=4 left_k=514 count=0 tries=0 '
+                       'line="4 bubbles 2 50"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot11" id=11 person=c:11 realm=Albion level=50 class="Friar" xp=0 '
+                       'rr=4L9 rp=500000 arc=rr5 point=90 topic=rr5_close channel=guild bubbles=0 left_k=14 count=0 tries=2 '
+                       'line="about 14k rps 2 rr5"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot12" id=12 person=c:12 realm=Albion level=50 class="Scout" xp=0 '
+                       'rr=1L0 rp=0 arc=dragon_trophy point=90 topic=trophy_long channel=faction bubbles=0 left_k=514 count=5 '
+                       'tries=0 line="5 raid kills now and still no drop 4 me"')
+        log.add(at(6), 'BOT_MILESTONE_TALK bot="Bot13" id=13 person=c:13 realm=Albion level=50 class="Scout" xp=0 '
+                       'rr=1L0 rp=0 arc=dragon_trophy point=100 topic=trophy_reached channel=faction bubbles=0 left_k=514 '
+                       'count=0 trophy="Ring of 100 Scales" source="Golestandt" line="Ring of 100 Scales off Golestandt!!"')
         return log
+
+    def test_a_milestone_line_that_claims_more_than_the_numbers_is_contradicted(self):
+        log = self.played_session()
+        log.add(at(7), 'BOT_MILESTONE_TALK bot="Bot9" id=9 person=c:9 realm=Albion level=50 class="Cleric" xp=0 '
+                       'rr=4L5 rp=300000 arc=rr5 point=90 topic=rr5_close channel=say count=0 line="almost rr5"')
+        row = check(only(log.run()[1]), "milestones")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("false_claims=1", row["detail"])
+        claim = pcl.milestone_claim_true
+        self.assertTrue(claim({"arc": "ding50", "point": "90", "level": "49", "xp": "158400000000"}))
+        self.assertFalse(claim({"arc": "ding50", "point": "90", "level": "49", "xp": "150000000000"}))
+        # The line's own numbers: the bubbles and the thousands left are the logged experience's and realm points'.
+        bubbles = {"arc": "ding50", "point": "90", "level": "49", "xp": "158400000000", "topic": "ding50_bubbles"}
+        self.assertEqual(pcl.milestone_bubbles_left(49, 158_400_000_000), 4)
+        self.assertTrue(claim(bubbles | {"bubbles": "4", "line": "4 bubbles 2 50"}))
+        self.assertFalse(claim(bubbles | {"bubbles": "2", "line": "2 bubbles to 50"}), "the slot is not the experience's")
+        self.assertFalse(claim(bubbles | {"bubbles": "4", "line": "2 bubbles to 50"}), "the line does not say its number")
+        close = {"arc": "rr5", "point": "90", "rp": "500000", "topic": "rr5_close"}
+        self.assertTrue(claim(close | {"left_k": "14", "line": "about 14k rps to rr5"}))
+        self.assertFalse(claim(close | {"left_k": "14", "line": "about 4k rps to rr5"}))
+        self.assertFalse(claim(close | {"left_k": "9", "line": "almost rr5"}))
+        # The trophy's talk points are big kills without a drop: the 2nd and the 5th; the moment names item and boss.
+        trophy = {"arc": "dragon_trophy", "topic": "trophy_try", "line": "no drop off Golestandt for me again"}
+        self.assertTrue(claim(trophy | {"point": "50", "count": "2"}))
+        self.assertFalse(claim(trophy | {"point": "50", "count": "1"}))
+        self.assertFalse(claim(trophy | {"point": "90", "count": "4"}))
+        self.assertTrue(claim(trophy | {"point": "90", "count": "5", "topic": "trophy_long", "line": "5 big kills, zero drops"}))
+        self.assertFalse(claim(trophy | {"point": "90", "count": "5", "topic": "trophy_long", "line": "7 big kills, zero drops"}))
+        self.assertFalse(claim({"arc": "dragon_trophy", "point": "100", "trophy": "", "source": "Golestandt"}))
+        self.assertTrue(claim({"arc": "dragon_trophy", "point": "100", "trophy": "Ring", "source": "Golestandt"}))
 
     def test_people_rows_from_the_lines_the_server_writes(self):
         log = self.played_session()
         sec = only(log.run()[1])
         for cid in ("summary", "skill_profile", "skill_growth", "mistakes", "raid_learn", "places", "way", "movement"):
             self.assertEqual(check(sec, cid)["status"], pcl.SEEN, cid)
-        self.assertEqual(check(sec, "milestones")["status"], pcl.NOT_SEEN, "work package 6 is not built")
+        self.assertEqual(check(sec, "milestones")["status"], pcl.SEEN)
+        self.assertIn("talk=6", check(sec, "milestones")["detail"])
         self.assertIn("100 profiles: 31/49/20", check(sec, "skill_profile")["detail"])
         self.assertIn("in/out=0.25", check(sec, "mistakes")["detail"])
         self.assertIn("rose between runs in albion-crystal-cave", check(sec, "raid_learn")["detail"])

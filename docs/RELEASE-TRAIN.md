@@ -202,7 +202,7 @@ each row counts only when seen on the owner's PC on the release-candidate line.
 | Movement, flanking and style choice; ports from other forks and True 1.65 | Merged | Tests only |
 | Every big boss (in 1.2 since 2026-11-14): the Darkness Falls raid AI, Legion, Behemoth, the level 70+ bosses with no plan yet, the open-world bosses | Being built: Legion; the rest of Darkness Falls; then the epic dungeons' remaining bosses and the open-world bosses | Before this work, on `e3b8238`: Midgard's raid killed Legion in one attempt; Hibernia's lost to him twice |
 | Install: 1.1.4 updated through Setup; a new install | Built | Not done |
-| Bots as people (moved from 2.0, owner 2026-11-17; [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md)): item 2 skill that varies and improves (WP1, WP2, raid learning WP2R), item 4 knowing only what a player would know (WP3, WP4), item 5 movement that doesn't look scripted (WP5) | Merged (#316-#318, #322, #324, #327, #328); item 6, personal milestones (WP6), in progress | Tests only |
+| Bots as people (moved from 2.0, owner 2026-11-17; [BOTS-AS-PEOPLE-1.2.md](BOTS-AS-PEOPLE-1.2.md)): item 2 skill that varies and improves (WP1, WP2, raid learning WP2R), item 4 knowing only what a player would know (WP3, WP4), item 5 movement that doesn't look scripted (WP5), item 6 personal milestones (WP6) | Merged (#316-#318, #322, #324, #327, #328); WP6 built on `feat/bap-wp6-milestones` | Tests only |
 | Era builds: the 2003 class mix and period builds for new gamebots (moved from 2.0) | Merged (#326) | Tests only |
 
 Back in 1.2 (owner, 2026-11-14, evening: "Put Darkness Falls raid AI and Legion back in", then "No ALL big bosses are
@@ -448,7 +448,7 @@ friends) and go with the guild social package.
 - [x] **5. Movement that doesn't look scripted.** **Moved to 1.2** (WP5; merged, tests only; keep walls only at held
       keeps with no siege, decision 11: walls in a siege stay here). Strafing, sitting to regen, /stick, overshooting, idling at the bank
       and crowding town spots, sitting on keep walls. Touches pathing: no navmesh changes without evidence (AGENTS.md).
-- [ ] **6. Personal milestones that get talked about.** **In progress for 1.2** (WP6; the artifact becomes a dragon
+- [ ] **6. Personal milestones that get talked about.** **Built for 1.2** (WP6, tests only; the artifact becomes a dragon
       trophy, decision 3; epic armour stays here, decision 2). A goal arc per bot player (epic armour, realm rank 5, an
       artifact, the ding to 50) that chat and the Herald pick up; feeds "a server with a past".
 - [ ] **Measured by a played "who's real?" session:** the owner and a friend play an evening and tag every bot that gave
