@@ -587,8 +587,10 @@ public class SocialExpansionSettingsTests
             dir = Path.GetDirectoryName(dir);
         if (dir == null) Assert.Ignore("Server source not found beside the tests.");
         // Crafting 2.0's settings are declared in CraftingEconomyProperties (WP0), in the same attribute form.
+        // Hired companions' switch is declared beside their code (HiredCompanionsMode, 1.2; in the tab since the chat audit).
         string source = File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/serverproperty/ServerProperties.cs")) +
-                        File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/craft/economy/CraftingEconomyProperties.cs"));
+                        File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/craft/economy/CraftingEconomyProperties.cs")) +
+                        File.ReadAllText(Path.Combine(dir!, "source/server/GameServer/mode165/HiredCompanionsMode.cs"));
         var defaults = SocialExpansionSettings.Defaults.ToStoredValues();
         foreach (var (key, category, _) in typeof(SocialExpansionSettings)
                      .GetField("Settings", BindingFlags.Static | BindingFlags.NonPublic)!
