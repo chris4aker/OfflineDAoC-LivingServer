@@ -206,7 +206,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderCouncilBirghirAndGuthlac.cs": "89cb44433186fac2b53a99232b4347e8925e6fb36b6a942f4ad03367e0ac6886",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/ElderIcelordHjalmarAndSuttung.cs": "ea52c80415f2deb2b89e013241b424cc9b1a234e0fc0317ac149e9e96c364744",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/FallingIce.cs": "c3dadde9c091ee2b698e8e18d2cb1be14a683c63e0c40ccbc2a921e7e7d71aa5",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "eebb3382c4986799a4280c2eca3f65efcd2f840d2eb001c93b1ed273a27c096c",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "499ccf2b00cdc911fcb9fbcedfe0b18603cf65670e07c9bcd57d8fd9c517e883",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Hord.cs": "f21c3e552ea4280627e1dbb87c762a4a5309d9cbec086d099d6231442327abc3",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "b61905e087baeca0d1c6e197b64d4f776f3d5363543839c02eb3feb39b5d3f92",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "6829e6e27f2c56d57f5ecc4231ad540d061dcee0284412c4b33b8da5d43b85d5",
@@ -32530,7 +32530,7 @@
      "maxHealth": 50000,
      "level": "75",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs",
-     "line": 224
+     "line": 250
     }
    ],
    "rules": [
@@ -32555,8 +32555,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage from attackers further than 400 from point.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs",
-     "line": 233,
-     "lineEnd": 245,
+     "line": 259,
+     "lineEnd": 271,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "FornfrusenenShard",
@@ -32567,14 +32567,14 @@
      "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "immune_while@233"
+     "key": "immune_while@259"
     },
     {
      "kind": "adds",
      "summary": "Spawns Fornfrusenen Shard (FornfrusenenShard): from SpawnShards; count about 2-3 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs",
-     "line": 208,
-     "lineEnd": 208,
+     "line": 234,
+     "lineEnd": 234,
      "anchor": "FornfrusenenShard Add = new FornfrusenenShard();",
      "confidence": "inferred",
      "sourceClass": "FornfrusenenBrain",
@@ -32589,7 +32589,7 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@208"
+     "key": "adds@234"
     },
     {
      "kind": "reset",
@@ -32629,8 +32629,8 @@
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs",
-     "line": 189,
-     "lineEnd": 189,
+     "line": 190,
+     "lineEnd": 190,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "FornfrusenenBrain",
@@ -32640,7 +32640,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@189"
+     "key": "reset@190"
     }
    ],
    "spells": [
@@ -32655,7 +32655,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs",
-     "line": 337,
+     "line": 363,
      "sourceClass": "FornfrusenenShard"
     }
    ],

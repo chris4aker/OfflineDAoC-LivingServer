@@ -3054,7 +3054,7 @@
   "tuscaran-glacier/fornfrusenen": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "eebb3382c4986799a4280c2eca3f65efcd2f840d2eb001c93b1ed273a27c096c"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs": "499ccf2b00cdc911fcb9fbcedfe0b18603cf65670e07c9bcd57d8fd9c517e883"
    },
    "aiTactics": {
     "summary": "Shards first: while he is above 35% the raid kills his 2-3 shards (each party takes one), each one taking a quarter of his health; at 35% or less the shards no longer hurt him and the raid kills him (his death removes them). Close in: he takes damage only from within 200 of him and the shards only from within 400 of his spot, so every raider, casters too, fights from within 120-180 of him or 320 of his spot.",
@@ -3065,7 +3065,7 @@
      "tactic": "In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him.",
      "difficulty": "easy for the current raid AI"
     },
-    "immune_while@233": {
+    "immune_while@259": {
      "tactic": "In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.",
      "difficulty": "easy for the current raid AI"
     }

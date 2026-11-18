@@ -42,6 +42,8 @@ SEEN = "Seen"
 NOT_SEEN = "Not seen"
 CONTRADICTED = "Contradicted"
 NOT_APPLICABLE = "Not applicable"
+# An attempt that ends "never entered combat" with this many fallen was a fight the route missed (sweep 6b).
+NEVER_ENTERED_FALLEN = 10
 
 GATE_HOURS = 8.0
 HARD_STALL_MS = 2000.0
@@ -251,6 +253,8 @@ class Section:
         self.engage_lines = defaultdict(dict)  # region -> boss -> time of its last FINAL_ENGAGE or EARLY_PULL
         self.add_owner = defaultdict(dict)     # region -> required add -> its boss (from REALM_EXPEDITION_TACTIC)
         self.no_engage = {}                    # (region, boss) -> first line of a pull that logged no engage
+        self.boss_adds = defaultdict(set)      # boss -> names of the adds the raid fought or saw raised for it
+        self.retry_watch = {}                  # boss -> [time, line, adds seen] of an open retry (FINAL_ENGAGE retry=True)
         self.waves = {}                        # (event, wave) -> "stuck" or "recovered"
         self.retired = {}                      # custom-class bot id -> name (BOT_CUSTOM_CLASS_RETIRED)
         self.copies = {}                       # retired buffbot copy id -> name (BOT_BUFFBOT_COPY_RETIRED)
@@ -602,6 +606,64 @@ def _final_engage(sec, t, message, level, near):
     engage(sec, f.get("region"), f.get("target"), t)
     if f.get("region") is not None and f.get("target"):
         sec.engage_lines[f["region"]][f["target"]] = t
+    boss = f.get("target")
+    if boss:
+        close_retry(sec, boss)
+        if f.get("retry") == "True" and boss in sec.boss_adds:
+            sec.retry_watch[boss] = [t, message, False]
+
+
+# ---- A retry of a boss with adds (sweep 6b, build b1b6846: Fornfrusenen's retry raised no shards) ------------------
+
+ADD_OF_RE = re.compile(r'required-adds? of "([^"]+)"')
+
+
+def add_seen(sec, boss, add=None):
+    """The raid fought (or saw raised) an add of `boss`: it has adds, and an open retry on it has them too."""
+    if not boss:
+        return
+    if add and add != boss:
+        sec.boss_adds[boss].add(add)
+    elif boss not in sec.boss_adds:
+        sec.boss_adds[boss] = set()
+    watch = sec.retry_watch.get(boss)
+    if watch is not None:
+        watch[2] = True
+
+
+def close_retry(sec, boss):
+    """The retry on `boss` ended (its defeat, wipe, attempt end or next engage): one with no add line is a finding."""
+    watch = sec.retry_watch.pop(boss, None)
+    if watch is None:
+        return
+    sec.ev["retry.with_adds" if watch[2] else "retry.no_adds"].add(watch[0], watch[1])
+
+
+@handles("LORE_LINE")
+def _lore_line(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("trigger") == "addsSpawn":
+        add_seen(sec, f.get("boss"))
+
+
+@handles("EPIC_TACTIC_BOT")
+def _tactic_bot(sec, t, message, level, near):
+    f = kv(message)
+    boss, to = f.get("target"), f.get("to")
+    if boss and to and to != boss and f.get("action") in ("Retarget", "Reposition"):
+        add_seen(sec, boss, to)
+
+
+@handles("REALM_EXPEDITION_ATTEMPT_ENDED")
+def _attempt_ended(sec, t, message, level, near):
+    """An attempt that never entered combat while ten or more of the raid fell was a fight the route did not see
+    (sweep 6b, build b1b6846: Aroon's three attempts ended between his Scaiths with 14, 35 and 19 fallen)."""
+    f = kv(message)
+    if f.get("how") == "never entered combat" and num(f.get("fallen")) >= NEVER_ENTERED_FALLEN:
+        sec.ev["attempt.never_entered_fallen"].add(t, message)
+    else:
+        sec.ev["attempt.ended"].add(t, message)
+    close_retry(sec, f.get("target"))
 
 
 @handles("REALM_EXPEDITION_EARLY_PULL")
@@ -624,11 +686,15 @@ def _fight_ledger(sec, t, message, level, near):
     """Every NPC named in raid_dealt (the raid hit it) or raid_took (it hit the raid) is in the fight this minute."""
     f = kv(message)
     region = f.get("region")
+    target = f.get("target")
+    adds = sec.boss_adds.get(target) or ()
     for field in ("raid_dealt", "raid_took"):
         for entry in (f.get(field) or "").split(","):
             name = entry.rsplit(":", 1)[0].strip()
             if name and ":" in entry:
                 engage(sec, region, name, t)
+                if name in adds:
+                    add_seen(sec, target, name)
 
 
 @handles("REALM_EXPEDITION_TACTIC")
@@ -637,6 +703,9 @@ def _tactic(sec, t, message, level, near):
     FINAL_ENGAGE or EARLY_PULL for the boss, it is a pull the 70% row cannot see."""
     f = kv(message)
     region, boss, add = f.get("region"), f.get("from"), f.get("to")
+    owner = ADD_OF_RE.search(message)
+    if owner:
+        add_seen(sec, owner.group(1), add)
     if not boss or "required-adds of" not in message:
         return
     engage(sec, region, boss, t)
@@ -654,6 +723,7 @@ def _expedition_wipe(sec, t, message, level, near):
         if target not in sec.engage_lines.get(region, {}):
             pull_without_engage(sec, t, region, owner, message)
     disengage(sec, region, target)
+    close_retry(sec, target)
 
 
 @handles("REALM_EXPEDITION_TARGET_HEALED")
@@ -685,6 +755,7 @@ def _target_defeated(sec, t, message, level, near):
     f = kv(message)
     sec.bosses[f.get("region")].pop(f.get("target"), None)
     disengage(sec, f.get("region"), f.get("target"))
+    close_retry(sec, f.get("target"))
 
 
 @handles("REALM_EXPEDITION_STRANDED_REGROUP")
@@ -1263,6 +1334,17 @@ def raids(j: Judge, sec: Section, c):
         j.add("raids", "pull_70", "A pull waits for 70% of the living raid (#195)", CONTRADICTED, bad, pull_detail)
     else:
         j.seen_if("raids", "pull_70", "A pull waits for 70% of the living raid (#195)", "pull.at_needed", pull_detail)
+    retry_detail = (f"{c('retry.with_adds')} retry(ies) of a boss with adds showed its adds, {c('retry.no_adds')} showed "
+                    f"none (no addsSpawn lore line, add retarget or add damage)"
+                    + (f"; still open: {', '.join(sec.retry_watch)}" if sec.retry_watch else ""))
+    j.seen_if("raids", "retry_adds", "A retry of a boss that raises adds raises them again (FINAL_ENGAGE retry=True, sweep 6b)",
+              "retry.with_adds", retry_detail, against="retry.no_adds",
+              note="a boss whose adds stay dead by design is the log review's call")
+    never = j.ev("attempt.never_entered_fallen")
+    j.seen_if("raids", "attempt_contact",
+              f"No attempt ends \"never entered combat\" with {NEVER_ENTERED_FALLEN} or more fallen (ATTEMPT_ENDED, sweep 6b)",
+              "attempt.ended", f"{c('attempt.ended') + never.count} attempt end(s), {never.count} \"never entered combat\" "
+              f"with {NEVER_ENTERED_FALLEN}+ fallen", against="attempt.never_entered_fallen")
     j.seen_if("raids", "reset_no_attempt", "A boss that resets while the raid still stands costs no attempt (#195)",
               "raid.reset_no_attempt", f"{c('raid.reset_no_attempt')} reset(s)")
     j.seen_if("raids", "route_boss", "A living boss on a raid's way in is fought as an objective (#213)",

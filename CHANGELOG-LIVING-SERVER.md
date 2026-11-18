@@ -8,6 +8,37 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 6b: Fornfrusenen, Aroon, Easmarach (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 08:55-10:27, `DIAG-b1b6-sweep6b`). Nothing below is seen in game yet.
+- **Fornfrusenen's retry raised no shards** (Tuscaran Glacier, 09:15:44): after the 09:01 wipe a few raiders kept his
+  aggro list filled, so his full reset never ran. His two heals to full (the tether heal and the 30-35 s quiet heal) left
+  the shards disarmed, and the retry fought him alone (dead in 2.2 minutes). A heal to full with **no shard alive** now
+  re-arms him as the reset does, so the next pull raises fresh shards. A live shard is never removed mid-fight, and his
+  health, the shards' health, their number (2 or 3) and the quarter each takes are unchanged.
+- **Aroon's attempts were cut off between his Scaiths** (Galladoria, 09:04, 09:12 and 09:21: `never entered combat` with
+  14, 35 and 19 fallen; he was then set aside as unreached). While the route fought a Scaith, the add fight never counted
+  as contact, and the 120 s grace still ran from the `FINAL_ENGAGE`. A required add of the attempt's boss in combat is now
+  the attempt's contact, and the grace runs from the last moment one was seen in combat (a separate field: "killed since
+  the attempt began" still keys on the pull). The attempt is still judged 120 s after the last add fight, and a wipe still
+  scores. The add fight is seen at the start of each route turn, so when the route judges an open attempt before it
+  turns to another monster fighting the raid (#346), an attempt whose adds were fought is judged "left combat". In
+  attempt 1 no Scaith was fought for 2 min 21 s after Taes died, and that gap is not covered: it still ends the
+  attempt, but now as "left combat", which does not count towards "unreached".
+- **Easmarach was set aside 9 s after he became the target** (`MUSTER_STALLED minutes=105`): his 07:29-07:34 muster
+  record was reused 108 minutes later. A muster record that has not been looked at for a whole stall window (20 minutes)
+  now starts a fresh count. A shorter interruption keeps the clock, as Krondon's Beran fix needs (#195 follow-up).
+- **Not changed: Dra'argus set aside while fighting the raid** (Avalon City, 09:05:30). Both of his `TARGET_STATUS` lines
+  around it say `inCombat=False`, and the set-aside check counts only encounters in combat, so a raider's pet as his target
+  cannot be shown to be the cause. Left for a log with his add's target in it.
+- **Checker** (`played_check_log.py`): two new raid rows. "A retry of a boss that raises adds raises them again" is
+  Contradicted by a `FINAL_ENGAGE retry=True` on a boss whose earlier fight showed adds (an `addsSpawn` lore line, an add
+  retarget or reposition, a `required-add` switch), when the retry ends with none of them and no damage to a known add. "No attempt
+  ends "never entered combat" with 10 or more fallen" is Contradicted by such an `ATTEMPT_ENDED`. On `cb1b6.log.all`
+  (`--build b1b6846`) both are Contradicted: Fornfrusenen at 09:15:44, Aroon at 09:04:49 (3 such ends).
+- Tests: `UT_RaidSweep6b` (re-arm only with no shard alive, both heal branches, his numbers unchanged; add fight as
+  contact and the grace from it; old muster records; Krondon's clock kept) and `test_played_check_log.py` (the two rows).
+
 ## Bot chat audit fixes (tests only): lore and tales (1.2, 2026-11-18)
 
 Chat audit findings LORE-001 to LORE-029 and LOG-025 (owner's decision 10, 09:14: lore is never cut; stand-in storytellers).
