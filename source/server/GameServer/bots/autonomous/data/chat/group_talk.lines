@@ -13,14 +13,12 @@
 nice pull, smooth as anything
 good spot, this camp suits us
 these {monsters} are good xp for us
+@levels 1-20
 almost half a bubble a kill, not bad at all
+@levels 1-50
 need a quick med before the next one
 endurance is low, give me a moment
-ty for the drop, really appreciate it
 if anything drops for your class, take it
-sorry about that last one, my bad
-i nearly pulled the whole room there, oops
-no deaths yet, lets keep it that way
 good timing on the pulls, i barely have to sit
 this camp has my vote, lets stay a while
 this is the most fun i have had all week
@@ -51,7 +49,6 @@ should we push on or stay here a bit?
 @invites chat
 lead the way, i will follow
 @needs in_player_group
-{me} needs to log in 20, just a heads up
 @invites none
 brb sec
 brb, getting a drink
@@ -65,7 +62,7 @@ lets get out of the city, xp is waiting
 grabbing potions, then ready
 @invites ask_next
 so where are we heading?
-@invites ask
+@invites ask_ready
 anything you need from the vendors before we go?
 @invites chat
 @needs in_player_group,bag_full
@@ -100,16 +97,15 @@ lets move a bit closer to the spawn
 slow and steady, nobody dies
 good xp, lets stay till the camp gets old
 i need a few minutes, sitting for power
+@invites ask_ready
 camp check, everyone still here?
 same group tomorrow? this works
+@invites
 @invites ask_where
 where do we go after this camp?
 @invites ask_anyone
 anyone else almost out of potions?
-@invites ask
-split the coin at the end?
 @invites joke
-who broke the mez? be honest
 stop pulling yellows, we are not that good
 i call the next drop, kidding
 we need a better puller or a better healer, not sure which

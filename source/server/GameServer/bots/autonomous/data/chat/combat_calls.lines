@@ -1,5 +1,5 @@
 # Group calls in a fight with the player's group (kind combat, /group). The code picks the topic at the
-# matching moment: a pull, an add, out of power, low health, a big heal, mez and mez broken, root, stun,
+# matching moment: a pull, an add, out of power, low health, a big heal, a mez, root, stun,
 # taunt, a kill, a wipe, the rest after a fight, and a rez. Keep each topic strictly about its moment.
 # New writing (see docs/bot-voices/TALKING-UPDATE-CONTENT.md).
 
@@ -10,17 +10,9 @@
 @needs in_player_group
 incoming
 inc, get ready
-pulling, get set
 here it comes
-pull on the way
 one coming, on me
 inc 1
-heads up, pull inc
-ready? pulling now
-bringing it in
-@who Daredevil
-pulling the big one, trust me
-@who Leveler
 
 # ---- add: another monster joined ----------------------------------------------------------
 @kind combat
@@ -50,24 +42,29 @@ out of power
 oom, meleeing with my staff lol
 0 power, need a sec
 dry, nothing left
-@needs in_player_group,is_healer
+@needs in_player_group
+@class Cleric,Friar,Druid,Bard,Healer,Shaman
 oom, no more heals
 oom! careful
 last heal, then im oom
 oom, pot me or pray
 healer oom, slow down
+@class
 
 # ---- low_hp: the bot is hurt --------------------------------------------------------------
 @kind combat
 @topic low_hp
 @who *
-@needs in_player_group
+@needs in_player_group,!is_healer
 low!
 heal me
 need a heal
+@needs in_player_group
 hp low, help
 im dying here
+@needs in_player_group,!is_healer
 getting chewed up, heals pls
+@needs in_player_group
 almost dead
 dont let me die
 ouch, red hp
@@ -109,24 +106,6 @@ mez is in, no aoe
 mezzed, dont pbaoe
 mez on, fight the other one
 
-# ---- mez_broke: the mez is off -------------------------------------------------------------
-@kind combat
-@topic mez_broke
-@who *
-@needs in_player_group,is_support
-mez is off
-who broke my mez
-it woke up
-mez broke, remezzing
-@needs in_player_group,is_caster
-resisted, mez failed
-mez down, careful
-add is loose
-it resisted, watch out
-@needs in_player_group,is_support
-mez broke, its loose
-broke early, sorry
-
 # ---- root ---------------------------------------------------------------------------------
 @kind combat
 @topic root
@@ -166,9 +145,7 @@ taunting
 got it
 on me
 i have it
-off the healer, taunting
 taunt, come here you
-got aggro back
 mine now, heal me
 eyes on me
 
@@ -220,10 +197,6 @@ short break, heal up
 everyone sit
 endurance break
 give me a sec to med
-@needs in_player_group,is_support
-rebuff time
-rebuffing, one sec
-buffs before the next one
 
 # ---- rez: rezzing someone ------------------------------------------------------------------
 @kind combat
@@ -463,7 +436,7 @@ jail run, kill the 2 guards and come back
 @topic epic_jail_team_away
 @who *
 @needs in_player_group
-{target}'s grp is on the jail guards
+{target}s grp is on the jail guards
 jail team is going, we stay on {boss}
 someones clearing the jail, keep on him
 if ya get jailed, the guards will be dead soon
@@ -692,3 +665,159 @@ in the mobs, coming back
 ported away, dotted, running back
 got ported, need a heal
 sent off again, omw
+
+# ---- more calls for the core moments (chat audit CORPUS-C-048, 2026-11-18: 7 to 13 lines each). Pull and add lines never
+# say "pull" or "bringing" (the call comes once the fight has started) and count enemies only as the code checks them. ----
+@kind combat
+@who *
+@needs in_player_group
+@topic pull
+here we go
+heads up, inc
+inc inc
+get ready
+ready up
+eyes up, inc
+inc, stay tight
+ok here it is
+inc, careful
+on us now
+fight time
+here it is, go
+its coming
+@topic add
+another add
+add, careful
+add, watch it
+more coming
+add! heads up
+got company
+add incoming
+@topic kill
+nice one
+good fight
+down it goes
+gj everyone
+got that one
+thats one
+nice job
+@topic rest
+sit up
+quick break
+short rest
+break time
+catch your breath
+heal up then go
+wait for hp
+rest a sec
+ok, breather
+hp up first
+regen time
+let everyone catch up
+pause, then next
+@topic low_hp
+hurting here
+taking a beating
+argh, low
+low, low
+@needs in_player_group,!is_healer
+help!
+need heals!
+@needs in_player_group,is_healer
+its on me, healing myself
+healer getting hit, help
+get it off me, im the healer
+healer low, peel it
+@needs in_player_group
+@topic wipe
+get out, now
+too much, run
+save yourselves
+its a wipe, go
+run, dont look back
+abort, run
+go go, run
+out out out
+@topic root
+rooted, stay back
+root landed
+its stuck
+rooted, nuke it
+stuck in place
+root up
+rooted, range it
+dont break the root
+root on, careful
+rooted the other one
+@topic stun
+stunned, now
+its dazed, hit it
+stun, burn
+stunned, go go go
+stun is up
+its out, hit it
+stun on it
+stun, quick
+stunned it
+stunned, pile on
+@topic oom
+@needs in_player_group,is_caster
+no power left
+power is gone
+tapped out
+oom, need a min
+empty, sorry
+oom, cant nuke
+running on fumes
+out of juice
+oom oom
+@topic mez
+@needs in_player_group,is_support
+mez in
+add is mezzed
+mezzed, hands off it
+mez up on the add
+add asleep, leave it
+@needs in_player_group,is_caster
+dont wake the add
+mez on, no aoe pls
+add is out, mezzed
+mezzing the add
+mez landed
+@topic taunt
+@needs in_player_group,is_tank
+come here
+taunted
+mine
+got it on me
+its on me now
+i have it, hit it
+over here
+taunting it off
+back to me
+eyes here
+turn it to me
+holding it
+@topic heal_big
+@needs in_player_group,is_healer
+group heal up
+healing all
+big heal out
+everyone close, healing
+heals going out
+stack up, heal
+group heal, hold on
+healing the group
+heal inc, stay in
+@topic rez
+@needs in_player_group,can_rez
+rezzing you
+rez on you
+accept the rez
+rez coming up
+sec, rezzing you
+rezzing now
+hold on, rez
+rez cast, take it
+getting you up
+back up you go

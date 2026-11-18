@@ -6,14 +6,14 @@
 @kind guild
 @topic leveling
 @who *
-anyone want to duo for a bit? {level} {class}
-who needs xp tonight? lets get a guild group going
+duo anyone? {level} {class}
+who needs xp? guild group anyone?
 tips for {camp}? never been
 any healers around {level} want to group up?
 does anyone still need the {dungeon} quest?
-anyone know what the next good camp after {camp} is?
+whats the next good camp after {camp}?
 @needs xp_high
-{bubbles} bubbles in, so close i can taste it
+{bubbles} bubbles in, so close
 @needs xp_mid
 halfway through the level, the middle bubbles drag
 @needs xp_low
@@ -23,7 +23,7 @@ ding! {level}, finally
 @needs in_group
 in a pickup group, nice people so far
 @needs solo,outdoors
-soloing in {zone}, shout if you want company
+soloing in {zone}, company welcome
 @needs
 
 # ---------------- Social guilds ----------------
@@ -33,99 +33,104 @@ soloing in {zone}, shout if you want company
 afk 10, dinner
 brb, kids are up
 brb phone
-back, what did i miss?
+back, anything happen?
 anyone watch anything good lately?
 the dog wants out, brb
-my wife says hi to the guild lol
-long week at work, glad to be on
+my wife says hi lol
+long one at work, glad to be on
 @needs night
-up way too late again, work in 6 hours
+up way too late, work in 6 hours
 @needs day
 on my lunch break, just checking in
 @who Socialite
 @needs
-we should do a guild screenshot at the keep sometime
-who wants to do a guild run through all the capitals?
+guild screenshot at the keep sometime?
+who wants a guild run through the realm?
 @who *
-anyone remember the name of that bard who helped us last week?
-i owe whoever buffed me in town, ty stranger
+what was that bard called who helped us?
+ty to whoever buffed me in town
 
 # ---------------- RvR guilds ----------------
 @kind guild
 @topic rvr
 @who *
 who has purge? asking for our next fight
-assist train worked well last night, lets keep it
-anyone want to practice duels? need to learn my class
-how many are on for rvr? need a headcount
-remember to bring siege gear, we always forget
-who has the best group setup for 8v8?
+assisting the leader works, lets keep at it
+anyone up for practice duels?
+headcount for rvr, who is on?
+bring siege gear, we keep forgetting
+@invites ask
+who has the best group setup for rvr?
+@invites
 stealthers, please call what you see in /gu
 @needs defending
-{enemy} on {keep}, everyone who can, get out there
+{enemy} on {keep}, everyone get out there
 @needs attacking
 we are on {keep}, more bodies welcome
 @needs keep_won_recent
-we got {keep}! nice work everyone
+we got {keep}! well done everyone
 @needs relic_lost_recent
 lost {relic}, this is going to sting
 @needs relic_won_recent
 {relic} is ours, best night in ages
 @needs in_frontier
-out in the frontier, group up if you are near
+out in the frontier, group up?
 
 # ---------------- Raiding guilds ----------------
 @kind guild
 @topic raiding
 @who *
-raid at 8, bring potions and resists
 who has the most rez classes on tonight?
-need a raid leader for the next one, anyone?
-please read up on the dragon before saturday
-loot council or dice? lets vote
-who is pulling for the raid, same as last time?
+who wants to lead the next raid?
+need before greed or dice? lets vote
+who is pulling for the raid, same?
 everyone set your bind before the raid please
-raid tips: stay off the walls and watch the leader
+raid advice: stay off the walls
 @needs raid_won_recent
 we did it, {boss} is down!
 @needs raid_wiped_recent
 {boss} wiped us, regroup and think it over
 @needs df_ours
 @about place
+@invites ask_who
 we hold darkness falls, who needs seals?
+@invites
 
 # ---------------- Crafting guilds ----------------
 @kind guild
 @topic crafting
 @who *
+@invites ask
 who is our best weaponcrafter these days?
-anyone have a tailor who can do a full suit?
+@invites
+anyone know a tailor for a full suit?
 need someone to spellcraft my armor, will pay
 what does everyone charge for a {level} suit?
 anyone selling dyes cheap?
-best way to skill up fletching, anyone?
-crafting order: two bows and a quiver, who can?
-if you need potions, i know an alchemist
-who can make me a shield with our emblem on it?
-anyone tried dyeing leather black? does it look ok?
-whats the best metal to buy for skilling right now?
+fastest way to skill fletching?
+two bows and a quiver, who can?
+need potions? i know an alchemist
+anyone tried black dye on leather?
+best metal to buy for skilling?
 
 # ---------------- Any guild ----------------
 @kind guild
 @topic general
 @who *
 anyone have a spare horse ticket?
+@invites ask_on
 who is on? say hi
-guild meeting this weekend, sound good?
-anyone need help with a quest? i have time
-remember to update your guild notes
+@invites
+guild meeting soon, sound good?
+anyone need a hand with a quest?
+update your guild notes please
 new members, say hi when you get on
-who wants to help me level my alt this weekend?
+who wants to help level my alt?
 need a hand with my epic quest, anyone?
 @needs bag_full
 bags are bursting, anyone want some vendor trash?
 @needs just_died
-died to something i should have seen coming, lesson learned
+died to something i should have seen coming
 @needs in_capital
 in {capital} now, anyone need anything picked up?
 @needs in_dungeon

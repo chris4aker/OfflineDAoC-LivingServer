@@ -1,0 +1,312 @@
+# Class and spec talk (intent classtalk), class by class (chat audit CORPUS-C-003, 2026-11-18). A player's "is friar good?" or
+# "good paladin spec?" is answered only by a line that names the class asked about (AutonomousBotChatCoordinator: "classtalk
+# asked"), so every line here names its class. Before, most classes had one fixed remark and twelve had none. Each class
+# gets a few remarks, a little spec talk in its 1.65 lines (no numbers, no templates) and a view from the other realms.
+# Own-realm lines are @realm; a view of another realm's class is said by the other realms. New writing (see docs/bot-voices).
+
+@kind reply
+@intent classtalk
+@who *
+
+# ================================ Albion =================================
+@realm alb
+# ---- armsman ----
+armsmen hit hard and never die, what more do you want
+polearm armsman for groups, sword and board solo
+an armsman with a crossbow is a funny sight
+armsman is slow to level but rock solid
+spec your armsman in one weapon and shields
+# ---- paladin ----
+paladin chants carry a whole group
+paladins level slow, they are worth it in groups
+most paladins go chants and two handed
+a paladin keeps the group alive without a single heal spell
+paladin with a big shield, the tank everyone wants
+# ---- mercenary ----
+mercenary dual wield looks great and hits even better
+mercs need a good group, then they shine
+pick slash or thrust on your merc and stick to it
+mercenary is a fun first character
+mercs and their two weapons, never gets old
+mercenary is all damage, bring a healer
+# ---- reaver ----
+reavers are the strangest class we have, i love it
+flex and soulrending, thats a reaver
+reaver soulrending hurts casters a lot
+a reaver with a flail is scary up close
+reavers are rare, groups like the novelty
+reaver is not easy to play well
+# ---- scout ----
+scouts sit at range and shoot everything
+longbow and shields for a scout, then stealth
+scouts are great at pulling
+a scout solo is slow but safe
+scouts get blamed for every arrow in the frontier
+scout range is the best part of the class
+# ---- infiltrator ----
+infiltrators are a blast if you like stealth
+critical strike and envenom for an infiltrator
+infils level slow in groups, better solo
+infiltrator is all about the opener
+infils in the frontier hunt casters
+# ---- minstrel ----
+minstrels bring speed, everyone loves them
+minstrel instruments first, the rest after
+a minstrel mez saves a lot of groups
+minstrels are good at everything and great at nothing
+minstrel stealth is handy for getting places
+# ---- cleric ----
+clerics get a group any time of day
+rejuv cleric for groups, smite cleric for soloing
+cleric is the rez bot of the realm lol
+clerics are slow solo, but never lfg long
+enhancement clerics have the best buffs
+# ---- friar ----
+friars are gimped, everyone says so, nobody listens
+staff and rejuv for a friar
+a friar can heal, buff and hit, all a bit
+friars solo better than clerics
+friar is the most fun healer we have
+# ---- wizard ----
+wizards hit like a truck from range
+fire wizard is the usual pick
+earth wizards have a nice bolt
+ice wizards slow everything down
+a wizard dies fast, stay behind the tank
+# ---- theurgist ----
+theurgists level fast with their pets
+earth theurgist pets tank for you
+ice theurgist for damage
+theurgist is the easiest class to level imo
+wind theurgist is the oddball spec
+# ---- sorcerer ----
+sorcerer pets do the work early on
+sorcerers mez and charm, very handy
+mind sorcerer for mez, body for damage
+a sorc pet can carry you while leveling
+sorcerers are a bit gimped solo early on
+sorcs are the mezzers of albion
+# ---- cabalist ----
+cabalists are a solid pick for a first caster
+cabalist pets are tough
+matter cabalist for the damage over time
+body cabalist if you want the direct damage
+cabalists solo really well
+spirit cabalist is for the brave
+cabbies are underrated in groups
+# ---- necromancer ----
+necromancers are a weird class, you are the pet
+painworking necro for damage
+deathsight necro for the lifetaps
+necro pets hit hard, the necro hides
+a necro is slow at first, then it clicks
+
+# ================================ Midgard =================================
+@realm mid
+# ---- warrior ----
+warriors are the backbone of a mid group
+warrior with a hammer and shield, never dies
+a warrior spec is easy, one weapon plus shields
+warriors take hits better than anyone
+people call warriors gimped, they still tank everything
+warriors are slow solo, great in groups
+# ---- thane ----
+thanes hit with lightning and steel
+stormcalling thane is the usual pick
+a thane is a bit of a tank and a bit of a caster
+thanes are fun, never a dull fight
+hammer thane with stormcalling, cant go wrong
+# ---- skald ----
+skalds bring speed and hit hard
+battlesongs skald for groups
+skald with a big two hander is great
+a skald in the group means fast travel
+skalds are always welcome in rvr
+# ---- berserker ----
+berserkers go left axe and parry
+a berserker frenzy is something to see
+zerkers level fast if they have a healer
+berserker is the most fun melee in midgard
+berserkers die fast if nobody watches them
+# ---- savage ----
+savages are all hand to hand and fury
+hand to hand and savagery for a savage
+savage buffs eat your health, watch out
+a savage hits faster than anyone
+savages need a healer close by
+savage is a high risk class, i like it
+# ---- hunter ----
+hunters have pets and a bow, easy leveling
+spear hunter levels faster than bow hunter
+beastcraft hunter for the pet
+a hunter can solo nearly anything at level
+hunters pull great with the bow
+# ---- shadowblade ----
+shadowblades are scary in the frontier
+left axe shadowblade or critical strike, both fun
+shadowblades solo slow but steady
+a shadowblade opener can kill a caster outright
+sbs are everywhere in emain
+# ---- healer ----
+healers are the most wanted class in the realm
+pac healer for mez, mending for big heals
+a healer never waits long for a group
+healer solo is slow, get a group
+# ---- shaman ----
+shamans debuff and heal, very handy
+cave shaman for damage over time
+augmentation shaman for buffs
+a shaman can solo better than a healer
+shamans heal better than people think
+# ---- runemaster ----
+runemaster bolts from range are nasty
+darkness runemaster for nukes
+runecarving runemaster is the usual pick
+a runemaster dies fast but kills faster
+runemasters need a good tank
+# ---- spiritmaster ----
+spiritmasters live and die by their pet
+summoning spiritmaster for the big pets
+a spiritmaster is fun but squishy
+spiritmasters are deadly in the frontier
+sms level fine with their pets
+spiritmaster pets are the best part
+# ---- bonedancer ----
+bonedancer pets hit harder every level
+bone army bonedancer for the pets
+a bonedancer is a lot of buttons
+bonedancers solo really well
+bds are slow at first, then strong
+
+# ================================ Hibernia =================================
+@realm hib
+# ---- hero ----
+large weapons hero for damage
+a hero tanks better than anyone in hib
+celtic spear hero is fun too
+heroes level slow but they never die
+# ---- champion ----
+champions debuff and hit, very handy
+valor champion for the debuffs
+a champion is a tank with spells
+champions are underrated in groups
+champs solo better than heroes
+champion is fun if you like a bit of everything
+# ---- blademaster ----
+blademasters are the best melee in hib imo
+celtic dual blademaster, always
+a blademaster hits fast and often
+blademasters are always wanted in groups
+bms need a healer, but who doesnt
+# ---- warden ----
+wardens buff, heal and hit a little
+nurture warden for buffs, regrowth for heals
+a warden with a shield is tough
+wardens are called gimped, they still do fine
+wardens are good at helping groups
+wardens make a good backup for heals
+# ---- druid ----
+druids rez and heal, everyone wants one
+regrowth druid for groups
+nature druid for a pet to solo with
+a druid never waits long for a group
+druids are slow solo, great in groups
+# ---- bard ----
+bard speed is the best thing in hib
+music bard for mez and speed
+regrowth bard for the heals
+a bard is welcome in any group
+bards are the best class in hib imo
+# ---- ranger ----
+rangers sit at range and shoot all day
+recurve and pathfinding for a ranger
+a ranger solos well, slow but safe
+rangers are great pullers
+rangers get blamed for every arrow in emain
+celtic dual ranger is a thing too
+# ---- nightshade ----
+nightshades are fragile once they are seen
+critical strike nightshade for the opener
+nightshades solo slow but steady
+a nightshade kills casters fast
+nightshade is fun if you like stealth
+# ---- eldritch ----
+eldritch is the hardest hitting caster we have
+void eldritch for damage
+light eldritch is fine too
+an eldritch dies fast, stay back
+eldritches are always wanted for damage
+# ---- enchanter ----
+enchanters hit hard once the pet is up
+enchanters have good buffs
+an enchanter levels fast with a pet
+enchanters are underrated
+enchantments enchanter for the pet and buffs
+# ---- mentalist ----
+mentalist is a good mix of heals and damage
+mentalism mentalist for heals and mez
+a mentalist can do a bit of everything
+mentalists solo well
+mentalists are handy in any group
+# ---- animist ----
+animists hate being rushed, they need setup time
+arboreal animist for the pets
+verdant animist for turrets
+an animist solo is easy mode
+animists are great at camps
+# ---- valewalker ----
+valewalkers are rare, i never see one
+scythe and arboreal for a valewalker
+a valewalker hits like a falling tree
+valewalkers are a hard class to group
+vw is a fun class if you can find a group
+valewalker is a strange mix, i like it
+
+# ============== Other realms' classes, as their enemies see them ==============
+@realm mid
+alb clerics rez each other faster than we kill them
+alb scouts out of range, every single time
+alb infiltrators in every bush
+albion wizards hurt, kill them first
+alb minstrels and their speed, cant catch them
+alb paladins never die
+alb theurgists fill the field with pets
+alb necromancers are weird to fight
+hib bards mez the whole group
+hib druids keep everyone up, kill them first
+hib nightshades all over emain
+hib rangers shoot from nowhere
+hib eldritch nukes from far away
+hib heroes are hard to kill
+hib animist shrooms everywhere
+@realm alb
+mid healers mez the whole group
+mid shamans debuff everyone
+mid spiritmasters in emain are the worst
+mid shadowblades in every bush
+mid berserkers hit hard, kite them
+mid hunters shoot from nowhere
+mid skalds and their speed, cant catch them
+mid thanes hit with lightning
+hib bards mez and run, so annoying
+hib druids first, or nothing dies
+hib nightshades, watch your back
+hib blademasters hit fast, watch out
+hib enchanters and their pets
+hib champions debuff everyone
+@realm hib
+alb clerics rez the whole zerg back up
+alb scouts, always just out of reach
+albion infils behind every tree
+alb wizards first, always
+alb armsmen never die
+alb sorcerers mez the whole group
+alb mercenaries hit fast, watch out
+mid healers and their mez, ugh
+mid shamans make everything hurt more
+mid spiritmasters at the mg are the worst
+mid shadowblades behind every tree
+mid zerkers, dont let them reach you
+mid runemasters nuke from far away
+mid warriors never go down
+mid bonedancers bring an army

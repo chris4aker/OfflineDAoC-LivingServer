@@ -24,7 +24,7 @@ eh, its been that kind of day
 @topic complaint
 because nothing goes right today
 because the game hates me, clearly
-spawn rng, why else
+bad luck, why else
 @topic boast
 because ive been at it for weeks
 because i finally got lucky for once
@@ -165,3 +165,97 @@ dunno who exactly, just heard it
 whoever keeps camping my spot
 @topic boast
 me, who else lol
+
+# ---- more follow-ups by family (chat audit CORPUS-C-042, 2026-11-18: one or two lines a family, so "really?" after any lfg
+# line was always "yep, still looking"). ----
+@kind reply
+@who *
+@answers followup_why
+@topic complaint
+because thats my luck lately
+dunno, it just keeps happening
+@topic boast
+because i put the hours in
+lucky night i guess
+@topic joke
+because someone had to say it
+because it made me laugh
+@topic news
+thats what people were saying
+dunno, just passing it on
+@topic lfg
+cant level this one solo
+groups are faster, simple as that
+@topic rvr
+because someone has to hold the line
+they started it lol
+@topic chat
+just felt like saying it
+dunno, it was on my mind
+@answers followup_really
+@topic complaint
+yep, every time
+really, no joke, its awful
+@topic boast
+yep, saw it with my own eyes
+really, still grinning
+@topic joke
+lol not really
+ok maybe a little
+@topic news
+heard it from a few people
+yep, its all over faction
+@topic lfg
+yep, any group will do
+yep, still need one
+@topic rvr
+yep, saw them myself
+really, it was chaos
+@answers followup_how
+@topic complaint
+no idea, it just went wrong
+same as always, bad luck
+@topic joke
+years of practice lol
+it just comes to me
+@topic news
+someone said so in faction
+heard it around town
+@topic lfg
+asking in faction mostly
+just waiting it out
+@topic rvr
+numbers, mostly
+caught them off guard
+@answers followup_what
+@topic joke
+nvm, bad joke
+just kidding around
+@topic news
+what i heard, anyway
+just some news, nevermind
+@topic complaint
+nothing, just grumbling
+ignore me, bad night
+@topic lfg
+just looking for a group
+lfg, thats all
+@topic boast
+nothing, just a good night
+eh, a little win
+@topic rvr
+just frontier stuff
+the fighting out there
+@answers followup_who
+@topic rvr
+some big group of them
+too many to count
+@topic news
+people in faction
+dunno, word gets around
+@topic complaint
+nobody, just the game
+some random guy
+@topic boast
+me, of course
+all me lol

@@ -1,0 +1,281 @@
+# More lines for the reply sets a player hears most and that ran thin (chat audit CORPUS-C-048, 2026-11-18: farewell had
+# 11 lines any bot could say, rez 6, abuse 6), and the reply sets the audit found missing: a ready check ("pull?"), a "who
+# has / who is" question, a price check, how close a bot is to its level and a ding at 50. Every line fits ANY line of its
+# set and promises nothing the server does not do. New writing (see docs/bot-voices/WRITING-GUIDE.md).
+
+# ---- farewell -------------------------------------------------------------------------------
+@kind reply
+@intent farewell
+@who *
+cya {player}
+later, gl out there
+bye bye
+cya, dont be a stranger
+take care {player}
+later, ty for the company
+have a good one
+bye {player}
+cya soon
+later gator
+laters
+see ya {player}
+
+# ---- back -----------------------------------------------------------------------------------
+@kind reply
+@intent back
+@who *
+welcome back {player}
+wb, how was it?
+hey, wb
+back already? wb
+wb, perfect timing
+ah wb
+wb, all quiet here
+good, wb
+
+# ---- away -----------------------------------------------------------------------------------
+@kind reply
+@intent away
+@who *
+k, see ya in a bit
+np, take your time
+kk np
+no worries, go
+k, holler when back
+sure, go
+kk, hurry
+ok np
+
+# ---- ding -----------------------------------------------------------------------------------
+@kind reply
+@intent ding
+@who *
+gz, well earned
+grats, onward
+
+# ---- a ding at 50 (no "next one", no "keep that pace up") -------------------------------------
+@kind reply
+@answers player_dingcap
+@who *
+gz on 50!!
+50! huge gz
+grats, welcome to the cap
+gz, now the real game starts
+50, finally! gz
+big gz, enjoy the rps
+gz, time for the frontier
+gz, no more bubbles to watch
+
+# ---- congrats: someone congratulated the bot ---------------------------------------------------
+@kind reply
+@intent congrats
+@who *
+woo ty
+thanks {player}
+ty, been a long one
+hehe ty
+ty, feels good
+thx!
+ty, appreciate that
+ty, finally got there
+cheers {player}
+ty, the bubbles were slow
+ty ty ty
+aw ty
+
+# ---- rez: no promise to come, no "where?" ----------------------------------------------------
+@kind reply
+@intent rez
+@who *
+ugh, sorry {player}
+ouch, that stinks
+argh, sorry
+ugh, the run back
+hope a rezzer turns up soon
+nooo
+bad luck, sorry
+happens to all of us
+hope you didnt lose much xp
+dont release yet, someone may come by
+ouch, sorry, gl
+death is the worst part of this game
+sorry, hope someone is close
+unlucky, sorry
+
+# ---- abuse ----------------------------------------------------------------------------------
+@kind reply
+@intent abuse
+@who *
+wow, rude
+ok, whatever
+lol, ok then
+someone is cranky
+bad night huh
+heh, sure
+alright, alright, calm
+no need for that
+calm down lol
+easy, easy
+uh, ok
+and hello to you too
+not cool
+ok, moving on
+
+# ---- ask_on: "anyone on?" ---------------------------------------------------------------------
+@kind reply
+@answers ask_on
+@who *
+yep, still around
+im here
+yep, around
+here, killing stuff
+yo, here
+here here
+yep, still on
+around, whats up?
+
+# ---- ask_howareyou ----------------------------------------------------------------------------
+@kind reply
+@answers ask_howareyou
+@who *
+good, you?
+not bad, slow xp
+ok, bit tired
+pretty good, ty
+doing alright, you?
+eh, could be worse
+fine fine, you?
+good good
+
+# ---- player_goodnews --------------------------------------------------------------------------
+@kind reply
+@answers player_goodnews
+@who *
+nice nice!
+big grats
+ooh nice, gz
+finally, gz!
+gz, earned it
+sweet, nice one
+woo, nice
+nice, well done
+
+# ---- player_mishap ----------------------------------------------------------------------------
+@kind reply
+@answers player_mishap
+@who *
+lol, oops
+ha, been there
+classic lol
+ouch, happens
+lol nooo
+haha, smooth move
+heh, rough
+
+# ---- ask_ready: "pull?", "camp check, everyone still here?", "anything you need before we go?" (CORPUS-C-006) ----
+@kind reply
+@answers ask_ready
+@who *
+ya
+go
+rdy
+sec
+k, go
+yep here
+wait, sitting
+ready
+go go go
+yes
+one sec
+hold on
+gimme a sec
+ready when you are
+ready, go
+yea go
+almost
+sure thing, go
+need a sec
+yep, set
+go ahead
+all set
+
+# ---- ask_who: "who is main assist?", "who has their first realm ability?", "who needs seals?" (CORPUS-C-004) ----
+@kind reply
+@answers ask_who
+@who *
+me here
+not me
+i do
+nope
+nah, not me
+i can try
+me i think
+nope, not yet
+dunno, not me
+ask the others, not me
+oh, me
+not yet here
+
+# ---- ask_price: a price check ("pc thrustbender mantle?"), never an answer to a sale (CORPUS-C-007) ----
+@kind reply
+@answers ask_price
+@who *
+no idea, never seen one sell
+few gold maybe
+depends on the bonuses
+not much, they drop a lot
+couple gold i think
+never seen one go
+dunno, ask a crafter
+not a lot honestly
+more than i have lol
+worth a few gold
+hard to say, really
+depends on the quality
+cheap, people vendor those
+no clue on that one
+the exchange would tell you
+
+# ---- ask_xp: "how close are you to a level?", by how far into the level the bot really is (CORPUS-C-011) ----
+@kind reply
+@answers ask_xp
+@levels 1-49
+@who *
+@needs xp_low
+barely started this one
+just a bubble or so
+long way to go
+not close at all
+start of the bar, ugh
+hardly any yet
+@needs xp_mid
+halfway-ish
+middle of the bar
+around half
+getting there
+not halfway yet
+past half i think
+@needs xp_high
+almost there
+so close
+couple bubbles to go
+nearly, few more pulls
+one bubble left maybe
+very close now
+
+# ---- closing: the answer was a brush-off ("no idea sorry", "beats me", "dunno") (CORPUS-C-008) -----------
+@kind closing
+@answers ask_unknown
+@who *
+ok, np then
+ty anyway
+k, ill ask around
+np, ty
+ah well
+k, someone will know
+ok, worth asking
+heh ok
+fair, ty
+k, will ask in a bit
+oh well, ty
+np, ill find out
