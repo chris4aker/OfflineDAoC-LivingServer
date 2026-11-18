@@ -40,7 +40,7 @@ public static class RealmRaidRouteGate
     public static bool On = true;
 
     [ServerProperty("autonomous", "realm_raid_hold_epic_respawn",
-        "While a realm raid is inside a dungeon (or the dungeon its way in leads through), that dungeon's epic monsters with a respawn of ten minutes or more do not respawn; they come back once the raid has ended. False = their own timers, as before 1.2 build 3.", true)]
+        "While a realm raid is inside a dungeon (or the dungeon its way in leads through), that dungeon's epic monsters with a respawn of ten minutes or more do not respawn, nor in Darkness Falls the epics the raid killed as its targets on its way; they come back once the raid has ended. False = their own timers, as before 1.2 build 3.", true)]
     public static bool HoldEpicRespawn = true;
 
     /// <summary>Added to a boss's aggro range when its distance to the walk is judged.</summary>
@@ -144,7 +144,14 @@ public static class RealmRaidRouteGate
     /// found alive behind a raid that is already through is left to the raid's return waves.</summary>
     public static bool RaidStillBeforeIt(int livingInRaidDungeon, int livingRaid) => livingInRaidDungeon * 2 < livingRaid;
 
-    /// <summary>Whether a dead monster's respawn is held now (pure).</summary>
-    public static bool HoldsRespawn(bool on, bool epic, bool ownedByNoRealm, int respawnInterval, bool raidInItsDungeon) =>
-        on && epic && ownedByNoRealm && respawnInterval >= HeldRespawnMinimumMilliseconds && raidInItsDungeon;
+    /// <summary>
+    /// Whether a dead monster's respawn is held now (pure). <paramref name="killedOnRaidsWay"/>: a Darkness Falls epic the
+    /// running raid killed as its target (AutonomousRealmRaid.HoldKilledOnTheWay) is held whatever its respawn, so a
+    /// chthonic knight back in about 3 minutes no longer turns the raid back on its trail (DF knight loop, owner's PC,
+    /// build b1b6846, 2026-11-18: Chthonic Knight Ukobat killed 14 times in a row from 16:42:30 to 18:14:46). Its own
+    /// respawn timer is unchanged; it comes back once the raid has ended.
+    /// </summary>
+    public static bool HoldsRespawn(bool on, bool epic, bool ownedByNoRealm, int respawnInterval, bool raidInItsDungeon,
+        bool killedOnRaidsWay = false) =>
+        on && epic && ownedByNoRealm && raidInItsDungeon && (respawnInterval >= HeldRespawnMinimumMilliseconds || killedOnRaidsWay);
 }
