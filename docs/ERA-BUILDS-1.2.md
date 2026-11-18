@@ -159,6 +159,31 @@ points left, every source) is generated: [research/ERA-BUILDS-CHECK.md](research
 - When autotrain arrived is not in the scrape (no patch note for it); its earliest mention is a Classes of Camelot
   news item of September 2002.
 
+**The modern base, tuned back to 1.65 (owner, 2026-11-17 19:43)**
+
+"Use more recent discussions and templates as a base and then tune back towards what you directionally know about
+1.65." The research (PERIOD-BUILDS-RESEARCH, 2026-11-17) takes the Uthgard forum as the base: a patch 1.65 freeshard
+(Classic + Shrouded Isles, no ToA, CL or ML) with this server's spec budget, whose best autotrain case is this
+server's 77 points a line, plus period guides reposted there (ZAM Warden and Ranger guides, the June 2003 Mentalist
+TL report, the Champion TL guide). `source/tools/era_research.py` holds its templates with their links and dates.
+
+- Where its confidence for a class is high or medium, a build is the research's template, cited per build in the
+  data (`citations`, `base`, `confidence`, `note`); otherwise it is the posted build, fully trained as above. The
+  Necromancer (low) stays as posted with `sourced: false`.
+- Every autotrain line is at its free 12, listed in the build or not (Armsman Thrust, Warrior's other weapons, a melee
+  Scout's bow...), as on Uthgard and as a player has it here.
+- The fallback no longer refills a line it trimmed; a fill of more than 10 levels needs a source (`validate()`).
+- Where the research and the class review of 1f3dcefe2 differ, the research's Uthgard-sourced template is used and the
+  build's `note` says why: Warden Nurture 49 / Regrowth 33 / Blades 29 / Parry 3 (review: Blades 25 Parry 14);
+  Champion Valor 50 / Shields 42 / Blades 39 / Parry 6 (review: the base LW 50 Blades 36 Valor 35); Theurgist Earth 48 /
+  Cold 24 / Wind 6 (review: Earth 50 Cold 17 Wind 11); Infiltrator Thrust 50 / CS 39 / Stealth 36 / Envenom 36 / DW 27
+  (review: Stealth 48); melee Scout Longbows 21 / Stealth 35 (review: Longbows 36 Stealth 20).
+- 7 builds are added (Paladin hybrid two-hander, Mercenary DW/Shield, Cabalist tri-spec, Healer tri-spec, Shaman Aug
+  group, Berserker bi-spec, Valewalker 34 Arboreal), each with its source; weights move only where the research gives
+  a reason (Theurgist Air 0.5 -> 0.3, Healer Pac 48 0.45 -> 0.25, Mentalist Mana first...). Build ids are the draft's:
+  a build whose template changed keeps its id (and a new label), so saved plans keep reading.
+- The full table: [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+
 **Class shares** stay estimates. The scrape has no class counts: `7-realms-classes` holds ten Herald pages for
 Merlin (realm rankings, guild, alliance and crafter lists with character names), which the fetcher's rule excludes.
 

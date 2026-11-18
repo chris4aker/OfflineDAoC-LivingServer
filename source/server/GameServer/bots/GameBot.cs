@@ -2884,6 +2884,8 @@ namespace DOL.GS
                              $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
                              $"specializations=\"{string.Join(",", GetSpecList().Where(spec => spec.Trainable && spec.Level > 1).Select(spec => $"{spec.KeyName}:1->{spec.Level}"))}\" unspent={m_leftOverSpecPoints}");
             }
+            else if (!IsInMemoryOnly && !hiredCompanion && _lastAutonomousTrainedLevel > 1)
+                ApplySavedSpecPointRefund();
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -4180,7 +4182,40 @@ namespace DOL.GS
             }
         }
 
-        public void SpendSpecPoints(byte level, byte previousLevel)
+        /// <summary>
+        /// A saved gamebot's points are counted again as a player's are, from the level it last trained at
+        /// (GamePlayer.VerifySpecPoints; owner 2026-11-17: "companions and bots should be the same as a player"): every point
+        /// a player of its class has earned there - half levels included - less what its lines cost a player there, with
+        /// the autotrain levels free. When that is more than it saved (a bot trained before the autotrain refund, or before
+        /// the half levels, #326), it gets the difference; a trained point is never taken away. A bot standing at the level
+        /// it trained at spends the points now, as it would at the trainer (gamebots at 50 never train again); one with
+        /// levels still to train spends them at its next trainer visit.
+        /// </summary>
+        private void ApplySavedSpecPointRefund()
+        {
+            int trainedAt = _lastAutonomousTrainedLevel;
+            int owed = SavedSpecPointsOwed(CharacterClass.SpecPointsMultiplier, trainedAt,
+                GetSpecList().Where(spec => spec.Trainable).Select(spec => (spec.Level, IsAutoTrainLine(spec))));
+            if (owed <= m_leftOverSpecPoints)
+                return;
+            int saved = m_leftOverSpecPoints;
+            m_leftOverSpecPoints = owed;
+            if (trainedAt == Level && BotSpec != null)
+                SpendSpecPoints(Level, Level, addLevelPoints: false);
+            MarkAutonomousStateDirty();
+            log.Info($"AUTONOMOUS_SPEC_REFUND bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                     $"trainedAt={trainedAt} saved={saved} owed={owed} unspent={m_leftOverSpecPoints}");
+        }
+
+        /// <summary>The points a player of <paramref name="trainedAt"/> has left with these lines: earned less their cost
+        /// (autotrain lines free up to a quarter of the level). Pure.</summary>
+        public static int SavedSpecPointsOwed(int multiplier, int trainedAt, IEnumerable<(int Level, bool AutoTrain)> lines) =>
+            PlayerSpecPointTotal(multiplier, trainedAt, false) - lines.Sum(line => LineCost(line.Level, trainedAt, line.AutoTrain));
+
+        /// <summary>Spends the points of levels <paramref name="previousLevel"/>+1 to <paramref name="level"/> (and what is
+        /// left over) along the bot's plan. With <paramref name="addLevelPoints"/> false and the two levels equal, it spends
+        /// only what is left over, at the bot's level (a saved bot's refund).</summary>
+        public void SpendSpecPoints(byte level, byte previousLevel, bool addLevelPoints = true)
         {
             if (BotSpec == null)
                 return;
@@ -4203,7 +4238,13 @@ namespace DOL.GS
                 spendLeftOverPoints = false;
 
                 // The level's points, and what a player's autotrain lines get back at this level (every fourth).
-                int totalSpecPointsThisLevel = GetSpecPointsForLevel(i) + AutoTrainRefundAtLevel(i) + leftOverSpecPoints;
+                int totalSpecPointsThisLevel = (addLevelPoints ? GetSpecPointsForLevel(i) + AutoTrainRefundAtLevel(i) : 0) +
+                    leftOverSpecPoints;
+                // Every autotrain line at its free level, trained or not: a player pays nothing for it (GamePlayer
+                // .GetAutoTrainPoints), and 1.65 trained it by itself (research finding 1, review of 1f3dcefe2 item 3).
+                foreach (Specialization autoTrain in GetSpecList())
+                    if (autoTrain.Trainable && IsAutoTrainLine(autoTrain) && autoTrain.Level < AutoTrainLevel(i) && i >= 8)
+                        autoTrain.Level = AutoTrainLevel(i);
 
                 while (spentPoints)
                 {

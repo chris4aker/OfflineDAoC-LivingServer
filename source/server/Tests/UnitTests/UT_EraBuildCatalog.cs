@@ -206,14 +206,14 @@ namespace DOL.GS.Tests
         [Test]
         public void TheDerivedRatiosHaveTheClassFilesShape()
         {
-            EraBuild build = Catalog.GetBuild("infiltrator-thrust-env");   // Thrust 50, Envenom 36, Stealth 35, CS 34, DW 34
+            EraBuild build = Catalog.GetBuild("infiltrator-thrust-env");   // Thrust 50, CS 39, Envenom 36, Stealth 36, DW 27
             Assert.That(EraBuildCatalog.DerivedRatio(build, "Thrust"), Is.EqualTo(1f));
+            Assert.That(EraBuildCatalog.DerivedRatio(build, "Critical Strike"), Is.EqualTo(0.6f + 0.2f * 4 / 15f).Within(1e-5));
             Assert.That(EraBuildCatalog.DerivedRatio(build, "Envenom"), Is.EqualTo(0.6f + 0.2f / 15f).Within(1e-5));
-            Assert.That(EraBuildCatalog.DerivedRatio(build, "Stealth"), Is.EqualTo(0.6f).Within(1e-5));
-            Assert.That(EraBuildCatalog.DerivedRatio(build, "Critical Strike"), Is.EqualTo(34 / 50f * 0.6f).Within(1e-5));
-            Assert.That(EraBuildCatalog.DerivedRatio(build, "Dual Wield"), Is.EqualTo(34 / 50f * 0.6f).Within(1e-5));
-            EraBuild scout = Catalog.GetBuild("scout-thrust-shld");         // Thrust 50, Shields 42, Stealth 39
+            Assert.That(EraBuildCatalog.DerivedRatio(build, "Dual Wield"), Is.EqualTo(27 / 50f * 0.6f).Within(1e-5));
+            EraBuild scout = Catalog.GetBuild("scout-thrust-shld");         // Thrust 50, Shields 42, Stealth 35, Longbows 21
             Assert.That(EraBuildCatalog.DerivedRatio(scout, "Shields"), Is.EqualTo(0.6f + 0.2f * 7 / 15f).Within(1e-5));
+            Assert.That(EraBuildCatalog.DerivedRatio(scout, "Longbows"), Is.EqualTo(21 / 50f * 0.6f).Within(1e-5));
             Assert.That(EraBuildCatalog.DerivedRatio(Catalog.GetBuild("eldritch-mana-light"), "Void"), Is.Zero, "Void 4: at 50");
         }
 

@@ -273,6 +273,7 @@
         {
           "id": "armsman-pole-shld-slash",
           "label": "Polearm/Shield hybrid",
+          "draftLabel": "Polearm/Shield hybrid",
           "role": "tank",
           "use": "rvr",
           "family": "TwoHandHybrid",
@@ -283,7 +284,8 @@
             "Polearm": 50,
             "Shields": 42,
             "Slash": 39,
-            "Parry": 13
+            "Parry": 13,
+            "Thrust": 12
           },
           "posted": {
             "Polearm": 50,
@@ -291,12 +293,31 @@
             "Slash": 39,
             "Parry": 6
           },
-          "change": "filled: rest to Parry (6->13)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "filled: rest to Parry (6->13); autotrain at its free level: Thrust 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2018-05; uthgard.net 2017)",
+          "changeSourced": true,
           "pointsLeft": 11,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=99&t=46589",
+              "site": "uthgard.net",
+              "date": "2018-05",
+              "says": "\"standard spec\": 50 Polearm, 42 Shields, 39 Slash, 12 Thrust, 13 Parry"
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=99&t=39654",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"42 shield, 50 polearm, 39 slash and the rest into parry\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
@@ -314,6 +335,7 @@
         {
           "id": "armsman-2h-shld",
           "label": "Two-handed/Shield hybrid",
+          "draftLabel": "Two-handed/Shield hybrid",
           "role": "tank",
           "use": "rvr",
           "family": "TwoHandHybrid",
@@ -323,19 +345,26 @@
           "specs": {
             "Two Handed": 50,
             "Shields": 42,
-            "Slash": 41
+            "Slash": 41,
+            "Thrust": 13
           },
           "posted": {
             "Two Handed": 50,
             "Shields": 42,
             "Slash": 39
           },
-          "change": "filled: rest to Slash (39->41)",
+          "change": "filled: rest to Slash (39->41); autotrain at its free level: Thrust 1->13",
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
-          "pointsLeft": 20,
+          "pointsLeft": 7,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
@@ -353,6 +382,7 @@
         {
           "id": "armsman-shld-slash",
           "label": "Sword and board",
+          "draftLabel": "Sword and board",
           "role": "tank",
           "use": "both",
           "family": "OneHandAndShield",
@@ -362,19 +392,33 @@
           "specs": {
             "Shields": 50,
             "Slash": 50,
-            "Parry": 31
+            "Parry": 31,
+            "Thrust": 13
           },
           "posted": {
             "Shields": 50,
             "Slash": 50,
             "Parry": 28
           },
-          "change": "filled: rest to Parry (28->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 13,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (28->31); autotrain at its free level: Thrust 1->13",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2012)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=27062",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "\"50 Shield, 50 Pole, 39 ... rest Parry\", the 50/50 shield tank"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -392,6 +436,7 @@
         {
           "id": "armsman-pole-shld-thrust",
           "label": "Polearm/Shield hybrid (Thrust)",
+          "draftLabel": "Polearm/Shield hybrid (Thrust)",
           "role": "tank",
           "use": "rvr",
           "family": "TwoHandHybrid",
@@ -402,7 +447,8 @@
             "Polearm": 50,
             "Shields": 42,
             "Thrust": 39,
-            "Parry": 13
+            "Parry": 13,
+            "Slash": 12
           },
           "posted": {
             "Polearm": 50,
@@ -410,12 +456,25 @@
             "Thrust": 39,
             "Parry": 6
           },
-          "change": "filled: rest to Parry (6->13)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "filled: rest to Parry (6->13); autotrain at its free level: Slash 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2018-05)",
+          "changeSourced": true,
           "pointsLeft": 11,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=99&t=46589",
+              "site": "uthgard.net",
+              "date": "2018-05",
+              "says": "the standard spec with Thrust as the weapon, Slash on autotrain"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
@@ -454,12 +513,13 @@
         {
           "id": "paladin-chants-shld-parry",
           "label": "Chants/Shield/Parry",
+          "draftLabel": "Chants/Shield/Parry",
           "role": "tank-support",
           "use": "rvr",
           "family": "OneHandAndShield",
-          "weight": 0.4,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.40 -> 0.30",
           "specs": {
             "Chants": 48,
             "Shields": 42,
@@ -473,11 +533,24 @@
             "Slash": 29
           },
           "change": "filled: rest to Parry (30->32), Slash (29->32)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "changeBasis": "the rest in Slash, as the cited source puts it (uthgard.net 2013)",
+          "changeSourced": true,
           "pointsLeft": 2,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=30610",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"46 Chant 42 Shield 30 Parry 34 slash\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 55,
@@ -495,6 +568,7 @@
         {
           "id": "paladin-chants-shld-slash",
           "label": "Chants/Shield/Slash",
+          "draftLabel": "Chants/Shield/Slash",
           "role": "tank-support",
           "use": "both",
           "family": "OneHandAndShield",
@@ -514,11 +588,24 @@
             "Parry": 15
           },
           "change": "filled: rest to Parry (15->23)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2017)",
+          "changeSourced": true,
           "pointsLeft": 2,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=107&t=40117",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"48 chants 39 slash 42 shield ... 15 parry also without AT\" (23 with it)"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 55,
@@ -536,6 +623,7 @@
         {
           "id": "paladin-shld-chants",
           "label": "Full shield",
+          "draftLabel": "Full shield",
           "role": "tank-support",
           "use": "rvr",
           "family": "OneHandAndShield",
@@ -544,9 +632,9 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Shields": 50,
-            "Chants": 46,
+            "Chants": 48,
             "Slash": 29,
-            "Parry": 25
+            "Parry": 21
           },
           "posted": {
             "Shields": 50,
@@ -554,12 +642,25 @@
             "Slash": 29,
             "Parry": 19
           },
-          "change": "filled: rest to Parry (19->25)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 21,
-          "specsSourced": false,
+          "change": "research template: Chants 46->48, Parry 19->21",
+          "changeBasis": "the cited template (uthgard.net 2013)",
+          "changeSourced": true,
+          "pointsLeft": 20,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=30610",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"50 shield 48 chants 29 slash\", posted twice"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 12,
@@ -576,7 +677,8 @@
         },
         {
           "id": "paladin-chants-2h",
-          "label": "Two-handed chanter",
+          "label": "Two-handed chanter (full 2H)",
+          "draftLabel": "Two-handed chanter",
           "role": "tank-support",
           "use": "both",
           "family": "TwoHandHybrid",
@@ -584,21 +686,36 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
+            "Two Handed": 50,
             "Chants": 46,
-            "Two Handed": 44,
-            "Parry": 43
+            "Parry": 36,
+            "Slash": 12,
+            "Shields": 8
           },
           "posted": {
             "Chants": 46,
             "Two Handed": 44,
             "Parry": 20
           },
-          "change": "filled: rest to Parry (20->43)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 42,
-          "specsSourced": false,
+          "change": "research template: Two Handed 44->50, Parry 20->36, Shields 1->8; autotrain at its free level: Slash 1->12",
+          "changeBasis": "the cited template (uthgard.net 2018)",
+          "changeSourced": true,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=107&t=46177",
+              "site": "uthgard.net",
+              "date": "2018",
+              "says": "\"50 2h and just enough points in shield to get ... Guard and Engage\""
+            }
+          ],
+          "note": "the fill had put 23 points into Parry (43); no source has a 43-Parry two-hander",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
@@ -611,6 +728,59 @@
             "2003-09-08",
             "2002-11-09",
             "2002-08-13"
+          ]
+        },
+        {
+          "id": "paladin-chants-shld-2h",
+          "label": "Two-handed hybrid (Chants/Shield/2H)",
+          "draftLabel": "Two-handed hybrid (Chants/Shield/2H)",
+          "role": "tank-support",
+          "use": "rvr",
+          "family": "TwoHandHybrid",
+          "weight": 0.1,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Chants": 43,
+            "Shields": 42,
+            "Two Handed": 39,
+            "Slash": 31,
+            "Parry": 4
+          },
+          "posted": {
+            "Chants": 43,
+            "Shields": 42,
+            "Two Handed": 39,
+            "Slash": 31,
+            "Parry": 4
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=107&t=46177",
+              "site": "uthgard.net",
+              "date": "2018",
+              "says": "\"the most common spec for group RvR Paladins ... 39 2h, 42 Shield, 21+ Slash, 42+ Chants\"; one player posts 43/42/39/31/4"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?f=107&t=46177"
+          ],
+          "sourceDates": [
+            "2018"
           ]
         }
       ]
@@ -636,28 +806,43 @@
         {
           "id": "mercenary-dw-thrust",
           "label": "Thrust dual wield",
+          "draftLabel": "Thrust dual wield",
           "role": "melee-dps",
           "use": "rvr",
           "family": "DualWield",
-          "weight": 0.45,
+          "weight": 0.15,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.45 -> 0.15 (weight 0.45 -> 0.15: 0.30 to the new DW/Shield build)",
           "specs": {
             "Dual Wield": 50,
             "Thrust": 50,
-            "Parry": 31
+            "Parry": 31,
+            "Slash": 13
           },
           "posted": {
             "Dual Wield": 50,
             "Thrust": 50,
             "Parry": 10
           },
-          "change": "filled: rest to Parry (10->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 13,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (10->31); autotrain at its free level: Slash 1->13",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=45364",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 thrust 50 dw rest parry\""
+            }
+          ],
+          "note": "weight 0.45 -> 0.15: 0.30 to the new DW/Shield build",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
@@ -675,6 +860,7 @@
         {
           "id": "mercenary-dw-slash",
           "label": "Slash dual wield",
+          "draftLabel": "Slash dual wield",
           "role": "melee-dps",
           "use": "both",
           "family": "DualWield",
@@ -684,19 +870,33 @@
           "specs": {
             "Dual Wield": 50,
             "Slash": 50,
-            "Parry": 31
+            "Parry": 31,
+            "Thrust": 13
           },
           "posted": {
             "Dual Wield": 50,
             "Slash": 50,
             "Parry": 28
           },
-          "change": "filled: rest to Parry (28->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 13,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (28->31); autotrain at its free level: Thrust 1->13",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=45364",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 thrust 50 dw rest parry\", the same with Slash"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -714,6 +914,7 @@
         {
           "id": "mercenary-dw-parry",
           "label": "Defensive parry",
+          "draftLabel": "Defensive parry",
           "role": "melee-dps",
           "use": "rvr",
           "family": "DualWield",
@@ -723,19 +924,26 @@
           "specs": {
             "Dual Wield": 50,
             "Parry": 49,
-            "Slash": 32
+            "Slash": 32,
+            "Thrust": 14
           },
           "posted": {
             "Dual Wield": 50,
             "Parry": 49,
             "Slash": 29
           },
-          "change": "filled: rest to Slash (29->32)",
+          "change": "filled: rest to Slash (29->32); autotrain at its free level: Thrust 1->14",
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
-          "pointsLeft": 31,
+          "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "no modern source; one period post (kept at its weight)",
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -744,6 +952,67 @@
           ],
           "sourceDates": [
             "2003-02-26"
+          ]
+        },
+        {
+          "id": "mercenary-dw-shld",
+          "label": "Dual wield/Shield (slam)",
+          "draftLabel": "Dual wield/Shield (slam)",
+          "role": "melee-dps",
+          "use": "rvr",
+          "family": "DualWieldAndShield",
+          "weight": 0.3,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Dual Wield": 50,
+            "Shields": 42,
+            "Slash": 39,
+            "Parry": 13,
+            "Thrust": 12
+          },
+          "posted": {
+            "Dual Wield": 50,
+            "Shields": 42,
+            "Slash": 39,
+            "Parry": 13,
+            "Thrust": 12
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 11,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=104&t=41099",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"Mercenary should aim to have 42 Shield for RvR\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=45364",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50DW/42shield/3x weaponskill/rest parry\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?f=104&t=41099",
+            "https://www.uthgard.net/forum/viewtopic.php?f=60&t=45364"
+          ],
+          "sourceDates": [
+            "2017",
+            "2017"
           ]
         }
       ]
@@ -770,6 +1039,7 @@
         {
           "id": "reaver-flex-shld",
           "label": "Flex/Shield/Soulrending",
+          "draftLabel": "Flex/Shield/Soulrending",
           "role": "tank",
           "use": "both",
           "family": "None",
@@ -780,7 +1050,8 @@
             "Flexible": 50,
             "Shields": 42,
             "Soulrending": 39,
-            "Parry": 13
+            "Parry": 13,
+            "Slash": 12
           },
           "posted": {
             "Flexible": 50,
@@ -788,12 +1059,31 @@
             "Soulrending": 39,
             "Parry": 6
           },
-          "change": "filled: rest to Parry (6->13)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "filled: rest to Parry (6->13); autotrain at its free level: Slash 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2010; uthgard.net 2011)",
+          "changeSourced": true,
           "pointsLeft": 11,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=20071",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"The one and only reaver spec is 50 flex / 42 shield / 36 soulrending / rest parry\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=23586",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "50/42/36/15 and 50/42/41/6"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
@@ -811,6 +1101,7 @@
         {
           "id": "reaver-soul-flex",
           "label": "Soulrending focus",
+          "draftLabel": "Soulrending focus",
           "role": "tank",
           "use": "rvr",
           "family": "SoulrendingReaver",
@@ -821,7 +1112,8 @@
             "Soulrending": 45,
             "Flexible": 44,
             "Shields": 42,
-            "Parry": 15
+            "Parry": 15,
+            "Slash": 12
           },
           "posted": {
             "Soulrending": 45,
@@ -829,12 +1121,25 @@
             "Shields": 42,
             "Parry": 10
           },
-          "change": "filled: rest to Parry (10->15)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "filled: rest to Parry (10->15); autotrain at its free level: Slash 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2010)",
+          "changeSourced": true,
           "pointsLeft": 12,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=20071",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"44 flex ... 45 soul ... 42 shield\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -864,6 +1169,7 @@
         {
           "id": "cleric-rejuv-enh",
           "label": "Rejuvenation healer",
+          "draftLabel": "Rejuvenation healer",
           "role": "healer",
           "use": "rvr",
           "family": "RejuvCleric",
@@ -884,8 +1190,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=29332",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"41-40rej/35-36enh\"; the period comment \"45+12 rejuv, 28+7enh\" backs ours"
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -911,6 +1230,7 @@
         {
           "id": "cleric-enh-rejuv",
           "label": "Enhancement/Rejuv (spec buffs)",
+          "draftLabel": "Enhancement/Rejuv (spec buffs)",
           "role": "healer-buffer",
           "use": "both",
           "family": "EnhanceCleric",
@@ -931,8 +1251,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 1,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=29332",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"42 enhance ... 33 rejuv ... 7 smite\"; \"40enhance 36rejuv\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -958,6 +1291,7 @@
         {
           "id": "cleric-smite-rejuv",
           "label": "Smite",
+          "draftLabel": "Smite",
           "role": "assist-dd",
           "use": "levelling",
           "family": "SmiteCleric",
@@ -978,8 +1312,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=42177",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"46 smite / 27 enhance / 8 rejuv\"; the period comment says 48/23/7"
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1023,6 +1370,7 @@
         {
           "id": "friar-enh-staff44",
           "label": "Enhance/Staff",
+          "draftLabel": "Enhance/Staff",
           "role": "support-melee",
           "use": "both",
           "family": "EnhanceFriar",
@@ -1045,8 +1393,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=46728",
+              "site": "uthgard.net",
+              "date": "2018",
+              "says": "\"44 staff, 46 enh, 15 rejuv, 8 parry\"; \"drop enh to 45 and boost parry to 12\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
@@ -1064,6 +1425,7 @@
         {
           "id": "friar-enh-staff39",
           "label": "Enhance/Staff/Rejuv",
+          "draftLabel": "Enhance/Staff/Rejuv",
           "role": "support-melee",
           "use": "rvr",
           "family": "EnhanceFriar",
@@ -1086,8 +1448,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 9,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=19734",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"39 Staff 47 Enhancement 18 Rejuvenation 16 Parry\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 31,
@@ -1122,6 +1497,7 @@
         {
           "id": "minstrel-inst-stl",
           "label": "Instruments/Stealth/Slash",
+          "draftLabel": "Instruments/Stealth/Slash",
           "role": "cc-support",
           "use": "rvr",
           "family": "None",
@@ -1138,12 +1514,31 @@
             "Stealth": 50,
             "Slash": 29
           },
-          "change": "trimmed to budget: Stealth 50->33; rest to Slash (29->30)",
-          "changeBasis": "'No reason to take Stealth to 50, the highest would be around 35 or so' and '35 is as high as you need to bring stealth' (2004-10-21/22, said of an Infiltrator) (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "change": "research template: Stealth 50->33, Slash 29->30",
+          "changeBasis": "the cited template (uthgard.net 2016; uthgard.net 2010)",
           "changeSourced": true,
           "pointsLeft": 2,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=105&t=38323",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 Inst / 29 Slash / 33 Stealth\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=19081",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"29 Slash (30 with AT) 31 Stealth (33 with AT)\""
+            }
+          ],
+          "note": "the trim to Stealth 33 now rests on Uthgard, not on a 2004 Infiltrator quote",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1168,7 +1563,8 @@
         },
         {
           "id": "minstrel-inst-slash",
-          "label": "Instruments/Slash (no stealth)",
+          "label": "Instruments/Slash (solo)",
+          "draftLabel": "Instruments/Slash (no stealth)",
           "role": "cc-support",
           "use": "both",
           "family": "None",
@@ -1176,21 +1572,34 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Instruments": 44,
-            "Slash": 44,
-            "Stealth": 24
+            "Instruments": 50,
+            "Slash": 37,
+            "Stealth": 25
           },
           "posted": {
             "Instruments": 44,
             "Slash": 44,
             "Stealth": 28
           },
-          "change": "trimmed to budget: Stealth 28->24",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 23,
-          "specsSourced": false,
+          "change": "research template: Instruments 44->50, Slash 44->37, Stealth 28->25",
+          "changeBasis": "the cited template (uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=105&t=38323",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 Inst / 37 Slash / 25 Stealth (minimum for wall climb)\"; \"50 Instruments is a must\""
+            }
+          ],
+          "note": "the draft label said \"no stealth\" with Stealth 24-28; the solo template keeps 25 for climbing",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -1207,7 +1616,8 @@
         },
         {
           "id": "minstrel-inst-thrust",
-          "label": "Instruments/Thrust",
+          "label": "Instruments/Thrust (8v8)",
+          "draftLabel": "Instruments/Thrust",
           "role": "cc-support",
           "use": "both",
           "family": "None",
@@ -1215,21 +1625,34 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Instruments": 44,
-            "Thrust": 39,
-            "Stealth": 32
+            "Instruments": 50,
+            "Thrust": 44,
+            "Stealth": 8
           },
           "posted": {
             "Instruments": 44,
             "Thrust": 39,
             "Stealth": 29
           },
-          "change": "filled: rest to Stealth (29->32)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 5,
-          "specsSourced": false,
+          "change": "research template: Instruments 44->50, Thrust 39->44, Stealth 29->8",
+          "changeBasis": "the cited template (uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=105&t=38323",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"8v8 spec = 50 Instruments / 44 Thrust / 8 Stealth\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -1264,6 +1687,7 @@
         {
           "id": "infiltrator-thrust-env",
           "label": "Thrust/CS assassin",
+          "draftLabel": "Thrust/CS assassin",
           "role": "stealther",
           "use": "rvr",
           "family": "None",
@@ -1272,10 +1696,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Thrust": 50,
+            "Critical Strike": 39,
             "Envenom": 36,
-            "Stealth": 35,
-            "Critical Strike": 34,
-            "Dual Wield": 34
+            "Stealth": 36,
+            "Dual Wield": 27
           },
           "posted": {
             "Thrust": 50,
@@ -1284,12 +1708,31 @@
             "Critical Strike": 34,
             "Dual Wield": 10
           },
-          "change": "filled: rest to Dual Wield (10->34)",
-          "changeBasis": "'rest dual wield' (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "change": "research template: Critical Strike 34->39, Stealth 35->36, Dual Wield 10->27",
+          "changeBasis": "the cited template (uthgard.net 2017; uthgard.net 2012)",
           "changeSourced": true,
-          "pointsLeft": 27,
-          "specsSourced": false,
+          "pointsLeft": 23,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=103&t=41180",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 thrust 39 CS 36 stealth 36 envenom 27 DW\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=25840",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "50/39/35/35/27; \"35 + 11 (items) + 4 (from rr5) = 50\" stealth"
+            }
+          ],
+          "note": "the class review proposed Stealth 48 to tell it from the 5-spec; every Uthgard 1.65 spec stops Stealth at 33-39, so the research's CS 39 / DW 27 template is used: it differs from the 5-spec in CS and DW",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1322,6 +1765,7 @@
         {
           "id": "infiltrator-thrust-dw",
           "label": "Thrust/DW \"5-spec\"",
+          "draftLabel": "Thrust/DW \"5-spec\"",
           "role": "stealther",
           "use": "rvr",
           "family": "None",
@@ -1343,11 +1787,24 @@
             "Envenom": 33
           },
           "change": "filled: rest to Critical Strike (34->35), Envenom (33->34)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "changeBasis": "the rest in Dual Wield, as the cited source puts it (uthgard.net 2016)",
+          "changeSourced": true,
           "pointsLeft": 28,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=103&t=37321",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 thrust / 44 cs\" with 33 stealth; \"Higher RR drop Env/Stealth for DW\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1373,6 +1830,7 @@
         {
           "id": "infiltrator-slash-env",
           "label": "Slash/CS assassin",
+          "draftLabel": "Slash/CS assassin",
           "role": "stealther",
           "use": "both",
           "family": "None",
@@ -1381,10 +1839,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Slash": 50,
+            "Critical Strike": 39,
             "Envenom": 36,
-            "Stealth": 35,
-            "Critical Strike": 34,
-            "Dual Wield": 34
+            "Stealth": 36,
+            "Dual Wield": 27
           },
           "posted": {
             "Slash": 50,
@@ -1393,12 +1851,25 @@
             "Critical Strike": 34,
             "Dual Wield": 10
           },
-          "change": "filled: rest to Dual Wield (10->34)",
-          "changeBasis": "'rest dual wield' (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "change": "research template: Critical Strike 34->39, Stealth 35->36, Dual Wield 10->27",
+          "changeBasis": "the cited template (uthgard.net 2017)",
           "changeSourced": true,
-          "pointsLeft": 27,
-          "specsSourced": false,
+          "pointsLeft": 23,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=103&t=41180",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "the thrust assassin template with Slash (Allakhazam 2004: \"briton slash infs\")"
+            }
+          ],
+          "note": "as Thrust/CS assassin",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1449,6 +1920,7 @@
         {
           "id": "scout-bow-shld-stl-thrust",
           "label": "Longbow archer",
+          "draftLabel": "Longbow archer",
           "role": "archer",
           "use": "both",
           "family": "None",
@@ -1468,11 +1940,30 @@
             "Thrust": 21
           },
           "change": "filled: rest to Thrust (21->24)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "changeBasis": "the rest in Thrust, as the cited source puts it (uthgard.net 2010; uthgard.net 2010)",
+          "changeSourced": true,
           "pointsLeft": 21,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=16466",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"42 shield 50 bow 35 stealth\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=19921",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"50 bow, 42 shield, 35 stealth, rest weapon\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 38,
@@ -1490,6 +1981,7 @@
         {
           "id": "scout-bow-shld-stl-slash",
           "label": "Longbow/Slash",
+          "draftLabel": "Longbow/Slash",
           "role": "archer",
           "use": "rvr",
           "family": "None",
@@ -1509,11 +2001,24 @@
             "Slash": 29
           },
           "change": "filled: rest to Slash (29->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "changeBasis": "the rest in Slash, as the cited source puts it (uthgard.net 2010)",
+          "changeSourced": true,
           "pointsLeft": 19,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=16466",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"45 Bow 42 Shield 36 Stealth\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 52,
@@ -1531,6 +2036,7 @@
         {
           "id": "scout-thrust-shld",
           "label": "Melee scout",
+          "draftLabel": "Melee scout",
           "role": "melee-dps",
           "use": "levelling",
           "family": "None",
@@ -1540,19 +2046,33 @@
           "specs": {
             "Thrust": 50,
             "Shields": 42,
-            "Stealth": 39
+            "Stealth": 35,
+            "Longbows": 21
           },
           "posted": {
             "Thrust": 50,
             "Shields": 42,
             "Stealth": 20
           },
-          "change": "filled: rest to Stealth (20->39)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 24,
-          "specsSourced": false,
+          "change": "research template: Stealth 20->35; autotrain at its free level: Longbows 1->21",
+          "changeBasis": "the cited template (uthgard.net 2010)",
+          "changeSourced": true,
+          "pointsLeft": 21,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=19921",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"50 weapon, 42 shield, 35 stealth, rest bow\"; \"leave bow on autotrain\""
+            }
+          ],
+          "note": "the fill had left Longbows at 1 (a Scout that can't shoot); the class review proposed Longbows 36 Stealth 20, the research's source has Stealth 35 and the rest in the bow",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -1580,12 +2100,13 @@
         {
           "id": "theurgist-wind-earth",
           "label": "Air",
+          "draftLabel": "Air",
           "role": "assist-dd",
           "use": "rvr",
           "family": "AirTheur",
-          "weight": 0.5,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.50 -> 0.30 (weight 0.5 -> 0.3: Air is the solo spec on a 1.65 server)",
           "specs": {
             "Wind Magic": 45,
             "Earth Magic": 26,
@@ -1600,8 +2121,27 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 6,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=111&t=36641",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"45 Air / 29 Earth\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=30972",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"45 air is a solo spec. It doesnt work in grps\""
+            }
+          ],
+          "note": "weight 0.5 -> 0.3: Air is the solo spec on a 1.65 server",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -1621,28 +2161,48 @@
         {
           "id": "theurgist-earth-cold",
           "label": "Earth (PBT)",
+          "draftLabel": "Earth (PBT)",
           "role": "support-pbt",
           "use": "rvr",
           "family": "EarthTheur",
-          "weight": 0.3,
+          "weight": 0.4,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.30 -> 0.40",
           "specs": {
-            "Earth Magic": 50,
-            "Cold Magic": 20,
-            "Wind Magic": 4
+            "Earth Magic": 48,
+            "Cold Magic": 24,
+            "Wind Magic": 6
           },
           "posted": {
             "Earth Magic": 50,
             "Cold Magic": 26,
             "Wind Magic": 11
           },
-          "change": "trimmed to budget: Cold Magic 26->20, Wind Magic 11->4",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 2,
-          "specsSourced": false,
+          "change": "research template: Earth Magic 50->48, Cold Magic 26->24, Wind Magic 11->6",
+          "changeBasis": "the cited template (uthgard.net 2016; uthgard.net 2013)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=111&t=36641",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"48earth rest ice or wind that's the most common 8v8 spec\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=30972",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"go 48 Earth rest whatever for speed6 earthlords and red pbt\""
+            }
+          ],
+          "note": "the trim had cut Wind to 4 (no stop); the class review proposed the base Earth 50 Cold 17 Wind 11, the research's 1.65 group spec is Earth 48 with the rest in Ice",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
@@ -1660,12 +2220,13 @@
         {
           "id": "theurgist-cold-earth",
           "label": "Ice/Earth",
+          "draftLabel": "Ice/Earth",
           "role": "cc-root",
-          "use": "levelling",
+          "use": "both",
           "family": "IceTheur",
-          "weight": 0.2,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.20 -> 0.30",
           "specs": {
             "Cold Magic": 41,
             "Earth Magic": 35
@@ -1678,8 +2239,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=111&t=36641",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"41 Ice / 35 Earth is probably the most common for 8-man RVR\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -1709,6 +2283,7 @@
         {
           "id": "wizard-fire-earth",
           "label": "Fire",
+          "draftLabel": "Fire",
           "role": "assist-dd",
           "use": "both",
           "family": "FireWiz",
@@ -1729,8 +2304,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 6,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=112&t=41544",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"Wizard Specs in Uthgard 1.65\": \"50 Fire / 19 Earth / 7 Ice\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -1750,6 +2338,7 @@
         {
           "id": "wizard-cold-earth",
           "label": "Ice PBAE",
+          "draftLabel": "Ice PBAE",
           "role": "pbae",
           "use": "rvr",
           "family": "IceWiz",
@@ -1758,20 +2347,33 @@
           "weightBasis": "estimate, D8: 0.35 -> 0.15 (one post; the threads say Ice wizards were rare)",
           "specs": {
             "Cold Magic": 50,
-            "Earth Magic": 14,
-            "Fire Magic": 14
+            "Earth Magic": 20,
+            "Fire Magic": 4
           },
           "posted": {
             "Cold Magic": 50,
             "Earth Magic": 20,
             "Fire Magic": 20
           },
-          "change": "trimmed to budget: Earth Magic 20->14, Fire Magic 20->14",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 12,
-          "specsSourced": false,
+          "change": "research template: Fire Magic 20->4",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=112&t=41544",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 Ice / 20 Earth\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -1787,6 +2389,7 @@
         {
           "id": "wizard-earth-cold",
           "label": "Earth",
+          "draftLabel": "Earth",
           "role": "assist-dd",
           "use": "levelling",
           "family": "EarthWiz",
@@ -1795,20 +2398,33 @@
           "weightBasis": "estimate, D8: 0.20 -> 0.25",
           "specs": {
             "Earth Magic": 48,
-            "Cold Magic": 24,
-            "Fire Magic": 6
+            "Fire Magic": 23,
+            "Cold Magic": 9
           },
           "posted": {
             "Earth Magic": 48,
             "Cold Magic": 24,
             "Fire Magic": 4
           },
-          "change": "filled: rest to Fire Magic (4->6)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "research template: Fire Magic 4->23, Cold Magic 24->9",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
           "pointsLeft": 0,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=112&t=41544",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"48 Earth / 23 Fire / 7 Ice\"; \"Earth is not good at this patch level\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -1838,6 +2454,7 @@
         {
           "id": "sorcerer-mind-body",
           "label": "Mind/Body (AE mez)",
+          "draftLabel": "Mind/Body (AE mez)",
           "role": "cc-mezzer",
           "use": "rvr",
           "family": "MindSorc",
@@ -1856,8 +2473,27 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 10,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=37922",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"If you want to rvr (8-man / zergs), I'd suggest 44 mind / 31 body\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=24637",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"44mind/31 body seems to be the standard at higher rr\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 24,
@@ -1875,6 +2511,7 @@
         {
           "id": "sorcerer-body-mind",
           "label": "Body/Mind",
+          "draftLabel": "Body/Mind",
           "role": "assist-dd",
           "use": "rvr",
           "family": "BodySorc",
@@ -1893,8 +2530,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=60&t=24637",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"split spec (39 body/37 mind) ... is the standard sorc spec\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1920,6 +2570,7 @@
         {
           "id": "sorcerer-matter-mind",
           "label": "Matter/Mind",
+          "draftLabel": "Matter/Mind",
           "role": "assist-dd",
           "use": "levelling",
           "family": "MatterSorc",
@@ -1938,8 +2589,14 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "no modern source; kept as the levelling build",
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -1979,6 +2636,7 @@
         {
           "id": "cabalist-matter-body",
           "label": "Matter/Body",
+          "draftLabel": "Matter/Body",
           "role": "pet-dot",
           "use": "both",
           "family": "MatterCab",
@@ -1999,8 +2657,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=100&t=40382",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"The classic matter cab is 46 matter 28 body and 4 spirit for pet recycle\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -2018,12 +2689,13 @@
         {
           "id": "cabalist-matter-spirit",
           "label": "Matter/Spirit",
+          "draftLabel": "Matter/Spirit",
           "role": "pet-dot",
           "use": "both",
           "family": "MatterCab",
-          "weight": 0.3,
+          "weight": 0.15,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.30 -> 0.15",
           "specs": {
             "Matter Magic": 46,
             "Spirit Magic": 28
@@ -2036,8 +2708,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 9,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "no modern source names it; weight 0.30 -> 0.15, the rest to the RvR tri-spec",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -2053,6 +2731,7 @@
         {
           "id": "cabalist-body-matter",
           "label": "Body",
+          "draftLabel": "Body",
           "role": "assist-dd",
           "use": "rvr",
           "family": "BodyCab",
@@ -2071,8 +2750,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=100&t=36855",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"46 body 25 matter\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -2088,6 +2780,7 @@
         {
           "id": "cabalist-spirit-body",
           "label": "Spirit/Body",
+          "draftLabel": "Spirit/Body",
           "role": "pet",
           "use": "levelling",
           "family": "SpiritCab",
@@ -2095,21 +2788,34 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Spirit Magic": 37,
-            "Body Magic": 34,
-            "Matter Magic": 19
+            "Spirit Magic": 46,
+            "Body Magic": 28,
+            "Matter Magic": 4
           },
           "posted": {
             "Spirit Magic": 37,
             "Body Magic": 34,
             "Matter Magic": 19
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 9,
+          "change": "research template: Spirit Magic 37->46, Body Magic 34->28, Matter Magic 19->4",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=100&t=40382",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"The classic spirit cab is 46 spirit 28 body\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -2118,6 +2824,55 @@
           ],
           "sourceDates": [
             "2003-07-28"
+          ]
+        },
+        {
+          "id": "cabalist-body-spirit-matter",
+          "label": "RvR tri-spec",
+          "draftLabel": "RvR tri-spec",
+          "role": "assist-dd",
+          "use": "rvr",
+          "family": "BodyCab",
+          "weight": 0.15,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Body Magic": 34,
+            "Spirit Magic": 33,
+            "Matter Magic": 25
+          },
+          "posted": {
+            "Body Magic": 34,
+            "Spirit Magic": 33,
+            "Matter Magic": 25
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 16,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=100&t=41486",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"many RvR Cabalists choose Tri-Specs like 25 Matter, 34 Body, 33 Spirit\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?f=100&t=41486"
+          ],
+          "sourceDates": [
+            "2017"
           ]
         }
       ]
@@ -2137,6 +2892,7 @@
         {
           "id": "necromancer-dsight-dserv",
           "label": "Deathsight",
+          "draftLabel": "Deathsight",
           "role": "pet-dd",
           "use": "both",
           "family": "DeathsightNecro",
@@ -2157,8 +2913,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
-          "specsSourced": true,
+          "sourced": false,
+          "confidence": "low",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
+          "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -2172,6 +2934,7 @@
         {
           "id": "necromancer-dserv-dsight",
           "label": "Death Servant",
+          "draftLabel": "Death Servant",
           "role": "pet",
           "use": "levelling",
           "family": "DeathServantNecro",
@@ -2192,8 +2955,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 8,
-          "specsSourced": true,
+          "sourced": false,
+          "confidence": "low",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
+          "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -2209,6 +2978,7 @@
         {
           "id": "necromancer-dsight-pain",
           "label": "Deathsight/Painworking",
+          "draftLabel": "Deathsight/Painworking",
           "role": "pet-dd",
           "use": "rvr",
           "family": "DeathsightNecro",
@@ -2229,8 +2999,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
-          "specsSourced": true,
+          "sourced": false,
+          "confidence": "low",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
+          "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -2258,12 +3034,13 @@
         {
           "id": "healer-pac-mend-aug",
           "label": "Pacification (48 Pac)",
+          "draftLabel": "Pacification (48 Pac)",
           "role": "healer-cc",
           "use": "rvr",
           "family": "PacHealer",
-          "weight": 0.45,
+          "weight": 0.25,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.45 -> 0.25 (weight 0.45 -> 0.25: the period posts favour it, the 1.65 server calls Pac 48 a waste)",
           "specs": {
             "Pacification": 48,
             "Mending": 24,
@@ -2278,8 +3055,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=22160",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"48 in pac for 10 sec stun instead 9 sec is waste of points\""
+            }
+          ],
+          "note": "weight 0.45 -> 0.25: the period posts favour it, the 1.65 server calls Pac 48 a waste",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
@@ -2301,12 +3091,13 @@
         {
           "id": "healer-pac-mend31",
           "label": "Pac/Mend",
+          "draftLabel": "Pac/Mend",
           "role": "healer-cc",
           "use": "rvr",
           "family": "PacHealer",
-          "weight": 0.2,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.20 -> 0.30",
           "specs": {
             "Pacification": 44,
             "Mending": 31
@@ -2319,8 +3110,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 10,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=24011",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "Healer Guide: \"44 pac 31 mend rest aug\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 10,
@@ -2338,12 +3142,13 @@
         {
           "id": "healer-mend-aug",
           "label": "Mend/Aug",
+          "draftLabel": "Mend/Aug",
           "role": "healer",
           "use": "both",
           "family": "MendHealer",
-          "weight": 0.35,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.35 -> 0.30",
           "specs": {
             "Mending": 39,
             "Augmentation": 37,
@@ -2358,8 +3163,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=24011",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "Healer Guide: \"39 mend, 37 aug\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -2381,6 +3199,55 @@
             "2003-05-20",
             "2003-03-04"
           ]
+        },
+        {
+          "id": "healer-pac-mend-aug19",
+          "label": "Tri-spec",
+          "draftLabel": "Tri-spec",
+          "role": "healer-cc",
+          "use": "rvr",
+          "family": "PacHealer",
+          "weight": 0.15,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Pacification": 38,
+            "Mending": 33,
+            "Augmentation": 19
+          },
+          "posted": {
+            "Pacification": 38,
+            "Mending": 33,
+            "Augmentation": 19
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=24011",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "Healer Guide: \"Tri Spec (38 Pac / 33 Mend / 19 Aug)\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?t=24011"
+          ],
+          "sourceDates": [
+            "2011"
+          ]
         }
       ]
     },
@@ -2399,6 +3266,7 @@
         {
           "id": "shaman-cave-aug",
           "label": "Cave/Aug",
+          "draftLabel": "Cave/Aug",
           "role": "healer-debuff",
           "use": "both",
           "family": "SubtShaman",
@@ -2419,8 +3287,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25947",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "\"41 sub / 32 aug, 14 mend\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -2446,6 +3327,7 @@
         {
           "id": "shaman-aug-cave",
           "label": "Aug/Cave (resist buffs, end regen)",
+          "draftLabel": "Aug/Cave (resist buffs, end regen)",
           "role": "healer-buffer",
           "use": "rvr",
           "family": "AugShaman",
@@ -2466,8 +3348,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 8,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=121&t=37579",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"38 aug 37 cave 9 mend is just about perfect\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -2495,12 +3390,13 @@
         {
           "id": "shaman-aug-mend",
           "label": "Aug/Mend",
+          "draftLabel": "Aug/Mend",
           "role": "healer-buffer",
           "use": "rvr",
           "family": "AugShaman",
-          "weight": 0.15,
+          "weight": 0.07,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.15 -> 0.07",
           "specs": {
             "Augmentation": 42,
             "Mending": 33,
@@ -2515,8 +3411,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "the period Shaman guide's 47/26/5 Aug/Mend backs it; weight split with the new Aug group build",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -2538,6 +3440,55 @@
             "2003-07-31",
             "2003-04-09"
           ]
+        },
+        {
+          "id": "shaman-aug-cave46",
+          "label": "Aug group RvR",
+          "draftLabel": "Aug group RvR",
+          "role": "healer-buffer",
+          "use": "rvr",
+          "family": "AugShaman",
+          "weight": 0.08,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Augmentation": 46,
+            "Subterranean": 27,
+            "Mending": 8
+          },
+          "posted": {
+            "Augmentation": 46,
+            "Subterranean": 27,
+            "Mending": 8
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=121&t=37579",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"The best shaman rvr spec is 46aug, 27cave, 8mend\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?f=121&t=37579"
+          ],
+          "sourceDates": [
+            "2016"
+          ]
         }
       ]
     },
@@ -2558,12 +3509,13 @@
         {
           "id": "skald-battle-axe",
           "label": "Battlesongs/Axe",
+          "draftLabel": "Battlesongs/Axe",
           "role": "support-melee",
           "use": "both",
           "family": "OneHandAndShield",
-          "weight": 0.35,
+          "weight": 0.25,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.35 -> 0.25",
           "specs": {
             "Battlesongs": 46,
             "Axe": 44,
@@ -2578,8 +3530,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -2597,6 +3555,7 @@
         {
           "id": "skald-sword-battle",
           "label": "Two-handed sword",
+          "draftLabel": "Two-handed sword",
           "role": "melee-dps",
           "use": "both",
           "family": "TwoHanded",
@@ -2617,8 +3576,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=122&t=39941",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 Sword spec due to the high growth rate of Ragnarok\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 10,
@@ -2636,12 +3608,13 @@
         {
           "id": "skald-battle-hammer",
           "label": "Battlesongs/Hammer",
+          "draftLabel": "Battlesongs/Hammer",
           "role": "support-melee",
           "use": "rvr",
           "family": "OneHandAndShield",
-          "weight": 0.3,
+          "weight": 0.4,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.30 -> 0.40 (weight 0.30 -> 0.40: Uthgard Skalds almost all go Hammer)",
           "specs": {
             "Battlesongs": 46,
             "Hammer": 44,
@@ -2656,8 +3629,27 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=11362",
+              "site": "uthgard.net",
+              "date": "2009",
+              "says": "\"46 BS, 44 hammer, 17 parry\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=122&t=39941",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "the same"
+            }
+          ],
+          "note": "weight 0.30 -> 0.40: Uthgard Skalds almost all go Hammer",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -2696,6 +3688,7 @@
         {
           "id": "warrior-axe-shld42",
           "label": "Axe/Shield/Parry",
+          "draftLabel": "Axe/Shield/Parry",
           "role": "tank",
           "use": "both",
           "family": "OneHandAndShield",
@@ -2705,19 +3698,34 @@
           "specs": {
             "Axe": 50,
             "Shields": 42,
-            "Parry": 41
+            "Parry": 41,
+            "Hammer": 13,
+            "Sword": 12
           },
           "posted": {
             "Axe": 50,
             "Shields": 42,
             "Parry": 39
           },
-          "change": "filled: rest to Parry (39->41)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 20,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (39->41); autotrain at its free level: Hammer 1->13, Sword 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 7,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=36249",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 weapon 42 shield 41 parry, always\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
@@ -2735,6 +3743,7 @@
         {
           "id": "warrior-hammer-shld",
           "label": "Hammer/Shield",
+          "draftLabel": "Hammer/Shield",
           "role": "tank",
           "use": "both",
           "family": "OneHandAndShield",
@@ -2744,19 +3753,34 @@
           "specs": {
             "Hammer": 50,
             "Shields": 50,
-            "Parry": 31
+            "Parry": 31,
+            "Axe": 13,
+            "Sword": 12
           },
           "posted": {
             "Hammer": 50,
             "Shields": 50,
             "Parry": 28
           },
-          "change": "filled: rest to Parry (28->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 13,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (28->31); autotrain at its free level: Axe 1->13, Sword 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=36249",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 Hammer 50 Shield 31 Parry\"; \"50 hammer / 50 shield / 12 sword / 12 axe\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -2774,6 +3798,7 @@
         {
           "id": "warrior-axe-shld50",
           "label": "Axe/Shield 50",
+          "draftLabel": "Axe/Shield 50",
           "role": "tank",
           "use": "rvr",
           "family": "OneHandAndShield",
@@ -2783,19 +3808,34 @@
           "specs": {
             "Axe": 50,
             "Shields": 50,
-            "Parry": 31
+            "Parry": 31,
+            "Hammer": 13,
+            "Sword": 12
           },
           "posted": {
             "Axe": 50,
             "Shields": 50,
             "Parry": 18
           },
-          "change": "filled: rest to Parry (18->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 13,
-          "specsSourced": false,
+          "change": "filled: rest to Parry (18->31); autotrain at its free level: Hammer 1->13, Sword 1->12",
+          "changeBasis": "the rest in Parry, as the cited source puts it (uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=36249",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 sword 50 shield and 31 parry\" with full autotrain"
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 9,
@@ -2829,6 +3869,7 @@
         {
           "id": "berserker-axe-la",
           "label": "Axe/Left Axe",
+          "draftLabel": "Axe/Left Axe",
           "role": "melee-dps",
           "use": "both",
           "family": "None",
@@ -2849,8 +3890,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25876",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "\"weapon 50 la 50 parry 28 this one is my favorite\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 7,
@@ -2868,6 +3922,7 @@
         {
           "id": "berserker-hammer-la",
           "label": "Hammer/Left Axe",
+          "draftLabel": "Hammer/Left Axe",
           "role": "melee-dps",
           "use": "rvr",
           "family": "None",
@@ -2888,8 +3943,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25876",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "the same with Hammer"
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -2905,12 +3973,13 @@
         {
           "id": "berserker-la-sword",
           "label": "Sword/Left Axe",
+          "draftLabel": "Sword/Left Axe",
           "role": "melee-dps",
           "use": "rvr",
           "family": "None",
-          "weight": 0.15,
+          "weight": 0.07,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.15 -> 0.07 (weight 0.15 -> 0.07, the rest to the new bi-spec)",
           "specs": {
             "Left Axe": 50,
             "Sword": 50,
@@ -2925,8 +3994,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25876",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "the same with Sword"
+            }
+          ],
+          "note": "weight 0.15 -> 0.07, the rest to the new bi-spec",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -2935,6 +4017,65 @@
           ],
           "sourceDates": [
             "2003-06-27"
+          ]
+        },
+        {
+          "id": "berserker-la-axe-hammer",
+          "label": "Bi-spec (group)",
+          "draftLabel": "Bi-spec (group)",
+          "role": "melee-dps",
+          "use": "rvr",
+          "family": "None",
+          "weight": 0.08,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Left Axe": 50,
+            "Axe": 39,
+            "Hammer": 39,
+            "Parry": 16
+          },
+          "posted": {
+            "Left Axe": 50,
+            "Axe": 39,
+            "Hammer": 39,
+            "Parry": 16
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 12,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25876",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "\"bi spec la 50 weapons slash/hammer 39 rest in parry, this one is pure grp spec\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=114&t=37162",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"39 Axe 39 Hammer 50 Left Axe with the leftovers into Parry\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?f=61&t=25876",
+            "https://www.uthgard.net/forum/viewtopic.php?f=114&t=37162"
+          ],
+          "sourceDates": [
+            "2012",
+            "2016"
           ]
         }
       ]
@@ -2957,6 +4098,7 @@
         {
           "id": "savage-h2h-sav",
           "label": "Hand to Hand",
+          "draftLabel": "Hand to Hand",
           "role": "melee-dps",
           "use": "both",
           "family": "DualWield",
@@ -2977,8 +4119,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=119&t=39894",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50H2H ... 39-42 Savagery ... rest parry\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -2996,6 +4151,7 @@
         {
           "id": "savage-sword-sav",
           "label": "Two-handed (Sword/Hammer)",
+          "draftLabel": "Two-handed (Sword/Hammer)",
           "role": "melee-dps",
           "use": "rvr",
           "family": "TwoHanded",
@@ -3016,8 +4172,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=119&t=39894",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"44H2H or Weapon(2-hander) 49Savagery 4Parry\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -3052,12 +4221,13 @@
         {
           "id": "thane-storm-hammer",
           "label": "Storm/Hammer/Shield",
+          "draftLabel": "Storm/Hammer/Shield",
           "role": "hybrid-dd",
           "use": "both",
           "family": "OneHandAndShield",
-          "weight": 0.7,
+          "weight": 0.45,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.70 -> 0.45",
           "specs": {
             "Stormcalling": 46,
             "Hammer": 44,
@@ -3072,8 +4242,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 8,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=124&t=38066",
+              "site": "uthgard.net",
+              "date": "2016-17",
+              "says": "\"Unless you plan to not get Slam, you can't go 48 SC / 44 Hammer\""
+            }
+          ],
+          "note": "the period posts back it; weight 0.7 -> 0.45",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -3091,17 +4274,18 @@
         {
           "id": "thane-storm-shld",
           "label": "Storm/Shield/Parry",
+          "draftLabel": "Storm/Shield/Parry",
           "role": "hybrid-dd",
           "use": "rvr",
           "family": "OneHandAndShield",
-          "weight": 0.3,
+          "weight": 0.55,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.30 -> 0.55",
           "specs": {
-            "Stormcalling": 48,
+            "Stormcalling": 50,
             "Shields": 42,
             "Hammer": 39,
-            "Parry": 15
+            "Parry": 6
           },
           "posted": {
             "Stormcalling": 48,
@@ -3109,12 +4293,25 @@
             "Hammer": 39,
             "Parry": 15
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
+          "change": "research template: Stormcalling 48->50, Parry 15->6",
+          "changeBasis": "the cited template (uthgard.net 2016-17)",
+          "changeSourced": true,
           "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=124&t=38066",
+              "site": "uthgard.net",
+              "date": "2016-17",
+              "says": "\"50 SC / 42 shield / 39 hammer / 6 parry\"; \"if you stop before 50 SC your lose the 75 str/con buff\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
@@ -3151,12 +4348,13 @@
         {
           "id": "shadowblade-axe-la",
           "label": "Axe/Left Axe",
+          "draftLabel": "Axe/Left Axe",
           "role": "stealther",
           "use": "both",
           "family": "LeftAxe",
-          "weight": 0.4,
+          "weight": 0.3,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.40 -> 0.30",
           "specs": {
             "Axe": 44,
             "Left Axe": 44,
@@ -3175,8 +4373,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=33907",
+              "site": "uthgard.net",
+              "date": "2014-17",
+              "says": "\"weap39 / 10cs / 34stealth / 34venom / 50LA\"; the period posts are 44/44"
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 12,
@@ -3193,18 +4404,20 @@
         },
         {
           "id": "shadowblade-cs-sword",
-          "label": "Sword/CS (2h or 1h)",
+          "label": "Critblade (Sword/CS)",
+          "draftLabel": "Sword/CS (2h or 1h)",
           "role": "stealther",
           "use": "rvr",
           "family": "TwoHanded",
-          "weight": 0.35,
+          "weight": 0.45,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.35 -> 0.45",
           "specs": {
-            "Critical Strike": 44,
-            "Sword": 44,
-            "Envenom": 36,
-            "Stealth": 36
+            "Critical Strike": 50,
+            "Sword": 39,
+            "Envenom": 34,
+            "Stealth": 34,
+            "Left Axe": 12
           },
           "posted": {
             "Critical Strike": 44,
@@ -3212,12 +4425,25 @@
             "Envenom": 35,
             "Stealth": 35
           },
-          "change": "filled: rest to Envenom (35->36), Stealth (35->36)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 22,
-          "specsSourced": false,
+          "change": "research template: Critical Strike 44->50, Sword 44->39, Envenom 35->34, Stealth 35->34, Left Axe 1->12",
+          "changeBasis": "the cited template (uthgard.net 2014-17)",
+          "changeSourced": true,
+          "pointsLeft": 12,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=33907",
+              "site": "uthgard.net",
+              "date": "2014-17",
+              "says": "\"sword39 / 50cs / 34stealth / 34venom / rest LA\"; \"SB Critblades were the dominating stealther in 1.65\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
@@ -3235,6 +4461,7 @@
         {
           "id": "shadowblade-axe-cs",
           "label": "Axe/CS",
+          "draftLabel": "Axe/CS",
           "role": "stealther",
           "use": "rvr",
           "family": "LeftAxe",
@@ -3259,8 +4486,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 24,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=33907",
+              "site": "uthgard.net",
+              "date": "2014-17",
+              "says": "\"the all spec, all is 34 but 39LA\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 20,
@@ -3294,6 +4534,7 @@
         {
           "id": "hunter-bow-spear",
           "label": "Bow/Spear",
+          "draftLabel": "Bow/Spear",
           "role": "archer",
           "use": "both",
           "family": "None",
@@ -3316,8 +4557,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 10,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=39501",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"35 BC 39 Weapon 32 Stealth 45 Bow\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -3335,6 +4589,7 @@
         {
           "id": "hunter-spear-bow",
           "label": "Spear/Bow (melee hunter)",
+          "draftLabel": "Spear/Bow (melee hunter)",
           "role": "melee-dps",
           "use": "rvr",
           "family": "SpearHunter",
@@ -3357,8 +4612,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 15,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=39501&start=15",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"BC 32, ST 35, SP 44, Bow 40\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 17,
@@ -3390,6 +4658,7 @@
         {
           "id": "runemaster-dark-supp26",
           "label": "Darkness",
+          "draftLabel": "Darkness",
           "role": "assist-dd",
           "use": "both",
           "family": "DarkRune",
@@ -3398,18 +4667,38 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Darkness": 47,
-            "Suppression": 26
+            "Suppression": 26,
+            "Runecarving": 5
           },
           "posted": {
             "Darkness": 47,
             "Suppression": 26
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 17,
+          "change": "research template: Runecarving 1->5",
+          "changeBasis": "the cited template (uthgard.net 2017; uthgard.net )",
+          "changeSourced": true,
+          "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=118&t=39893",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"47 dark / 26 supp\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=32297",
+              "site": "uthgard.net",
+              "date": "",
+              "says": "\"standard dark specs is 47 in dark\""
+            }
+          ],
+          "note": "the 17 spare points go into the third line, as Uthgard casters do (research finding 3)",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
@@ -3427,6 +4716,7 @@
         {
           "id": "runemaster-dark-supp20",
           "label": "Darkness 50",
+          "draftLabel": "Darkness 50",
           "role": "assist-dd",
           "use": "rvr",
           "family": "DarkRune",
@@ -3435,18 +4725,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Darkness": 50,
-            "Suppression": 20
+            "Suppression": 20,
+            "Runecarving": 4
           },
           "posted": {
             "Darkness": 50,
             "Suppression": 20
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 11,
+          "change": "research template: Runecarving 1->4",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=20924",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"50 Darkness 20 Suppression\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
@@ -3464,6 +4768,7 @@
         {
           "id": "runemaster-supp-dark",
           "label": "Suppression (PBT)",
+          "draftLabel": "Suppression (PBT)",
           "role": "support-pbt",
           "use": "rvr",
           "family": "SuppRune",
@@ -3482,8 +4787,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 11,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=32297",
+              "site": "uthgard.net",
+              "date": "",
+              "says": "\"Supp runemaster are awesome\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -3513,6 +4831,7 @@
         {
           "id": "spiritmaster-supp-dark",
           "label": "Suppression (PBAE)",
+          "draftLabel": "Suppression (PBAE)",
           "role": "pbae",
           "use": "rvr",
           "family": "SuppSpirit",
@@ -3521,18 +4840,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Suppression": 49,
-            "Darkness": 22
+            "Darkness": 22,
+            "Summoning": 5
           },
           "posted": {
             "Suppression": 49,
             "Darkness": 25
           },
-          "change": "trimmed to budget: Darkness 25->22",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 18,
-          "specsSourced": false,
+          "change": "research template: Darkness 25->22, Summoning 1->5",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=40747",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"49 Supp for highest bomb and rest dark\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -3552,6 +4885,7 @@
         {
           "id": "spiritmaster-dark-supp",
           "label": "Darkness/Suppression",
+          "draftLabel": "Darkness/Suppression",
           "role": "assist-dd",
           "use": "both",
           "family": "DarkSpirit",
@@ -3560,18 +4894,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Darkness": 47,
-            "Suppression": 26
+            "Suppression": 26,
+            "Summoning": 5
           },
           "posted": {
             "Darkness": 47,
             "Suppression": 26
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 17,
+          "change": "research template: Summoning 1->5",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
+          "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=61&t=24879",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"47 Darkness 26 Suppression is the only way to go as dark spec\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -3585,6 +4933,7 @@
         {
           "id": "spiritmaster-summ-supp",
           "label": "Summoning",
+          "draftLabel": "Summoning",
           "role": "pet",
           "use": "levelling",
           "family": "SummSpirit",
@@ -3603,8 +4952,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 11,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "no modern source; kept for levelling",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -3634,6 +4989,7 @@
         {
           "id": "bonedancer-supp-dark",
           "label": "Suppression",
+          "draftLabel": "Suppression",
           "role": "pet-dd",
           "use": "both",
           "family": "SuppBone",
@@ -3642,18 +4998,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Suppression": 47,
-            "Darkness": 26
+            "Darkness": 26,
+            "Bone Army": 5
           },
           "posted": {
             "Suppression": 47,
             "Darkness": 26
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 17,
+          "change": "research template: Bone Army 1->5",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 3,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=115&t=38851",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "BD Guide by Sheena (BD Teamlead): \"47 Suppression / 26 Darkness / 5 Bone Army\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 9,
@@ -3671,6 +5041,7 @@
         {
           "id": "bonedancer-army-supp",
           "label": "Bone Army",
+          "draftLabel": "Bone Army",
           "role": "pet",
           "use": "levelling",
           "family": "ArmyBone",
@@ -3691,8 +5062,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 1,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=115&t=38851",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"44 Bone Army / 31 Suppression / 4 Darkness\", \"48 Bone Army / 24 Suppression / 6 Darkness\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -3724,6 +5108,7 @@
         {
           "id": "druid-regrow-nurt",
           "label": "Regrowth/Nurture",
+          "draftLabel": "Regrowth/Nurture",
           "role": "healer",
           "use": "both",
           "family": "RegrowthDruid",
@@ -3742,8 +5127,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=131&t=40770",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"35r+40n or 33r+42n\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 19,
@@ -3761,6 +5159,7 @@
         {
           "id": "druid-nurt-regrow",
           "label": "Nurture/Regrowth (spec buffs)",
+          "draftLabel": "Nurture/Regrowth (spec buffs)",
           "role": "healer-buffer",
           "use": "rvr",
           "family": "NurtureDruid",
@@ -3769,18 +5168,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Nurture": 44,
-            "Regrowth": 31
+            "Regrowth": 31,
+            "Nature": 4
           },
           "posted": {
             "Nurture": 44,
             "Regrowth": 31
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 10,
+          "change": "research template: Nature 1->4",
+          "changeBasis": "the cited template (uthgard.net 2010)",
+          "changeSourced": true,
+          "pointsLeft": 1,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=17324",
+              "site": "uthgard.net",
+              "date": "2010",
+              "says": "\"44 nurture/31 regrowth/4 nature\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
@@ -3798,6 +5211,7 @@
         {
           "id": "druid-nature-regrow",
           "label": "Nature",
+          "draftLabel": "Nature",
           "role": "healer-pet",
           "use": "levelling",
           "family": "NatureDruid",
@@ -3818,8 +5232,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 11,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=131&t=40770",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"36 nature, 26 nurture, 30 regrowth\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 7,
@@ -3853,6 +5280,7 @@
         {
           "id": "bard-music-nurt",
           "label": "Music/Nurture",
+          "draftLabel": "Music/Nurture",
           "role": "cc-mezzer",
           "use": "both",
           "family": "None",
@@ -3860,21 +5288,34 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Music": 47,
+            "Music": 44,
             "Nurture": 43,
-            "Regrowth": 16
+            "Regrowth": 23
           },
           "posted": {
             "Music": 47,
             "Nurture": 43,
             "Regrowth": 16
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 16,
+          "change": "research template: Music 47->44, Regrowth 16->23",
+          "changeBasis": "the cited template (uthgard.net 2013)",
+          "changeSourced": true,
+          "pointsLeft": 14,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=29049",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"43nurture 44music 20regrowth ... The last aoe instamezz is trash, that's why not 47 music\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 42,
@@ -3891,7 +5332,8 @@
         },
         {
           "id": "bard-regrow-nurt",
-          "label": "Regrowth/Nurture",
+          "label": "Group bard (Nurture/Music/Regrowth)",
+          "draftLabel": "Regrowth/Nurture",
           "role": "healer",
           "use": "rvr",
           "family": "RegrowthBard",
@@ -3899,21 +5341,40 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Regrowth": 47,
             "Nurture": 43,
-            "Music": 16
+            "Music": 37,
+            "Regrowth": 33
           },
           "posted": {
             "Regrowth": 47,
             "Nurture": 43,
             "Music": 16
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
+          "change": "research template: Music 16->37, Regrowth 47->33",
+          "changeBasis": "the cited template (uthgard.net 2011; uthgard.net 2020)",
+          "changeSourced": true,
           "pointsLeft": 16,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=22367",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"43 nurture 37 music 33 regrowth\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=128&t=48068",
+              "site": "uthgard.net",
+              "date": "2020",
+              "says": "\"43 nurture ... 37 music ... 31 regrowth\""
+            }
+          ],
+          "note": "no source has a Music-16 bard: it loses the instant mezz (id kept for saved plans)",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -3947,6 +5408,7 @@
         {
           "id": "warden-nurt-regrow",
           "label": "Nurture/Regrowth",
+          "draftLabel": "Nurture/Regrowth",
           "role": "support-healer",
           "use": "both",
           "family": "NurtureWarden",
@@ -3956,19 +5418,39 @@
           "specs": {
             "Nurture": 49,
             "Regrowth": 33,
-            "Parry": 29
+            "Blades": 29,
+            "Parry": 3
           },
           "posted": {
             "Nurture": 49,
             "Regrowth": 33,
             "Parry": 14
           },
-          "change": "filled: rest to Parry (14->29)",
-          "changeBasis": "'the Parry skill is what's left over once the other skills have been raised' (camelot.allakhazam.com, Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html), captured 2003-01-05)",
+          "change": "research template: Blades 1->29, Parry 14->3",
+          "changeBasis": "the cited template (uthgard.net 2011; uthgard.net 2017)",
           "changeSourced": true,
-          "pointsLeft": 5,
-          "specsSourced": false,
+          "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=24521",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"You can go 49 nurt 33 reg 29 weapon 3 parry as well\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?p=418263",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"49 nurture 33 heals and rest blade/parry\""
+            }
+          ],
+          "note": "the fill had dropped the weapon (Parry 29); the class review proposed the base Blades 25 Parry 14, the research's Uthgard template has the weapon at 29",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4001,6 +5483,7 @@
         {
           "id": "warden-nurt-blades",
           "label": "Nurture/Blades",
+          "draftLabel": "Nurture/Blades",
           "role": "support-melee",
           "use": "levelling",
           "family": "BattleWarden",
@@ -4023,8 +5506,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 8,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4068,6 +5557,7 @@
         {
           "id": "hero-lw-shld",
           "label": "Large Weapons/Shield",
+          "draftLabel": "Large Weapons/Shield",
           "role": "tank",
           "use": "both",
           "family": "TwoHandHybrid",
@@ -4088,8 +5578,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 24,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=134&t=43002",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 LW 42 shield 39 spear\", the same lines with Spear for Parry; the period posts back ours"
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4115,6 +5618,7 @@
         {
           "id": "hero-spear-shld",
           "label": "Spear (Celtic Spear)/Shield",
+          "draftLabel": "Spear (Celtic Spear)/Shield",
           "role": "tank",
           "use": "rvr",
           "family": "TwoHandHybrid",
@@ -4135,8 +5639,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 24,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4158,6 +5668,7 @@
         {
           "id": "hero-blades-shld",
           "label": "Sword and board",
+          "draftLabel": "Sword and board",
           "role": "tank",
           "use": "both",
           "family": "OneHandAndShield",
@@ -4178,8 +5689,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=134&t=43002",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"50 Shield, 50 LW ... rest parry\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4221,6 +5745,7 @@
         {
           "id": "champion-lw-valor-parry",
           "label": "Large Weapons/Valor",
+          "draftLabel": "Large Weapons/Valor",
           "role": "melee-dps",
           "use": "both",
           "family": "TwoHanded",
@@ -4241,8 +5766,27 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=130&t=38881",
+              "site": "uthgard.net",
+              "date": "",
+              "says": "Champion Guide by Jubal (Champ TeamLead): \"Valor 50, Large Weapons 50, Parry 27\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=36032",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"most popular are 50valor, 50lw, rest in parry\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 19,
@@ -4259,18 +5803,19 @@
         },
         {
           "id": "champion-lw-valor-blades",
-          "label": "Large Weapons/Valor/Blades",
+          "label": "Valor/Shield/Blades",
+          "draftLabel": "Large Weapons/Valor/Blades",
           "role": "melee-dps",
           "use": "rvr",
-          "family": "TwoHanded",
+          "family": "OneHandAndShield",
           "weight": 0.2,
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Large Weapons": 50,
-            "Valor": 40,
+            "Valor": 50,
+            "Shields": 42,
             "Blades": 39,
-            "Parry": 14
+            "Parry": 6
           },
           "posted": {
             "Large Weapons": 50,
@@ -4278,12 +5823,31 @@
             "Blades": 39,
             "Parry": 28
           },
-          "change": "trimmed to budget: Parry 28->14",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 3,
-          "specsSourced": false,
+          "change": "research template: Valor 40->50, Shields 1->42, Parry 28->6, Large Weapons 50->1",
+          "changeBasis": "the cited template (uthgard.net ; uthgard.net 2016)",
+          "changeSourced": true,
+          "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=130&t=38881",
+              "site": "uthgard.net",
+              "date": "",
+              "says": "TL guide: \"Valor 50, Shields 42, Blades 39, Parry 6\"; \"the Champion does not have enough points to diversify\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=36032",
+              "site": "uthgard.net",
+              "date": "2016",
+              "says": "\"50 valore, 42shield, 34 weapon, 20 parry\""
+            }
+          ],
+          "note": "the posted LW+Blades build cost 298 more than a level 50 has; the class review proposed the base LW 50 Blades 36 Valor 35 Parry 28, the research's TL guide has one weapon and a shield (id kept for saved plans)",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
@@ -4316,6 +5880,7 @@
         {
           "id": "blademaster-blades-cd",
           "label": "Blades/Celtic Dual",
+          "draftLabel": "Blades/Celtic Dual",
           "role": "melee-dps",
           "use": "both",
           "family": "DualWield",
@@ -4336,8 +5901,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4360,29 +5931,44 @@
         },
         {
           "id": "blademaster-piercing-cd",
-          "label": "Piercing/Celtic Dual",
+          "label": "Celtic Dual/Shield/Piercing",
+          "draftLabel": "Piercing/Celtic Dual",
           "role": "melee-dps",
           "use": "rvr",
-          "family": "DualWield",
+          "family": "DualWieldAndShield",
           "weight": 0.35,
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Piercing": 50,
-            "Celtic Dual": 42,
-            "Parry": 39
+            "Celtic Dual": 50,
+            "Shields": 42,
+            "Piercing": 39,
+            "Parry": 6
           },
           "posted": {
             "Piercing": 50,
             "Celtic Dual": 42,
             "Parry": 39
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 24,
+          "change": "research template: Celtic Dual 42->50, Shields 1->42, Piercing 50->39, Parry 39->6",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
+          "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=23852",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"50CD 42shield 39pierce\""
+            }
+          ],
+          "note": "every source has CD 50; the period posts' Piercing 50 / CD 42 has 3 posts (id kept)",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -4397,7 +5983,8 @@
         },
         {
           "id": "blademaster-blunt-cd",
-          "label": "Blunt/Celtic Dual",
+          "label": "Celtic Dual/split weapon",
+          "draftLabel": "Blunt/Celtic Dual",
           "role": "melee-dps",
           "use": "rvr",
           "family": "DualWield",
@@ -4405,21 +5992,35 @@
           "weightSourced": false,
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
-            "Blunt": 50,
-            "Celtic Dual": 41,
-            "Parry": 40
+            "Celtic Dual": 50,
+            "Blades": 39,
+            "Blunt": 39,
+            "Parry": 16
           },
           "posted": {
             "Blunt": 50,
             "Celtic Dual": 41,
             "Parry": 40
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 26,
+          "change": "research template: Celtic Dual 41->50, Blades 1->39, Blunt 50->39, Parry 40->16",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
+          "pointsLeft": 12,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=23852",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"50CD 39pierce 39blade\""
+            }
+          ],
+          "note": "as Piercing/Celtic Dual (id kept)",
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
@@ -4454,6 +6055,7 @@
         {
           "id": "nightshade-piercing-env",
           "label": "Piercing/CS",
+          "draftLabel": "Piercing/CS",
           "role": "stealther",
           "use": "rvr",
           "family": "None",
@@ -4476,8 +6078,14 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 24,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4499,6 +6107,7 @@
         {
           "id": "nightshade-cs-stl",
           "label": "Critical Strike",
+          "draftLabel": "Critical Strike",
           "role": "stealther",
           "use": "both",
           "family": "None",
@@ -4507,9 +6116,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Critical Strike": 44,
-            "Stealth": 40,
-            "Piercing": 39,
-            "Envenom": 38
+            "Piercing": 38,
+            "Envenom": 37,
+            "Stealth": 37,
+            "Celtic Dual": 19
           },
           "posted": {
             "Critical Strike": 44,
@@ -4517,12 +6127,25 @@
             "Piercing": 39,
             "Envenom": 36
           },
-          "change": "filled: rest to Envenom (36->38)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 3,
-          "specsSourced": false,
+          "change": "research template: Piercing 39->38, Envenom 36->37, Stealth 40->37, Celtic Dual 1->19",
+          "changeBasis": "the cited template (uthgard.net 2017)",
+          "changeSourced": true,
+          "pointsLeft": 8,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=45724",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "\"44 CS, 37 stealth/env, 38 Pierce, rest CD\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
@@ -4540,6 +6163,7 @@
         {
           "id": "nightshade-piercing-cd",
           "label": "Celtic Dual",
+          "draftLabel": "Celtic Dual",
           "role": "stealther",
           "use": "rvr",
           "family": "None",
@@ -4562,8 +6186,14 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 29,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": "weak support; kept at its weight",
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -4600,6 +6230,7 @@
         {
           "id": "ranger-bow-path",
           "label": "Archery/Pathfinding",
+          "draftLabel": "Archery/Pathfinding",
           "role": "archer",
           "use": "both",
           "family": "None",
@@ -4609,8 +6240,9 @@
           "specs": {
             "Recurve Bow": 42,
             "Pathfinding": 40,
-            "Stealth": 40,
-            "Piercing": 31
+            "Stealth": 35,
+            "Piercing": 30,
+            "Celtic Dual": 21
           },
           "posted": {
             "Recurve Bow": 42,
@@ -4618,12 +6250,25 @@
             "Stealth": 40,
             "Piercing": 30
           },
-          "change": "filled: rest to Piercing (30->31)",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
-          "pointsLeft": 21,
-          "specsSourced": false,
+          "change": "research template: Stealth 40->35, Celtic Dual 1->21",
+          "changeBasis": "the cited template (uthgard.net 2012)",
+          "changeSourced": true,
+          "pointsLeft": 12,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=27267",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "Ranger Guide: \"Stealth 35, Pierce 32, CD 29, Path 40, Bow 35\""
+            }
+          ],
+          "note": "every Ranger template has some CD; the period ZAM guide too",
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4649,6 +6294,7 @@
         {
           "id": "ranger-piercing-path",
           "label": "Melee ranger (Piercing/CD)",
+          "draftLabel": "Melee ranger (Piercing/CD)",
           "role": "melee-dps",
           "use": "rvr",
           "family": "None",
@@ -4673,8 +6319,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 10,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=27267",
+              "site": "uthgard.net",
+              "date": "2012",
+              "says": "Ranger Guide: \"Stealth 35, Path 42, Pierce 35, CD 40, Bow Auto (12)\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [
             {
               "site": "camelot.allakhazam.com",
@@ -4714,6 +6373,7 @@
         {
           "id": "eldritch-mana-light",
           "label": "Mana (PBAE \"manabomb\")",
+          "draftLabel": "Mana (PBAE \"manabomb\")",
           "role": "pbae",
           "use": "rvr",
           "family": "ManaEld",
@@ -4730,12 +6390,25 @@
             "Light": 20,
             "Void": 6
           },
-          "change": "trimmed to budget: Void 6->4",
-          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
-          "changeSourced": false,
+          "change": "research template: Void 6->4",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
           "pointsLeft": 2,
-          "specsSourced": false,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=23989",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"Mana spec (50 mana / 20 light)\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
@@ -4755,15 +6428,16 @@
         {
           "id": "eldritch-void-mana",
           "label": "Void",
+          "draftLabel": "Void",
           "role": "assist-dd",
           "use": "both",
           "family": "VoidEld",
-          "weight": 0.35,
+          "weight": 0.25,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.35 -> 0.25",
           "specs": {
-            "Void": 46,
-            "Mana": 26,
+            "Void": 49,
+            "Mana": 20,
             "Light": 10
           },
           "posted": {
@@ -4771,12 +6445,25 @@
             "Mana": 26,
             "Light": 10
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 10,
+          "change": "research template: Void 46->49, Mana 26->20",
+          "changeBasis": "the cited template (uthgard.net 2011)",
+          "changeSourced": true,
+          "pointsLeft": 7,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=23989",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"Void spec (49 void, 10 light, 20 mana)\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
@@ -4794,12 +6481,13 @@
         {
           "id": "eldritch-light-mana",
           "label": "Light",
+          "draftLabel": "Light",
           "role": "assist-dd",
-          "use": "levelling",
+          "use": "both",
           "family": "LightEld",
-          "weight": 0.25,
+          "weight": 0.35,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.25 -> 0.35",
           "specs": {
             "Light": 45,
             "Mana": 29
@@ -4812,8 +6500,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://uthgard.net/forum/viewtopic.php?t=23989",
+              "site": "uthgard.net",
+              "date": "2011",
+              "says": "\"Light spec (46 light / 28 mana)\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -4841,6 +6542,7 @@
         {
           "id": "enchanter-mana-light",
           "label": "Mana (PBAE)",
+          "draftLabel": "Mana (PBAE)",
           "role": "pbae",
           "use": "both",
           "family": "ManaEnchanter",
@@ -4849,18 +6551,32 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Mana": 50,
-            "Light": 20
+            "Light": 20,
+            "Enchantments": 4
           },
           "posted": {
             "Mana": 50,
             "Light": 20
           },
-          "change": null,
-          "changeBasis": null,
-          "changeSourced": false,
-          "pointsLeft": 11,
+          "change": "research template: Enchantments 1->4",
+          "changeBasis": "the cited template (uthgard.net 2009)",
+          "changeSourced": true,
+          "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=8963",
+              "site": "uthgard.net",
+              "date": "2009",
+              "says": "\"49 Mana, 22 Light is the best RvR spec\"; \"50mana/20light would be better\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
@@ -4878,6 +6594,7 @@
         {
           "id": "enchanter-light-mana",
           "label": "Light",
+          "draftLabel": "Light",
           "role": "assist-dd",
           "use": "rvr",
           "family": "LightEnchanter",
@@ -4896,8 +6613,14 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 26,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
@@ -4913,6 +6636,7 @@
         {
           "id": "enchanter-mana-ench",
           "label": "Enchantments (pet/buff)",
+          "draftLabel": "Enchantments (pet/buff)",
           "role": "pet-buffer",
           "use": "levelling",
           "family": "EnchantmentEnchanter",
@@ -4933,8 +6657,14 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 2,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -4962,12 +6692,13 @@
         {
           "id": "mentalist-light-mana",
           "label": "Light/Mana",
+          "draftLabel": "Light/Mana",
           "role": "assist-dd",
           "use": "both",
           "family": "LightMenta",
-          "weight": 0.6,
+          "weight": 0.4,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.60 -> 0.40",
           "specs": {
             "Light": 45,
             "Mana": 28,
@@ -4982,8 +6713,21 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 1,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=38871",
+              "site": "uthgard.net",
+              "date": "2003-06",
+              "says": "\"The Light specialization is not too far behind\""
+            }
+          ],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
@@ -5001,12 +6745,13 @@
         {
           "id": "mentalist-mana-menta",
           "label": "Mana/Mentalism",
+          "draftLabel": "Mana/Mentalism",
           "role": "pbae",
           "use": "rvr",
           "family": "ManaMenta",
-          "weight": 0.25,
+          "weight": 0.45,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 0.25 -> 0.45",
           "specs": {
             "Mana": 46,
             "Mentalism": 28
@@ -5019,8 +6764,27 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 9,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?t=38871",
+              "site": "uthgard.net",
+              "date": "2003-06",
+              "says": "Mentalist Team Leader Report: \"the Mana specialization is the most popular\""
+            },
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=27551",
+              "site": "uthgard.net",
+              "date": "",
+              "says": "\"46 mana 28 menta\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
@@ -5038,6 +6802,7 @@
         {
           "id": "mentalist-menta-light",
           "label": "Mentalism (heals)",
+          "draftLabel": "Mentalism (heals)",
           "role": "healer",
           "use": "levelling",
           "family": "MentaMenta",
@@ -5058,8 +6823,14 @@
           "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
           "changeSourced": false,
           "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "medium",
+          "base": "dated 2002-2003 posts",
+          "citations": [],
+          "note": null,
           "specsSourced": false,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -5087,12 +6858,13 @@
         {
           "id": "valewalker-scythe-arb",
           "label": "Scythe/Arboreal",
+          "draftLabel": "Scythe/Arboreal",
           "role": "melee-dps",
           "use": "both",
           "family": "None",
-          "weight": 1.0,
+          "weight": 0.7,
           "weightSourced": false,
-          "weightBasis": "estimate from forumMentions and period wording",
+          "weightBasis": "estimate, the research: 1.00 -> 0.70",
           "specs": {
             "Scythe": 50,
             "Arboreal Path": 38,
@@ -5107,8 +6879,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 0,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?p=398755",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "The complete VW guide: \"38/50/20 ... possibly one of the most common melee spec's\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
@@ -5117,6 +6902,55 @@
           ],
           "sourceDates": [
             "2003-03-24"
+          ]
+        },
+        {
+          "id": "valewalker-scythe-arb34",
+          "label": "Scythe/Arboreal 34",
+          "draftLabel": "Scythe/Arboreal 34",
+          "role": "melee-dps",
+          "use": "both",
+          "family": "None",
+          "weight": 0.3,
+          "weightSourced": false,
+          "weightBasis": "estimate, the research adds this template",
+          "specs": {
+            "Scythe": 50,
+            "Arboreal Path": 34,
+            "Parry": 26
+          },
+          "posted": {
+            "Scythe": 50,
+            "Arboreal Path": 34,
+            "Parry": 26
+          },
+          "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 5,
+          "sourced": true,
+          "confidence": "high",
+          "base": "Uthgard 1.65 / reposted period guide",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?p=398755",
+              "site": "uthgard.net",
+              "date": "2017",
+              "says": "The complete VW guide: \"34/50/26 Another very popular melee spec\""
+            }
+          ],
+          "note": null,
+          "specsSourced": true,
+          "postedSourced": true,
+          "new": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
+          "forumMentions": 0,
+          "sources": [
+            "https://www.uthgard.net/forum/viewtopic.php?p=398755"
+          ],
+          "sourceDates": [
+            "2017"
           ]
         }
       ]
@@ -5136,6 +6970,7 @@
         {
           "id": "animist-arb-creep",
           "label": "Arboreal (bomber/pet)",
+          "draftLabel": "Arboreal (bomber/pet)",
           "role": "pet",
           "use": "both",
           "family": "ArborealAnimist",
@@ -5156,8 +6991,21 @@
           "changeBasis": null,
           "changeSourced": false,
           "pointsLeft": 4,
+          "sourced": true,
+          "confidence": "high",
+          "base": "dated 2002-2003 posts",
+          "citations": [
+            {
+              "url": "https://www.uthgard.net/forum/viewtopic.php?f=62&t=31993",
+              "site": "uthgard.net",
+              "date": "2013",
+              "says": "\"50 Arb 19 Creeping 7 Verd ... 7 Verdant is for the first AoE bubble\""
+            }
+          ],
+          "note": null,
           "specsSourced": true,
           "postedSourced": true,
+          "new": false,
           "wayback": [],
           "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,

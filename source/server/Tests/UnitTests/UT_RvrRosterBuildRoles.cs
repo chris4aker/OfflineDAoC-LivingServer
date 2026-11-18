@@ -126,7 +126,8 @@ namespace DOL.UnitTests
                 "cc-root is the Theurgist's, which is no realm's crowd-control class");
             Assert.That(OfflineDaoc.Shared.EraBuildCatalog.Default.Classes.SelectMany(c => c.Builds)
                 .Where(b => RvrRosterTemplates.IsCrowdControlRole(b.Role)).Select(b => b.Id).OrderBy(id => id, StringComparer.Ordinal),
-                Is.EqualTo(new[] { "bard-music-nurt", "healer-pac-mend-aug", "healer-pac-mend31", "sorcerer-mind-body" }));
+                Is.EqualTo(new[] { "bard-music-nurt", "healer-pac-mend-aug", "healer-pac-mend-aug19", "healer-pac-mend31", "sorcerer-mind-body" }),
+                "healer-pac-mend-aug19: the research's tri-spec (38 Pac, its instant AoE stun)");
         }
 
         [Test]

@@ -406,7 +406,7 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
   either edition.
 - **Level 41-50 points:** since 1.2 a gamebot that trains every level gets the half-level spec points above 40 that a
   player gets at each "x.5", so it reaches 50 with the same points as a `+ Lv.50` bot. Points it missed before 1.2 are
-  not given back (its trained levels don't change on the update).
+  given back at load since the owner's 2026-11-17 19:43 decision (below); its trained levels never go down.
 - **Every bot has a player's points** (owner, 2026-11-17: "companions and bots should be the same as a player"). A hired
   companion's spec window counts its points as yours are counted: every level, every half level above 40 it has
   passed, and the current one once its bar reaches the half, less what its lines cost you. A companion saved before
@@ -431,17 +431,17 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
     has none here.
   - A hired companion's free levels show "next: 0 points"; one saved before gets the points back to spend (77 a line at
     50), and its respec leaves autotrain lines at a quarter of its level, as yours does.
-  - A gamebot gets nothing back for levels it already trained; from its next level on it pays a player's cost.
-  - Era builds are **fully trained** (owner, 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and
-    Wayback build scraping showed"). Each of the 106 builds is the build of the dated 2002-2003 posts, paid for as a
-    level 50 player pays (autotrain counted), with every point spent: 57 are as posted; 40 had points to spare, which
-    go into the build's remainder line (its lowest posted line, where the period guides put spare points: "the
-    remainder in parry"); 9 asked for more than a level 50 has and lose points from that line. What is left (0 to 42
-    points) buys no further level in any of the build's lines. No line is added to a build.
-  - 22 of the 106 are also in the Wayback scrape (9 match its builds); the other 84 rest on the dated forum posts
-    alone. The list, with every source, is [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+  - Era builds are **fully trained** on the **modern 1.65 templates** (owner, 2026-11-17 18:59 and 19:43): the Uthgard
+    1.65 freeshard's templates and period guides reposted there, tuned back to 1.65, wherever the research is
+    confident; the dated 2002-2003 posts elsewhere. Each build cites its source; 113 builds, the Necromancer's 3 not
+    sourced. Every autotrain line is at its free 12. What is left (0-29 points) buys no further level. The list:
+    [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
   - A levelling era bot trains toward its build at every trainer visit and keeps no points its build can take;
     the per-bot variation (2 points) keeps the build fully trained; `ERA_BUILD_TRAINED` ends with `unspent=`.
+  - **Existing gamebots** are counted as a player at load (owner 2026-11-17 19:43): a bot saved with fewer points
+    than a player of its level and lines (the autotrain refund, half levels it never had) gets the difference,
+    `AUTONOMOUS_SPEC_REFUND` in the log; a bot at the level it trained at spends them at once. No line is lowered. This
+    replaces #326's "points missed before 1.2 are not given back".
   - An era bot made by an earlier 1.2 test build keeps the plan it saved.
   - Tests only until seen on the owner's PC.
 - **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so

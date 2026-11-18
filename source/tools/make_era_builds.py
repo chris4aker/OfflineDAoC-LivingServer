@@ -13,8 +13,12 @@ class, that should never be played by bots". Applied here:
   D3 A'  Midgard's shares moved toward the sourced Excalibur count of 2003-01-22, healers kept (MIDGARD_A_PRIME).
   D4     one class-share table per realm: the draft's RvR table (its levelling table stays in the research doc).
   D5     offMetaPercent 10, jitterPoints 2.
-  D7     replaced by the owner on 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and Wayback build
-         scraping showed". Every build is the period build (the dated FreddysHouse posts of the draft, checked against
+  D7     replaced by the owner on 2026-11-17 18:59 ("bots should be fully trained on what our 1.65 and Wayback build
+         scraping showed") and 19:43 ("use more recent discussions and templates as a base and then tune back towards
+         what you directionally know about 1.65"): a build whose class the research covers with high or medium
+         confidence is the research's template (era_research.RESEARCH, Uthgard 1.65 and reposted period guides, cited
+         per build); the others are the posted points, fully trained. Every autotrain line a build doesn't train is at
+         its free 12. The text below says how the posted points are trained. Every build is the period build (the dated FreddysHouse posts of the draft, checked against
          the Wayback scrape of 2026-11-13: WAYBACK) and spends a level 50 player's whole budget (fully_trained): the
          posted points, then the rest in the build's remainder line - or, where the posted points cost more than a
          level 50 has, less in that line. What is left is always less than the next level of any of its lines.
@@ -34,6 +38,10 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from era_research import CONFIDENCE, NEW_BUILDS, RESEARCH  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 DRAFT = REPO / "docs/research/bot-builds.draft.json"
@@ -369,12 +377,12 @@ def is_fully_trained(specs: dict, budget: int, autotrain=()) -> bool:
     return left >= 0 and (cheapest is None or left < cheapest)
 
 
-def spend_rest(specs: dict, order: list, budget: int, autotrain=()) -> dict:
+def spend_rest(specs: dict, order: list, budget: int, autotrain=(), exclude=()) -> dict:
     """The rest of a level 50's points go into the cheapest next level of the build's lines - its lowest line, the first
     of `order` on a tie - a level at a time, until what is left buys none (EraBuildCatalog.SpendRest does the same)."""
     specs = dict(specs)
     while True:
-        open_lines = [k for k in order if specs[k] < 50]
+        open_lines = [k for k in order if specs[k] < 50 and k not in exclude]
         if not open_lines:
             break
         line = min(open_lines, key=lambda k: (next_level_cost(specs[k], k in autotrain), specs[k], order.index(k)))
@@ -393,6 +401,7 @@ def fully_trained(posted: dict, budget: int, autotrain=(), trim_line: str | None
     buys no further level in any line. No line is added and none goes below 1 or above 50."""
     specs = dict(posted)
     order = list(ordered(posted))
+    trimmed = set()
     while points_left(specs, budget, autotrain) < 0:
         if trim_line and specs[trim_line] > 1:
             group = [trim_line]
@@ -401,9 +410,70 @@ def fully_trained(posted: dict, budget: int, autotrain=(), trim_line: str | None
             group = [k for k in order if posted[k] == floor and specs[k] > 1]
         line = max(group, key=lambda k: (specs[k], order.index(k)))   # the highest of the group, the last listed on a tie
         specs[line] -= 1
-    specs = spend_rest(specs, order, budget, autotrain)
-    assert is_fully_trained(specs, budget, autotrain), (posted, specs)
+        trimmed.add(line)
+    # a line just trimmed is never filled again (review of 1f3dcefe2: Wind 11 -> 1 -> 4)
+    specs = spend_rest(specs, order, budget, autotrain, exclude=trimmed)
     return specs
+
+
+def with_autotrain(specs: dict, autotrain=()) -> dict:
+    """Every autotrain line at its free level at least (12 at 50), as a player has it: listed or not (research finding 1,
+    review of 1f3dcefe2 item 3)."""
+    out = dict(specs)
+    for line in autotrain:
+        out[line] = max(out.get(line, 1), AUTOTRAIN_LEVEL_50)
+    return out
+
+
+def train_build(cls: str, label: str, posted: dict, budget: int, autotrain=()) -> tuple[dict, str]:
+    """The trained specs and what they rest on ("research" or "posted")."""
+    entry = RESEARCH.get((cls, label), {})
+    if entry.get("specs"):
+        specs = with_autotrain(entry["specs"], autotrain)
+        assert points_left(specs, budget, autotrain) >= 0, (cls, label, "the research template is over budget")
+        if entry.get("rest"):
+            specs = spend_rest(specs, [entry["rest"]], budget, autotrain)
+        base = "research"
+    else:
+        specs = fully_trained(posted, budget, autotrain, TRIM_LINE.get((cls, label)))
+        if entry.get("rest") and entry["rest"] in specs:
+            # a source names where the rest goes; until then the build's own lines take it
+            specs = fully_trained(posted, budget, autotrain, TRIM_LINE.get((cls, label)))
+        specs = with_autotrain(specs, autotrain)
+        base = "posted"
+    # points still left buy a level in the build's own lines (never one it trimmed, never an autotrain line it doesn't
+    # train), the named rest line first
+    own = [k for k in ordered(posted if base == "posted" else entry["specs"]) if k in specs]
+    if entry.get("rest") in own:
+        own.remove(entry["rest"])
+        own.insert(0, entry["rest"])
+    trimmed = {k for k in posted if base == "posted" and specs.get(k, 0) < posted[k]}
+    specs = spend_rest(specs, own, budget, autotrain, exclude=trimmed)
+    if not is_fully_trained(specs, budget, autotrain):
+        specs = spend_rest(specs, list(ordered(specs)), budget, autotrain, exclude=trimmed)
+    assert is_fully_trained(specs, budget, autotrain), (cls, label, specs, points_left(specs, budget, autotrain))
+    return specs, base
+
+
+def citations(cls: str, label: str) -> list[dict]:
+    return [{"url": url, "site": urlparse(url).netloc.removeprefix("www."), "date": date, "says": says}
+            for url, date, says in RESEARCH.get((cls, label), {}).get("cite", [])]
+
+
+def describe(posted: dict, specs: dict, autotrain=(), base: str = "posted") -> str | None:
+    """'Uthgard 1.65 template: Shields 25->42, ...; autotrain: Thrust 1->12; rest to Parry (6->13)'."""
+    free = [f"{k} {posted.get(k, 1)}->{specs[k]}" for k in specs
+            if k in autotrain and specs[k] >= AUTOTRAIN_LEVEL_50 and posted.get(k, 1) < AUTOTRAIN_LEVEL_50]
+    if base == "research":
+        moved = [f"{k} {posted.get(k, 1)}->{specs[k]}" for k in specs if specs[k] != posted.get(k, 1)
+                 and f"{k} {posted.get(k, 1)}->{specs[k]}" not in free]
+        moved += [f"{k} {v}->1" for k, v in posted.items() if k not in specs]
+        parts = (["research template: " + ", ".join(moved)] if moved else []) + \
+                (["autotrain at its free level: " + ", ".join(free)] if free else [])
+        return "; ".join(parts) or None
+    note = change_note(posted, {k: v for k, v in specs.items() if k in posted})
+    parts = ([note] if note else []) + (["autotrain at its free level: " + ", ".join(free)] if free else [])
+    return "; ".join(parts) or None
 
 
 def change_note(posted: dict, specs: dict) -> str | None:
@@ -499,19 +569,44 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
         autotrain = AUTOTRAIN.get(cls, [])
         assert all(line in lines for line in autotrain), cls
         out_builds = []
-        for build, build_id in zip(builds, make_ids(cls, builds)):
+        drafted = [dict(b, id=i) for b, i in zip(builds, make_ids(cls, builds))]
+        added = [dict(b, sources=[c[0] for c in b["cite"]], sourceDates=[c[1] for c in b["cite"]], forumMentions=0,
+                      sourced=True, new=True) for b in NEW_BUILDS.get(cls, [])]
+        low = CONFIDENCE.get(cls) == "low"
+        for build in drafted + added:
             label = build["label"]
+            build_id = build["id"]
+            entry = {} if build.get("new") else RESEARCH.get((cls, label), {})
             posted = ordered(build["specs"])
-            trained = fully_trained(posted, budget, autotrain, TRIM_LINE.get((cls, label)))
-            change = change_note(posted, trained)
+            if build.get("new"):
+                entry = dict(specs=build["specs"], rest=build.get("rest"), cite=build["cite"])
+                RESEARCH[(cls, label)] = entry
+            trained, base = train_build(cls, label, posted, budget, autotrain)
             specs = ordered(trained)
+            change = describe(posted, specs, autotrain, base)
+            cites = citations(cls, label)
             wayback = wayback_entries(cls, label)
             change_basis, change_sourced = None, False
             if change is not None:
+                only_free = all(k in autotrain and v == AUTOTRAIN_LEVEL_50 for k, v in specs.items() if v != posted.get(k, 1)) \
+                    and set(posted) <= set(specs)
                 named = [e for e in wayback if e["verdict"] in ("remainder", "trim")]
-                change_sourced = bool(named)
-                change_basis = ("; ".join(f"{e['shows']} ({e['site']}, {e['page']}, captured {e['captured']})" for e in named)
-                                if named else REMAINDER_BASIS)
+                if base == "research" and cites:
+                    change_sourced = True
+                    change_basis = "the cited template (" + "; ".join(f"{c['site']} {c['date']}" for c in cites) + ")"
+                elif only_free:
+                    change_sourced = True
+                    change_basis = ("a player's free autotrain levels (this server: 12 at 50); Uthgard 1.65 writes them in "
+                                    "the same way (www.uthgard.net forum t=46589 2018, t=19921 2010, t=36249 2016)")
+                elif cites and entry.get("rest"):
+                    change_sourced = True
+                    change_basis = f"the rest in {entry['rest']}, as the cited source puts it (" + \
+                        "; ".join(f"{c['site']} {c['date']}" for c in cites) + ")"
+                elif named:
+                    change_sourced = True
+                    change_basis = "; ".join(f"{e['shows']} ({e['site']}, {e['page']}, captured {e['captured']})" for e in named)
+                else:
+                    change_basis = REMAINDER_BASIS
                 changes.append(f"build {build_id}: {fmt(posted)} -> {fmt(specs)} ({change}; "
                                f"{build_cost(posted, autotrain)} -> {build_cost(specs, autotrain)} of {budget} points)")
             weight, weight_basis = build["weight"], "estimate from forumMentions and period wording"
@@ -519,12 +614,21 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
                 weight, note = WEIGHT_CHANGES[(cls, label)]
                 weight_basis = f"estimate, {note}"
                 changes.append(f"weight {build_id}: {build['weight']:.2f} -> {weight:.2f} ({note})")
+            if "weight" in entry and not build.get("new"):
+                weight_basis = f"estimate, the research: {build['weight']:.2f} -> {entry['weight']:.2f}" + \
+                    (f" ({entry['note']})" if entry.get("note", "").startswith("weight") else "")
+                changes.append(f"weight {build_id}: {build['weight']:.2f} -> {entry['weight']:.2f}")
+                weight = entry["weight"]
+            if build.get("new"):
+                weight_basis = "estimate, the research adds this template"
+            sourced = not low and bool(cites or build.get("sourced"))
             out_builds.append({
                 "id": build_id,
-                "label": label,
+                "label": entry.get("label", label),
+                "draftLabel": label,
                 "role": build["role"],
-                "use": build["use"],
-                "family": family(cls, label),
+                "use": entry.get("use", build["use"]),
+                "family": entry.get("family") or build.get("family") or family(cls, label),
                 "weight": round(weight, 4),
                 "weightSourced": False,
                 "weightBasis": weight_basis,
@@ -534,8 +638,14 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
                 "changeBasis": change_basis,
                 "changeSourced": change_sourced,
                 "pointsLeft": points_left(specs, budget, autotrain),
-                "specsSourced": bool(build.get("sourced", False)) and change is None,
+                "sourced": sourced,
+                "confidence": CONFIDENCE.get(cls) or entry.get("conf") or ("high" if build.get("new") else "medium"),
+                "base": "Uthgard 1.65 / reposted period guide" if base == "research" else "dated 2002-2003 posts",
+                "citations": cites,
+                "note": entry.get("note"),
+                "specsSourced": sourced and (change is None or change_sourced),
                 "postedSourced": bool(build.get("sourced", False)),
+                "new": bool(build.get("new")),
                 "wayback": wayback,
                 "check": wayback_check(wayback),
                 "forumMentions": build["forumMentions"],
@@ -626,10 +736,25 @@ def validate(data: dict) -> list[str]:
                 problems.append(f"{b['id']}: {left} points left, the next level of a line costs {cheapest}")
             if b.get("pointsLeft") != left:
                 problems.append(f"{b['id']}: pointsLeft {b.get('pointsLeft')} is not {left}")
-            if set(b["specs"]) != set(b["posted"]):
-                problems.append(f"{b['id']}: a line was added or dropped")
-            if not b.get("postedSourced") or not b.get("sources"):
+            # a line comes in or goes out only with a cited template, or as an autotrain line at its free level
+            for line in set(b["specs"]) ^ set(b["posted"]):
+                free = line in autotrain and b["specs"].get(line, 0) >= AUTOTRAIN_LEVEL_50
+                if not free and not b.get("citations"):
+                    problems.append(f"{b['id']}: {line} added or dropped without a cited template")
+            for line in autotrain:
+                if b["specs"].get(line, 1) < AUTOTRAIN_LEVEL_50:
+                    problems.append(f"{b['id']}: autotrain line {line} below its free {AUTOTRAIN_LEVEL_50}")
+            # a fill of more than 10 levels needs a source (review of 1f3dcefe2)
+            for line, level in b["specs"].items():
+                start = b["posted"].get(line, 1)
+                if line in autotrain:
+                    start = max(start, AUTOTRAIN_LEVEL_50)   # the free levels are no fill
+                if level - start > 10 and not b.get("citations"):
+                    problems.append(f"{b['id']}: {line} +{level - start} levels without a source")
+            if not b.get("sources"):
                 problems.append(f"{b['id']}: no dated source for its posted points")
+            if b.get("sourced") and not (b.get("citations") or b.get("postedSourced")):
+                problems.append(f"{b['id']}: sourced without a source")
             if b["change"] is not None and not b.get("changeBasis"):
                 problems.append(f"{b['id']}: changed without a basis")
     return problems
@@ -649,9 +774,15 @@ def render_table(data: dict) -> str:
         "Generated by `source/tools/make_era_builds.py --table` from `bot-builds.draft.json` and the tool's Wayback table;",
         "`--check` fails when this file is out of date. Do not edit by hand.",
         "",
-        f"- **{len(every)} builds, {len(data['classes'])} classes.** Each has dated FreddysHouse posts of 2002-2003 for its posted",
-        "  points (the links and dates are in the data file and in `ERA-BUILDS-1.65.md`). Those threads could not be",
-        "  re-read for this check: the forum is not reachable from the build environment.",
+        f"- **{len(every)} builds, {len(data['classes'])} classes** ({sum(1 for _, b in every if b['new'])} added by the research). "
+        "The draft's have dated FreddysHouse posts of 2002-2003 for",
+        "  their posted points (not re-read: the forum is not reachable from the build environment).",
+        f"- **Owner 2026-11-17 19:43:** the modern base (Uthgard, a 1.65 freeshard with this server's budget, and period guides",
+        "  reposted there) tuned back to 1.65. "
+        f"{sum(1 for _, b in every if b['base'].startswith('Uthgard'))} builds are the research's template; "
+        f"{sum(1 for _, b in every if b['citations'])} cite a source (\"Cited\" below); "
+        f"{sum(1 for _, b in every if not b['sourced'])} are not sourced (the Necromancer, low confidence).",
+        "- Every autotrain line is at its free 12 at least, listed in the build or not.",
         f"- **{len(wayback)} builds are also in the Wayback scrape of 2026-11-13** "
         f"({sum(1 for _, b in wayback if b['check'].startswith('matches'))} match within 4 points on their top two lines); "
         f"**{len(every) - len(wayback)} are not** (\"-\" below).",
@@ -669,15 +800,16 @@ def render_table(data: dict) -> str:
     for site, page, captured in sorted(set(WAYBACK_SOURCES.values()), key=lambda entry: entry[1]):
         out.append(f"| {site} | {page} | {captured} |")
     out += ["", "## The builds", "",
-            "| Class | Build | Posted (dated posts, newest) | Trained | Left | Change | Wayback |",
-            "|---|---|---|---|---|---|---|"]
+            "| Class | Build | Posted (dated posts, newest) | Trained | Left | Change | Cited | Wayback |",
+            "|---|---|---|---|---|---|---|---|"]
     for cls, b in every:
         shows = "<br>".join(f"**{e['verdict']}**: {e['shows']} ({e['page'].split(' (')[0]}, captured {e['captured']})"
                             for e in b["wayback"]) or "-"
         newest = max(b["sourceDates"]) if b["sourceDates"] else "-"
+        cited = "<br>".join(f"[{c['site']} {c['date']}]({c['url']}): {c['says']}" for c in b["citations"]) or "-"
         out.append(f"| {cls} | `{b['id']}` {b['label']} | {fmt(b['posted'])} ({b['forumMentions']}, {newest}) | "
                    f"{fmt(b['specs']) if b['change'] else 'as posted'} | {b['pointsLeft']} | {b['change'] or '-'} | "
-                   f"{shows.replace('|', '/')} |")
+                   f"{cited.replace('|', '/')} | {shows.replace('|', '/')} |")
     out += ["", "## Not in the Wayback scrape", "",
             "Builds with dated FreddysHouse posts only, by class: " +
             "; ".join(f"{cls} ({', '.join(b['label'] for c2, b in every if c2 == cls and not b['wayback'])})"
@@ -692,15 +824,17 @@ def summary(data: dict) -> list[str]:
         lines.append(f"{realm}: " + ", ".join(f"{c} {e['share'] * 100:g}" for c, e in info["classShare"].items()))
     builds = sum(len(c["builds"]) for c in data["classes"].values())
     every = [b for c in data["classes"].values() for b in c["builds"]]
+    research = sum(1 for b in every if b["base"].startswith("Uthgard") and not b["new"])
+    new = sum(1 for b in every if b["new"])
     changed = sum(1 for b in every if b["change"])
-    trimmed = sum(1 for b in every if (b["change"] or "").startswith("trimmed"))
-    wayback = sum(1 for b in every if b["wayback"])
-    matches = sum(1 for b in every if b["check"].startswith("matches"))
+    sourced = sum(1 for b in every if b["sourced"])
+    cited = sum(1 for b in every if b["citations"])
     left = [b["pointsLeft"] for b in every]
-    lines.append(f"{len(data['classes'])} classes, {builds} builds, all with dated posts; {wayback} also in the Wayback "
-                 f"scrape ({matches} match), {builds - wayback} not; {changed} changed to be fully trained ({trimmed} "
-                 f"trimmed, {changed - trimmed} filled), {builds - changed} as posted; points left {min(left)}-{max(left)}; "
-                 f"sharesSourced 0/3, weightsSourced 0/{builds}; excluded: {', '.join(data['excludedClasses'])}")
+    lines.append(f"{len(data['classes'])} classes, {builds} builds ({new} new): {sourced} sourced ({cited} with a modern or "
+                 f"period citation), {builds - sourced} not; {research} are the research's template, {changed} differ "
+                 f"from their posted points ({sum(1 for b in every if b['changeSourced'])} of them with a source), "
+                 f"{builds - changed} as posted; points left {min(left)}-{max(left)}; sharesSourced 0/3, "
+                 f"weightsSourced 0/{builds}; excluded: {', '.join(data['excludedClasses'])}")
     return lines
 
 

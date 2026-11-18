@@ -52,6 +52,19 @@ namespace DOL.UnitTests
             public override void LoadClassSpecializations(bool sendMessage) { }
         }
 
+        /// <summary>A saved gamebot whose lines exist before its saved levels load (the skill tables give them in the game).</summary>
+        private sealed class SavedBot : GameBot
+        {
+            [ThreadStatic] public static string[] Lines;
+            public SavedBot(OfflineWorldBotRecord record) : base(record) { }
+            public override void LoadClassSpecializations(bool sendMessage)
+            {
+                foreach (string line in Lines ?? [])
+                    if (GetSpecializationByName(line) == null)
+                        AddSpecialization(new Specialization(line, line, 0), false);
+            }
+        }
+
         /// <summary>A /bot or /spawn companion's player.</summary>
         private sealed class Owner : GamePlayer
         {
@@ -263,28 +276,74 @@ namespace DOL.UnitTests
             }
         }
 
-        [Test]
-        public void AGamebotTrainedBeforeTheFixGetsNothingBackButTrainsItsNextLevelsAtAPlayersCost()
+        [TestCase(50, 50)]
+        [TestCase(45, 42)]
+        public void ASavedGamebotGetsBackWhatAPlayerHasAndKeepsEveryTrainedPoint(int level, int trainedAt)
         {
-            // An Armsman saved at 40 by the build before: Slash 40 with every level paid for (no autotrain).
-            GameBot bot = Gamebot(eCharacterClass.Armsman, 40);
-            GivePlan(bot);
-            bot.GetSpecializationByName(Specs.Slash).Level = 40;
-            Leftover(bot, PlayerSpecPointOracle.Earned(bot.CharacterClass, 40) - GameBot.PointsToTrain(40));
-            // a player with the same line has its ten free levels more
-            int paidForFreeLevelsBefore = GameBot.PointsToTrain(GameBot.AutoTrainLevel(40));
-            Assert.That(Left(bot.CharacterClass, 40, (Specs.Slash, 40)) - Leftover(bot), Is.EqualTo(paidForFreeLevelsBefore));
-            for (byte level = 41; level <= 50; level++)
+            // An Armsman saved by a build before 1.2: Slash 40, Shields 42, Parry 20, Thrust 1, every level paid for (no
+            // autotrain refund) and no half-level points. At load it is counted as a player is (owner 2026-11-17 19:43:
+            // existing gamebots too): the difference is its to spend.
+            const string specs = "Slash|40;Shields|42;Parry|20;Thrust|1;Polearm|1;Crush|1;Two Handed|1;Crossbows|1";
+            int multiplier = PlayerSpecPointOracle.ClassOf(eCharacterClass.Armsman).SpecPointsMultiplier;
+            int oldEarned = Enumerable.Range(2, trainedAt - 1).Sum(l => GameBot.SpecPointsForLevel(multiplier, l, false));
+            int oldSaved = oldEarned - GameBot.PointsToTrain(40) - GameBot.PointsToTrain(42) - GameBot.PointsToTrain(20);
+            Assume.That(oldSaved, Is.Not.Negative);
+            OfflineWorldBotRecord record = Record(eCharacterClass.Armsman, level, 9_872_000 + level);
+            record.SerializedSpecs = specs;
+            record.SerializedAbilities = $"trained-level|{trainedAt}|realm-points|0";
+            record.UnspentSpecPoints = oldSaved;
+            record.LastSavedUtc = DateTime.UtcNow.ToString("O");
+            SavedBot.Lines = specs.Split(';').Select(entry => entry.Split('|')[0]).ToArray();
+            GameBot bot;
+            try { bot = Track(new SavedBot(record)); }
+            finally { SavedBot.Lines = null; }
+
+            foreach ((string line, int at) in new[] { (Specs.Slash, 40), (Specs.Shields, 42), (Specs.Parry, 20) })
+                Assert.That(bot.GetBaseSpecLevel(line), Is.GreaterThanOrEqualTo(at), $"{line}: never untrained");
+            // a player trained at the same level with the same lines has exactly what the bot has now
+            int left = PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, trainedAt, false, PlayerSpecPointOracle.Lines(bot));
+            Assert.That(Leftover(bot), Is.EqualTo(left), EraBuild.Format(PlayerSpecPointOracle.Lines(bot)));
+            Assert.That(Left(bot.CharacterClass, trainedAt, (Specs.Slash, 40), (Specs.Shields, 42), (Specs.Parry, 20)),
+                Is.GreaterThan(oldSaved), "the autotrain refund and the half levels it had not had");
+            Assert.That(_logs.Lines.Any(l => l.StartsWith("AUTONOMOUS_SPEC_REFUND ") && l.Contains($"saved={oldSaved} ")), Is.True);
+            if (level == trainedAt)
             {
-                bot.Level = level;
-                bot.SpendSpecPoints(level, (byte)(level - 1));
+                // at 50 it never trains again: the points are spent at once, along its plan, and Thrust takes its free 12
+                Assert.That(bot.GetBaseSpecLevel(Specs.Thrust), Is.EqualTo(12));
+                Assert.That(PlayerSpecPointOracle.Lines(bot).Sum(l => l.Value), Is.GreaterThan(40 + 42 + 20 + 5 + 12));
             }
-            Assert.That(bot.GetBaseSpecLevel(Specs.Slash), Is.EqualTo(50), "never untrained");
-            // The levels 41-50 are a player's: the points of each level and half level, the 11th and 12th free level of
-            // Slash (at 44 and 48), and Thrust free up to 12. Only what it had already paid for at 40 is not given back.
-            Assert.That(bot.GetBaseSpecLevel(Specs.Thrust), Is.GreaterThanOrEqualTo(12));
-            Assert.That(Leftover(bot), Is.EqualTo(PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, 50, false,
-                PlayerSpecPointOracle.Lines(bot)) - paidForFreeLevelsBefore));
+            else
+            {
+                // levels 43-45 are still to train: the points wait for the trainer, with those levels' own
+                Assert.That(bot.GetBaseSpecLevel(Specs.Thrust), Is.EqualTo(1));
+                bot.SpendSpecPoints((byte)level, (byte)trainedAt);
+                AssertAPlayersPoints(bot, Leftover(bot), level, "trained at the next visit");
+            }
+            // loaded again, nothing more is given
+            GameBot again;
+            OfflineWorldBotRecord saved = bot.PrepareAutonomousStateSnapshot();
+            SavedBot.Lines = specs.Split(';').Select(entry => entry.Split('|')[0]).ToArray();
+            try { again = Track(new SavedBot(saved)); }
+            finally { SavedBot.Lines = null; }
+            Assert.That(Leftover(again), Is.EqualTo(Leftover(bot)));
+            Assert.That(PlayerSpecPointOracle.Lines(again), Is.EquivalentTo(PlayerSpecPointOracle.Lines(bot)));
+        }
+
+        [Test]
+        public void ASavedGamebotWithAPlayersPointsGetsNothingMore()
+        {
+            OfflineWorldBotRecord record = Record(eCharacterClass.Wizard, 30, 9_872_100);
+            record.SerializedSpecs = "Cold Magic|20";
+            record.SerializedAbilities = "trained-level|30|realm-points|0";
+            record.UnspentSpecPoints = PlayerSpecPointOracle.Earned(PlayerSpecPointOracle.ClassOf(eCharacterClass.Wizard), 30) -
+                GameBot.PointsToTrain(20) + 5;   // more than a player: kept, never taken away
+            record.LastSavedUtc = DateTime.UtcNow.ToString("O");
+            SavedBot.Lines = ["Cold Magic", "Earth Magic", "Fire Magic"];
+            GameBot bot;
+            try { bot = Track(new SavedBot(record)); }
+            finally { SavedBot.Lines = null; }
+            Assert.That(Leftover(bot), Is.EqualTo(record.UnspentSpecPoints));
+            Assert.That(_logs.Lines.Any(l => l.StartsWith("AUTONOMOUS_SPEC_REFUND ")), Is.False);
         }
 
         // ---- hired companions (True 1.65): their player spends the points in the companion's spec window

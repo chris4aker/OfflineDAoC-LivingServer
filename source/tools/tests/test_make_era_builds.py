@@ -54,9 +54,10 @@ class MakeEraBuilds(unittest.TestCase):
                     if level < 50:
                         self.assertLess(left, era.next_level_cost(level, line in c["autotrain"]), f"{b['id']} {line}")
                 self.assertTrue(era.is_fully_trained(b["specs"], c["pointBudget50"], c["autotrain"]), b["id"])
-                self.assertEqual(set(b["specs"]), set(b["posted"]), f"{b['id']}: no line added or dropped")
+                for line in set(b["specs"]) ^ set(b["posted"]):
+                    self.assertTrue(b["citations"] or line in c["autotrain"], f"{b['id']}: {line}")
         left = [b["pointsLeft"] for c in self.data["classes"].values() for b in c["builds"]]
-        self.assertEqual((min(left), max(left)), (0, 42))
+        self.assertEqual((min(left), max(left)), (0, 29))
 
     def test_validate_refuses_a_build_with_points_to_spare(self):
         data = json.loads(era.render(self.data))
@@ -69,9 +70,9 @@ class MakeEraBuilds(unittest.TestCase):
         fit = era.fully_trained
         # under: the lowest posted line takes the rest (Armsman: Slash and Thrust are free up to 12)
         self.assertEqual(fit({"Polearm": 50, "Shields": 42, "Slash": 39, "Parry": 6}, 2979, ["Slash", "Thrust"])["Parry"], 13)
-        # over: the lowest line gives the points back, then the rest is spent again (the period's Earth 50 / Ice 20 / Air 4)
+        # over: the lowest line gives the points back, and a line just trimmed is never filled again
         self.assertEqual(fit({"Earth Magic": 50, "Cold Magic": 26, "Wind Magic": 11}, 1494),
-                         {"Earth Magic": 50, "Cold Magic": 20, "Wind Magic": 4})
+                         {"Earth Magic": 50, "Cold Magic": 20, "Wind Magic": 1})
         # lines posted at the same level come down together
         self.assertEqual(fit({"Mentalism": 45, "Light": 25, "Mana": 25}, 1494), {"Mentalism": 45, "Light": 21, "Mana": 21})
         # a source names the line to trim: Stealth, not the Minstrel's weapon
@@ -81,37 +82,95 @@ class MakeEraBuilds(unittest.TestCase):
         posted = {"Mind Magic": 44, "Body Magic": 31}
         self.assertEqual(fit(posted, 1494), posted)
         builds = {b["id"]: b for c in self.data["classes"].values() for b in c["builds"]}
-        self.assertEqual(builds["infiltrator-thrust-env"]["specs"]["Dual Wield"], 34)   # "rest dual wield"
-        self.assertTrue(builds["infiltrator-thrust-env"]["changeSourced"])
-        self.assertEqual(builds["warden-nurt-regrow"]["specs"], {"Nurture": 49, "Regrowth": 33, "Parry": 29})
-        self.assertTrue(builds["warden-nurt-regrow"]["changeSourced"])                  # "the remainder in parry"
-        self.assertFalse(builds["armsman-pole-shld-slash"]["changeSourced"])            # the general practice only
-        self.assertIn("remainder line", builds["armsman-pole-shld-slash"]["changeBasis"])
+        # a cited "rest into parry": the source decides, not the general practice
+        self.assertEqual(builds["armsman-pole-shld-slash"]["specs"]["Parry"], 13)
+        self.assertTrue(builds["armsman-pole-shld-slash"]["changeSourced"])
+        self.assertIn("rest in Parry", builds["armsman-pole-shld-slash"]["changeBasis"])
+        # no source: the general practice, and the data says so
+        self.assertFalse(builds["sorcerer-body-mind"]["changeSourced"])
+        self.assertIn("remainder line", builds["sorcerer-body-mind"]["changeBasis"])
 
     def test_every_build_has_dated_posts_and_the_wayback_check_is_recorded(self):
         builds = [b for c in self.data["classes"].values() for b in c["builds"]]
         self.assertTrue(all(b["postedSourced"] and b["sources"] and b["sourceDates"] for b in builds))
+        self.assertEqual(sum(1 for b in builds if not b["sourced"]), 3)   # the Necromancer (low confidence)
         self.assertEqual(sum(1 for b in builds if b["wayback"]), 22)
         self.assertEqual(sum(1 for b in builds if b["check"].startswith("matches")), 9)
         for b in builds:
-            self.assertEqual(b["specsSourced"], b["change"] is None, b["id"])
+            self.assertEqual(b["specsSourced"], b["sourced"] and (b["change"] is None or b["changeSourced"]), b["id"])
             for entry in b["wayback"]:
                 self.assertTrue(entry["site"] and entry["page"] and entry["captured"] and entry["shows"], b["id"])
                 self.assertRegex(entry["captured"], r"^200[2-5]-\d\d-\d\d$")
             self.assertEqual(b["changeBasis"] is not None, b["change"] is not None, b["id"])
         self.assertEqual(era.CHECK_DOC.read_text(encoding="utf-8"), era.render_table(self.data))
 
-    def test_nine_trims_forty_fills_and_the_rest_as_posted(self):
+    def test_the_drafts_106_builds_and_the_researchs_7_new_ones(self):
         builds = [b for c in self.data["classes"].values() for b in c["builds"]]
-        self.assertEqual(len(builds), 106)
-        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("trimmed")), 9)
-        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("filled")), 40)
-        for b in builds:
-            draft = next(d for d in self.draft["classes"][b["id"].split("-")[0].capitalize()] if d["label"] == b["label"])
-            self.assertEqual(b["posted"], era.ordered(draft["specs"]), b["id"])
-            if b["change"] is None:
-                self.assertEqual(b["specs"], b["posted"], b["id"])
-            self.assertFalse(b["weightSourced"], b["id"])
+        self.assertEqual(len(builds), 113)
+        self.assertEqual(sum(1 for b in builds if b["new"]), 7)
+        for cls, c in self.data["classes"].items():
+            self.assertAlmostEqual(sum(b["weight"] for b in c["builds"]), 1.0, places=3, msg=cls)
+            for b in c["builds"]:
+                if not b["new"]:
+                    draft = next(d for d in self.draft["classes"][cls] if d["label"] == b["draftLabel"])
+                    self.assertEqual(b["posted"], era.ordered(draft["specs"]), b["id"])
+                else:
+                    self.assertTrue(b["citations"] and b["sourced"], b["id"])
+                if b["change"] is None:
+                    self.assertEqual(b["specs"], b["posted"], b["id"])
+                self.assertFalse(b["weightSourced"], b["id"])
+        # ids stay those of the draft (saved plans keep reading): the research changed labels, never ids
+        ids = [b["id"] for b in builds if not b["new"]]
+        self.assertEqual(len(ids), 106)
+        self.assertIn("champion-lw-valor-blades", ids)
+        self.assertIn("bard-regrow-nurt", ids)
+
+    def test_the_research_templates_and_the_class_review(self):
+        builds = {b["id"]: b for c in self.data["classes"].values() for b in c["builds"]}
+        # review of 1f3dcefe2, must fix: the Scout keeps a bow, the Warden a weapon
+        self.assertEqual(builds["scout-thrust-shld"]["specs"], {"Thrust": 50, "Shields": 42, "Stealth": 35, "Longbows": 21})
+        self.assertEqual(builds["warden-nurt-regrow"]["specs"], {"Nurture": 49, "Regrowth": 33, "Blades": 29, "Parry": 3})
+        # the research's templates where it and the review differ
+        self.assertEqual(builds["theurgist-earth-cold"]["specs"], {"Earth Magic": 48, "Cold Magic": 24, "Wind Magic": 6})
+        self.assertEqual(builds["champion-lw-valor-blades"]["specs"], {"Valor": 50, "Shields": 42, "Blades": 39, "Parry": 6})
+        self.assertEqual(builds["champion-lw-valor-blades"]["family"], "OneHandAndShield")
+        self.assertNotEqual(builds["infiltrator-thrust-env"]["specs"], builds["infiltrator-thrust-dw"]["specs"])
+        self.assertEqual(builds["infiltrator-thrust-env"]["specs"]["Critical Strike"], 39)
+        self.assertEqual(builds["minstrel-inst-slash"]["label"], "Instruments/Slash (solo)")
+        for b in builds.values():
+            if b["base"].startswith("Uthgard"):
+                self.assertTrue(b["citations"], b["id"])
+                for c in b["citations"]:
+                    self.assertTrue(c["url"].startswith("https://") and c["site"] and c["says"], b["id"])
+            if b["note"] and "class review" in b["note"]:
+                self.assertTrue(b["base"].startswith("Uthgard"), b["id"])
+        # low confidence: the Necromancer stays as posted, not sourced
+        for b in self.data["classes"]["Necromancer"]["builds"]:
+            self.assertFalse(b["sourced"])
+            self.assertEqual(b["base"], "dated 2002-2003 posts")
+        # every change rests on something; a source where it says so
+        for b in builds.values():
+            if b["changeSourced"]:
+                self.assertTrue(b["citations"] or "autotrain" in b["changeBasis"] or b["wayback"], b["id"])
+
+    def test_every_autotrain_line_is_at_its_free_level(self):
+        for cls, c in self.data["classes"].items():
+            for b in c["builds"]:
+                for line in c["autotrain"]:
+                    self.assertGreaterEqual(b["specs"].get(line, 1), era.AUTOTRAIN_LEVEL_50, f"{b['id']} {line}")
+        builds = {b["id"]: b for c in self.data["classes"].values() for b in c["builds"]}
+        self.assertEqual(builds["armsman-pole-shld-slash"]["specs"]["Thrust"], 12)
+        self.assertEqual(builds["warrior-hammer-shld"]["specs"]["Sword"], 12)
+
+    def test_validate_refuses_a_big_fill_without_a_source_and_an_untrained_autotrain_line(self):
+        data = json.loads(era.render(self.data))
+        b = next(b for b in data["classes"]["Necromancer"]["builds"])
+        line = next(k for k, v in b["specs"].items() if v < 30)
+        b["specs"][line] += 11
+        self.assertTrue(any("levels without a source" in p for p in era.validate(data)))
+        data = json.loads(era.render(self.data))
+        data["classes"]["Armsman"]["builds"][0]["specs"]["Thrust"] = 1
+        self.assertTrue(any("below its free" in p for p in era.validate(data)))
 
     def test_the_owners_decisions(self):
         midgard = {c: e["share"] for c, e in self.data["realms"]["Midgard"]["classShare"].items()}
