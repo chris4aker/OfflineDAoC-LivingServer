@@ -1418,5 +1418,56 @@ class Sweep6e(unittest.TestCase):
         self.assertEqual(check(only(log.run()[1]), "return_stuck")["status"], pcl.CONTRADICTED)
 
 
+class Sweep6f(unittest.TestCase):
+    """Row from DIAG-b1b6-sweep6f: a return wave rebased to a step none of its raiders stood at that then sat silent (W-2;
+    synthetic lines shaped like build b1b6846's Tur Suil and Trollheim waves, and the fixed build's standing= field)."""
+
+    EV = "dungeon-hibernia-tursuil"
+
+    def wave(self, log, minute, rest, level="INF"):
+        log.add(at(minute), f"REALM_RAID_RETURN_WAVE event={self.EV} {rest}", level, "DOL.GS.AutonomousRealmRaid")
+
+    def row(self, log):
+        return check(only(log.run()[1]), "rebase_silent")
+
+    def test_a_rebase_silent_27_minutes_contradicts(self):
+        log = Log().start(at(0))
+        self.wave(log, 1, "step=formed wave=1 members=30 steps=27")
+        self.wave(log, 5, 'step=rebased wave=1 at=10/27 members=19 catching=14 reason="no raider of the wave walks at its step"')
+        self.wave(log, 25, "step=joined wave=1 joined=20 members=39 at=10/27 catching=20 from=1")
+        self.wave(log, 28, "step=stuck wave=1 at=10/27 living=19 atStep=0 inside=19 kills=3 helps=0", "WRN")
+        self.wave(log, 32, 'step=fighting wave=1 target="balorian" level=50 living=39 atStep=13 step_at=10/27')
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("dungeon-hibernia-tursuil wave 1 rebased at 06:05:00 to 10/27 (standing=not logged), silent 27.0 min "
+                      "until step=fighting", row["detail"])
+
+    def test_a_rebase_whose_core_stands_at_its_step_or_that_moves_soon_is_seen(self):
+        log = Log().start(at(0))
+        self.wave(log, 1, "step=formed wave=1 members=30 steps=27")
+        self.wave(log, 5, "step=rebased wave=1 at=9/27 members=19 core=5 standing=4 catching=14")
+        self.wave(log, 30, "step=moving wave=1 at=10/27 living=19 together=12 kills=3 minutes=29")
+        self.wave(log, 31, "step=rebased wave=1 at=12/27 members=19 core=5 standing=0 catching=14")
+        for m in (33, 35, 37, 39):
+            self.wave(log, m, "step=waiting wave=1 at=12/27 living=5 atStep=0 needed=3 catching=14 waiting_s=120")
+        self.wave(log, 40, "step=moving wave=1 at=13/27 living=19 together=12 kills=3 minutes=39")
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.SEEN, "standing=4 is a core at its step; 9 minutes is under the bar")
+        self.assertIn("2 rebase(s)", row["detail"])
+
+    def test_a_silent_rebase_until_the_raid_ends_or_the_log_ends_counts(self):
+        log = Log().start(at(0))
+        self.wave(log, 5, "step=rebased wave=4 at=15/33 members=38 core=1 standing=0 catching=37")
+        log.add(at(20), f'REALM_RAID_ENDED event={self.EV} outcome="Timed out" minutes=220 named=6 wipes=0', "INF",
+                "DOL.GS.AutonomousRealmRaid")
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("(standing=0), silent 15.0 min until the raid ended", row["detail"])
+        log = Log().start(at(0))
+        self.wave(log, 5, "step=rebased wave=4 at=15/33 members=38 catching=37")
+        log.add(at(16), "REALM_RAID_RETURN_WAVE event=other step=moving wave=4 at=2/9 living=9", "INF")
+        self.assertIn("until the log ends", self.row(log)["detail"])
+
+
 if __name__ == "__main__":
     unittest.main()

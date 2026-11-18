@@ -8,6 +8,49 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 6f: rebased return waves, the summoners' musters, Summoner Pain's camps (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 15:15-16:46, `DIAG-b1b6-sweep6f`). Nothing below is seen in game yet.
+No boss, guard or monster is changed: Summoner Roesia's script, Summoner Pain, her health and damage are as they were.
+- **A rebased return wave stands at its step and fights** (W-2, Tur Suil and Trollheim). When a wave's front reached the
+  raid, the raiders still catching up became the wave at the step they were walking to, not one they stood at, so the new
+  core was not at its step: the wave waited (it waits before it looks at monsters), fought nothing in its way and logged
+  nothing. Tur Suil's wave 1 (rebased to 10/27 at 15:38:03) sat silent 27.5 minutes while the Sargan muster held 24 of 33
+  and the half rule pulled with 24; Trollheim's wave 4 (rebased to 15/33 at 15:10:54) was stuck with a core of 1, Bonchar
+  was set aside and the raid timed out. Now:
+  - the rebase puts the wave at the furthest step one of its catching-up raiders stands at (`RealmRaidReturnWave.Rebase`
+    with `LatestStepAt`; the step before the one it walks to when none is known), and the rebased line logs `core=` and
+    `standing=` (the new core standing at the step);
+  - a catcher stepping on no longer counts as the wave moving (`RealmRaidReturnWave.Moved`), so a wave whose own raiders
+    don't move is stuck after 4 minutes, is helped twice and is then released by #356's rule; while it is not moving it
+    no longer holds its muster (`MUSTER_WAITS_FOR_WAVE`) either;
+  - a waiting wave logs `step=waiting` at most every 2 minutes (living, at its step, needed, catching, how long, closest).
+- **The summoners keep their 900 muster** (#358 side effect, Summoner's Hall). #358's home cap
+  (`RealmRaidTetherReach.MusterReach`) moved Cunovinda's, Roesia's and Lossren's musters from 900 to 700 from their spawns
+  (their 1,000 home is their damage reach), 100 outside their 600 aggro instead of 300, which invites the early pull that
+  cost Cunovinda's attempt 1. The cap now applies only when the home radius lies inside the damage reach, or when it still
+  leaves the muster 150 or more outside the aggro. Aidon keeps #358's 800; Kula, Tuscar, Caer Sidi and every other
+  fight-at-home boss are unchanged.
+- **Summoner Pain's split camps** (R-1, owner's decision 2026-11-18: "Add a split-camp tactic"). Roesia's Summoner Pain
+  (1,000 around a random raider, bots included) hit 71 raiders for 124,913 damage in the first minute because the raid
+  stood together. While a summoner who carries the spell is fought (gated on the spell, not her name; she is the only one
+  in the three halls), the parties split evenly between two camps on opposite sides of her spawn, 920 out (inside her
+  1,000 home, outside her 600 aggro, about 1,840 apart), with healers in each camp: each party's back line fights from its
+  camp, its melee from her side facing that camp (`EpicEncounterTactics.PainCamps.cs`; `REALM_EXPEDITION_TACTIC
+  tactic=summoner-pain/camps` logs the camps and who went where). A cast on one camp's back line now reaches its own half
+  only; a cast on the melee still reaches all the melee and the camp they face. A deterministic model (`UT_RaidSweep6f`,
+  72 raiders, 27 melee) gives 41.4 raiders a cast against 71.1 before: a little over half, not less. The owner asked for
+  camps about 1,600 apart; at 1,600 the melee on her far side stand inside a cast on either camp (the model: about 50).
+- **Raid cures are logged.** Bots already cure Summoner Pain (a damage over time, which cure poison removes) with their cure
+  poison spells, but that path logged nothing, so `b1b6846` could not show it. Each region's raid cure poison casts are now
+  summed once a minute (`RAID_CURE_POISON casts= curers= targets= dots=`).
+- **Roesia's lore** no longer says GameBots are never Summoner Pain's centre: her script picks bots too (text only).
+- **Checker** (`played_check_log.py`): a new row, `rebase_silent`: a return wave rebased to a step none of its raiders
+  stand at (`standing=0`, or no `standing=` on builds before this) that then makes no step, fight or end of its own for 10
+  minutes or more. Contradicted on `b1b6846`: Trollheim wave 4 from 15:10:54 (34.8 min) and Tur Suil wave 1 from 15:38:03
+  (27.5 min), and three earlier ones: epic-midgard waves 1 (08:11:48, 25.4 min) and 2 (10:18:36, 25.8 min) and Krondon
+  wave 1 (11:28:27, 79.0 min).
+
 ## Bot chat audit fixes (1.2, 2026-11-18; tests only)
 
 The owner's chat audit (2026-11-18 08:10: "fully audit all bot language and chat design ... then make the fixes"). Nothing

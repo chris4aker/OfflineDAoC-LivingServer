@@ -117,7 +117,8 @@ namespace DOL.UnitTests
         public void ARebaseKeepsTheBestStepSoReWalkedStepsAreNoHeadway()
         {
             var catching = new Dictionary<long, int> { [1] = 3, [2] = 5, [3] = 5 };
-            Assert.That(W.Rebase(catching), Is.EqualTo(5), "the furthest catching up");
+            // Sweep 6f (W-2): with no step known for them, each stands at the step before the one it walks to.
+            Assert.That(W.Rebase(catching), Is.EqualTo(4), "the furthest step one catching up stands at");
             Assert.That(catching, Is.EqualTo(new Dictionary<long, int> { [1] = 3 }), "those at it are the wave now");
             const int bestStep = 34;
             Assert.That(W.Headway(6, bestStep), Is.False, "walking steps 6..34 again holds off no stall verdict");

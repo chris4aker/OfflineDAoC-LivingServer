@@ -46,7 +46,7 @@
       "source": "name glossary, to verify"
     },
     {
-      "text": "Summoner Pain (spirit damage over time, 150 every 3 seconds for 36 seconds, radius 1,000) is cast on a random real player within 2,000, recast every 20 seconds; GameBots are never its centre but take it if they stand near.",
+      "text": "Summoner Pain (spirit damage over time, 150 every 3 seconds for 36 seconds, radius 1,000) is cast on a random player or GameBot within 2,000, recast every 20 seconds; a GameBot can be its centre as well as a real player, and everyone near the centre takes it.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs"
     },

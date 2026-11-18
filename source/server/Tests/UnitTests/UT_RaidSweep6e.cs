@@ -126,7 +126,7 @@ namespace DOL.UnitTests
             {
                 Assert.That(now, Is.LessThanOrEqualTo(800f), "about 800 from his spawn, well inside his 1,100 home");
                 Assert.That(now, Is.GreaterThanOrEqualTo(AidonAggro + RealmRaidTetherReach.MusterInset), "still outside his 600 aggro");
-                Assert.That(RealmRaidTetherReach.MusterReach(AidonTether, AidonHome), Is.EqualTo(900),
+                Assert.That(RealmRaidTetherReach.MusterReach(AidonTether, AidonHome, AidonAggro), Is.EqualTo(900),
                     "a muster point past 900 from his spawn is refused like one past his tether");
                 // The real catalog row, through the same function the route uses.
                 var row = EpicEncounterTactics.All.Single(t => t.Boss == "AidonTheArchwizard");
@@ -136,7 +136,7 @@ namespace DOL.UnitTests
                 // No home radius: unchanged.
                 Assert.That(RealmRaidTetherReach.MusterStandOff(RealmRaidDungeonRoute.FinalMusterStandOff, AidonAggro, AidonTether, 0),
                     Is.EqualTo(before));
-                Assert.That(RealmRaidTetherReach.MusterReach(0, 0), Is.EqualTo(0), "no tether and no home: no limit");
+                Assert.That(RealmRaidTetherReach.MusterReach(0, 0, 0), Is.EqualTo(0), "no tether and no home: no limit");
                 // Caer Sidi's home (2,700) leaves the 1,400 muster as it was.
                 Assert.That(RealmRaidTetherReach.MusterStandOff(RealmRaidDungeonRoute.FinalMusterStandOff, 600, 3600, 2700),
                     Is.EqualTo(RealmRaidDungeonRoute.FinalMusterStandOff));

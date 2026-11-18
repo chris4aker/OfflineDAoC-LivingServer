@@ -363,19 +363,56 @@ public static class RealmRaidReturnWave
     }
 
     /// <summary>
-    /// The wave has no raider of its own left walking while some catch up behind it (pure): they are the wave now, from the step
-    /// of the furthest of them, which is returned (those at it leave <paramref name="catching"/>); -1 when none catch up. The
-    /// wave's best step is kept (review of 27abe6e78: steps walked again are no headway, <see cref="Headway"/>).
+    /// The wave has no raider of its own left walking while some catch up behind it (pure): they are the wave now, from the
+    /// furthest step one of them stands at, which is returned (those standing at it or past it leave <paramref name="catching"/>:
+    /// the wave's core; the rest walk on to at most that step); -1 when none catch up. <paramref name="standingAt"/>: the
+    /// latest step each catching raider stands at (<see cref="LatestStepAt"/>; -1, or missing, for none, which counts as the
+    /// step before the one it walks to). The wave's best step is kept (review of 27abe6e78: steps walked again are no headway,
+    /// <see cref="Headway"/>).
+    /// <para>
+    /// Owner's PC, build b1b6846, 2026-11-18 (sweep 6f, W-2): the rebase put the wave at the step its catching raiders were
+    /// walking to, not one they stood at. Its new core was not at its step, so it waited (<see cref="Walk"/> waits before it
+    /// looks at monsters) and fought nothing in its way: Tur Suil's wave 1, rebased to 10/27 at 15:38:03, logged nothing for
+    /// 27.5 minutes while the Sargan muster held 24 of 33; Trollheim's wave 4, rebased to 15/33 at 15:10:54, was stuck at
+    /// 15:21:40 with a core of 1 (atStep=0), Bonchar was set aside and the raid timed out.
+    /// </para>
     /// </summary>
-    public static int Rebase(IDictionary<long, int> catching)
+    public static int Rebase(IDictionary<long, int> catching, IReadOnlyDictionary<long, int> standingAt = null)
     {
         if (catching.Count == 0) return -1;
+        int Stands(long member)
+        {
+            int walkingTo = catching[member];
+            return standingAt != null && standingAt.TryGetValue(member, out int at) && at >= 0 ? at : Math.Max(0, walkingTo - 1);
+        }
         int to = int.MinValue;
-        foreach (int s in catching.Values) to = Math.Max(to, s);
+        foreach (long member in catching.Keys) to = Math.Max(to, Stands(member));
         foreach (long member in new List<long>(catching.Keys))
-            if (catching[member] >= to) catching.Remove(member);
+        {
+            if (Stands(member) >= to) catching.Remove(member);
+            else if (catching[member] > to) catching[member] = to;
+        }
         return to;
     }
+
+    /// <summary>
+    /// The wave moved this pulse, for <see cref="Stuck"/> (pure): its own raiders got <see cref="CloserUnits"/> closer to its
+    /// step (<paramref name="coreCloser"/>), it damaged or killed its monster, or it made headway. A raider catching up that
+    /// stepped on (<paramref name="catcherStepped"/>, <see cref="CatchUp"/>) is not the wave moving. Sweep 6f (W-2, build
+    /// b1b6846): catchers' steps kept a rebased wave whose core stood at no step "moving" for 27.5 minutes (Tur Suil, wave 1),
+    /// so it was never stuck, never helped and never released (#356's rule).
+    /// </summary>
+    public static bool Moved(bool coreCloser, bool targetHit, bool headway, bool catcherStepped) =>
+        coreCloser || targetHit || headway;
+
+    /// <summary>A wave that has waited (<see cref="WaveMove.Wait"/>) this long logs a step=waiting line, and again after each
+    /// such span while it still waits (sweep 6f: a silent wait shows in the log).</summary>
+    public const long WaitingLogMilliseconds = 2 * 60_000;
+
+    /// <summary>A step=waiting line is due (pure): the wave has waited since <paramref name="waitingSince"/> (0: it is not
+    /// waiting) and logged its last such line at <paramref name="lastLogged"/> (0: none in this wait).</summary>
+    public static bool WaitingLogDue(long waitingSince, long lastLogged, long now) =>
+        waitingSince > 0 && now - Math.Max(waitingSince, lastLogged) >= WaitingLogMilliseconds;
 
     /// <summary>A step the wave reaches is headway (the stall clock) only past the furthest it has been (pure).</summary>
     public static bool Headway(int step, int bestStep) => step > bestStep;
