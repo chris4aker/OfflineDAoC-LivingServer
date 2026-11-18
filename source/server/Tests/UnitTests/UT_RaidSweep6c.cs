@@ -234,11 +234,11 @@ namespace DOL.UnitTests
             // Krondon at 11:38:50: helps=1, nobody waiting at the way in, the main body mustering (it can't come).
             var help = RealmRaidReturnWave.ChooseHelp(0, false, 1);
             Assert.That(help, Is.EqualTo(none));
-            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(help, mustering: true), Is.True,
+            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(help), Is.True,
                 "build b1b6846: the wave held 19 raiders at step 14 while the Krevo Ricik muster stood at 6 of 44");
-            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(RealmRaidReturnWave.ChooseHelp(0, false, 2), true), Is.True);
-            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(help, mustering: false), Is.False, "not mustering: the stall clock decides");
-            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(RealmRaidReturnWave.Help.SendWaiting, true), Is.False,
+            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(RealmRaidReturnWave.ChooseHelp(0, false, 2)), Is.True);
+            // Not mustering is covered by UT_RaidSweep6d (G-5): the wave is released during a fight too.
+            Assert.That(RealmRaidReturnWave.ReleasesStuckWave(RealmRaidReturnWave.Help.SendWaiting), Is.False,
                 "help left: it is helped first");
         }
 

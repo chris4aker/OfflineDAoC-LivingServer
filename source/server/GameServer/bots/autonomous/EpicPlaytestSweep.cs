@@ -473,7 +473,8 @@ namespace DOL.GS
                 bool running = AutonomousRealmRaid.IsRunning(current.Id);
                 if (running && CapReached(_capMs, now - lane.CurrentStarted))
                 {
-                    AutonomousRealmRaid.Stop(current.Id, out _);
+                    // Its own outcome, "Sweep cap", not "Stopped by player" (sweep 6d, L-1): no cooldown, no win or loss.
+                    AutonomousRealmRaid.Stop(current.Id, out _, AutonomousRealmRaid.SweepCapReason(_capMs / 60_000));
                     Log.Info($"EPIC_SWEEP_CAP event={current.Id} minutes={(now - lane.CurrentStarted) / 60_000} cap={_capMs / 60_000} lane={lane.Name}");
                     running = false;
                 }
