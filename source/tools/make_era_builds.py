@@ -13,15 +13,20 @@ class, that should never be played by bots". Applied here:
   D3 A'  Midgard's shares moved toward the sourced Excalibur count of 2003-01-22, healers kept (MIDGARD_A_PRIME).
   D4     one class-share table per realm: the draft's RvR table (its levelling table stays in the research doc).
   D5     offMetaPercent 10, jitterPoints 2.
-  D7     the builds over the level-50 point budget trimmed, the 7 under it filled (SPEC_CHANGES). The review sheet
-         counted every level of every line and trimmed 12. A player's autotrain lines are free up to level 12 at 50
-         (AUTOTRAIN; owner 2026-11-17 18:11: "companions and bots should be the same as a player"), so 3 of the 12 fit
-         as posted and are no longer trimmed, 2 are trimmed less, and 9 trims remain.
+  D7     replaced by the owner on 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and Wayback build
+         scraping showed". Every build is the period build (the dated FreddysHouse posts of the draft, checked against
+         the Wayback scrape of 2026-11-13: WAYBACK) and spends a level 50 player's whole budget (fully_trained): the
+         posted points, then the rest in the build's remainder line - or, where the posted points cost more than a
+         level 50 has, less in that line. What is left is always less than the next level of any of its lines.
+         A player's autotrain lines are free up to level 12 at 50 (AUTOTRAIN; owner 2026-11-17 18:11: "companions and
+         bots should be the same as a player").
   D8     Wizard Fire 60 / Earth 25 / Ice PBAE 15 (WEIGHT_CHANGES).
   Owner rule (replaces D6): bots never play the Sluaghbinder, in any edition. It has no share and no builds here, and
          the loader refuses it (excludedClasses).
 Every share and every weight is an estimate (sourced: false); only the spec points come from dated posts, and a trim or
-fill says so in "change" (the posted points stay in "posted").
+fill says so in "change" (the posted points stay in "posted"; "changeBasis" says what the change rests on).
+
+    python3 source/tools/make_era_builds.py --table    # the per-build source check (docs/research/ERA-BUILDS-CHECK.md)
 """
 from __future__ import annotations
 
@@ -33,6 +38,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 DRAFT = REPO / "docs/research/bot-builds.draft.json"
 OUT = REPO / "source/server/GameServer/bots/autonomous/data/era-builds-165.json"
+CHECK_DOC = REPO / "docs/research/ERA-BUILDS-CHECK.md"
 
 APPROVED = "2026-11-17"
 OFF_META_PERCENT = 10
@@ -114,39 +120,97 @@ EXCLUDED = {
 MIDGARD_A_PRIME = {"Thane": 0.08, "Runemaster": 0.09, "Berserker": 0.08, "Shadowblade": 0.10, "Hunter": 0.05,
                    "Savage": 0.06}
 
-# D7: (class, posted specs as a dict) -> (specs trained, why). The builds over the level-50 budget lose points from
-# their lower lines; the 7 under it give the rest to a named line. Every one is the review sheet's line (marked *),
-# except where a player's autotrain changes it: the two Minstrel builds keep the sheet's line and lose fewer points from it
-# (the sheet had Stealth 50->31 and Slash 44->40), and Shadowblade Axe/Left Axe, Shadowblade Axe/CS and Ranger
-# Archery/Pathfinding (the sheet's Left Axe 44->43, Critical Strike 39->38, Pathfinding 40->39) fit as posted.
-SPEC_CHANGES = {
-    ("Minstrel", "Instruments/Stealth/Slash"): ({"Instruments": 50, "Stealth": 33, "Slash": 29},
-                                                 "trimmed to budget: Stealth 50->33"),
-    ("Minstrel", "Instruments/Slash (no stealth)"): ({"Instruments": 44, "Slash": 42, "Stealth": 28},
-                                                      "trimmed to budget: Slash 44->42"),
-    ("Theurgist", "Earth (PBT)"): ({"Earth Magic": 50, "Cold Magic": 17, "Wind Magic": 11},
-                                   "trimmed to budget: Cold Magic 26->17"),
-    ("Wizard", "Ice PBAE"): ({"Cold Magic": 50, "Earth Magic": 14, "Fire Magic": 14},
-                             "trimmed to budget: Earth Magic 20->14, Fire Magic 20->14"),
-    ("Runemaster", "Suppression (PBT)"): ({"Suppression": 50, "Darkness": 20}, "trimmed to budget: Darkness 24->20"),
-    ("Spiritmaster", "Suppression (PBAE)"): ({"Suppression": 49, "Darkness": 22}, "trimmed to budget: Darkness 25->22"),
-    ("Champion", "Large Weapons/Valor/Blades"): ({"Large Weapons": 50, "Blades": 36, "Valor": 35, "Parry": 28},
-                                                 "trimmed to budget: Valor 40->35, Blades 39->36"),
-    ("Eldritch", "Mana (PBAE \"manabomb\")"): ({"Mana": 50, "Light": 19, "Void": 6}, "trimmed to budget: Light 20->19"),
-    ("Mentalist", "Mentalism (heals)"): ({"Mentalism": 45, "Light": 21, "Mana": 21},
-                                         "trimmed to budget: Light 25->21, Mana 25->21"),
-    ("Paladin", "Two-handed chanter"): ({"Chants": 46, "Two Handed": 44, "Parry": 42}, "filled: rest to Parry (20->42)"),
-    ("Mercenary", "Thrust dual wield"): ({"Thrust": 50, "Dual Wield": 50, "Parry": 28}, "filled: rest to Parry (10->28)"),
-    ("Infiltrator", "Thrust/CS assassin"): ({"Thrust": 50, "Stealth": 46, "Envenom": 36, "Critical Strike": 34,
-                                             "Dual Wield": 10}, "filled: rest to Stealth (35->46)"),
-    ("Infiltrator", "Slash/CS assassin"): ({"Slash": 50, "Stealth": 46, "Envenom": 36, "Critical Strike": 34,
-                                            "Dual Wield": 10}, "filled: rest to Stealth (35->46)"),
-    ("Scout", "Melee scout"): ({"Thrust": 50, "Shields": 42, "Longbows": 34, "Stealth": 20},
-                               "filled: rest to Longbows (new line, 34)"),
-    ("Warrior", "Axe/Shield 50"): ({"Axe": 50, "Shields": 50, "Parry": 28}, "filled: rest to Parry (18->28)"),
-    ("Warden", "Nurture/Regrowth"): ({"Nurture": 49, "Regrowth": 33, "Blades": 25, "Parry": 14},
-                                     "filled: rest to Blades (new line, 25)"),
+# The Wayback scrape of 2026-11-13 (the owner's PC; packs 3-builds-specs, a3-build-threads, 6-mechanics, 2-patch-notes).
+# Only citations are kept here: site, page, capture date, and the few words that carry the point. No scraped page is in
+# the repository.
+WAYBACK_SOURCES = {
+    "shaman-guide": ("camelot.allakhazam.com", "Shaman Guide by Seraphym (Shaman_Guide.html)", "2002-11-12"),
+    "warden-guide": ("camelot.allakhazam.com", "Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html)",
+                     "2003-01-05"),
+    "blademaster-guide": ("camelot.allakhazam.com", "Blade Guide by Melkio (Blademaster_Guide.html)", "2003-01-05"),
+    "hero-guide": ("camelot.allakhazam.com", "Hero Guide (Hero_Guide.html)", "2003-02-24"),
+    "ranger-guide": ("camelot.allakhazam.com", "Ranger Guide (Ranger_Guide.html)", "2002-12-30"),
+    "cleric-comments": ("camelot.allakhazam.com", "Cleric class page, reader comments of 2002-2003 (db/class.html?cclass=10)",
+                        "2004-09-19"),
+    "smite-comments": ("camelot.allakhazam.com", "skill page, reader comment of 2002-01-28 (db/skills.html?cskill=25)",
+                       "2005-12-06"),
+    "healer-comments": ("camelot.allakhazam.com", "skill page, reader comment of 2001-11-06 (db/skills.html?cskill=57)",
+                        "2005-12-06"),
+    "mind-comments": ("camelot.allakhazam.com", "skill pages, reader comments of 2001-11-07 and 2002-04-02 "
+                      "(db/skills.html?cskill=20 and cskill=16)", "2005-12-08"),
+    "good-specs": ("camelot.allakhazam.com", "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to "
+                   "2005-01-26, after the era (forum.html?forum=13)", "2005-03-20"),
 }
+
+# (class, label) -> [(source, what it shows, verdict)]. Verdicts: "matches" (the top two lines within 4 points, the
+# draft's own test), "same lines" (the lines of the build, another split), "remainder" (says where the build's spare
+# points go) or "trim" (says which line is not worth its posted points). A build not listed here is not in the scrape.
+WAYBACK = {
+    ("Shaman", "Cave/Aug"): [("shaman-guide", "36 Cave/37 Aug/15 Mend and 46 Cave/27 Aug/8 Mend", "same lines")],
+    ("Shaman", "Aug/Cave (resist buffs, end regen)"): [
+        ("shaman-guide", "37 Aug/36 Cave/15 Mend, 'the lines can be maneuvered to raise Aug to 38'", "matches")],
+    ("Shaman", "Aug/Mend"): [("shaman-guide", "38 Aug/34 Mend/19 Cave and 47 Aug/26 Mend/5 Cave", "matches")],
+    ("Cleric", "Rejuvenation healer"): [("cleric-comments", "'45+12 rejuv, 28+7enh and 10+4 smite' (2003-12-16)", "matches")],
+    ("Cleric", "Enhancement/Rejuv (spec buffs)"): [
+        ("cleric-comments", "'40 rej, 34 ench, and 12 smite' (2003-10-15): the two lines the other way round", "same lines")],
+    ("Cleric", "Smite"): [("smite-comments", "'a template of 48 smite, 23 rejuv, 7 enhance'", "matches"),
+                          ("cleric-comments", "'38 Smite, 33 Rej, and 18 Enh' (2002-12-19)", "same lines")],
+    ("Healer", "Mend/Aug"): [("healer-comments", "'At 50, 40 aug, 32 mend and 15 pac looks the best to me'", "same lines")],
+    ("Infiltrator", "Thrust/CS assassin"): [
+        ("good-specs", "'most rr5s are 35 stealth, 35 env, 50 thrust, 34 cs, rest dual wield' (2004-11-02)", "matches"),
+        ("good-specs", "'rest dual wield'", "remainder")],
+    ("Infiltrator", "Thrust/DW \"5-spec\""): [
+        ("good-specs", "'most rr5s are 35 stealth, 35 env, 50 thrust, 34 cs, rest dual wield' (2004-11-02)", "matches")],
+    ("Infiltrator", "Slash/CS assassin"): [
+        ("good-specs", "'The new flavor for infs are briton slash infs' (2004-11-02), the same template with Slash",
+         "same lines"),
+        ("good-specs", "'rest dual wield'", "remainder")],
+    ("Nightshade", "Piercing/CS"): [
+        ("good-specs", "'most 50 NSs/SBs/Infs that i know only take CS to 36 and pierce or thrust to 50' (2005-01-11)",
+         "matches")],
+    ("Minstrel", "Instruments/Stealth/Slash"): [
+        ("good-specs", "'No reason to take Stealth to 50, the highest would be around 35 or so' and '35 is as high as "
+         "you need to bring stealth' (2004-10-21/22, said of an Infiltrator)", "trim")],
+    ("Warden", "Nurture/Blades"): [
+        ("warden-guide", "Nurture 45, 46, 47 or 49; 'a weapon skill around 40 (often stopping at new styles at 34, 39, or "
+         "44), regrowth at one of the popular stopping points (2, 12, 16, or 20), and the remainder in parry'", "matches")],
+    ("Warden", "Nurture/Regrowth"): [
+        ("warden-guide", "Nurture 49 is a popular stop; the guide's Wardens take a weapon to 34 or more and stop Regrowth "
+         "at 20, which this build does not", "same lines"),
+        ("warden-guide", "'the Parry skill is what's left over once the other skills have been raised'", "remainder")],
+    ("Blademaster", "Blades/Celtic Dual"): [
+        ("blademaster-guide", "'most people say Celtic Dual and Blades then the last points go into parry'", "matches")],
+    ("Hero", "Sword and board"): [
+        ("hero-guide", "'A hero with 50 sword, 50 parry, and 50 shield is, obviously, going to be very powerful'",
+         "same lines")],
+    ("Hero", "Large Weapons/Shield"): [
+        ("hero-guide", "'the lvl 42 shield style is considered quite uber'; LW heroes 'spending some significant points on "
+         "their shield skills' is called an unusual hybrid (2002)", "same lines")],
+    ("Hero", "Spear (Celtic Spear)/Shield"): [
+        ("hero-guide", "'the lvl 42 shield style is considered quite uber'; CS heroes 'spending some significant points on "
+         "their shield skills' is called an unusual hybrid (2002)", "same lines")],
+    ("Ranger", "Archery/Pathfinding"): [
+        ("ranger-guide", "templates of 2002: '43 Pathfinding, 25 Pierce, 45 Recurve Bows, 31 Stealth, 18 Celtic Dual' and "
+         "'27 Pathfinding, 25 Pierce, 50 Recurve Bows, 40 Stealth, 18 Celtic Dual'", "same lines")],
+    ("Ranger", "Melee ranger (Piercing/CD)"): [
+        ("ranger-guide", "the same five lines in its 2002 templates, the bow higher and the melee lines lower", "same lines")],
+    ("Sorcerer", "Body/Mind"): [
+        ("mind-comments", "'only plan on having level 34 spec in mind twising so i get the 2nd best mez'; '35 in mind which "
+         "gives u second best mez'", "same lines")],
+    ("Sorcerer", "Matter/Mind"): [
+        ("mind-comments", "'only plan on having level 34 spec in mind twising so i get the 2nd best mez'; '35 in mind which "
+         "gives u second best mez'", "same lines")],
+}
+
+# Where a build's spare points go, and where they come from when the posted points cost more than a level 50 has: the
+# build's remainder line, its lowest posted line. The period guides say so in words: the Shaman guide ("places the
+# remaining points in Cave", "the remainder in Cave", "the rest in Aug"), the Warden guide ("the remainder in parry"),
+# the Blademaster guide ("the last points go into parry") and the Infiltrator thread ("rest dual wield").
+REMAINDER_BASIS = ("the build's remainder line (its lowest posted line), where the period guides put spare points "
+                   "(Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)")
+
+# The one build whose points come out of another line than its lowest: a source says which line is not worth them.
+TRIM_LINE = {("Minstrel", "Instruments/Stealth/Slash"): "Stealth"}
 
 # D8: the weight that contradicted its own source text.
 WEIGHT_CHANGES = {
@@ -283,6 +347,93 @@ def build_cost(specs: dict, autotrain=()) -> int:
     return sum(line_cost(v, k in autotrain) for k, v in specs.items())
 
 
+def next_level_cost(level: int, autotrain: bool = False) -> int:
+    """What a level 50 pays for the next level of a line (GameBot.NextLevelCost): nothing below 12 in an autotrain line."""
+    return 0 if autotrain and level < AUTOTRAIN_LEVEL_50 else level + 1
+
+
+def points_left(specs: dict, budget: int, autotrain=()) -> int:
+    return budget - build_cost(specs, autotrain)
+
+
+def cheapest_next_level(specs: dict, autotrain=()) -> int | None:
+    """The cost of the cheapest next level in any of the build's lines (None when every line is at 50)."""
+    costs = [next_level_cost(v, k in autotrain) for k, v in specs.items() if v < 50]
+    return min(costs) if costs else None
+
+
+def is_fully_trained(specs: dict, budget: int, autotrain=()) -> bool:
+    """A level 50 can pay for the build, and what is left buys no further level in any of its lines."""
+    left = points_left(specs, budget, autotrain)
+    cheapest = cheapest_next_level(specs, autotrain)
+    return left >= 0 and (cheapest is None or left < cheapest)
+
+
+def spend_rest(specs: dict, order: list, budget: int, autotrain=()) -> dict:
+    """The rest of a level 50's points go into the cheapest next level of the build's lines - its lowest line, the first
+    of `order` on a tie - a level at a time, until what is left buys none (EraBuildCatalog.SpendRest does the same)."""
+    specs = dict(specs)
+    while True:
+        open_lines = [k for k in order if specs[k] < 50]
+        if not open_lines:
+            break
+        line = min(open_lines, key=lambda k: (next_level_cost(specs[k], k in autotrain), specs[k], order.index(k)))
+        if next_level_cost(specs[line], line in autotrain) > points_left(specs, budget, autotrain):
+            break
+        specs[line] += 1
+    return specs
+
+
+def fully_trained(posted: dict, budget: int, autotrain=(), trim_line: str | None = None) -> dict:
+    """The posted build as a level 50 player trains it with every point (owner 2026-11-17 18:59).
+
+    Over the budget: points come out of the remainder line - the lowest posted line (lines posted at the same level come
+    down together), or `trim_line` when a source names another - until a level 50 can pay for it. Then, and for a build
+    under the budget, the rest goes into the lowest line a level at a time (the highest posted first on a tie) until it
+    buys no further level in any line. No line is added and none goes below 1 or above 50."""
+    specs = dict(posted)
+    order = list(ordered(posted))
+    while points_left(specs, budget, autotrain) < 0:
+        if trim_line and specs[trim_line] > 1:
+            group = [trim_line]
+        else:
+            floor = min(posted[k] for k in order if specs[k] > 1)
+            group = [k for k in order if posted[k] == floor and specs[k] > 1]
+        line = max(group, key=lambda k: (specs[k], order.index(k)))   # the highest of the group, the last listed on a tie
+        specs[line] -= 1
+    specs = spend_rest(specs, order, budget, autotrain)
+    assert is_fully_trained(specs, budget, autotrain), (posted, specs)
+    return specs
+
+
+def change_note(posted: dict, specs: dict) -> str | None:
+    """'trimmed to budget: Stealth 50->33; rest to Slash (29->30)' or 'filled: rest to Parry (6->13)'."""
+    down = [f"{k} {posted[k]}->{specs[k]}" for k in posted if specs[k] < posted[k]]
+    up = [f"{k} ({posted[k]}->{specs[k]})" for k in posted if specs[k] > posted[k]]
+    if down:
+        return "trimmed to budget: " + ", ".join(down) + (("; rest to " + ", ".join(up)) if up else "")
+    return "filled: rest to " + ", ".join(up) if up else None
+
+
+def wayback_entries(cls: str, label: str) -> list[dict]:
+    out = []
+    for source, shows, verdict in WAYBACK.get((cls, label), []):
+        site, page, captured = WAYBACK_SOURCES[source]
+        out.append({"site": site, "page": page, "captured": captured, "shows": shows, "verdict": verdict})
+    return out
+
+
+def wayback_check(entries: list[dict]) -> str:
+    verdicts = {e["verdict"] for e in entries}
+    if "matches" in verdicts:
+        return "matches a Wayback source"
+    if "same lines" in verdicts:
+        return "same lines in a Wayback source, another split"
+    if verdicts:
+        return "a Wayback source speaks to its points only"
+    return "not in the Wayback scrape (dated FreddysHouse posts only)"
+
+
 def ordered(specs: dict) -> dict:
     return dict(sorted(specs.items(), key=lambda kv: (-kv[1], kv[0])))
 
@@ -351,10 +502,16 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
         for build, build_id in zip(builds, make_ids(cls, builds)):
             label = build["label"]
             posted = ordered(build["specs"])
-            specs, change = posted, None
-            if (cls, label) in SPEC_CHANGES:
-                specs, change = SPEC_CHANGES[(cls, label)]
-                specs = ordered(specs)
+            trained = fully_trained(posted, budget, autotrain, TRIM_LINE.get((cls, label)))
+            change = change_note(posted, trained)
+            specs = ordered(trained)
+            wayback = wayback_entries(cls, label)
+            change_basis, change_sourced = None, False
+            if change is not None:
+                named = [e for e in wayback if e["verdict"] in ("remainder", "trim")]
+                change_sourced = bool(named)
+                change_basis = ("; ".join(f"{e['shows']} ({e['site']}, {e['page']}, captured {e['captured']})" for e in named)
+                                if named else REMAINDER_BASIS)
                 changes.append(f"build {build_id}: {fmt(posted)} -> {fmt(specs)} ({change}; "
                                f"{build_cost(posted, autotrain)} -> {build_cost(specs, autotrain)} of {budget} points)")
             weight, weight_basis = build["weight"], "estimate from forumMentions and period wording"
@@ -374,7 +531,13 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
                 "specs": specs,
                 "posted": posted,
                 "change": change,
+                "changeBasis": change_basis,
+                "changeSourced": change_sourced,
+                "pointsLeft": points_left(specs, budget, autotrain),
                 "specsSourced": bool(build.get("sourced", False)) and change is None,
+                "postedSourced": bool(build.get("sourced", False)),
+                "wayback": wayback,
+                "check": wayback_check(wayback),
                 "forumMentions": build["forumMentions"],
                 "sources": build["sources"],
                 "sourceDates": build["sourceDates"],
@@ -397,9 +560,13 @@ def build_data(draft: dict) -> tuple[dict, list[str]]:
         "decisions": "owner 2026-11-17 09:48: D1-D5, D7-D12 as recommended; D6 replaced: bots never play the "
                      "Sluaghbinder (docs/ERA-BUILDS-1.2.md)",
         "estimates": "every share and every weight is an estimate from 2002-2003 forum posts (European servers); "
-                     "spec points come from dated posts unless 'change' says they were trimmed or filled",
+                     "spec points come from dated posts unless 'change' says they were trimmed or filled "
+                     "('posted' keeps the posts' points, 'changeBasis' says what the change rests on)",
         "points": "a build fits when a level 50 player of the class can pay for it: every level of every line, less a "
-                  "class's 'autotrain' lines up to level 12 (free for a player, 77 points a line)",
+                  "class's 'autotrain' lines up to level 12 (free for a player, 77 points a line); every build is "
+                  "fully trained: 'pointsLeft' buys no further level in any of its lines",
+        "sources": "posted points: dated FreddysHouse posts of 2002-2003 ('sources', 'sourceDates'); 'wayback': what the "
+                   "Wayback scrape of 2026-11-13 holds for the build (site, page, capture date), empty when nothing does",
         "generatedBy": "source/tools/make_era_builds.py from docs/research/bot-builds.draft.json",
         "offMetaPercent": OFF_META_PERCENT,
         "jitterPoints": JITTER_POINTS,
@@ -451,6 +618,20 @@ def validate(data: dict) -> list[str]:
             if (b["change"] or "").startswith("trimmed") and \
                     build_cost(b["posted"], info.get("autotrain", [])) <= info["pointBudget50"]:
                 problems.append(f"{b['id']}: trimmed, but the posted points fit the budget")
+            # fully trained (owner 2026-11-17 18:59): what is left buys no further level in any of the build's lines
+            autotrain = info.get("autotrain", [])
+            left = points_left(b["specs"], info["pointBudget50"], autotrain)
+            cheapest = cheapest_next_level(b["specs"], autotrain)
+            if left >= 0 and cheapest is not None and left >= cheapest:
+                problems.append(f"{b['id']}: {left} points left, the next level of a line costs {cheapest}")
+            if b.get("pointsLeft") != left:
+                problems.append(f"{b['id']}: pointsLeft {b.get('pointsLeft')} is not {left}")
+            if set(b["specs"]) != set(b["posted"]):
+                problems.append(f"{b['id']}: a line was added or dropped")
+            if not b.get("postedSourced") or not b.get("sources"):
+                problems.append(f"{b['id']}: no dated source for its posted points")
+            if b["change"] is not None and not b.get("changeBasis"):
+                problems.append(f"{b['id']}: changed without a basis")
     return problems
 
 
@@ -458,20 +639,75 @@ def render(data: dict) -> str:
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
 
 
+def render_table(data: dict) -> str:
+    """docs/research/ERA-BUILDS-CHECK.md: every build against its sources (the WP0 check of docs/ERA-BUILDS-1.2.md)."""
+    every = [(cls, b) for cls, c in data["classes"].items() for b in c["builds"]]
+    wayback = [(cls, b) for cls, b in every if b["wayback"]]
+    out = [
+        "# Era builds: every build against its sources",
+        "",
+        "Generated by `source/tools/make_era_builds.py --table` from `bot-builds.draft.json` and the tool's Wayback table;",
+        "`--check` fails when this file is out of date. Do not edit by hand.",
+        "",
+        f"- **{len(every)} builds, {len(data['classes'])} classes.** Each has dated FreddysHouse posts of 2002-2003 for its posted",
+        "  points (the links and dates are in the data file and in `ERA-BUILDS-1.65.md`). Those threads could not be",
+        "  re-read for this check: the forum is not reachable from the build environment.",
+        f"- **{len(wayback)} builds are also in the Wayback scrape of 2026-11-13** "
+        f"({sum(1 for _, b in wayback if b['check'].startswith('matches'))} match within 4 points on their top two lines); "
+        f"**{len(every) - len(wayback)} are not** (\"-\" below).",
+        f"- **{sum(1 for _, b in every if b['change'])} builds were changed to be fully trained** (owner, 2026-11-17 18:59): "
+        "the posted points, and the rest of a level 50 player's points in the build's remainder line (or fewer points in",
+        "  it, where the posts ask for more than a level 50 has). \"Left\" is what remains; it buys no further level in",
+        "  any of the build's lines.",
+        "- Budget and costs are a player's on this server: an autotrain line is free up to level 12 at 50.",
+        "",
+        "## The Wayback sources",
+        "",
+        "| Site | Page | Captured |",
+        "|---|---|---|",
+    ]
+    for site, page, captured in sorted(set(WAYBACK_SOURCES.values()), key=lambda entry: entry[1]):
+        out.append(f"| {site} | {page} | {captured} |")
+    out += ["", "## The builds", "",
+            "| Class | Build | Posted (dated posts, newest) | Trained | Left | Change | Wayback |",
+            "|---|---|---|---|---|---|---|"]
+    for cls, b in every:
+        shows = "<br>".join(f"**{e['verdict']}**: {e['shows']} ({e['page'].split(' (')[0]}, captured {e['captured']})"
+                            for e in b["wayback"]) or "-"
+        newest = max(b["sourceDates"]) if b["sourceDates"] else "-"
+        out.append(f"| {cls} | `{b['id']}` {b['label']} | {fmt(b['posted'])} ({b['forumMentions']}, {newest}) | "
+                   f"{fmt(b['specs']) if b['change'] else 'as posted'} | {b['pointsLeft']} | {b['change'] or '-'} | "
+                   f"{shows.replace('|', '/')} |")
+    out += ["", "## Not in the Wayback scrape", "",
+            "Builds with dated FreddysHouse posts only, by class: " +
+            "; ".join(f"{cls} ({', '.join(b['label'] for c2, b in every if c2 == cls and not b['wayback'])})"
+                      for cls in data["classes"] if any(c2 == cls and not b["wayback"] for c2, b in every)) + ".",
+            ""]
+    return "\n".join(out)
+
+
 def summary(data: dict) -> list[str]:
     lines = []
     for realm, info in data["realms"].items():
         lines.append(f"{realm}: " + ", ".join(f"{c} {e['share'] * 100:g}" for c, e in info["classShare"].items()))
     builds = sum(len(c["builds"]) for c in data["classes"].values())
-    changed = sum(1 for c in data["classes"].values() for b in c["builds"] if b["change"])
-    lines.append(f"{len(data['classes'])} classes, {builds} builds, {changed} changed by D7; sharesSourced 0/3, "
-                 f"weightsSourced 0/{builds}; excluded: {', '.join(data['excludedClasses'])}")
+    every = [b for c in data["classes"].values() for b in c["builds"]]
+    changed = sum(1 for b in every if b["change"])
+    trimmed = sum(1 for b in every if (b["change"] or "").startswith("trimmed"))
+    wayback = sum(1 for b in every if b["wayback"])
+    matches = sum(1 for b in every if b["check"].startswith("matches"))
+    left = [b["pointsLeft"] for b in every]
+    lines.append(f"{len(data['classes'])} classes, {builds} builds, all with dated posts; {wayback} also in the Wayback "
+                 f"scrape ({matches} match), {builds - wayback} not; {changed} changed to be fully trained ({trimmed} "
+                 f"trimmed, {changed - trimmed} filled), {builds - changed} as posted; points left {min(left)}-{max(left)}; "
+                 f"sharesSourced 0/3, weightsSourced 0/{builds}; excluded: {', '.join(data['excludedClasses'])}")
     return lines
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--check", action="store_true", help="fail if the data file is out of date or invalid")
+    parser.add_argument("--table", action="store_true", help="write the per-build source check (ERA-BUILDS-CHECK.md)")
     args = parser.parse_args(argv)
     data, changes = build_data(json.loads(DRAFT.read_text(encoding="utf-8")))
     problems = validate(data)
@@ -484,7 +720,14 @@ def main(argv: list[str] | None = None) -> int:
         if current != text:
             print(f"{OUT.relative_to(REPO)} is not what the draft and the decisions give: run make_era_builds.py")
             return 1
+        if not CHECK_DOC.exists() or CHECK_DOC.read_text(encoding="utf-8") != render_table(data):
+            print(f"{CHECK_DOC.relative_to(REPO)} is out of date: run make_era_builds.py --table")
+            return 1
         print("\n".join(summary(data)))
+        return 0
+    if args.table:
+        CHECK_DOC.write_text(render_table(data), encoding="utf-8", newline="\n")
+        print(f"wrote {CHECK_DOC.relative_to(REPO)}")
         return 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(text, encoding="utf-8", newline="\n")

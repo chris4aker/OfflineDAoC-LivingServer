@@ -120,9 +120,11 @@ namespace DOL.GS
         /// <summary>
         /// <c>ERA_BUILD_TRAINED bot="Name" id=123 build=sorcerer-mind-body level=50 specs="Mind Magic:44,Body Magic:31"
         /// match=yes</c>, when an era-built bot first stands trained at 50 (a "+ Lv.50" arrival, or its first trainer visit at
-        /// 50). With match=no, <c>short="Body Magic:29/31"</c> names each line below its plan.
+        /// 50). With match=no, <c>short="Body Magic:29/31"</c> names each line below its plan. The game's lines add
+        /// <c>unspent=5</c> at the end: the points left, less than the next level of any line of a fully trained build.
         /// </summary>
-        public static string TrainedLine(string name, long id, int level, BotSpec plan, Func<string, int> trained)
+        public static string TrainedLine(string name, long id, int level, BotSpec plan, Func<string, int> trained,
+            int? unspent = null)
         {
             var specs = new StringBuilder();
             var shortLines = new StringBuilder();
@@ -139,7 +141,8 @@ namespace DOL.GS
                 }
             }
             return $"{TrainedTag} bot=\"{Clean(name)}\" id={id} build={plan.EraBuildId} level={level} specs=\"{specs}\" " +
-                   (shortLines.Length == 0 ? "match=yes" : $"match=no short=\"{shortLines}\"");
+                   (shortLines.Length == 0 ? "match=yes" : $"match=no short=\"{shortLines}\"") +
+                   (unspent is int left ? $" unspent={left}" : string.Empty);
         }
 
         /// <summary>Whether this training is the one to log: an era plan, standing at 50 now and not before.</summary>

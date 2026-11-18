@@ -99,6 +99,16 @@ namespace DOL.GS.Tests
                     Assert.That(left, Is.Not.Negative, $"{build.Id}: a level 50 player can train it");
                     Assert.That(build.Points, Is.EqualTo(eraClass.PointBudget50 - left), $"{build.Id}: what it costs a player");
                     Assert.That(build.AutoTrain, Is.EqualTo(eraClass.AutoTrainLines), build.Id);
+                    // Fully trained (owner 2026-11-17 18:59): the player has less left than the next level of any of the
+                    // build's lines costs him.
+                    foreach (KeyValuePair<string, int> line in build.Specs.Where(l => l.Value < 50))
+                    {
+                        int next = left - PlayerSpecPointOracle.PointsLeft(game, 50, false, build.Specs.Select(l =>
+                            l.Key == line.Key ? new KeyValuePair<string, int>(l.Key, l.Value + 1) : l));
+                        Assert.That(left, Is.LessThan(next), $"{build.Id}: {left} left, {line.Key} {line.Value + 1} costs {next}");
+                    }
+                    Assert.That(EraBuildCatalog.IsFullyTrained(build.Specs, eraClass.PointBudget50, eraClass.AutoTrainLines), Is.True, build.Id);
+                    Assert.That(EraBuildCatalog.SpendRest(build.Specs, eraClass.PointBudget50, eraClass.AutoTrainLines), Is.EqualTo(build.Specs), build.Id);
                 }
             }
         }
@@ -180,13 +190,14 @@ namespace DOL.GS.Tests
         public void EveryTrimOrFillSaysSoAndKeepsThePostedPoints()
         {
             var changed = Catalog.Classes.SelectMany(c => c.Builds).Where(b => b.Change != null).ToArray();
-            // D7's sheet trimmed 12 counting every level of every line; with a player's autotrain levels free, 3 of them fit
-            // as posted (Shadowblade Axe/Left Axe and Axe/CS, Ranger Archery/Pathfinding) and 9 are still trimmed.
-            Assert.That(changed, Has.Length.EqualTo(16), "D7: 9 trimmed, 7 filled");
+            // Owner 2026-11-17 18:59 (replaces D7's sheet): every build is the posted one, fully trained. 9 ask for more
+            // than a level 50 player has and lose points from their remainder line; 40 have points to spare and take them
+            // there; 57 are as posted.
+            Assert.That(changed, Has.Length.EqualTo(49));
             Assert.That(changed.Count(b => b.Change.StartsWith("trimmed to budget")), Is.EqualTo(9));
-            foreach (string id in new[] { "shadowblade-axe-la", "shadowblade-axe-cs", "ranger-bow-path" })
-                Assert.That(Catalog.GetBuild(id)?.Change, Is.Null, $"{id} fits as posted");
-            Assert.That(changed.Count(b => b.Change.StartsWith("filled:")), Is.EqualTo(7));
+            Assert.That(changed.Count(b => b.Change.StartsWith("filled: rest to ")), Is.EqualTo(40));
+            foreach (EraBuild build in Catalog.Classes.SelectMany(c => c.Builds))
+                Assert.That(build.Specs.Select(s => s.Key), Is.EquivalentTo(build.Posted.Select(s => s.Key)), $"{build.Id}: no line added or dropped");
             foreach (EraBuild build in Catalog.Classes.SelectMany(c => c.Builds))
             {
                 bool differs = !build.Specs.OrderBy(s => s.Key).SequenceEqual(build.Posted.OrderBy(s => s.Key));
@@ -225,18 +236,19 @@ namespace DOL.GS.Tests
                 Assert.That(Catalog.GetBuild("wizard-cold-earth").Weight, Is.EqualTo(0.15).Within(1e-9));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("wizard-cold-earth").Specs), Is.EqualTo("Cold Magic:50,Earth Magic:14,Fire Magic:14"));
                 // D7, one trim and one fill per realm
-                Assert.That(EraBuild.Format(Catalog.GetBuild("minstrel-inst-stl").Specs), Is.EqualTo("Instruments:50,Stealth:33,Slash:29"));
+                Assert.That(EraBuild.Format(Catalog.GetBuild("minstrel-inst-stl").Specs), Is.EqualTo("Instruments:50,Stealth:33,Slash:30"));
+                // "rest dual wield" (Allakhazam, "Good Specs?"), not the sheet's Stealth 46
                 Assert.That(EraBuild.Format(Catalog.GetBuild("infiltrator-thrust-env").Specs),
-                    Is.EqualTo("Thrust:50,Stealth:46,Envenom:36,Critical Strike:34,Dual Wield:10"));
-                // as posted since autotrain is counted (the sheet had Left Axe 43): Stealth's first 12 levels are free
+                    Is.EqualTo("Thrust:50,Envenom:36,Stealth:35,Critical Strike:34,Dual Wield:34"));
+                // the posted lines (the sheet had Left Axe 43: Stealth's first 12 levels are free), the rest in its lowest
                 Assert.That(EraBuild.Format(Catalog.GetBuild("shadowblade-axe-la").Specs),
-                    Is.EqualTo("Axe:44,Left Axe:44,Envenom:35,Stealth:35,Critical Strike:10"));
+                    Is.EqualTo("Axe:44,Left Axe:44,Envenom:35,Stealth:35,Critical Strike:13"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("runemaster-supp-dark").Specs), Is.EqualTo("Suppression:50,Darkness:20"));
-                Assert.That(EraBuild.Format(Catalog.GetBuild("warrior-axe-shld50").Specs), Is.EqualTo("Axe:50,Shields:50,Parry:28"));
+                Assert.That(EraBuild.Format(Catalog.GetBuild("warrior-axe-shld50").Specs), Is.EqualTo("Axe:50,Shields:50,Parry:31"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("champion-lw-valor-blades").Specs),
-                    Is.EqualTo("Large Weapons:50,Blades:36,Valor:35,Parry:28"));
+                    Is.EqualTo("Large Weapons:50,Valor:40,Blades:39,Parry:14"));
                 Assert.That(EraBuild.Format(Catalog.GetBuild("warden-nurt-regrow").Specs),
-                    Is.EqualTo("Nurture:49,Regrowth:33,Blades:25,Parry:14"));
+                    Is.EqualTo("Nurture:49,Regrowth:33,Parry:29"), "the Warden guide: 'the remainder in parry'");
                 // Roles WP5 reads for the RvR crowd-control slot
                 Assert.That(Catalog.GetBuild("healer-pac-mend-aug").Role, Is.EqualTo("healer-cc"));
                 Assert.That(Catalog.GetBuild("sorcerer-mind-body").Role, Is.EqualTo("cc-mezzer"));

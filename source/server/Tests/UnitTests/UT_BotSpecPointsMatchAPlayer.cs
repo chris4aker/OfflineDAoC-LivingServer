@@ -100,16 +100,41 @@ namespace DOL.UnitTests
             _language.Dispose();
         }
 
-        // x1.0, x1.5 and x2.0 without autotrain lines and with them (Minstrel: Instruments; Armsman: Slash and Thrust), and
-        // the x2.5 assassin (Stealth).
+        // x1.0 and x1.5 without autotrain lines, and every class that has them (review of ce90adcc1): all eleven, x1.5 to
+        // x2.5, one to three autotrain lines each.
         private static readonly object[] Classes =
         [
             new object[] { eCharacterClass.Wizard, 10 },
             new object[] { eCharacterClass.Friar, 15 },
             new object[] { eCharacterClass.Minstrel, 15 },
             new object[] { eCharacterClass.Armsman, 20 },
+            new object[] { eCharacterClass.Mercenary, 20 },
+            new object[] { eCharacterClass.Paladin, 20 },
+            new object[] { eCharacterClass.Reaver, 20 },
+            new object[] { eCharacterClass.Scout, 20 },
             new object[] { eCharacterClass.Infiltrator, 25 },
+            new object[] { eCharacterClass.Warrior, 20 },
+            new object[] { eCharacterClass.Shadowblade, 22 },
+            new object[] { eCharacterClass.Nightshade, 22 },
+            new object[] { eCharacterClass.Ranger, 20 },
         ];
+
+        [Test]
+        public void TheCasesCoverEveryClassWithAutotrainLines()
+        {
+            eCharacterClass[] cases = Classes.Select(c => (eCharacterClass)((object[])c)[0]).ToArray();
+            foreach (eCharacterClass cls in Enum.GetValues<eCharacterClass>())
+            {
+                ICharacterClass characterClass = ScriptMgr.FindCharacterClass((int)cls);
+                if (characterClass?.GetAutotrainableSkills() is { Count: > 0 } lines && BotCustomClassRule.BotsMayPlay((int)cls) &&
+                    EraBuildCatalog.Default.GetClass((int)cls) != null)
+                {
+                    Assert.That(cases, Does.Contain(cls), $"{cls} autotrains {string.Join(", ", lines)}");
+                    Assert.That(Plans[cls].Select(p => p.Line).Intersect(lines), Is.Not.Empty, $"{cls}: a plan with an autotrain line");
+                }
+            }
+            Assert.That(cases.Count(c => PlayerSpecPointOracle.ClassOf(c).GetAutotrainableSkills().Count > 0), Is.EqualTo(11));
+        }
 
         /// <summary>A training plan per class: line, cap, share of the level (0: trained last, at level 50 only).</summary>
         private static readonly Dictionary<eCharacterClass, (string Line, int Cap, float Ratio)[]> Plans = new()
@@ -121,12 +146,27 @@ namespace DOL.UnitTests
             [eCharacterClass.Armsman] = [(Specs.Slash, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Parry, 50, 0.5f), (Specs.Thrust, 20, 0f)],
             [eCharacterClass.Infiltrator] = [(Specs.Thrust, 50, 1f), (Specs.Critical_Strike, 50, 0.8f), (Specs.Stealth, 50, 0.7f),
                 (Specs.Envenom, 50, 0.7f), (Specs.Dual_Wield, 50, 0.2f)],
+            [eCharacterClass.Mercenary] = [(Specs.Thrust, 50, 1f), (Specs.Dual_Wield, 50, 0.8f), (Specs.Parry, 50, 0.5f), (Specs.Slash, 20, 0f)],
+            [eCharacterClass.Paladin] = [(Specs.Chants, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Slash, 50, 0.5f), (Specs.Parry, 20, 0f)],
+            [eCharacterClass.Reaver] = [(Specs.Flexible, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Soulrending, 50, 0.7f), (Specs.Slash, 20, 0f)],
+            [eCharacterClass.Scout] = [(Specs.Longbow, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Stealth, 50, 0.6f), (Specs.Thrust, 20, 0f)],
+            // three autotrain lines: one trained every level, two left at 1 until 50
+            [eCharacterClass.Warrior] = [(Specs.Axe, 50, 1f), (Specs.Shields, 50, 0.8f), (Specs.Parry, 50, 0.6f), (Specs.Hammer, 20, 0f),
+                (Specs.Sword, 20, 0f)],
+            [eCharacterClass.Shadowblade] = [(Specs.Axe, 50, 1f), (Specs.Left_Axe, 50, 0.9f), (Specs.Stealth, 50, 0.7f),
+                (Specs.Envenom, 50, 0.7f), (Specs.Critical_Strike, 50, 0.2f)],
+            [eCharacterClass.Nightshade] = [(Specs.Piercing, 50, 1f), (Specs.Critical_Strike, 50, 0.8f), (Specs.Stealth, 50, 0.7f),
+                (Specs.Envenom, 50, 0.7f)],
+            // the server's Ranger autotrains Recurve Bow (the period's did not; a player's is the rule here)
+            [eCharacterClass.Ranger] = [(Specs.RecurveBow, 50, 1f), (Specs.Pathfinding, 50, 0.8f), (Specs.Stealth, 50, 0.8f),
+                (Specs.Piercing, 50, 0.6f)],
             [eCharacterClass.Cleric] = [(Specs.Enhancement, 50, 1f), (Specs.Rejuvenation, 50, 0.6f), (Specs.Smite, 20, 0f)],
             [eCharacterClass.Shaman] = [(Specs.Augmentation, 50, 1f), (Specs.Mending, 50, 0.6f), (Specs.Subterranean, 20, 0f)],
             [eCharacterClass.Druid] = [(Specs.Nurture, 50, 1f), (Specs.Regrowth, 50, 0.6f), (Specs.Nature, 20, 0f)],
         };
 
-        private static readonly int[] Levels = [40, 45, 50];
+        // 4: before the first free level; 8, 20, 48: free levels just reached; 40, 45: half levels; 50.
+        private static readonly int[] Levels = [4, 8, 20, 40, 45, 48, 50];
 
         // ---- the oracle and the pure helpers
 
@@ -161,7 +201,8 @@ namespace DOL.UnitTests
                 if (level is >= 40 and < 50)
                     Assert.That(GameBot.PlayerSpecPointTotal(multiplier, level, true),
                         Is.EqualTo(PlayerSpecPointOracle.Earned(characterClass, level, true)), $"earned at {level}.5");
-                foreach ((string line, _, _) in Plans[cls])
+                // one autotrain line and one other line of the class
+                foreach (string line in Plans[cls].Select(p => p.Line).GroupBy(autoTrain.Contains).Select(g => g.First()))
                 {
                     bool free = autoTrain.Contains(line);
                     for (int spec = 1; spec <= level; spec++)
@@ -261,13 +302,17 @@ namespace DOL.UnitTests
                 for (int i = 0; i < plan.Length; i++)
                 {
                     Specialization line = AddLine(bot, plan[i].Line);
-                    int target = i == 0 ? 21 : i % 2 == 1 ? 13 : 5;
-                    while (line.Level < target)
+                    int target = Math.Min(level, i == 0 ? 21 : i % 2 == 1 ? 13 : 5);
+                    while (line.Level < target && bot.CompanionTrainCost(line) <= bot.CompanionSpecPoints)
                     {
                         int before = bot.CompanionSpecPoints, cost = bot.CompanionTrainCost(line);
+                        // a free level costs nothing, as /train gives it to a player
+                        Assert.That(cost, Is.EqualTo(bot.IsAutoTrainLine(line) && line.Level < level / 4 ? 0 : line.Level + 1));
                         Assert.That(bot.CompanionTrain(line), Is.Null, $"{line.KeyName} {line.Level + 1}");
                         Assert.That(before - bot.CompanionSpecPoints, Is.EqualTo(cost), $"{line.KeyName} {line.Level}: the cost shown");
                     }
+                    if (line.Level < target)
+                        Assert.That(bot.CompanionTrain(line), Is.Not.Null, "refused, not trained on credit");
                     AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, $"x{multiplier / 10.0} level {level}, {line.KeyName} trained");
                 }
             }
@@ -297,16 +342,23 @@ namespace DOL.UnitTests
                 GameBot bot = Hired(cls, level, GamePlayer.GetExperienceAmountForLevel(level - 1));
                 foreach ((string name, _, _) in Plans[cls])
                     AddLine(bot, name);
-                Specialization top = bot.GetSpecializationByName(Plans[cls][0].Line);
-                for (int i = 0; i < 20; i++)
-                    Assert.That(bot.CompanionTrain(top), Is.Null, $"train {top.Level + 1}");
-                Assert.That(top.Level, Is.EqualTo(21));
+                // the first two lines of the plan are trained, the others stay at 1
+                foreach ((string name, _, _) in Plans[cls].Take(2))
+                {
+                    Specialization line = bot.GetSpecializationByName(name);
+                    while (line.Level < Math.Min(level, 21) && bot.CompanionTrainCost(line) <= bot.CompanionSpecPoints)
+                        Assert.That(bot.CompanionTrain(line), Is.Null, $"train {name} {line.Level + 1}");
+                }
+                Assert.That(bot.GetBaseSpecLevel(Plans[cls][0].Line), Is.GreaterThan(1));
                 AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, "trained");
+                HashSet<string> trained = bot.GetSpecList().Where(spec => spec.Level > 1).Select(spec => spec.KeyName).ToHashSet();
 
                 bot.CompanionRespec();
-                // as a player's respec leaves them (GamePlayer.RespecSingleLine): autotrain lines at a quarter of the level
+                // as a player's respec leaves them: a trained autotrain line at a quarter of the level from level 8
+                // (GamePlayer.RespecSingleLine), a line never trained where it was (RespecAllLines skips it)
                 foreach (Specialization spec in bot.GetSpecList())
-                    Assert.That(spec.Level, Is.EqualTo(bot.IsAutoTrainLine(spec) ? level / 4 : 1), spec.KeyName);
+                    Assert.That(spec.Level, Is.EqualTo(trained.Contains(spec.KeyName) && bot.IsAutoTrainLine(spec) && level >= 8
+                        ? level / 4 : 1), spec.KeyName);
                 Assert.That(bot.CompanionSpecPoints, Is.EqualTo(PlayerSpecPointOracle.Earned(bot.CharacterClass, level)),
                     $"x{multiplier / 10.0} level {level}: every point back");
                 AssertAPlayersPoints(bot, bot.CompanionSpecPoints, level, "respecced");
@@ -477,9 +529,15 @@ namespace DOL.UnitTests
 
         private static OfflineWorldBotRecord Record(eCharacterClass cls, int level, long botId) => new()
         {
-            BotId = botId, Name = $"Points{cls}{level}{botId}", Realm = (int)eRealm.Albion, ClassId = (int)cls,
-            RaceId = (int)eRace.Briton, Level = level, Health = 100, Mana = 10, Endurance = 100,
+            BotId = botId, Name = $"Points{cls}{level}{botId}", Realm = (int)RealmOf(cls), ClassId = (int)cls,
+            RaceId = (int)RaceOf(cls), Level = level, Health = 100, Mana = 10, Endurance = 100,
         };
+
+        private static eRealm RealmOf(eCharacterClass cls) =>
+            (eRealm)(Array.IndexOf(EraBuildCatalog.RealmNames, EraBuildCatalog.Default.GetClass((int)cls)?.Realm ?? "Albion") + 1);
+
+        private static eRace RaceOf(eCharacterClass cls) =>
+            RealmOf(cls) switch { eRealm.Midgard => eRace.Norseman, eRealm.Hibernia => eRace.Celt, _ => eRace.Briton };
 
         private GameBot Gamebot(eCharacterClass cls, int level) => Track(new GameBot(Record(cls, level, 0)));
 
@@ -498,7 +556,7 @@ namespace DOL.UnitTests
         {
             var owner = (Owner)RuntimeHelpers.GetUninitializedObject(typeof(Owner));
             owner.Level = ownerLevel;
-            return Track(new GameBot(owner, (byte)cls, $"Points{cls}", (byte)eRace.Briton, temporaryGroupHelper: temporary, botLevel: botLevel));
+            return Track(new GameBot(owner, (byte)cls, $"Points{cls}", (byte)RaceOf(cls), temporaryGroupHelper: temporary, botLevel: botLevel));
         }
 
         private GameBot Track(GameBot bot)

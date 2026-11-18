@@ -43,33 +43,69 @@ class MakeEraBuilds(unittest.TestCase):
         self.assertNotIn("Hunter", era.AUTOTRAIN)   # the game's Hunter list is commented out
         self.assertEqual(sum(1 for c in self.data["classes"].values() if c["autotrain"]), 11)
 
-    def test_the_builds_autotrain_lets_fit_are_as_posted_again(self):
-        builds = {b["id"]: (cls, b) for cls, c in self.data["classes"].items() for b in c["builds"]}
-        for build_id in ("shadowblade-axe-la", "shadowblade-axe-cs", "ranger-bow-path"):
-            cls, b = builds[build_id]
-            info = self.data["classes"][cls]
-            self.assertIsNone(b["change"], build_id)
-            self.assertEqual(b["specs"], b["posted"], build_id)
-            self.assertGreater(era.build_cost(b["posted"]), info["pointBudget50"], f"{build_id}: over, every level counted")
-            self.assertLessEqual(era.build_cost(b["posted"], info["autotrain"]), info["pointBudget50"], build_id)
-        # the two Minstrel builds are still over: the same line is trimmed, by less, to the most that fits
-        for build_id, line, level in (("minstrel-inst-stl", "Stealth", 33), ("minstrel-inst-slash", "Slash", 42)):
-            cls, b = builds[build_id]
-            info = self.data["classes"][cls]
-            self.assertEqual(b["specs"][line], level, build_id)
-            self.assertLessEqual(era.build_cost(b["specs"], info["autotrain"]), info["pointBudget50"])
-            self.assertGreater(era.build_cost({**b["specs"], line: level + 1}, info["autotrain"]), info["pointBudget50"])
-        # every trim left is one a player's points still need
+    def test_every_build_is_fully_trained(self):
+        # Owner 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and Wayback build scraping showed".
         for cls, c in self.data["classes"].items():
             for b in c["builds"]:
-                if (b["change"] or "").startswith("trimmed"):
-                    self.assertGreater(era.build_cost(b["posted"], c["autotrain"]), c["pointBudget50"], b["id"])
+                left = era.points_left(b["specs"], c["pointBudget50"], c["autotrain"])
+                self.assertEqual(left, b["pointsLeft"], b["id"])
+                self.assertGreaterEqual(left, 0, b["id"])
+                for line, level in b["specs"].items():
+                    if level < 50:
+                        self.assertLess(left, era.next_level_cost(level, line in c["autotrain"]), f"{b['id']} {line}")
+                self.assertTrue(era.is_fully_trained(b["specs"], c["pointBudget50"], c["autotrain"]), b["id"])
+                self.assertEqual(set(b["specs"]), set(b["posted"]), f"{b['id']}: no line added or dropped")
+        left = [b["pointsLeft"] for c in self.data["classes"].values() for b in c["builds"]]
+        self.assertEqual((min(left), max(left)), (0, 42))
 
-    def test_nine_trims_seven_fills_and_the_rest_as_posted(self):
+    def test_validate_refuses_a_build_with_points_to_spare(self):
+        data = json.loads(era.render(self.data))
+        build = data["classes"]["Armsman"]["builds"][0]
+        build["specs"]["Parry"] -= 1
+        build["pointsLeft"] += build["specs"]["Parry"] + 1
+        self.assertTrue(any("points left, the next level of a line costs" in p for p in era.validate(data)))
+
+    def test_the_rest_goes_to_the_remainder_line_and_trims_come_out_of_it(self):
+        fit = era.fully_trained
+        # under: the lowest posted line takes the rest (Armsman: Slash and Thrust are free up to 12)
+        self.assertEqual(fit({"Polearm": 50, "Shields": 42, "Slash": 39, "Parry": 6}, 2979, ["Slash", "Thrust"])["Parry"], 13)
+        # over: the lowest line gives the points back, then the rest is spent again (the period's Earth 50 / Ice 20 / Air 4)
+        self.assertEqual(fit({"Earth Magic": 50, "Cold Magic": 26, "Wind Magic": 11}, 1494),
+                         {"Earth Magic": 50, "Cold Magic": 20, "Wind Magic": 4})
+        # lines posted at the same level come down together
+        self.assertEqual(fit({"Mentalism": 45, "Light": 25, "Mana": 25}, 1494), {"Mentalism": 45, "Light": 21, "Mana": 21})
+        # a source names the line to trim: Stealth, not the Minstrel's weapon
+        self.assertEqual(fit({"Instruments": 50, "Stealth": 50, "Slash": 29}, 2223, ["Instruments"], "Stealth"),
+                         {"Instruments": 50, "Stealth": 33, "Slash": 30})
+        # as posted when it is already fully trained
+        posted = {"Mind Magic": 44, "Body Magic": 31}
+        self.assertEqual(fit(posted, 1494), posted)
+        builds = {b["id"]: b for c in self.data["classes"].values() for b in c["builds"]}
+        self.assertEqual(builds["infiltrator-thrust-env"]["specs"]["Dual Wield"], 34)   # "rest dual wield"
+        self.assertTrue(builds["infiltrator-thrust-env"]["changeSourced"])
+        self.assertEqual(builds["warden-nurt-regrow"]["specs"], {"Nurture": 49, "Regrowth": 33, "Parry": 29})
+        self.assertTrue(builds["warden-nurt-regrow"]["changeSourced"])                  # "the remainder in parry"
+        self.assertFalse(builds["armsman-pole-shld-slash"]["changeSourced"])            # the general practice only
+        self.assertIn("remainder line", builds["armsman-pole-shld-slash"]["changeBasis"])
+
+    def test_every_build_has_dated_posts_and_the_wayback_check_is_recorded(self):
+        builds = [b for c in self.data["classes"].values() for b in c["builds"]]
+        self.assertTrue(all(b["postedSourced"] and b["sources"] and b["sourceDates"] for b in builds))
+        self.assertEqual(sum(1 for b in builds if b["wayback"]), 22)
+        self.assertEqual(sum(1 for b in builds if b["check"].startswith("matches")), 9)
+        for b in builds:
+            self.assertEqual(b["specsSourced"], b["change"] is None, b["id"])
+            for entry in b["wayback"]:
+                self.assertTrue(entry["site"] and entry["page"] and entry["captured"] and entry["shows"], b["id"])
+                self.assertRegex(entry["captured"], r"^200[2-5]-\d\d-\d\d$")
+            self.assertEqual(b["changeBasis"] is not None, b["change"] is not None, b["id"])
+        self.assertEqual(era.CHECK_DOC.read_text(encoding="utf-8"), era.render_table(self.data))
+
+    def test_nine_trims_forty_fills_and_the_rest_as_posted(self):
         builds = [b for c in self.data["classes"].values() for b in c["builds"]]
         self.assertEqual(len(builds), 106)
         self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("trimmed")), 9)
-        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("filled")), 7)
+        self.assertEqual(sum(1 for b in builds if (b["change"] or "").startswith("filled")), 40)
         for b in builds:
             draft = next(d for d in self.draft["classes"][b["id"].split("-")[0].capitalize()] if d["label"] == b["label"])
             self.assertEqual(b["posted"], era.ordered(draft["specs"]), b["id"])

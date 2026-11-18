@@ -419,15 +419,30 @@ nothing here has been seen on the owner's PC yet. New gamebots are built the way
   Shadowblade and Nightshade: Stealth; Ranger: Recurve Bow; this server's Hunter has none). You pay nothing for those
   lines up to a quarter of your level, whenever you train them: 77 points a line at 50. Every bot now pays the same.
   - This server's rule is the later "autotrain refund" one (its code names patch 1.87): nothing rises by itself and
-    training a line early loses nothing. In 1.65 itself only a line left untrained got the free levels; the most a 1.65
-    player could have is what every player and bot has here.
+    training a line early loses nothing. **In 1.65 it was stricter** (Wayback scrape of 2026-11-13: Classes of Camelot's
+    FAQ "Training", its autotrain section written 2002-09-30 and corrected that October, captured 2005-03-06; the
+    Herald's "Classes and Races: Autotraining" table, captured 2005-02-09): the trainer raised an autotrain line for free only while it was below a quarter of the
+    level ("will not auto-train a skill unless the skill is less than 25% of your level"), and "if you did not autotrain
+    from the get go, you will not get the benefit of autotrain points". So a 1.65 player got the 77 points only for a
+    line left untrained to level 48, and none for a line trained from level 5; here every player and bot gets them. The
+    scrape has no patch note for when autotrain arrived; its earliest mention is a site news item of September 2002.
+  - The same sources list the period's autotrain lines: this server's, except that Classes of Camelot's Ranger page
+    (captured 2005-12-25) lists none (the server's Ranger has Recurve Bow, 77 points). The Hunter had none then and
+    has none here.
   - A hired companion's free levels show "next: 0 points"; one saved before gets the points back to spend (77 a line at
     50), and its respec leaves autotrain lines at a quarter of its level, as yours does.
   - A gamebot gets nothing back for levels it already trained; from its next level on it pays a player's cost.
-  - Era builds: a build fits when a level 50 player can pay for it. Shadowblade Axe/Left Axe, Shadowblade Axe/CS and
-    Ranger Archery/Pathfinding now fit as posted (no longer trimmed); Minstrel Instruments/Stealth/Slash keeps Stealth 33
-    (was 31) and Minstrel Instruments/Slash keeps Slash 42 (was 40); 9 builds are still trimmed. Bots that already
-    have a saved build keep it.
+  - Era builds are **fully trained** (owner, 2026-11-17 18:59: "bots should be fully trained on what our 1.65 and
+    Wayback build scraping showed"). Each of the 106 builds is the build of the dated 2002-2003 posts, paid for as a
+    level 50 player pays (autotrain counted), with every point spent: 57 are as posted; 40 had points to spare, which
+    go into the build's remainder line (its lowest posted line, where the period guides put spare points: "the
+    remainder in parry"); 9 asked for more than a level 50 has and lose points from that line. What is left (0 to 42
+    points) buys no further level in any of the build's lines. No line is added to a build.
+  - 22 of the 106 are also in the Wayback scrape (9 match its builds); the other 84 rest on the dated forum posts
+    alone. The list, with every source, is [research/ERA-BUILDS-CHECK.md](research/ERA-BUILDS-CHECK.md).
+  - A levelling era bot trains toward its build at every trainer visit and keeps no points its build can take;
+    the per-bot variation (2 points) keeps the build fully trained; `ERA_BUILD_TRAINED` ends with `unspent=`.
+  - An era bot made by an earlier 1.2 test build keeps the plan it saved.
   - Tests only until seen on the owner's PC.
 - **Every number is an estimate** from 2002-2003 forum posts (European servers); none is a count. The data file says so
   for each share and weight, and a later data update can re-weight them.

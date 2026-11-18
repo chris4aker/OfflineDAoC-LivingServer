@@ -116,7 +116,8 @@ namespace DOL.GS
                 int points = m_leftOverSpecPoints;
                 for (int level = _lastAutonomousTrainedLevel + 1; level <= Level; level++)
                     points += GetSpecPointsForLevel(level) + AutoTrainRefundAtLevel(level);
-                return BotSpec.SpecLines.Any(line => (line.levelRatio > 0 || Level >= 50) &&
+                return BotSpec.SpecLines.Any(line =>
+                    (line.levelRatio > 0 || Level >= 50 || !string.IsNullOrEmpty(BotSpec.EraBuildId)) &&
                     GetSpecializationByName(line.Spec) is Specialization spec && spec.Trainable &&
                     spec.Level < Math.Min(Level, line.SpecCap) &&
                     points >= NextLevelCost(spec.Level, Level, IsAutoTrainLine(spec)));
@@ -2877,7 +2878,7 @@ namespace DOL.GS
                 _lastAutonomousTrainedLevel = Level;
                 MarkAutonomousStateDirty();
                 if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, arrivalTrainedFrom, Level))
-                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
+                    log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
                 if (AutonomousDiagnosticsProperties.Training)
                     log.Info($"AUTONOMOUS_TRAINING bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
                              $"trainer=\"(arrived trained)\" trainedFrom=1 trainedThrough={Level} " +
@@ -3753,6 +3754,12 @@ namespace DOL.GS
         /// companion got no half-level points (220/330/445 fewer at level 50 for x1.0/x1.5/x2.0) and paid for its autotrain
         /// levels (77 points a line at 50); counting from its level gives a saved companion those points to spend, and
         /// never takes a trained point away.
+        /// <para>
+        /// A hired companion never trains as a gamebot again, so a half level its player has spent is not earned twice by
+        /// SpendSpecPoints at a later level: dismissing only parks it (it stays hired), releasing deletes its record
+        /// (HiredCompanions165.AskRelease; a delete that fails retires it, and a retired bot never logs in), and the
+        /// launcher deletes a hire row only together with its bot (BotPurge).
+        /// </para>
         /// </summary>
         public int CompanionSpecPoints => Math.Max(0, CompanionEarnedSpecPoints - TrainedSpecPointCost());
 
@@ -3852,12 +3859,13 @@ namespace DOL.GS
             return null;
         }
 
-        /// <summary>The free respec (owner rule): every trainable line back to 1 - an autotrain line to its free level from
-        /// level 8, as a player's respec leaves it (GamePlayer.RespecSingleLine) - and all the points back to spend: a
-        /// player's total for the level, half levels included.</summary>
+        /// <summary>The free respec (owner rule): every trained line back to 1 - an autotrain line to its free level from
+        /// level 8, as a player's respec leaves it (GamePlayer.RespecSingleLine; a line still at 1 is left alone, as
+        /// RespecAllLines leaves it) - and all the points back to spend: a player's total for the level, half levels
+        /// included.</summary>
         public void CompanionRespec()
         {
-            foreach (Specialization spec in GetSpecList().Where(s => s.Trainable))
+            foreach (Specialization spec in GetSpecList().Where(s => s.Trainable && s.Level >= 2))
                 spec.Level = Level >= 8 && IsAutoTrainLine(spec) ? Level / 4 : 1;
             m_leftOverSpecPoints = CompanionSpecPoints;
             _lastAutonomousTrainedLevel = Level;
@@ -3920,7 +3928,7 @@ namespace DOL.GS
             SpendSpecPoints(Level, previous);
             _lastAutonomousTrainedLevel = Level;
             if (EraLifetimeBuild.FirstTrainedAtFifty(BotSpec, previous, Level))
-                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel));
+                log.Info(EraLifetimeBuild.TrainedLine(Name, DatabaseID, Level, BotSpec, GetBaseSpecLevel, m_leftOverSpecPoints));
             RefreshSpecDependantSkills(false);
             SetBotSpells();
             SortStyles();
@@ -4182,6 +4190,7 @@ namespace DOL.GS
             int leftOverSpecPoints = m_leftOverSpecPoints;
             bool spentPoints = true;
             bool spendLeftOverPoints = false;
+            bool trainsEveryPoint = !string.IsNullOrEmpty(BotSpec.EraBuildId);
 
             byte index = (byte)(previousLevel + 1);
 
@@ -4202,7 +4211,11 @@ namespace DOL.GS
 
                     foreach (BotSpecLine specLine in BotSpec.SpecLines)
                     {
-                        if (specLine.levelRatio <= 0 && Level < 50)
+                        // A line with no levelling share waits for level 50 - except in an era build, whose lines are
+                        // capped at the build's points: there the points nothing else can take go into it at once, so
+                        // the bot is always as trained as its points allow, as a player following a template is (owner
+                        // 2026-11-17 18:59). The build still ends at its points: no line passes its cap.
+                        if (specLine.levelRatio <= 0 && Level < 50 && !(spendLeftOverPoints && trainsEveryPoint))
                             continue;
 
                         Specialization spec = GetSpecializationByName(specLine.Spec);

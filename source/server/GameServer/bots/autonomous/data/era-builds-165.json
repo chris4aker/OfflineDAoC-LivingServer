@@ -4,8 +4,9 @@
   "status": "approved 2026-11-17",
   "approved": "2026-11-17",
   "decisions": "owner 2026-11-17 09:48: D1-D5, D7-D12 as recommended; D6 replaced: bots never play the Sluaghbinder (docs/ERA-BUILDS-1.2.md)",
-  "estimates": "every share and every weight is an estimate from 2002-2003 forum posts (European servers); spec points come from dated posts unless 'change' says they were trimmed or filled",
-  "points": "a build fits when a level 50 player of the class can pay for it: every level of every line, less a class's 'autotrain' lines up to level 12 (free for a player, 77 points a line)",
+  "estimates": "every share and every weight is an estimate from 2002-2003 forum posts (European servers); spec points come from dated posts unless 'change' says they were trimmed or filled ('posted' keeps the posts' points, 'changeBasis' says what the change rests on)",
+  "points": "a build fits when a level 50 player of the class can pay for it: every level of every line, less a class's 'autotrain' lines up to level 12 (free for a player, 77 points a line); every build is fully trained: 'pointsLeft' buys no further level in any of its lines",
+  "sources": "posted points: dated FreddysHouse posts of 2002-2003 ('sources', 'sourceDates'); 'wayback': what the Wayback scrape of 2026-11-13 holds for the build (site, page, capture date), empty when nothing does",
   "generatedBy": "source/tools/make_era_builds.py from docs/research/bot-builds.draft.json",
   "offMetaPercent": 10,
   "jitterPoints": 2,
@@ -282,7 +283,7 @@
             "Polearm": 50,
             "Shields": 42,
             "Slash": 39,
-            "Parry": 6
+            "Parry": 13
           },
           "posted": {
             "Polearm": 50,
@@ -290,8 +291,14 @@
             "Slash": 39,
             "Parry": 6
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (6->13)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 11,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
           "sources": [
             "https://forums.freddyshouse.com/threads/armsman-spec-advice.134508/",
@@ -316,15 +323,21 @@
           "specs": {
             "Two Handed": 50,
             "Shields": 42,
-            "Slash": 39
+            "Slash": 41
           },
           "posted": {
             "Two Handed": 50,
             "Shields": 42,
             "Slash": 39
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Slash (39->41)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 20,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/2hand-armsman-spec.131215/",
@@ -349,15 +362,21 @@
           "specs": {
             "Shields": 50,
             "Slash": 50,
-            "Parry": 28
+            "Parry": 31
           },
           "posted": {
             "Shields": 50,
             "Slash": 50,
             "Parry": 28
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (28->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 13,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/99-armsman-template.145044/",
@@ -383,7 +402,7 @@
             "Polearm": 50,
             "Shields": 42,
             "Thrust": 39,
-            "Parry": 6
+            "Parry": 13
           },
           "posted": {
             "Polearm": 50,
@@ -391,8 +410,14 @@
             "Thrust": 39,
             "Parry": 6
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (6->13)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 11,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
           "sources": [
             "https://forums.freddyshouse.com/threads/armsman-spec-advice.134508/",
@@ -438,8 +463,8 @@
           "specs": {
             "Chants": 48,
             "Shields": 42,
-            "Parry": 30,
-            "Slash": 29
+            "Parry": 32,
+            "Slash": 32
           },
           "posted": {
             "Chants": 48,
@@ -447,8 +472,14 @@
             "Parry": 30,
             "Slash": 29
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (30->32), Slash (29->32)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 2,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 55,
           "sources": [
             "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
@@ -474,7 +505,7 @@
             "Chants": 48,
             "Shields": 42,
             "Slash": 39,
-            "Parry": 15
+            "Parry": 23
           },
           "posted": {
             "Chants": 48,
@@ -482,8 +513,14 @@
             "Slash": 39,
             "Parry": 15
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (15->23)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 2,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 55,
           "sources": [
             "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
@@ -509,7 +546,7 @@
             "Shields": 50,
             "Chants": 46,
             "Slash": 29,
-            "Parry": 19
+            "Parry": 25
           },
           "posted": {
             "Shields": 50,
@@ -517,8 +554,14 @@
             "Slash": 29,
             "Parry": 19
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (19->25)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 21,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 12,
           "sources": [
             "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
@@ -543,15 +586,21 @@
           "specs": {
             "Chants": 46,
             "Two Handed": 44,
-            "Parry": 42
+            "Parry": 43
           },
           "posted": {
             "Chants": 46,
             "Two Handed": 44,
             "Parry": 20
           },
-          "change": "filled: rest to Parry (20->42)",
+          "change": "filled: rest to Parry (20->43)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 42,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
           "sources": [
             "https://forums.freddyshouse.com/threads/paladin-spec-and-race.146293/",
@@ -596,15 +645,21 @@
           "specs": {
             "Dual Wield": 50,
             "Thrust": 50,
-            "Parry": 28
+            "Parry": 31
           },
           "posted": {
             "Dual Wield": 50,
             "Thrust": 50,
             "Parry": 10
           },
-          "change": "filled: rest to Parry (10->28)",
+          "change": "filled: rest to Parry (10->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 13,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/thrust-mercenary-sc-template.145900/",
@@ -629,15 +684,21 @@
           "specs": {
             "Dual Wield": 50,
             "Slash": 50,
-            "Parry": 28
+            "Parry": 31
           },
           "posted": {
             "Dual Wield": 50,
             "Slash": 50,
             "Parry": 28
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (28->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 13,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/merc-specs.114278/",
@@ -662,15 +723,21 @@
           "specs": {
             "Dual Wield": 50,
             "Parry": 49,
-            "Slash": 29
+            "Slash": 32
           },
           "posted": {
             "Dual Wield": 50,
             "Parry": 49,
             "Slash": 29
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Slash (29->32)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 31,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/merc-specs.114278/"
@@ -713,7 +780,7 @@
             "Flexible": 50,
             "Shields": 42,
             "Soulrending": 39,
-            "Parry": 6
+            "Parry": 13
           },
           "posted": {
             "Flexible": 50,
@@ -721,8 +788,14 @@
             "Soulrending": 39,
             "Parry": 6
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (6->13)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 11,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
           "sources": [
             "https://forums.freddyshouse.com/threads/new-reaver-spec.132053/",
@@ -748,7 +821,7 @@
             "Soulrending": 45,
             "Flexible": 44,
             "Shields": 42,
-            "Parry": 10
+            "Parry": 15
           },
           "posted": {
             "Soulrending": 45,
@@ -756,8 +829,14 @@
             "Shields": 42,
             "Parry": 10
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (10->15)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 12,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/reaver-spec-help.115670/",
@@ -802,7 +881,21 @@
             "Smite": 8
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Cleric class page, reader comments of 2002-2003 (db/class.html?cclass=10)",
+              "captured": "2004-09-19",
+              "shows": "'45+12 rejuv, 28+7enh and 10+4 smite' (2003-12-16)",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 7,
           "sources": [
             "https://forums.freddyshouse.com/threads/cleric-spec.132302/",
@@ -835,7 +928,21 @@
             "Smite": 4
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 1,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Cleric class page, reader comments of 2002-2003 (db/class.html?cclass=10)",
+              "captured": "2004-09-19",
+              "shows": "'40 rej, 34 ench, and 12 smite' (2003-10-15): the two lines the other way round",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 7,
           "sources": [
             "https://forums.freddyshouse.com/threads/cleric-spec.132314/",
@@ -868,7 +975,28 @@
             "Enhancement": 9
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "skill page, reader comment of 2002-01-28 (db/skills.html?cskill=25)",
+              "captured": "2005-12-06",
+              "shows": "'a template of 48 smite, 23 rejuv, 7 enhance'",
+              "verdict": "matches"
+            },
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Cleric class page, reader comments of 2002-2003 (db/class.html?cclass=10)",
+              "captured": "2004-09-19",
+              "shows": "'38 Smite, 33 Rej, and 18 Enh' (2002-12-19)",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 0,
           "sources": [
             "https://forums.freddyshouse.com/threads/how-many-pure-smiters-we-got.93469/"
@@ -914,7 +1042,13 @@
             "Parry": 12
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 4,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
           "sources": [
             "https://forums.freddyshouse.com/threads/friar-sc-template.135338/",
@@ -949,7 +1083,13 @@
             "Parry": 12
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 9,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 31,
           "sources": [
             "https://forums.freddyshouse.com/threads/friar-sc-template-yes-yes-again.131065/",
@@ -991,15 +1131,29 @@
           "specs": {
             "Instruments": 50,
             "Stealth": 33,
-            "Slash": 29
+            "Slash": 30
           },
           "posted": {
             "Instruments": 50,
             "Stealth": 50,
             "Slash": 29
           },
-          "change": "trimmed to budget: Stealth 50->33",
+          "change": "trimmed to budget: Stealth 50->33; rest to Slash (29->30)",
+          "changeBasis": "'No reason to take Stealth to 50, the highest would be around 35 or so' and '35 is as high as you need to bring stealth' (2004-10-21/22, said of an Infiltrator) (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "changeSourced": true,
+          "pointsLeft": 2,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'No reason to take Stealth to 50, the highest would be around 35 or so' and '35 is as high as you need to bring stealth' (2004-10-21/22, said of an Infiltrator)",
+              "verdict": "trim"
+            }
+          ],
+          "check": "a Wayback source speaks to its points only",
           "forumMentions": 25,
           "sources": [
             "https://forums.freddyshouse.com/threads/mincer-spec.147275/",
@@ -1023,16 +1177,22 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Instruments": 44,
-            "Slash": 42,
-            "Stealth": 28
+            "Slash": 44,
+            "Stealth": 24
           },
           "posted": {
             "Instruments": 44,
             "Slash": 44,
             "Stealth": 28
           },
-          "change": "trimmed to budget: Slash 44->42",
+          "change": "trimmed to budget: Stealth 28->24",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 23,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/minstrel-spec.105153/",
@@ -1057,15 +1217,21 @@
           "specs": {
             "Instruments": 44,
             "Thrust": 39,
-            "Stealth": 29
+            "Stealth": 32
           },
           "posted": {
             "Instruments": 44,
             "Thrust": 39,
             "Stealth": 29
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Stealth (29->32)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 5,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/minstrel-spec.113887/",
@@ -1106,10 +1272,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Thrust": 50,
-            "Stealth": 46,
             "Envenom": 36,
+            "Stealth": 35,
             "Critical Strike": 34,
-            "Dual Wield": 10
+            "Dual Wield": 34
           },
           "posted": {
             "Thrust": 50,
@@ -1118,8 +1284,29 @@
             "Critical Strike": 34,
             "Dual Wield": 10
           },
-          "change": "filled: rest to Stealth (35->46)",
+          "change": "filled: rest to Dual Wield (10->34)",
+          "changeBasis": "'rest dual wield' (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "changeSourced": true,
+          "pointsLeft": 27,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'most rr5s are 35 stealth, 35 env, 50 thrust, 34 cs, rest dual wield' (2004-11-02)",
+              "verdict": "matches"
+            },
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'rest dual wield'",
+              "verdict": "remainder"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 59,
           "sources": [
             "https://forums.freddyshouse.com/threads/which-infil-spec.150636/",
@@ -1143,10 +1330,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Thrust": 50,
+            "Critical Strike": 35,
             "Dual Wield": 35,
             "Stealth": 35,
-            "Critical Strike": 34,
-            "Envenom": 33
+            "Envenom": 34
           },
           "posted": {
             "Thrust": 50,
@@ -1155,8 +1342,22 @@
             "Critical Strike": 34,
             "Envenom": 33
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Critical Strike (34->35), Envenom (33->34)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 28,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'most rr5s are 35 stealth, 35 env, 50 thrust, 34 cs, rest dual wield' (2004-11-02)",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 71,
           "sources": [
             "https://forums.freddyshouse.com/threads/which-infil-spec.150636/",
@@ -1180,10 +1381,10 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Slash": 50,
-            "Stealth": 46,
             "Envenom": 36,
+            "Stealth": 35,
             "Critical Strike": 34,
-            "Dual Wield": 10
+            "Dual Wield": 34
           },
           "posted": {
             "Slash": 50,
@@ -1192,8 +1393,29 @@
             "Critical Strike": 34,
             "Dual Wield": 10
           },
-          "change": "filled: rest to Stealth (35->46)",
+          "change": "filled: rest to Dual Wield (10->34)",
+          "changeBasis": "'rest dual wield' (camelot.allakhazam.com, DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13), captured 2005-03-20)",
+          "changeSourced": true,
+          "pointsLeft": 27,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'The new flavor for infs are briton slash infs' (2004-11-02), the same template with Slash",
+              "verdict": "same lines"
+            },
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'rest dual wield'",
+              "verdict": "remainder"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-to-spec-a-infil.143569/",
@@ -1237,7 +1459,7 @@
             "Longbows": 50,
             "Shields": 42,
             "Stealth": 33,
-            "Thrust": 21
+            "Thrust": 24
           },
           "posted": {
             "Longbows": 50,
@@ -1245,8 +1467,14 @@
             "Stealth": 33,
             "Thrust": 21
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Thrust (21->24)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 21,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 38,
           "sources": [
             "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/",
@@ -1272,7 +1500,7 @@
             "Longbows": 46,
             "Shields": 42,
             "Stealth": 33,
-            "Slash": 29
+            "Slash": 31
           },
           "posted": {
             "Longbows": 46,
@@ -1280,8 +1508,14 @@
             "Stealth": 33,
             "Slash": 29
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Slash (29->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 19,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 52,
           "sources": [
             "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/",
@@ -1306,16 +1540,21 @@
           "specs": {
             "Thrust": 50,
             "Shields": 42,
-            "Longbows": 34,
-            "Stealth": 20
+            "Stealth": 39
           },
           "posted": {
             "Thrust": 50,
             "Shields": 42,
             "Stealth": 20
           },
-          "change": "filled: rest to Longbows (new line, 34)",
+          "change": "filled: rest to Stealth (20->39)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 24,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/interesting-scout-spec.144286/"
@@ -1358,7 +1597,13 @@
             "Cold Magic": 14
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 6,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/someone-tell-me-how-i-should-spec-my-thurg.142027/",
@@ -1384,16 +1629,22 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Earth Magic": 50,
-            "Cold Magic": 17,
-            "Wind Magic": 11
+            "Cold Magic": 20,
+            "Wind Magic": 4
           },
           "posted": {
             "Earth Magic": 50,
             "Cold Magic": 26,
             "Wind Magic": 11
           },
-          "change": "trimmed to budget: Cold Magic 26->17",
+          "change": "trimmed to budget: Cold Magic 26->20, Wind Magic 11->4",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/help-w-theurg-sc-template.131762/",
@@ -1424,7 +1675,13 @@
             "Earth Magic": 35
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 5,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/theurgist-spec-question.96528/",
@@ -1461,15 +1718,21 @@
           "specs": {
             "Fire Magic": 50,
             "Earth Magic": 18,
-            "Cold Magic": 8
+            "Cold Magic": 9
           },
           "posted": {
             "Fire Magic": 50,
             "Earth Magic": 18,
             "Cold Magic": 8
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Cold Magic (8->9)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 6,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/wizard-respec.105489/",
@@ -1504,7 +1767,13 @@
             "Fire Magic": 20
           },
           "change": "trimmed to budget: Earth Magic 20->14, Fire Magic 20->14",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 12,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/ice-wizzy-spec.127027/",
@@ -1527,15 +1796,21 @@
           "specs": {
             "Earth Magic": 48,
             "Cold Magic": 24,
-            "Fire Magic": 4
+            "Fire Magic": 6
           },
           "posted": {
             "Earth Magic": 48,
             "Cold Magic": 24,
             "Fire Magic": 4
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Fire Magic (4->6)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 0,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/to-all-wizards-respeccing-to-earth.102924/",
@@ -1578,7 +1853,13 @@
             "Body Magic": 31
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 10,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 24,
           "sources": [
             "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
@@ -1602,14 +1883,28 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Body Magic": 41,
-            "Mind Magic": 34
+            "Mind Magic": 35
           },
           "posted": {
             "Body Magic": 41,
             "Mind Magic": 34
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Mind Magic (34->35)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 5,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "skill pages, reader comments of 2001-11-07 and 2002-04-02 (db/skills.html?cskill=20 and cskill=16)",
+              "captured": "2005-12-08",
+              "shows": "'only plan on having level 34 spec in mind twising so i get the 2nd best mez'; '35 in mind which gives u second best mez'",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 24,
           "sources": [
             "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
@@ -1633,14 +1928,28 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Matter Magic": 41,
-            "Mind Magic": 34
+            "Mind Magic": 35
           },
           "posted": {
             "Matter Magic": 41,
             "Mind Magic": 34
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Mind Magic (34->35)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 5,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "skill pages, reader comments of 2001-11-07 and 2002-04-02 (db/skills.html?cskill=20 and cskill=16)",
+              "captured": "2005-12-08",
+              "shows": "'only plan on having level 34 spec in mind twising so i get the 2nd best mez'; '35 in mind which gives u second best mez'",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 10,
           "sources": [
             "https://forums.freddyshouse.com/threads/sorc-spec.138240/",
@@ -1687,7 +1996,13 @@
             "Spirit Magic": 4
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/cabby-spec.140145/",
@@ -1718,7 +2033,13 @@
             "Spirit Magic": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 9,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/givf-cabalist-sc-template-please.132870/",
@@ -1740,14 +2061,20 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Body Magic": 45,
-            "Matter Magic": 27
+            "Matter Magic": 29
           },
           "posted": {
             "Body Magic": 45,
             "Matter Magic": 27
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Matter Magic (27->29)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 26,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/my-final-cabby-spec.111065/",
@@ -1778,7 +2105,13 @@
             "Matter Magic": 19
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 9,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/cabalist-spec.137705/"
@@ -1821,7 +2154,13 @@
             "Painworking": 6
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/necro-spec.114235/"
@@ -1850,7 +2189,13 @@
             "Painworking": 8
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 8,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/necro-spec.115325/",
@@ -1881,7 +2226,13 @@
             "Death Servant": 6
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/necro-50-spec.115758/"
@@ -1924,7 +2275,13 @@
             "Augmentation": 6
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/pac-healer-spec.146828/",
@@ -1959,7 +2316,13 @@
             "Mending": 31
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 10,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 10,
           "sources": [
             "https://forums.freddyshouse.com/threads/pac-healer-spec.146828/",
@@ -1992,7 +2355,21 @@
             "Pacification": 4
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 4,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "skill page, reader comment of 2001-11-06 (db/skills.html?cskill=57)",
+              "captured": "2005-12-06",
+              "shows": "'At 50, 40 aug, 32 mend and 15 pac looks the best to me'",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 12,
           "sources": [
             "https://forums.freddyshouse.com/threads/mend-aug-healer-spec-advice.139739/",
@@ -2039,7 +2416,21 @@
             "Mending": 14
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 3,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Shaman Guide by Seraphym (Shaman_Guide.html)",
+              "captured": "2002-11-12",
+              "shows": "36 Cave/37 Aug/15 Mend and 46 Cave/27 Aug/8 Mend",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 26,
           "sources": [
             "https://forums.freddyshouse.com/threads/your-shaman-spec-ideas-welcome-p.148962/",
@@ -2072,7 +2463,21 @@
             "Mending": 9
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 8,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Shaman Guide by Seraphym (Shaman_Guide.html)",
+              "captured": "2002-11-12",
+              "shows": "37 Aug/36 Cave/15 Mend, 'the lines can be maneuvered to raise Aug to 38'",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 15,
           "sources": [
             "https://forums.freddyshouse.com/threads/your-shaman-spec-ideas-welcome-p.148962/",
@@ -2107,7 +2512,21 @@
             "Subterranean": 7
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 5,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Shaman Guide by Seraphym (Shaman_Guide.html)",
+              "captured": "2002-11-12",
+              "shows": "38 Aug/34 Mend/19 Cave and 47 Aug/26 Mend/5 Cave",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/best-rvr-shaman-spec.143170/",
@@ -2156,7 +2575,13 @@
             "Parry": 17
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/skald-template-stats.145278/",
@@ -2189,7 +2614,13 @@
             "Parry": 2
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 10,
           "sources": [
             "https://forums.freddyshouse.com/threads/help-49-hammer-44-bs-skald-template.146703/",
@@ -2222,7 +2653,13 @@
             "Parry": 17
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/help-49-hammer-44-bs-skald-template.146703/",
@@ -2268,15 +2705,21 @@
           "specs": {
             "Axe": 50,
             "Shields": 42,
-            "Parry": 39
+            "Parry": 41
           },
           "posted": {
             "Axe": 50,
             "Shields": 42,
             "Parry": 39
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (39->41)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 20,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
@@ -2301,15 +2744,21 @@
           "specs": {
             "Hammer": 50,
             "Shields": 50,
-            "Parry": 28
+            "Parry": 31
           },
           "posted": {
             "Hammer": 50,
             "Shields": 50,
             "Parry": 28
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (28->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 13,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
@@ -2334,15 +2783,21 @@
           "specs": {
             "Axe": 50,
             "Shields": 50,
-            "Parry": 28
+            "Parry": 31
           },
           "posted": {
             "Axe": 50,
             "Shields": 50,
             "Parry": 18
           },
-          "change": "filled: rest to Parry (18->28)",
+          "change": "filled: rest to Parry (18->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 13,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 9,
           "sources": [
             "https://forums.freddyshouse.com/threads/warrior-spec.140962/",
@@ -2391,7 +2846,13 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 7,
           "sources": [
             "https://forums.freddyshouse.com/threads/best-zerker-spec.125989/",
@@ -2424,7 +2885,13 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/best-zerker-spec.125989/",
@@ -2455,7 +2922,13 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/advice-specing-my-berserker.133028/"
@@ -2501,7 +2974,13 @@
             "Parry": 9
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 3,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/2h-savage-spec.134856/",
@@ -2526,15 +3005,21 @@
           "specs": {
             "Sword": 50,
             "Savagery": 42,
-            "Parry": 4
+            "Parry": 9
           },
           "posted": {
             "Sword": 50,
             "Savagery": 42,
             "Parry": 4
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Parry (4->9)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 3,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/better-savage-spec-h2h-or-2h.135697/",
@@ -2584,7 +3069,13 @@
             "Shields": 42
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 8,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-with-thane-specc.140628/",
@@ -2619,7 +3110,13 @@
             "Parry": 15
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 4,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 23,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-with-thane-specc.140628/",
@@ -2665,7 +3162,7 @@
             "Left Axe": 44,
             "Envenom": 35,
             "Stealth": 35,
-            "Critical Strike": 10
+            "Critical Strike": 13
           },
           "posted": {
             "Axe": 44,
@@ -2674,8 +3171,14 @@
             "Stealth": 35,
             "Critical Strike": 10
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Critical Strike (10->13)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 4,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 12,
           "sources": [
             "https://forums.freddyshouse.com/threads/about-my-spec.140177/",
@@ -2700,8 +3203,8 @@
           "specs": {
             "Critical Strike": 44,
             "Sword": 44,
-            "Envenom": 35,
-            "Stealth": 35
+            "Envenom": 36,
+            "Stealth": 36
           },
           "posted": {
             "Critical Strike": 44,
@@ -2709,8 +3212,14 @@
             "Envenom": 35,
             "Stealth": 35
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Envenom (35->36), Stealth (35->36)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 22,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-with-sb-spec.147706/",
@@ -2737,7 +3246,7 @@
             "Critical Strike": 39,
             "Envenom": 34,
             "Stealth": 34,
-            "Left Axe": 25
+            "Left Axe": 26
           },
           "posted": {
             "Axe": 44,
@@ -2746,8 +3255,14 @@
             "Stealth": 34,
             "Left Axe": 25
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Left Axe (25->26)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 24,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 20,
           "sources": [
             "https://forums.freddyshouse.com/threads/need-help-with-sb-spec.147706/",
@@ -2798,7 +3313,13 @@
             "Beastcraft": 32
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 10,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/hunter-specs-pls.150620/",
@@ -2833,7 +3354,13 @@
             "Beastcraft": 32
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 15,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 17,
           "sources": [
             "https://forums.freddyshouse.com/threads/hunter-spec.146661/",
@@ -2878,7 +3405,13 @@
             "Suppression": 26
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 17,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/rm-spec.124523/",
@@ -2909,7 +3442,13 @@
             "Suppression": 20
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 11,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/rm-spec.124523/",
@@ -2940,7 +3479,13 @@
             "Darkness": 24
           },
           "change": "trimmed to budget: Darkness 24->20",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 11,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/runemaster-spec.120840/",
@@ -2983,7 +3528,13 @@
             "Darkness": 25
           },
           "change": "trimmed to budget: Darkness 25->22",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 18,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/wtb-single-line-respec-stone.140736/",
@@ -3016,7 +3567,13 @@
             "Suppression": 26
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 17,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/sm-spec.109396/"
@@ -3043,7 +3600,13 @@
             "Suppression": 20
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 11,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/summon-spec-spiritmaster.117177/",
@@ -3086,7 +3649,13 @@
             "Darkness": 26
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 17,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 9,
           "sources": [
             "https://forums.freddyshouse.com/threads/bonedancer-spec-advice.140129/",
@@ -3119,7 +3688,13 @@
             "Darkness": 16
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 1,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/looking-for-some-bonedancer-template-for-insane-soloing.133785/",
@@ -3164,7 +3739,13 @@
             "Nurture": 35
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 5,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 19,
           "sources": [
             "https://forums.freddyshouse.com/threads/rvr-grp-druid-spec.150179/",
@@ -3195,7 +3776,13 @@
             "Regrowth": 31
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 10,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 14,
           "sources": [
             "https://forums.freddyshouse.com/threads/druid-speccing.143389/",
@@ -3228,7 +3815,13 @@
             "Nurture": 19
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 11,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 7,
           "sources": [
             "https://forums.freddyshouse.com/threads/druid-spec-help-needed.148472/",
@@ -3277,7 +3870,13 @@
             "Regrowth": 16
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 16,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 42,
           "sources": [
             "https://forums.freddyshouse.com/threads/bard-specs.148969/",
@@ -3310,7 +3909,13 @@
             "Music": 16
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 16,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/bard-specs.148969/",
@@ -3351,16 +3956,36 @@
           "specs": {
             "Nurture": 49,
             "Regrowth": 33,
-            "Blades": 25,
-            "Parry": 14
+            "Parry": 29
           },
           "posted": {
             "Nurture": 49,
             "Regrowth": 33,
             "Parry": 14
           },
-          "change": "filled: rest to Blades (new line, 25)",
+          "change": "filled: rest to Parry (14->29)",
+          "changeBasis": "'the Parry skill is what's left over once the other skills have been raised' (camelot.allakhazam.com, Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html), captured 2003-01-05)",
+          "changeSourced": true,
+          "pointsLeft": 5,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html)",
+              "captured": "2003-01-05",
+              "shows": "Nurture 49 is a popular stop; the guide's Wardens take a weapon to 34 or more and stop Regrowth at 20, which this build does not",
+              "verdict": "same lines"
+            },
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html)",
+              "captured": "2003-01-05",
+              "shows": "'the Parry skill is what's left over once the other skills have been raised'",
+              "verdict": "remainder"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 7,
           "sources": [
             "https://forums.freddyshouse.com/threads/warden-spec.146822/",
@@ -3395,7 +4020,21 @@
             "Parry": 12
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 8,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Warden Guide by Hoode Wynk, v1.1b of 29 May 2002 (Warden_Guide.html)",
+              "captured": "2003-01-05",
+              "shows": "Nurture 45, 46, 47 or 49; 'a weapon skill around 40 (often stopping at new styles at 34, 39, or 44), regrowth at one of the popular stopping points (2, 12, 16, or 20), and the remainder in parry'",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/warden-spec.146822/",
@@ -3446,7 +4085,21 @@
             "Parry": 39
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 24,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Hero Guide (Hero_Guide.html)",
+              "captured": "2003-02-24",
+              "shows": "'the lvl 42 shield style is considered quite uber'; LW heroes 'spending some significant points on their shield skills' is called an unusual hybrid (2002)",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 8,
           "sources": [
             "https://forums.freddyshouse.com/threads/hero-spec.134321/",
@@ -3479,7 +4132,21 @@
             "Parry": 39
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 24,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Hero Guide (Hero_Guide.html)",
+              "captured": "2003-02-24",
+              "shows": "'the lvl 42 shield style is considered quite uber'; CS heroes 'spending some significant points on their shield skills' is called an unusual hybrid (2002)",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/spearo-spec.102105/"
@@ -3508,7 +4175,21 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Hero Guide (Hero_Guide.html)",
+              "captured": "2003-02-24",
+              "shows": "'A hero with 50 sword, 50 parry, and 50 shield is, obviously, going to be very powerful'",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/hero-spec.134321/",
@@ -3557,7 +4238,13 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 19,
           "sources": [
             "https://forums.freddyshouse.com/threads/champion-shield-blabes-spec.143560/",
@@ -3581,9 +4268,9 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Large Weapons": 50,
-            "Blades": 36,
-            "Valor": 35,
-            "Parry": 28
+            "Valor": 40,
+            "Blades": 39,
+            "Parry": 14
           },
           "posted": {
             "Large Weapons": 50,
@@ -3591,8 +4278,14 @@
             "Blades": 39,
             "Parry": 28
           },
-          "change": "trimmed to budget: Valor 40->35, Blades 39->36",
+          "change": "trimmed to budget: Parry 28->14",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 3,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
           "sources": [
             "https://forums.freddyshouse.com/threads/champion-spec.135027/",
@@ -3640,7 +4333,21 @@
             "Parry": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Blade Guide by Melkio (Blademaster_Guide.html)",
+              "captured": "2003-01-05",
+              "shows": "'most people say Celtic Dual and Blades then the last points go into parry'",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/bm-speccing.132760/",
@@ -3671,7 +4378,13 @@
             "Parry": 39
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 24,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/what-spec-are-bms-using-these-days.108211/",
@@ -3702,7 +4415,13 @@
             "Parry": 40
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/bm-speccing.132760/",
@@ -3743,9 +4462,9 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Piercing": 50,
-            "Envenom": 36,
-            "Stealth": 35,
-            "Critical Strike": 34
+            "Envenom": 37,
+            "Critical Strike": 36,
+            "Stealth": 36
           },
           "posted": {
             "Piercing": 50,
@@ -3753,8 +4472,22 @@
             "Stealth": 35,
             "Critical Strike": 34
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Envenom (36->37), Stealth (35->36), Critical Strike (34->36)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 24,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "DAoC General Discussion forum, thread \"Good Specs?\", posts of 2004-10-21 to 2005-01-26, after the era (forum.html?forum=13)",
+              "captured": "2005-03-20",
+              "shows": "'most 50 NSs/SBs/Infs that i know only take CS to 36 and pierce or thrust to 50' (2005-01-11)",
+              "verdict": "matches"
+            }
+          ],
+          "check": "matches a Wayback source",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/nightshade-template.126709/"
@@ -3776,7 +4509,7 @@
             "Critical Strike": 44,
             "Stealth": 40,
             "Piercing": 39,
-            "Envenom": 36
+            "Envenom": 38
           },
           "posted": {
             "Critical Strike": 44,
@@ -3784,8 +4517,14 @@
             "Piercing": 39,
             "Envenom": 36
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Envenom (36->38)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 3,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 5,
           "sources": [
             "https://forums.freddyshouse.com/threads/anyone-got-a-spec-for-a-ns-if-he-auto-trains-stealth-to-50.141339/",
@@ -3810,8 +4549,8 @@
           "specs": {
             "Piercing": 44,
             "Celtic Dual": 43,
-            "Envenom": 36,
-            "Stealth": 35
+            "Envenom": 37,
+            "Stealth": 36
           },
           "posted": {
             "Piercing": 44,
@@ -3819,8 +4558,14 @@
             "Envenom": 36,
             "Stealth": 35
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Envenom (36->37), Stealth (35->36)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 29,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/wta-full-skill-respec-stone.147403/",
@@ -3865,7 +4610,7 @@
             "Recurve Bow": 42,
             "Pathfinding": 40,
             "Stealth": 40,
-            "Piercing": 30
+            "Piercing": 31
           },
           "posted": {
             "Recurve Bow": 42,
@@ -3873,8 +4618,22 @@
             "Stealth": 40,
             "Piercing": 30
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Piercing (30->31)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 21,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Ranger Guide (Ranger_Guide.html)",
+              "captured": "2002-12-30",
+              "shows": "templates of 2002: '43 Pathfinding, 25 Pierce, 45 Recurve Bows, 31 Stealth, 18 Celtic Dual' and '27 Pathfinding, 25 Pierce, 50 Recurve Bows, 40 Stealth, 18 Celtic Dual'",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 19,
           "sources": [
             "https://forums.freddyshouse.com/threads/ranger-spec-questions-again.140520/",
@@ -3901,7 +4660,7 @@
             "Pathfinding": 36,
             "Recurve Bow": 35,
             "Stealth": 30,
-            "Celtic Dual": 21
+            "Celtic Dual": 24
           },
           "posted": {
             "Piercing": 44,
@@ -3910,8 +4669,22 @@
             "Stealth": 30,
             "Celtic Dual": 21
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Celtic Dual (21->24)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 10,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [
+            {
+              "site": "camelot.allakhazam.com",
+              "page": "Ranger Guide (Ranger_Guide.html)",
+              "captured": "2002-12-30",
+              "shows": "the same five lines in its 2002 templates, the bow higher and the melee lines lower",
+              "verdict": "same lines"
+            }
+          ],
+          "check": "same lines in a Wayback source, another split",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/ranger-rvr-spec.129040/",
@@ -3949,16 +4722,22 @@
           "weightBasis": "estimate from forumMentions and period wording",
           "specs": {
             "Mana": 50,
-            "Light": 19,
-            "Void": 6
+            "Light": 20,
+            "Void": 4
           },
           "posted": {
             "Mana": 50,
             "Light": 20,
             "Void": 6
           },
-          "change": "trimmed to budget: Light 20->19",
+          "change": "trimmed to budget: Void 6->4",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 2,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 6,
           "sources": [
             "https://forums.freddyshouse.com/threads/spec-eldritch.149703/",
@@ -3993,7 +4772,13 @@
             "Light": 10
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 10,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
           "sources": [
             "https://forums.freddyshouse.com/threads/what-rvr-spec-and-why.112903/",
@@ -4024,7 +4809,13 @@
             "Mana": 29
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/eld-specing.100494/"
@@ -4065,7 +4856,13 @@
             "Light": 20
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 11,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
           "sources": [
             "https://forums.freddyshouse.com/threads/mana-magician-template.132389/",
@@ -4096,7 +4893,13 @@
             "Mana": 29
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 26,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 3,
           "sources": [
             "https://forums.freddyshouse.com/threads/light-spec-enchanters.147299/",
@@ -4119,15 +4922,21 @@
           "specs": {
             "Mana": 39,
             "Enchantments": 34,
-            "Light": 10
+            "Light": 15
           },
           "posted": {
             "Mana": 39,
             "Enchantments": 34,
             "Light": 10
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Light (10->15)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 2,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/why-do-chanters-only-get-1-0-spec-points.99084/"
@@ -4162,15 +4971,21 @@
           "specs": {
             "Light": 45,
             "Mana": 28,
-            "Mentalism": 6
+            "Mentalism": 10
           },
           "posted": {
             "Light": 45,
             "Mana": 28,
             "Mentalism": 6
           },
-          "change": null,
-          "specsSourced": true,
+          "change": "filled: rest to Mentalism (6->10)",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 1,
+          "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 16,
           "sources": [
             "https://forums.freddyshouse.com/threads/mentalist-spec.129596/",
@@ -4201,7 +5016,13 @@
             "Mentalism": 28
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 9,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 4,
           "sources": [
             "https://forums.freddyshouse.com/threads/mentalist-spec.129596/",
@@ -4234,7 +5055,13 @@
             "Mana": 25
           },
           "change": "trimmed to budget: Light 25->21, Mana 25->21",
+          "changeBasis": "the build's remainder line (its lowest posted line), where the period guides put spare points (Allakhazam's Shaman, Warden and Blademaster guides, captured 2002-11-12 and 2003-01-05)",
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": false,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/is-this-a-good-spec-for-a-mentalist.91578/"
@@ -4277,7 +5104,13 @@
             "Parry": 20
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 0,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 1,
           "sources": [
             "https://forums.freddyshouse.com/threads/valewalker-bg-and-final-spec.118642/"
@@ -4320,7 +5153,13 @@
             "Verdant Path": 7
           },
           "change": null,
+          "changeBasis": null,
+          "changeSourced": false,
+          "pointsLeft": 4,
           "specsSourced": true,
+          "postedSourced": true,
+          "wayback": [],
+          "check": "not in the Wayback scrape (dated FreddysHouse posts only)",
           "forumMentions": 2,
           "sources": [
             "https://forums.freddyshouse.com/threads/how-to-specc-the-animist.135197/",

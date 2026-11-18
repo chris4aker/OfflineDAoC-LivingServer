@@ -374,8 +374,68 @@ namespace DOL.UnitTests
                     Assert.That(Leftover(bot), Is.EqualTo(eraClass.PointBudget50 -
                         EraBuildCatalog.BuildCost(trainedLines, eraClass.AutoTrainLines)), build.Id);
                     Assert.That(Leftover(bot), Is.Not.Negative, build.Id);
-                    string trained = EraLifetimeBuild.TrainedLine(bot.Name, bot.DatabaseID, 50, plan, bot.GetBaseSpecLevel);
-                    Assert.That(trained, Does.EndWith("match=yes"), build.Id);
+                    // fully trained (owner 2026-11-17 18:59): what is left buys no further level in any line of the build
+                    foreach (BotSpecLine line in plan.SpecLines.Where(l => l.SpecCap < 50))
+                    {
+                        int next = Leftover(bot) - PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, 50, false,
+                            trainedLines.Select(l => l.Key == line.Spec ? new KeyValuePair<string, int>(l.Key, l.Value + 1) : l));
+                        Assert.That(Leftover(bot), Is.LessThan(next), $"{build.Id}: {line.Spec} {line.SpecCap + 1} is out of reach");
+                    }
+                    Assert.That(EraBuildCatalog.IsFullyTrained(trainedLines, eraClass.PointBudget50, eraClass.AutoTrainLines), Is.True, build.Id);
+                    string trained = EraLifetimeBuild.TrainedLine(bot.Name, bot.DatabaseID, 50, plan, bot.GetBaseSpecLevel, Leftover(bot));
+                    Assert.That(trained, Does.EndWith($"match=yes unspent={Leftover(bot)}"), build.Id);
+                }
+            }
+        }
+
+        // ---- levelling: an era-built gamebot is always as trained as its points allow
+
+        [Test]
+        public void ALevellingEraBotNeverHoardsPointsItsBuildCanTake()
+        {
+            // Every trainer visit, one a level or one every third level, leaves less than the next level of any line of the
+            // build still below its points and the bot's level: a player following a template (owner 2026-11-17 18:59).
+            foreach (EraClass eraClass in Catalog.Classes)
+            {
+                var cls = (eCharacterClass)eraClass.ClassId;
+                foreach (int step in new[] { 1, 3 })
+                {
+                    GameBot bot = Make(cls, 1, 810_000 + eraClass.ClassId * 10 + step);
+                    foreach (EraBuild build in eraClass.Builds)
+                    {
+                        BotSpec plan = BotSpec.FromEraBuild(cls, build, Catalog.Jitter(build, 5, out _), 5);
+                        SetPlan(bot, plan);
+                        AddLines(bot, eraClass.Lines);
+                        foreach (string line in eraClass.Lines)
+                            bot.GetSpecializationByName(line).Level = 1;
+                        Leftover(bot, 0);
+                        byte trained = 1;
+                        for (byte level = 2; level <= 50; level++)
+                        {
+                            bot.Level = level;
+                            if ((level - 1) % step != 0 && level != 50)
+                                continue;
+                            bot.SpendSpecPoints(level, trained);
+                            trained = level;
+                            KeyValuePair<string, int>[] now = PlayerSpecPointOracle.Lines(bot).ToArray();
+                            int left = PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, level, false, now);
+                            Assert.That(Leftover(bot), Is.EqualTo(left), $"{build.Id} level {level}: a player's points");
+                            foreach (BotSpecLine line in plan.SpecLines)
+                            {
+                                int at = bot.GetBaseSpecLevel(line.Spec);
+                                Assert.That(at, Is.LessThanOrEqualTo(Math.Min((int)line.SpecCap, level)), $"{build.Id} {line.Spec}");
+                                if (at >= Math.Min((int)line.SpecCap, level))
+                                    continue;
+                                int next = left - PlayerSpecPointOracle.PointsLeft(bot.CharacterClass, level, false,
+                                    now.Select(l => l.Key == line.Spec ? new KeyValuePair<string, int>(l.Key, l.Value + 1) : l));
+                                Assert.That(left, Is.LessThan(next), $"{build.Id} level {level} step {step}: {line.Spec} {at + 1} was affordable");
+                            }
+                        }
+                        foreach (BotSpecLine line in plan.SpecLines)
+                            Assert.That(bot.GetBaseSpecLevel(line.Spec), Is.EqualTo((int)line.SpecCap), $"{build.Id} {line.Spec} at 50");
+                        Assert.That(bot.GetSpecList().Where(s => plan.SpecLines.All(p => p.Spec != s.KeyName)).Select(s => s.Level),
+                            Has.All.EqualTo(1), $"{build.Id}: nothing outside the build");
+                    }
                 }
             }
         }
@@ -405,6 +465,9 @@ namespace DOL.UnitTests
             // training is ALevelFiftyArrivalTrainsEveryEraBuildToItsPointsExactly.
             Assert.That(_logs.Lines.Count(l => l.StartsWith($"ERA_BUILD_TRAINED bot=\"{record.Name}\" id=424243 build={bot.BotSpec.EraBuildId} level=50 ")),
                 Is.EqualTo(1));
+            // the line ends with the points left (here every point a level 50 Wizard has: no line could be trained)
+            Assert.That(_logs.Lines.Single(l => l.StartsWith("ERA_BUILD_TRAINED ")),
+                Does.EndWith($" unspent={PlayerSpecPointOracle.Earned(bot.CharacterClass, 50)}"));
             OfflineWorldBotRecord saved = JsonSerializer.Deserialize<OfflineWorldBotRecord>(JsonSerializer.Serialize(bot.PrepareAutonomousStateSnapshot()));
             New(saved);
             Assert.That(_logs.Lines.Count(l => l.StartsWith("ERA_BUILD_TRAINED ")), Is.EqualTo(1), "a saved, trained bot never logs it again");

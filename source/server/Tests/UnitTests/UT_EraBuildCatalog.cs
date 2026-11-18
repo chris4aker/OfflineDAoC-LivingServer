@@ -148,7 +148,13 @@ namespace DOL.GS.Tests
                     Assert.That(after.Values, Has.All.InRange(1, 50), build.Id);
                     Assert.That(after[build.Specs[0].Key], Is.EqualTo(build.Specs[0].Value), $"{build.Id}: the top line never moves");
                     int shift = before.Sum(kv => Math.Abs(kv.Value - after[kv.Key]));
-                    Assert.That(shift, Is.LessThanOrEqualTo(2 * Catalog.JitterPoints), build.Id);
+                    // at most JitterPoints levels leave one lower line; they go to another, and the rest of the points
+                    // they free go where the build's own rest went, so the build stays fully trained
+                    Assert.That(before.Sum(kv => Math.Max(0, kv.Value - after[kv.Key])), Is.LessThanOrEqualTo(Catalog.JitterPoints), build.Id);
+                    Assert.That(before.Count(kv => kv.Value > after[kv.Key]), Is.LessThanOrEqualTo(1), build.Id);
+                    Assert.That(after.Values.Max(), Is.EqualTo(build.Specs[0].Value), $"{build.Id}: no line passes the top line");
+                    Assert.That(EraBuildCatalog.IsFullyTrained(specs, eraClass.PointBudget50, eraClass.AutoTrainLines), Is.True,
+                        $"{build.Id} seed {seed}: {EraBuild.Format(specs)}");
                     Assert.That(moves.Length > 0, Is.EqualTo(shift > 0), build.Id);
                     if (shift > 0)
                         moved++;
@@ -200,12 +206,15 @@ namespace DOL.GS.Tests
         [Test]
         public void TheDerivedRatiosHaveTheClassFilesShape()
         {
-            EraBuild build = Catalog.GetBuild("infiltrator-thrust-env");   // Thrust 50, Stealth 46, Envenom 36, CS 34, DW 10
+            EraBuild build = Catalog.GetBuild("infiltrator-thrust-env");   // Thrust 50, Envenom 36, Stealth 35, CS 34, DW 34
             Assert.That(EraBuildCatalog.DerivedRatio(build, "Thrust"), Is.EqualTo(1f));
-            Assert.That(EraBuildCatalog.DerivedRatio(build, "Stealth"), Is.EqualTo(0.6f + 0.2f * 11 / 15f).Within(1e-5));
             Assert.That(EraBuildCatalog.DerivedRatio(build, "Envenom"), Is.EqualTo(0.6f + 0.2f / 15f).Within(1e-5));
+            Assert.That(EraBuildCatalog.DerivedRatio(build, "Stealth"), Is.EqualTo(0.6f).Within(1e-5));
             Assert.That(EraBuildCatalog.DerivedRatio(build, "Critical Strike"), Is.EqualTo(34 / 50f * 0.6f).Within(1e-5));
-            Assert.That(EraBuildCatalog.DerivedRatio(build, "Dual Wield"), Is.Zero);
+            Assert.That(EraBuildCatalog.DerivedRatio(build, "Dual Wield"), Is.EqualTo(34 / 50f * 0.6f).Within(1e-5));
+            EraBuild scout = Catalog.GetBuild("scout-thrust-shld");         // Thrust 50, Shields 42, Stealth 39
+            Assert.That(EraBuildCatalog.DerivedRatio(scout, "Shields"), Is.EqualTo(0.6f + 0.2f * 7 / 15f).Within(1e-5));
+            Assert.That(EraBuildCatalog.DerivedRatio(Catalog.GetBuild("eldritch-mana-light"), "Void"), Is.Zero, "Void 4: at 50");
         }
 
         [Test]

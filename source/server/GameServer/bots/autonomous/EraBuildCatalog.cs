@@ -296,6 +296,53 @@ public sealed class EraBuildCatalog
         int characterLevel = 50) =>
         specs.Sum(line => LineCost(line.Value, autoTrain != null && autoTrain.Contains(line.Key), characterLevel));
 
+    /// <summary>What the next level of a line costs a player of <paramref name="characterLevel"/>: nothing while an
+    /// autotrain line is below a quarter of the level, else the new level (GameBot.NextLevelCost).</summary>
+    public static int NextLevelCost(int level, bool autoTrain, int characterLevel = 50) =>
+        autoTrain && level < characterLevel / 4 ? 0 : level + 1;
+
+    /// <summary>The points a level 50 has left after the lines (negative when it can't pay for them).</summary>
+    public static int PointsLeft(IEnumerable<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null) => budget - BuildCost(specs, autoTrain);
+
+    /// <summary>Fully trained (owner 2026-11-17 18:59: "bots should be fully trained"): a level 50 can pay for the lines,
+    /// and what is left buys no further level in any of them.</summary>
+    public static bool IsFullyTrained(IReadOnlyList<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null)
+    {
+        int left = PointsLeft(specs, budget, autoTrain);
+        return left >= 0 && specs.Where(line => line.Value < 50)
+            .All(line => NextLevelCost(line.Value, autoTrain != null && autoTrain.Contains(line.Key)) > left);
+    }
+
+    /// <summary>
+    /// The rest of a level 50's points go into the cheapest next level of the lines - the lowest line, the first listed on
+    /// a tie - a level at a time, until what is left buys none (make_era_builds.py's spend_rest: where the period guides
+    /// put spare points, "the remainder in parry"). The order of the lines is kept.
+    /// </summary>
+    public static KeyValuePair<string, int>[] SpendRest(IReadOnlyList<KeyValuePair<string, int>> specs, int budget,
+        IReadOnlyCollection<string>? autoTrain = null, int cap = 50)
+    {
+        KeyValuePair<string, int>[] result = specs.ToArray();
+        int left = PointsLeft(result, budget, autoTrain);
+        while (true)
+        {
+            int best = -1, bestCost = int.MaxValue;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i].Value >= cap)
+                    continue;
+                int cost = NextLevelCost(result[i].Value, autoTrain != null && autoTrain.Contains(result[i].Key));
+                if (cost < bestCost || cost == bestCost && result[i].Value < result[best].Value)
+                    (best, bestCost) = (i, cost);
+            }
+            if (best < 0 || bestCost > left)
+                return result;
+            result[best] = new KeyValuePair<string, int>(result[best].Key, result[best].Value + 1);
+            left -= bestCost;
+        }
+    }
+
     // ---- lookups
 
     public EraClass? GetClass(string className) =>
@@ -369,8 +416,10 @@ public sealed class EraBuildCatalog
 
     /// <summary>
     /// The build's specs with up to <see cref="JitterPoints"/> levels moved from one of its lower lines to another (never
-    /// the top line), from a seed; inside 1-50 and the class's level-50 budget. <paramref name="moves"/> says what moved
-    /// ("Body Magic+1,Matter Magic-1"; empty when nothing did). A build with fewer than two lower lines never moves.
+    /// the top line), from a seed; inside 1-50 and the class's level-50 budget. A move that frees points is followed by
+    /// <see cref="SpendRest"/>, so the result is as fully trained as the build. <paramref name="moves"/> says what moved
+    /// ("Body Magic+1,Matter Magic-1", and "Parry+2" for the rest; empty when nothing did). A build with fewer than two
+    /// lower lines never moves.
     /// </summary>
     public IReadOnlyList<KeyValuePair<string, int>> Jitter(EraBuild build, ulong seed, out string moves, int? points = null)
     {
@@ -403,7 +452,22 @@ public sealed class EraBuildCatalog
             result[to] = new KeyValuePair<string, int>(result[to].Key, toLevel);
             if (BuildCost(result, build.AutoTrain) > budget)
                 continue;
-            moves = $"{result[to].Key}+{k},{result[from].Key}-{k}";
+            // A fully trained build stays fully trained: the points the move freed go where the build's own rest went,
+            // its lowest lines (never the top line, and never above it).
+            if (IsFullyTrained(build.Specs, budget, build.AutoTrain))
+            {
+                KeyValuePair<string, int>[] rest = SpendRest(result.Skip(1).ToArray(),
+                    budget - LineCost(result[0].Value, build.AutoTrain.Contains(result[0].Key)), build.AutoTrain, top);
+                for (int i = 0; i < rest.Length; i++)
+                    result[i + 1] = rest[i];
+            }
+            // what moved against the build, the raised lines first ("Body Magic+1,Matter Magic-1")
+            moves = string.Join(",", Enumerable.Range(1, result.Length - 1)
+                .Select(i => (Line: result[i].Key, Change: result[i].Value - build.Specs[i].Value))
+                .Where(entry => entry.Change != 0).OrderBy(entry => entry.Change < 0)
+                .Select(entry => $"{entry.Line}{(entry.Change > 0 ? "+" : "")}{entry.Change}"));
+            if (moves.Length == 0)
+                return build.Specs;
             // The top line stays first, even when a lower line now ties it (DerivedRatio gives the first line 1.0).
             return result.Take(1).Concat(result.Skip(1).OrderByDescending(line => line.Value)
                 .ThenBy(line => line.Key, StringComparer.Ordinal)).ToArray();
