@@ -276,7 +276,9 @@ namespace DOL.GS
 
             // The main body sent back to meet the wave: met, gone back to an attempt, or out of time.
             bool raidFighting = route.InAttempt || route.NamedTarget?.InCombat == true;
-            if (walk.Helpers.Count > 0 && (raidFighting || now - walk.HelpersSince >= RealmRaidReturnWave.HelpMilliseconds))
+            // A mustering raid needs its idle raiders at the muster: helpers out go back to it, and none are sent.
+            bool mustering = route.Mustering;
+            if (walk.Helpers.Count > 0 && (raidFighting || mustering || now - walk.HelpersSince >= RealmRaidReturnWave.HelpMilliseconds))
                 walk.Helpers.Clear();
             if (walk.Helpers.Count > 0)
             {
@@ -327,7 +329,7 @@ namespace DOL.GS
             int idle = raid.Support.Count(b => b.IsAlive && b.CurrentRegionID == region && !b.InCombat &&
                                                b is GameBot g && !walk.Members.Contains(g.DatabaseID));
             bool bodyComing = walk.Helpers.Count > 0;
-            bool bodyCanCome = RealmRaidReturnWave.BodyCanCome(idle, raidFighting);
+            bool bodyCanCome = RealmRaidReturnWave.BodyCanCome(idle, raidFighting, mustering);
             if (walk.Target != null) CallWave(walk, members, walk.Target);
             else
             {
@@ -339,7 +341,7 @@ namespace DOL.GS
                              $"kills_at_step={walk.StepKills} reason=\"{RealmRaidReturnWave.StepKillCap} kills at this step; monsters off the walk no longer hold it\"");
                 }
                 bool last = walk.Step >= walk.Steps.Length - 1;
-                switch (RealmRaidReturnWave.Walk(members.Length, atStep, stepWaited, ahead != null, last, bodyCanCome, bodyComing))
+                switch (RealmRaidReturnWave.Walk(members.Length, atStep, stepWaited, ahead != null, last, bodyCanCome, bodyComing, walk.Helps))
                 {
                     case RealmRaidReturnWave.WaveMove.Fight:
                         walk.Target = ahead;

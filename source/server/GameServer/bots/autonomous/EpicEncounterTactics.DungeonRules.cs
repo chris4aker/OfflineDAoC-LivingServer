@@ -111,6 +111,10 @@ namespace DOL.GS
             /// fight, the Host is not at his ambush yet. Asked for every monster whatever <see cref="Targets"/> says; the route
             /// asks before it picks a target and before a muster goes in (<see cref="PullWait"/>).</summary>
             public Func<GameNPC, IReadOnlyList<GameNPC>, long, string> PullWait { get; init; }
+            /// <summary><see cref="PullWait"/> that also sees the raid's walk from its muster to the monster (null: no muster
+            /// for it yet); asked instead of <see cref="PullWait"/> when set (the Crypt Lord's court: his patrol must keep clear
+            /// of the walk too).</summary>
+            public Func<GameNPC, IReadOnlyList<GameNPC>, long, IReadOnlyList<Vector3>, string> WalkPullWait { get; init; }
             /// <summary>A fixed point the raid musters for this encounter at instead of where it stands (the Host's ambush on
             /// his patrol: the muster chased him every 10 s); null: none.</summary>
             public Func<GameNPC, Vector3?> MusterAnchor { get; init; }
@@ -128,7 +132,7 @@ namespace DOL.GS
         private sealed record RuleSet(DungeonRule[] All, Dictionary<string, DungeonRule[]> ByTarget, DungeonRule[] Routes)
         {
             public DungeonRule[] ClearFirsts { get; } = All.Where(r => r.ClearFirstOf != null).ToArray();
-            public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null).ToArray();
+            public DungeonRule[] PullWaits { get; } = All.Where(r => r.PullWait != null || r.WalkPullWait != null).ToArray();
             public DungeonRule[] Anchors { get; } = All.Where(r => r.MusterAnchor != null).ToArray();
             public DungeonRule[] Dangers { get; } = All.Where(r => r.MusterDangers != null).ToArray();
         }
@@ -264,14 +268,19 @@ namespace DOL.GS
         /// combat and before a mustered raid goes in, and waits (holding at the muster) while one objects. A monster in combat
         /// is never held: the fight is on.
         /// </summary>
-        public static string PullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        public static string PullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now) => PullWait(target, live, now, null);
+
+        /// <summary><see cref="PullWait(GameNPC, IReadOnlyList{GameNPC}, long)"/> with the raid's walk from its muster to
+        /// <paramref name="target"/> (null: none yet), for the rules that time it too (<see cref="DungeonRule.WalkPullWait"/>).</summary>
+        public static string PullWait(GameNPC target, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
         {
             if (target == null || target.InCombat || live == null) return null;
             foreach (DungeonRule rule in DungeonRuleSet.PullWaits)
             {
                 try
                 {
-                    if (rule.PullWait(target, live, now) is string why) return why;
+                    if ((rule.WalkPullWait != null ? rule.WalkPullWait(target, live, now, walk) : rule.PullWait(target, live, now)) is string why)
+                        return why;
                 }
                 catch (Exception ex) { RuleWarn($"EPIC_TACTIC dungeon pull-wait {rule.Encounter} failed: {ex.Message}"); }
             }

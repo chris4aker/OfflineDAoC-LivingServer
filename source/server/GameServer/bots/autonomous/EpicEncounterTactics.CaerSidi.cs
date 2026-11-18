@@ -42,11 +42,13 @@ namespace DOL.GS
             new(nameof(CryptLord), [nameof(CryptLord)], CryptLordMeleeFirst)
             {
                 Summary = "His court is cleared first, each monster of it pulled only while his patrol keeps 1,200 from it for " +
-                          "35 s (one fighting within 800 of him pulls him and the whole court), and again after a skirmish or a " +
+                          "35 s (one fighting within 800 of him pulls him and the whole court) and 550 from the raid's walk from " +
+                          "the muster to it for the walk's time plus 35 s (he aggroes within 400 while he walks), and again after a skirmish or a " +
                           "wipe before he is pulled; no muster lies within 1,100 of his patrol loop or 500 of a court monster; in " +
                           "his fight melee take him (70% magic resist) and the casters his court.",
                 ClearFirstOf = CourtClearsFirst,
-                PullWait = CourtPullWindow,
+                PullWait = (target, live, now) => CourtPullWindow(target, live, now, null),
+                WalkPullWait = CourtPullWindow,
                 MusterDangers = CryptLordMusterDangers,
                 ClearsAgainBeforePull = true,
             },
@@ -630,15 +632,103 @@ namespace DOL.GS
         /// keeps <see cref="CourtPullClearance"/> from it for <see cref="CourtPullHorizonSeconds"/>: the raid waits (at the
         /// muster) or takes another court monster meanwhile. With him in combat there is nothing left to time.
         /// </summary>
-        private static string CourtPullWindow(GameNPC target, IReadOnlyList<GameNPC> live, long now)
+        private static string CourtPullWindow(GameNPC target, IReadOnlyList<GameNPC> live, long now, IReadOnlyList<Vector3> walk)
         {
             if (!IsCryptLordCourt(target) || BossNear(target, live, nameof(CryptLord), CryptLordCourtRange) is not { } lord ||
                 lord.InCombat)
                 return null;
-            float near = CourtPullApproach(At(lord), CryptLordNextPoint(lord), At(target));
-            return near >= CourtPullClearance ? null
-                : $"the Crypt Lord's patrol comes within {(int)near} of it in the next {CourtPullHorizonSeconds} s " +
-                  $"(a court monster fighting within {CryptLordCourtLink} pulls him)";
+            return CourtPullWait(At(lord), CryptLordNextPoint(lord), At(target), walk);
+        }
+
+        /// <summary>He aggroes on raiders this close while he walks his patrol (CryptLord: aggro 400 out of combat).</summary>
+        public const int CryptLordWalkAggro = 400;
+        /// <summary>The raid's walk from its muster to a court monster keeps his walking aggro plus this from his patrol.</summary>
+        public const int CourtWalkMargin = 150;
+        /// <summary>His patrol keeps this far from the raid's walk (<see cref="CryptLordWalkAggro"/> + <see cref="CourtWalkMargin"/>).</summary>
+        public const int CourtWalkClearance = CryptLordWalkAggro + CourtWalkMargin;
+        /// <summary>A raid walks no faster than this on average (a crowd in his halls; slower is the longer, stricter horizon).</summary>
+        public const float RaidWalkSpeed = 150f;
+
+        /// <summary>His loop takes this long (s); a horizon past it adds nothing (pure).</summary>
+        public static float CryptLordLoopSeconds()
+        {
+            float length = 0;
+            for (int k = 0; k < CryptLordPatrol.Length; k++) length += Vector3.Distance(CryptLordPatrol[k], CryptLordPatrol[(k + 1) % CryptLordPatrol.Length]);
+            return length / CryptLordWalkSpeed;
+        }
+
+        /// <summary>How long the raid takes to walk <paramref name="walk"/> plus <see cref="CourtPullHorizonSeconds"/>, at most
+        /// one loop of his (pure).</summary>
+        public static float CourtWalkHorizonSeconds(IReadOnlyList<Vector3> walk)
+        {
+            float length = 0;
+            for (int i = 1; i < (walk?.Count ?? 0); i++) length += Vector3.Distance(walk[i - 1], walk[i]);
+            return MathF.Min(length / RaidWalkSpeed + CourtPullHorizonSeconds, CryptLordLoopSeconds());
+        }
+
+        /// <summary>The nearest his patrol comes to the walk <paramref name="walk"/> (any point of its legs, 3D) in
+        /// <see cref="CourtWalkHorizonSeconds"/>, from <paramref name="lord"/> walking to <see cref="CryptLordPatrol"/>[<paramref name="next"/>] (pure).</summary>
+        public static float CourtWalkApproach(Vector3 lord, int next, IReadOnlyList<Vector3> walk)
+        {
+            if (walk is not { Count: > 0 }) return float.MaxValue;
+            float best = float.MaxValue;
+            foreach (Vector3 p in PredictPatrol(lord, CryptLordPatrol, next, CryptLordWalkSpeed, CourtWalkHorizonSeconds(walk)))
+                best = MathF.Min(best, DistanceToWalk(p, walk));
+            return best;
+        }
+
+        /// <summary>The distance from <paramref name="p"/> to the polyline <paramref name="walk"/> (pure).</summary>
+        public static float DistanceToWalk(Vector3 p, IReadOnlyList<Vector3> walk)
+        {
+            if (walk is not { Count: > 0 }) return float.MaxValue;
+            float best = Vector3.Distance(p, walk[0]);
+            for (int i = 1; i < walk.Count; i++)
+            {
+                Vector3 a = walk[i - 1], ab = walk[i] - a;
+                float len2 = ab.LengthSquared();
+                float t = len2 < 1e-3f ? 0 : Math.Clamp(Vector3.Dot(p - a, ab) / len2, 0, 1);
+                best = MathF.Min(best, Vector3.Distance(p, a + ab * t));
+            }
+            return best;
+        }
+
+        /// <summary>
+        /// Why a court monster at <paramref name="spot"/> is not pulled now (pure), or null: the Crypt Lord, at
+        /// <paramref name="lord"/> walking to <see cref="CryptLordPatrol"/>[<paramref name="next"/>], keeps
+        /// <see cref="CourtPullClearance"/> from it for <see cref="CourtPullHorizonSeconds"/>, and (with a muster, its
+        /// <paramref name="walk"/> to the monster) <see cref="CourtWalkClearance"/> from that walk for
+        /// <see cref="CourtWalkHorizonSeconds"/>. Owner's PC, build 5378dbe, 2026-11-17: the window checked his patrol against
+        /// the court monster only; the walk from the muster (29617,41288) to the western forerunner (26744,39884) passes 400 from
+        /// his corner 28461,40166, and he yelled aggro 5 s and 7 s after the "clean" pulls of 23:21:56 and 23:28:03, with his
+        /// whole court (90% of the deaths were court kills).
+        /// </summary>
+        public static string CourtPullWait(Vector3 lord, int next, Vector3 spot, IReadOnlyList<Vector3> walk)
+        {
+            float near = CourtPullApproach(lord, next, spot);
+            if (near < CourtPullClearance)
+                return $"the Crypt Lord's patrol comes within {(int)near} of it in the next {CourtPullHorizonSeconds} s " +
+                       $"(a court monster fighting within {CryptLordCourtLink} pulls him)";
+            if (walk is not { Count: > 0 }) return null;
+            float onWalk = CourtWalkApproach(lord, next, walk);
+            return onWalk >= CourtWalkClearance ? null
+                : $"the Crypt Lord's patrol comes within {(int)onWalk} of the raid's walk from the muster in the next " +
+                  $"{(int)CourtWalkHorizonSeconds(walk)} s (he aggroes within {CryptLordWalkAggro} while he walks)";
+        }
+
+        /// <summary>For the log at a court pull: his spot, his next patrol point and how near his patrol comes to the court
+        /// monster and to the raid's walk; null when <paramref name="target"/> is no court monster or he fights.</summary>
+        public static string CourtPullLine(GameNPC target, IReadOnlyList<GameNPC> live, IReadOnlyList<Vector3> walk)
+        {
+            if (!IsCryptLordCourt(target) || BossNear(target, live, nameof(CryptLord), CryptLordCourtRange) is not { } lord ||
+                lord.InCombat)
+                return null;
+            Vector3 at = At(lord);
+            int next = CryptLordNextPoint(lord);
+            Vector3 to = CryptLordPatrol[((next % CryptLordPatrol.Length) + CryptLordPatrol.Length) % CryptLordPatrol.Length];
+            float walkNear = CourtWalkApproach(at, next, walk);
+            return $"lord={(int)at.X},{(int)at.Y},{(int)at.Z} next={(int)to.X},{(int)to.Y} " +
+                   $"courtClosest={(int)CourtPullApproach(at, next, At(target))} " +
+                   $"walkClosest={(walkNear == float.MaxValue ? -1 : (int)walkNear)} horizon={(int)CourtWalkHorizonSeconds(walk)}";
         }
 
         /// <summary>No muster lies this close to his patrol loop while he walks it (a court monster fighting within

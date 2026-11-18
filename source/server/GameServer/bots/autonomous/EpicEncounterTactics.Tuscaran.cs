@@ -81,11 +81,15 @@ namespace DOL.GS
             },
             new(nameof(Agmundr), [nameof(Agmundr)], AgmundrSpread)
             {
-                Summary = "His linked hrimthursa (AgmundrBaf) die first, and nothing standing in his aggro is pulled while he " +
-                          "lives; in his fight everyone but his target's party keeps 500 off his target (his cold blast), melee " +
-                          "from behind him, and steps out while he casts it.",
+                Summary = "His linked hrimthursa (AgmundrBaf) die first, and again after a skirmish or a wipe before he is " +
+                          "pulled (once he fights every living one joins him, with no tether and at speed 300); nothing standing " +
+                          "in his aggro is pulled while he lives; in his fight everyone but his target's party keeps 500 off his " +
+                          "target (his cold blast), melee from behind him, and steps out while he casts it.",
                 ClearFirstOf = AgmundrBafClearsFirst,
                 PullWait = AgmundrNeighbourWaits,
+                // Owner's PC, build 5378dbe, 2026-11-17: after wipe 1 the raid regrouped for him and went in again at 23:18:22
+                // with all six of his hrimthursa alive (89 of 90 fell, half of them to the pack; the raid was Defeated).
+                ClearsAgainBeforePull = true,
             },
             // ---- Living Server 1.2: every big boss in (owner 2026-11-14) ----------------------------------------------
             new(nameof(Hakr), [nameof(Hakr)], null)

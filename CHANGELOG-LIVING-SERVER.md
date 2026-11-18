@@ -741,6 +741,31 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     - `ERA_BUILD_TRAINED` reads "Not applicable" when no bot drew `draw=era`.
     - (c) "back at its sender" is exact from `from=`.
     - `source/tools/tests/test_played_check_log.py`.
+- **Raid regroups, return waves, Agmundr's pack and the Crypt Lord's court: fixes from sweep 5** (owner's PC, build
+  5378dbe, 2026-11-17/18; tests only: none of it has been seen on the PC yet).
+  - **No stranded raider is moved to a resting target's door before its muster.** In the route turn between picking a
+    mustered encounter and setting its muster, the raid is not holding and its front is the approach 200 from the
+    target, which the guard leaves out as the raid's own: 34 raiders were moved 200 from the resting Conservator and 2
+    beside Xaga (she killed one 46 s later). That turn now moves nobody (`REGROUP_REFUSED ... the muster for the resting
+    X is not set yet`); the next turn sends them to the muster.
+  - **A muster is placed only where stranded raiders may be sent.** Musters were guarded against bosses only, the
+    stranded-regroup guard against bosses, named, finals and linked packs; in Galladoria the guard refused the olcasar
+    warrior's muster for ~18 minutes and 123 raiders stood on the landing at the way in. Musters now stay out of both
+    lists, and `REALM_EXPEDITION_REGROUP_REFUSED` names the refusing danger (`by=` and `musterBy=`: its name, spot, the
+    distance and the strict edge). Musters in rooms full of named may lie further back.
+  - **A return wave calls for help at most twice, and a mustering raid sends none.** The wave's own help call never
+    checked the cap (Avalon: helps=9 of 2, 11 calls in 53 minutes); after two it fights what is in its way, and helpers
+    already out go back when the raid musters.
+  - **Icelord Agmundr's hrimthursa are cleared again before a retry** (`ClearsAgainBeforePull`, as the Crypt Lord has):
+    the second attempt had gone in with all six alive and 89 of 90 fell. The catalog's "boosted stats" for his pack was
+    wrong: once he fights they get no tether and speed 300, not raised stats.
+  - **The Crypt Lord's court is pulled only while his patrol also keeps 550 from the raid's walk** (his walking aggro,
+    400, plus 150) from the muster to the court monster, over the walk's time plus 35 s: the old window checked the court
+    monster's spot only, and he joined 5-7 s after two "clean" pulls. For the western forerunner the window is about 7 s
+    of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
+    with his spot, next point and closest approaches, so the next PC log can confirm it.
+  - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+
 - **Every Living Server feature is on by default** (owner 2026-11-16: "They should be on by default - all our living
   server features should be in by default if someone downloads our installer"; this replaces the rule that bot-side
   switches default off). Tests only: nothing of this change has been seen on the owner's PC.
