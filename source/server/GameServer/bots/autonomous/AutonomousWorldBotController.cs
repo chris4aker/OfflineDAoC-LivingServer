@@ -6629,9 +6629,8 @@ namespace DOL.GS
                 return legalCells;
             }
             AutonomousCampCrowdWidening.CountWidened(bot.Realm);
-            Log.Info($"AUTONOMOUS_CAMP_WIDENED bot={bot.Name} id={bot.DatabaseID} realm={bot.Realm} level={bot.Level} " +
-                     $"from={maximumTargetCon} to={ceiling} natural={naturalMaximumTargetCon} died_to={(diedTo?.ToString() ?? "none")} " +
-                     $"strict_crowded={legalCells.Length} wider_quiet={picked.Length}");
+            Log.Info(AutonomousCampCrowdWidening.WidenedLine(bot.Name, bot.DatabaseID, bot.Realm, bot.Level, maximumTargetCon,
+                ceiling, naturalMaximumTargetCon, diedTo, legalCells.Length, picked.Length));
             return picked;
         }
 

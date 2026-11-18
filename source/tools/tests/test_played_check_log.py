@@ -155,9 +155,12 @@ class Raids(unittest.TestCase):
         self.assertEqual((raid["minutes"], raid["named"], raid["wipes"]), ("55", "9", 2))
         self.assertEqual(raid["stuck_return_waves"], 1)
         self.assertEqual(raid["present"], "82")
-        wave = check(sec, "return_wave")
-        self.assertEqual(wave["status"], pcl.CONTRADICTED)
-        self.assertIn("step=stuck", wave["line"])
+        # the stuck wave is its own row, not the gather-and-go-in claim (DIAG-5378-regroup issue 2)
+        self.assertEqual(check(sec, "return_wave")["status"], pcl.NOT_SEEN, "formed, never went in")
+        stuck = check(sec, "return_stuck")
+        self.assertEqual(stuck["status"], pcl.CONTRADICTED)
+        self.assertIn("step=stuck", stuck["line"])
+        self.assertIn("1 wave(s) stuck at least once: 0 made headway again, 1 never did", stuck["detail"])
         self.assertEqual(check(sec, "result")["status"], pcl.SEEN)
 
     def test_outcomes(self):
@@ -172,9 +175,33 @@ class Raids(unittest.TestCase):
         self.assertIn("Timed out", result["line"])
 
     def test_return_wave_without_a_stuck_one_is_seen(self):
-        sec = only(self.raid_log().run()[1])
+        log = self.raid_log()
+        log.add(at(23), "REALM_RAID_RETURN_WAVE event=epic-midgard step=moving wave=1 at=2/39 living=2 together=2")
+        sec = only(log.run()[1])
         self.assertEqual(check(sec, "return_wave")["status"], pcl.SEEN)
+        self.assertEqual(check(sec, "return_stuck")["status"], pcl.NOT_SEEN)
+        self.assertFalse(check(sec, "return_stuck")["must"])
         self.assertEqual(sec["raids"][0]["result"], "no end in this build's log")
+
+    def test_a_stuck_wave_that_makes_headway_again_is_reported_apart(self):
+        # epic-hibernia wave 5 on 5378dbe: gathered (54), went in together (123), then stuck at the way in
+        log = self.raid_log()
+        log.add(at(23), "REALM_RAID_RETURN_WAVE event=epic-midgard step=moving wave=1 at=2/39 living=54 together=54")
+        log.add(at(27), 'REALM_RAID_RETURN_WAVE event=epic-midgard step=stuck wave=1 at=5/39 living=13 atStep=4 '
+                        'reason="no headway for 4 minutes and no help left; the stall clock decides"', "WRN")
+        log.add(at(33), "REALM_RAID_RETURN_WAVE event=epic-midgard step=passable wave=1 at=5/39 kills_at_step=14")
+        sec = only(log.run()[1])
+        self.assertEqual(check(sec, "return_wave")["status"], pcl.SEEN, "the gather and go-in claim stands")
+        stuck = check(sec, "return_stuck")
+        self.assertEqual(stuck["status"], pcl.SEEN)
+        self.assertIn("1 made headway again, 0 never did", stuck["detail"])
+        # a second wave that never moves again contradicts the stuck row only
+        log.add(at(40), 'REALM_RAID_RETURN_WAVE event=epic-midgard step=stuck wave=2 at=2/42 living=123 atStep=0 '
+                        'reason="no headway"', "WRN")
+        sec = only(log.run()[1])
+        self.assertEqual(check(sec, "return_wave")["status"], pcl.SEEN)
+        self.assertEqual(check(sec, "return_stuck")["status"], pcl.CONTRADICTED)
+        self.assertIn("wave=2", check(sec, "return_stuck")["line"])
 
     def test_teleport_near_a_resting_boss(self):
         log = self.raid_log()
@@ -197,6 +224,102 @@ class Raids(unittest.TestCase):
         log.add(at(26), 'REALM_EXPEDITION_TARGET_DEFEATED region=160 target="Icelord Agmundr" level=81 minutes=3')
         log.add(at(27), stranded.format(to="15037,49914,12424"), "WRN")
         self.assertIn("4 stranded regroups, 1 within", check(only(log.run()[1]), "teleport_resting_boss")["detail"])
+
+    STATUS = ('REALM_EXPEDITION_TARGET_STATUS region={r} target="{b}" level=81 health={h}% '
+              'inCombat={c} raidersWithin1000=0 targeting=0 at=15037,50114,12408 spawnDistance=0')
+    NEAR = "REALM_EXPEDITION_STRANDED_REGROUP bot=Bjagira id=4109 region={r} from=25812,35822,14461 to=15037,49914,12424"
+
+    def teleports_near(self, log):
+        return check(only(log.run()[1]), "teleport_resting_boss")
+
+    def test_an_engaged_boss_is_not_resting_until_its_wipe(self):
+        # Icelord Agmundr on 5378dbe: status inCombat=False at 23:17:31, FINAL_ENGAGE 23:18:22, teleports 0-6 s later
+        log = self.raid_log()
+        log.add(at(23), self.STATUS.format(r=160, b="Icelord Agmundr", h=100, c="False"))
+        log.add(at(24), 'REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Icelord Agmundr" mustered=69 needed=50 '
+                        'living=97 attempt=2')
+        log.add(at(24, 5), self.NEAR.format(r=160), "WRN")
+        row = self.teleports_near(log)
+        self.assertEqual(row["status"], pcl.SEEN, "engaged: not resting")
+        self.assertIn("1 stranded regroups, 0 within", row["detail"])
+        log.add(at(26), 'REALM_EXPEDITION_WIPE region=160 target="Icelord Agmundr" level=81 failures=2 of=2 engaged=90 '
+                        'fallen=89 health=100 lowest=74 how="left combat"', "WRN")
+        log.add(at(26, 10), self.NEAR.format(r=160), "WRN")
+        self.assertEqual(self.teleports_near(log)["status"], pcl.SEEN, "the status from before the fight is spent")
+        log.add(at(27), self.STATUS.format(r=160, b="Icelord Agmundr", h=100, c="False"))
+        log.add(at(27, 10), self.NEAR.format(r=160), "WRN")
+        self.assertEqual(self.teleports_near(log)["status"], pcl.CONTRADICTED, "after the wipe it rests again")
+
+    def test_each_engage_signal_and_its_ends(self):
+        signals = {
+            "early pull commit": 'REALM_EXPEDITION_EARLY_PULL region=191 target="Boss" near=67 inside=123 raid=124 '
+                                 'needed=86 decision=Commit health=97',
+            "target call": 'REALM_EXPEDITION_TARGET_CALLED region=191 target="Boss" health=100 called=16 idleSeconds=0',
+            "ledger, it hits the raid": 'EPIC_FIGHT_LEDGER region=191 target="Other" seconds=60 '
+                                        'raid_dealt="Other:100/2/2" raid_took="Other:5/1/1,Boss:18613/17/9"',
+            "ledger, the raid hits it": 'EPIC_FIGHT_LEDGER region=191 target="Other" seconds=60 raid_dealt="Boss:9/1/1"',
+            "required-adds switch": 'REALM_EXPEDITION_TACTIC region=191 from="Boss" to="Add" health=99 '
+                                    'reason="required-adds of "Boss" alive=2; ranged" tactic=galladoria/xaga',
+        }
+        ends = {
+            "defeat": 'REALM_EXPEDITION_TARGET_DEFEATED region=191 target="Boss" level=81 minutes=3',
+            "heal": 'REALM_EXPEDITION_TARGET_HEALED region=191 target="Boss" from=74 to=100 inCombat=False',
+            "wipe": 'REALM_EXPEDITION_WIPE region=191 target="Boss" level=81 failures=1 of=2 how="left combat"',
+        }
+        for name, signal in signals.items():
+            with self.subTest(signal=name):
+                log = self.raid_log()
+                log.add(at(23), self.STATUS.format(r=191, b="Boss", h=100, c="False"))
+                log.add(at(24), signal)
+                log.add(at(25), self.NEAR.format(r=191), "WRN")
+                self.assertEqual(self.teleports_near(log)["status"], pcl.SEEN)
+        for name, end in ends.items():
+            with self.subTest(end=name):
+                log = self.raid_log()
+                log.add(at(23), self.STATUS.format(r=191, b="Boss", h=100, c="False"))
+                log.add(at(24), signals["target call"])
+                log.add(at(25), end)
+                log.add(at(25, 10), self.STATUS.format(r=191, b="Boss", h=100, c="False"))
+                log.add(at(26), self.NEAR.format(r=191), "WRN")
+                self.assertEqual(self.teleports_near(log)["status"], pcl.CONTRADICTED)
+        # an early pull held, the muster and a non-adds tactic are not an engage
+        for name, line in {"hold": signals["early pull commit"].replace("Commit", "Hold"),
+                           "clear-first": 'REALM_EXPEDITION_TACTIC region=191 from="Boss" to="forerunner" '
+                                          'reason="clear-first of "Boss" is up again: cleared before the pull"'}.items():
+            with self.subTest(not_engaged=name):
+                log = self.raid_log()
+                log.add(at(23), self.STATUS.format(r=191, b="Boss", h=100, c="False"))
+                log.add(at(24), line)
+                log.add(at(25), self.NEAR.format(r=191), "WRN")
+                self.assertEqual(self.teleports_near(log)["status"], pcl.CONTRADICTED)
+        # an engage lapses after 15 minutes without a sign of the fight
+        log = self.raid_log()
+        log.add(at(1), signals["target call"])
+        log.add(at(10), self.STATUS.format(r=191, b="Boss", h=100, c="False"))
+        log.add(at(17), self.NEAR.format(r=191), "WRN")
+        self.assertEqual(self.teleports_near(log)["status"], pcl.CONTRADICTED)
+
+    def test_xaga_in_the_ledger_is_not_resting(self):
+        # Xaga on 5378dbe: one status inCombat=False at 00:08:48, then in the ledger every minute (173 false hits)
+        log = self.raid_log()
+        log.add(at(23), self.STATUS.format(r=191, b="Xaga", h=100, c="False"))
+        log.add(at(23, 4), self.NEAR.format(r=191), "WRN")                       # before any fight: a real hit
+        for minute in range(25, 37):
+            log.add(at(minute), 'EPIC_FIGHT_LEDGER region=191 target="spindler" seconds=60 '
+                                'raid_dealt="Beatha:97347/288/73" raid_took="Beatha:1/1/1,Xaga:18613/17/9"')
+            log.add(at(minute, 20), self.NEAR.format(r=191), "WRN")
+        row = self.teleports_near(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("13 stranded regroups, 1 within", row["detail"])
+        # 00:23:38: a wipe scored at Xaga in the middle of the fight; the status before the fight no longer counts, so a
+        # teleport before the next ledger line is not "near a resting Xaga"; a new status after the wipe would be
+        log.add(at(37), 'REALM_EXPEDITION_WIPE region=191 target="Xaga" level=81 failures=1 of=2 '
+                        'how="raid-wide deaths outside an attempt" raidTarget="Tine"', "WRN")
+        log.add(at(37, 5), self.NEAR.format(r=191), "WRN")
+        self.assertIn("14 stranded regroups, 1 within", self.teleports_near(log)["detail"])
+        log.add(at(38), self.STATUS.format(r=191, b="Xaga", h=100, c="False"))
+        log.add(at(38, 5), self.NEAR.format(r=191), "WRN")
+        self.assertIn("15 stranded regroups, 2 within", self.teleports_near(log)["detail"])
 
     def test_teleports_far_from_bosses_are_seen(self):
         log = self.raid_log()
@@ -228,6 +351,40 @@ class Raids(unittest.TestCase):
         log.add(at(10), 'REALM_EXPEDITION_FINAL_ENGAGE region=60 target="x" mustered=50 needed=81 living=116')
         self.assertEqual(check(only(log.run()[1]), "pull_70")["status"], pcl.CONTRADICTED)
 
+    def test_a_pull_that_never_logged_an_engage(self):
+        # Xaga and Aroon on 5378dbe: a required-adds switch and wipes outside an attempt, with no FINAL_ENGAGE or
+        # EARLY_PULL for either boss, under "30 final engages at the needed count, 0 below it"
+        engage = 'REALM_EXPEDITION_FINAL_ENGAGE region=191 target="spindler" mustered=94 needed=86 living=124'
+        switch = ('REALM_EXPEDITION_TACTIC region=191 from="Xaga" to="Beatha" health=99 approach=ranged-stand '
+                  'reason="required-adds of "Xaga" alive=2; ranged from the floor 620 away" tactic=galladoria/xaga')
+        wipe = ('REALM_EXPEDITION_WIPE region=191 target="{t}" level=67 failures=1 of=2 engaged=125 fallen=71 '
+                'health=39 how="raid-wide deaths outside an attempt" raidTarget="{t}"')
+        log = Log().start(at(0))
+        log.add(at(1), engage)
+        self.assertEqual(check(only(log.run()[1]), "pull_70")["status"], pcl.SEEN)
+        log.add(at(2), switch)
+        log.add(at(8), wipe.format(t="Beatha"), "WRN")                  # the same encounter: counted once
+        log.add(at(9), wipe.format(t="Aroon the Urlamhai"), "WRN")      # a wipe with no switch before it
+        row = check(only(log.run()[1]), "pull_70")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 final engages at the needed count, 0 below it, 2 pull(s) with no FINAL_ENGAGE", row["detail"])
+        self.assertIn("Xaga, Aroon the Urlamhai", row["detail"])
+        self.assertIn('from="Xaga"', row["line"])
+        # with its engage first, the same switch and wipe are an attempt's
+        log = Log().start(at(0))
+        log.add(at(1), 'REALM_EXPEDITION_EARLY_PULL region=191 target="Xaga" near=67 decision=Hold health=100')
+        log.add(at(2), switch)
+        log.add(at(8), wipe.format(t="Beatha"), "WRN")
+        log.add(at(9), 'REALM_EXPEDITION_FINAL_ENGAGE region=191 target="Aroon the Urlamhai" mustered=90 needed=86')
+        log.add(at(10), wipe.format(t="Aroon the Urlamhai"), "WRN")
+        self.assertEqual(check(only(log.run()[1]), "pull_70")["status"], pcl.SEEN)
+        # an engage in an earlier raid in the region does not count for the next one
+        log = Log().start(at(0))
+        log.add(at(1), 'REALM_EXPEDITION_FINAL_ENGAGE region=191 target="Xaga" mustered=90 needed=86')
+        log.add(at(5), "REALM_RAID_STARTED event=epic-hibernia present=86 required=80")
+        log.add(at(6), switch)
+        self.assertEqual(check(only(log.run()[1]), "pull_70")["status"], pcl.CONTRADICTED)
+
 
 class Rvr(unittest.TestCase):
     REGROUP = ('RVR_REGROUP phase=start group={g} realm=Hibernia region=1 reason="{r}" skill=Average members=4 '
@@ -255,7 +412,9 @@ class Rvr(unittest.TestCase):
         self.assertIn("1 started by a relay (8.3%", row["detail"])
         self.assertIn("(a) relayed stance relayed again: 0", row["detail"])
         self.assertIn("(b) regroup ending a relayed retreat relayed: 0", row["detail"])
-        self.assertIn("(c) relay back at its sender within 60 s: 0", row["detail"])
+        self.assertIn("(c) relay back at its sender within 60 s: not judged", row["detail"])
+        self.assertIn("(c) relay back at its sender within 60 s: 0 (exact, from= on 1",
+                      self.regroup(self.named(self.stance_log()))["detail"])
         self.assertEqual(self.regroup(Log().start(at(0)))["status"], pcl.NOT_SEEN)
 
     def test_a_relayed_stance_that_relays_again(self):
@@ -281,22 +440,64 @@ class Rvr(unittest.TestCase):
         log.add(at(5, 20), self.REGROUP.format(g=7, r="retreat over", to=2, relay="sent"))
         self.assertIn("(b) regroup ending a relayed retreat relayed: 0", self.regroup(log)["detail"])
 
+    def named(self, log):
+        """The stance log with from= on its relayed start (builds after DIAG-5378-misc 1)."""
+        log.lines = [line.replace('reason="relayed retreat" skill=Average members=4 relayedTo=0 relay=none minSeconds=15',
+                                  'reason="relayed retreat" skill=Average members=4 relayedTo=0 relay=none minSeconds=15 '
+                                  'from=1') for line in log.lines]
+        return log
+
     def test_c_a_relay_back_at_its_sender_within_60_s(self):
-        # 4891 -> 5219 -> 4891, as at 12:36-12:37 on 453e01a
-        log = self.stance_log()
+        # 4891 -> 5219 -> 4891, as at 12:36-12:37 on 453e01a, with the sender logged (from=)
+        log = self.named(self.stance_log())
         log.add(at(5, 0), self.RETREAT.format(g=4891, r="in contact: fight lost", to=3, relay="sent", relayed="False"))
-        log.add(at(5, 9), self.RETREAT.format(g=5219, r="relayed retreat", to=0, relay="none", relayed="True"))
+        log.add(at(5, 9), self.RETREAT.format(g=5219, r="relayed retreat", to=0, relay="none", relayed="True") + " from=4891")
         log.add(at(5, 30), self.REGROUP.format(g=5219, r="retreat over", to=4, relay="sent"))
-        log.add(at(5, 37), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none"))
+        log.add(at(5, 37), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none") + " from=5219")
         row = self.regroup(log)
         self.assertEqual(row["status"], pcl.CONTRADICTED)
-        self.assertIn("(c) relay back at its sender within 60 s: 1", row["detail"])
+        self.assertIn("(c) relay back at its sender within 60 s: 1 (exact, from= on 3 relayed start(s))", row["detail"])
         self.assertIn("(b) regroup ending a relayed retreat relayed: 1", row["detail"])
-        log = self.stance_log()
+        # an echo needs a second hop ((a) or (b)), so (c) always comes with one of them
+        # too late: 65 s after the sender passed it on
+        log = self.named(self.stance_log())
         log.add(at(5, 0), self.RETREAT.format(g=4891, r="in contact: fight lost", to=3, relay="sent", relayed="False"))
-        log.add(at(5, 50), self.REGROUP.format(g=6000, r="after the fight", to=2, relay="sent"))
-        log.add(at(6, 5), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none"))   # 65 s: too late
+        log.add(at(5, 1), self.RETREAT.format(g=5219, r="relayed retreat", to=0, relay="none", relayed="True") + " from=4891")
+        log.add(at(5, 2), self.REGROUP.format(g=5219, r="retreat over", to=4, relay="sent"))
+        log.add(at(6, 7), self.REGROUP.format(g=4891, r="relayed regroup", to=0, relay="none") + " from=5219")
         self.assertIn("(c) relay back at its sender within 60 s: 0", self.regroup(log)["detail"])
+
+    def test_c_relays_among_the_groups_of_one_fight_are_no_echo(self):
+        # 4308 and 4093 on 5378dbe: each sent its OWN retreat in one fight, and each got the other's. The old pattern
+        # counted that as "back at its sender" (86 times); with from= it is exact and 0.
+        log = self.named(self.stance_log())
+        log.add(at(5, 0), self.RETREAT.format(g=4308, r="in contact: bad odds", to=2, relay="sent", relayed="False"))
+        log.add(at(5, 3), self.RETREAT.format(g=4093, r="in contact: fight lost", to=2, relay="sent", relayed="False"))
+        log.add(at(5, 9), self.REGROUP.format(g=4308, r="relayed retreat", to=0, relay="none") + " from=4093")
+        row = self.regroup(log)
+        self.assertIn("(c) relay back at its sender within 60 s: 0 (exact", row["detail"])
+        # a build without from=: not judged, the pattern is reported and does not contradict
+        log = self.stance_log(own_regroups=30)
+        log.add(at(5, 0), self.RETREAT.format(g=4308, r="in contact: bad odds", to=2, relay="sent", relayed="False"))
+        log.add(at(5, 3), self.RETREAT.format(g=4093, r="in contact: fight lost", to=2, relay="sent", relayed="False"))
+        log.add(at(5, 9), self.REGROUP.format(g=4308, r="relayed retreat", to=0, relay="none"))
+        row = self.regroup(log)
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("(c) relay back at its sender within 60 s: not judged", row["detail"])
+        self.assertIn("relays among the groups of one fight: 1", row["detail"])
+
+    def test_relayed_regroups_ended_by_contact_at_once_are_counted(self):
+        # group 4308 on 5378dbe: a relayed regroup in contact, ended a second later (123 of them)
+        log = self.stance_log(own_regroups=30)
+        log.add(at(3), 'RVR_REGROUP phase=end group=2 region=1 next=Kite reason="contact while regrouping: odds below fair" '
+                       'started="relayed retreat" seconds=1 members=4 health=90 power=80')
+        log.add(at(3), 'RVR_REGROUP phase=end group=3 region=1 next=Engage reason="regrouped" '
+                       'started="relayed retreat" seconds=40 members=4 health=90 power=80')
+        log.add(at(3), 'RVR_REGROUP phase=end group=4 region=1 next=Kite reason="contact while regrouping: odds below fair" '
+                       'started="retreat over" seconds=0 members=4 health=90 power=80')
+        row = self.regroup(log)
+        self.assertIn("relayed regroups ended by contact within 1 s: 1", row["detail"])
+        self.assertIn("32 regroup starts", row["detail"], "an end line is not a start")
 
     def test_d_relay_started_regroups_over_ten_percent(self):
         log = self.stance_log(own_regroups=3)
@@ -416,9 +617,49 @@ class EraBuilds(unittest.TestCase):
         log.add(at(4), 'ERA_BUILD_CENSUS realm=Hibernia bots=900 era=120 kept=780 Sluaghbinder=3(0.3%/0%)')
         log.add(at(4), 'ERA_BUILD_TRAINED bot="B1" id=1 build=sorc-mind-body level=50 match=no')
         sec = only(log.run()[1])
-        self.assertEqual(check(sec, "census")["status"], pcl.CONTRADICTED)
+        self.assertEqual(check(sec, "census")["status"], pcl.CONTRADICTED, "3 counted, 1 retired")
         self.assertIn("Sluaghbinder=3", check(sec, "census")["line"])
+        self.assertIn("Sluaghbinder counted 3, retired 1", check(sec, "census")["detail"])
         self.assertEqual(check(sec, "trained")["status"], pcl.CONTRADICTED)
+
+    def test_census_against_the_retired(self):
+        # 5378dbe: Sluaghbinder=79 in Hibernia's census and 79 BOT_CUSTOM_CLASS_RETIRED, none of them online
+        retired = ('BOT_CUSTOM_CLASS_RETIRED bot="Bind{i}" id={i} class=Sluaghbinder level=50 realm=Hibernia: kept with '
+                   'its items, never logged in (bots never play the custom class)')
+        log = Log().start(at(0))
+        log.add(at(0, 17), 'ERA_BUILD_CENSUS realm=Hibernia bots=1092 era=0 kept=1092 new=0 Sluaghbinder=3(0.3%/0%)')
+        for i in range(70, 73):
+            log.add(at(0, 17), retired.format(i=i))
+        log.add(at(1), 'AUTONOMOUS_EXCHANGE_SOLD seller="Bind70" sellerId=70 item="x"')    # an old listing sold
+        log.add(at(1), 'AUTONOMOUS_BOT_DEATH bot="Kyle" id=999 level=50 class="Healer" killer="x"')  # a namesake
+        sec = only(log.run()[1])
+        row = check(sec, "census")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("Sluaghbinder counted 3, retired 3; 0 line(s) of a retired one playing", row["detail"])
+        log.add(at(2), 'AUTONOMOUS_BOT_DEATH bot="Bind71" id=71 level=50 class="Sluaghbinder" killer="x"')
+        row = check(only(log.run()[1]), "census")
+        self.assertEqual(row["status"], pcl.CONTRADICTED, "a retired one acts")
+        self.assertIn('bot="Bind71" id=71', row["line"])
+
+    def test_trained_is_not_applicable_without_era_draws(self):
+        # 5378dbe: 13 ERA_BUILD_ASSIGNED, all draw=nearest at level 50; TRAINED is only for draw=era
+        log = Log().start(at(0))
+        log.add(at(1), 'ERA_BUILD_ASSIGNED bot="Eilriorrin" id=5876 class=Druid level=50 build=druid-regrow-nurt '
+                       'role=healer draw=nearest jitter=""')
+        sec = only(log.run()[1])
+        row = check(sec, "trained")
+        self.assertEqual(row["status"], pcl.NOT_APPLICABLE)
+        self.assertIn("0 draw=era assignment(s)", row["detail"])
+        log.add(at(2), 'ERA_BUILD_ASSIGNED bot="B1" id=1 class=Sorcerer level=50 build=sorc-body draw=era')
+        self.assertEqual(check(only(log.run()[1]), "trained")["status"], pcl.NOT_SEEN, "a draw=era bot: must be seen")
+        code = Log().start(at(0)).add(at(1), 'ERA_BUILD_ASSIGNED bot="E" id=5 class=Druid level=50 draw=nearest')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "server.log"
+            path.write_text("\n".join(code.lines) + "\n", encoding="utf-8")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                pcl.main([str(path), "--year", "2026"])
+        self.assertIn("[Not applicable on build abc1234] must ERA_BUILD_TRAINED match=yes", out.getvalue())
 
 
 class BotsAsPeople(unittest.TestCase):

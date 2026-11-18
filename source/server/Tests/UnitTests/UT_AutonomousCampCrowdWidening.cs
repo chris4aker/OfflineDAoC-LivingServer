@@ -156,5 +156,16 @@ namespace DOL.UnitTests
             Assert.That(AutonomousCampCrowdWidening.BusySiblingMemory, Is.True);
             Assert.That(AutonomousCampCrowdWidening.WidenWhenCrowded, Is.True);
         }
+
+        [Test]
+        public void TheWidenedLineNamesTheRealm()
+        {
+            // 5378dbe on the owner's PC: realm=_FirstPlayerRealm (eRealm's alias for Albion) on 71 lines.
+            string line = AutonomousCampCrowdWidening.WidenedLine("Bot", 12, eRealm.Albion, 20, ConColor.GREEN, ConColor.BLUE,
+                ConColor.YELLOW, null, 4, 2);
+            Assert.That(line, Does.Contain(" realm=Albion "));
+            Assert.That(line, Does.Not.Contain("_First"));
+            Assert.That(line, Does.StartWith("AUTONOMOUS_CAMP_WIDENED bot=Bot id=12 realm=Albion level=20 from=GREEN to=BLUE natural=YELLOW died_to=none"));
+        }
     }
 }

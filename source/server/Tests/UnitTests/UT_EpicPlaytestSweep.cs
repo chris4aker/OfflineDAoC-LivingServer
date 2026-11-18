@@ -138,5 +138,19 @@ namespace DOL.UnitTests
                 Assert.That(EpicPlaytestSweep.Landing(anchor, true, new Vector3(30_040, 30_040, 1_080), true), Is.EqualTo(anchor),
                     "the floor below is another level");
             });
+
+        [Test]
+        public void TheSweepLinesNameTheRealm()
+        {
+            // 5378dbe on the owner's PC: EPIC_SWEEP_RAID_START ... realm=_FirstPlayerRealm, EPIC_SWEEP_START guestRealm=_First.
+            Assert.Multiple(() =>
+            {
+                Assert.That(EpicPlaytestSweep.RealmWord(eRealm.Albion), Is.EqualTo("Albion"));
+                Assert.That(EpicPlaytestSweep.RealmWord(eRealm.None), Is.EqualTo("None"), "no guest");
+                Assert.That(EpicPlaytestSweep.RealmWord(eRealm.Hibernia), Is.EqualTo("Hibernia"));
+                string line = EpicPlaytestSweep.RaidStartLine("epic-albion", "Caer Sidi", eRealm.Albion, 100, 1, 0, "next", "Albion");
+                Assert.That(line, Is.EqualTo("EPIC_SWEEP_RAID_START event=epic-albion name=\"Caer Sidi\" realm=Albion size=100 try=1 toHub=0 reason=\"next\" lane=Albion"));
+            });
+        }
     }
 }

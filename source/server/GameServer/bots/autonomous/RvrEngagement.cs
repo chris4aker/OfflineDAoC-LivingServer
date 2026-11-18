@@ -38,8 +38,12 @@ public sealed record RvrEngagementFacts
     public static RvrEngagementFacts Empty { get; } = new();
 }
 
-/// <summary>A retreat or regroup passed on from another group of the warband: it counts from <see cref="AppliesAt"/> until <see cref="ExpiresAt"/>.</summary>
-public readonly record struct RvrStanceRelay(RvrStance Stance, long AppliesAt, long ExpiresAt);
+/// <summary>
+/// A retreat or regroup passed on from another group of the warband: it counts from <see cref="AppliesAt"/> until
+/// <see cref="ExpiresAt"/>. <see cref="From"/> is the sending group's log name (RvrEngagementRuntime.GroupName), logged
+/// as <c>from=</c> on the relayed stance's RVR_REGROUP / RVR_RETREAT line; null when not known.
+/// </summary>
+public readonly record struct RvrStanceRelay(RvrStance Stance, long AppliesAt, long ExpiresAt, string From = null);
 
 /// <summary>Which stances the settings allow (rvr_bot_size_up, rvr_bot_disengage with bot_veteran_retreat, rvr_bot_regroup).</summary>
 public readonly record struct RvrEngagementOptions(bool SizeUp, bool Kite, bool Retreat, bool Regroup)
@@ -447,7 +451,11 @@ public static class RvrEngagement
         {
             if (relay.Stance == RvrStance.Retreat && aware && o.Retreat && !coolingDown)
                 return new(RvrStance.Retreat, "relayed retreat");
-            if (o.Regroup)
+            // A group in contact fights its own fight (below): a relayed regroup in contact is ended by Decide's forced
+            // rule on the next board, so it would only be a 1-second start (owner's PC log on 5378dbe, 2026-11-17/18:
+            // 123 of 347 relay-started regroups began in contact, 121 lasted 1 s). The relay stays valid until it
+            // expires, so a group whose contact ends in time still regroups.
+            if (o.Regroup && !s.InContact)
                 return new(RvrStance.Regroup, "relayed " + (relay.Stance == RvrStance.Retreat ? "retreat" : "regroup"), s.FriendlyCentre);
         }
 
@@ -752,14 +760,15 @@ public static class RvrEngagement
 
     /// <summary>
     /// A retreat or regroup passed on to another group of the warband: half the time (a roll from 0 to 1 below
-    /// <see cref="RelayChance"/>), arriving <see cref="RelayDelayMilliseconds"/> later. Other stances are not passed on. Pure.
+    /// <see cref="RelayChance"/>), arriving <see cref="RelayDelayMilliseconds"/> later. Other stances are not passed on.
+    /// <paramref name="from"/> is the sending group's log name. Pure.
     /// </summary>
-    public static RvrStanceRelay? RelayTo(RvrStance stance, long now, double roll)
+    public static RvrStanceRelay? RelayTo(RvrStance stance, long now, double roll, string from = null)
     {
         if (stance is not (RvrStance.Retreat or RvrStance.Regroup) || roll >= RelayChance)
             return null;
         long at = now + RelayDelayMilliseconds;
-        return new RvrStanceRelay(stance, at, at + RelayValidMilliseconds);
+        return new RvrStanceRelay(stance, at, at + RelayValidMilliseconds, from);
     }
 
     // ---- chasing -------------------------------------------------------------------------------------------------------

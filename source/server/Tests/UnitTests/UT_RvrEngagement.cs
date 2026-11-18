@@ -457,6 +457,52 @@ namespace DOL.UnitTests
             });
         }
 
+        [Test]
+        public void A_relay_in_contact_while_cooling_down_does_not_start_a_regroup()
+        {
+            // Group 4308 on 5378dbe (owner's PC, 2026-11-17 22:18): its own retreat at 22:18:16, regrouped at 22:18:37,
+            // Engage to Kite in contact at 22:18:42, then a relayed retreat at 22:18:49 inside its 60 s retreat cooldown
+            // started a "relayed retreat" regroup that Decide's forced rule ended a second later (123 such starts, 121
+            // lasting 1 s). In contact, the group fights its own fight instead.
+            long now = T0;
+            RvrStanceRelay relay = RvrEngagement.RelayTo(RvrStance.Retreat, now - RvrEngagement.RelayDelayMilliseconds, 0, "4093")!.Value;
+            RvrStanceRelay regroupRelay = RvrEngagement.RelayTo(RvrStance.Regroup, now - RvrEngagement.RelayDelayMilliseconds, 0, "4093")!.Value;
+            RvrEngagementFacts cooling = Facts(noticed: now, encounter: now - 60_000) with { LastRetreatAt = now - 30_000 };
+            RvrFightBoard contact = Board(Eight(), Enemies(8, x: 200, contact: true));
+            RvrFightBoard inView = Board(Eight(), Enemies(6));
+            RvrStanceDecision inContact = Step(RvrStance.Kite, now - 7_000, contact, State(cooling with { Relay = relay }), now);
+            RvrStanceDecision inContactRegroup = Step(RvrStance.Kite, now - 7_000, contact, State(cooling with { Relay = regroupRelay }), now);
+            RvrStanceDecision outOfContact = Step(RvrStance.Kite, now - 7_000, inView, State(cooling with { Relay = relay }), now);
+            RvrStanceDecision outOfContactEngaged = Step(RvrStance.Engage, now - 7_000, inView, State(cooling with { Relay = regroupRelay }), now);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrEngagement.SizeUp(contact, cooling, RvrSkillTier.Average).InContact, Is.True, "the board is in contact");
+                Assert.That(inContact.Stance, Is.Not.EqualTo(RvrStance.Regroup), "in contact and cooling down: no relayed regroup");
+                Assert.That(inContact.Stance, Is.Not.EqualTo(RvrStance.Retreat), "nor a second retreat inside the cooldown");
+                Assert.That(inContact.Reason, Does.Not.StartWith("relayed"));
+                Assert.That(inContactRegroup.Stance, Is.Not.EqualTo(RvrStance.Regroup), "a relayed regroup in contact neither");
+                Assert.That((outOfContact.Stance, outOfContact.Reason), Is.EqualTo((RvrStance.Regroup, "relayed retreat")),
+                    "out of contact the relay still regroups it");
+                Assert.That((outOfContactEngaged.Stance, outOfContactEngaged.Reason), Is.EqualTo((RvrStance.Regroup, "relayed regroup")));
+                // contact ends while the relay is still valid: it regroups then
+                Assert.That(Step(RvrStance.Kite, now - 7_000, inView, State(cooling with { Relay = relay }), now + 3_000).Stance,
+                    Is.EqualTo(RvrStance.Regroup));
+                // not cooling down and aware: a relayed retreat in contact still runs with the warband, as before
+                Assert.That(Step(RvrStance.Kite, now - 7_000, contact, State(cooling with { Relay = relay, LastRetreatAt = now - 120_000 }), now).Stance,
+                    Is.EqualTo(RvrStance.Retreat));
+            });
+        }
+
+        [Test]
+        public void A_relay_carries_its_sender()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrEngagement.RelayTo(RvrStance.Retreat, T0, 0, "4308")!.Value.From, Is.EqualTo("4308"));
+                Assert.That(RvrEngagement.RelayTo(RvrStance.Regroup, T0, 0)!.Value.From, Is.Null, "unknown sender");
+            });
+        }
+
         // ---- after the fight ---------------------------------------------------------------------------------------------
 
         [TestCase(RvrSkillTier.Casual, 0.10)]

@@ -189,6 +189,10 @@ public static class RvrEngagementRuntime
             previousSince == long.MinValue ? plan.StanceSince : previousSince,
             sizeUp, board.State.Engagement, board.State, options, plan.SkillTier, board.BuiltAt).Reason;
         string groupName = GroupName(bot);
+        // The relay this stance acted on: the board's stored facts are the ones the planner decided from.
+        string relayFrom = reason.StartsWith("relayed", StringComparison.Ordinal)
+            ? board.State.Engagement?.Relay?.From ?? "?"
+            : null;
         LogStance(runtime, groupName, board, previous, plan, reason, now);
 
         if (previous == RvrStance.Observe || plan.Stance is RvrStance.Kite or RvrStance.Retreat && previous != RvrStance.Retreat)
@@ -199,12 +203,12 @@ public static class RvrEngagementRuntime
         if (previous == RvrStance.Retreat && plan.Stance != RvrStance.Retreat)
             ClearOrder(group, runtime);
         if (plan.Stance == RvrStance.Retreat)
-            BeginRetreat(bot, group, runtime, board, sizeUp, plan, reason, now);
+            BeginRetreat(bot, group, runtime, board, sizeUp, plan, reason, relayFrom, now);
 
         if (previous == RvrStance.Regroup && plan.Stance != RvrStance.Regroup)
             EndRegroup(group, runtime, groupName, board, plan, reason, now);
         if (plan.Stance == RvrStance.Regroup && previous != RvrStance.Regroup)
-            BeginRegroup(bot, runtime, groupName, board, plan, reason, now);
+            BeginRegroup(bot, runtime, groupName, board, plan, reason, relayFrom, now);
     }
 
     private static void KeepOrder(Group group, Runtime runtime, RvrFightPlan plan, long now)
@@ -242,7 +246,7 @@ public static class RvrEngagementRuntime
     }
 
     private static void BeginRetreat(GameBot bot, Group group, Runtime runtime, RvrFightBoard board, in RvrSizeUp sizeUp,
-        RvrFightPlan plan, string reason, long now)
+        RvrFightPlan plan, string reason, string relayFrom, long now)
     {
         if (!BotGroupRetreat.Enabled || !Properties.RVR_BOT_DISENGAGE)
             return;
@@ -288,11 +292,12 @@ public static class RvrEngagementRuntime
             Log.Info($"RVR_RETREAT group={GroupName(bot)} realm={GlobalConstants.RealmToName(board.Realm)} region={board.RegionId} " +
                      $"reason=\"{reason}\" odds={sizeUp.Odds:0.00} read={sizeUp.PerceivedOdds:0.00} friendly=\"{sizeUp.Friendly}\" " +
                      $"enemy=\"{sizeUp.Enemy}\" skill={plan.SkillTier} runners={runners} holdouts={holdouts} slowestMs={slowest} " +
-                     $"to={board.RegionId}:{(int)point.X},{(int)point.Y} relayedTo={relayed} relay={relay} relayed={relayedHere}");
+                     $"to={board.RegionId}:{(int)point.X},{(int)point.Y} relayedTo={relayed} relay={relay} relayed={relayedHere}" +
+                     (relayFrom != null ? $" from={relayFrom}" : string.Empty));
     }
 
     private static void BeginRegroup(GameBot bot, Runtime runtime, string groupName, RvrFightBoard board, RvrFightPlan plan,
-        string reason, long now)
+        string reason, string relayFrom, long now)
     {
         lock (runtime.Lock)
         {
@@ -308,7 +313,8 @@ public static class RvrEngagementRuntime
                      $"reason=\"{reason}\" skill={plan.SkillTier} members={board.Friendly.Count} health={board.Friendly.HealthPercent} " +
                      $"power={board.Friendly.PowerPercent} rally={board.RegionId}:{(int)rally.X},{(int)rally.Y} " +
                      $"fromFight={(facts.LastContactAt > long.MinValue / 2 ? ((int)fromFight).ToString() : "-")} relayedTo={relayed} relay={relay} " +
-                     $"minSeconds={RvrEngagement.MinRegroupMilliseconds(plan.SkillTier) / 1000}");
+                     $"minSeconds={RvrEngagement.MinRegroupMilliseconds(plan.SkillTier) / 1000}" +
+                     (relayFrom != null ? $" from={relayFrom}" : string.Empty));
     }
 
     private static void EndRegroup(Group group, Runtime runtime, string groupName, RvrFightBoard board, RvrFightPlan plan,
@@ -362,12 +368,13 @@ public static class RvrEngagementRuntime
             if (member?.Group is { } other && other != own)
                 groups.Add(other);
         var from = new Vector2(board.FriendlyCentroid.X, board.FriendlyCentroid.Y);
+        string sender = GroupName(bot);
         int told = 0;
         foreach (Group other in groups)
         {
             if (!RvrEngagement.RelayReaches(board.RegionId, from, BodyOf(other)))
                 continue;
-            if (RvrEngagement.RelayTo(stance, now, Random.Shared.NextDouble()) is not { } relay)
+            if (RvrEngagement.RelayTo(stance, now, Random.Shared.NextDouble(), sender) is not { } relay)
                 continue;
             RvrFightBoards.UpdateState(other, state => state.WithEngagement(f => f with { Relay = relay }));
             told++;
