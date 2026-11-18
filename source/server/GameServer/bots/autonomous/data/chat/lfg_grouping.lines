@@ -44,6 +44,12 @@ anyone want to join us at {camp}? xp is steady
 @needs in_group,outdoors
 group has room near {zone}, all classes welcome
 @needs in_group
+lfm at {camp}, pst
+group at {camp} has room, pst
+lfm {dungeon}, pst
+{camp} group looking for more, pst
+lfm for {camp}, send a tell
+@needs in_group
 need one more for {camp}, pst
 @levels 20-50
 lfm {dungeon} run, should take about an hour

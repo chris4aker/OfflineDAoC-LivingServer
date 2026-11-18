@@ -41,3 +41,10 @@
 [wtb|looking for|anyone got] [armor|a weapon|jewelry|a shield] for a {level} {class}[, pst|, paying fair|]
 [wtb|need] [potions|power pots|health pots|dye][, anyone|, will pay|, pst]
 [anyone sell|wtb] [a better cloak|a ring or two|some bracers|a decent belt] [for|around] level {level}[?|, pst]
+# Crafter types buy materials and ask prices; no line claims a craft the bot may not have (chat audit CORPUS-C-034).
+@topic buying
+@who Crafter
+[wtb|buying] [cloth|leather|metal bars|wood][ cheap|, pst|, any amount]
+[anyone selling|wtb] [dye|thread|leather][, pst|, paying fair|]
+[pc|price check] on [cloth|leather|metal bars|dye]?
+[wtb|looking for] [spare materials|leftover materials][, paying merchant price|, pst|]

@@ -377132,6 +377132,392 @@
    "id": "3d46b6280907"
   },
   {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "all set here",
+   "id": "7aae031649ec"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "good pace, lets keep it up",
+   "id": "9360845b0c91"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "ill follow your lead",
+   "id": "bea0e994f941"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "say when you want to move",
+   "id": "efd79ea7c7b2"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "i can keep going a while yet",
+   "id": "d132fca4d29c"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "all good on my end",
+   "id": "cfa0e5bb2745"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "this camp works for me",
+   "id": "939d7f96db7b"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "nice and steady",
+   "id": "b41a5da03141"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "shout if you need a break",
+   "id": "8412dbf2484c"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "ready for more",
+   "id": "3236f518029b"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "all set, next one",
+   "id": "67d1259bf189"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "lets keep the pace",
+   "id": "9c35fa4839e0"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "nice and steady, good",
+   "id": "bcb7a84b43fd"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "ask_anyone",
+   "text": "anyone need a break?",
+   "id": "da833e174864"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "im good to keep going",
+   "id": "f0f4c4c68db7"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "this spot works",
+   "id": "5b2248dde3e5"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "good camp, staying",
+   "id": "8921c799633a"
+  },
+  {
+   "kind": "group",
+   "topic": "group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "!in_player_group",
+    "!in_capital"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "ready when the rest are",
+   "id": "b3cbe176d8f2"
+  },
+  {
    "kind": "guild",
    "topic": "leveling",
    "who": [],
@@ -420586,6 +420972,106 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
+   "text": "lfm at {camp}, pst",
+   "id": "4c7534bd0301"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lfm",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "lfg",
+   "text": "group at {camp} has room, pst",
+   "id": "b90b2c495870"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lfm",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "lfg",
+   "text": "lfm {dungeon}, pst",
+   "id": "40a0be7e4e03"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lfm",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "lfg",
+   "text": "{camp} group looking for more, pst",
+   "id": "f2658232d5ff"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lfm",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "lfg",
+   "text": "lfm for {camp}, send a tell",
+   "id": "3c9c0a7b81ea"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lfm",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "lfg",
    "text": "need one more for {camp}, pst",
    "id": "0f8b84cb51f9"
   },
@@ -426021,6 +426507,1266 @@
    "text": "wtb a decent belt around level {level}, pst",
    "family": "62e0280b1e",
    "id": "bc99a7021fe0"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb cloth cheap",
+   "family": "3c605649d8",
+   "id": "ef774e486455"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb cloth, pst",
+   "family": "3c605649d8",
+   "id": "e3dfb5e57bdb"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb cloth, any amount",
+   "family": "3c605649d8",
+   "id": "fabc0bda58f4"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb leather cheap",
+   "family": "3c605649d8",
+   "id": "a3d56c10febc"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb leather, pst",
+   "family": "3c605649d8",
+   "id": "866f79bdc40f"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb leather, any amount",
+   "family": "3c605649d8",
+   "id": "665415bed4af"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb metal bars cheap",
+   "family": "3c605649d8",
+   "id": "84b4c9422f2b"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb metal bars, pst",
+   "family": "3c605649d8",
+   "id": "a40078952f72"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb metal bars, any amount",
+   "family": "3c605649d8",
+   "id": "2d748165e2f7"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb wood cheap",
+   "family": "3c605649d8",
+   "id": "05e5af1b08d9"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb wood, pst",
+   "family": "3c605649d8",
+   "id": "fea1edf72519"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "wtb wood, any amount",
+   "family": "3c605649d8",
+   "id": "06414d8c76e8"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying cloth cheap",
+   "family": "3c605649d8",
+   "id": "c5f1619c6b68"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying cloth, pst",
+   "family": "3c605649d8",
+   "id": "a854f141baac"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying cloth, any amount",
+   "family": "3c605649d8",
+   "id": "df34b46736f2"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying leather cheap",
+   "family": "3c605649d8",
+   "id": "2c63f055e111"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying leather, pst",
+   "family": "3c605649d8",
+   "id": "3040589b6fb3"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying leather, any amount",
+   "family": "3c605649d8",
+   "id": "5f6ad5b87bc5"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying metal bars cheap",
+   "family": "3c605649d8",
+   "id": "4afa086a2255"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying metal bars, pst",
+   "family": "3c605649d8",
+   "id": "4bcfd89191e7"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying metal bars, any amount",
+   "family": "3c605649d8",
+   "id": "3e3da3892856"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying wood cheap",
+   "family": "3c605649d8",
+   "id": "662aa298f42f"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying wood, pst",
+   "family": "3c605649d8",
+   "id": "cc2d9925c8f6"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2041,
+   "invites": "trade",
+   "text": "buying wood, any amount",
+   "family": "3c605649d8",
+   "id": "93ab39f592f2"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling dye, pst",
+   "family": "92780dcb53",
+   "id": "9ff825d36459"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling dye, paying fair",
+   "family": "92780dcb53",
+   "id": "072da056c8f9"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling dye",
+   "family": "92780dcb53",
+   "id": "5905c25a5c86"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling thread, pst",
+   "family": "92780dcb53",
+   "id": "8c78917b2c17"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling thread, paying fair",
+   "family": "92780dcb53",
+   "id": "0663b6c9e9ce"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling thread",
+   "family": "92780dcb53",
+   "id": "2b40bdf463c9"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling leather, pst",
+   "family": "92780dcb53",
+   "id": "255101a890d6"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling leather, paying fair",
+   "family": "92780dcb53",
+   "id": "9e61e59bba21"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "anyone selling leather",
+   "family": "92780dcb53",
+   "id": "21db9681f4ea"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb dye, paying fair",
+   "family": "92780dcb53",
+   "id": "6c8790671117"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb dye",
+   "family": "92780dcb53",
+   "id": "6102b60c53e6"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb thread, pst",
+   "family": "92780dcb53",
+   "id": "c59dd74bb3ba"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb thread, paying fair",
+   "family": "92780dcb53",
+   "id": "bb932ab400eb"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb thread",
+   "family": "92780dcb53",
+   "id": "8d6ebfa54d72"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb leather, paying fair",
+   "family": "92780dcb53",
+   "id": "472f903a920b"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "invites": "trade",
+   "text": "wtb leather",
+   "family": "92780dcb53",
+   "id": "f4e1d917c8f2"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "pc on cloth?",
+   "family": "334d1782e8",
+   "id": "d35e477e959b"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "pc on leather?",
+   "family": "334d1782e8",
+   "id": "246ddad966cc"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "pc on metal bars?",
+   "family": "334d1782e8",
+   "id": "5718fbe027f8"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "pc on dye?",
+   "family": "334d1782e8",
+   "id": "d2791d8f592c"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "price check on cloth?",
+   "family": "334d1782e8",
+   "id": "810bc29cb984"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "price check on leather?",
+   "family": "334d1782e8",
+   "id": "eb09c4dee2f6"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "price check on metal bars?",
+   "family": "334d1782e8",
+   "id": "2f83d2158ae3"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "invites": "ask",
+   "text": "price check on dye?",
+   "family": "334d1782e8",
+   "id": "cb0d290b37e7"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb spare materials, paying merchant price",
+   "family": "3f5365aa03",
+   "id": "8e04422491ce"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb spare materials, pst",
+   "family": "3f5365aa03",
+   "id": "e73a04f258c4"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb spare materials",
+   "family": "3f5365aa03",
+   "id": "16cfaac8440a"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb leftover materials, paying merchant price",
+   "family": "3f5365aa03",
+   "id": "882142ecc92f"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb leftover materials, pst",
+   "family": "3f5365aa03",
+   "id": "17605457d1f2"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "wtb leftover materials",
+   "family": "3f5365aa03",
+   "id": "c5a8e8445173"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for spare materials, paying merchant price",
+   "family": "3f5365aa03",
+   "id": "2bd0e8512d3f"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for spare materials, pst",
+   "family": "3f5365aa03",
+   "id": "8fcffd845a91"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for spare materials",
+   "family": "3f5365aa03",
+   "id": "b849b05bedeb"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for leftover materials, paying merchant price",
+   "family": "3f5365aa03",
+   "id": "25f82d1fae2a"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for leftover materials, pst",
+   "family": "3f5365aa03",
+   "id": "83a1b45cece7"
+  },
+  {
+   "kind": "trade",
+   "topic": "buying",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "trade",
+   "text": "looking for leftover materials",
+   "family": "3f5365aa03",
+   "id": "29bfda1f1f5b"
   },
   {
    "kind": "lfg",

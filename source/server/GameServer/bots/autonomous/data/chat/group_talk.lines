@@ -109,3 +109,30 @@ anyone else almost out of potions?
 stop pulling yellows, we are not that good
 i call the next drop, kidding
 we need a better puller or a better healer, not sure which
+
+# ---------------- More lines that claim nothing (chat audit CORPUS-C-027, 2026-11-18) ----------------
+# The audit deleted group lines that stated a drop, a mistake, a record or a lead nobody checked; these take their place, so a
+# group keeps as much to say as before, and every one is true of any group.
+@kind group
+@topic group
+@who *
+@needs in_player_group,!in_capital
+all set here
+good pace, lets keep it up
+ill follow your lead
+say when you want to move
+i can keep going a while yet
+all good on my end
+this camp works for me
+nice and steady
+shout if you need a break
+ready for more
+@needs in_group,!in_player_group,!in_capital
+all set, next one
+lets keep the pace
+nice and steady, good
+anyone need a break?
+im good to keep going
+this spot works
+good camp, staying
+ready when the rest are
