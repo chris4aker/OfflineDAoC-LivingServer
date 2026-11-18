@@ -40,7 +40,7 @@ E: i will set the ram by the gate at {keep} | ram goes by the gate at {keep}, tr
 C: who is calling targets once we are in | someone has to lead inside or we will spread out on every stair
 A: i will call, everyone /assist me when the guards come | i will lead, stay tight and assist me
 C: ok boss
-D: on my way, two minutes | omw, saddling up
+D: sounds like a plan | good, finally a plan
 
 @topic keep_door_defense
 @levels 35-50
@@ -228,7 +228,7 @@ D: leveling people do, thats the point | it pulls the leveling crowd into the fr
 ~ 25
 B: so when it closes, how do we get it back | what does it take to reopen it
 D: take back whatever fell, then maybe one of theirs | get our keeps back first
-C: next time it closes i will come if someone groups me | next time, invite me, i will drop the grind
+C: next time it closes, maybe i will join in | next time, i might drop the grind for it
 B: me too. never thought df would drag me into the frontier | lol, the demons made a soldier out of me
 A: thats how they get you
 ?C: next thing you know you are counting realm points in your sleep | first it is df, then you are buying realm abilities
@@ -379,8 +379,8 @@ A: fine. scout them, not me | ok but go scout the {enemy}, not my corpse
 B: there is no counter to a stealther except not being alone | best defense is three friends
 ?C: or run in a big group like a sensible person | or wait for the zerg and ride along
 A: ok so who wants to walk me to {keep} | escort needed to {keep}, will pay in gratitude
-C: i can, leaving in a few | on my way out anyway, wait at the gate
-D: i can watch the road ahead | i will go ahead and look for their stealthers, it takes one to find one
+C: i would, but im nowhere near the gate | ask at the gate, someone always rides out
+D: a stealther could watch the road ahead | find a stealther to look for their stealthers, it takes one to find one
 B: a stealther escort for a stealther victim, poetry | lol, hire one to catch one
 A: whatever works | i am not proud, i will take it
 
@@ -666,9 +666,9 @@ A: yeah but at least it isnt every fight | ok but they are not everywhere
 ~ 25
 D: is murdaigean busy now? | anyone in murdaigean right now, is it worth going
 C: usually, the keep changes hands all night | most evenings, the keep fight never stops
-D: on my way | coming, two minutes
-B: pick up a healer on the way, we have none | bring a healer if you see one
-?D: i will drag one along | i will grab a healer on the way
+D: might go after this | maybe later, after this camp
+B: pick up a healer if you go | bring a healer if you see one
+?D: noted | good idea
 ~ 30
 A: question, do the realm points here stay with me later | does bg rvr count for anything
 B: yes, you keep them | you keep them when you leave, its real
@@ -676,10 +676,10 @@ A: so i could be ranked before i even see the frontier | nice, so i can get a ra
 C: lots of people do that, its a good start | plenty of people come out of the bgs with ranks
 ?B: the real gain is the practice | and they know how to fight when they reach the frontier, which matters more than the rank
 ~ 25
-D: arrived, which way is the fight | here now, wow there are a lot of people
+D: so where is the fight usually | which way do people go in there
 C: stick with the biggest group, dont wander | find our group and stay with it
-A: heading over, dont win without me | coming too, save me some
-B: no promises | hurry
+A: maybe i will try it tonight | sounds like my kind of place
+B: bring a friend or two | do it, its fun
 
 @topic war_stories
 @levels 35-50

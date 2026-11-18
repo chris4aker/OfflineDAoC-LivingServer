@@ -58,7 +58,7 @@ A: lol ok ty | sounds relaxing actually | fine by me
 @levels 10-50
 @scene sh_need_rez
 @role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden
-A: ty to whoever rezzed me in {zone} earlier, never caught your name | shout out to the healer who walked across {zone} to rez me | to whoever rezzed me by the {monster} camp, thank you
+A: ty to whoever rezzed me earlier, never caught your name | shout out to the healer who walked half a zone to rez me | to whoever rezzed me by the {monster} camp, thank you
 B: that was me, np | me. you picked a bad spot to die btw | yw, the walk was the hard part
 ?C: careful, some camps aggro on the rezzer too | bring a friend next time, that kind of spot bites | dont get the healer killed as well lol
 A: i know, wrong pull | it was an add, i swear | sorry, bad spot, i know
@@ -310,7 +310,7 @@ B: my group at {camp} might be short one, pst me | pst me, we could use one more
 A: sending a tell | anything beats solo, tell sent | sure, check your tells
 ?C: grab it before someone else does | lucky, i waited an hour once | take it, groups are rare tonight
 B: got it, see you at the camp | ok, meet us there | got your tell, come on over
-A: omw | thx
+A: ty | thx
 
 @topic real_weather
 @levels 1-50
@@ -368,7 +368,7 @@ B: me, what do you need | i craft, what pieces | depends what you want, pst
 A: full suit eventually, one piece tonight | just one piece to start | a weapon to begin with
 B: bring the gems and the armor and pst | ok, meet me in {capital} | send a tell when you are in town
 ?C: that crafter is good, used them before | listen to them, they know their stuff
-A: ty | omw | great, heading in
+A: ty | ok, will do | great
 
 @topic pets
 @levels 5-30
@@ -388,7 +388,7 @@ A: ok ty | trying it now
 @scene sh_named_up
 @role B type=Explorer
 @role C type=*
-A: anyone seen the named in {zone}? | is there a named up in {zone} right now | heard a named roams {zone}, true?
+A: anyone seen the named in {dungeon} lately? | is the named in {dungeon} up right now | heard a named roams {dungeon}, true?
 B: just killed it, sorry lol | it died a few minutes ago, sorry | a group just took it down
 A: aw | what did it drop | of course
 B: nothing good, dont bother | some coin and junk | a decent drop actually, but it was mine
@@ -426,7 +426,7 @@ A: ok | heading back | going now
 A: any speed classes heading out of {capital}? | can someone give me speed out of {capital} | lf speed from {capital}, anyone leaving soon
 B: leaving in a minute, meet me at the gate | on my way out of town, tag along | sure, find me by the stable and stay close
 ?C: speed taxi, now boarding | the speed bus is leaving lol | free rides, no refunds
-A: ty, heading to the gate | omw, dont leave without me | thanks, on my way
+A: ty | thanks, see you at the gate | perfect
 B: dont fall behind | stay in range or you lose it | keep up, i dont stop
 
 @topic realm_ranks
@@ -529,7 +529,7 @@ A: meet in {capital} | gathering soon, pst me | we go when we have the healers
 @scene sh_random_heal_thanks
 @role B class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden,Mentalist
 @role C type=*
-A: ty to whoever healed me in {zone} | thanks random healer, saved my life | whoever healed me just now, ty
+A: ty to whoever healed me out there earlier | thanks random healer, saved my life earlier | whoever healed me on that last fight, ty
 B: that was me | np | yw
 C: realm love | nice | thats how it should be
 ?A: owe you one | buying you a drink if we meet in town | you are the best
@@ -557,7 +557,7 @@ B: try later, they come out late | the late crowd will show up | wait for the la
 A: anyone in spindelhalla? looking for a spot | spindel check, which camps are open | {q} is spindelhalla packed tonight
 B: two groups deep inside, the entrance is free | we are on the arachite krigare, rest looks open | busy, but the entrance camps were empty
 A: need a healer for the entrance then | any healers want to come along | if a healer joins we can take the open spot
-B: i can heal after this pull | i will come when my group breaks up | give me a few, my group is wrapping up
+B: maybe after this pull | maybe when my group breaks up | my group is wrapping up, pst me
 ?C: spindel at night is the best xp in midgard | spindel never gets old | i have spent half my life in that place
 A: saving you a spot | ok, waiting by the entrance | great, see you down there
 
@@ -671,7 +671,7 @@ A: gjalpinulva raid tonight, pst me | dragon raid on gjalpinulva later, need hea
 B: healer here, in | i can heal | how many so far
 A: enough to try | a few groups | we need more healers though
 ?C: last time half the raid died to the breath | bring resist buffs | stand where the leader says, please
-B: count me in | ill bring my healer | ok, i will be there
+B: count me in | ill bring my healer | ok, tell sent
 A: meet in jordheim | gathering in jordheim soon | pst me
 
 @topic rez_request
@@ -858,7 +858,7 @@ A: gz | grats | gz wiz
 A: golestandt raid forming, pst | golestandt tonight, pst me | dragon raid, golestandt, need people, pst
 B: tell sent | pst sent | what time
 A: soon, gathering in camelot | when we fill up | in a couple of hours
-C: i will bring my cleric | you will want healers, i can come | count me in for heals
+C: i will bring my cleric | you will want healers, pst sent | count me in for heals
 ?B: last time we got so close | i hope this is the night | this time we win
 A: pst me | pst if you know more healers | ok
 
@@ -933,7 +933,7 @@ A: not me, i have work | i will take the weekend shift | ok who volunteers. anyo
 @role C type=*
 A: anyone in spraggon den? | spraggon den check | {q} is spraggon den full tonight
 B: we have the pit spraggons, the rest looks open | one group in there, plenty of room | the cutters are free, we are on the sprites
-A: ty, coming down | ok heading over | cool
+A: ty | ok, good to know | cool
 ?C: spraggon den, where every hib grew up | i must have killed a thousand spraggons there | love that place
 B: watch the root worms, they add | careful with the earth sprites | dont pull past our group pls
 A: will do | ok | noted, thanks

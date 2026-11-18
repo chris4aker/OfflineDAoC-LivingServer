@@ -74,6 +74,7 @@ jobs:
         run: |
           python tools/bot-voices/build_corpus.py --verify
           python tools/bot-voices/check_runtime_names.py
+          python tools/bot-voices/debates_doc.py --check
           python -m unittest discover -s tools/bot-voices/tests -v
           python -m unittest discover -s tools/claude-version/tests -v
           python -m unittest discover -s tools/perf/tests -v

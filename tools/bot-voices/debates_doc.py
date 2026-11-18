@@ -1,8 +1,10 @@
 """Write docs/bot-voices/DEBATES.md: every debate scene in corpus.json, readable for review.
 
-  python tools/bot-voices/debates_doc.py
+  python tools/bot-voices/debates_doc.py           (write it)
+  python tools/bot-voices/debates_doc.py --check   (exit 1 when DEBATES.md is out of date with corpus.json; CI)
 """
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -37,7 +39,8 @@ def main():
             minutes = (spoken * 7 + sum(b.get('pause', 0) for b in s['beats'])) / 60
             out += [f'### {s["id"].replace("_", " ")}', '',
                     f'Levels {s["levels"][0]}–{s["levels"][1]} · {spoken} lines · about {minutes:.0f} min' +
-                    (f' · roles: {roles}' if roles else ''), '']
+                    (f' · roles: {roles}' if roles else '') +
+                    (f' · plays only when: {", ".join(s["needs"])}' if s.get('needs') else ''), '']
             for b in s['beats']:
                 if b['role'] == '~':
                     out.append(f'- *(quiet for {b["pause"]} seconds)*')
@@ -46,7 +49,14 @@ def main():
                 alts = b.get('variants') or [b['text']]
                 out.append(f'- **{b["role"]}:**{opt} ' + (alts[0] if len(alts) == 1 else ' / '.join(f'"{v}"' for v in alts)))
             out.append('')
-    OUT.write_text('\n'.join(out), encoding='utf-8')
+    text = '\n'.join(out)
+    if '--check' in sys.argv[1:]:
+        if not OUT.exists() or OUT.read_text(encoding='utf-8') != text:
+            print(f'{OUT.relative_to(ROOT)} is out of date: run python tools/bot-voices/debates_doc.py')
+            sys.exit(1)
+        print(OUT.relative_to(ROOT), 'is up to date,', len(scenes), 'scenes')
+        return
+    OUT.write_text(text, encoding='utf-8')
     print('wrote', OUT.relative_to(ROOT), len(scenes), 'scenes')
 
 

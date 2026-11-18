@@ -223,6 +223,28 @@ From the owner's PC log of build `b1b6846` (2026-11-18 06:33-08:55). None of thi
   `played_check_log.py` judges them (`chat` / `promises`, docs/PLAYED-CHECK-1.2.md). The replies that call the gate come with
   the other chat fixes. Tests: `UT_ChatPromises`, `test_played_check_log.py`.
 
+
+### Scenes, threads and debates (corpus-b1; tests only, not yet seen on the owner's PC)
+
+- **Live keep, relic and Darkness Falls scenes** (owner, 2026-11-18): a scene can now need a realm news flag
+  (`defending`, `attacking`, `keep_lost_recent`, `keep_won_recent`, `relic_lost_recent`, `relic_won_recent`,
+  `df_changed_recent`, `df_ours`). It plays only while that is true, comes before ordinary talk, may start 8 minutes
+  after the last scene instead of waiting 30-45, and names the news's own keep, relic and enemy. 18 live scenes
+  (`scenes_live.lines`): the nine that had been flattened into talk, rewritten so nobody claims to be at the keep or to
+  be riding there, and nine new ones (any realm and each realm). The talk versions stay for the rest of the time.
+- **Who plays a scene:** a scene with a band under 12 levels is cast inside it (Thidranki 20-24 was said by level 26-28
+  bots on 11/18 01:36); roleplayers are no longer cast (their style rewrote a scene line as "... forgive me everyone,
+  huzzah!", 11/18 02:15); roles that claim a class ability, a level or a craft now require it; the shared `{dungeon}`
+  follows the first speaker's level.
+- **Lines:** the audit's 8 replacement scenes and 155 line edits; no role letters spoken as names, no `{q}` before a
+  statement, Cabalist, Healer and Shaman facts corrected, Darkness Falls no longer "throws you out", `/realm` and
+  `/relic` answer the questions they answer, no enemy heard in /faction, clock times and dinner only in scenes with a
+  time flag, live rez requests and train alarms turned into past events, group talk told as stories, no "inv sent",
+  "we have a spot" or "omw" (nothing makes a scene bot travel), {enemy} used as a people word, contractions in the six files that
+  had none, 22 of the 62 debates end on B's or C's line, the third copy of eight class questions retired.
+- **Docs:** DESIGN.md section 3 matches the code; DEBATES.md is regenerated and CI checks it
+  (`debates_doc.py --check`).
+
 - **Field talk, market and realm event phrasing (engineer E2).** Nothing here has been seen
   on the owner's PC yet; every item is covered by `UT_ChatFieldTalkAudit12`.
 - Out-of-era words gone from generated lines: "o/", the bare "rip", "dps" (now "nuker"), towers, "rn", "the map" (/realm),
@@ -276,6 +298,7 @@ Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leof
 - Tests: `UT_CrafterRepliesFit` (each case above, with every corpus summary and break line filled from the reply's slots) and
   `UT_CrafterCommerce` (a held piece is kept from another buyer, the trade-window goods and the Exchange; released when it lapses
   or is called off; the break tell comes once, only to a player in the game, only with an open deal).
+
 
 ## Bot chat audit fixes (1.2, 2026-11-18; tests only)
 

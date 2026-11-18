@@ -144,6 +144,12 @@ def places_in(text):
             t = pattern.sub(' ', t)
     return found
 TIME_FLAGS = {'day', 'evening', 'night'}
+# A live scene (owner, 2026-11-18: "if they are the best scenes then let's double the number written") needs a realm news
+# flag and plays only while it is true: AutonomousChatNews.For sets these for the whole realm, with the keep, relic and
+# enemy of the news as the scene's {keep}, {relic} and {enemy} (AutonomousBotDebates.LiveSlots).
+SCENE_NEWS_FLAGS = {'defending', 'attacking', 'keep_news', 'keep_lost_recent', 'keep_won_recent', 'relic_lost_recent',
+                    'relic_won_recent', 'raid_won_recent', 'raid_wiped_recent', 'df_changed_recent', 'df_ours'}
+SCENE_FLAGS = TIME_FLAGS | SCENE_NEWS_FLAGS
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
            'trading', 'help', 'farewell', 'ignoreoutofworld',
            # 0.36-se.4: short chat players type
@@ -457,10 +463,11 @@ def parse_file(path, problems):
             value = value.split(' #', 1)[0].strip()
             if key == 'scene':
                 scene = dict(id=value, topic=tags['topic'], realm=tags['realm'], levels=tags['levels'], roles={},
-                             beats=[], where=where, needs=[n for n in tags['needs'] if n.lstrip('!') in TIME_FLAGS])
-                bad = [n for n in tags['needs'] if n.lstrip('!') not in TIME_FLAGS]
+                             beats=[], where=where, needs=[n for n in tags['needs'] if n.lstrip('!') in SCENE_FLAGS])
+                bad = [n for n in tags['needs'] if n.lstrip('!') not in SCENE_FLAGS]
                 if bad:
-                    problems.append(f'{where}: a scene can only need a time of day (day, evening, night), not {bad}')
+                    problems.append(f'{where}: a scene can only need a time of day or a realm news flag '
+                                    f'({", ".join(sorted(SCENE_FLAGS))}), not {bad}')
                 scenes.append(scene)
             elif key == 'role':
                 if scene is None:
