@@ -169,6 +169,15 @@ namespace DOL.UnitTests
         private static float Flat(Vector3 a, Vector3 b) => Vector2.Distance(new(a.X, a.Y), new(b.X, b.Y));
         private static Vector3 At(GameObject o) => new(o.X, o.Y, o.Z);
 
+        private static string Source(params string[] parts)
+        {
+            string dir = TestContext.CurrentContext.TestDirectory;
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(new[] { dir, "GameServer" }.Concat(parts).ToArray())))
+                dir = System.IO.Path.GetDirectoryName(dir);
+            Assume.That(dir, Is.Not.Null, "the sources are next to the tests");
+            return System.IO.File.ReadAllText(System.IO.Path.Combine(new[] { dir, "GameServer" }.Concat(parts).ToArray())).Replace("\r\n", "\n");
+        }
+
         // ---- a patrol's next seconds -------------------------------------------------------------------------------
 
         [Test]
@@ -370,6 +379,108 @@ namespace DOL.UnitTests
             Assert.That(T.ClearsAgainBeforePull(court), Is.False);
             var ilron = Npc<TestIlron>(0, 0, 0);
             Assert.That(T.ClearsAgainBeforePull(ilron), Is.False, "only where a rule says so (and in Darkness Falls, as before)");
+        }
+
+        // ---- build 5378dbe (owner's PC, 2026-11-17): the walk from the muster, the re-clear, CC immunity -------------------
+
+        private static readonly Vector3 CryptLordCorner = new(28461, 40166, 15373);
+        private static readonly Vector3 WesternForerunner = new(26744, 39884, 15373);
+        /// <summary>The raid's walk from its muster (29617,41288) to the western forerunner, by 28081,40298 (MUSTER_GUARDED).</summary>
+        private static readonly Vector3[] ForerunnerWalk = [new(29617, 41288, 15375), new(28081, 40298, 15375), WesternForerunner];
+
+        [Test]
+        public void HisPatrolMustKeepClearOfTheWalkFromTheMusterNotOnlyOfTheCourtMonster()
+        {
+            // At his corner P1 heading north to P2: 1,740 from the forerunner and walking away, so the old window was clear...
+            Assert.That(T.CourtPullApproach(CryptLordCorner, 1, WesternForerunner), Is.GreaterThanOrEqualTo(T.CourtPullClearance));
+            Assert.That(T.CourtPullWait(CryptLordCorner, 1, WesternForerunner, null), Is.Null, "the 5378dbe check: a \"clean\" pull");
+            // ...but the walk from the muster crosses his leg P1-P2 (28461,40543) and passes 400 from the corner: he aggroes (400).
+            Assert.That(T.DistanceToWalk(CryptLordCorner, ForerunnerWalk), Is.LessThan(T.CourtWalkClearance));
+            Assert.That(T.CourtWalkApproach(CryptLordCorner, 1, ForerunnerWalk), Is.LessThan(T.CryptLordWalkAggro));
+            Assert.That(T.CourtPullWait(CryptLordCorner, 1, WesternForerunner, ForerunnerWalk), Does.Contain("the raid's walk from the muster"));
+            // The rule wires it: with the walk, the route's PullWait for the court monster waits.
+            var (lord, court, live) = CryptLordRoom((int)WesternForerunner.X, (int)WesternForerunner.Y);
+            Move(lord, CryptLordCorner.X, CryptLordCorner.Y, CryptLordCorner.Z);
+            T.CryptLordNextPoint = _ => 1;
+            Assert.That(T.PullWait(court, live, 1_000), Is.Null, "no muster yet: the court check alone, as before");
+            Assert.That(T.PullWait(court, live, 1_000, ForerunnerWalk), Does.Contain("the raid's walk from the muster"));
+            Assert.That(T.CourtPullLine(court, live, ForerunnerWalk), Does.Contain("lord=28461,40166").And.Contain("walkClosest="));
+        }
+
+        [Test]
+        public void TheWalkWindowStillOpensOnHisFarSide()
+        {
+            // Past the walk on his east leg, walking north away from it, then along the far side: clear of both.
+            Vector3 east = new(28461, 41300, 15373);
+            Assert.That(T.CourtPullWait(east, 1, WesternForerunner, ForerunnerWalk), Is.Null);
+            Assert.That(T.CourtWalkHorizonSeconds(ForerunnerWalk), Is.GreaterThan(T.CourtPullHorizonSeconds), "the walk's time comes on top");
+            // Somewhere on his loop the window opens (else the 20-minute hold lapse would pull without any timing).
+            Vector3[] loop = T.PredictPatrol(T.CryptLordPatrol[^1], T.CryptLordPatrol, 0, T.CryptLordWalkSpeed, T.CryptLordLoopSeconds());
+            int open = 0;
+            for (int s = 0; s < loop.Length; s++)
+            {
+                // The point he walks to from that spot: the first loop corner ahead of him on the prediction.
+                int next = NextCorner(loop[s]);
+                if (T.CourtPullWait(loop[s], next, WesternForerunner, ForerunnerWalk) == null) open++;
+            }
+            Assert.That(open, Is.GreaterThanOrEqualTo(5), $"open {open} of {loop.Length} s");
+            TestContext.Out.WriteLine($"window open {open} of {loop.Length} s of his loop");
+        }
+
+        /// <summary>The loop corner he walks to from a spot on his loop (the leg it lies on).</summary>
+        private static int NextCorner(Vector3 p)
+        {
+            Vector3[] c = T.CryptLordPatrol;
+            int best = 0;
+            float bestD = float.MaxValue;
+            for (int i = 0; i < c.Length; i++)
+            {
+                Vector3 a = c[(i - 1 + c.Length) % c.Length], b = c[i];
+                float d = T.DistanceToWalk(p, [a, b]);
+                if (d < bestD - 0.01f && Vector3.Distance(p, b) > 0.5f) { bestD = d; best = i; }
+            }
+            return best;
+        }
+
+        [Test]
+        public void AgmundrsPackIsClearedAgainBeforeHeIsPulledAgain()
+        {
+            UseRegion(160);
+            var agmundr = Npc<TestAgmundr>(15037, 50114, 12408);
+            var depredator = Npc<Mob>(16418, 49908, 12059); depredator.PackageID = T.AgmundrLinkedPackage;
+            var seer = Npc<Mob>(17208, 50280, 12059); seer.PackageID = T.AgmundrLinkedPackage;
+            var stranger = Npc<Mob>(16000, 49000, 12059);
+            var live = new List<GameNPC> { agmundr, depredator, seer, stranger };
+            Assert.That(T.ClearsAgainBeforePull(agmundr), Is.True, "PC 5378dbe: attempt 2 met all six of his hrimthursa");
+            Assert.That(T.ClearsAgainBeforePull(depredator), Is.False);
+            // The route's re-clear before the pull (RealmRaidDungeonRoute.ReclearBeforePull): the nearest living pack member.
+            Vector3 front = new(15210, 50014, 12408);
+            Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(agmundr, live, _ => true, front), Is.SameAs(depredator));
+            Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(agmundr, live, n => n != depredator, front), Is.SameAs(seer),
+                "one the route set aside is retried later");
+            depredator.Dead = true; seer.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(agmundr, live, _ => true, front), Is.Null, "his pack is dead: he is pulled");
+            depredator.Dead = false;
+            agmundr.Fighting = true;
+            Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(agmundr, live, _ => true, front), Is.Null, "his fight is on");
+            string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs");
+            Assert.That(route, Does.Contain("EpicEncounterTactics.ClearsAgainBeforePull(_target)) &&"));
+            Assert.That(route, Does.Contain("ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front) is { } back"));
+        }
+
+        [Test]
+        public void NoMezOrStunGoesOnTheCcImmuneCryptLord()
+        {
+            var (lord, _, _) = CryptLordRoom(29714, 41493);
+            Assert.That(lord.HasAbility(Abilities.CCImmunity), Is.True);
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(true, true, false, false, true), Is.True, "mez");
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(true, false, false, false, true), Is.True, "stun");
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(false, true, false, false, false), Is.False, "a mez on a plain add");
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(false, false, false, false, true), Is.False, "a protecting stun");
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(false, false, false, false, false), Is.True, "a stun protects nobody");
+            Assert.That(DOL.AI.Brain.BotBrain.RefusesAddControl(false, true, true, false, true), Is.True, "mez immune now");
+            string control = Source("bots", "BotBrain.PveAddControl.cs");
+            Assert.That(control, Does.Contain("bool ccImmune = add.HasAbility(Abilities.CCImmunity);"));
         }
 
         // ---- a route rule never maps a fighting monster onto the raid's target ---------------------------------------

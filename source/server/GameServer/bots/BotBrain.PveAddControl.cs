@@ -29,6 +29,14 @@ namespace DOL.AI.Brain
         private static bool IsAddControlSpell(Spell spell) =>
             spell?.SpellType is eSpellType.Mesmerize or eSpellType.Mez or eSpellType.Stun;
 
+        /// <summary>
+        /// A mez or stun is not cast on this add (pure): it is immune to crowd control (<paramref name="ccImmune"/>, the
+        /// CCImmunity ability: the Crypt Lord and other epic bosses), immune to this kind now, or a stun would protect nobody.
+        /// Owner's PC, build 5378dbe, 2026-11-17: Minstrels cast stun or mez on the CC-immune Crypt Lord four times.
+        /// </summary>
+        public static bool RefusesAddControl(bool ccImmune, bool isMez, bool mezImmune, bool stunImmune, bool protects) =>
+            ccImmune || (isMez ? mezImmune : stunImmune || !protects);
+
         private bool TryPveAddControl()
         {
             GameBot bot = BotBody;
@@ -93,6 +101,7 @@ namespace DOL.AI.Brain
                     add.effectListComponent.ContainsEffectForEffectType(eEffect.NPCMezImmunity);
                 bool stunImmune = add.effectListComponent.ContainsEffectForEffectType(eEffect.StunImmunity) ||
                     add.effectListComponent.ContainsEffectForEffectType(eEffect.NPCStunImmunity);
+                bool ccImmune = add.HasAbility(Abilities.CCImmunity);
                 // A stun is protection: only for an add hitting someone who is fighting something else.
                 bool protects = add.TargetObject is GameLiving victim && victim.TargetObject != add;
 
@@ -102,7 +111,7 @@ namespace DOL.AI.Brain
                              .ThenByDescending(spell => spell.Level))
                 {
                     bool isMez = spell.SpellType != eSpellType.Stun;
-                    if (isMez ? mezImmune : (stunImmune || !protects))
+                    if (RefusesAddControl(ccImmune, isMez, mezImmune, stunImmune, protects))
                         continue;
                     if (spell.HasRecastDelay && spell.RecastDelay >= EmergencyRecastMilliseconds && !emergency)
                         continue;

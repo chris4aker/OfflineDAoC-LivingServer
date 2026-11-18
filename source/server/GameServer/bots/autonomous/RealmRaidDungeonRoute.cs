@@ -142,7 +142,17 @@ namespace DOL.GS
         /// it has held for <see cref="PullWaitLimitMilliseconds"/>: the raid then pulls as it would without the tactic.</summary>
         private string HeldByTactic(GameNPC npc, IReadOnlyList<GameNPC> live, long now)
         {
-            string why = EpicEncounterTactics.PullWait(npc, live, now);
+            // The muster's own target is timed against the raid's walk from the muster to it too (the Crypt Lord's court:
+            // EpicEncounterTactics.CourtPullWindow).
+            IReadOnlyList<Vector3> walk = npc != null && npc == _target && _musterTarget == _target ? MusterWalk(npc) : null;
+            string why = EpicEncounterTactics.PullWait(npc, live, now, walk);
+            if (why == null && walk != null && now >= _nextCourtWindowLog &&
+                EpicEncounterTactics.CourtPullLine(npc, live, walk) is string court)
+            {
+                _nextCourtWindowLog = now + 30_000;
+                log.Info($"REALM_EXPEDITION_COURT_WINDOW region={_region} target=\"{npc.Name}\" " +
+                         $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} {court} verdict=clear");
+            }
             if (why == null) { _pullWaitSince.Remove(npc); return null; }
             if (!_pullWaitSince.TryGetValue(npc, out long since)) { _pullWaitSince[npc] = now; return why; }
             if (!PullWaitExpired(since, now)) return why;
@@ -152,6 +162,32 @@ namespace DOL.GS
                 log.Info($"REALM_EXPEDITION_PULL_WAIT_EXPIRED region={_region} target=\"{npc.Name}\" minutes={(now - since) / 60_000} reason=\"{why}\"");
             }
             return null;
+        }
+
+        private long _nextCourtWindowLog;
+        private (Vector3 From, Vector3 To, Vector3[] Walk) _musterWalk;
+
+        /// <summary>The raid's walk from its muster to <paramref name="target"/>: the navmesh path from the muster to the front
+        /// (a straight line without one), then the target's spot; worked out again only when the muster or the front moves.</summary>
+        private IReadOnlyList<Vector3> MusterWalk(GameNPC target)
+        {
+            Vector3 from = _musterPoint, to = Front, at = new(target.X, target.Y, target.Z);
+            if (_musterWalk.Walk == null || _musterWalk.From != from || _musterWalk.To != to)
+            {
+                var points = new List<Vector3> { from };
+                var nav = PathfindingProvider.Instance;
+                Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)from.X, (int)from.Y);
+                if (nav != null && zone != null && nav.IsAvailable && nav.HasNavmesh(zone))
+                {
+                    Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
+                    PathfindingResult path = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, nodes);
+                    if (path.Status == PathfindingStatus.PathFound || path.Status == PathfindingStatus.PartialPathFound)
+                        for (int i = 0; i < Math.Min(path.NodeCount, nodes.Length); i++) points.Add(nodes[i].Position);
+                }
+                points.Add(to);
+                _musterWalk = (from, to, points.ToArray());
+            }
+            return [.. _musterWalk.Walk, at];
         }
 
         /// <summary>A tactic's hold that began at <paramref name="since"/> no longer holds (pure; long.MinValue = already expired).</summary>
@@ -734,6 +770,10 @@ namespace DOL.GS
         public Vector3[] ReturnWalk() => WalkBack(PathfindingProvider.Instance);
         /// <summary>The raid is in an attempt on its encounter (a return wave's helpers stay with it).</summary>
         public bool InAttempt => _musterEngaged;
+        /// <summary>The raid holds at its muster (or regroup) for its target, out of an attempt: its idle raiders are the muster,
+        /// so a return wave gets no helpers from it (AutonomousRealmRaid.PulseReturnWalk; owner's PC, build 5378dbe, Avalon:
+        /// 8-15 sent back as helpers 11 times while the muster for Dra'argus stood at 37 of 44).</summary>
+        public bool Mustering => Hold && _target != null && _musterTarget == _target && !_musterEngaged;
         public bool Complete { get; private set; }
         public string Status { get; private set; } = "Entering dungeon";
         public GameNPC[] FinalBosses => _finals.Values.ToArray();
@@ -1465,9 +1505,7 @@ namespace DOL.GS
             if ((_region == AutonomousDarknessFallsPolicy.RegionId || EpicEncounterTactics.ClearsAgainBeforePull(_target)) &&
                 !_target.InCombat && now >= _nextReclearCheck &&
                 (_nextReclearCheck = now + 10_000) > 0 &&
-                (_live ?? []).Where(n => n != _target && _routeRetry.GetValueOrDefault(n) <= now &&
-                                         EpicEncounterTactics.ClearFirstOwner(n, _live) == _target)
-                    .OrderBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).FirstOrDefault() is { } back)
+                ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front) is { } back)
             {
                 SwitchByTactic(back, $"clear-first of \"{_target.Name}\" is up again: cleared before the pull", participants, now);
                 return true;
@@ -1512,6 +1550,14 @@ namespace DOL.GS
             }
             return true;
         }
+
+        /// <summary>The living monster that would join <paramref name="target"/>'s fight (EpicEncounterTactics.ClearFirstOwner)
+        /// the route clears before the pull, nearest the front first; null: none (pure but for the rules). Asked for a boss out
+        /// of combat whose rule clears again before the pull (EpicEncounterTactics.ClearsAgainBeforePull) and in Darkness Falls.</summary>
+        public static GameNPC ReclearBeforePull(GameNPC target, IReadOnlyList<GameNPC> live, Func<GameNPC, bool> mayTake, Vector3 front) =>
+            target == null || target.InCombat ? null
+                : (live ?? []).Where(n => n != target && (mayTake?.Invoke(n) ?? true) && EpicEncounterTactics.ClearFirstOwner(n, live) == target)
+                    .OrderBy(n => WalkEstimate(front, new(n.X, n.Y, n.Z))).FirstOrDefault();
 
         /// <summary>A front further than this from an encounter out of combat is not where the encounter is: pulls that walk
         /// there never reach it (about the aggro range of the big epics, and well past any approach the resolver snaps to).</summary>
@@ -1594,7 +1640,10 @@ namespace DOL.GS
             GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToArray();
             Zone zone = WorldMgr.GetRegion(_region)?.GetZone((int)Front.X, (int)Front.Y);
             Vector3? body = TryRegroupFront(inside, out Vector3 main) ? main : null;
-            MusterPlan plan = PlanMuster(nav, zone, Front, body, boss, standOff, UntargetedBossDangers(), _musterReaches, AggroOf(_target));
+            // Against what the stranded-regroup guard refuses too (RestingDangers): a muster it refuses strands the raid's
+            // returners (owner's PC, build 5378dbe, Galladoria: 123 raiders held ~18 minutes at the way in).
+            MusterPlan plan = PlanMuster(nav, zone, Front, body, boss, standOff, MusterDangersOf(UntargetedBossDangers(), RestingDangers()),
+                _musterReaches, AggroOf(_target));
             if (plan.By != null)
             {
                 if (!plan.Unsafe)
@@ -1672,9 +1721,22 @@ namespace DOL.GS
             return dangers;
         }
 
+        /// <summary>
+        /// The dangers a muster stays out of (pure): every living boss but the target's fight (<see cref="UntargetedBossDangers"/>),
+        /// and everything the stranded-regroup guard refuses (<see cref="RestingDangersOf"/>: named, finals, linked packs).
+        /// Owner's PC, build 5378dbe, 2026-11-18, Galladoria: the muster for an olcasar warrior (53490,43926) was placed against
+        /// the bosses only, the guard refused it every minute from 23:45:51 to 00:01:19 (REGROUP_REFUSED hold=True) and 123 of
+        /// 124 raiders stood ~18 minutes on the landing at 32072,29524, which only a stranded regroup leaves. Now a muster is
+        /// never placed where stranded raiders can't be sent; its edge is the full radius, so it is clear of the guard's strict
+        /// one (<see cref="FloorSnapTolerance"/> inside) too.
+        /// </summary>
+        public static List<BossDanger> MusterDangersOf(IEnumerable<BossDanger> untargeted, IEnumerable<BossDanger> resting) =>
+            [.. untargeted ?? [], .. resting ?? []];
+
         // ---- where raiders stand while the raid holds, and where a stranded raider is moved (owner's PC, 2026-11-17) ----------
 
         private IReadOnlyList<BossDanger> _postDangers, _restingDangers;
+        private GameNPC _restingDangersFor;
 
         /// <summary>A danger's edge is this soft for posts and stranded regroups: a point is inside only when it is more than this
         /// within the sphere (the floor snap moves a point up to 48 across; a muster placed at exactly aggro + 300, Summoner Roesia's
@@ -1736,7 +1798,9 @@ namespace DOL.GS
         /// route turn, and only when asked.</summary>
         private IReadOnlyList<BossDanger> RestingDangers()
         {
-            if (_restingDangers != null) return _restingDangers;
+            // Worked out for the target it was asked for (the muster asks on the turn its target is set).
+            if (_restingDangers != null && _restingDangersFor == _target) return _restingDangers;
+            _restingDangersFor = _target;
             IReadOnlyList<GameNPC> live = _live;
             var candidates = new List<DangerCandidate>();
             GameNPC targetOwner = _target == null ? null : EpicEncounterTactics.ClearFirstOwner(_target, live);
@@ -1784,19 +1848,57 @@ namespace DOL.GS
         /// <summary>A point inside one of the stranded-regroup dangers (<see cref="RestingDangers"/>, strict edge).</summary>
         public bool InRegroupDanger(Vector3 point) => InBossDangerStrict(point, RestingDangers());
 
+        /// <summary>
+        /// Nobody stranded is moved yet (pure): the raid has just picked a mustered encounter (<paramref name="musteredEncounter"/>)
+        /// that rests, and its muster is not set (<paramref name="musterSet"/> false), so the route is not holding and its front is
+        /// the approach to the resting target, which the guard leaves out as the raid's own. Owner's PC, build 5378dbe,
+        /// 2026-11-18: 34 stranded raiders were moved to 31246,40738, 200 from the resting Conservator, in the 10 s before his
+        /// muster (00:01:32-00:01:42; he aggroed at 00:01:44), and 2 to 27655,54721, 209 from the resting Xaga (00:08:52), one of
+        /// whom she killed 46 s later. The next route turn sets the muster and holds there, and they are sent to it.
+        /// </summary>
+        public static bool AwaitsMuster(bool holding, bool targetResting, bool musteredEncounter, bool musterSet) =>
+            !holding && targetResting && musteredEncounter && !musterSet;
+
+        /// <summary>The danger <paramref name="point"/> lies deepest in (strict edge, <see cref="InBossDangerStrict"/>), or null (pure).</summary>
+        public static BossDanger? RefusingDanger(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            (dangers ?? []).Where(d => Vector3.Distance(point, d.At) < d.Radius - FloorSnapTolerance)
+                .OrderBy(d => Vector3.Distance(point, d.At) - d.Radius).Select(d => (BossDanger?)d).FirstOrDefault();
+
+        /// <summary>The refusing danger for a log line: its name, spot, the point's distance and the strict edge (pure).</summary>
+        public static string RefusalText(Vector3 point, IEnumerable<BossDanger> dangers) =>
+            RefusingDanger(point, dangers) is { } d
+                ? $"{d.Name}@{(int)d.At.X},{(int)d.At.Y},{(int)d.At.Z}/distance={(int)Vector3.Distance(point, d.At)}/edge={(int)(d.Radius - FloorSnapTolerance)}"
+                : "none";
+
         /// <summary>The point a stranded raider is moved to now (<see cref="StrandedRegroupPoint"/>); false: none is clear.</summary>
         public bool TryStrandedRegroupPoint(out Vector3 point)
         {
+            point = default;
+            long now = GameLoop.GameLoopTime;
+            if (_target != null && AwaitsMuster(Hold, !_target.InCombat, IsMusteredEncounter(_target), _musterTarget == _target))
+            {
+                if (now >= _nextRegroupRefusedLog)
+                {
+                    _nextRegroupRefusedLog = now + 60_000;
+                    log.Warn($"REALM_EXPEDITION_REGROUP_REFUSED region={_region} target=\"{_target.Name}\" hold={Hold} " +
+                             $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} " +
+                             $"reason=\"the muster for the resting {_target.Name} is not set yet; the stranded raider is not moved to its front\"");
+                }
+                return false;
+            }
+            IReadOnlyList<BossDanger> dangers = RestingDangers();
             Vector3? muster = _target != null && _musterTarget == _target ? _musterPoint : null;
-            Vector3? found = StrandedRegroupPoint(Hold, Front, Destination, muster, RestingDangers());
+            Vector3? found = StrandedRegroupPoint(Hold, Front, Destination, muster, dangers);
             point = found ?? default;
             if (found.HasValue) return true;
-            long now = GameLoop.GameLoopTime;
             if (now >= _nextRegroupRefusedLog)
             {
                 _nextRegroupRefusedLog = now + 60_000;
+                Vector3 first = Hold ? Destination : Front;
                 log.Warn($"REALM_EXPEDITION_REGROUP_REFUSED region={_region} target=\"{_target?.Name}\" hold={Hold} " +
                          $"front={(int)Front.X},{(int)Front.Y},{(int)Front.Z} destination={(int)Destination.X},{(int)Destination.Y},{(int)Destination.Z} " +
+                         $"by=\"{RefusalText(first, dangers)}\" " +
+                         $"musterBy=\"{(muster is Vector3 m ? RefusalText(m, dangers) : "no muster")}\" " +
                          $"reason=\"every regroup point is within a resting boss's aggro + {(int)UntargetedBossMargin}; the stranded raider is not moved\"");
             }
             return false;

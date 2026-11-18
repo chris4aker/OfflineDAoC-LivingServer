@@ -398,13 +398,16 @@ public static class RealmRaidReturnWave
     /// step is where the raid stands; <paramref name="bodyCanCome"/>, <paramref name="bodyComing"/>: the main body can come
     /// back to meet it, or is on its way. It waits until it stands together; then it fights what is in its way (a wave
     /// smaller than a party's worth holds and calls the main body instead, when it can come), goes on to its next step, or
-    /// has arrived.
+    /// has arrived. A wave that has called for help <see cref="MaximumHelps"/> times (<paramref name="helpsSoFar"/>) calls no
+    /// more: it waits only for helpers already on their way, else it fights (owner's PC, build 5378dbe, 2026-11-18, Avalon: a
+    /// wave of 2-3 called the main body back 11 times in 53 minutes, helps=9 against a cap of 2, and never met it).
     /// </summary>
     public static WaveMove Walk(int living, int atStep, long stepWaitedMilliseconds, bool monsterAhead, bool lastStep,
-        bool bodyCanCome, bool bodyComing)
+        bool bodyCanCome, bool bodyComing, int helpsSoFar = 0)
     {
         if (!Grouped(living, atStep, stepWaitedMilliseconds)) return WaveMove.Wait;
-        if (monsterAhead) return living < MinimumWave && (bodyCanCome || bodyComing) ? WaveMove.CallHelp : WaveMove.Fight;
+        if (monsterAhead)
+            return living < MinimumWave && (bodyComing || bodyCanCome && helpsSoFar < MaximumHelps) ? WaveMove.CallHelp : WaveMove.Fight;
         return lastStep ? WaveMove.Arrived : WaveMove.Advance;
     }
 
@@ -463,9 +466,12 @@ public static class RealmRaidReturnWave
         return help;
     }
 
-    /// <summary>The main body can come back to meet a wave (pure): it is not fighting an encounter's attempt, and a party's
-    /// worth of it stands idle inside.</summary>
-    public static bool BodyCanCome(int idleInside, bool raidFighting) => !raidFighting && idleInside >= MinimumWave;
+    /// <summary>The main body can come back to meet a wave (pure): it is not fighting an encounter's attempt, it is not
+    /// mustering (<paramref name="mustering"/>: its idle raiders are the muster; owner's PC, build 5378dbe, Avalon: the muster
+    /// for Dra'argus stood at 37 of 44 for ten minutes while 8-15 of it were away as helpers), and a party's worth of it
+    /// stands idle inside.</summary>
+    public static bool BodyCanCome(int idleInside, bool raidFighting, bool mustering = false) =>
+        !raidFighting && !mustering && idleInside >= MinimumWave;
 
     /// <summary>How many of the main body come back to meet a wave of <paramref name="waveLiving"/> (whole parties until this).</summary>
     public static int HelpersWanted(int waveLiving) => Math.Clamp(waveLiving, MinimumWave, MaximumHelpers);
