@@ -356,11 +356,11 @@ The plan is [CRAFTING-AND-ECONOMY.md](CRAFTING-AND-ECONOMY.md). Must rows since 
 | The economy doesn't run away | must | On `19e7037` the ledger wrote every hour (`ECON_SUPPLY`, `ECON_FLOWS`). The sink governor's smoothed ratio stayed at 0.02-0.04 against its target of 0.5 (`ECON_GOVERNOR`). The full-day report is pending. Open |
 | No bot strips its own gear | must | On `19e7037`: 0 blocked in every hourly check, 152 to 209 checks an hour (`ECON_UNDRESS_GUARD`, `blocked_since_start=0`). Open until the full-day report |
 | You craft as a player | must | Not done |
-| You trade with a crafter bot | must | Not done |
+| You trade with a crafter bot | must | Tried on `b1b6846` (2026-11-18 07:33-07:36, Testrunner by /send): "what do you make?" was cut mid-word, "can you make a fine alloy needle mace" offered a different stock piece, and an agreed stock "deal" lapsed after 15 minutes with no log line. The piece is now set aside until the deal lapses (`ECON_PLAYER_ORDER outcome="stock_held"` / `"stock_released"`) and the crafter tells the player once at its break. Fixed by tests only (`UT_CrafterRepliesFit`); not yet seen working. No trade completed |
 | The launcher's Bot crafters card and economy page | must | Not done |
 | Crafted goods reach the Exchange |  | On `19e7037`: 7 crafted sales overnight (`ECON_FLOWS exchange_crafted`), of 434 Exchange sales. Under investigation |
 | Wear, repairs and potions |  | On `19e7037`: 12 `ECON_WEAR` and 10 `ECON_CONSUMABLE` lines. Wear rolls happen, but no item fell below 88% and none was repaired; no potion was bought or drunk (vials for weapon coats were bought). Open |
-| `/lscraft` |  | Not used on the PC |
+| `/lscraft` |  | Used on `b1b6846` (2026-11-18): `/lscraft craft` printed only "Crafter roster: registered." It now lists the crafters in the game (tests only) |
 
 ## Tales and lore
 

@@ -92,6 +92,18 @@ still on my list, the {item} should be done in {when}
 your {item} is done, ill be in town at my break in {when}
 {item} is ready, catch me at my break in {when}
 
+@topic craft_break_ready
+on my break now, in {zone}. come find me for the {item} and say yes
+break time, im in {zone}. still got your {item}, come say yes
+in {zone} on a break now. if you still want the {item} find me and say yes
+ok im on break in {zone}. come grab the {item}, just say yes when youre near
+{zone} for a bit, on my break. kept the {item} for you, say yes when you find me
+
+@topic craft_stock_cancelled
+ok, forget the {item} then
+np, the {item} goes back in my bag
+k, ill keep the {item} then
+
 @topic craft_ready_tell
 your {item} is done, im in {zone} for a bit, come by and say ready
 {item} is ready! in {zone} on a break, come get it and say ready

@@ -411,5 +411,101 @@ namespace DOL.UnitTests
             Assert.That(EconomyFlowClassifier.IsTransfer(EconomyFlowKind.CraftOrder), Is.False, "escrow is outside the supply");
             Assert.That(EconomyFlowClassifier.KeyName(EconomyFlowKind.PlayerTrade), Is.EqualTo("playertrade"));
         }
+
+        #region Stock held for a player (owner 2026-11-18: "Yes fix those issues")
+
+        /// <summary>A piece of the crafter's own work in its bag: stock it would sell.</summary>
+        private static DbInventoryItem OwnWork(GameBot crafter, string name = "Chain Hauberk")
+        {
+            var item = new DbInventoryItem
+            {
+                Id_nb = "p_" + name.Replace(' ', '_'), Name = name, Quality = 97, IsCrafted = true, Creator = crafter.Name, Level = 20,
+                Object_Type = (int)eObjectType.Chain, Item_Type = (int)eInventorySlot.TorsoArmor, MaxCondition = 100, Condition = 100,
+                MaxDurability = 100, Durability = 100, Price = 4_000,
+            };
+            item.ObjectId = Guid.NewGuid().ToString("N");
+            eInventorySlot slot = crafter.Inventory.FindFirstEmptySlot(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack);
+            Assert.That(crafter.Inventory.AddItem(slot, item), Is.True);
+            return item;
+        }
+
+        /// <summary>The player asks for the piece and says "deal" while the crafter hunts, far away: the sale is agreed for its break.</summary>
+        private (GameBot Crafter, GamePlayer Player, DbInventoryItem Piece) AgreeStockSale()
+        {
+            GameBot crafter = Crafter();
+            DbInventoryItem piece = OwnWork(crafter);
+            GamePlayer player = PlayerNamed("Testrunner", 100_000);
+            _online = player;
+            CrafterCommerce.AtBreak = _ => false;
+            CrafterCommerce.IsNear = (_, _) => false;
+            CrafterCommerce.FindBot = id => id == crafter.DatabaseID ? crafter : null;
+            CrafterTalk.Reply quote = CrafterCommerce.Handle(player, crafter, "wtb chain hauberk");
+            Assert.That(quote.Deal?.Kind, Is.EqualTo(CrafterTalk.DealKind.Stock), quote.Text);
+            CrafterTalk.Reply deal = CrafterCommerce.Handle(player, crafter, "deal");
+            Assert.That(deal.Topic, Is.EqualTo("craft_stock_meet"), deal.Text);
+            return (crafter, player, piece);
+        }
+
+        [Test]
+        public void AnAgreedStockSaleSetsThePieceAsideFromOtherBuyersAndTheExchange()
+        {
+            (GameBot crafter, GamePlayer player, DbInventoryItem piece) = AgreeStockSale();
+            Assert.That(CrafterCommerce.HoldsNow.Single().ObjectId, Is.EqualTo(piece.ObjectId));
+            Assert.That(CrafterCommerce.HoldsNow.Single().UntilUtc, Is.GreaterThan(DateTime.UtcNow.AddMinutes(60)), "until after the break");
+            Assert.That(EconomySeams.IsReserved(crafter, piece), Is.True, "never worn, listed on the Exchange or sold to a vendor");
+            Assert.That(CrafterCommerce.StockOf(crafter), Is.Empty, "not offered as stock to anyone else");
+            Assert.That(BotTrades.DefaultGoods(crafter).Select(g => g.Item), Has.No.Member(piece), "not in its trade-window goods");
+
+            GamePlayer other = PlayerNamed("Othername", 100_000);
+            CrafterTalk.Reply asked = CrafterCommerce.Handle(other, crafter, "wtb chain hauberk");
+            Assert.That(asked.Deal?.Kind, Is.Not.EqualTo(CrafterTalk.DealKind.Stock), "another buyer is quoted a commission, not the held piece");
+            CrafterTalk.Deal sneaky = new(CrafterTalk.DealKind.Stock, [], new CrafterTalk.StockPiece(piece.ObjectId, piece.Name, 97, 20, 4_000,
+                piece.Object_Type, piece.Item_Type), 4_000, 3_200, 800, 0, false, DateTime.UtcNow.AddMinutes(10));
+            CrafterCommerce.IsNear = (_, _) => true;
+            CrafterCommerce.AtBreak = _ => true;
+            Assert.That(CrafterCommerce.OpenStockTrade(crafter, other, sneaky), Is.Null, "no trade window for another player");
+        }
+
+        [Test]
+        public void AHeldPieceIsReleasedWhenTheDealLapsesOrIsCalledOff()
+        {
+            (GameBot crafter, GamePlayer player, DbInventoryItem piece) = AgreeStockSale();
+            CrafterCommerce.UtcNow = () => DateTime.UtcNow.AddHours(3);
+            CrafterCommerce.PulseHolds();
+            Assert.That(CrafterCommerce.HoldsNow, Is.Empty, "lapsed");
+            Assert.That(EconomySeams.IsReserved(crafter, piece), Is.False);
+            Assert.That(CrafterCommerce.StockOf(crafter).Select(p => p.ObjectId), Has.Member(piece.ObjectId), "back in stock, nothing lost");
+
+            CrafterCommerce.UtcNow = () => DateTime.UtcNow;
+            (crafter, player, piece) = AgreeStockSale();
+            CrafterTalk.Reply cancel = CrafterCommerce.Handle(player, crafter, "forget it");
+            Assert.That(cancel.Topic, Is.EqualTo("craft_stock_cancelled"), cancel.Text);
+            Assert.That(CrafterCommerce.HoldsNow, Is.Empty, "cancelled");
+            Assert.That(EconomySeams.IsReserved(crafter, piece), Is.False);
+        }
+
+        [Test]
+        public void TheBreakTellComesOnceOnlyToAnOnlinePlayerWithAnOpenDeal()
+        {
+            // No deal: nothing to say at the break.
+            CrafterCommerce.AtBreak = _ => true;
+            Assert.That(CrafterCommerce.PulseHolds(), Is.EqualTo(0));
+
+            (GameBot crafter, GamePlayer player, DbInventoryItem piece) = AgreeStockSale();
+            _tells.Clear();
+            Assert.That(CrafterCommerce.PulseHolds(), Is.EqualTo(0), "still hunting");
+            CrafterCommerce.AtBreak = _ => true;
+            _online = null;
+            Assert.That(CrafterCommerce.PulseHolds(), Is.EqualTo(0), "the player is not in the game");
+            _online = player;
+            Assert.That(CrafterCommerce.PulseHolds(), Is.EqualTo(1));
+            Assert.That(_tells.Single(), Does.StartWith("Aldwyn -> Testrunner: ").And.Contain("chain hauberk"));
+            Assert.That(CrafterCommerce.PulseHolds(), Is.EqualTo(0), "once per deal");
+            Assert.That(_tells, Has.Count.EqualTo(1));
+            Assert.That(CrafterCommerce.HoldsNow.Single().Told, Is.True);
+        }
+
+        #endregion
+
     }
 }

@@ -16,7 +16,7 @@ namespace DOL.GS.Commands
         "&lscraft",
         ePrivLevel.GM,
         "Crafting 2.0 in game: what is built, and what a bot or an item looks like to the economy",
-        "/lscraft craft - bot crafting: switches, the recipe catalog, the crafter roster (a crafter's next session, once WP4 is in)",
+        "/lscraft craft - bot crafting: switches, the recipe catalog, and the crafter roster: each realm's crafter gamebots in the game (name, order, skill, level, where, on a break or a task)",
         "/lscraft wtb - bots' want-to-buy posts (WP6)",
         "/lscraft commission - realm quartermaster commissions (WP5)",
         "/lscraft ledger - the realm's coin now (online gamebots) and the economy ledger (WP2)",
@@ -60,7 +60,7 @@ namespace DOL.GS.Commands
 
         private static IEnumerable<string> Answer(string part, GamePlayer gm, string[] words) => part switch
         {
-            "craft" => CraftLines(),
+            "craft" => CraftLines(RosterNow()),
             "wtb" => WtbLines(),
             "commission" => CommissionLines(),
             "ledger" => LedgerLines(OnlineBots(), EconomyFlows.Sink),
@@ -98,7 +98,14 @@ namespace DOL.GS.Commands
             return sign + string.Join(" ", parts);
         }
 
-        public static string[] CraftLines()
+        public static string[] CraftLines() => CraftLines(null);
+
+        /// <summary>A crafter on the roster as /lscraft craft lists it: in the game (with where it is) or not.</summary>
+        public sealed record RosterEntry(CrafterState State, bool Online, string Where, bool AtBreak);
+
+        /// <summary>The switches, the catalog and the roster. <paramref name="roster"/> null: the registered roster is not read
+        /// (the tests' pure call).</summary>
+        public static string[] CraftLines(IReadOnlyList<RosterEntry> roster)
         {
             var lines = new List<string>
             {
@@ -115,10 +122,73 @@ namespace DOL.GS.Commands
                 eCraftingSkill[] skills = Enum.GetValues<eCraftingSkill>().Where(s => s is not eCraftingSkill.NoCrafting and not eCraftingSkill._Last).Distinct().ToArray();
                 lines.Add("Recipe catalog: " + string.Join(", ", skills.Select(s => (s, n: catalog.ForSkill(s)?.Count ?? 0)).Where(p => p.n > 0).Select(p => $"{p.s} {p.n}")) + ".");
             }
-            lines.Add(IsBuilt(BotCrafters.Roster, typeof(BotCrafters))
-                ? "Crafter roster: registered."
-                : "Crafter roster: not built yet (WP4: DividedRealms' crafting and craft trip). No gamebot crafts; Crafter-type bots only take longer town breaks.");
+            if (!IsBuilt(BotCrafters.Roster, typeof(BotCrafters)))
+                lines.Add("Crafter roster: not built yet (WP4: DividedRealms' crafting and craft trip). No gamebot crafts; Crafter-type bots only take longer town breaks.");
+            else
+                lines.AddRange(RosterLines(roster ?? []));
             return lines.ToArray();
+        }
+
+        /// <summary>At most this many crafters are named a realm (the best skill first); the rest are counted.</summary>
+        public const int RosterNamesPerRealm = 12;
+
+        /// <summary>
+        /// The crafter roster by realm: how many crafters, how many in the game, and the ones in the game by name with their
+        /// order, primary skill, level and where they are. Seen on the owner's PC (build b1b6846, 2026-11-18): the line was only
+        /// "Crafter roster: registered." while crafters were working. Pure.
+        /// </summary>
+        public static string[] RosterLines(IReadOnlyList<RosterEntry> roster)
+        {
+            var lines = new List<string>();
+            RosterEntry[] all = (roster ?? []).Where(e => e?.State != null).ToArray();
+            if (all.Length == 0)
+            {
+                lines.Add($"Crafter roster: no crafter gamebots{(CraftingEconomyProperties.BOT_CRAFTERS ? "" : " (bot_crafters is off)")}.");
+                return lines.ToArray();
+            }
+            int online = all.Count(e => e.Online);
+            lines.Add($"Crafter roster: {all.Length} crafter gamebots, {online} in the game. /lscraft crafter <name> for one of them.");
+            foreach (var realm in all.GroupBy(e => e.State.Realm).OrderBy(g => g.Key))
+            {
+                RosterEntry[] here = realm.Where(e => e.Online).OrderByDescending(e => SkillOf(e.State)).ThenBy(e => e.State.Name, StringComparer.Ordinal).ToArray();
+                lines.Add($"  {GlobalConstants.RealmToName(realm.Key)}: {realm.Count()} crafters, {here.Length} in the game" + (here.Length == 0 ? "." : ":"));
+                foreach (RosterEntry e in here.Take(RosterNamesPerRealm))
+                    lines.Add($"    {e.State.Name}: {OrderName(e.State.Order)} {SkillOf(e.State)}, level {e.State.BotLevel}, " +
+                              $"{(string.IsNullOrWhiteSpace(e.Where) ? "somewhere" : e.Where)}, {(e.AtBreak ? "on a break" : "on a task")}.");
+                if (here.Length > RosterNamesPerRealm)
+                    lines.Add($"    and {here.Length - RosterNamesPerRealm} more in the game.");
+            }
+            return lines.ToArray();
+        }
+
+        private static int SkillOf(CrafterState state) => state.Skills != null && state.Skills.TryGetValue(state.Order, out int value) ? value : 0;
+
+        private static string OrderName(eCraftingSkill order) => order switch
+        {
+            eCraftingSkill.WeaponCrafting => "weaponcraft",
+            eCraftingSkill.ArmorCrafting => "armorcraft",
+            eCraftingSkill.Tailoring => "tailoring",
+            eCraftingSkill.Fletching => "fletching",
+            eCraftingSkill.SpellCrafting => "spellcraft",
+            eCraftingSkill.Alchemy => "alchemy",
+            eCraftingSkill.SiegeCrafting => "siegecraft",
+            _ => order.ToString().ToLowerInvariant(),
+        };
+
+        /// <summary>The registered roster now, every realm, with where each crafter in the game is. Game loop.</summary>
+        private static IReadOnlyList<RosterEntry> RosterNow()
+        {
+            var entries = new List<RosterEntry>();
+            foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+                foreach (CrafterState state in BotCrafters.Roster.InRealm(realm) ?? [])
+                {
+                    bool online = AutonomousBotRegistry.TryGet(state.BotId, out GameBot bot) && bot != null && bot.ObjectState == GameObject.eObjectState.Active;
+                    bool atBreak = false;
+                    try { atBreak = online && AutonomousObjectiveAssignments.IsBetweenPveTasks(bot); }
+                    catch { }
+                    entries.Add(new RosterEntry(state, online, online ? AutonomousLivingServer.PlaceOf(bot) : string.Empty, atBreak));
+                }
+            return entries;
         }
 
         public static string[] WtbLines() =>

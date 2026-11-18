@@ -49,7 +49,15 @@ namespace DOL.GS.CraftingEconomy
         public enum Act { None, Summary, Quote, Haggle, PlaceOrder, AwaitDeposit, OpenTrade, Status, Cancel, Declined, Cannot, Refuse }
 
         /// <summary>The answer: the fixed text (all facts), what to do, the deal now on the table, and the corpus topic and slots.</summary>
-        public sealed record Reply(string Text, Act Act, Deal Deal, string Topic, IReadOnlyDictionary<string, string> Slots);
+        /// <remarks><paramref name="More"/> is a second line said right after the first (fixed words, styled), when the facts
+        /// do not fit one tell: the summary's stock list.</remarks>
+        public sealed record Reply(string Text, Act Act, Deal Deal, string Topic, IReadOnlyDictionary<string, string> Slots, string More = null);
+
+        /// <summary>The most a crafter's tell may hold (the bot voices' cap, AutonomousBotVoiceCorpus.MaxLength).</summary>
+        public const int TellRoom = AutonomousBotVoiceCorpus.MaxLength;
+
+        /// <summary>Room kept for the writing style (an emote, an expanded word, a full stop) on top of the filled line.</summary>
+        public const int StyleRoom = 16;
 
         /// <summary>How long a quote stands.</summary>
         public static readonly TimeSpan DealLifetime = TimeSpan.FromMinutes(15);
@@ -137,6 +145,13 @@ namespace DOL.GS.CraftingEconomy
             if (customer.Standing == CrafterCustomers.Standing.Refused)
                 return new Reply("not dealing with you, sorry", Act.Refuse, null, "craft_refuse", slots);
 
+            // An agreed stock sale called off ("cancel", "forget it"): the piece it set aside goes back on the shelf.
+            if (open is { Kind: DealKind.Stock } && CancelRegex.IsMatch(t))
+            {
+                slots["item"] = open.ItemText;
+                return new Reply($"ok, forget the {slots["item"]} then", Act.Declined, null, "craft_stock_cancelled", slots);
+            }
+
             // An order already on the board: its status, or cancelling it.
             if (orders.Count > 0 && CancelRegex.IsMatch(t))
             {
@@ -156,7 +171,7 @@ namespace DOL.GS.CraftingEconomy
                 long? offer = CrafterHaggle.ParseCopper(t, open.Ask);
                 bool? yes = offer == null && !HaggleWords.IsMatch(t) ? AutonomousChatThreads.SaysYes(t) : null;
                 if (yes == true)
-                    return AcceptReply(crafter, customer, open, slots);
+                    return AcceptReply(crafter, customer, open, slots, utcNow);
                 if (yes == false)
                     return new Reply("np, let me know", Act.Declined, null, "craft_declined", slots);
                 if (offer != null || HaggleWords.IsMatch(t))
@@ -172,16 +187,74 @@ namespace DOL.GS.CraftingEconomy
         {
             (int low, int high) = CrafterQuotes.Range(crafter.Makeable);
             IReadOnlyList<string> examples = CrafterQuotes.Examples(crafter.Makeable);
-            string stock = crafter.Stock.Count == 0 ? "nothing in stock right now"
-                : "in stock: " + string.Join(", ", crafter.Stock.Take(3).Select(p => $"{p.Name.ToLowerInvariant()} {p.Quality}% {PriceText(p.Price)}"));
             slots["level"] = high.ToString();
-            slots["item"] = examples.Count > 0 ? string.Join(", ", examples) : CraftName(crafter.Primary);
+            // Seen on the owner's PC (build b1b6846, 2026-11-18): the item list and the stock list together ran past the
+            // 160-character cap and the tell was cut mid-word. Both are now fitted, whole items only, to the room the
+            // longest summary line leaves (TellRoom less its words, the crafter's title and skill, and StyleRoom); a stock list
+            // that does not fit as well is said as a count, and listed in a second line.
+            string recipe = slots["recipe"];
+            int room = TellRoom - StyleRoom - Math.Max((crafter.Title ?? string.Empty).Length + 32, 48) - slots["skill"].Length - recipe.Length -
+                       slots["level"].Length;
+            string items = examples.Count > 0 ? ItemList(examples, Math.Max(24, room * 3 / 5)) : recipe;
+            string stockList = crafter.Stock.Count == 0 ? null : "in stock: " + StockList(crafter.Stock, TellRoom - StyleRoom - 10);
+            string stock = crafter.Stock.Count == 0 ? "nothing in stock right now"
+                : items.Length + 2 + stockList.Length <= room ? stockList
+                : crafter.Stock.Count == 1 ? "1 piece in stock" : $"{crafter.Stock.Count} pieces in stock";
+            string more = stockList != null && !ReferenceEquals(stock, stockList) ? stockList : null;
+            slots["item"] = items;
             slots["stock"] = stock;
             string makes = examples.Count == 0
-                ? $"{crafter.Title}, {crafter.Skill} {CraftName(crafter.Primary)}, still learning, nothing i can promise yet"
-                : $"{crafter.Title}, {crafter.Skill} {CraftName(crafter.Primary)}. i can make {slots["item"]}" + (high > 0 ? $", up to lvl {high}" : string.Empty);
+                ? $"{crafter.Title}, {crafter.Skill} {recipe}, still learning, nothing i can promise yet"
+                : $"{crafter.Title}, {crafter.Skill} {recipe}. i can make {items}" + (high > 0 ? $", up to lvl {high}" : string.Empty);
             string topic = examples.Count == 0 || high <= 0 ? null : crafter.Stock.Count > 0 ? "craft_summary_stock" : "craft_summary";
-            return new Reply($"{makes}. {stock}", Act.Summary, null, topic, slots);
+            return new Reply($"{makes}. {stock}", Act.Summary, null, topic, slots, more);
+        }
+
+        /// <summary>
+        /// Item names as a player lists them, whole names only, within <paramref name="room"/> characters: a material the names
+        /// share is said once ("fine alloy archmace, bardiche, needle mace"). Always at least the first name. Pure.
+        /// </summary>
+        public static string ItemList(IReadOnlyList<string> names, int room)
+        {
+            string[] list = (names ?? []).Where(n => !string.IsNullOrWhiteSpace(n)).Select(n => n.Trim()).ToArray();
+            if (list.Length == 0)
+                return string.Empty;
+            string[][] words = list.Select(n => n.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray();
+            int shared = 0;
+            if (list.Length > 1)
+                while (words.All(w => w.Length > shared + 1) && words.All(w => w[shared] == words[0][shared]))
+                    shared++;
+            var said = new List<string> { list[0] };
+            int length = list[0].Length;
+            for (int i = 1; i < list.Length; i++)
+            {
+                string rest = string.Join(' ', words[i].Skip(shared));
+                if (length + 2 + rest.Length > room)
+                    break;
+                said.Add(rest);
+                length += 2 + rest.Length;
+            }
+            return string.Join(", ", said);
+        }
+
+        /// <summary>The stock as "name 96% 62s", whole pieces only, within <paramref name="room"/> characters, "+N more" for the
+        /// rest; at most three pieces are named. Pure.</summary>
+        public static string StockList(IReadOnlyList<StockPiece> stock, int room)
+        {
+            string[] pieces = (stock ?? []).Select(p => $"{p.Name.ToLowerInvariant()} {p.Quality}% {PriceText(p.Price)}").ToArray();
+            var said = new List<string>();
+            int length = 0;
+            foreach (string piece in pieces.Take(3))
+            {
+                int left = pieces.Length - said.Count - 1;
+                int tail = left > 0 ? $", +{left} more".Length : 0;
+                if (said.Count > 0 && length + 2 + piece.Length + tail > room)
+                    break;
+                said.Add(piece);
+                length += (said.Count > 1 ? 2 : 0) + piece.Length;
+            }
+            int unsaid = pieces.Length - said.Count;
+            return string.Join(", ", said) + (unsaid > 0 ? $", +{unsaid} more" : string.Empty);
         }
 
         private static Reply RequestReply(CrafterFacts crafter, CustomerFacts customer, string t, Dictionary<string, string> slots, DateTime utcNow)
@@ -189,11 +262,15 @@ namespace DOL.GS.CraftingEconomy
             CrafterQuotes.Request request = CrafterQuotes.Parse(t);
             if (!request.Names)
                 return new Reply("sure, what do you need made?", Act.None, null, "craft_ask_what", slots);
-            // Stock first: a piece it holds that answers the request.
+            // Stock first: a piece it holds that answers the request at least as well as the best piece it can make. Seen on
+            // the owner's PC (build b1b6846, 2026-11-18): "can you make a fine alloy needle mace" was answered with a "fine alloy
+            // exceptional mace" from stock (it shares "fine alloy" and "mace") and the needle mace, which it makes, was never
+            // quoted. The piece the player named wins; a stock piece that only shares some of its words is not offered instead.
+            int bestMade = crafter.Makeable.Select(r => CrafterQuotes.Score(request, r)).DefaultIfEmpty(0).Max();
             StockPiece piece = crafter.Stock
                 .Select(p => (Piece: p, Score: CrafterQuotes.Score(request, new CraftRecipeInfo(p.ObjectId, crafter.Primary, 0, p.ObjectId, p.Name,
                     p.ObjectType, p.ItemType, p.Level, 0, true, false, Array.Empty<CraftMaterial>()))))
-                .Where(c => c.Score > 0 && (request.Quality == null || c.Piece.Quality >= request.Quality))
+                .Where(c => c.Score > 0 && c.Score >= bestMade && (request.Quality == null || c.Piece.Quality >= request.Quality))
                 .OrderByDescending(c => c.Score).Select(c => c.Piece).FirstOrDefault();
             if (piece != null && !request.Set)
             {
@@ -252,7 +329,7 @@ namespace DOL.GS.CraftingEconomy
             return new Reply(text, Act.Quote, newDeal, topic, slots);
         }
 
-        private static Reply AcceptReply(CrafterFacts crafter, CustomerFacts customer, Deal open, Dictionary<string, string> slots)
+        private static Reply AcceptReply(CrafterFacts crafter, CustomerFacts customer, Deal open, Dictionary<string, string> slots, DateTime utcNow)
         {
             slots["item"] = open.ItemText;
             slots["price"] = PriceText(open.Ask);
@@ -261,7 +338,12 @@ namespace DOL.GS.CraftingEconomy
                 if (crafter.CanTradeNow && customer.Near)
                     return new Reply($"ok, opening a trade. {slots["price"]} for the {slots["item"]}", Act.OpenTrade, open, "craft_trade_open", slots);
                 slots["terms"] = crafter.AtBreak ? $"im in {crafter.Zone}, come find me" : "catch me at my next break";
-                return new Reply($"sure, {slots["terms"]} and ill trade it to you", Act.Quote, open, "craft_stock_meet", slots);
+                // Seen on the owner's PC (build b1b6846, 2026-11-18): "deal" on a stock piece an hour before the crafter's break
+                // was answered "catch me at my next break", but the quote lapsed after 15 minutes, so the player's "yes" at the
+                // break found no deal. The agreed sale now stands until half an hour after the break the crafter named.
+                TimeSpan stands = TimeSpan.FromMinutes(Math.Max(0, crafter.AtBreak ? 0 : crafter.MinutesToBreak) + 30);
+                Deal kept = open with { UntilUtc = utcNow + (stands > DealLifetime ? stands : DealLifetime) };
+                return new Reply($"sure, {slots["terms"]} and ill trade it to you", Act.Quote, kept, "craft_stock_meet", slots);
             }
             int minutes = CrafterQuotes.MinutesUntilReady(crafter.MinutesToBreak, crafter.SecondsPerPiece, open.Recipes.Count);
             slots["when"] = CrafterQuotes.TimeText(minutes);

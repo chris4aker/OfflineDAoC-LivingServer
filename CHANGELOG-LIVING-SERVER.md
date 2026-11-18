@@ -8,6 +8,36 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Crafter replies and the crafter roster (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leofrunn, an Assistant Weaponcrafter at 499):
+- **"what do you make?" was cut mid-word** ("... in stock: fine alloy except"): every bot line is capped at 160 characters
+  (`AutonomousBotVoiceCorpus.MaxLength`) and the cap cut wherever it fell. The summary now fits its item list and stock
+  list, whole names only, to the room its longest line leaves; a material the names share is said once ("fine alloy
+  archmace, bardiche, needle mace"); a stock list that does not fit is said as "1 piece in stock" and listed whole in a
+  second tell. Any bot line still over the cap now ends at its last whole word with "..." instead of mid-word.
+- **"can you make a fine alloy needle mace" was answered with a different piece from stock** (a fine alloy exceptional
+  mace, which shares "fine alloy" and "mace") and the needle mace it makes was never quoted. A stock piece is now offered
+  only when it answers the request at least as well as the best piece the crafter makes; otherwise the named piece is
+  quoted as a commission.
+- **"deal" on a stock piece an hour before the crafter's break** got "catch me at my next break and ill trade it to u",
+  but the quote lapsed after 15 minutes and nothing was logged. The agreed sale now stands until half an hour after the
+  break the crafter named, and (owner 2026-11-18: "Yes fix those issues") the piece is **set aside** for the player until
+  then: the crafter does not sell it to anyone else (by tell, in a trade window or to a vendor), list it on the Realm
+  Exchange or wear it. The hold ends when the deal lapses, when the player calls it off ("cancel", "forget it", "no") or
+  asks for something else, or when the sale completes. Log lines: `ECON_PLAYER_ORDER outcome="stock_held"` (with `until=`)
+  and `outcome="stock_released"` (with `why=` expired, cancelled, declined, replaced, sold or gone). The hold is kept in
+  memory with the deal and the piece never leaves the crafter's bag: a crafter logout keeps the hold until it lapses, and
+  a server restart drops the deal and the hold together, leaving the piece in the crafter's stock. No item can be lost.
+- **When its break begins** the crafter holding a player's piece tells that player once, if they are in the game, where
+  it is and to come and say yes (corpus topic `craft_break_ready`, five lines in `craft_commerce.lines`).
+- **`/lscraft craft` printed only "Crafter roster: registered."** It now lists each realm's crafter gamebots: how many,
+  how many are in the game, and those by name with their order, skill, level, zone and whether they are on a break or a
+  task (12 a realm, best skill first). The command's help line says so.
+- Tests: `UT_CrafterRepliesFit` (each case above, with every corpus summary and break line filled from the reply's slots) and
+  `UT_CrafterCommerce` (a held piece is kept from another buyer, the trade-window goods and the Exchange; released when it lapses
+  or is called off; the break tell comes once, only to a player in the game, only with an open deal).
+
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until
