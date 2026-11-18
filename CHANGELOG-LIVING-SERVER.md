@@ -8,6 +8,29 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Bot chat audit fixes (tests only): lore and tales (1.2, 2026-11-18)
+
+Chat audit findings LORE-001 to LORE-029 and LOG-025 (owner's decision 10, 09:14: lore is never cut; stand-in storytellers).
+None of this has been seen on the owner's PC yet.
+
+- **A tale nobody told** (LOG-025, build 5378dbe: the realm hushed for Orylle's tale, the stand-in had just died and logged
+  off five seconds later): a storyteller or stand-in must be able to stay (not leaving within ten minutes, not dead in the
+  last two, a stand-in idle). A teller who leaves before its first line is replaced once, with a listener's line
+  (`TALE_HANDOVER`); otherwise a listener closes it. The cut remark says "logged", not "pulled into a fight", and comes after
+  any cut tale. The realm's own tale logs why it did not start (`TALE_NOT_STARTED kind=own`).
+- **Requests and questions:** "tell" alone no longer starts a tale ("can someone tell me what spec..."); during a tale, trade,
+  group, rez, travel and class questions go to the ordinary replies instead of "patience, i am getting there".
+- **Lore is heard:** a question naming a place or boss can be answered with a written lore line (`data/chat/lore_*.lines`);
+  a gamebot standing with the player in a place now and then remarks on it in /group or /say (placed lore, about two an
+  hour at most, `LORE_PLACED`). Tales of a place (tales_more.lines) are asked for by the place's name.
+- **Canon and world fixes:** no Govannon nodes (a New Frontiers change; the scene is now "sacrifice or demon first"),
+  Summoner's Hall under the frontier tunnels, Arward sent long after Uther, Kula first (twin heal is on), Nosdoden's
+  spirits, Xanxicar's lightning as hearsay, Behemoth's one-swing kill, levels and places per the world database,
+  Golestandt's emotes say "she", "this autumn" for the islands; the lore bible's Kula and Olcasgean facts and briefings.
+- **Craft:** every tale's teller says yes first, eight endings rewritten, apostrophes and lower-case coinages, four teller lines
+  that answered a skipped question, six older tale scenes now half-remembered versions pointing at the storytellers, later
+  slang replaced; `/lore` heading "What is said"; WRITING-GUIDE allows three short sentences in a scene beat.
+
 ## Sweep 6 fixes: Caer Sidi's Crypt Lord, the stall count, buffbot logouts (1.2, 2026-11-18; tests only)
 
 From the owner's PC log of build `b1b6846` (2026-11-18 06:33-08:55). None of this has been seen on the PC yet.

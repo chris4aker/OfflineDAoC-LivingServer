@@ -156,8 +156,8 @@ dare: run straight through the glimmer camps in sheeroe without stopping. [first
 # ---------------- Hy Brasil: Olcasgean, Galladoria, Fomor, Balor ----------------
 @who *
 @levels 30-50
-olcasgean was banished to world's end, and now his roots poison hy brasil. [the trees out there look sick|you can see the rot]
-olcasgean is a child of gaea, [older than the tuatha|older than any of us], and he has been sulking at the edge of the world ever since
+the sylvan say olcasgean was banished to world's end, and now his roots poison hy brasil. [the trees out there look sick|you can see the rot]
+olcasgean is a child of gaea, the scholars in tir na nog say, [older than the tuatha|older than any of us], and he sulks at the edge of the world
 galladoria is where the roots lead. hurionthex [changes shape in there|wears a different shape every time], so trust nothing that looks friendly
 the sylvan are trees that walk and talk and ask us for help. still getting used to that
 the mantids kept allta fearann secret for generations. their untamed land, they call it
@@ -256,7 +256,7 @@ C: cruachan is a gorge full of albs every relic night. if there were a door to t
 B: samhain is when the mounds open, all the tales agree. nera went into the cruachan cave on samhain and lived a year in the sidhe | in the tale nera walked into that cave on samhain, married in the sidhe and came back out with summer fruit in the middle of winter
 C: and nera came back seeing cruachan in flames, and the queen raided the mound before it could happen. a war story, not a travel guide | read the end of nera's tale. it is a war between cruachan and the mound. nobody tells it to children for a reason
 B: i have knocked on every hill in bri leith and sat by lough gur till dark. the melancholic fairy queen there looks like someone locked out | every hill in bri leith, by hand. and i sat near the melancholic fairy queen at lough gur a long while. she looks like she lost her key
-C: she is level sixty seven and wipes groups that sit too close. mournful and locked out are not the same thing | she cons purple to me and she has killed more explorers than any door ever has
+C: she cons purple to a fifty and wipes groups that sit too close. mournful and locked out are not the same thing | she cons purple to me and she has killed more explorers than any door ever has
 E: dare: first one through the door has to explain to the guards in tir na nog why they are three hundred years late | whoever finds it, try not to come home three hundred years late. the stablemaster will want back pay
 C: that is oisin's tale, and the best reason not to go. three years in the land of youth, three hundred gone, then he touched the ground | think about oisin. three years with niamh, home to find the fianna dust, and the moment he touched the ground he was an old man
 B: so i stay in the saddle. oisin aged because his girth broke and he fell. the door was never his problem | then i do not get off the horse. oisin's mistake was the saddle girth, not the door
@@ -462,7 +462,7 @@ B: nuts is a drop. and the loot on myrddraxis was changed in the autumn patch, s
 E: why would a hydra live at the bottom of a fomorian city anyway? | what is a hydra doing in fomor?
 C: in the old tales the fomorians were sea raiders, half monster themselves. a many headed thing under their city suits them | the fomor of the old tales came from the sea and looked like nightmares. a hydra in their cellar is about right
 D: in the far southern tale you sear each neck with fire as the head comes off, or two grow back. maybe nobody here has tried | the southern story says burn each neck as you cut it. maybe the heads do not heal, they just grow back
-C: we are not a realm of fire mages. our casters throw light and void. good luck searing a neck with that | hibernia has no fire school worth the name. sear a neck with a sun spell and see what happens
+C: our fire is sun spells, one neck at a time. there are a lot of necks | hibernia burns with light, one target at a time. count the heads and count your eldritch
 D: then all the heads at once, the way the raid leaders say. take them down together or not at all | so all heads at the same time. that is the advice i keep hearing
 ~ 15
 B: and the other big named down there? anurigunda, nogoribando. any word on what they carry? | there are other named in fomor too, anurigunda and nogoribando. any good drop stories about them?
@@ -605,7 +605,7 @@ A: i will watch from the werewolf camp and cheer | i will be at the werewolf cam
 @role B type=* levels=5-25
 @role C type=Explorer
 @role D type=Socialite,Leveler
-A: {q} sit down, newer folk. here is how the sheeroe pass came out of the mist | {q} the tale of the sheeroe pass, for anyone who never heard it. it is a good one
+A: {q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it | {q} the tale of the sheeroe pass, for anyone who never heard it. my version, anyway
 ?B: please. i only know sheeroe as the glowing place nobody lets me near | go on, all i know is the glow
 A: the rangers knew the bog of cullen like their own hands. every pool, every hummock, every crow that badb sends out to look | in those days the rangers had walked every foot of cullen. they knew every pool and every one of badb's birds
 A: then one grey morning the mist came up off the bog thicker than they had ever seen it, and it stayed | then came a morning when the mist rose and would not lift. the bog went white, and nobody went in
@@ -619,6 +619,7 @@ C: and the azure found it just as fast. firbolg kin, sky worshippers, sure the g
 D: so the moral is, if a new road appears, there is a dragon at the end of it | lesson learned. a new road means a new dragon
 A: the moral is the mist gives back what it hid. it did it once in cullen. i keep watching the bog for the second time | the moral is the mist opens when it likes. it opened once in cullen, and i keep an eye on it in case it opens again
 C: you and me both. i ride past the cullen fold every week and wait | i check the bog of cullen every time i ride by
+A: that is the short of it. ask one of the realm's storytellers for the real one, they tell it better | or so i remember it. the storytellers in faction have the whole of it
 
 @topic lore_tale_muire
 @levels 10-50
@@ -661,7 +662,8 @@ A: at the second mag tuired the lid came up, and lugh put a sling stone through 
 A: and the eye, still open, fell looking at the fomorian ranks behind him. his own gaze killed his own army | the eye landed facing the fomorians, and its gaze killed his own host. that is how the fomor lost the war
 C: fine story, except our balor sits in tur suil right now at level eighty one, eye and all | lovely, except there is a balor alive in tur suil at eighty one and nobody has put a stone through anything
 C: the sylvan say his eye opened once on hy brasil and a whole valley burned. that is why the vale of balor looks the way it does | the sylvan tell that his eye opened over the isle once and scorched a whole valley. that is how the vale got his name
-A: so if you go to tur suil, never meet his eye, and remember who his grandson was | so: never meet his eye, aim for the lid, and remember who his grandson was
+A: so if you go to tur suil: when the eye opens over you, nothing reaches it. you outlast it. and remember who his grandson was | so: when that eye opens there is nothing to hit. you live through it. and remember who his grandson was
+C: and that is only the nursery verse. ask one of the realm's storytellers for the real one | that is the first verse. the storytellers in faction know what came after
 
 @topic lore_tale_oisin
 @levels 1-50
@@ -705,6 +707,8 @@ A: so the sylvan believe. galladoria is where the roots lead, and hurionthex dow
 C: and this is why i level in the old zones | i will stick to the cursed forest werewolves, thank you
 D: my old crafting teacher would never buy wood cut near world's end. said it warps in the bag, and i think i know why now | an old crafter belief: wood from world's end warps toward the sea. i always thought it was a joke until now
 A: elro the ancient waits out at world's end too. i like to think he is one of the jailers they left behind, still on watch | and elro the ancient is out at world's end. i always wondered if he was the jailer, still keeping watch
+B: you should ask one of the realm's storytellers for the whole of it | the storytellers in faction tell it longer, right?
+A: they do. i only have the sylvan's short version | aye. mine is the half i remember
 
 # ---- more Hibernian lore built from parts (realm balance, 2026-10-26) -------------------------
 @kind ambient

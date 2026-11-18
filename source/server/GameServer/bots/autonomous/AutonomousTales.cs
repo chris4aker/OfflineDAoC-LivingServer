@@ -20,7 +20,8 @@ namespace DOL.GS;
 /// <item>Each realm has up to two storytellers, kept across restarts: other bots name them, and only they tell.</item>
 /// <item>At most one tale an evening per realm on its own; a player can ask for one ("tell the one about legion"), and a
 /// question asked while a tale runs is answered by the teller.</item>
-/// <item>It can go wrong: the teller is pulled into a fight and never finishes, and nobody pretends otherwise.</item>
+/// <item>It can go wrong: the teller logs off and never finishes, and nobody pretends otherwise. A teller who leaves before
+/// its first line is replaced once (chat audit LORE-004); a fight is waited out.</item>
 /// <item>Fireside tales: resting in or near a boss's place with a gamebot in the group, a groupmate tells the short version
 /// in /group, once a day per character and tale.</item>
 /// </list>
@@ -105,14 +106,14 @@ public static class AutonomousTales
 
     /// <summary>
     /// The tale that belongs to the place a player stands in (pure): one of its bosses' tales the realm has, else the place's
-    /// own legend (a battleground's), else null.
+    /// own tale (a battleground's legend, a place's tale of tales_more.lines), else null.
     /// </summary>
     public static string LocalTale(string placeId, IEnumerable<string> bossIds, ISet<string> told)
     {
         if (told == null)
             return null;
         string boss = (bossIds ?? []).FirstOrDefault(told.Contains);
-        return boss ?? (placeId != null && IsLegend(placeId) && told.Contains(placeId) ? placeId : null);
+        return boss ?? (placeId != null && told.Contains(placeId) ? placeId : null);
     }
 
     public static bool IsLegend(string loreId) => loreId != null && Legends.ContainsKey(loreId);
@@ -120,7 +121,9 @@ public static class AutonomousTales
     /// <summary>The names a request may use for a tale: a boss's names, else a legend's.</summary>
     public static IEnumerable<string> RequestNames(string loreId, LoreBible bible) =>
         bible?.BossById(loreId) is { } boss ? LoreBible.NamesOf(boss.Name, boss.Id, boss.Aliases)
-        : loreId != null && Legends.TryGetValue(loreId, out string[] names) ? names : [loreId];
+        : loreId != null && Legends.TryGetValue(loreId, out string[] names) ? names
+        // A place's own tale (tales_more.lines: the thin places, chat audit LORE-028) is asked for by the place's names.
+        : bible?.LocationById(loreId) is { } place ? LoreBible.NamesOf(place.Name, place.Id, place.Aliases) : [loreId];
 
     /// <summary>The realm's raid event on a tale's boss, or null when it has none.</summary>
     public static string RaidIdFor(string loreId, eRealm realm)
@@ -182,6 +185,18 @@ public static class AutonomousTales
     public static TellerCandidate? PickStandIn(IEnumerable<TellerCandidate> candidates, ISet<long> tellers) =>
         PickTeller((candidates ?? []).Where(c => c.Level >= 35), tellers);
 
+    /// <summary>A teller must not be due to log off within this long, nor have died within the second window.</summary>
+    public const long TellerStaysMs = 10 * 60_000, TellerDiedMs = 2 * 60_000;
+
+    /// <summary>
+    /// Whether a bot can take a tale now (pure): idle (not fighting or casting, not running back after a death), not dead in
+    /// the last two minutes, and not due to log off within ten. PC check 2026-11-17, build 5378dbe: the stand-in
+    /// Chocchipper had just died at the Crypt Lord, logged off five seconds after the asking line, and the realm hushed
+    /// for a tale nobody told (chat audit LORE-004, LOG-025).
+    /// </summary>
+    public static bool CanTellNow(bool fightingOrCasting, bool returningAfterDeath, long sinceDeathMs, bool leavesWithinTenMinutes) =>
+        !fightingOrCasting && !returningAfterDeath && sinceDeathMs >= TellerDiedMs && !leavesWithinTenMinutes;
+
     /// <summary>A bot that could be a realm's storyteller.</summary>
     public readonly record struct TellerCandidate(long Id, string Name, BotPersonalityType Type, int Level);
 
@@ -210,19 +225,45 @@ public static class AutonomousTales
         return due[random.Next(due.Length)];
     }
 
-    private static readonly Regex AsksForTale = new(
-        @"\b(tell|story|stories|tale|tales|storytime)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // A story noun asks for a tale; "long story short", "fairy tale" and "whats the story with the keeps" do not.
+    private static readonly Regex StoryNoun = new(
+        @"\b(story|stories|tale|tales|storytime)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex NotAStoryNoun = new(
+        @"\b(long story|fairy tales?|whats the story|what s the story|what is the story)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    // "tell" alone is not a request (chat audit LORE-002: "can someone tell me what spec is good", "i cant tell if df is
+    // open"); it is with a telling's object ("tell the one about", "tell us a", "tell it again").
+    private static readonly Regex TellWord = new(@"\btell\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex TellATale = new(
+        @"\btell\b.*\b(the one|that one|us (a|the|about|of)|them about|it again)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex TradeLine = new(@"\bwt[sbt]\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
     private static readonly Regex NotARequest = new(
-        @"\b(dont tell|don t tell|do not tell|tell me (where|how|when|if)|tell (him|her) (to|i)|told)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        @"\b(dont tell|don t tell|do not tell|tell me (where|how|when|if)|tell (him|her|them) (to|i)|told)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     private static string Plain(string text) =>
         " " + Regex.Replace((text ?? string.Empty).ToLowerInvariant().Replace('\'', ' '), @"[^a-z0-9 ]+", " ").Trim() + " ";
 
-    /// <summary>Whether a player's /faction line asks for a story ("tell the one about legion", "any stories tonight?"). Pure.</summary>
-    public static bool IsRequest(string message)
+    /// <summary>
+    /// Whether a player's /faction line asks for a story ("tell the one about legion", "any stories tonight?"). Pure. It needs
+    /// a story noun, "tell" with a telling's object ("tell us about", "tell it again"), or "tell" with the name of a tale
+    /// (<paramref name="namesATale"/>: <see cref="RequestedLore"/> found one) or of a storyteller (<paramref name="namesATeller"/>).
+    /// A trade line ("wts tale of the sea cloak") never is.
+    /// </summary>
+    public static bool IsRequest(string message, bool namesATale = false, bool namesATeller = false)
     {
         string plain = Regex.Replace(Plain(message), @"\s+", " ");
-        return AsksForTale.IsMatch(plain) && !NotARequest.IsMatch(plain);
+        if (TradeLine.IsMatch(plain) || NotARequest.IsMatch(plain))
+            return false;
+        if (StoryNoun.IsMatch(NotAStoryNoun.Replace(plain, " ")))
+            return true;
+        return TellATale.IsMatch(plain) || TellWord.IsMatch(plain) && (namesATale || namesATeller);
+    }
+
+    /// <summary>Whether a line names one of the realm's storytellers, as a word. Pure.</summary>
+    public static bool NamesATeller(string message, IEnumerable<string> tellerNames)
+    {
+        string plain = Regex.Replace(Plain(message), @"\s+", " ");
+        return (tellerNames ?? []).Any(name => !string.IsNullOrWhiteSpace(name) && name.Length >= 3 &&
+            plain.Contains(" " + name.ToLowerInvariant() + " ", StringComparison.Ordinal));
     }
 
     /// <summary>The tale a request names, by the boss's names ("the stone dragon", "gole"), or null for any. Pure.</summary>
@@ -250,6 +291,37 @@ public static class AutonomousTales
     /// <summary>Whether a player's line during a tale is a question for the teller. Pure.</summary>
     public static bool IsQuestion(string message) => !string.IsNullOrWhiteSpace(message) && Question.IsMatch(message);
 
+    /// <summary>What a line is about when it is the realm's ordinary business, not the tale (chat audit LORE-003).</summary>
+    private static readonly HashSet<eAutonomousChatIntent> OtherBusiness =
+    [
+        eAutonomousChatIntent.Trading, eAutonomousChatIntent.Grouping, eAutonomousChatIntent.Travel, eAutonomousChatIntent.Help,
+        eAutonomousChatIntent.Rez, eAutonomousChatIntent.ClassTalk, eAutonomousChatIntent.Alarm, eAutonomousChatIntent.Crafting,
+    ];
+    private static readonly Regex EverydayAsk = new(
+        @"\b(wt[sbt]|selling|buying|sell|buy|price|how much|trainer|merchant|vendor|bind|rez|res|rezz|port|lfg|lfm|inv|grp|group)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    /// <summary>
+    /// Whether a player's line during a tale is a question for the teller (pure): a question that is none of the realm's
+    /// everyday business (trade, groups, travel, help, a rez, class talk, an alarm), and either short (eight words or
+    /// fewer) or sharing a telling word with the tale. Anything else goes on to the ordinary replies (chat audit
+    /// LORE-003: "is anyone selling a cloak" and "where is the trainer" got "patience, i am getting there").
+    /// </summary>
+    public static bool IsTaleQuestion(string message, eAutonomousChatIntent intent, IEnumerable<string> taleLines)
+    {
+        if (!IsQuestion(message) || OtherBusiness.Contains(intent) || EverydayAsk.IsMatch(Plain(message)))
+            return false;
+        int words = message.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        return words <= 8 || SharesAWord(message, taleLines);
+    }
+
+    /// <summary>Whether a line shares a telling word with any of <paramref name="lines"/>. Pure.</summary>
+    public static bool SharesAWord(string line, IEnumerable<string> lines)
+    {
+        HashSet<string> words = WordsOf(line);
+        return words.Count > 0 && (lines ?? []).Any(other => WordsOf(other).Overlaps(words));
+    }
+
     /// <summary>When a realm may start its next tale on its own after one at <paramref name="lastUtc"/> (pure).</summary>
     public static bool GapOver(DateTime nowUtc, DateTime? lastUtc, long gapMs) =>
         lastUtc is not DateTime last || (nowUtc - last).TotalMilliseconds >= gapMs || nowUtc < last;
@@ -261,11 +333,27 @@ public static class AutonomousTales
         "that part nobody agrees on", "wait for it", "if i knew that i would be richer",
     ];
 
-    /// <summary>What a listener says when the teller is pulled away mid-tale.</summary>
+    /// <summary>What a listener says when the teller logged off mid-tale (the only cut it is said for: a fight is waited
+    /// out, docs/TALES.md).</summary>
     public static readonly string[] CutShort =
     [
-        "aw, {teller} got pulled into a fight", "well. to be continued i guess", "of course it stops at the good part",
+        "aw, {teller} logged", "{teller} went ld i think", "well. to be continued i guess", "of course it stops at the good part",
         "{teller}? ... and gone. typical", "someone remind {teller} to finish that later",
+    ];
+
+    /// <summary>What a listener says when the teller logged off before telling a word of it, and nobody took it over.</summary>
+    public static readonly string[] CutBeforeStart =
+    [
+        "and {teller} logs. guess not tonight", "{teller} logged before it even started lol", "ok nvm, {teller} is gone",
+        "well that was a short story. {teller} logged",
+    ];
+
+    /// <summary>What a listener says when the teller logged off before the first line and another bot takes the tale
+    /// over: {old} is the one who left, {new} the one who tells it now.</summary>
+    public static readonly string[] Handover =
+    [
+        "{old} just logged. {new}, you know that one?", "aw, {old} logged. {new} you know it right?",
+        "{old} is gone. {new}, you tell it then", "typical, {old} logs. {new}, you know this one, go on",
     ];
 
     /// <summary>What a bot says when a player asks for a tale and no storyteller is on.</summary>
@@ -386,6 +474,8 @@ public static class AutonomousTales
         public bool RaidRumourNext;
         /// <summary>The raid that is called when the tale playing now ends (1.2, the tale then the call), or null.</summary>
         public string RaidCall;
+        /// <summary>The tale playing now was handed to another teller once already (its first teller left before a line).</summary>
+        public bool HandedOver;
         public readonly List<(long At, Action Do)> Due = new();
     }
 
@@ -467,12 +557,23 @@ public static class AutonomousTales
                     bool started = TryStartForRaid(realm, raidId, out string why);
                     AutonomousRealmRaid.TaleStartResult(realm, raidId, started, why);
                 });
+            // Chat audit LORE-006: the realm's own tale did not start once in 6 h 14 m (build 5378dbe) and the log never said why.
             if (start && ClientService.Instance.GetPlayersOfRealm(realm).Count > 0)
-                Run("start", () => TryStart(realm, null, null, out _));
+                Run("start", () =>
+                {
+                    if (!TryStart(realm, null, null, out string why))
+                        Log.Info(OwnTaleNotStartedLog(realm, why));
+                });
         }
         if (On)
             Run("fireside", () => PulseFiresides(now));
+        if (AutonomousBotVoices.Enabled)
+            Run("placed lore", () => PulsePlacedLore(now));
     }
+
+    /// <summary>The log line when the realm's own tale (not a raid's, not a player's) could not start. Pure.</summary>
+    public static string OwnTaleNotStartedLog(eRealm realm, string why) =>
+        $"TALE_NOT_STARTED realm={GlobalConstants.RealmToName(realm)} kind=own retry_in_s={RetryMs / 1_000} reason=\"{why ?? "unknown"}\"";
 
     private static void Run(string what, Action action)
     {
@@ -486,10 +587,28 @@ public static class AutonomousTales
         }
     }
 
-    /// <summary>The realm's storyteller who is in the game now, choosing new ones while the realm has fewer than two.</summary>
-    private static GameBot TellerOnline(eRealm realm, out (long Id, string Name)[] known, bool standIn = false)
+    /// <summary>Whether the schedule (or a break) wants this bot offline now or within <see cref="TellerStaysMs"/>.</summary>
+    private static bool LeavesSoon(GameBot bot)
     {
-        GameBot[] online = AutonomousBotRegistry.Snapshot().Where(bot => Speaks(bot, realm)).ToArray();
+        if (!AutonomousBotSchedule.Active || bot?.PersistentRecord == null)
+            return false;
+        DateTime now = DateTime.UtcNow;
+        return !AutonomousBotSchedule.WantsOnline(bot.PersistentRecord, now) ||
+               !AutonomousBotSchedule.WantsOnline(bot.PersistentRecord, now.AddMilliseconds(TellerStaysMs));
+    }
+
+    /// <summary>A stand-in that can tell the whole tale: see <see cref="CanTellNow"/>.</summary>
+    private static bool StaysToTell(GameBot bot)
+    {
+        long sinceDeath = AutonomousBotVoices.RecentDeath(bot) is { } death ? GameLoop.GameLoopTime - death.At : long.MaxValue;
+        return CanTellNow(bot.InCombat || bot.IsCasting, bot.IsReturningAfterRelease, sinceDeath, LeavesSoon(bot));
+    }
+
+    /// <summary>The realm's storyteller who is in the game now, choosing new ones while the realm has fewer than two.
+    /// <paramref name="notId"/> is a teller who just left a tale (never cast again for it).</summary>
+    private static GameBot TellerOnline(eRealm realm, out (long Id, string Name)[] known, bool standIn = false, long notId = 0)
+    {
+        GameBot[] online = AutonomousBotRegistry.Snapshot().Where(bot => Speaks(bot, realm) && bot.DatabaseID != notId).ToArray();
         known = Tellers(realm);
         if (known.Length < TellersPerRealm)
         {
@@ -509,14 +628,15 @@ public static class AutonomousTales
             known = Tellers(realm);
         }
         var ids = known.Select(k => k.Id).ToHashSet();
-        GameBot teller = online.Where(bot => ids.Contains(bot.DatabaseID)).OrderBy(bot => bot.InCombat || bot.IsCasting ? 1 : 0)
+        // A storyteller the schedule is about to send home does not start a tale it can't finish.
+        GameBot teller = online.Where(bot => ids.Contains(bot.DatabaseID) && !LeavesSoon(bot)).OrderBy(bot => bot.InCombat || bot.IsCasting ? 1 : 0)
             .ThenBy(_ => Random.Shared.Next()).FirstOrDefault();
         if (teller != null || !standIn)
             return teller;
         // A raid's tale is not lost because both storytellers are out (owner's PC, 2026-11-12, build af3fe271: Albion's
         // Thotavyn and Merootek were both offline, and Golestandt's raid was called with no tale). Another veteran of the
         // realm tells it this once; the realm's storytellers stay who they are.
-        TellerCandidate? standInPick = PickStandIn(online.Where(bot => !bot.InCombat && !bot.IsCasting)
+        TellerCandidate? standInPick = PickStandIn(online.Where(StaysToTell)
             .Select(bot => new TellerCandidate(bot.DatabaseID, bot.Name, AutonomousBotPersonality.For(bot).Type, bot.Level)), ids);
         if (standInPick is not TellerCandidate stand)
             return null;
@@ -568,6 +688,7 @@ public static class AutonomousTales
             state.Asides = 0;
             state.Answers.Clear();
             state.RaidRumourNext = false;
+            state.HandedOver = false;
         }
         Log.Info($"TALE_START realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller.Name}\" asked_by=\"{askedBy?.Name ?? "a bot"}\"");
         return true;
@@ -613,7 +734,7 @@ public static class AutonomousTales
     /// finished, cut for room, or the teller left. A finished tale is remembered and its rumour follows; a tale the teller
     /// left gets one rueful line and is told again another night.
     /// </summary>
-    internal static void OnTaleEnded(eRealm realm, VC.Scene scene, bool finished, string reason, int linesSaid)
+    internal static void OnTaleEnded(eRealm realm, VC.Scene scene, bool finished, string reason, int linesSaid, int tellerLines = -1)
     {
         long now = GameLoop.GameLoopTime;
         RealmState state = State(realm);
@@ -624,6 +745,17 @@ public static class AutonomousTales
             teller = state.TellerName;
             tellerId = state.TellerId;
             state.Playing = null;
+            // The teller logged off before its first line (chat audit LORE-004, LOG-025): once a tale, another bot takes it
+            // over from the teller's first line, and a listener says so. Only when nobody can does the tale end here.
+            if (ShouldHandOver(finished, reason, tellerLines, state.HandedOver))
+            {
+                string handRaid = state.RaidCall;
+                state.RaidCall = null;
+                state.HandedOver = true;
+                state.Due.Add((now + 3_000, () => HandOver(realm, scene, tellerId, teller, handRaid, reason)));
+                Log.Info($"TALE_END realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller}\" finished=False lines={linesSaid} reason=\"{reason}\" handover=1");
+                return;
+            }
             bool heard = finished || linesSaid >= 6;
             state.NextTaleAt = now + (heard ? TaleGapMs + (long)(Random.Shared.NextDouble() * TaleGapSpreadMs) : RetryMs * 3);
             if (heard)
@@ -640,11 +772,71 @@ public static class AutonomousTales
                 state.Due.Add((now + (finished ? RaidCallDelayMs : 5_000), () => AutonomousRealmRaid.CallAfterTale(realm, raidCall, finished, reason)));
             else if (finished)
                 state.Due.Add((now + AftermathDelayMs + (long)(Random.Shared.NextDouble() * AftermathSpreadMs), () => Aftermath(realm, loreId, tellerId, heardLines)));
-            if (!finished && linesSaid >= 4 && reason == "the teller left")
+            // Any tale the realm hushed for gets its closing line, even one cut after the asking line (was: four lines).
+            if (CutRemarkDue(finished, reason, linesSaid))
+            {
+                string[] pool = tellerLines == 0 ? CutBeforeStart : CutShort;
                 state.Due.Add((now + 8_000, () => SayAfter(realm, tellerId, "listener",
-                    CutShort[Random.Shared.Next(CutShort.Length)].Replace("{teller}", teller ?? "the teller"))));
+                    pool[Random.Shared.Next(pool.Length)].Replace("{teller}", teller ?? "the teller"))));
+            }
         }
         Log.Info($"TALE_END realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} teller=\"{teller}\" finished={finished} lines={linesSaid} reason=\"{reason}\"");
+    }
+
+    /// <summary>Whether a tale whose teller left is handed to another bot (pure): the teller said none of it, and the tale
+    /// was not handed over once already.</summary>
+    public static bool ShouldHandOver(bool finished, string reason, int tellerLines, bool handedOver) =>
+        !finished && reason == "the teller left" && tellerLines == 0 && !handedOver;
+
+    /// <summary>Whether a listener remarks on a tale its teller left (pure): any line of it was said.</summary>
+    public static bool CutRemarkDue(bool finished, string reason, int linesSaid) =>
+        !finished && reason == "the teller left" && linesSaid >= 1;
+
+    /// <summary>The first beat the teller says, where a tale taken over starts again; -1 when it has none.</summary>
+    public static int FirstTellerBeat(VC.Scene scene)
+    {
+        if (scene?.Beats == null)
+            return -1;
+        for (int i = 0; i < scene.Beats.Length; i++)
+            if (!scene.Beats[i].IsPause && scene.Beats[i].Role == TellerRole)
+                return i;
+        return -1;
+    }
+
+    /// <summary>
+    /// A tale whose teller left before its first line: a listener names the one who left and the one who takes it over, and
+    /// the tale goes on from the teller's first line with that bot (the realm's other storyteller, else a stand-in that
+    /// can stay). When nobody can, the tale ends as any cut tale does: a listener's line, and a raid's call goes out.
+    /// </summary>
+    private static void HandOver(eRealm realm, VC.Scene scene, long oldId, string oldName, string raidCall, string reason)
+    {
+        RealmState state = State(realm);
+        int first = FirstTellerBeat(scene);
+        GameBot next = first < 0 || AutonomousBotDebates.IsRunning(realm) ? null : TellerOnline(realm, out _, standIn: true, notId: oldId);
+        string why = next == null ? "nobody can take it over" : null;
+        if (next != null)
+        {
+            string line = Handover[Random.Shared.Next(Handover.Length)].Replace("{old}", oldName ?? "the teller").Replace("{new}", next.Name);
+            TrySay(realm, next.DatabaseID, "tale_after", "listener", line, AutonomousChatExchange.NewId());
+            if (AutonomousBotDebates.StartTale(realm, scene, next.DatabaseID, first, out why))
+            {
+                lock (state)
+                {
+                    state.Playing = scene;
+                    state.TellerId = next.DatabaseID;
+                    state.TellerName = next.Name;
+                    state.Asides = 0;
+                    state.Answers.Clear();
+                    state.RaidCall = raidCall;
+                }
+                Log.Info($"TALE_HANDOVER realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} from=\"{oldName}\" to=\"{next.Name}\" beat={first}");
+                return;
+            }
+        }
+        Log.Info($"TALE_HANDOVER realm={GlobalConstants.RealmToName(realm)} scene={scene.Id} from=\"{oldName}\" to=none reason=\"{why}\"");
+        if (raidCall != null)
+            AutonomousRealmRaid.CallAfterTale(realm, raidCall, false, reason);
+        SayAfter(realm, oldId, "listener", CutBeforeStart[Random.Shared.Next(CutBeforeStart.Length)].Replace("{teller}", oldName ?? "the teller"));
     }
 
     /// <summary>
@@ -805,7 +997,9 @@ public static class AutonomousTales
         }
         if (playing != null)
         {
-            if (!IsQuestion(message))
+            string loreOfTale = LoreIdOf(playing.Topic);
+            if (!IsTaleQuestion(message, AutonomousChatIntentModel.Predict(message),
+                    LinesOf(playing).Concat(RequestNames(loreOfTale, LoreBible.Current))))
                 return false;
             lock (state)
             {
@@ -821,10 +1015,12 @@ public static class AutonomousTales
             string taleLore = LoreIdOf(playing.Topic);
             string[] fresh = IsLegend(taleLore) ? LoreLegends.RumoursAfter(AutonomousBotVoices.Corpus, taleLore, realm, heard)
                 : FreshRumours(boss, realm, heard);
+            // A rumour only when it shares a word with the question; else a deflection (chat audit LORE-003).
+            string[] near = fresh.Where(rumour => SharesAWord(rumour, [message])).ToArray();
             string answer = LoreChat.TryAnswer(message, out string known, realm) && !string.IsNullOrWhiteSpace(known) && !Repeats(known, heard)
                 ? known
-                : fresh.Length > 0 && Random.Shared.NextDouble() < 0.5
-                    ? fresh[Random.Shared.Next(fresh.Length)]
+                : near.Length > 0 && Random.Shared.NextDouble() < 0.5
+                    ? near[Random.Shared.Next(near.Length)]
                     : Deflections[Random.Shared.Next(Deflections.Length)];
             bool said = AutonomousBotDebates.TellerAside(realm, $"{player.Name}: {answer}");
             if (said)
@@ -833,7 +1029,10 @@ public static class AutonomousTales
             Log.Info($"TALE_ASIDE realm={GlobalConstants.RealmToName(realm)} scene={playing.Id} player=\"{player.Name}\" said={said}");
             return said;
         }
-        if (!IsRequest(message) || AutonomousBotDebates.IsRunning(realm))
+        LoreBible bible = LoreBible.Current;
+        string loreId = RequestedLore(message, TalesOf(realm).Select(t => LoreIdOf(t.Topic)).Distinct()
+            .Select(id => (id, RequestNames(id, bible))));
+        if (!IsRequest(message, loreId != null, NamesATeller(message, Tellers(realm).Select(k => k.Name))) || AutonomousBotDebates.IsRunning(realm))
             return false;
         long now = GameLoop.GameLoopTime;
         lock (state)
@@ -849,9 +1048,6 @@ public static class AutonomousTales
             Log.Info($"TALE_REQUEST realm={GlobalConstants.RealmToName(realm)} player=\"{player.Name}\" started=False reason=\"a tale was told less than {RequestGapMs / 60_000} minutes ago\"");
             return TrySay(realm, 0, "player", "answerer", JustTold[Random.Shared.Next(JustTold.Length)], AutonomousChatExchange.NewId()) == null;
         }
-        LoreBible bible = LoreBible.Current;
-        string loreId = RequestedLore(message, TalesOf(realm).Select(t => LoreIdOf(t.Topic)).Distinct()
-            .Select(id => (id, RequestNames(id, bible))));
         // A player who asks gets the tale even when both storytellers are out: another veteran tells it (as for a raid).
         if (TryStart(realm, loreId, player, out string why, standIn: true))
             return true;
@@ -959,6 +1155,71 @@ public static class AutonomousTales
         if (fire.Lines.Count == 0)
             Firesides.TryRemove(group, out _);
     }
+
+    #region Placed lore (/group, /say)
+
+    private static readonly ConcurrentDictionary<string, long> PlacedLast = new(StringComparer.Ordinal);
+    private static readonly ConcurrentDictionary<string, long> PlacedNextCheck = new(StringComparer.Ordinal);
+    private static readonly ConcurrentDictionary<string, HashSet<string>> PlacedHeard = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Placed lore (owner, 2026-11-18 09:14: lore is never cut; chat audit LORE-001.3): the 632 written lore lines and the
+    /// bible's place lines are not said unprompted in /faction, so a gamebot standing with the player in a place now and then
+    /// remarks on it: a groupmate in /group, else a gamebot nearby in /say. Out of a fight, at most one every
+    /// <see cref="LoreChat.PlacedGapMs"/> per player (about <see cref="LoreChat.PlacedTargetPerHour"/> an hour while the
+    /// player stays in places with lore), never a line the player heard this session, never during a fireside tale.
+    /// </summary>
+    private static void PulsePlacedLore(long now)
+    {
+        LoreBible bible = LoreBible.Current;
+        VC corpus = AutonomousBotVoices.Corpus;
+        if (bible == null || corpus == null)
+            return;
+        foreach (eRealm realm in Realms)
+            foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(realm))
+            {
+                string id = player?.ObjectId;
+                if (id == null || player.CurrentZone == null || !player.IsAlive || player.InCombat)
+                    continue;
+                if (now < PlacedNextCheck.GetValueOrDefault(id, 0))
+                    continue;
+                PlacedNextCheck[id] = now + LoreChat.PlacedCheckMs;
+                if (!LoreChat.PlacedDue(now, PlacedLast.GetValueOrDefault(id, long.MinValue / 2), Random.Shared.NextDouble()))
+                    continue;
+                if (player.Group != null && Firesides.ContainsKey(player.Group))
+                    continue;
+                LoreBible.Location here = LoreEntryRules.LocationAt(bible, player.CurrentRegionID, player.CurrentZone.ID);
+                if (here == null)
+                    continue;
+                HashSet<string> heard = PlacedHeard.GetOrAdd(id, _ => new HashSet<string>(StringComparer.Ordinal));
+                string[] pool;
+                lock (heard)
+                    pool = LoreChat.PlacedLines(bible, corpus.Lines, here, realm, heard);
+                if (pool.Length == 0)
+                    continue;
+                GameBot mate = player.Group?.GetMembersInTheGroup().OfType<GameBot>()
+                    .Where(bot => AutonomousLivingServer.CanTalk(bot) && bot.Realm == realm && bot.CurrentRegionID == player.CurrentRegionID)
+                    .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+                GameBot near = mate ?? player.GetNPCsInRadius(1_000).OfType<GameBot>()
+                    .Where(bot => AutonomousLivingServer.CanTalk(bot) && bot.Realm == realm && !IsTelling(bot.DatabaseID))
+                    .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
+                if (near == null)
+                    continue;
+                string template = pool[Random.Shared.Next(pool.Length)];
+                string text = LoreText.Pick(template, Random.Shared);
+                if (string.IsNullOrWhiteSpace(text))
+                    continue;
+                var channel = mate != null ? AutonomousLivingServer.Channel.Group : AutonomousLivingServer.Channel.Say;
+                if (!AutonomousLivingServer.Speak(near, channel, AutonomousBotVoices.StyleFor(near, text)))
+                    continue;
+                PlacedLast[id] = now;
+                lock (heard)
+                    heard.Add(template);
+                Log.Info($"LORE_PLACED player=\"{player.Name}\" place={here.Id} bot=\"{near.Name}\" channel={channel} pool={pool.Length}");
+            }
+    }
+
+    #endregion
 
     /// <summary>GM test (/lstest fireside): the next look treats the GM as rested and due, here and today.</summary>
     public static void ForgetFiresides(GamePlayer player)

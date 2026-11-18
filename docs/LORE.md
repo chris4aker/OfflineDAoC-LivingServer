@@ -5,8 +5,10 @@ Server writing where it doesn't, with the source of every fact marked. The stori
 and several channels show them: screen-centre atmosphere lines, boss yells, bot chat (briefings, after-raid tales,
 rumours, answers), and (from the loremaster and Herald work) a loremaster NPC, books and a chronicle.
 
-This page describes the data format, the checks every file must pass, and the engine. Nothing here has been played in
-game yet; the automated tests are listed at the end.
+This page describes the data format, the checks every file must pass, and the engine. Seen on the owner's PC (build
+5378dbe, 2026-11-17, `c5378.log.all`): boss yells, boss actions and screen-centre lines (`LORE_LINE` kind yell 487,
+action 373, screen 87) and one lore debate. Every other channel (briefings, after-raid lines, answers, loremaster, books,
+chronicle) is tests only; the automated tests are listed at the end.
 
 ## The files
 
@@ -131,7 +133,7 @@ loremaster, /lore codex and bestiary show its story, legend and loremaster words
 
 ### Bot lines
 
-Bot lines are 2003 chat voice: lower case (caps for shouting, "SPREAD", "MT", are fine; a Capitalized word is not), no `{slots}`, at most 160 characters as said. The corpus's `[a|b]` choices
+Bot lines are 2003 chat voice: lower case (caps for shouting, "SPREAD", "MT", are fine; a Capitalized word is not), no `{slots}`, at most 140 characters as said (`LoreBible.MaxBotLineLength`; `LoreChat` uses the same limit). The corpus's `[a|b]` choices
 work (`[a|]` is a or nothing; no nesting). Atmosphere lines are said as written, at most 60 characters, no choices.
 
 ## The schema in one place (every writer follows this)
@@ -299,10 +301,20 @@ No script reads the lore files, so a file never replaces a script's own text.
 - **After the raid:** 90-180 s after a win or a wipe, a raider says an `aftermathWin` or `aftermathLoss` line, then
   50 s later one of the place's `lore` or `rumour` lines.
 - **The lore pool:** locations' `lore` and `rumour` and bosses' `rumour` lines are added to the voices corpus at load
-  (kind ambient, topic lore, about place, the location's realm; Neutral is every realm).
+  (kind ambient, topic lore, about place, the location's realm; Neutral is every realm). Since round 5 no lore line is
+  said unprompted (`AutonomousChatFiller` drops topic lore; `CHAT-BUDGETS.md`: lore is never recited unasked), so these
+  lines and the written `data/chat/lore_*.lines` are heard only as answers (below) and in lore debates.
 - **Answers:** a question about a place or a boss ("whats in krondon?", "who is the storm keeper", "ever been to tur
-  suil") through any route that uses the knowledge answers (tells, /advice, /broadcast, groups, guilds) gets one of the
-  place's `tell` lines, or a boss's `rumour` (else `briefing`) line. "Where is ...?" stays the directions answer.
+  suil") through any route that uses the knowledge answers (tells, /advice, /broadcast, groups, guilds) gets a written lore line
+  of the corpus (`data/chat/lore_*.lines`, the asker's realm or every realm, no slot, class or condition) that names the
+  place or boss, when the bible has no `tell` line for it, and one time in three when it has; else one of the place's
+  `tell` lines, or a boss's `rumour` (else `briefing`) line (`LoreChat.TryAnswer`; chat audit LORE-001, tests only). "Where is ...?" stays the directions answer.
+- **Placed lore** (owner, 2026-11-18 09:14: "Lore should never be cut"): a gamebot standing with the player in a place
+  with a lore file now and then remarks on it: a groupmate in /group, else a gamebot within 1,000 units in /say. The line
+  is a written lore line naming the place or one of its bosses, or the place's own `lore`/`rumour` line. Out of a fight, at
+  most one per player every 20 minutes, then a 15% chance a minute: about 2.2 an hour while the player stays in such
+  places (`LoreChat.PlacedTargetPerHour`, measured by `UT_ChatLoreFixes`), never a line that player heard this session,
+  never during a fireside tale. Log: `LORE_PLACED`. Tests only.
 - **Era rumours** (owner, 2026-11-15: Trials of Atlantis and Catacombs as rumours only): "what is atlantis?" and "is there
   anything under camelot?" are answered first, with one of the asker's realm's rumour lines (`LoreLegends`,
   `data/chat/era_rumours.lines`); a question about another realm's capital is left to the other routes. No location file
@@ -485,6 +497,6 @@ All four read the same files and treat the three realms alike. The code is in `s
   all die, reset, form changes, partners); the script-only triggers; rate limits; the switch default.
 - `tools/bot-voices/build_corpus.py --verify` checks the bot lines.
 
-None of this has been played in game. To check it: walk into Krondon (first entry), walk to Scurceol Hyrde's room (area
+Apart from the boss yells, actions and screen lines seen on build 5378dbe (above), none of this has been played in game. To check it: walk into Krondon (first entry), walk to Scurceol Hyrde's room (area
 and lair), pull him and kill the four lights (yells, `orbDeath`, `addsDead`), and kill him (death yell, first kill). Check
 the line lengths on the classic client (the inventory suggests trying 40, 60 and 80 characters).

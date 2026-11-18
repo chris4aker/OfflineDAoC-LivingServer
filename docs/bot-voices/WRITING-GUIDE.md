@@ -72,6 +72,9 @@ says "today").
   (abbreviations, typos, emotes, capitalised "proper" writers), so write the plain middle.
 - SHORT. Reactions 1-4 words ("lol", "gz", "same", "ouch"). Most lines 4-9 words. Rarely more than 14
   words. Hard limit 140 characters.
+- Scenes are the exception (chat audit LORE-026, 2026-11-18): a beat of a debate, a tale or a lore scene
+  may hold up to three short sentences. The engine sends a long beat sentence by sentence, each as its own
+  chat line, so each sentence keeps to about 14 words. Count sentences, not beats.
 - Period chat words are welcome: ty, np, k, kk, lol, heh, gz, grats, gratz, brb, afk, wb, omw, gl, pst,
   lfg, lfm, inc, oom, med, pull, add, mez, rez, buffs, con (yellow/orange/red/purple/blue/green/grey),
   bubble, ding, camp, twink, zerg, gank, buffbot, uber, gimped, nerf, imo, btw, nvm, rofl, lag.

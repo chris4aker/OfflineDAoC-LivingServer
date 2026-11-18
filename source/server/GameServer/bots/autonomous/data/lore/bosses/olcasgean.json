@@ -16,7 +16,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs"
     },
     {
-      "text": "When he wakes a second body (Olcasgean2) with its own 250,000 health rises with him; at 50% each casts a heavy spell.",
+      "text": "When he wakes a second body (Olcasgean2) rises with him and shares his health (a blow to either takes from both); at 50% each casts a heavy spell.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },

@@ -5,8 +5,8 @@
 #
 # Truth rules for this file: documented lore is said plainly; rumours, superstitions and inventions are
 # framed as hearsay, belief, memory or argument. No bot claims to have killed Legion, Behemoth, Govannon
-# or a dragon. Realm * only: no place names except Darkness Falls and the battlegrounds, and every line
-# that compares the realms treats all three the same.
+# or a dragon. Realm * only: no place names except Darkness Falls, the battlegrounds and the shared dungeons
+# (the Summoner's Hall and the frontier tunnels), and every line that compares the realms treats all three the same.
 
 @kind ambient
 @topic lore
@@ -57,13 +57,12 @@ ask an imp and i bet the realm war is the best thing that ever happened to them
 @who NoLifer,Explorer
 @levels 35-50
 grand summoner govannon starts the fight as an elf and finishes it as a demon. nobody knows which one is the real him
-[the old raiders say|word is], leave govannon's shield node alone or [every hit does one damage|your swords might as well be sticks]
 heard a govannon fight runs forty minutes. bring food, and a spare healer
 aidon the archwizard sits in the hall of the corrupt on the way down to the summoners, and nobody can say whose side he is on
 three summoners and their sidhe guards, all in one hall. someone planned that
 the summoners in that hall keep calling something. nobody i know has asked them what
-[heard|people say] the deepest rooms of df lead to the summoner's hall, where all three realms come together
-i heard the summoner's hall was a sidhe place before legion's lot moved in
+[heard|people say] every frontier tunnel has a stair down to the summoner's hall, where all three realms come together
+i heard the summoner's hall was a sidhe place before the summoners moved in
 
 # ---------------------------------------------------------------- the tunnels and the third power
 @who Explorer,NoLifer
@@ -247,7 +246,7 @@ someday i will stand where legion can see me and not run. someday
 @role E type=Explorer levels=30-50
 A: {q} is behemoth really unkillable, or is that a story the raid leaders tell | {q} anyone else think behemoth can die and nobody has managed it yet
 ?D: wait, who is behemoth? i keep seeing the name in faction | whos behemoth? sounds like a boat
-B: the biggest thing in darkness falls. level ninety nine, a room to himself, and nothing you swing at him sticks | a demon in df, level ninety nine, not a typo. he has his own room and every hit on him does nothing
+B: the biggest thing in darkness falls. level ninety nine, a room to himself, and one swing from him ends you. guilds swear nothing sticks | a demon in df, level ninety nine, not a typo. whatever he hits dies. people say hits on him do nothing
 D: ninety nine? i thought fifty was the top | how is anything ninety nine, i thought fifty was as high as it goes
 E: fifty is our cap. legion's court goes way past it. dukes in the mid seventies, the princes near eighty, legion in the eighties | we stop at fifty, the demons dont. duke alloc and his lot are about seventy five, the three princes nearer eighty
 C: and behemoth sits sixteen levels over legion himself. so who is really in charge down there | sixteen levels over his own master. if i were legion i would sleep with one eye open
@@ -261,7 +260,7 @@ C: a bin that hits harder than your whole health bar | a very angry bin
 E: in the old books behemoth is the great beast of the land, and only the one who made him can bring a sword near him | the old scripture tale says behemoth is the first of the beasts, and only his maker can come at him with a blade
 E: so maybe none of us can kill him because none of us made him | which would mean the game is telling us straight: this one is not for you
 B: or nothing sticks and that is that. three guilds told me the same: you swing, you cast, you dot, the numbers dont move | three raid leaders, three realms, same story. melee, nukes, dots, nothing comes off him. thats not lore, thats a wall
-C: walls have doors. maybe its a phase thing like govannon's node. break something else first and he opens up | a mob that cant die is a puzzle. find the right thing to break first
+C: walls have doors. maybe its like govannon's sacrifice. stop something else first and he opens up | a mob that cant die is a puzzle. find the right thing to kill first
 B: people looked. the rooms near him are full of chthonic knights and earls, and killing them does nothing to him | the knights and earls round his room get farmed for seals all week. nobody ever saw him flinch
 ~ 15
 D: has anyone tried with a whole realm at once? | what if every level fifty in the realm went in together
@@ -344,8 +343,8 @@ C: i'd sing along to that one | do it, and sing it in every town. i want to see 
 @role D type=Crafter
 @role E type=* levels=5-25
 A: {q} settle a bet. are the dragons he or she | {q} he or she, when we talk about the three dragons? i have a wager riding on it
-B: the heralds call the stone one she. golestandt is a she, every herald piece says so | golestandt is she. thats in the herald, written down, ask anyone who reads those
-C: the herald calls her she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it | written down as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she
+B: the albs sing the stone one as she. golestandt is a she in every alb song | golestandt is she. thats how the albs sing it, ask any of their minstrels
+C: sung as she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it | sung as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she
 ?E: how would you even tell, with a dragon | wait, how does anyone check that on a dragon
 D: you dont. you look at what the story calls them and hope | you read the lore, you dont go and look. nobody gets that close and lives
 B: the glimmer king is easy. king. its in the name. he | cuuldurach the glimmer KING. that one at least is a he
@@ -378,7 +377,7 @@ B: grey gives nothing, green is easy, blue is fair, yellow is your level, orange
 B: blue is the best xp per minute, for the record. fight blues all day and you level twice as fast as the heroes | i live on blues. never a death, steady xp. the colours are fair on normal mobs
 E: on normal mobs, sure. on anything with a name the colour is a guess. the old bestiaries list some named with two levels at once | on named ones the colour tells you nothing. half the bestiary pages list two levels for one mob and argue in the comments
 C: i read about one named that two bestiaries listed fifteen levels apart. the con just went red and stayed red | one named, two bestiaries, two levels fifteen apart. the colour cant even pick one
-E: and the frontier giants. glacier giant and evern listed in the seventies, the green knight at sixty, all three purple to everyone | the green knight is listed sixty, the glacier giant and evern in the seventies. same purple for all three. that colour covers a lot
+E: and the frontier giants. evern and the green knight listed in the seventies, the glacier giant in the eighties, all three purple to everyone | the green knight and evern are listed in the seventies, the glacier giant in the eighties. same purple for all three. covers a lot
 D: so purple just means more than red? | is there anything after purple?
 C: purple means the game stopped counting. it's the same colour for a duke in df and for behemoth | after purple there's nothing. a duke in df and behemoth con the same, and one is twenty four levels higher
 E: thats what i mean. purple is a lie by being honest. it says too strong and leaves out how much | purple covers twenty levels and calls them all the same. that is the lie
@@ -432,7 +431,7 @@ A: is there anything out past the edge of the world | {q} has anyone here ever s
 B: a wall. you swim and swim, the water stays the same and then you just stop. like cold glass you cannot see | i swam out until my map showed nothing but blue, then i hit something i couldnt see. no splash, no sound, just stop
 ?E: wait, you can swim off the map? | the map ends? i thought it just kept going
 C: every map ends in water. the water doesnt end, you do. the gods put a wall there | the land stops, the sea goes on, and then the sea stops too. invisible, all the way round
-B: but it moved. the islands last autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one | it isnt fixed though. one autumn three islands appeared out of nowhere, one per realm, and people swam out to them
+B: but it moved. the islands this autumn. three of them turned up that nobody had seen, one for each realm, and you could swim to one | it isnt fixed though. one autumn three islands appeared out of nowhere, one per realm, and people swam out to them
 C: those came with a patch. the heralds called them long forgotten islands. forgotten isnt hidden, its added | a patch put them there. the herald said long forgotten. thats a polite word for new
 B: so the sea was hiding them, or the wall was closer before. either way the edge moved and nobody noticed | either the wall was in front of them all along, or the wall moved back. both mean the edge isnt where it was
 D: so if it moved once it can move again. i want to be out there the day it does | so one day it moves and somebody is pressed against it when it goes. i want to be that someone
@@ -497,7 +496,7 @@ E: the hibs had a pass come out of their mist overnight. the mids got told about
 B: thats the argument. the lore says they were always there and we just hadnt walked in | the stories say they were there all along. we just hadnt been told where to look
 C: they came with a patch. a patch is not a hidden door, its a builder with a hammer | patches add things. that isnt discovery, thats a delivery
 B: then what about darkness falls? the spring after the war began, a portal opens and there's a whole demon court underneath | darkness falls. one spring, a door, and under it a court of demons with names and ranks. who built that in a week
-E: and that summer, tunnels under all three frontiers. then a whole new land across the sea that autumn. then the islands this year | then tunnels under every frontier the next summer, new lands across the water that autumn, three islands last autumn
+E: and that summer, tunnels under all three frontiers. then a whole new land across the sea that autumn. then the islands this year | then tunnels under every frontier the next summer, new lands across the water that autumn, three islands this autumn
 C: and every one of those came with patch notes. hidden things dont come with patch notes | right, and every one came with a herald post. nobody stumbled into anything
 B: but the herald always wrote it as found. discovered, long forgotten, little explored. never built | the heralds never said built. they said found, forgotten, uncovered. the world itself says it was there
 ~ 15
@@ -512,22 +511,24 @@ C: you two have fun. i'll be at my camp, getting xp from the dungeons that exist
 
 @topic lore_govannon
 @levels 5-50
-@scene lore_shield_node
+@scene lore_sacrifice_first
 @role B type=NoLifer levels=35-50
 @role C type=Daredevil
 @role D class=Wizard,Runemaster,Eldritch levels=30-50
 @role E type=* levels=5-25
-A: is the shield node story about govannon true | {q} should you really leave govannon's shield node alone
+A: {q} sacrifice or demon, which do you kill first at govannon | is it true you have to stop govannon's adds before they reach the middle
 ?E: whos govannon? | sorry, who or what is govannon
-B: grand summoner govannon. he holds the summoner's hall, past the deepest rooms of darkness falls. level eighty | the boss of the summoner's hall, the hall you reach past legion's rooms in df. grand summoner, level eighty
+B: grand summoner govannon. he holds the summoner's hall, under the frontier tunnels. level eighty | the boss of the summoner's hall, the hall at the bottom of the frontier dungeons. grand summoner, level eighty
 B: the hall is the only place where all three realms meet. sidhe guards, the summoners, and govannon at the end | its where the three realms come together. sidhe guards on the doors, summoners in the rooms, then him
-E: and the node thing? | so whats the shield node
-B: there's a node next to him. the old raid leaders all say the same: kill it and he goes near invulnerable. leave it alone | a thing called a shield node stands in his room. every raid leader i ever heard says dont touch it, or your hits do almost nothing
-C: everyone says leave it. nobody says they tested it. that's a rule somebody made after one bad wipe | sounds like one raid leader said it after a wipe and everyone copied it. nobody i know tested it
-D: it makes sense though, if you think about wards. a shield node feeds a shield. break the feeder and the ward snaps shut around him | from a caster's view it makes sense. a node that holds a ward open. break it, the ward closes on him, and he's sealed
-C: or break it and the shield drops. that's what a sensible node would do | or kill the shield and he has no shield. thats what a name usually means
-D: and there are more nodes, people say. a healing node, a fire node. the room is a machine, not a fight | i heard there's a healing node and a fire node too. the whole room works like a spell, and govannon is in the middle
-B: and he changes shape. starts as an elf caster, grows taller, and by sixty percent he's a true demon | three forms. an elf summoner, then something taller, and at sixty percent he drops the act and is a demon
+E: and the adds? | so what adds
+B: when he starts to hurt he calls two things, a sacrifice and a demon. they come in from both sides | about four fifths down he calls two adds. a sacrifice from one side, a summoned demon from the other
+B: neither one swings at you. they just walk to the middle of his room | they dont fight. they walk, slow, to the middle of the room, and thats all
+C: walking adds. so whats the problem | if they dont hit, why does anyone care
+B: if both of them get there a shade of aelfgar comes out and joins him | both reach the middle and a shade of aelfgar walks out. then you fight two
+D: so you only have to stop one. the shade needs the pair | one dead add is enough. it takes both of them arriving to call the shade
+C: then the question is which one. the demon or the sacrifice | so which do you burn, the sacrifice or the demon
+D: whichever your nukers reach first. they walk in from opposite ends | the one on your casters' side. they come from opposite doors
+B: and he changes shape. starts as an elf caster, and at half health he's a true demon | two shapes. an elf summoner, and at half he drops the act and is a demon
 E: wait, an elf turning into a demon? | so he was pretending to be an elf?
 D: that's the question. was he an elf that legion turned, or a demon wearing an elf? i think the elf is the costume | i read it as a demon wearing a sidhe face. why else hide among sidhe guards
 C: or a summoner who called one demon too many and it moved in | or he called legion's lot once too often and something called him back
@@ -536,11 +537,11 @@ B: makes sense, if the hall is a forge. he summons things, a smith makes things.
 ~ 15
 C: how long does the fight run if you do it right? | how long are we talking, for a proper attempt
 B: people say forty minutes, some say longer. healers taking turns, food at the keyboard | the stories say forty minutes when it goes well. some raids took longer and lost on the last form
-C: and if you break the node, maybe ten minutes. thats the rumour i want tested | so leave the node and it's forty minutes, break it and maybe it's ten. someone has to find out
-D: or maybe a wipe in ten seconds and a long run back from the bind stone | or the ward shuts and you fight a wall until your healers run out of mana
-?E: i'm writing all this down for when i'm fifty | i'll remember the node thing for when i'm old enough
-B: leave the node. thats my advice. i like my rules with a few wipes behind them | node stays, nobody touch it. the old raiders learned that the slow way
-C: if i ever get in there, the node gets one hit from me. just one. for science | one day i'll tap that node, just once, and we'll all know
+C: and when he changes he gets most of his health back, and calls a new pair. kill one again | after the change, two new adds and most of his health back. stop one, every time
+D: or let the shade out once and find out how long forty minutes can get | or the shade gets out and you fight two until your healers run out of mana
+?E: i'm writing all this down for when i'm fifty | i'll remember the adds thing for when i'm old enough
+B: one add dies, every time. thats my advice. i like my rules with a few wipes behind them | stop one add, nobody argues. the old raiders learned that the slow way
+C: if i ever get in there i want the demon. it has the better name | one day i'll be on the add team and i'll pick the demon. just to see
 
 @topic lore_df
 @levels 5-50
@@ -587,7 +588,7 @@ B: the midgard ones called the dragon's fortress little known and less explored.
 B: and the hibs got a mountain pass drawn where the rangers swore there'd only been bog the week before | and the hibs had a pass drawn on the new maps that the old maps showed as mist and bog
 C: and every one of those came true later, with a patch. the map was a promise, not a secret | and every one of those turned up with a patch. thats not a hidden world, thats a map of next year
 D: so the maps were a sneak peek. i like that better than lying | so the mapmakers were prophets. i'd pay more for that map
-C: and when the keeps got rebuilt this autumn every frontier map went stale overnight. the world changes, the ink doesnt | when the frontier keeps changed layout last autumn, every frontier map was wrong by the next morning
+C: and when the islands turned up this autumn every sea chart in the realm went stale overnight. the world changes, the ink doesnt | when three islands appeared this autumn, every coast map was wrong by the next morning
 B: thats my point. the world moves. a map is a picture of one day | thats exactly it. the world isnt fixed. a map is just one day of it
 ~ 15
 C: then explain the roads that go nowhere. old roads that end at a cliff, like somebody walked them once | ok, explain the roads that end at a cliff. there are old markers that point at nothing

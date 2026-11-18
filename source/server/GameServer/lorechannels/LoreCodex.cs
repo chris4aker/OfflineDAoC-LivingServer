@@ -168,7 +168,7 @@ namespace DOL.GS.LoreChannels
                     lines.AddRange(LoreBooks.Wrap(piece, 200));
                 lines.Add(" ");
             }
-            if (!string.IsNullOrWhiteSpace(place.Legend)) { lines.Add("What players say"); lines.AddRange(LoreBooks.Wrap(place.Legend, 200)); lines.Add(" "); }
+            if (!string.IsNullOrWhiteSpace(place.Legend)) { lines.Add("What is said"); lines.AddRange(LoreBooks.Wrap(place.Legend, 200)); lines.Add(" "); }
             lines.AddRange(Ties(source, place.Era, place.Factions, place.Related));
             var bosses = bestiary.Where(b => b.Location.Id == place.Id).ToList();
             if (bosses.Count > 0)
