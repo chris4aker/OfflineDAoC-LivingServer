@@ -218,6 +218,7 @@ is added here, with the build that carries it, before it is merged.
 | Trollheim | Stopped by the owner before Nosdoden (`1dc66b6`); not finished on the candidate line | none | | Timed out on `ccba364` after a wipe at Nosdoden. Under investigation |
 | Tur Suil | Stalled while clearing its first hour of trash (`88b6ab3`) | #291 | `ccba364` and later | **#291 seen**: won in sweep 3 on `ccba364`, no wipe. A raid the game opened itself stalled on `19e7037` (below) |
 | Spirit of Lord Emthoro | Failed rally: 8 of 40 arrived (`ccba364`) | #293 | `19e7037` and later | Not run since |
+| Caer Sidi | Two full wipes at the Crypt Lord scored "killed; it came back since" (`5378dbe`): a move home taken for a respawn | fix/raid-attempts-5378 (kill needs a seen death) | not yet on a build | Owed: seen when a wipe at a boss moved home is scored `REALM_EXPEDITION_WIPE`, and a real respawn still as a win |
 
 Under investigation from `ccba364` and `19e7037` (no fix yet):
 - **Darkness Falls (Albion), a false wipe?** Both wipes at Chthonic Knight Ukobat were counted with 0 and 2 raiders

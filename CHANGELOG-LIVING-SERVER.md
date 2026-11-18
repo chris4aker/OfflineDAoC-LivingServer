@@ -765,6 +765,13 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
     with his spot, next point and closest approaches, so the next PC log can confirm it.
   - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+- **A boss moved home is no longer scored as killed** (tests only; owner's PC, build 5378dbe, 2026-11-17, Caer Sidi). Two
+  full wipes at the Crypt Lord (93 raiders dead each, he never fell below 96%) ended `REALM_EXPEDITION_ATTEMPT_ENDED
+  how="killed; it came back since" wipe=False`, so the raid had four attempts instead of two. The attempt took any new
+  `SpawnTick` as a respawn, but every AddToWorld sets it and `ABrain.Stop` moves an idle NPC home a minute after the
+  last raider near it fell. A kill now needs the route to have seen the encounter dead (health 0 or respawning) after
+  the pull, and a new life after that (`KilledSinceAttempt`); Chthonic Knight Ukobat's real respawns (`ccba364`) still
+  end their attempts as wins. Raids now end at the true second wipe, never later.
 
 - **Every Living Server feature is on by default** (owner 2026-11-16: "They should be on by default - all our living
   server features should be in by default if someone downloads our installer"; this replaces the rule that bot-side

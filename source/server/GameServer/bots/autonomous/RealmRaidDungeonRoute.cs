@@ -447,9 +447,19 @@ namespace DOL.GS
         /// low: two free resets (22:37:13 lowest=18, 22:46:23 lowest=66), then REALM_EXPEDITION_WIPE failures=1 engaged=54
         /// fallen=0 lowest=14 (22:55:28) and failures=2 engaged=68 fallen=2 lowest=68 (23:07:42), and the raid ended
         /// "Defeated at Chthonic Knight Ukobat" with 87 of 88 alive. Each followed a REALM_EXPEDITION_TARGET_DEFEATED.
+        /// A new SpawnTick alone is no kill: every AddToWorld sets it, and ABrain.Stop moves an idle NPC home with one. Owner's
+        /// PC, build 5378dbe, 2026-11-17 (Caer Sidi): the Crypt Lord, never below 96%, was moved home a minute after each of two
+        /// full wipes (93 raiders dead each) and both attempts ended "killed; it came back since" wipe=False. A kill now needs
+        /// the route to have seen the encounter dead (<paramref name="deathSeenTick"/>, health 0 or respawning) after the pull,
+        /// and the new life to have come after that.
         /// </summary>
-        public static bool KilledSinceAttempt(long attemptStartTick, long spawnTick) =>
-            attemptStartTick > 0 && spawnTick > attemptStartTick;
+        public static bool KilledSinceAttempt(long attemptStartTick, long deathSeenTick, long spawnTick) =>
+            attemptStartTick > 0 && deathSeenTick >= attemptStartTick && spawnTick > deathSeenTick;
+        // When the route last saw the attempt's encounter (_musterTarget) dead: health 0 or waiting to respawn (0 = not seen).
+        private long _musterDeathSeen;
+        /// <summary>The encounter is dead (health 0 from ProcessDeath, or waiting to respawn), never merely out of the world
+        /// for a moment (MoveTo home keeps its health).</summary>
+        private static bool SeenDead(GameNPC npc) => npc != null && (npc.Health <= 0 || npc.IsRespawning);
         private readonly Dictionary<string, int> _freeResets = new(StringComparer.Ordinal);
 
         /// <summary>Raiders a regroup waits for: 70% of the raid's roster (40% after 20 minutes), 8 to 150.</summary>
@@ -1251,7 +1261,7 @@ namespace DOL.GS
         {
             // The encounter died and came back since this attempt's pull: that attempt was won, and the new life is a new
             // muster (KilledSinceAttempt; Chthonic Knight Ukobat, 2026-11-16).
-            if (_musterTarget == _target && _musterEngaged && KilledSinceAttempt(_musterEngagedTick, _target.SpawnTick))
+            if (_musterTarget == _target && _musterEngaged && KilledSinceAttempt(_musterEngagedTick, _musterDeathSeen, _target.SpawnTick))
             {
                 log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={_engaged.Count} " +
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"killed; it came back since\" wipe=False");
@@ -1281,6 +1291,7 @@ namespace DOL.GS
             if (_musterTarget != _target)
             {
                 _musterTarget = _target;
+                _musterDeathSeen = 0;
                 _musterSince = now;
                 if (_finalMusterSince == 0 && _finalTypes.Contains(_target.GetType().Name)) _finalMusterSince = now;
                 _musterEngaged = false;
@@ -2680,6 +2691,8 @@ namespace DOL.GS
                 _routeRetry.Remove(stale);
             foreach (GameNPC npc in live.Where(n => _finalTypes.Contains(n.GetType().Name)))
                 if (!_finals.TryGetValue(npc.GetType().Name, out var old) || old.IsAlive) _finals[npc.GetType().Name] = npc;
+            // The attempt's encounter seen dead, whether or not it is the route's target this turn (KilledSinceAttempt).
+            if (SeenDead(_musterTarget)) _musterDeathSeen = now;
             if (_target != null && !_target.IsAlive)
             {
                 log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{_target.Name}\" level={_target.Level} " +
