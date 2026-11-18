@@ -270,6 +270,11 @@ Reading and replies (the chat audit's E1 items; unit tests only, none seen on th
 - **Fairer answers:** thread answers spread over the realm's regulars (one rests 90 s after answering); a player's spec
   question gets the spec answers bots give each other.
 - **/lswhy** reads plainly for players (codes, rules and scores for GMs); an event's reactions show as exempt, not held.
+- **Conversation memory** (owner 2026-11-18: in 1.2): for five minutes a bot remembers its conversation with you, per bot and
+  per channel: the turns, its open question, the place, item, class and level in play, and who has the floor. Your next
+  line goes on with the bot you were talking to (not a hello, goodbye, call or group post); "how do i get there", "is it
+  far", "how much for it" are completed from the last place or item; a bot never asks the level, class, place or item you
+  already gave. Gamebots in /faction, /say, /group and tells; hired companions are to join it (their chat is being rebuilt).
 
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
