@@ -438,7 +438,9 @@ Write-Host "Backup: $backup"
 $pruned = Remove-OldDatabaseBackups $game 3
 if ($pruned -gt 0) { Write-Host "Removed the world database copies of $pruned older install(s) (the newest 3 are kept; their server files stay)." }
 Write-Host "Start the game as usual. The server log shows: FORK_BUILD name=$($info['BuildName']) commit=$($info['Commit'])"
-Write-Host 'Every new feature is OFF until you switch it on: launcher -> Living Server tab (server stopped). To undo: ROLLBACK.cmd'
+# Living Server 1.2 (owner 2026-11-16, AGENTS.md "Living Server features are on by default"): the features are on by
+# default; a world from an earlier build moves to the new defaults once, only where it still holds the old untouched one.
+Write-Host 'Living Server features are ON by default. Their switches are in the launcher''s Living Server tab (change them with the server stopped); diagnostics and test switches stay off. To undo the install: ROLLBACK.cmd'
 # Living Server 1.2: the epic chains need no step here (and no Python): the server links them as it reads the quests,
 # in memory, so the world keeps its released rows and ROLLBACK.cmd has nothing to undo for them.
 Write-Host 'The epic chains are linked by the server as it reads the quests; nothing is written to your world for them (/epic shows a chain).'

@@ -122,8 +122,9 @@ in a crash-safe mode and is backed up every day
 - **Your rules stay.** Real loot, the Realm Exchange, stablemaster routes and bots that earn their armor are
   untouched.
 - **Every part has its own switch.** Chat, personalities, guilds, server life and XP rates each have a
-  switch in the launcher's **Living Server** tab. Setup's first install turns them on at our suggested
-  settings unless you untick that option; the manual install leaves them off. The bots' own endgame and
+  switch in the launcher's **Living Server** tab, and since 1.2 they are on by default, with the manual
+  install too (diagnostics and test switches stay off). Setup's first install also sets our suggested XP rates
+  unless you untick that option; with the manual install XP by level stays off until you pick it. The bots' own endgame and
   safer routes are always on.
 - **Undo any time.** The installer checks your game version, backs up every file it replaces and verifies
   each copy. `ROLLBACK.cmd` puts the originals back.

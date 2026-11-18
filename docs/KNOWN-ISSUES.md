@@ -144,6 +144,13 @@ meetup fix drop two no-shows (in the server log).
   install replaced. The new database tables and settings stay; the original server ignores them.
   Remove bot guilds first (above) if you used them. If you installed more than one build, run
   `ROLLBACK.cmd` once per build.
+- **A maximized launcher ignores clicks on START SERVER, STOP SERVER or ENTER REALM (seen on the owner's PC,
+  2026-11-05 and 2026-11-18, build b1b6846).** Maximized, those buttons sit at the top right of the screen; when another
+  window is on top there, the click goes to that window, so nothing happens and nothing is logged, while the tabs further
+  left still answer. On the owner's PC that window was most likely the Claude app's (the helper's screenshots mask it; the
+  2026-11-05 notes name it; on 2026-11-18 it wasn't confirmed). Restoring the window
+  made STOP SERVER work first try both times. The launcher itself puts nothing over the buttons at any size up to 4K
+  (`LauncherWindowSizeTests`, tests only). Move the other window or use the launcher at its normal size.
 - **A fresh world needs bots.** Most features need bots online, and a realm needs at least 8 bots
   of level 5 or higher before it forms a bot guild. Use the **+ Lv.1** / **+ Lv.50** buttons in the
   launcher.

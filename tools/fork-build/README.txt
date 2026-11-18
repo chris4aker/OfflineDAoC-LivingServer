@@ -26,7 +26,8 @@ ALWAYS ON (the bots' own game, nothing to switch):
     region; flickering casting hands; arrow / bolt / poison info. Untested in game so far.
     What is held back and why: docs\CLIENT-SCRIPTS-1.2.md
 
-OFF UNTIL YOU SWITCH THEM ON (launcher -> Living Server tab):
+ON BY DEFAULT (each has its switch in the launcher -> Living Server tab; since 1.2 every Living
+Server feature is on by default, and only diagnostics and test switches stay off):
   - Bot guilds .................... docs\BOT-GUILDS.md
   - Bot personalities, voices
     and /faction debates .......... docs\BOT-PERSONALITIES.md
@@ -36,10 +37,16 @@ OFF UNTIL YOU SWITCH THEM ON (launcher -> Living Server tab):
     nemeses, bot schedules,
     breaks, linkdeads and body
     language ...................... docs\LIVING-SERVER.md
-  - XP rate by level range ........ docs\XP-BY-LEVEL-RANGE.md
-    (the suggested values keep levels 1-34 worth playing and compress the 35-50 grind:
-     you 3x / 5x / 12x, bots 1.5x / 2.5x / 6x for levels 1-19 / 20-34 / 35-50)
   - Camelot Herald (a news page; button in the Living Server tab)
+
+YOUR CHOICE (launcher -> Living Server tab):
+  - XP rate by level range ........ docs\XP-BY-LEVEL-RANGE.md
+    Off with INSTALL.cmd until you pick Suggested or Custom; Setup's first install picks
+    Suggested unless you untick that option. (The suggested values keep levels 1-34 worth
+    playing and compress the 35-50 grind: you 3x / 5x / 12x, bots 1.5x / 2.5x / 6x for
+    levels 1-19 / 20-34 / 35-50.)
+  - The classic rule options (power halving, crafting's secondary caps, classic quality and
+    losses) and the epic encounter options not yet played through stay off.
 
 Known issues and what hasn't been tested in game yet: docs\KNOWN-ISSUES.md
 
@@ -72,7 +79,8 @@ when that is what it replaced, but never shadowofze's: after a first install the
 one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like
-  FORK_BUILD name=1.2-beta commit=... bot_guilds=off ... bot_voices=off living=off
+  FORK_BUILD name=1.2-beta commit=... bot_guilds=on ... bot_voices=on ... living=memory,grats,...
+(a switch you turned off in the tab shows as off there).
 
 Had an earlier Social Expansion build (0.36-se.N or 0.37-se.N)? Just run INSTALL.cmd: your
 characters, bots, bot guilds, bot memory and settings stay where they are.
@@ -86,18 +94,22 @@ Coming from 0.36 with an earlier build installed? The 0.37 update applies only t
   3. Double-click INSTALL.cmd in this folder.
 This build refuses a 0.36 game.
 If you installed 0.37 fresh instead and brought your progress over, the game's transfer leaves out
-the Living Server's own tables (bot guilds, bot memory, heard lines). Before turning bot guilds
-on, copy them from the old game folder:
+the Living Server's own tables (bot guilds, bot memory, heard lines). Bot guilds are on by
+default, so before the first server start copy them from the old game folder:
   python tools\claude-version\carry_social_tables.py --from "C:\path\to\old\game" --apply
 
-SWITCHING FEATURES ON
+CHANGING THE SWITCHES
 ---------------------
+The features are on after the install: a world from an earlier build moves to the new defaults
+once, only for a switch it still holds at the old default the server wrote; a switch you set in
+the Living Server tab stays as you set it.
+
 A fresh world has no bots: add some with the + Lv.1 / + Lv.50 buttons on the launcher's main
 screen first (a realm needs 8 bots of level 5 or higher before it forms a bot guild).
 
 Open the launcher as usual (START OFFLINE DAOC.cmd) and go to the Living Server tab. With the
-server stopped, tick what you want, pick the XP-by-level rates (Off, Suggested or Custom) and click
-Save settings. They apply the next time you start the server. ALL OFF puts it back.
+server stopped, untick what you don't want, pick the XP-by-level rates (Off, Suggested or Custom) and
+click Save settings. They apply the next time you start the server. ALL OFF switches everything off.
 The server life switches are only in the tab (no scripts).
 
 The same switches as scripts, for those who prefer a command line (server closed; Python 3):
