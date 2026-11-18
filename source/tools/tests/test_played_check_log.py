@@ -385,6 +385,62 @@ class Raids(unittest.TestCase):
         log.add(at(6), switch)
         self.assertEqual(check(only(log.run()[1]), "pull_70")["status"], pcl.CONTRADICTED)
 
+    # Sweep 6b (b1b6846): Fornfrusenen's retry at 09:15:44 raised no shards and died to plain melee.
+    RETRY = ('REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Boss" mustered=89 needed=87 living=124 attempt=2 '
+             'retry=True')
+
+    def _first_fight(self, log, adds_line):
+        log.add(at(1), 'REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Boss" mustered=79 needed=70 living=100 attempt=1 '
+                       'retry=False')
+        log.add(at(2), adds_line)
+        log.add(at(9), 'REALM_EXPEDITION_WIPE region=160 target="Boss" level=75 failures=1 of=2 engaged=99 fallen=86 '
+                       'health=49 lowest=49 how="left combat"', "WRN")
+        return log
+
+    def test_a_retry_with_no_adds_contradicts(self):
+        lore = 'LORE_LINE boss="Boss" kind=screen trigger=addsSpawn text="Shards of living ice break from the walls!"'
+        log = self._first_fight(Log().start(at(0)), lore)
+        log.add(at(20), self.RETRY)
+        log.add(at(21), 'EPIC_TACTIC_BOT bot=A region=160 target="Boss" action=Reposition to="Boss" reason="close in"')
+        log.add(at(22), 'REALM_EXPEDITION_TARGET_DEFEATED region=160 target="Boss" level=75 minutes=27.7')
+        row = check(only(log.run()[1]), "retry_adds")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("retry=True", row["line"])
+        self.assertIn("0 retry(ies) of a boss with adds showed its adds, 1 showed none", row["detail"])
+
+    def test_a_retry_whose_adds_come_back_is_seen(self):
+        retarget = ('EPIC_TACTIC_BOT bot=A region=160 target="Boss" action=Retarget to="Boss Shard" '
+                    'reason="shards first (3 left)"')
+        for again in (retarget, 'EPIC_FIGHT_LEDGER region=160 target="Boss" seconds=60 raid_dealt="Boss Shard:5000/9/3"'):
+            log = self._first_fight(Log().start(at(0)), retarget)
+            log.add(at(20), self.RETRY)
+            log.add(at(21), again)
+            log.add(at(22), 'REALM_EXPEDITION_TARGET_DEFEATED region=160 target="Boss" level=75 minutes=27.7')
+            self.assertEqual(check(only(log.run()[1]), "retry_adds")["status"], pcl.SEEN, again)
+
+    def test_a_retry_of_a_boss_without_adds_is_not_judged(self):
+        log = self._first_fight(Log().start(at(0)), 'EPIC_TACTIC_BOT bot=A region=160 target="Boss" action=Reposition to="Boss"')
+        log.add(at(20), self.RETRY)
+        log.add(at(22), 'REALM_EXPEDITION_TARGET_DEFEATED region=160 target="Boss" level=75 minutes=10.0')
+        self.assertEqual(check(only(log.run()[1]), "retry_adds")["status"], pcl.NOT_SEEN)
+
+    def test_an_attempt_that_never_entered_combat_with_ten_fallen_contradicts(self):
+        # Aroon on b1b6846: three attempts ended between his Scaiths (fallen 14, 35, 19).
+        ended = ('REALM_EXPEDITION_ATTEMPT_ENDED region=191 target="Aroon the Urlamhai" engaged={e} fallen={f} health=100 '
+                 'lowest=100 how="{how}" wipe=False')
+        log = Log().start(at(0))
+        log.add(at(5), ended.format(e=80, f=0, how="never entered combat"))
+        log.add(at(6), ended.format(e=90, f=40, how="left combat"))
+        row = check(only(log.run()[1]), "attempt_contact")
+        self.assertEqual(row["status"], pcl.SEEN, "no one fell, or the raid was in combat")
+        log.add(at(7), ended.format(e=97, f=14, how="never entered combat"))
+        row = check(only(log.run()[1]), "attempt_contact")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("fallen=14", row["line"])
+        self.assertIn('3 attempt end(s), 1 "never entered combat" with 10+ fallen', row["detail"])
+        log = Log().start(at(0)).add(at(5), ended.format(e=97, f=9, how="never entered combat"))
+        self.assertEqual(check(only(log.run()[1]), "attempt_contact")["status"], pcl.SEEN, "nine fallen is under the bar")
+
 
 class Rvr(unittest.TestCase):
     REGROUP = ('RVR_REGROUP phase=start group={g} realm=Hibernia region=1 reason="{r}" skill=Average members=4 '

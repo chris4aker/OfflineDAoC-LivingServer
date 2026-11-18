@@ -309,10 +309,21 @@ namespace DOL.GS
         {
             public int Best { get; private set; } = -1;
             public long BestSince { get; private set; }
+            /// <summary>When this muster was last looked at (0 = never).</summary>
+            public long LastSeen { get; private set; }
+            /// <summary>
+            /// The raid was away from this muster for a whole stall window (pure): the record is an old muster's, and a new
+            /// muster starts its own count. Owner's PC, build b1b6846, 2026-11-18 (Galladoria): Easmarach's 07:29-07:34 muster
+            /// (best 43) was left for a monster fighting the raid; when he was the target again at 09:22 the old record was
+            /// reused and "MUSTER_STALLED minutes=105" set him aside 9 s later. An interruption shorter than that (Krondon's
+            /// five-minute turns on Scurceol Hyrde) keeps the clock, as before.
+            /// </summary>
+            public bool StaleAt(long now) => LastSeen > 0 && now - LastSeen >= MusterStalledMilliseconds;
             /// <summary>The muster now has <paramref name="mustered"/> of <paramref name="needed"/>; true when it has stalled
             /// (short of what it needs, and no better than its best for <see cref="MusterStalledMilliseconds"/>).</summary>
             public bool Observe(int mustered, int needed, long now)
             {
+                LastSeen = now;
                 if (mustered > Best) { Best = mustered; BestSince = now; }
                 return mustered < needed && now - BestSince >= MusterStalledMilliseconds;
             }
@@ -457,6 +468,25 @@ namespace DOL.GS
             attemptStartTick > 0 && deathSeenTick >= attemptStartTick && spawnTick > deathSeenTick;
         // When the route last saw the attempt's encounter (_musterTarget) dead: health 0 or waiting to respawn (0 = not seen).
         private long _musterDeathSeen;
+        // When the route last saw a required add of the open attempt's boss in combat (AttemptAddInFight). Its own field, so
+        // KilledSinceAttempt still keys on the pull (_musterEngagedTick).
+        private long _attemptAddFightTick;
+
+        /// <summary>
+        /// A required add of the attempt's boss is in combat (pure but for the catalog): the raid is in that boss's fight.
+        /// Owner's PC, build b1b6846, 2026-11-18 (Galladoria): while the route was on one of Aroon's Scaiths his muster check
+        /// never ran, so the add fights were never seen as contact and the 120 s grace still counted from the FINAL_ENGAGE.
+        /// When a Scaith died and the next was not yet in combat (Aroon himself out of combat), the attempt ended "never
+        /// entered combat" (fallen=14, 35, 19), Aroon reset, all nine Scaiths came back, and after three such pulls he was set
+        /// aside as unreached.
+        /// </summary>
+        public static bool AttemptAddInFight(GameNPC attemptBoss, IReadOnlyList<GameNPC> live) =>
+            attemptBoss != null && EpicEncounterTactics.LiveRequiredAdds(attemptBoss, live).Any(a => a.InCombat);
+
+        /// <summary>The raid is still crossing to the fight (pure): <see cref="FinalEngageGraceMilliseconds"/> from the pull, or
+        /// from the last moment one of the boss's adds was seen in combat, whichever came later (the gap between two adds).</summary>
+        public static bool InFinalEngageGrace(long engagedTick, long lastAddFightTick, long now) =>
+            now - Math.Max(engagedTick, lastAddFightTick) < FinalEngageGraceMilliseconds;
         /// <summary>The encounter is dead (health 0 from ProcessDeath, or waiting to respawn), never merely out of the world
         /// for a moment (MoveTo home keeps its health).</summary>
         private static bool SeenDead(GameNPC npc) => npc != null && (npc.Health <= 0 || npc.IsRespawning);
@@ -1468,7 +1498,7 @@ namespace DOL.GS
             // The raid needs time to cross from the muster point to the boss (run 5: the engage repeated every ten
             // seconds while Govannon was still out of combat); only after that is "out of combat" a wipe.
             // A held skirmish sent nobody across: its end is judged at once.
-            if (_musterEngaged && !_skirmishHeld && now - _musterEngagedTick < FinalEngageGraceMilliseconds)
+            if (_musterEngaged && !_skirmishHeld && InFinalEngageGrace(_musterEngagedTick, _attemptAddFightTick, now))
                 return false;
             if (_musterEngaged)
             {
@@ -1505,7 +1535,7 @@ namespace DOL.GS
                 _musterUnreachable = true;
                 return true;
             }
-            if (!_musterProgress.TryGetValue(_target, out MusterProgress progress))
+            if (!_musterProgress.TryGetValue(_target, out MusterProgress progress) || progress.StaleAt(now))
                 _musterProgress[_target] = progress = new();
             if (progress.Observe(mustered, needed, now))
             {
@@ -2879,6 +2909,8 @@ namespace DOL.GS
                 if (!_finals.TryGetValue(npc.GetType().Name, out var old) || old.IsAlive) _finals[npc.GetType().Name] = npc;
             // The attempt's encounter seen dead, whether or not it is the route's target this turn (KilledSinceAttempt).
             if (SeenDead(_musterTarget)) _musterDeathSeen = now;
+            // A fight with one of the attempt's boss's adds is the attempt's contact (AttemptAddInFight).
+            if (_musterEngaged && AttemptAddInFight(_musterTarget, live)) { _pulls.SawCombat(); _attemptAddFightTick = now; }
             if (_target != null && !_target.IsAlive)
             {
                 log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{_target.Name}\" level={_target.Level} " +

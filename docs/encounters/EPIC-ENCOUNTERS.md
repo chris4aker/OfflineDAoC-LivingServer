@@ -408,11 +408,11 @@ Rules of Prince Asmoien (`source/server/GameServer/scripts/namedmobs/DarknessFal
 Rules of Fornfrusenen (`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Fornfrusonen.cs`):
 
 - **immune_while** (verified): Takes no damage from attackers further than 200 from it (only close attackers hurt it). `Fornfrusonen.cs:104`. *easy for the current raid AI*: In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him.
-- **immune_while** (verified): Takes no damage from attackers further than 400 from point. `Fornfrusonen.cs:233`. *easy for the current raid AI*: In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.
-- **adds** (verified): Spawns Fornfrusenen Shard (FornfrusenenShard): from SpawnShards; count about 2-3 (loop to a random bound) `Fornfrusonen.cs:208`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
+- **immune_while** (verified): Takes no damage from attackers further than 400 from point. `Fornfrusonen.cs:259`. *easy for the current raid AI*: In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%.
+- **adds** (verified): Spawns Fornfrusenen Shard (FornfrusenenShard): from SpawnShards; count about 2-3 (loop to a random bound) `Fornfrusonen.cs:234`. *easy for the current raid AI*: Kill the adds as they spawn (the route already puts script-spawned adds near the front first).
 - **reset** (verified): Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) `Fornfrusonen.cs:161`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 - **reset** (verified): Resets while drawn past its tether: aggro cleared, back to full health `Fornfrusonen.cs:184`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
-- **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `Fornfrusonen.cs:189`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
+- **reset** (verified): Resets after 30 s out of combat: aggro cleared, full health `Fornfrusonen.cs:190`. *easy for the current raid AI*: Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).
 
 Rules of Icelord Agmundr (`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs`):
 
@@ -3316,11 +3316,11 @@ Area spells: Falling Ice (DirectDamageNoVariance, damage 400, radius 450).
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
 | immune_while / attacker_position | Takes no damage from attackers further than 200 from it (only close attackers hurt it). | `Fornfrusonen.cs:104` | inferred, verified |  | easy for the current raid AI | In the raid AI (EpicEncounterTactics.Tuscaran): every raider attacking him, casters too, stands within 120-180 of him. |
-| immune_while / attacker_position | Takes no damage from attackers further than 400 from point. | `Fornfrusonen.cs:233` | inferred, verified |  | easy for the current raid AI | In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%. |
-| adds | Spawns Fornfrusenen Shard (FornfrusenenShard): from SpawnShards; count about 2-3 (loop to a random bound) | `Fornfrusonen.cs:208` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
+| immune_while / attacker_position | Takes no damage from attackers further than 400 from point. | `Fornfrusonen.cs:259` | inferred, verified |  | easy for the current raid AI | In the raid AI: raiders on a shard stand within 320 of his spot; the shards die first while he is above 35%. |
+| adds | Spawns Fornfrusenen Shard (FornfrusenenShard): from SpawnShards; count about 2-3 (loop to a random bound) | `Fornfrusonen.cs:234` | inferred, verified |  | easy for the current raid AI | Kill the adds as they spawn (the route already puts script-spawned adds near the front first). |
 | reset | Resets when its aggro list is empty: walks home at full health, adds cleared (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `Fornfrusonen.cs:161` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 | reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `Fornfrusonen.cs:184` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Fornfrusonen.cs:189` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `Fornfrusonen.cs:190` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
 
 Area spells: Frost Shock (DirectDamageNoVariance, damage 300, radius 300).
 
