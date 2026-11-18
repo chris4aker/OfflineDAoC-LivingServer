@@ -29,6 +29,10 @@ haven't been watched on a real install yet, so treat them as likely, not certain
 
 ## Still not right
 
+- **Galladoria's Earthmenders can't be beaten by the bot raid with the original options on** (class puzzle, mutual
+  heal, quick reset; build `b1b6846`, 48 minutes at 99-100%). 1.2 has a tactic that reads their heals (tests only); the
+  simulation says it kills one mender and the other three hold, and the raid would need about 2-2.75 times its damage.
+  The raid then ends at the sweep's cap. Changing the encounter is the owner's decision.
 - **Bots don't fall when they die.** The game client plays the lying-dead pose only for player characters. The only
   death animation it plays for any other character also removes it from the world, so a fallen bot couldn't be rezzed.
   There's no safe way around it without changing the game client.

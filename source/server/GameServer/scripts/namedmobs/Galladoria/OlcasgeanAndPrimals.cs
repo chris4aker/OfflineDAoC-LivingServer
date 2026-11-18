@@ -2573,7 +2573,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -2781,7 +2781,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -2986,7 +2986,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {
@@ -3191,7 +3191,7 @@ namespace DOL.AI.Brain
                     {
                         // Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four
                         // kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).
-                        if (npc.Brain is EarthPrimalBrain || EpicEncounterMechanics.AllowEarthmenderMutualHeal && npc != Body && npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender)
+                        if (EpicEncounterRestores.EarthmenderHealsTarget(npc.Brain is EarthPrimalBrain, npc is GuardianEarthmender or MagicalEarthmender or NaturalEarthmender or ShadowyEarthmender, npc == Body, npc.IsAlive, npc.HealthPercent, EpicEncounterMechanics.AllowEarthmenderMutualHeal))
                         {
                             if (npc.IsAlive && npc.HealthPercent < 100)
                             {

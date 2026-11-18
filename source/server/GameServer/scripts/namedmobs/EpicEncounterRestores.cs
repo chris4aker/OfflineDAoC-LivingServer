@@ -49,6 +49,19 @@ namespace DOL.GS
             };
         }
 
+        /// <summary>
+        /// An Earthmender's brain asks for a heal on this NPC (GuardianEarthmenderBrain.Think and its three twins, the
+        /// condition their loop over GetNPCsInRadius applies to each NPC, unchanged): the Earth primal, or with
+        /// <paramref name="mutualHeal"/> on another Earthmender (never itself), alive and below 100% (any missing point:
+        /// HealthPercent is whole percents rounded down). Every NPC that passes gets a cast request in the radius list's
+        /// order; the casting component starts the first and keeps the last as its queued spell (CastingComponent), so a
+        /// mender heals the first and the last of them, two casts a round. Pure, so the raid's tactic and its tests use the
+        /// boss's own rule.
+        /// </summary>
+        public static bool EarthmenderHealsTarget(bool isEarthPrimal, bool isEarthmender, bool isSelf, bool alive, int healthPercent,
+            bool mutualHeal) =>
+            (isEarthPrimal || mutualHeal && !isSelf && isEarthmender) && alive && healthPercent < 100;
+
         /// <summary>Aroon's Scaiths in the order they must die; the n-th one's death opens the n-th damage type on Aroon.</summary>
         public static readonly eDamageType[] AroonOrder =
         [

@@ -80,7 +80,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "5dc125e76917efb343216bca38490453c93fbec7cd1cc32b886dddef0cd3c1fd",
-  "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "8cf1e4784c92a8b70c3fded764a49b1e1b35ac19c6f4e1e6d363b7343cb8ee37",
+  "source/server/GameServer/scripts/namedmobs/EpicEncounterRestores.cs": "3b2859fbe8f4794c3401c4b29fb99787a898d4a83b3ecf448a56b9b44c1e9361",
   "source/server/GameServer/scripts/namedmobs/EpicSpawnPlacement.cs": "0689986b9d49012042c3ef444cd43b88485992a4b4116b80ef1d5fd875baf1cb",
   "source/server/GameServer/scripts/namedmobs/Evern.cs": "ba4d8e6ed7b5359cff9bb3aa3edb56512f40930c25c1d0e1f102d74560f8407e",
   "source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs": "1c5e602f857d2f65066f9b0de0fd0c6f3274422478efcfd243cfa7af9f3ae06e",
@@ -94,7 +94,7 @@
   "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "f2ab131fba683b917c0d7a439de5a01e2adee5fdb4421107051f064f321426f9",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "ec7559dc4df5cecda9b671c9dec34ffb683df7c5c3bca00d8036477ad826aa9a",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "e4a4c685603dcd217bf1f5d22ef0ec02cd6e0cc99fa43c1f49328ac70810bb04",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
   "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "db0a97bcbcffb9823f7c7e3a875be6b4293d04b4642c66eefc96bec4733b148b",
@@ -13743,7 +13743,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; from run 18 until 1.2 wave 2 they fought back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
+   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; from run 18 until 1.2 wave 2 they fought back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2, 2026-11-18 (tests only; EpicEncounterTactics.Earthmenders.cs): each mender heals the first and the last hurt NPC of its radius list (two casts a round, the primal included, never itself); the raid watches the heals and kills the mender the fewest land on (animists, valewalkers and its own group), half of each other group keeps its mender hurt and half keeps the primal hurt. Simulated with b1b6846's raid: one mender dies in 5-10 minutes, the other three hold; winning needs about 2.0-2.75 times the raid's damage (3.5 times with the old split). 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "aiTactics": {
     "requiredAdds": [

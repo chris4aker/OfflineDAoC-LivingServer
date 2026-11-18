@@ -8,6 +8,34 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Galladoria's Earthmenders: a tactic that reads their heals (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 11:59-12:47, `DIAG-b1b6-sweep6d` D-1): the raid dealt the four
+Earthmenders 1.44M damage in 48 minutes and none went below 99%. Owner: "Tactic first, then decide". The boss is
+unchanged (health, heal, cast time, recast, the uninterruptible flag, the class puzzle and every `EPIC_*` setting).
+- **How they heal (from the code).** Every 500 ms a mender that is not casting asks for a heal on every hurt NPC of its
+  radius list that its rule allows (the Earth primal, or another mender; never itself), in the list's order. Its casting
+  component starts the first and keeps only the last as the queued spell, so each mender heals the first and the last
+  hurt one: two casts of 2,000 x 0.6-1.0 a round, 2.7 s each, about 33,000 a minute per mender. Four menders can heal
+  about 130,000 a minute; the raid dealt them 31,300 a minute (Guardian 14,900 with 34 attackers, Natural 7,000 with 22,
+  Magical 5,200 with 22, Shadowy 4,200 with 9), and all of its 118 raiders together could deal about 42,000.
+- **The new tactic** (`EpicEncounterTactics.Earthmenders.cs`, with the class puzzle and mutual heal on): the raid watches
+  the menders' casts and kills the mender the fewest heals land on; animists and valewalkers go there and its own class
+  group stays on it. Half of each other mender's group keeps that mender hurt, so it draws its healers' first casts; the
+  other half keeps the Earth primal hurt, so one of each mender's two casts goes to him (not while he is out of his
+  tether: he takes no damage there). A dead mender's group fights the primal. The plan is logged as
+  `REALM_EXPEDITION_TACTIC ... tactic=galladoria/earthmenders kill=... heals=... health=... assign=...` when it changes
+  and once a minute. Each raider's pick is an `EPIC_TACTIC_BOT` line (`earthmenders: kill/decoy/keep the Earth primal hurt`).
+- **Nothing the old tactic did was against the puzzle**: in the log no raider was sent to a mender its class can't hurt.
+  What it missed: it spread animists and valewalkers by party instead of where they count, and kept only 8 raiders on
+  the primal, so he was often at full health and the menders' second casts went to each other.
+- **Simulated, not won.** `UT_EarthmenderTactic` runs the fight on the boss's own heal spell, heal rule and class puzzle
+  with b1b6846's roster: the old split kills no mender in 120 minutes (as on the PC); the new tactic kills one in 5-10
+  minutes, and then the other three hold. To kill all four, the raid would need about 2.0-2.75 times its damage with the
+  new tactic and 3.5 times with the old split. Whether to change the encounter is the owner's decision.
+- The four mender brains now ask `EpicEncounterRestores.EarthmenderHealsTarget` for the same condition they tested inline
+  (a pure copy, so the tactic and the tests use the boss's own rule); the epic encounter catalog was regenerated and the
+  seven encounters of `OlcasgeanAndPrimals.cs` re-stamped, their behaviour unchanged.
 ## Raid fixes from sweep 6d: a wave stuck in a fight, the sweep cap's label, the walk out after a raid (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 12:00-13:31, `DIAG-b1b6-sweep6d`). Nothing below is seen in game yet.
