@@ -24,15 +24,15 @@ public sealed class LauncherWindowSizeTests
     [TestCase(3840, 2100)]
     public void HeaderButtonsAreTheTopMostControlAtTheirCentresAtEverySize(int width, int height)
     {
-        WithLauncher(width, height, (form, type) =>
+        WithLauncher(width, height, (root, form, type) =>
         {
             foreach (string field in HeaderButtons)
             {
                 var button = (Button)type.GetField(field, HiddenInstance)!.GetValue(form)!;
                 Assert.That(button.Visible, Is.True, $"{button.Text} is shown at {width}x{height}");
-                AssertInsideEveryParent(form, button, $"{width}x{height}");
-                Point centre = form.PointToClient(button.PointToScreen(new Point(button.Width / 2, button.Height / 2)));
-                Control hit = TopMostAt(form, centre);
+                AssertInsideEveryParent(root, button, $"{width}x{height}");
+                Point centre = root.PointToClient(button.PointToScreen(new Point(button.Width / 2, button.Height / 2)));
+                Control hit = TopMostAt(root, centre);
                 Assert.That(hit, Is.SameAs(button),
                     $"At {width}x{height} a click on the centre of {button.Text} lands on {Describe(hit)}, not on the button");
             }
@@ -43,40 +43,41 @@ public sealed class LauncherWindowSizeTests
     [Test]
     public void TheHitTestFindsAnOverlayOverTheButtons()
     {
-        WithLauncher(1920, 1040, (form, type) =>
+        WithLauncher(1920, 1040, (root, form, type) =>
         {
             var stop = (Button)type.GetField("_stopButton", HiddenInstance)!.GetValue(form)!;
             Control actions = stop.Parent;
             var overlay = new Panel { BackColor = Color.Transparent, Bounds = actions.Parent.ClientRectangle };
             actions.Parent.Controls.Add(overlay);
             overlay.BringToFront();
-            Point centre = form.PointToClient(stop.PointToScreen(new Point(stop.Width / 2, stop.Height / 2)));
-            Assert.That(TopMostAt(form, centre), Is.SameAs(overlay));
+            Point centre = root.PointToClient(stop.PointToScreen(new Point(stop.Width / 2, stop.Height / 2)));
+            Assert.That(TopMostAt(root, centre), Is.SameAs(overlay));
         });
     }
 
-    private static void WithLauncher(int width, int height, Action<Form, Type> check)
+    private static void WithLauncher(int width, int height, Action<Control, Form, Type> check)
     {
         Type type = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
-        // A top-level window can't be larger than this machine's screen (Windows caps it), so the launcher is laid out as a
-        // child window of a small off-screen host: its own size is then exactly the maximized size asked for. The message
-        // loop is never pumped, so the launcher's Shown handler (database reads, timers) never runs.
+        // Windows caps any Form, even a child one, at this machine's largest window size (about the screen size; on CI
+        // 1044x788). So the launcher's controls are moved, in their z-order, onto a plain panel of the size under test:
+        // their docking and anchoring then lay them out exactly as the form's client area of that size would. The
+        // message loop is never pumped, so the launcher's Shown handler (database reads, timers) never runs.
         using var host = new Form
         {
             ShowInTaskbar = false, StartPosition = FormStartPosition.Manual, Location = new Point(-20_000, -20_000),
             ClientSize = new Size(200, 200), FormBorderStyle = FormBorderStyle.None,
         };
-        var form = (Form)Activator.CreateInstance(type)!;
-        form.TopLevel = false;
-        form.FormBorderStyle = FormBorderStyle.None; // maximized windows draw no resizable frame inside the work area
-        form.Location = Point.Empty;
-        host.Controls.Add(form);
-        form.Size = new Size(width, height);
-        form.Visible = true;
+        using var form = (Form)Activator.CreateInstance(type)!;
+        var root = new Panel { Location = Point.Empty, Size = new Size(width, height), Padding = form.Padding, BackColor = form.BackColor };
+        host.Controls.Add(root);
+        Control[] controls = form.Controls.Cast<Control>().ToArray();
+        root.SuspendLayout();
+        root.Controls.AddRange(controls);
+        root.ResumeLayout(true);
         host.Show();
-        LayoutAll(form);
-        Assert.That(form.ClientSize, Is.EqualTo(new Size(width, height)), "the launcher has the size under test");
-        check(form, type);
+        LayoutAll(root);
+        Assert.That(root.ClientSize, Is.EqualTo(new Size(width, height)), "the launcher's client area has the size under test");
+        check(root, form, type);
     }
 
     /// <summary>The deepest visible child window under a point, by Windows' own child-window hit test, level by level.</summary>
@@ -94,10 +95,10 @@ public sealed class LauncherWindowSizeTests
         }
     }
 
-    private static void AssertInsideEveryParent(Form form, Control control, string size)
+    private static void AssertInsideEveryParent(Control root, Control control, string size)
     {
         Rectangle screen = control.RectangleToScreen(control.ClientRectangle);
-        for (Control parent = control.Parent; parent != null && parent != form.Parent; parent = parent.Parent)
+        for (Control parent = control.Parent; parent != null && parent != root.Parent; parent = parent.Parent)
         {
             Rectangle inParent = parent.RectangleToClient(screen);
             Assert.That(parent.ClientRectangle.Contains(inParent), Is.True,
