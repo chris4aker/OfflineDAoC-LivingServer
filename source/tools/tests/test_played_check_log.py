@@ -1268,5 +1268,155 @@ class Sweep6d(unittest.TestCase):
         self.assertEqual(only(log.run()[1])["raids"][0]["result"], "sweep cap")
 
 
+class Sweep6e(unittest.TestCase):
+    """Rows from DIAG-b1b6-sweep6e: Aidon healed to full past his home (S-1), deaths after his reset inside an attempt
+    left open (S-2), raiders killed by the epic trash on a raid's way in (W-1), a muster set aside while a return wave
+    walked to it (T-1), the way-in region in the post-raid deaths row and a wave stuck just before a win (synthetic lines
+    shaped like build b1b6846's)."""
+
+    AIDON = "Aidon the Archwizard"
+
+    def healed(self, log, minute, frm, to, from_spawn, in_combat=True):
+        log.add(at(minute), f'REALM_EXPEDITION_TARGET_HEALED region=277 target="{self.AIDON}" from={frm} to={to} '
+                            f'inCombat={in_combat} lastHitAgoMs=3400 aggro=0 targeting=0 inReach=0 returning=False '
+                            f'fromSpawn={from_spawn} model=61', "WRN", "DOL.GS.RealmRaidDungeonRoute")
+
+    def status(self, log, minute, health, in_combat=True, second=0):
+        log.add(at(minute, second), f'REALM_EXPEDITION_TARGET_STATUS region=277 target="{self.AIDON}" level=75 '
+                                    f'health={health}% inCombat={in_combat} raidersWithin1000=16 targeting=12 '
+                                    'at=31412,36551,14886 spawnDistance=1084', "INF", "DOL.GS.RealmRaidDungeonRoute")
+
+    @staticmethod
+    def death(log, minute, bot, killer, region, second=0, goal="Grind"):
+        log.add(at(minute, second), f'AUTONOMOUS_BOT_DEATH bot="{bot}" id=1 level=50 class="Cleric" realm=Albion group=8 '
+                                    f'killer="{killer}" killerKind=monster killerLevel=75 con=PURPLE attackers=2 '
+                                    f'activity="Fighting" goal="{goal}" region={region} zone="x" at=1,2,3', "INF",
+                "DOL.GS.AutonomousDeathDiagnostics")
+
+    def test_aidon_healed_to_full_past_his_home_while_fighting_contradicts(self):
+        log = Log().start(at(0))
+        self.healed(log, 5, 71, 100, 1256)          # 14:05:19: past his 1,100 home (catalog), inside his 1,500 tether
+        self.healed(log, 6, 86, 98, 1000)           # inside his home: the fight's
+        self.healed(log, 7, 60, 100, 1800, in_combat=False)
+        row = check(only(log.run()[1]), "tether_heal")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn(f"{self.AIDON} x1", row["detail"])
+        self.assertIn("fromSpawn=1256", row["line"])
+
+    def test_no_heal_past_home_is_seen(self):
+        log = Log().start(at(0))
+        log.add(at(1), f'REALM_EXPEDITION_FINAL_ENGAGE region=277 target="{self.AIDON}" mustered=46 needed=44 living=60')
+        self.healed(log, 5, 86, 98, 1000)
+        self.assertEqual(check(only(log.run()[1]), "tether_heal")["status"], pcl.SEEN)
+
+    def attempt(self, log, close_at):
+        log.add(at(1), f'REALM_EXPEDITION_FINAL_ENGAGE region=277 target="{self.AIDON}" mustered=62 needed=62 living=88 '
+                       'attempt=2 retry=True')
+        self.status(log, 2, 6)
+        log.add(at(3), f'AUTONOMOUS_TETHER_LEASH boss="{self.AIDON}" region=277 fromSpawn=1598 tether=1500')
+        self.status(log, 4, 100, in_combat=False)  # reset: back at full after 6%
+        for i in range(12):
+            self.death(log, 5, f"R{i}", self.AIDON if i % 2 else f"Illusion of {self.AIDON}", 277, second=i + 1)
+        log.add(at(close_at), f'REALM_EXPEDITION_WIPE region=277 target="{self.AIDON}" level=75 failures=2 of=2 '
+                              'engaged=88 fallen=88 health=100 lowest=1 how="left combat"', "WRN")
+
+    def test_deaths_after_a_reset_inside_an_open_attempt_contradict(self):
+        log = Log().start(at(0))
+        self.attempt(log, 20)
+        row = check(only(log.run()[1]), "reset_closes")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn(f"{self.AIDON} in region 277", row["detail"])
+        self.assertIn("12 death(s)", row["detail"])
+
+    def test_an_attempt_closed_at_its_reset_is_seen(self):
+        log = Log().start(at(0))
+        log.add(at(1), f'REALM_EXPEDITION_FINAL_ENGAGE region=277 target="{self.AIDON}" mustered=62 needed=62 living=88')
+        self.status(log, 2, 6)
+        log.add(at(3), f'REALM_EXPEDITION_WIPE region=277 target="{self.AIDON}" level=75 failures=2 of=2 engaged=88 '
+                       'fallen=60 health=100 lowest=1 how="reset to full"', "WRN")
+        self.status(log, 4, 100, in_combat=False)
+        for i in range(12):
+            self.death(log, 5, f"R{i}", self.AIDON, 277, second=i)
+        self.assertEqual(check(only(log.run()[1]), "reset_closes")["status"], pcl.SEEN)
+
+    def crystal(self, log, end_minute=30):
+        log.add(at(1), "REALM_RAID_STARTED event=dungeon-albion-crystal present=103 required=96 support=112 minutes=15",
+                "INF", "DOL.GS.AutonomousRealmRaid")
+        log.add(at(2), 'AUTONOMOUS_DUNGEON_EPIC_AVOIDED bot=B id=1 level=50 target="xanxicarian sentry" targetLevel=77 '
+                       'aggro=200 action=pass region=50 at=24010,38261,8671 group=8', "INF")
+        self.death(log, 3, "Vermellebuffer", "xanxicarian sentry", 50)
+        self.death(log, 4, "Klurik", "ordinary rat", 50)
+        self.death(log, 5, "Other", "xanxicarian sentry", 62)
+        log.add(at(end_minute), 'REALM_RAID_ENDED event=dungeon-albion-crystal outcome="Boss defeated" minutes=31 named=1 '
+                                'wipes=0', "INF", "DOL.GS.AutonomousRealmRaid")
+
+    def test_raiders_killed_by_epic_trash_on_the_way_in_contradict(self):
+        log = Log().start(at(0))
+        self.crystal(log)
+        self.death(log, 35, "After", "xanxicarian sentry", 50)   # after the end: the post-raid row's
+        sec = only(log.run()[1])
+        row = check(sec, "way_in_epics")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 death(s) while the raid ran: dungeon-albion-crystal in region 50 (xanxicarian sentry) x1",
+                      row["detail"])
+        after = check(sec, "deaths_after_end")
+        self.assertEqual(after["status"], pcl.CONTRADICTED, "region 50 is Crystal Cave's way in (sweep 6d judged 62 only)")
+        self.assertIn("dungeon-albion-crystal (xanxicarian sentry) x1", after["detail"])
+
+    def test_a_gate_boss_on_the_way_in_is_the_raids_fight_not_epic_trash(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_STARTED event=summoners-albion present=56 required=52", "INF", "DOL.GS.AutonomousRealmRaid")
+        log.add(at(1), f'REALM_EXPEDITION_ROUTE_GATE event=summoners-albion region=277 into=248 living=64 past=0 walk=208 '
+                       f'bosses="{self.AIDON}@31353,37634,14873" reason="a living boss covers the walk"', "WRN")
+        log.add(at(2), f'AUTONOMOUS_DUNGEON_EPIC_AVOIDED bot=B id=1 level=50 target="{self.AIDON}" targetLevel=75 '
+                       'aggro=600 action=pass region=277 at=1,2,3 group=8', "INF")
+        self.death(log, 3, "R", self.AIDON, 277)
+        self.assertEqual(check(only(log.run()[1]), "way_in_epics")["status"], pcl.SEEN)
+
+    @staticmethod
+    def troll_wave(log, minute, step, extra):
+        log.add(at(minute), f"REALM_RAID_RETURN_WAVE event=dungeon-midgard-trollheim step={step} wave=4 {extra}", "INF",
+                "DOL.GS.AutonomousRealmRaid")
+
+    def troll(self, log, last_headway):
+        log.add(at(1), "REALM_RAID_STARTED event=dungeon-midgard-trollheim present=64 required=52", "INF",
+                "DOL.GS.AutonomousRealmRaid")
+        self.troll_wave(log, 2, "formed", "members=1 steps=27")
+        self.troll_wave(log, 5, "fighting", 'target="morvalt soldat" level=50 at=1,2,3 respawned=True living=20 kills=10')
+        self.troll_wave(log, last_headway, "moving", "at=12/27 living=20 together=10 kills=30 minutes=44")
+        self.troll_wave(log, 29, "fighting", 'target="blood broms" level=41 at=1,2,3 respawned=True living=20 kills=30')
+        log.add(at(30), 'REALM_EXPEDITION_MUSTER_STALLED region=150 target="Storrow" mustered=3 needed=32 best=3 minutes=20 '
+                        'living=64 muster=28288,35959,13532 body=32204,42815,14906 reason="the muster gained nobody"', "WRN")
+        return check(only(log.run()[1]), "muster_wave")
+
+    def test_a_muster_set_aside_while_a_moving_wave_walks_to_it_contradicts(self):
+        row = self.troll(Log().start(at(0)), 28)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn('dungeon-midgard-trollheim at 06:30:00: "Storrow" set aside, wave 4 headway 120 s before', row["detail"])
+
+    def test_a_muster_set_aside_beside_a_wave_stuck_four_minutes_is_seen(self):
+        row = self.troll(Log().start(at(0)), 24)
+        self.assertEqual(row["status"], pcl.SEEN, "the wave had no headway for 6 minutes: the stall applies")
+
+    def test_a_wave_stuck_just_before_its_raid_won_is_not_contradicted(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_STARTED event=dungeon-albion-crystal present=103 required=96", "INF",
+                "DOL.GS.AutonomousRealmRaid")
+        log.add(at(2), "REALM_RAID_RETURN_WAVE event=dungeon-albion-crystal step=formed wave=2 members=6 steps=6", "INF")
+        log.add(at(10), 'REALM_RAID_RETURN_WAVE event=dungeon-albion-crystal step=stuck wave=2 at=1/6 living=6 helps=1', "WRN")
+        log.add(at(10, 51), 'REALM_RAID_ENDED event=dungeon-albion-crystal outcome="Boss defeated" minutes=31 named=1 '
+                            'wipes=0', "INF", "DOL.GS.AutonomousRealmRaid")
+        row = check(only(log.run()[1]), "return_stuck")
+        self.assertNotEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 stuck less than 5 minutes before its raid won (not counted)", row["detail"])
+        # Stuck long before a win, or before a loss: still a finding.
+        log = Log().start(at(0))
+        log.add(at(2), "REALM_RAID_RETURN_WAVE event=dungeon-albion-crystal step=formed wave=2 members=6 steps=6", "INF")
+        log.add(at(10), 'REALM_RAID_RETURN_WAVE event=dungeon-albion-crystal step=stuck wave=2 at=1/6 living=6 helps=1', "WRN")
+        log.add(at(10, 51), 'REALM_RAID_ENDED event=dungeon-albion-crystal outcome="Defeated" minutes=31 named=0 wipes=2',
+                "INF", "DOL.GS.AutonomousRealmRaid")
+        self.assertEqual(check(only(log.run()[1]), "return_stuck")["status"], pcl.CONTRADICTED)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -776,7 +776,16 @@ namespace DOL.GS
             if (AfterOwner(target, live) is { } first && !Holds(raider, target))
                 return new(BotAction.Retarget, first, null, $"after \"{first.Name}\": the party \"{target.Name}\" fights holds it");
             if (RequiredAddOwner(target, live) is { } boss && For(boss).KeepAlive > 0 && ShieldingAdds(boss, live).Length == 0)
+            {
+                // Fight-at-home first (sweep 6e, S-1): owner's PC, build b1b6846, 2026-11-18 14:18:48-51, Eva and Wayne were told
+                // "StandOff fight-at-home" for Aidon at 1,165-1,262 from his spawn and within a second "keep-alive add of Aidon:
+                // fight the boss", which sent them back onto him out there; he followed raiders past his 1,500 tether and his
+                // script healed him from 1% to full. While the boss is out of its home, the raider leads it back (it chases this
+                // raider) or stands off inside its home, as for the boss itself.
+                if (OutsideHome(boss))
+                    return HomeAdviceFor(raider, boss, "before the keep-alive add");
                 return new(BotAction.Retarget, boss, null, $"keep-alive add of \"{boss.Name}\": fight the boss");
+            }
             // Adds that die in order (Aroon's Scaiths): one that is not the next to die is held by the party it fights, and
             // everyone else turns to the next one.
             if (RequiredAddOwner(target, live) is { } orderBoss && For(orderBoss).AddsInOrder && !Holds(raider, target) &&
@@ -894,6 +903,86 @@ namespace DOL.GS
                 return new(target.TargetObject == raider ? BotAction.LeadHome : BotAction.StandOff, target, null,
                     $"fight-at-home {(int)target.GetDistanceTo(target.SpawnPoint)}>{For(target).FightAtHomeRadius}");
             return default;
+        }
+
+        /// <summary>The fight-at-home advice for a raider of <paramref name="boss"/>'s fight while the boss is out of its home:
+        /// lead it back when it chases this raider, else stand off, inside its home when the raider stands outside it
+        /// (<see cref="HomeStand"/>).</summary>
+        private static Advice HomeAdviceFor(GameLiving raider, GameNPC boss, string why)
+        {
+            int home = For(boss)?.FightAtHomeRadius ?? 0;
+            string reason = $"fight-at-home {(int)boss.GetDistanceTo(boss.SpawnPoint)}>{home}: {why}";
+            if (boss.TargetObject == raider) return new(BotAction.LeadHome, boss, null, reason);
+            return new(BotAction.StandOff, boss, HomeStand(SpawnOf(boss), new Vector3(raider.X, raider.Y, raider.Z), home), reason);
+        }
+
+        /// <summary>
+        /// Where a raider standing outside a boss's home stands instead (pure): on the straight line from the raider to the
+        /// boss's spawn, <see cref="RealmRaidTetherReach.HomeInset"/> inside its fight-at-home radius; null when the raider is
+        /// already inside (or the boss has no home radius).
+        /// </summary>
+        public static Vector3? HomeStand(Vector3 spawn, Vector3 raider, int fightAtHomeRadius)
+        {
+            if (fightAtHomeRadius <= 0) return null;
+            Vector3 away = raider - spawn;
+            float distance = away.Length();
+            if (distance <= fightAtHomeRadius || distance < 1f) return null;
+            float inside = Math.Max(1, fightAtHomeRadius - RealmRaidTetherReach.HomeInset);
+            return spawn + away / distance * inside;
+        }
+
+        /// <summary>A raider within this of a boss standing inside its home is fighting beside it (melee at the home's edge):
+        /// not sent back inside.</summary>
+        public const int BesideBossRadius = 300;
+
+        /// <summary>
+        /// A raider of a fight-at-home boss's fight walks back inside the boss's home (pure): it stands past the home radius
+        /// from the boss's spawn, and is not fighting beside a boss that is itself inside its home.
+        /// <para>
+        /// Owner's PC, build b1b6846, 2026-11-18 (Summoner's Hall; S-1): Aidon the Archwizard (home 1,100, tether 1,500) was
+        /// drawn past his tether by the raiders that stood beyond his home, not only the one he chased: the muster at 1,100,
+        /// healers at 1,400-2,200 (Rexettir 1,960, Halaermys 1,743, Ladysnore 2,134) and regroupers at 1,211-1,226. Each time
+        /// his script healed him to full (eight times; the last at 1%, 14:18:56). The lead-home rule acted only for the raider he
+        /// was already chasing. Now every raider of his fight, healers included, stands in his room; a heal still reaches the
+        /// tanks from there. His script and tether are unchanged.
+        /// </para>
+        /// </summary>
+        public static bool StandsBackInside(int fightAtHomeRadius, double raiderFromSpawn, double raiderToBoss, double bossFromSpawn) =>
+            fightAtHomeRadius > 0 && raiderFromSpawn > fightAtHomeRadius &&
+            !(bossFromSpawn <= fightAtHomeRadius && raiderToBoss <= BesideBossRadius);
+
+        /// <summary>
+        /// The stand-inside-home advice for <paramref name="raider"/> in <paramref name="boss"/>'s fight (null: none): its
+        /// target is the boss or one of its required adds, or it (a healer) targets a raider who does, or a member of its party
+        /// does; it stands outside the boss's home (<see cref="StandsBackInside"/>). StandAt is <see cref="HomeStand"/>.
+        /// </summary>
+        public static Advice? StandInsideHome(GameLiving raider, GameNPC boss, IReadOnlyList<GameNPC> live)
+        {
+            if (raider == null || !Present(boss) || For(boss) is not { FightAtHomeRadius: > 0 } tactic ||
+                raider.CurrentRegionID != boss.CurrentRegionID || boss.IsReturningToSpawnPoint || boss.TargetObject == raider)
+                return null;
+            Vector3 spawn = SpawnOf(boss), at = new(raider.X, raider.Y, raider.Z);
+            double raiderFromSpawn = Vector3.Distance(at, spawn);
+            if (!StandsBackInside(tactic.FightAtHomeRadius, raiderFromSpawn, raider.GetDistanceTo(boss), boss.GetDistanceTo(boss.SpawnPoint)) ||
+                !InFightOf(raider, boss, live))
+                return null;
+            return new Advice(BotAction.StandOff, boss, HomeStand(spawn, at, tactic.FightAtHomeRadius),
+                $"fight-at-home: standing {(int)raiderFromSpawn}>{tactic.FightAtHomeRadius} from \"{boss.Name}\"'s spawn; back inside his home");
+        }
+
+        /// <summary>The raider is in <paramref name="boss"/>'s fight: its target, its target's target (a healer's tank), or a
+        /// party member's target is the boss or one of its required adds.</summary>
+        private static bool InFightOf(GameLiving raider, GameNPC boss, IReadOnlyList<GameNPC> live)
+        {
+            bool OfFight(GameObject o) => o == boss || o is GameNPC add && add != boss && RequiredAddOwner(add, live) == boss;
+            if (OfFight(raider.TargetObject)) return true;
+            if (raider.TargetObject is GameLiving friend && friend != raider && friend is not GameNPC { Realm: eRealm.None } &&
+                OfFight(friend.TargetObject))
+                return true;
+            if (raider.Group is { } group)
+                foreach (GameLiving member in group.GetMembersInTheGroup())
+                    if (member != raider && member.IsAlive && OfFight(member.TargetObject)) return true;
+            return false;
         }
 
         // ---- ranged stands (required adds fought from the floor) -----------------------------------------------------
@@ -1485,10 +1574,29 @@ namespace DOL.GS
                     HomeWatch.TryRemove(boss, out _);
                     continue;
                 }
-                if (For(boss) is not { FightAtHomeRadius: > 0 } tactic ||
-                    !LeadsHome(tactic.FightAtHomeRadius, boss.GetDistanceTo(boss.SpawnPoint), boss.TargetObject == bot,
+                if (For(boss) is not { FightAtHomeRadius: > 0 } tactic) continue;
+                if (!LeadsHome(tactic.FightAtHomeRadius, boss.GetDistanceTo(boss.SpawnPoint), boss.TargetObject == bot,
                         boss.CurrentRegionID == bot.CurrentRegionID, boss.IsReturningToSpawnPoint))
+                {
+                    // Not chased: a raider of its fight standing outside its home walks back in (sweep 6e, S-1).
+                    if (StandInsideHome(bot, boss, Nearby(boss)) is { StandAt: Vector3 inside } stand)
+                    {
+                        if (bot.FollowTarget != null) bot.StopFollowing();
+                        if (!bot.IsMovingOnPath || now >= LeadHomeRepath.GetValueOrDefault(bot))
+                        {
+                            if (LeadHomeRepath.Count > 512) LeadHomeRepath.Clear();
+                            LeadHomeRepath[bot] = now + LeadHomeRepathMilliseconds;
+                            Vector3 point = inside;
+                            if (PathfindingProvider.Instance is { IsAvailable: true } nav && bot.CurrentZone is { } zone && nav.HasNavmesh(zone) &&
+                                nav.GetClosestPoint(zone, inside, 96, 96, 256, nav.DefaultFilters) is Vector3 floor)
+                                point = floor;
+                            bot.PathTo(new Point3D((int)point.X, (int)point.Y, (int)point.Z), bot.MaxSpeed);
+                        }
+                        LogDecision(bot, boss, stand);
+                        return true;
+                    }
                     continue;
+                }
                 if (bot.IsCasting) bot.StopCurrentSpellcast();
                 bot.StopAttack();
                 if (bot.FollowTarget != null) bot.StopFollowing();

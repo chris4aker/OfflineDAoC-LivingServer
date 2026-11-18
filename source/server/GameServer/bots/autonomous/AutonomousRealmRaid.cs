@@ -1899,6 +1899,10 @@ namespace DOL.GS
             route.ReturnGathering = raid.ReturnGathering && waiting > 0 ||
                                     raid.Walk != null && !RealmRaidReturnWave.Stuck(raid.Walk.LastMove, now);
             if (raid.Transit != null) raid.Transit.ReturnGathering = route.ReturnGathering;
+            // The wave walking in, for the muster-stall check (sweep 6e, T-1).
+            route.Wave = raid.Walk is { } wave
+                ? new RealmRaidDungeonRoute.WaveWalking(wave.Goal, wave.LastMove, wave.Members.Count, wave.Number) : null;
+            if (raid.Transit != null) raid.Transit.Wave = route.Wave;
         }
 
         /// <summary>

@@ -41,6 +41,34 @@ public static class RealmRaidTetherReach
     /// </summary>
     public static int DamageReach(int tetherRange) => tetherRange > 0 ? Math.Max(1, tetherRange - TetherMargin) : 0;
 
+    /// <summary>A raider of a fight with a fight-at-home boss stands this far inside its home radius (and its muster's reach
+    /// is this far inside it): EpicEncounterTactics' stand-inside-home rule walks raiders back to it.</summary>
+    public const int HomeInset = 200;
+
+    /// <summary>
+    /// How far from its spawn a boss's muster may stand (pure; 0: no limit): its <see cref="DamageReach"/>, and for a boss
+    /// with a catalog fight-at-home radius never past <see cref="HomeInset"/> inside that radius.
+    /// <para>
+    /// Owner's PC, build b1b6846, 2026-11-18 (Summoner's Hall, Albion; S-1): Aidon the Archwizard (tether 1,500, fight at home
+    /// 1,100, aggro 600) had his muster at 1,100 from his spawn, his fight-at-home edge; healers and regroupers stood at
+    /// 1,100-2,200, he followed them past 1,500 and his script healed him to full eight times, the last one at 1% (14:18:56).
+    /// His script's out-of-tether heal is the original anti-kite rule and is unchanged; the raid now stands in his room: his
+    /// muster's reach is 900 and the muster stands about 800 from his spawn (<see cref="MusterStandOff"/>).
+    /// </para>
+    /// </summary>
+    public static int MusterReach(int tetherRange, int fightAtHomeRadius)
+    {
+        int reach = DamageReach(tetherRange);
+        if (fightAtHomeRadius <= 0) return reach;
+        int home = Math.Max(1, fightAtHomeRadius - HomeInset);
+        return reach > 0 ? Math.Min(reach, home) : home;
+    }
+
+    /// <summary>As <see cref="MusterStandOff(float, int, int)"/> with the reach of <see cref="MusterReach"/>: a boss with a
+    /// fight-at-home radius is mustered for inside its home (Aidon: about 800 from his spawn, 200 outside his aggro).</summary>
+    public static float MusterStandOff(float preferred, int aggroRange, int tetherRange, int fightAtHomeRadius) =>
+        MusterStandOff(preferred, aggroRange, MusterReach(tetherRange, fightAtHomeRadius));
+
     /// <summary>
     /// How far from a boss its muster stands (pure): <paramref name="preferred"/> (the 1,400 every muster stood at), but
     /// never past <paramref name="reach"/> (<see cref="MusterInset"/> inside it where that still clears the aggro), and at

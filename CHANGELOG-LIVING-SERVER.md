@@ -8,6 +8,50 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 6e: Aidon's room, an attempt over his reset, epic trash on the way in, musters a wave walks to (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 13:31-15:15, `DIAG-b1b6-sweep6e`). Nothing below is seen in game yet.
+Aidon the Archwizard's script (his out-of-tether heal is the original anti-kite rule), his tether, the xanxicarian
+sentries and every other boss, guard and trash monster are unchanged; no fight is made easier.
+- **The raid stands in Aidon's room** (S-1, Summoner's Hall, Albion). His muster stood 1,100 from his spawn, his
+  fight-at-home edge; healers and regroupers stood 1,100-2,200 out. He followed them past his 1,500 tether and his script
+  healed him to full eight times, the last one at 1% (14:18:56), which took away a near-kill. Now:
+  - a boss with a catalog fight-at-home radius is mustered for inside it (`RealmRaidTetherReach.MusterReach`: the radius
+    less 200; Aidon's muster about 800 from his spawn, still outside his 600 aggro);
+  - every raider of that boss's fight (its target the boss or an add, a healer whose target is in the fight, or a party
+    member in it) standing past the radius walks back to 200 inside it (`EpicEncounterTactics.StandInsideHome`, from
+    `ThinkLeadHome`; a raider beside a boss that is itself inside its home is left alone);
+  - while the boss is out of its home, "keep-alive add: fight the boss" yields to fight-at-home (the raider he chases
+    leads him home, the others stand off inside his home). At 14:18:48 Eva and Wayne were sent back onto him out there.
+  This holds for every boss with a fight-at-home radius (Aidon, King Tuscar, Queen Kula, Caer Sidi's three); for Caer
+  Sidi's 2,700 radius the 1,400 muster is unchanged.
+- **An attempt ends when its boss resets to full** (S-2). After the 14:18:56 leash the attempt stayed open for 21 minutes
+  because the new illusions kept Aidon "in combat"; return waves walked into his room one after another and 85 raiders died
+  298 times. An open attempt now ends (`how="reset to full"`) when its boss is back at 95% or more after 70% or less and is
+  outside its tether, walking home or has an empty aggro list. It is judged as always (wipe, free reset or skirmish) and the
+  raid regroups at the muster. A heal inside the fight (inside the tether, with aggro) is not a reset.
+- **Epic trash with no way round on a raid's way in is a route gate** (W-1, Crystal Cave). The xanxicarian sentries (levels
+  70-77, aggro 200) on the walk through Avalon City were walked past (`EPIC_AVOIDED action=pass`, 190 times): 37 raiders
+  died to them during the raid and 57 after it. The route gate (`RealmRaidDungeonRoute.TryCreateGate`) now takes any
+  hostile epic monster whose aggro covers the walk, not only a `GameEpicBoss`; a non-boss gates the walk only when the mesh
+  has no way round it (the parties' own detour search). The raid clears them as objectives, and the epic respawn hold
+  (#213, and #356 after the raid's end) keeps them down for the walk out. Epic monsters off the walk are left alone.
+- **A muster is not set aside while a return wave walks to it** (T-1, Trollheim). The Storrow and Trollkarl Bonchar musters
+  were set aside three times as "gained nobody for 20 minutes" while wave 4, up to 56 of 64 raiders, was walking to them
+  through respawned trash; each flip re-planned the wave to a muster 15,000 away, and the raid made no boss progress for 90
+  minutes. A muster stall now waits while a return wave of the raid walks to that muster and made headway in the last 4
+  minutes (`REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE`); a wave stuck for 4 minutes is left to the stuck-wave release
+  (#355/#356) and the stall applies as before.
+- **A boss back inside its tether starts its next excursion with the full grace** (M-1). The stranded-leash clocks were
+  cleared only on a leash, an engagement or a walk home; a boss that walked back in kept its old time and its next
+  excursion was leashed at once. They are now cleared when a raider finds the boss inside its tether.
+- **Checker** (`played_check_log.py`): four rows, all Contradicted on `b1b6846`: `tether_heal` (Aidon healed to full past
+  his home 7 times, Queen Kula once), `reset_closes` (255 deaths to Aidon and his illusions after his reset at 14:22:35
+  while the attempt stayed open), `way_in_epics` (37 deaths to the xanxicarian sentries while Crystal Cave ran) and
+  `muster_wave` (5 musters set aside beside a wave with headway). `deaths_after_end` now also judges the raid's way-in region
+  and counts the epics parties walked past and the required adds of bosses (209 deaths on `b1b6846`, was 107); the stuck-wave
+  row no longer counts a wave stuck less than 5 minutes before its raid won (Crystal Cave's wave 2, 51 s).
+
 ## Galladoria's Earthmenders: mutual heal off by default, and a tactic that reads their heals (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 11:59-12:47, `DIAG-b1b6-sweep6d` D-1): the raid dealt the four
@@ -44,6 +88,7 @@ numbers below, **"Mutual heal off"**.
 - The four mender brains now ask `EpicEncounterRestores.EarthmenderHealsTarget` for the same condition they tested inline
   (a pure copy, so the tactic and the tests use the boss's own rule); the epic encounter catalog was regenerated and the
   seven encounters of `OlcasgeanAndPrimals.cs` re-stamped, their behaviour unchanged.
+
 ## Raid fixes from sweep 6d: a wave stuck in a fight, the sweep cap's label, the walk out after a raid (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 12:00-13:31, `DIAG-b1b6-sweep6d`). Nothing below is seen in game yet.

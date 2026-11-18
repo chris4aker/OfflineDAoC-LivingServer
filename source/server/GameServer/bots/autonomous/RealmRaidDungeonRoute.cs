@@ -445,6 +445,36 @@ namespace DOL.GS
         /// encounter use no attempt: the raid musters again and goes in together. After that they count, so an encounter
         /// the raid can never hold still ends the raid.
         /// </summary>
+        /// <summary>
+        /// An open attempt ends because its encounter has reset (pure): it is back at 95% or more after being taken to
+        /// <see cref="ResetWipeLowestPercent"/> or lower, and it is outside its tether, walking home or has nobody on its aggro
+        /// list. The attempt is then judged as usual (<see cref="IsWipe(int, int, int, int, int)"/>, the free resets, the
+        /// skirmish rule) and the raid regroups at the muster.
+        /// <para>
+        /// Owner's PC, build b1b6846, 2026-11-18 (Summoner's Hall, Albion; S-2): at 14:18:56 Aidon the Archwizard was leashed
+        /// from 1% (his script had set him to full past his tether; his illusions were removed) while raiders still fought the
+        /// new illusions, so he stayed "in combat" at every check and the attempt stayed open until 14:39:40. Return waves walked
+        /// into his room one after another (14:21-14:37), he re-aggroed at 14:22:36 with no muster or engage, and 85 raiders died
+        /// 298 times. Heals inside a fight (Hurionthex, Kula's twin) don't match: they are inside the tether, with aggro.
+        /// </para>
+        /// </summary>
+        public static bool AttemptEndsOnReset(bool attemptOpen, int healthPercent, int lowestPercent, bool outOfTether,
+            bool returningHome, bool aggroEmpty) =>
+            attemptOpen && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent && (outOfTether || returningHome || aggroEmpty);
+
+        /// <summary>The open attempt's encounter has reset (<see cref="AttemptEndsOnReset"/>): the attempt is ended and judged.
+        /// Null when it has not; else whether it was a wipe (as <see cref="EndAttempt"/>).</summary>
+        private bool? EndAttemptIfReset(long now)
+        {
+            if (_target == null) return null;
+            _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
+            if (!AttemptEndsOnReset(_musterEngaged, _target.HealthPercent, _attemptLowestPercent, AutonomousTetherReset.IsOutOfTether(_target),
+                    _target.IsReturningToSpawnPoint, _target.Brain is DOL.AI.Brain.StandardMobBrain brain && !brain.HasAggro))
+                return null;
+            _musterSince = now;
+            return EndAttempt(now, "reset to full");
+        }
+
         public static bool IsResetWithRaidStanding(int engaged, int fallen, int healthPercent, int lowestPercent) =>
             engaged >= MinimumRaidersAtTarget && fallen * 4 < engaged && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent;
         public const int FreeEncounterResets = 2;
@@ -823,6 +853,28 @@ namespace DOL.GS
         /// <summary>Set by the raid each pulse: raiders stand at the way in, waiting to come back in together
         /// (RealmRaidReturnWave). The muster's "nobody reached it" clock waits for them.</summary>
         public bool ReturnGathering { get; set; }
+
+        /// <summary>The raid's return wave walking in now (set by the raid each pulse; null: none): where it walks to, its last
+        /// headway and its members (RealmRaidReturnWave; sweep 6e, T-1).</summary>
+        public readonly record struct WaveWalking(Vector3 Goal, long LastMove, int Members, int Number);
+        public WaveWalking? Wave { get; set; }
+
+        /// <summary>
+        /// A stalled muster is not set aside while a return wave of the raid walks to it and made headway in the last
+        /// <see cref="RealmRaidReturnWave.StuckMilliseconds"/> (pure): its goal is within <see cref="FinalMusterRadius"/> of the
+        /// muster. A wave stuck that long is left to the stuck-wave release (#355/#356) and the stall applies as before.
+        /// <para>
+        /// Owner's PC, build b1b6846, 2026-11-18 (Trollheim; T-1): after Rotodjur died (13:45) the musters for Storrow (twice) and
+        /// Trollkarl Bonchar were each set aside as "gained nobody for 20 minutes" while return wave 4, up to 56 of the 64
+        /// raiders, walked to them through respawned trash (moving 12/27 at 14:14, 20/33 at 14:34). Each set-aside flipped the
+        /// target and re-planned the wave's walk to a muster 15,000 away: no boss progress for 90 minutes.
+        /// </para>
+        /// </summary>
+        public static bool MusterWaitsForWave(Vector3 muster, WaveWalking? wave, long now) =>
+            wave is { Members: > 0 } w && Vector3.Distance(w.Goal, muster) <= FinalMusterRadius &&
+            !RealmRaidReturnWave.Stuck(w.LastMove, now);
+
+        private long _nextWaveWaitLog;
         /// <summary>A return wave walks this route together (RealmRaidReturnWave.WalkTogether): an epic or raid dungeon's own
         /// route, not a neutral raid's objectives (Darkness Falls, Summoner's Hall) nor a gate on the way.</summary>
         public bool WalksInWaves => _objectives == null && !IsGate;
@@ -1043,15 +1095,14 @@ namespace DOL.GS
             }
             if (Vector3.DistanceSquared(walk[^1], to) > 64 * 64) walk.Add(to);
             var blocking = new List<GameNPC>();
-            foreach (GameNPC npc in region.Objects.OfType<GameNPC>())
+            GameNPC[] monsters = region.Objects.OfType<GameNPC>().ToArray();
+            foreach (GameNPC npc in monsters)
             {
-                if (npc is not GameEpicBoss || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
-                    (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
-                    npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain)
-                    continue;
-                if (RealmRaidRouteGate.Blocks(walk, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), brain.AggroRange) ||
-                    RealmRaidRouteGate.Blocks(walk, new(npc.X, npc.Y, npc.Z), brain.AggroRange))
-                    blocking.Add(npc);
+                if (!RealmRaidRouteGate.BlocksWalk(npc, walk)) continue;
+                // Epic trash (an epic monster that is not a boss: Avalon City's xanxicarian sentries) gates the walk only when
+                // the mesh has no way round it (sweep 6e, W-1); a boss always does.
+                if (npc is not GameEpicBoss && HasWayRound(nav, region, walk, npc, to, monsters)) continue;
+                blocking.Add(npc);
             }
             detail = $"walk={walk.Count} points from {(int)from.X},{(int)from.Y},{(int)from.Z} to {(int)to.X},{(int)to.Y},{(int)to.Z}";
             if (blocking.Count == 0) return false;
@@ -1060,6 +1111,23 @@ namespace DOL.GS
                 inner, gates) { Focus = null };
             detail += $" bosses=\"{string.Join(",", gates.Select(g => $"{g.Name}@{g.X},{g.Y},{g.Z}"))}\"";
             return true;
+        }
+
+        /// <summary>The mesh has a way round <paramref name="npc"/> outside its aggro on <paramref name="walk"/>, as a party's
+        /// walk would find one (AutonomousWorldBotController.FindRouteThreatDetour, from a little before it on the walk).</summary>
+        private static bool HasWayRound(IPathfindingMgr nav, Region region, IReadOnlyList<Vector3> walk, GameNPC npc, Vector3 destination,
+            GameNPC[] monsters)
+        {
+            Zone zone = region.GetZone(npc.X, npc.Y);
+            if (zone == null || !nav.HasNavmesh(zone) || npc.Brain is not StandardMobBrain { AggroRange: > 0 } brain) return false;
+            Vector3 at = new(npc.X, npc.Y, npc.Z);
+            Vector3[] corridor = RealmRaidRouteGate.CorridorBefore(walk, at, brain.AggroRange + RealmRaidRouteGate.Margin + 400f);
+            if (corridor.Length < 2) return false;
+            GameNPC[] threats = monsters.Where(m => m.IsAlive && m.Realm == eRealm.None && m.Brain is StandardMobBrain { AggroRange: > 0 } &&
+                                                    (m.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) == 0 &&
+                                                    m.IsWithinRadius(npc, AutonomousRouteThreatPolicy.ScanRadius)).ToArray();
+            return AutonomousWorldBotController.FindRouteThreatDetour(nav, zone, corridor, npc, brain.AggroRange,
+                AutonomousRouteThreatPolicy.MeleeMargin, destination, threats).HasValue;
         }
 
         /// <summary>The raid comes back to this route after fighting a gate on its way (RealmRaidRouteGate): the clocks that
@@ -1387,6 +1455,15 @@ namespace DOL.GS
             // that caught raiders during the muster is an early pull like the boss itself (Galladoria, build 5378dbe: Beatha
             // and Aroon's Scaiths were fought with no attempt open).
             bool fightOn = EpicEncounterTactics.FightOn(_target, _live);
+            // An open attempt whose encounter reset to full (leashed, healed out of its tether) ends now, even while raiders
+            // still fight its adds: the raid regroups at the muster, never fed in piecemeal (sweep 6e, S-2).
+            if (_musterEngaged && EndAttemptIfReset(now) is bool resetWiped)
+            {
+                if (resetWiped && Defeated) return true;
+                Destination = _musterPoint; Hold = true;
+                _targetProgressTick = now;
+                return true;
+            }
             if (fightOn && (!_regrouping || regroupThreatened))
             {
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
@@ -1537,7 +1614,23 @@ namespace DOL.GS
             }
             if (!_musterProgress.TryGetValue(_target, out MusterProgress progress) || progress.StaleAt(now))
                 _musterProgress[_target] = progress = new();
-            if (progress.Observe(mustered, needed, now))
+            bool musterStalled = progress.Observe(mustered, needed, now);
+            if (musterStalled && MusterWaitsForWave(_musterPoint, Wave, now))
+            {
+                // Most of the raid may be in a wave walking here: the muster waits for it (sweep 6e, T-1).
+                if (now >= _nextWaveWaitLog)
+                {
+                    _nextWaveWaitLog = now + 2 * 60_000;
+                    WaveWalking w = Wave.Value;
+                    log.Warn($"REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE region={_region} target=\"{_target.Name}\" mustered={mustered} " +
+                             $"needed={needed} best={progress.Best} minutes={(now - progress.BestSince) / 60_000} wave={w.Number} " +
+                             $"members={w.Members} movedAgoS={(now - w.LastMove) / 1000} " +
+                             $"muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                             $"reason=\"the muster gained nobody for {MusterStalledMilliseconds / 60_000} minutes, but a return wave is walking " +
+                             $"to it and moved in the last {RealmRaidReturnWave.StuckMilliseconds / 60_000} minutes; not set aside\"");
+                }
+            }
+            else if (musterStalled)
             {
                 var pinned = PinnedRaiders(participants, now);
                 // A party's worth pinned by another encounter: that encounter is the raid's fight now (it is fighting it), not
@@ -2113,8 +2206,10 @@ namespace DOL.GS
         /// <summary>A boss's tether: its catalog leash, else its own.</summary>
         private static int TetherOf(GameNPC npc) => EpicEncounterTactics.LeashOf(npc)?.TetherRange is int t && t > 0 ? t : npc?.TetherRange ?? 0;
 
-        /// <summary>How far from its spawn <paramref name="npc"/> can be fought (RealmRaidTetherReach.DamageReach; 0: no limit).</summary>
-        private static int ReachOf(GameNPC npc) => npc == null ? 0 : RealmRaidTetherReach.DamageReach(TetherOf(npc));
+        /// <summary>How far from its spawn <paramref name="npc"/>'s muster may stand: where it can be fought, and inside its
+        /// catalog fight-at-home radius (RealmRaidTetherReach.MusterReach; 0: no limit). Sweep 6e (S-1, Aidon).</summary>
+        private static int ReachOf(GameNPC npc) => npc == null ? 0 :
+            RealmRaidTetherReach.MusterReach(TetherOf(npc), EpicEncounterTactics.For(npc)?.FightAtHomeRadius ?? 0);
 
         private static int AggroOf(GameNPC npc) => npc?.Brain is DOL.AI.Brain.StandardMobBrain brain ? brain.AggroRange : 0;
 

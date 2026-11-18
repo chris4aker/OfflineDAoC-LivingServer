@@ -310,7 +310,7 @@ namespace DOL.GS
         /// A reachable sidestep beside the monster that stays out of every nearby monster's aggro
         /// range; the shorter way of the two sides wins.
         /// </summary>
-        private static Vector3? FindRouteThreatDetour(IPathfindingMgr nav, Zone zone, ReadOnlySpan<Vector3> corridor,
+        internal static Vector3? FindRouteThreatDetour(IPathfindingMgr nav, Zone zone, ReadOnlySpan<Vector3> corridor,
             GameNPC blocker, int aggroRange, int margin, Vector3 destination, GameNPC[] threats)
         {
             Vector3 start = corridor[0];

@@ -47,32 +47,57 @@ namespace DOL.GS
             return boss.MaxSpeed;
         }
 
-        private static void LeashIfStranded(GameNPC boss)
+        /// <summary>
+        /// The boss is back inside its tether: its excursion's clocks are forgotten, so its next excursion gets its own
+        /// <see cref="StrandedLeashMilliseconds"/> grace. Owner's PC, build b1b6846, 2026-11-18 (sweep 6e, M-1): the clocks were
+        /// cleared only on a leash, on engagement or while walking home; a boss that walked back in kept its old time, and its
+        /// next excursion was leashed at once (Aidon's 14:18:56 leash came in the first second of a new one; his previous tether
+        /// line was at 14:06:28). On a boss without a tether heal that cuts a fight short.
+        /// </summary>
+        public static void BackInsideTether(GameNPC boss)
         {
-            long now = GameLoop.GameLoopTime;
+            if (boss == null || StrandedSince.IsEmpty && OutOfTetherSince.IsEmpty) return;
+            StrandedSince.TryRemove(boss, out _);
+            OutOfTetherSince.TryRemove(boss, out _);
+        }
+
+        /// <summary>
+        /// Whether a boss outside its tether is leashed now (the clocks only; true forgets them): walking home, never; fighting a
+        /// raider in reach, not before <see cref="OutOfTetherLeashMilliseconds"/> out; else after
+        /// <see cref="StrandedLeashMilliseconds"/> stranded.
+        /// </summary>
+        public static bool LeashDue(GameNPC boss, bool engaged, long now)
+        {
             if (boss.IsReturningToSpawnPoint)
             {
                 StrandedSince.TryRemove(boss, out _);
                 OutOfTetherSince.TryRemove(boss, out _);
-                return;
+                return false;
             }
             long outSince = OutOfTetherSince.GetOrAdd(boss, now);
             if (OutOfTetherSince.TryGetValue(boss, out long seen) && now - seen > 2 * OutOfTetherLeashMilliseconds)
                 OutOfTetherSince[boss] = outSince = now; // a stale entry from an earlier excursion
-            bool engaged = boss.TargetObject is GameLiving foe && foe.IsAlive && boss.IsWithinRadius(foe, boss.attackComponent.AttackRange + 100);
             bool longOut = now - outSince >= OutOfTetherLeashMilliseconds;
             if (engaged && !longOut)
             {
                 StrandedSince.TryRemove(boss, out _);
-                return;
+                return false;
             }
             if (!longOut)
             {
                 long since = StrandedSince.GetOrAdd(boss, now);
-                if (now - since < StrandedLeashMilliseconds) return;
+                if (now - since < StrandedLeashMilliseconds) return false;
             }
             StrandedSince.TryRemove(boss, out _);
             OutOfTetherSince.TryRemove(boss, out _);
+            return true;
+        }
+
+        private static void LeashIfStranded(GameNPC boss)
+        {
+            long now = GameLoop.GameLoopTime;
+            bool engaged = boss.TargetObject is GameLiving foe && foe.IsAlive && boss.IsWithinRadius(foe, boss.attackComponent.AttackRange + 100);
+            if (!LeashDue(boss, engaged, now)) return;
             (boss.Brain as StandardMobBrain)?.ClearAggroList();
             boss.StopAttack();
             boss.TargetObject = null;
@@ -110,7 +135,12 @@ namespace DOL.GS
         /// </summary>
         public static bool TryHandle(GameBot bot, GameNPC boss)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup || !IsOutOfTether(boss)) return false;
+            if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup) return false;
+            if (!IsOutOfTether(boss))
+            {
+                BackInsideTether(boss);
+                return false;
+            }
             if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
             bot.StopAttack();
             (bot.Brain as BotBrain)?.RemoveFromAggroList(boss);
