@@ -941,6 +941,48 @@ class StallsAndErrors(unittest.TestCase):
         self.assertEqual(row["status"], pcl.CONTRADICTED)
 
 
+class ChatPromises(unittest.TestCase):
+    """"omw" made true: CHAT_PROMISE made / kept / broken, as ChatPromiseBook writes them."""
+
+    @staticmethod
+    def made(n, minute):
+        return (f'CHAT_PROMISE made bot="Bot{n}" id={n} promise={n} realm=Albion reason=Alarm mode=RvrObjective '
+                f'target="Caer Benowyc" kind=Keep region=1 eta=60s deadline=210s asker="x"', at(minute))
+
+    @staticmethod
+    def ended(n, minute, why=None):
+        head = f'CHAT_PROMISE {"kept" if why is None else "broken"} bot="Bot{n}" id={n} promise={n} reason=Alarm ' \
+               f'mode=RvrObjective target="Caer Benowyc"'
+        return (head + (" after=95s eta=60s" if why is None else f" why={why} after=210s deadline=210s"), at(minute, 30))
+
+    def session(self, kept, timeouts, died=0):
+        log = Log().start(at(0))
+        n = 0
+        for whys in ([None] * kept, ["timeout"] * timeouts, ["died"] * died):
+            for why in whys:
+                n += 1
+                for message, t in (self.made(n, 1 + n), self.ended(n, 2 + n, why)):
+                    log.add(t, message)
+        log.add(at(40), 'CHAT_PROMISE refused bot="Bot99" id=99 reason=Alarm place="bled" why=not_on_rvr')
+        return check(only(log.run()[1]), "promises")
+
+    def test_kept_promises_are_seen(self):
+        row = self.session(kept=4, timeouts=1, died=3)
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("made=8 kept=4 broken=4 (timeout=1, other=3) refused=1", row["detail"])
+        self.assertIn("kept 80% of kept+timeout", row["detail"])
+        self.assertIn("CHAT_PROMISE kept", row["line"])
+
+    def test_bots_that_say_omw_and_never_arrive_contradict(self):
+        row = self.session(kept=2, timeouts=4)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("why=timeout", row["line"])
+
+    def test_no_kept_promise_is_not_seen(self):
+        self.assertEqual(self.session(kept=0, timeouts=2)["status"], pcl.NOT_SEEN, "too few to contradict")
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "promises")["status"], pcl.NOT_SEEN)
+
+
 class TextOutput(unittest.TestCase):
     def test_wording_names_the_build_and_never_says_works(self):
         log = Log().start(at(0), commit="5555555eeeee")

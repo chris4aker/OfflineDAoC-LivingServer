@@ -93,6 +93,8 @@ SKILL_SHARES = (30.0, 50.0, 20.0)   # casual / average / veteran (BOTS-AS-PEOPLE
 MISTAKES_MIN_IN_GROUP = 100         # chance decisions in the player's group before the quarter rate is judged
 MISTAKES_MAX_RATIO = 0.5            # rate_in / rate_out above this contradicts "about a quarter" (WP2 played check)
 MISTAKES_MIN_RATIO = 0.1            # below this, too few mistakes in the player's group to call it "about a quarter"
+PROMISE_KEPT_BAR = 0.7              # "omw": kept at least this share of the promises that were kept or timed out
+PROMISE_MIN_JUDGED = 5              # fewer kept-or-timed-out promises than this are too few to contradict
 
 
 # ---- Lines -------------------------------------------------------------------------------------------------------
@@ -1063,6 +1065,16 @@ def _raid_learn(sec, t, message, level, near):
     sec.lists["raid_learn"].append((raid, num(f.get("seenShare")), run))
 
 
+@handles("CHAT_PROMISE")
+def _chat_promise(sec, t, message, level, near):
+    """CHAT_PROMISE made / kept / broken / refused (ChatPromises: "omw" made true, 1.2 chat audit)."""
+    parts = message.split(" ", 2)
+    outcome = parts[1] if len(parts) > 1 else "?"
+    sec.ev[f"promise.{outcome}"].add(t, message)
+    if outcome == "broken":
+        sec.ev[f"promise.broken.{kv(message).get('why', '?')}"].add(t, message)
+
+
 @handles("BOT_PLACE_LEARNED")
 def _place(sec, t, message, level, near):
     f = kv(message)
@@ -1166,6 +1178,7 @@ def judge(sec: Section) -> list[dict]:
     companions(j, sec, c)
     era(j, sec, c)
     people(j, sec, c)
+    chat(j, sec, c)
     stalls_and_errors(j, sec, c)
     return j.checks
 
@@ -1528,6 +1541,25 @@ def people(j: Judge, sec: Section, c):
           f"arc={c('BOT_MILESTONE_ARC')} progress={c('BOT_MILESTONE_PROGRESS')} reached={c('BOT_MILESTONE_REACHED')} "
           f"talk={c('BOT_MILESTONE_TALK')} summary={c('BOT_MILESTONE_SUMMARY')} false_claims={false_claims}",
           note="the Herald page is a screen check")
+
+
+def chat(j: Judge, sec: Section, c):
+    made, kept, timeout = c("promise.made"), c("promise.kept"), c("promise.broken.timeout")
+    other = c("promise.broken") - timeout
+    judged = kept + timeout
+    share = kept / judged if judged else None
+    detail = (f"made={made} kept={kept} broken={c('promise.broken')} (timeout={timeout}, other={other}) "
+              f"refused={c('promise.refused')}" + (f", kept {100 * share:.0f}% of kept+timeout ({PROMISE_KEPT_BAR:.0%} wanted)"
+                                                    if share is not None else ""))
+    row = "A bot that says it is coming arrives (CHAT_PROMISE made, then kept; timeouts under 30%)"
+    note = ("a broken promise for died, taken, logged_out, keep_fell or asker_gone is an honest end, not counted against; "
+            "that no bot says \"omw\" without a made line is a chat-window check")
+    if judged >= PROMISE_MIN_JUDGED and share < PROMISE_KEPT_BAR:
+        j.add("chat", "promises", row, CONTRADICTED, j.ev("promise.broken.timeout"), detail, note=note)
+    elif kept:
+        j.add("chat", "promises", row, SEEN, j.ev("promise.kept"), detail, note=note)
+    else:
+        j.add("chat", "promises", row, NOT_SEEN, j.ev("promise.made") if made else None, detail, note=note)
 
 
 def stalls_and_errors(j: Judge, sec: Section, c):

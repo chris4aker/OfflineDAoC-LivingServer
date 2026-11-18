@@ -173,6 +173,7 @@ public static class AutonomousBotRegistry
     {
         AutonomousBeggars.Forget(bot);
         BotDutyLeases.OnLoggedOut(bot); // a bot that leaves the world gives up whatever had its time
+        ChatPromises.OnLoggedOut(bot); // and an "omw" it had not kept is broken (logged_out)
         BotPeopleStore.OnLoggedOut(bot); // Bots as people: its rows are saved soon, off the game loop (no-op for companions)
         if (bot?.DatabaseID > 0 && bot.IsEpicSpecialForce)
         {

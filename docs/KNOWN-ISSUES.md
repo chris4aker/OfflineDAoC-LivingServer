@@ -171,7 +171,9 @@ meetup fix drop two no-shows (in the server log).
     bonuses").
   - A bot answering your "lfg" prefers bots in your zone and near your level, but one from elsewhere
     may still answer.
-  - A bot in the frontier may answer your "inc" with "omw" without coming.
+  - A bot that answers "omw" (or "coming", "ill be there") to an alarm, a keep call, free realm points, a call for help, heals
+    or a rez now has to go there, with a deadline, and a bot that can't go says something else (1.2, tests only; the
+    `CHAT_PROMISE` lines in the server log show each promise made, kept or broken).
   - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
     levelled, and other replies guess from the words alone.
   - Chat volume: see "/faction can get too busy" at the top.
