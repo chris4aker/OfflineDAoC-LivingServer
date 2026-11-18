@@ -153,9 +153,24 @@ C: one person playing a whole group isnt a group tho
 A: fair points both. still wish i had one
 ```
 
-Roles are filled from different bots of the same realm. A role can require a class or type:
-`@role B type=Crafter,NoLifer`. A role whose lines only fit some levels ("i am not 50 yet") also takes
-`levels=`: `@role D type=Socialite levels=30-49`. Those roles are cast first.
+Roles are filled from different bots of the same realm. A role can require a class (`class=` is kept) or prefer a
+type (`type=` is relaxed when nobody fits): `@role B type=Crafter,NoLifer`. A role whose lines only fit some levels
+("i am not 50 yet") also takes `levels=`: `@role D type=Socialite levels=30-49`. Those roles are cast first. A role
+whose line claims a class ability ("rez coming", "my pet pulled") must name the classes that have it.
+
+- **Levels:** bots up to five levels outside the scene's `@levels` may play it, except in a scene whose band spans
+  fewer than 12 levels (a battleground, a newbie scene), which is cast inside its band only (1.2).
+- **Who is cast:** autonomous gamebots only, never beggars or roleplayers (their old-tongue style would rewrite the
+  lines, 1.2). The shared `{dungeon}` and `{camp}` are picked for the level of the bot that speaks first.
+- **Time and news (`@needs`):** a scene may need a time of day (`day`, `evening`, `night`) or, since 1.2, a realm news
+  flag: `defending`, `attacking`, `keep_lost_recent`, `keep_won_recent`, `relic_lost_recent`, `relic_won_recent`,
+  `df_changed_recent`, `df_ours` (and the other flags in `build_corpus.py` `SCENE_NEWS_FLAGS`). A **live scene** plays
+  only while its flag is true, comes before ordinary scenes then, and takes `{keep}`, `{relic}` and `{enemy}` from the
+  news (`AutonomousBotDebates.LiveSlots`). The live scenes are in `data/chat/scenes_live.lines`; the talk versions of
+  the same topics play the rest of the time.
+- **Say only what is true:** a scene line says what the realm can see (the warnings, the news, `/realm`, `/relic`). No
+  bot says it is coming ("omw"), sending an invite or standing at a keep; a group's talk is told as a story about a
+  group, because the cast are not in one.
 
 `tools/bot-voices/build_corpus.py` checks the files and writes `corpus.json`, which is embedded in
 the server like the camp catalog.
@@ -202,7 +217,7 @@ words. "tonight" and "all night" need no flag: by day the server says "today" an
 ### 3.4 Choosing a line
 
 1. **Filter** by kind, the speaker's realm, class, level band, type (with type weight) and flags.
-2. **Skip** any line used in this realm in the last 6 hours: the time each line was last used,
+2. **Skip** any line used in this realm within the no-repeat window (three days, see 3.8): the time each line was last used,
    per realm (up to 5,000 entries, well above the corpus size). Grats and rez thanks are short and
    frequent, so they skip this check (a "gz" can repeat).
 3. **Pick** by weight, fill the slots, apply the voice, and cap the length at 160 characters. 1.2 chat audit: the voice works on
@@ -212,7 +227,7 @@ words. "tonight" and "all night" need no flag: by day the server says "today" an
 
 ### 3.5 Long threads
 
-**Format:** a scene can run 15–30 lines with up to six speakers (roles A–F). `~ N` marks a lull of
+**Format:** a scene can run 15–30 lines with up to eight speakers (roles A–H). `~ N` marks a lull of
 N seconds.
 
 **Pacing at runtime:**
@@ -220,12 +235,15 @@ N seconds.
 - a long thread takes about 4–8 minutes.
 
 **Interruptions:**
-- **A speaker who goes into combat or logs off is replaced** by another bot of the same realm that fits
-  the role, or the thread skips that speaker's remaining lines.
+- **A speaker who is fighting is waited for** (up to 45 seconds). One who stays busy, dies or logs off before
+  speaking is replaced by another bot of the same realm that fits the role; once a role has spoken it keeps its bot
+  (1.1.3), and its remaining lines are skipped instead.
 - **If fewer than two speakers are left,** the thread ends early, as real ones did.
 
 **Variety:**
-- **Spacing:** at most one long thread per realm every 45–60 minutes. Short scenes fill the gaps.
+- **Spacing:** one scene of any length per realm every 30–45 minutes (less often with a small roster,
+  `AutonomousChatBudget.SceneScale`). A live scene may start 8 minutes after the last scene ended while its news is
+  true.
 - **No repeats until the pool is used up:** the server remembers which scenes each of your
   characters' realms has heard (a small saved list). It never replays a scene until every scene that
   fits has played.

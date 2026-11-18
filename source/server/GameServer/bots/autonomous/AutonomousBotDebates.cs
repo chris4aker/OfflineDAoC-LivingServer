@@ -38,6 +38,9 @@ public static class AutonomousBotDebates
     public const int MaximumGapMs = 45 * 60_000;
     public const int FirstSceneDelayMs = 5 * 60_000;
     public const int LevelSlack = 5;
+    /// <summary>A scene whose band spans fewer levels than this gets no slack: "anyone going to thidranki?" (20-24) was
+    /// said by level 26 and 28 bots (owner's PC, 2026-11-18 01:36), and a 1-10 newbie scene by level 15s (corpus-b1 -003, -005).</summary>
+    public const int NarrowSceneSpan = 12;
     /// <summary>A scene holds its next line this long after a player speaks in /faction, so the replies to the player come
     /// first and a scene line isn't read as one (live test 2026-10-18: "lfg 5 scout" was followed by the scene's "me too").</summary>
     public const int PlayerPauseMs = 10_000;
@@ -48,8 +51,11 @@ public static class AutonomousBotDebates
 
     #region Pure rules (tested)
 
-    /// <summary>A bot that could speak. <paramref name="InTown"/>: on a town break, so least likely to be pulled into a fight.</summary>
-    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false, bool RvrTask = false);
+    /// <summary>A bot that could speak. <paramref name="InTown"/>: on a town break, so least likely to be pulled into a fight.
+    /// <paramref name="Roleplayer"/>: writes in the old tongue, so it isn't cast in a scene (its flourish rewrote "TRAIN to
+    /// the zone line, sorry everyone" as "... forgive me everyone, huzzah!", owner's PC 2026-11-18 02:15; corpus-b1 -028).</summary>
+    public readonly record struct Candidate(long Id, BotPersonalityType Type, string ClassName, int Level, bool InTown = false, bool RvrTask = false,
+        bool Roleplayer = false);
 
     /// <summary>Where a cast speaker is when its line is due.</summary>
     public enum SpeakerState { Free, Busy, Gone }
@@ -151,7 +157,19 @@ public static class AutonomousBotDebates
 
     public static int NextGapMs(Random random) => MinimumGapMs + random.Next(MaximumGapMs - MinimumGapMs + 1);
 
-    public static bool LevelFits(VC.Scene scene, int level) => level >= scene.LevelLow - LevelSlack && level <= scene.LevelHigh + LevelSlack;
+    /// <summary>The levels a scene may be cast outside its band: none for a narrow band (a battleground, a newbie scene).</summary>
+    public static int SlackFor(VC.Scene scene) => scene.LevelHigh - scene.LevelLow < NarrowSceneSpan ? 0 : LevelSlack;
+
+    public static bool LevelFits(VC.Scene scene, int level)
+    {
+        int slack = SlackFor(scene);
+        return level >= scene.LevelLow - slack && level <= scene.LevelHigh + slack;
+    }
+
+    /// <summary>The role whose bot the shared {dungeon} and {camp} are chosen for: the one that speaks first, not the role
+    /// cast first (the most constrained one, often B; corpus-b1 -027). Pure.</summary>
+    public static string OpenerRole(VC.Scene scene, IReadOnlyDictionary<string, long> cast) =>
+        scene.Beats.Where(beat => !beat.IsPause && cast.ContainsKey(beat.Role)).Select(beat => beat.Role).FirstOrDefault() ?? cast.Keys.First();
 
     public static bool Fits(VC.RoleSpec spec, Candidate candidate) =>
         spec == null || VC.TypeFits(spec.Types, candidate.Type) && VC.ClassFits(spec.Classes, candidate.ClassName) && spec.LevelFits(candidate.Level) &&
@@ -178,7 +196,7 @@ public static class AutonomousBotDebates
                 cast[pair.Key] = pair.Value;
         var used = new HashSet<long>(cast.Values);
         // Bots on a town break first: a thread cast from grinding bots stalls at their next pull.
-        Candidate[] pool = candidates.Where(c => LevelFits(scene, c.Level)).OrderByDescending(c => c.InTown)
+        Candidate[] pool = candidates.Where(c => !c.Roleplayer && LevelFits(scene, c.Level)).OrderByDescending(c => c.InTown)
             .ThenBy(_ => random.Next()).ToArray();
         // Roles with requirements first, so the open roles don't take the only fitting bot.
         foreach (string role in scene.SpeakingRoles.Where(r => !cast.ContainsKey(r)).OrderByDescending(r => scene.Roles.TryGetValue(r, out var s) ?
@@ -232,27 +250,83 @@ public static class AutonomousBotDebates
     /// when every fitting scene has been heard, the realm starts a fresh round (resetRound = true).
     /// </summary>
     public static VC.Scene ChooseScene(IReadOnlyList<VC.Scene> scenes, eRealm realm, ISet<string> heard,
-        IReadOnlyCollection<int> onlineLevels, Random random, out bool resetRound, string timeFlag = null)
+        IReadOnlyCollection<int> onlineLevels, Random random, out bool resetRound, string timeFlag = null,
+        IReadOnlySet<string> newsFlags = null, bool liveOnly = false)
     {
         resetRound = false;
-        // A scene about bedtime plays at night only (0.36-se.4: scenes can need a time of day).
-        IReadOnlySet<string> now = timeFlag == null ? null : new HashSet<string>(StringComparer.Ordinal) { timeFlag };
+        // A scene about bedtime plays at night only (0.36-se.4: scenes can need a time of day). A live scene ("INC {keep}")
+        // plays only while its news flag is true (1.2, owner 2026-11-18: "defending", "keep_lost_recent", "df_ours"...);
+        // with no time given (a forced topic, a test) only the news needs are checked.
+        var flags = new HashSet<string>(newsFlags ?? (IEnumerable<string>)Array.Empty<string>(), StringComparer.Ordinal);
+        if (timeFlag != null)
+            flags.Add(timeFlag);
+        bool NeedsHold(VC.Scene scene) => VC.NeedsMet(timeFlag != null ? scene.Needs : scene.Needs.Where(n => !IsTimeNeed(n)).ToArray(), flags);
         // Storyline episodes are played only by AutonomousBotStorylines, in order.
         // Tales and fireside tales likewise: only AutonomousTales starts those (their teller is the realm's storyteller).
         VC.Scene[] fitting = scenes.Where(scene => !AutonomousBotStorylines.IsStory(scene) && !AutonomousTales.IsTaleScene(scene) &&
             VC.RealmFits(scene.Realm, realm) &&
-            (now == null || VC.NeedsMet(scene.Needs, now)) &&
+            NeedsHold(scene) && (!liveOnly || IsLive(scene)) &&
             onlineLevels.Count(level => LevelFits(scene, level)) >= 2).ToArray();
         if (fitting.Length == 0)
             return null;
         VC.Scene[] fresh = fitting.Where(scene => !heard.Contains(scene.Id)).ToArray();
         if (fresh.Length == 0)
         {
+            // A live scene is heard once per event: when they are all heard, the fallback talk plays, not a repeat.
+            if (liveOnly)
+                return null;
             resetRound = true;
             fresh = fitting;
         }
+        // While a live scene's news is true it comes first: that news lasts minutes, the ordinary talk can wait.
+        VC.Scene[] live = fresh.Where(IsLive).ToArray();
+        if (live.Length > 0)
+            fresh = live;
         return fresh[random.Next(fresh.Length)];
     }
+
+    private static bool IsTimeNeed(string need) => need.TrimStart('!') is "day" or "evening" or "night";
+
+    /// <summary>A live scene: it needs a news flag ("defending", "relic_lost_recent", "df_ours"), so it plays only while that
+    /// is true and its {keep}, {relic} and {enemy} are the news's own. Pure.</summary>
+    public static bool IsLive(VC.Scene scene) => scene.Needs.Any(need => !need.StartsWith('!') && !IsTimeNeed(need));
+
+    /// <summary>A live scene starts this long after the last scene at the soonest, without waiting for the usual 30-45 min gap.</summary>
+    public const long LiveSceneGapMs = 8 * 60_000;
+    /// <summary>How often a realm checks for a live scene it could start early.</summary>
+    public const long LiveCheckMs = 90_000;
+
+    /// <summary>Whether a live scene could start now: its news is true, it fits the realm and it hasn't been heard. Pure.</summary>
+    public static bool LiveSceneWaiting(IReadOnlyList<VC.Scene> scenes, eRealm realm, ISet<string> heard, IReadOnlySet<string> newsFlags) =>
+        newsFlags != null && newsFlags.Count > 0 && scenes.Any(scene => IsLive(scene) && VC.RealmFits(scene.Realm, realm) &&
+            !heard.Contains(scene.Id) && VC.NeedsMet(scene.Needs.Where(n => !IsTimeNeed(n)).ToArray(), newsFlags));
+
+    /// <summary>The slots a live scene takes from its news: the keep under siege or lost, the relic, the enemy realm (as its
+    /// people, "mids") and the frontier zone. Pure.</summary>
+    public static Dictionary<string, string> LiveSlots(VC.Scene scene, IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> needSlots)
+    {
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (needSlots == null)
+            return result;
+        foreach (string need in scene.Needs)
+        {
+            if (need.StartsWith('!') || !needSlots.TryGetValue(need, out var slots) || slots == null)
+                continue;
+            foreach (string key in new[] { "keep", "relic", "frontier", "enemy" })
+                if (slots.TryGetValue(key, out string value) && !string.IsNullOrWhiteSpace(value))
+                    result[key] = key == "enemy" ? EnemyPeople(value) : value;
+        }
+        return result;
+    }
+
+    /// <summary>"Midgard" as its people say it in chat: "mids" (an already people-form name is kept).</summary>
+    public static string EnemyPeople(string realmName) => realmName?.Trim().ToLowerInvariant() switch
+    {
+        "albion" => "albs",
+        "midgard" => "mids",
+        "hibernia" => "hibs",
+        var other => other,
+    };
 
     #endregion
 
@@ -501,7 +575,7 @@ public static class AutonomousBotDebates
     private static Candidate CandidateOf(GameBot bot) =>
         new(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty, bot.Level,
             bot.PersistentRecord?.ObjectivePhase == AutonomousWorldBotController.TownIdlePhase,
-            AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR));
+            AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR), AutonomousRoleplayers.Is(bot));
 
     private static SpeakerState StateOf(GameBot bot, eRealm realm)
     {
@@ -520,9 +594,12 @@ public static class AutonomousBotDebates
         running.Cast.TryGetValue(role, out long id) && AutonomousBotRegistry.TryGet(id, out GameBot bot)
             ? StateOf(bot, realm) : SpeakerState.Gone;
 
+    private static readonly Dictionary<eRealm, long> LiveCheckedAt = new();
+
     private static void TickRealm(eRealm realm, long now)
     {
         Running running;
+        bool liveOnly = false;
         lock (Sync)
         {
             Scenes.TryGetValue(realm, out running);
@@ -533,7 +610,13 @@ public static class AutonomousBotDebates
                 // 1.2: a small roster hears scenes less often (AutonomousChatBudget.SceneScale); 300 bots a realm and up as before.
                 long start = NextStartAt[realm];
                 if (!AutonomousChatBudget.SceneDue(PlannedAt.GetValueOrDefault(realm, start), start, now, AutonomousBotChatCoordinator.RealmBots(realm)))
-                    return;
+                {
+                    // A live scene (a keep under siege, a relic just lost) need not wait for the usual gap: its news lasts minutes.
+                    if (now - LastSceneEnd(realm) < LiveSceneGapMs || now - LiveCheckedAt.GetValueOrDefault(realm, long.MinValue / 2) < LiveCheckMs)
+                        return;
+                    LiveCheckedAt[realm] = now;
+                    liveOnly = true;
+                }
             }
             else if (now < running.NextAt)
                 return;
@@ -559,16 +642,30 @@ public static class AutonomousBotDebates
             return;
         }
         if (running == null)
-            TryStart(realm, now);
+        {
+            if (liveOnly)
+            {
+                // Only when a live scene could play: the news is true and one is unheard (cheap; the flags are cached).
+                HashSet<string> heardNow = Heard.GetOrAdd(realm, _ => new HashSet<string>(StringComparer.Ordinal));
+                bool waiting;
+                lock (heardNow)
+                    waiting = LiveSceneWaiting(AutonomousBotVoices.Corpus.Scenes, realm, heardNow, AutonomousChatNews.For(realm).Flags);
+                if (!waiting)
+                    return;
+            }
+            TryStart(realm, now, liveOnly);
+        }
         else
             PlayBeat(realm, running, now);
     }
 
-    private static void TryStart(eRealm realm, long now)
+    private static void TryStart(eRealm realm, long now, bool liveOnly = false)
     {
-        ForcedTale tale;
-        lock (Sync)
-            ForcedTales.Remove(realm, out tale);
+        // An early live scene leaves a waiting tale, storyline episode or /lstest topic for the usual start.
+        ForcedTale tale = null;
+        if (!liveOnly)
+            lock (Sync)
+                ForcedTales.Remove(realm, out tale);
         if (tale != null)
         {
             TryStartTale(realm, now, tale);
@@ -586,7 +683,7 @@ public static class AutonomousBotDebates
         {
             // A running arc's pair need only be in the game: the scene waits for a protagonist who is fighting.
             GameBot[] present = AutonomousBotRegistry.Snapshot().Where(bot => Present(bot, realm)).ToArray();
-            story = AutonomousBotStorylines.TryNext(realm, online, DateTime.UtcNow, Random.Shared, present);
+            story = liveOnly ? null : AutonomousBotStorylines.TryNext(realm, online, DateTime.UtcNow, Random.Shared, present);
             if (story != null)
                 speakers = online.Concat(present.Where(bot => bot.DatabaseID == story.BotA || bot.DatabaseID == story.BotB))
                     .DistinctBy(bot => bot.DatabaseID).ToArray();
@@ -605,28 +702,41 @@ public static class AutonomousBotDebates
             if (cast == null)
                 story = null;   // not enough others to fill the scene: an ordinary debate instead, the episode waits
         }
-        string forcedTopic;
-        lock (Sync)
-        {
-            ForcedTopic.TryGetValue(realm, out forcedTopic);
-            ForcedTopic.Remove(realm);
-        }
+        string forcedTopic = null;
+        if (!liveOnly)
+            lock (Sync)
+            {
+                ForcedTopic.TryGetValue(realm, out forcedTopic);
+                ForcedTopic.Remove(realm);
+            }
         if (forcedTopic != null)
             story = null;   // /lstest asked for a topic: that, not the storyline
         if (story == null)
         {
             IReadOnlyList<VC.Scene> pool = forcedTopic == null ? AutonomousBotVoices.Corpus.Scenes
                 : AutonomousBotVoices.Corpus.Scenes.Where(s => string.Equals(s.Topic, forcedTopic, StringComparison.OrdinalIgnoreCase)).ToArray();
+            IReadOnlySet<string> newsFlags = null;
+            try
+            {
+                newsFlags = AutonomousChatNews.For(realm).Flags;
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("Debates: could not read the realm's news flags", exception);
+            }
             lock (heard)
                 scene = ChooseScene(pool, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset,
-                    forcedTopic == null ? VC.TimeFlag(DateTime.Now.Hour) : null);
+                    forcedTopic == null ? VC.TimeFlag(DateTime.Now.Hour) : null, newsFlags, liveOnly && forcedTopic == null);
             cast = scene == null ? null : Cast(scene, online.Select(CandidateOf).ToArray(), Random.Shared);
         }
         Dictionary<string, string> shared = null;
         if (cast != null)
         {
-            GameBot opener = speakers.First(bot => bot.DatabaseID == cast.Values.First());
+            GameBot opener = speakers.First(bot => bot.DatabaseID == cast[OpenerRole(scene, cast)]);
             shared = AutonomousBotVoices.SharedSlots(realm, opener.Level, Random.Shared);
+            if (IsLive(scene))
+                foreach (var pair in LiveSlots(scene, AutonomousChatNews.For(realm).Slots))
+                    shared[pair.Key] = pair.Value;
             if (story != null)
                 foreach (var pair in story.Slots)
                     shared[pair.Key] = pair.Value;
@@ -645,7 +755,9 @@ public static class AutonomousBotDebates
         {
             if (cast == null)
             {
-                Plan(realm, now, 5 * 60_000); // try again in a few minutes
+                // A live scene that could not be cast leaves the usual plan alone; anything else tries again in a few minutes.
+                if (!liveOnly)
+                    Plan(realm, now, 5 * 60_000);
                 return;
             }
             if (reset)
@@ -1082,7 +1194,7 @@ public static class AutonomousBotDebates
         var taken = running.Cast.Values.ToHashSet();
         GameBot replacement = AutonomousBotRegistry.Snapshot()
             .Where(bot => Eligible(bot, realm) && !taken.Contains(bot.DatabaseID) && LevelFits(running.Scene, bot.Level) &&
-                          Fits(spec, CandidateOf(bot)))
+                          !AutonomousRoleplayers.Is(bot) && Fits(spec, CandidateOf(bot)))
             .OrderBy(_ => Random.Shared.Next())
             .FirstOrDefault();
         if (replacement != null)

@@ -10,14 +10,14 @@
 @role B type=NoLifer
 @role C type=Daredevil,Leveler
 @role D type=*
-A: {q} first realm ability, what is everyone buying?
+A: {q} first realm ability, whats everyone buying?
 B: purge. a stun or mez you can shrug off wins more fights than anything
 C: purge is pricey for a first pick, cheap passives add up faster
-B: passives do not help when you are mezzed for half the fight
+B: passives dont help when youre mezzed for half the fight
 D: depends on the class, a caster wants different things than a tank
 C: true, my healer friend swears by mastery of concentration
 B: cast through the hits, sure, still buying purge first
-A: ok so the answer is it depends. classic
+C: ask ten people, get ten answers. buy what keeps you alive
 
 @topic group_setup
 @levels 35-50
@@ -27,12 +27,12 @@ A: ok so the answer is it depends. classic
 @role D type=Daredevil
 A: whats the ideal 8man, honestly?
 B: two healers, a mezzer, a speed class, a tank, and damage for the rest
-C: that is the dream. in practice you take whoever is online
+C: thats the dream. in practice you take whoever is online
 D: give me four damage classes and one healer, fights end before they start
 B: until the other group mezzes your healer and you all fold
 D: then we die fast and run back fast, still fun
 C: the best group is the one where people actually assist
-A: assist. right. who is main assist tonight?
+B: and someone who watches the healer, that too
 
 @topic assist
 @levels 20-50
@@ -40,9 +40,9 @@ A: assist. right. who is main assist tonight?
 @role B type=NoLifer,Leveler
 @role C type=Daredevil
 A: why does every group fight turn into everyone hitting something different?
-B: nobody uses /assist. one target, everyone on it, that is the whole secret
+B: nobody uses /assist. one target, everyone on it, thats the whole secret
 C: i like picking my own targets though
-B: and that is why the healer on the other side never dies
+B: and thats why the healer on the other side never dies
 C: ok fine, but the main assist better be fast
 A: setting up an assist macro right now
 
@@ -51,12 +51,12 @@ A: setting up an assist macro right now
 @scene mez_breaks
 @role B class=Sorcerer,Healer,Bard,Minstrel,Mentalist
 @role C type=Daredevil
-A: who broke the mez on that last pull?
+A: still thinking about my group last night. who breaks a mez on the first pull?
 C: in my defense it was standing right there
 B: it was standing there because it was mezzed
-C: ok in my defense i did not read the group chat
-B: rule one: do not touch the sleeping ones
-A: lol. noted for the next pull
+C: ok in my defense i didnt read the group chat
+B: rule one: dont touch the sleeping ones
+A: lol. noted for my next group
 
 @topic pulling
 @levels 20-50
@@ -64,13 +64,13 @@ A: lol. noted for the next pull
 @role B type=Leveler
 @role C type=Daredevil
 @role D type=Socialite
-A: can we agree only one person pulls tonight?
+A: {q} can we agree a group only ever needs one puller?
 B: yes please, two pullers means double the adds
 C: but the puller is slow, i can grab the next one while they kill this
 B: and then the healer runs out of power and we all lie down
 D: the puller sets the pace, everyone else enjoys the ride
 C: fine, i will just stand here looking impatient
-A: perfect, thank you
+A: perfect, thank you, spread the word
 
 @topic named_drops
 @levels 30-50
@@ -96,9 +96,9 @@ A: anyone going on the dragon raid this weekend?
 B: of course, the whole realm shows up for the dragon
 C: last time half the raid died to the first breath
 D: is it even worth it? hundreds of people and one loot table
-B: it is not about the loot, it is about being there when it falls
+B: its not about the loot, its about being there when it falls
 C: and the stories after, those are the best part
-D: ok, i will come for the stories
+D: ok, i would go for the stories
 A: bring patience and a healer you trust
 
 @topic housing
@@ -108,10 +108,10 @@ A: bring patience and a healer you trust
 @role C type=Leveler,NoLifer
 A: is a house worth the coin?
 B: a house is a home, plus storage, plus somewhere to show off
-C: it is a weekly rent bill for a room you visit twice a month
+C: its a weekly rent bill for a room you visit twice a month
 B: decorate it right and your friends will visit too
 C: my friends are in the frontier, not in my living room
-A: maybe a small cottage to start
+B: then bring the frontier home. trophies on every wall
 
 @topic alts
 @levels 1-50
@@ -131,11 +131,11 @@ A: so the cure for alt-itis is more alt-itis. got it
 @role B type=Leveler
 @role C type=Daredevil
 A: is anyone else still killing greys for loot?
-B: greys give nothing. yellow and orange, that is where the xp is
-C: oranges if you have a healer, reds if you are brave
+B: greys give nothing. yellow and orange, thats where the xp is
+C: oranges if you have a healer, reds if youre brave
 B: reds if you like your bind point
 C: my bind point and i are close friends
-A: blues it is, i am a coward
+B: your bind point must be sick of you by now
 
 @topic epics
 @levels 45-50
@@ -145,7 +145,7 @@ A: blues it is, i am a coward
 A: is the epic armor worth the quest?
 B: the look alone is worth it, everyone knows you finished the epic
 C: the stats get outclassed by a decent crafted suit
-B: crafted does not have that look
+B: crafted doesnt have that look
 C: you can dye crafted any color you like
 A: i will do the quest for the look and wear crafted for the fights
 
@@ -155,11 +155,11 @@ A: i will do the quest for the look and wear crafted for the fights
 @role B type=Leveler
 @role C type=Daredevil
 A: lost half a bubble to one death, the penalty is brutal
-B: that is why you consider before you pull
+B: thats why you consider before you pull
 C: the penalty is what makes the win feel good
-B: easy to say when it is not your xp bar going backwards
+B: easy to say when its not your xp bar going backwards
 C: i have died five times tonight, still smiling
-A: you are not well
+A: youre not well
 
 @topic loot_rules
 @levels 20-50
@@ -167,13 +167,13 @@ A: you are not well
 @role B type=Socialite
 @role C type=NoLifer
 @role D type=*
-A: group loot rules tonight? need before greed?
+A: {q} what loot rules do your groups use? need before greed?
 B: need before greed, roll for anything nobody needs
 C: random loot is fair, everyone gets the same chance
 B: then a caster gets the shield and sells it
 C: and the tank buys it off him, everyone wins
-D: just do not ninja it and we are fine
-A: need before greed it is
+D: just dont ninja it and we are fine
+A: need before greed it is, for my groups anyway
 
 @topic leveling_route
 @levels 20-34
@@ -183,9 +183,9 @@ A: need before greed it is
 A: dungeon or outdoor camps for the 20s?
 B: dungeons, the camp bonus and the respawns are better
 C: outdoors, you can see the adds coming and run if it goes bad
-B: running is for people who do not have a mezzer
+B: running is for people who dont have a mezzer
 C: having a mezzer is for people who have friends online
-A: outdoor tonight, dungeon this weekend
+B: then make some friends and meet me in the dungeon
 
 @topic speed
 @levels 20-50
@@ -195,7 +195,7 @@ A: outdoor tonight, dungeon this weekend
 A: why does every group ask for a speed class first?
 B: because walking everywhere is slow and boring
 C: and because speed wins the run home after a bad fight
-B: i am a speed bot with feelings, remember that
+B: im a speed bot with feelings, remember that
 C: a speed bot with feelings and great songs
 A: we love you, speed class, never leave
 
@@ -204,10 +204,11 @@ A: we love you, speed class, never leave
 @scene stun_mez_det
 @role B type=NoLifer
 @role C type=Leveler
+@role A class=Armsman,Mercenary,Paladin,Reaver,Warrior,Berserker,Savage,Thane,Hero,Champion,Warden,Valewalker
 A: chain stunned for ten seconds and died without moving
 B: determination. it shortens stuns and mez, buy it
 C: points spent there are points not spent on damage
-B: damage does not help when you cannot move
+B: damage doesnt help when you cant move
 C: then i will just stay out of stun range
 A: buying a little determination, thanks
 
@@ -218,10 +219,10 @@ A: buying a little determination, thanks
 @role C type=Socialite
 A: our guild claimed {keep}, it actually means something now
 B: a claim is a target, every enemy zerg will come for it
-C: and every member will show up to defend it, that is the fun
-B: until it is 3am and nobody is online
+C: and every member will show up to defend it, thats the fun
+B: until its the middle of the night and nobody is online
 C: then we take it back the next night
-A: guild night at {keep}, everyone come
+B: and thats why claims are for big guilds
 
 @topic off_hours
 @levels 40-50
@@ -229,11 +230,11 @@ A: guild night at {keep}, everyone come
 @role B type=Leveler,Socialite
 @role C type=NoLifer
 A: they took our relic at four am again
-B: hitting a keep when nobody is awake is not winning
+B: hitting a keep when nobody is awake isnt winning
 C: a relic left unguarded is a relic waiting to be taken
-B: there is no fight in that, just walking in
-C: then guard it. war does not sleep
-A: setting an alarm for the next one, apparently
+B: theres no fight in that, just walking in
+C: then guard it. war doesnt sleep
+B: war sleeps when i do
 
 @topic bind_points
 @levels 1-50
@@ -245,7 +246,7 @@ B: close to your camp, every death is a short walk
 C: in town, so i can restock after every death
 B: a long run back eats more time than the restock
 C: a full bag eats more than both
-A: binding next to the merchant then
+B: fine, but my bind stays next to my camp
 
 @topic pets_rvr
 @levels 35-50
@@ -270,5 +271,5 @@ B: group, the xp is better and the time goes faster
 C: group, but only with people who talk
 D: solo, nobody blames me when it goes wrong
 B: nobody saves you either
-D: that is half the thrill
+D: thats half the thrill
 A: groups for me, i need the company

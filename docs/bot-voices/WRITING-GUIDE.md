@@ -126,6 +126,9 @@ openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/test
   "on my way", "ill be there", "heading there", "porting", "count me in" and "on it" are said only through the promise
   gate (`ChatPromises.TryPromiseCome` or `ChatPromises.Gate`, 1.2): saying one gives the bot a real duty to go there, and a
   bot that can't go gets a line that promises nothing ("how many?", "where are you?", "might make it").
+  Scenes too: a scene line goes through no gate, so it never says "omw", "on my way", "count me in", "inv sent" or "we
+  have a spot". A scene about a live event (a keep under siege, a relic just lost) needs its news flag (`@needs
+  defending`, DESIGN.md 3.1) and says only what the realm can see; it lives in `scenes_live.lines`.
 
 ## World facts you can use
 - Battlegrounds in this world: Abermenai 15-19, Thidranki 20-24, Murdaigean 25-29, Caledonia 30-35.

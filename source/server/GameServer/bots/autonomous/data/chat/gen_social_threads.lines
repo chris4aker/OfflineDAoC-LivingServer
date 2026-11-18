@@ -12,7 +12,7 @@
 @role C type=Socialite
 @role D type=Daredevil
 @role E type=*
-A: {q} is there a rule about camps or is it just whoever is fastest | so someone just walked into {camp} and started pulling our spawn
+A: {q} is there a rule about camps? someone just started pulling our spawn at {camp} | so someone just walked into {camp} and started pulling our spawn
 B: if you were there first its your camp, everyone knows that | first come first served, always has been
 A: i told them that. they said they didnt see us
 C: didnt see a whole group sitting in a circle? lol | eight people sitting in a ring and they didnt see us. sure
@@ -25,7 +25,7 @@ C: yesterday doesnt count. you leave, you lose it
 E: unless they left a buddy sitting there to hold it | did they leave someone holding it? thats the only exception i know
 A: nope, nobody
 D: then its yours. keep pulling and let them get bored | then pull faster and smile
-?E: i held a camp for a guildie once while they ate dinner, nobody argued
+E: i held a camp for a guildie once while they went to eat, nobody argued
 C: thats different, a body sitting at the camp is a claim
 ~ 40
 A: ok they joined us. they were a solid tank actually | well. they joined the group. and they can tank. weird ending
@@ -42,17 +42,17 @@ A: will do. pull is up, back later | gotta go, theyre pulling already
 @role C type=Socialite
 @role D type=NoLifer
 @role E type=Explorer
-A: TRAIN to the zone line, sorry everyone | train coming out of {dungeon}, move!
-B: who is training at this hour | not again
+A: so that train out of {dungeon} earlier... that was me. sorry everyone | confession time. the train at the {dungeon} entrance earlier was mine
+B: so that was you | not again
 C: we had just sat to med, it went right through us | it ran straight through our camp, we picked up a pile of adds
 A: i know, i know. the pull went wrong and the healer died first
 B: did you yell before or after you ran
 A: before! i yelled in say and in faction
 D: yelling only works if people are looking at chat | nobody reads chat mid-fight though
 ~ 30
-C: ok we survived, barely. two of us dead | we lost our puller and our healer, the rest made it
-A: i owe you a rez | coming back to rez, give me a sec
-?C: you are forgiven if you bring the rez
+C: we survived, barely. two of us dead | we lost our puller and our healer, the rest made it
+A: i owe all of you, name the price | i owe you a rez, or a drink since i cant rez
+?C: forgiven. once | you are forgiven if you pay for the next round of potions
 E: worst train i ever saw was a whole room following one runner across a zone | i once watched a train chase someone all the way to the guards
 B: running to the guards is the only good train | the guards are the best part, they eat the whole thing
 E: only if the guards are tough enough, some just fall over too
@@ -60,8 +60,8 @@ E: only if the guards are tough enough, some just fall over too
 D: there should be a rule. if you train someone you owe them a favor | new rule, whoever trains a camp buys the next round of potions
 A: deal. i will pay up in {capital} | fair. find me in {capital} later
 C: i accept payment in coin lol
-?E: whats the going rate for one train, asking for a friend
-A: everyone back up? trying that pull again, slowly this time | all rezzed, back to it
+?E: whats the going rate for one train, just so i know
+A: anyway. going back in, slowly this time | back to it then, wish me luck
 B: from the far side this time please
 A: from the far side, promise
 D: you said that last time too | heh
@@ -83,7 +83,7 @@ D: the shrouded isles, first trip out | heading to the islands for the first tim
 ~ 30
 E: long walks are worse. at least the boat drives itself | walking across a whole zone with no speed buff, now that is pain
 C: that is why everyone loves a speed class | a speed class is worth their weight in gold
-E: or the horse routes. buy a ticket, go make dinner | stablemaster tickets, the original autopilot
+E: or the horse routes. buy a ticket, go make a sandwich | stablemaster tickets, the original autopilot
 A: ever fallen asleep on a horse route?
 F: woke up at the end of the route with something chewing on me | yes. woke up next to a guard staring at me
 ~ 35
@@ -123,7 +123,7 @@ F: hey i know that player, they were in my group last week, very nice | i groupe
 A: well they were not nice tonight
 F: i will ask them about it, maybe there is a reason
 E: there is never a reason that makes that ok
-?F: their little brother plays on the account sometimes, i am not kidding
+F: their little brother plays on the account sometimes, i am not kidding
 D: lol the little brother defense | ah, the classic little brother
 ~ 25
 F: ok they answered me. they will meet you in {capital} and hand it back | they say sorry, they thought it was free loot, will hand it back
@@ -166,6 +166,7 @@ C: pst me if nobody bites
 @scene soc_midnight_healer
 @role B type=NoLifer
 @role E type=Leveler
+@role A levels=27-36
 A: lf healer, anyone, its late and we are stuck | any healer awake? we have a full camp and nobody to keep us up
 B: every healer in the realm went to bed an hour ago
 A: at this point i will take anything with a heal spell
@@ -197,13 +198,14 @@ A: you are a hero | best person in the realm
 @role D type=NoLifer
 @role E type=Leveler
 @role F type=Crafter
-A: failed the same combine over and over tonight | so many fails in a row on one piece, is that normal
+@role A type=Crafter
+A: failed the same combine over and over tonight | so many failures in a row on one piece, is that normal
 B: welcome to crafting | thats a normal tuesday for a crafter
 C: what tier are you making, maybe its too high for you
 A: right at my skill. it should not fail this much
 D: it feels rigged but its not. probably. | everyone says it is rigged. nobody can prove it
 ~ 25
-B: every fail is coin down the drain, thats the real pain | its not the fail, its watching the materials vanish
+B: every failed combine is coin down the drain, thats the real pain | its not failing, its watching the materials vanish
 E: this is why crafted gear costs what it costs
 ?F: and people still haggle like we pick it off trees
 C: i quit crafting after a night like that | i put my crafter on the shelf after a night like that
@@ -227,7 +229,8 @@ A: back to the forge, still need the gloves | ok, gloves next. pray for me
 @role D type=NoLifer
 @role E type=Daredevil
 @role F type=Crafter
-A: ding legendary!!! | {q} i finally hit legendary on my crafter
+@role A type=Crafter
+A: ding legendary!!! | i finally hit legendary on my crafter
 B: GZ!!! | gratz, that is a long road
 C: how long did that take you
 A: dont ask. i stopped counting the hours | months. i stopped counting at some point
@@ -248,7 +251,7 @@ A: never craft tired, and never look at your coin total | buy materials in bulk,
 E: and dont stop when you hit the boring stretch | the middle stretch is where crafters quit. push through
 B: first masterpiece out of your forge, show us | make something nice for yourself first
 A: first one goes to my guild leader, promised it ages ago
-?D: and the second to me, right
+D: and the second to me, right
 A: lol no | not a chance
 
 @topic overcharge
@@ -259,6 +262,7 @@ A: lol no | not a chance
 @role D type=Daredevil
 @role E type=Leveler
 @role F type=Crafter,NoLifer
+@role A type=Crafter
 A: overcharging a piece, wish me luck | about to overcharge my chest piece. hold me
 B: how far over are you going | how greedy are we feeling tonight
 A: a little over. not crazy
@@ -290,7 +294,7 @@ A: next piece is the helm... | the helm is next. dont tell me the odds
 @role B type=Socialite
 @role C type=Crafter
 @role D type=Daredevil
-A: what color should i dye my armor | {q} need opinions. dyeing my whole set tonight
+A: what color should i dye my armor | need opinions. dyeing my whole set tonight
 B: black. always black | royal blue, its classy
 C: whatever matches your realm colors | something that looks good with the cloak at least
 D: please not pink | do not go pink, i beg you
@@ -336,7 +340,7 @@ D: rare drops sit for days though, only a few people can use them
 ~ 35
 C: i still say merchants are underrated, no listing, no waiting
 F: and no profit lol | and nothing to brag about either
-B: depends. a full bag at a natural break, merchant. one good item, exchange | junk at a break goes to a merchant. anything nice goes to the exchange
+B: depends. a full bag between pulls, merchant. one good item, exchange | junk goes to the merchant on the way through town. anything nice goes on the exchange
 A: ok that is a decent rule
 E: and if you see me undercut you, just undercut me back | race you to the bottom
 A: no thanks, i will relist tomorrow | not playing that game. relisting later
@@ -368,7 +372,7 @@ C: same. after a long night it beats the bindstone
 E: houses are just very expensive places to stand | its a very pricey place to go afk
 F: worth every coin | worth it, no regrets
 ?B: invite us for a housewarming
-A: ok, housewarming saturday. bring furniture | saturday, bring a chair, i only have one
+A: ok, housewarming this weekend. bring a chair | this weekend then, bring a chair, i only have one
 D: i will bring the statue | i will bring something tasteful. maybe
 
 @topic guild_name
@@ -398,9 +402,9 @@ A: oh i like that one | ok thats actually good
 ~ 25
 C: now you need an emblem too, that is the real fight
 A: dont start
-B: i want an invite when it is up | send me an invite, i will be your fourth
+B: i want in when it is up | i would be your fourth
 F: me too, my guild just fell apart | same, mine went quiet a while ago
-A: invites going out tonight | welcome aboard, everyone
+A: pst me, all of you | welcome aboard, everyone
 ?C: first rule of the guild, nobody puts elite anywhere
 
 @topic guild_leader_quits
@@ -411,8 +415,8 @@ A: invites going out tonight | welcome aboard, everyone
 @role D type=NoLifer
 @role E type=Leveler
 @role F type=*
-A: our guild leader just quit the game. gave lead to whoever was online | {q} our gl quit tonight, no warning
-B: oof. who got it | ouch. who is in charge now
+A: our guild leader just quit the game. gave lead to whoever was online | our gl quit tonight, no warning
+B: ouch. who got it | ugh. who is in charge now
 A: me. i was the only officer online | me, apparently. i was online
 C: congrats and sorry | gz? or condolences, not sure which
 D: happened to my old guild too. half of us left within a month | when ours quit, the guild split in two by the weekend
@@ -481,13 +485,14 @@ A: lfg, low level, i do stuff | ok. lfg ... whatever i am
 ?C: we have all typed that
 B: honestly at your level just solo the blues and yellows, groups come later | solo blue cons for now. you will find people in your teens
 A: whats a blue con
-D: when you /con a monster the color says how tough it is | the color of the name when you check a monster. blue is easy, red is run
+D: target a monster and the color of its name says how tough it is | the color of the name when you target a monster. blue is easy, red is run
 ~ 35
 A: this game is complicated
 E: it gets better. also train your skills every level at your trainer | dont forget your trainer when you level. people forget for ages
 ?B: i forgot to train for ten levels once. ten.
 A: oh. oh no. i never trained | wait what trainer
 C: go now, before you get killed by a rabbit | go. right now. we will wait
+~ 45
 A: ok i went. i am so much stronger lol | wow, i have like four new things now
 D: welcome to {realm} :) | there you go, a real adventurer now
 E: pst me if you get stuck, i am around | send a tell anytime, happy to help
@@ -500,7 +505,7 @@ E: pst me if you get stuck, i am around | send a tell anytime, happy to help
 @role D type=NoLifer
 @role E type=Daredevil
 @role F type=Explorer
-A: day three of camping the same named for one drop | {q} still sitting on this named. third night
+A: day three of camping the same named for one drop | still sitting on this named. third night
 B: what are you after | what drop
 A: a {item} | a cloak. one specific cloak
 C: does it even drop it often | is the drop common at least
@@ -512,7 +517,7 @@ A: tv. snacks. faction chat | i read a book between spawns lol
 ?E: so we are your entertainment. got it
 C: someone else showed up yet | any competition
 A: one other person, we agreed to take turns | another camper came, we made a deal, alternate pops
-B: thats nice, usually someone just camps it rude | civilized camping, love to see it
+B: thats nice, usually someone just camps it rude | civilized camping, that is rare
 ~ 45
 F: rumor is there is a second spawn point nobody uses | i heard it sometimes spawns somewhere else in the zone
 A: dont tell me that now | please do not do this to me
@@ -564,7 +569,7 @@ A: perfect, still no agreement. see you saturday | nothing decided. like every r
 @role C type=Explorer
 @role D type=Crafter
 @role A levels=48-50
-A: finally finished my epic quest | {q} done with the epic, armor is on
+A: finally finished my epic quest | done with the epic, armor is on
 B: gz! how does it look | gz!! describe it
 A: honestly? kinda silly | i look like a lamp
 C: lol every epic looks like a lamp | some epics are gorgeous. some are lamps
@@ -596,8 +601,8 @@ A: lol. lamp to the frontier | they will see me from across the map
 @role D type=NoLifer
 @role E class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden
 @role F type=Daredevil
-A: died at the bottom of {dungeon}, my bind is in {capital} | {q} died deep in {dungeon}. the run back is going to take forever
-B: oof, that run | the longest run in the game
+A: died at the bottom of {dungeon}, my bind is in {capital} | died deep in {dungeon}. the run back is going to take forever
+B: ouch, that run | the longest run in the game
 C: why are you bound in {capital} | why bind so far away
 A: i bound there for selling, then forgot | because the merchants are there and i am lazy
 D: rule: bind near where you hunt, always | bind close to your camp. every time
@@ -608,14 +613,14 @@ A: you are a lifesaver. literally | yes please! i will wait
 B: dont forget to visit the town healer later, the con loss adds up | con loss stacks, pay the healer in town once in a while
 C: i forgot about con loss for weeks once, wondered why i died so fast
 ~ 30
-F: hot take, the death penalty is what makes the game exciting | without the penalty nobody would be careful
+F: unpopular opinion, the death penalty is what makes the game exciting | without the penalty nobody would be careful
 D: without the penalty i would be level 50 already | id be happier lol
 F: and you would never feel your heart race on a bad pull | the fear is the fun
 ?C: i like fear in small doses
 E: ok, at your body. rezzing | here, rezzing you now
 A: ty!! sick but alive | thank you. i owe you
 E: np, and rebind closer this time | np. bind closer lol
-A: heading to the nearest bindstone now | already on my way to rebind
+A: heading to the nearest bindstone now | rebinding first, lesson learned
 
 @topic leveling_memories
 @levels 20-50
@@ -645,7 +650,7 @@ D: worst was a camp where nobody talked, just pull, kill, sit | silent groups. t
 C: worse than a train?
 D: a train at least gives you a story
 A: ok this thread made me want to group | anyone up for a group, after all this
-E: i am in | count me in | sure, why not
+E: i am in | sounds good | sure, why not
 
 @topic real_life
 @levels 10-50
@@ -703,11 +708,11 @@ F: i did not know how to sit, ran everywhere at half health | i didnt know you c
 E: lol | heh, same
 F: walked to my first dungeon with no group, died at the door | wandered into {dungeon} way too early, never forgot it
 A: the classic first night
-C: anyone remember the first time they saw an {enemy} player | first enemy i ever saw, i just stood there staring
+C: anyone remember the first time they saw one of the {enemy} | first enemy i ever saw, i just stood there staring
 B: i ran. i ran so fast | i waved. they did not wave back
 ?F: they never wave back
 ~ 25
-D: these stories are why i stay up too late | its 2am and we are telling stories, perfect
+D: these stories are why i stay up too late | middle of the night and we are telling stories, perfect
 A: same, should sleep | this is the best part of the night
 C: one more story then bed
 B: no, that is how it starts | that is how it gets to sunrise
@@ -723,7 +728,7 @@ B: no, that is how it starts | that is how it gets to sunrise
 @role F type=Daredevil
 @role A levels=20-39
 A: my friend is already 50 and i am not even 40. we started the same day | how is my buddy 50 when we started together
-B: does your friend sleep | they no-lifed it, clearly
+B: does your friend sleep | they played day and night, clearly
 C: some people treat it like a race | the game starts at 50, some people believe that
 A: they say the real game starts at 50
 D: the real game is whatever you are doing right now | if you hate the leveling why play
@@ -751,7 +756,7 @@ E: thats the best use of a 50 friend | lol, a 50 sitting at a camp of lowbies
 @role D type=Daredevil
 @role E type=Explorer
 @role F type=NoLifer
-A: i am completely lost. trees everywhere | {q} anyone know {zone} well, im lost
+A: i am completely lost. trees everywhere | {q} anyone good with directions, im lost
 B: what can you see | describe it. landmarks?
 A: a big rock, a river, and something purple looking at me | river on my left, giant tree, and a red con watching me
 C: thats every place in the game | that narrows it down to everywhere

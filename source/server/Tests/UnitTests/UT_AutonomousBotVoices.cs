@@ -205,7 +205,10 @@ namespace DOL.GS.Tests
             story["recipe"] = "armorcraft";
             story["title"] = "Master Armorer";
             // A tale gets its storyteller's name ({name_b}) and the asker's (AutonomousTales).
-            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story : slots))
+            // A live scene also gets its news's relic (AutonomousBotDebates.LiveSlots; 1.2).
+            var live = new Dictionary<string, string>(slots) { ["relic"] = "the Scabbard of Excalibur" };
+            Assert.That(Corpus.Scenes.Where(scene => !Debates.Playable(scene, _ => AutonomousBotStorylines.IsStory(scene) || AutonomousTales.IsTaleScene(scene) ? story
+                    : Debates.IsLive(scene) ? live : slots))
                 .Select(scene => scene.Id), Is.Empty);
         }
 
