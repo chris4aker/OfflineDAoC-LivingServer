@@ -1700,7 +1700,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "0c124d89e2831fb1ce6b05b4826d1179a433407c169382797a4019c8e51adfc0",
+    "source/server/GameServer/scripts/namedmobs/Dragons/AlbGolestandt.cs": "ac4c1b190ac24d66feeaa9afe5be222d0f62ae6a982575fbbcaf4a4384cd91fd",
     "source/server/GameServer/scripts/namedmobs/Dragons/DragonEncounterThrow.cs": "d143647fc68985b513dc65eb05c2dd6626479531f8c80ffe56d5c898fd6129a1"
    },
    "extraRules": [
