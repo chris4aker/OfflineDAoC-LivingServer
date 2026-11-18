@@ -966,7 +966,7 @@ Levels 35–50 · 26 lines · about 5 min · roles: B (NoLifer), C (Daredevil), 
 - **B:** deep means a very long walk home if it goes wrong
 - **C:** "walking is half the fun" / "then dont die :P" / "so dont lose"
 - *(quiet for 25 seconds)*
-- **D:** "i am in, give me a few to grab my stuff from the bank" / "count me in, just finishing a quest turn in"
+- **D:** "i am in, give me a few to grab my stuff from the bank" / "i like it, just finishing a quest turn in"
 - **A:** need numbers first. how many can we get without begging
 - **D:** *(sometimes)* "my guild has maybe six on, let me ask them" / "i can poke my guild, a few of them look bored"
 - **B:** "we need two rams or we are knocking with our fists" / "without rams we are just tourists with swords"
@@ -1272,7 +1272,7 @@ Levels 35–50 · 20 lines · about 4 min · roles: B (Leveler/Socialite), C (No
 - **A:** "once is enough for a story" / "the one time counts more than the twenty losses"
 - *(quiet for 25 seconds)*
 - **D:** "zerg forming at {keep} later, anyone" / "so who wants to zerg tonight, {keep} raid later on"
-- **B:** "me" / "count me in, obviously"
+- **B:** "me" / "obviously"
 - **C:** "we will be off doing our own thing, call if you need us" / "we will roam, send a tell if you find a fight for eight"
 - **E:** "if you see eight people fighting forty, thats us. send help" / "if the zerg passes us dying, please stop and help"
 - **D:** "will do :)" / "deal, we will come rescue you"
@@ -1735,7 +1735,7 @@ Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 - **C:** "and spend your points while you are there" / "dont forget to train your specs when you visit"
 - **A:** "wait i have points to spend?" / "i have been leveling with nothing trained lol" / "train? i thought it was automatic"
 - **C:** *(sometimes)* "lol, go train, you will feel twice as strong" / "that explains why you hit like a wet noodle" / "oh no. go now"
-- **A:** "ok, ty" / "heading there now, thx both" / "ok running to town"
+- **A:** "ok, ty" / "thx both" / "ok running to town"
 
 ### sh stable master
 
@@ -2561,7 +2561,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: B (Socialite), C (NoLifer), D
 - *(quiet for 25 seconds)*
 - **C:** now you need an emblem too, that is the real fight
 - **A:** dont start
-- **B:** "i want in when it is up" / "count me as your fourth"
+- **B:** "i want in when it is up" / "i would be your fourth"
 - **F:** "me too, my guild just fell apart" / "same, mine went quiet a while ago"
 - **A:** "pst me, all of you" / "welcome aboard, everyone"
 - **C:** *(sometimes)* first rule of the guild, nobody puts elite anywhere
@@ -2781,7 +2781,7 @@ Levels 20–50 · 19 lines · about 3 min · roles: B (Leveler), C (Daredevil), 
 - **C:** worse than a train?
 - **D:** a train at least gives you a story
 - **A:** "ok this thread made me want to group" / "anyone up for a group, after all this"
-- **E:** "i am in" / "count me in" / "sure, why not"
+- **E:** "i am in" / "sounds good" / "sure, why not"
 
 ### soc real life
 
@@ -6580,8 +6580,8 @@ Levels 45–50 · 22 lines · about 4 min · roles: B (Daredevil), C (Healer/Sha
 - **C:** *(sometimes)* the wipes are the best stories
 - *(quiet for 20 seconds)*
 - **A:** "ok forming groups now, send tells with class and level" / "form up, tell me class and level"
-- **F:** "{level} {class}, ready" / "{class}, {level}, count me in"
-- **E:** "count me in" / "tell sent, count me in"
+- **F:** "{level} {class}, ready" / "{class}, {level}"
+- **E:** "sounds good" / "tell sent"
 - **C:** "healer, put me in the healer group" / "healer here, put me with the other healers"
 - **D:** *(sometimes)* and dont blame me when we wipe the first time
 - **A:** "ok, see you all there" / "see you at the bind"
@@ -6609,7 +6609,7 @@ Levels 45–50 · 19 lines · about 3 min · roles: B (Explorer), C (Daredevil),
 - *(quiet for 20 seconds)*
 - **A:** "ok if i get a group together, whos in" / "if i make a group for the lair this weekend, anyone want to come"
 - **C:** "me, obviously" / "im in, no question"
-- **B:** "id go for the sights" / "count me in, i want to see the back"
+- **B:** "id go for the sights" / "i like it, i want to see the back"
 - **D:** "fine. but if we wipe im going back to spindel" / "fine, but im bringing my spindel groups healer"
 - **A:** *(sometimes)* deal, see you saturday
 
@@ -6734,7 +6734,7 @@ Levels 20–50 · 18 lines · about 4 min · roles: B (Explorer), C (Daredevil),
 - **D:** "everyone has that puller" / "we all had that puller"
 - **E:** "hes a 50 now, still pulls like that" / "still my friend, still a train machine"
 - *(quiet for 25 seconds)*
-- **F:** "what did i miss, story time?" / "ooh story time, count me in"
+- **F:** "what did i miss, story time?" / "ooh story time"
 - **A:** "worst death stories" / "best wipes, go"
 - **F:** "grouped with a healer who fell asleep at the keyboard in spindel" / "our healer went afk for pizza right as the pull came"
 - **C:** *(sometimes)* the pizza afk, a true classic
@@ -6867,7 +6867,7 @@ Levels 47–50 · 6 lines · about 1 min · roles: B (Healer/Shaman), C (Daredev
 - **B:** "healer here, in" / "i can heal" / "how many so far"
 - **A:** "enough to try" / "a few groups" / "we need more healers though"
 - **C:** *(sometimes)* "last time half the raid died to the breath" / "bring resist buffs" / "stand where the leader says, please"
-- **B:** "count me in" / "ill bring my healer" / "ok, tell sent"
+- **B:** "sounds good" / "ill bring my healer" / "ok, tell sent"
 - **A:** "meet in jordheim" / "gathering in jordheim soon" / "pst me"
 
 ### sh mid cursed tomb rez
@@ -8289,6 +8289,8 @@ Levels 35–50 · 19 lines · about 3 min · roles: B (Scout), C (Armsman/Mercen
 Levels 30–50 · 22 lines · about 4 min · roles: B (Infiltrator), C (Infiltrator), D (Leveler), E (Daredevil)
 
 - **A:** "who is going infil hunting in the frontier tonight, any takers" / "{q} any infiltrators up for a stealth hunt in Forest Sauvage tonight"
+- **B:** "im in. last night in Snowdonia was a feast" / "i like it, i had a great run in Snowdonia last night"
+
 - **B:** "im in. last night in Snowdonia was a feast" / "count me in, i had a great run in Snowdonia last night"
 
 - **B:** "i am in. last night in Snowdonia was a feast" / "count me in, i had a great run in Snowdonia last night"
@@ -8617,7 +8619,7 @@ Levels 10–50 · 20 lines · about 4 min · roles: B (Socialite), C (Crafter), 
 - **D:** *(sometimes)* "until the lag hits when everyone is shopping" / "until a hundred people are in the same street and you lag out"
 - **A:** "ok so housewarming saturday. bring furniture" / "saturday night, my lot. bring something to put in the house"
 - **C:** bringing a table, youre paying for the chairs
-- **B:** "i will bring my guild, they love a party" / "count me and the guild in"
+- **B:** "i will bring my guild, they love a party" / "my guild would love that"
 - **D:** "fine, but if i visit im telling you about spellcraft" / "if i visit i will quietly judge your template choices"
 - *(quiet for 20 seconds)*
 - **A:** "deal. dress code is your best dye job" / "wear your best dye, we take a group screenshot"
@@ -8701,7 +8703,7 @@ Levels 45–50 · 24 lines · about 5 min · roles: B (NoLifer), C (Cleric), D (
 
 - **A:** "Golestandt raid sunday, how many are we so far" / "{q} head count for the dragon on sunday, who is in"
 - **B:** "i count thirty-one confirmed, we need more healers" / "around thirty so far. short on clerics as always"
-- **C:** "cleric, im in. i will bring two more from my guild" / "count me and two rejuv clerics from my guild"
+- **C:** "cleric, im in. i will bring two more from my guild" / "me and two rejuv clerics from my guild, maybe"
 - **D:** "i have never seen the dragon. is it as bad as people say" / "first dragon for me. what am i walking into"
 - **B:** "worse. the breath alone will wipe anyone in front" / "the worst fight in albion. stay off the front of it"
 - *(quiet for 30 seconds)*
@@ -8973,7 +8975,7 @@ Levels 20–35 · 6 lines · about 1 min · roles: B (Explorer), C (Leveler)
 
 - **A:** "anyone on avalon isle? looking for drakoran" / "drakoran camp check on avalon isle" / "avalon isle, any good spots open"
 - **B:** "the marauders are free" / "lots of space, nobody there" / "quiet tonight, take your pick"
-- **A:** "ty" / "heading there" / "great"
+- **A:** "ty" / "nice" / "great"
 - **C:** "avalon isle is so pretty, wasted on xp" / "campacorentin is just as good and closer" / "i always end up back in cornwall"
 - **B:** "empty beats crowded" / "avalon isle is more fun" / "to each their own"
 - **A:** *(sometimes)* "ill try both" / "pretty and empty sounds good to me"
@@ -9007,7 +9009,7 @@ Levels 47–50 · 6 lines · about 1 min · roles: B (Daredevil), C (Cleric/Fria
 - **A:** "golestandt raid forming, pst" / "golestandt tonight, pst me" / "dragon raid, golestandt, need people, pst"
 - **B:** "tell sent" / "pst sent" / "what time"
 - **A:** "soon, gathering in camelot" / "when we fill up" / "in a couple of hours"
-- **C:** "i will bring my cleric" / "you will want healers, pst sent" / "count me in for heals"
+- **C:** "i will bring my cleric" / "you will want healers, pst sent" / "i would heal that"
 - **B:** *(sometimes)* "last time we got so close" / "i hope this is the night" / "this time we win"
 - **A:** "pst me" / "pst if you know more healers" / "ok"
 
@@ -11581,7 +11583,7 @@ Levels 35–50 · 21 lines · about 4 min · roles: B (Socialite), C (NoLifer), 
 - **A:** "yes please, the rangers go through them fast" / "yes, our rangers will empty the stock in one siege"
 - **E:** "send me a tell, guild discount" / "pst, i will price it fair"
 - **C:** "also make a list of who plays when, you will need it" / "post a defense list, who is on at what hours"
-- **A:** "good idea, on it" / "will do"
+- **A:** "good idea" / "will do"
 - *(quiet for 20 seconds)*
 - **D:** "any room in your guild for a leveler?" / "is your guild recruiting"
 - **A:** "always, pst me" / "yes, small but active, send me a tell"
@@ -11596,7 +11598,7 @@ Levels 35–50 · 21 lines · about 4 min · roles: B (Socialite), C (NoLifer), 
 Levels 45–50 · 22 lines · about 4 min · roles: B (Daredevil), C (NoLifer), D (Druid), E (Bard), F (Socialite)
 
 - **A:** "anyone want to try the glimmer king this weekend" / "thinking about a raid on cuuldurach saturday, interest?"
-- **B:** "yes! been waiting for this" / "count me in"
+- **B:** "yes! been waiting for this" / "sounds good"
 - **C:** "how many fifties can we actually get" / "we need a lot of fifties, do we have them"
 - **A:** "if every guild sends a group, enough" / "with three guilds, maybe"
 - **D:** "i will heal, but i want a plan, not a zerg at a dragon" / "healing yes, but we need a real plan this time"
@@ -11790,7 +11792,7 @@ Levels 20–29 · 20 lines · about 4 min · roles: B (Bard), C (Daredevil), D (
 - *(quiet for 25 seconds)*
 - **A:** "anyway, the other realms will be back for more tomorrow" / "they will be back tomorrow, they always are"
 - **B:** "and we will be singing" / "and we will mez them again"
-- **C:** "count me in" / "sounds fun, count me in"
+- **C:** "sounds good" / "sounds fun"
 - **E:** "me too, i will try it" / "ok im going tomorrow"
 
 ### sh hib spraggon check
@@ -11910,8 +11912,8 @@ Levels 20–50 · 8 lines · about 1 min · roles: B (Ranger), C (Nightshade)
 Levels 47–50 · 6 lines · about 1 min · roles: B (Druid/Bard/Warden), C (Daredevil)
 
 - **A:** "raid on cuuldurach the glimmer king tonight, pst" / "glimmer king later, pst me" / "glimmer king raid, need healers, pst"
-- **B:** "im in for heals" / "count me in" / "ill bring heals"
-- **C:** "in, wanted that for ages" / "finally, count me in" / "yes please"
+- **B:** "im in for heals" / "sounds good" / "ill bring heals"
+- **C:** "in, wanted that for ages" / "finally, sounds good" / "yes please"
 - **A:** *(sometimes)* "we are short on healers" / "bring every resist you have" / "full power before the pull please"
 - **B:** "see you there" / "tell sent" / "ok"
 - **A:** "gathering in tir na nog" / "soon" / "pst me"

@@ -688213,7 +688213,7 @@
      "text": "im in. last night in Snowdonia was a feast",
      "variants": [
       "im in. last night in Snowdonia was a feast",
-      "count me in, i had a great run in Snowdonia last night"
+      "i like it, i had a great run in Snowdonia last night"
      ],
      "optional": false
     },
@@ -690789,7 +690789,7 @@
      "text": "i will bring my guild, they love a party",
      "variants": [
       "i will bring my guild, they love a party",
-      "count me and the guild in"
+      "my guild would love that"
      ],
      "optional": false
     },
@@ -691393,7 +691393,7 @@
      "text": "cleric, im in. i will bring two more from my guild",
      "variants": [
       "cleric, im in. i will bring two more from my guild",
-      "count me and two rejuv clerics from my guild"
+      "me and two rejuv clerics from my guild, maybe"
      ],
      "optional": false
     },
@@ -697579,9 +697579,9 @@
     },
     {
      "role": "A",
-     "text": "good idea, on it",
+     "text": "good idea",
      "variants": [
-      "good idea, on it",
+      "good idea",
       "will do"
      ],
      "optional": false
@@ -697693,7 +697693,7 @@
      "text": "yes! been waiting for this",
      "variants": [
       "yes! been waiting for this",
-      "count me in"
+      "sounds good"
      ],
      "optional": false
     },
@@ -699084,10 +699084,10 @@
     },
     {
      "role": "C",
-     "text": "count me in",
+     "text": "sounds good",
      "variants": [
-      "count me in",
-      "sounds fun, count me in"
+      "sounds good",
+      "sounds fun"
      ],
      "optional": false
     },
@@ -703543,16 +703543,16 @@
      "text": "{level} {class}, ready",
      "variants": [
       "{level} {class}, ready",
-      "{class}, {level}, count me in"
+      "{class}, {level}"
      ],
      "optional": false
     },
     {
      "role": "E",
-     "text": "count me in",
+     "text": "sounds good",
      "variants": [
-      "count me in",
-      "tell sent, count me in"
+      "sounds good",
+      "tell sent"
      ],
      "optional": false
     },
@@ -703773,7 +703773,7 @@
      "text": "id go for the sights",
      "variants": [
       "id go for the sights",
-      "count me in, i want to see the back"
+      "i like it, i want to see the back"
      ],
      "optional": false
     },
@@ -704772,7 +704772,7 @@
      "text": "what did i miss, story time?",
      "variants": [
       "what did i miss, story time?",
-      "ooh story time, count me in"
+      "ooh story time"
      ],
      "optional": false
     },
@@ -704966,7 +704966,7 @@
      "text": "i am in, give me a few to grab my stuff from the bank",
      "variants": [
       "i am in, give me a few to grab my stuff from the bank",
-      "count me in, just finishing a quest turn in"
+      "i like it, just finishing a quest turn in"
      ],
      "optional": false
     },
@@ -707272,7 +707272,7 @@
      "text": "me",
      "variants": [
       "me",
-      "count me in, obviously"
+      "obviously"
      ],
      "optional": false
     },
@@ -710966,7 +710966,7 @@
      "text": "ok, ty",
      "variants": [
       "ok, ty",
-      "heading there now, thx both",
+      "thx both",
       "ok running to town"
      ],
      "optional": false
@@ -715274,9 +715274,9 @@
     },
     {
      "role": "B",
-     "text": "count me in",
+     "text": "sounds good",
      "variants": [
-      "count me in",
+      "sounds good",
       "ill bring my healer",
       "ok, tell sent"
      ],
@@ -716295,7 +716295,7 @@
      "text": "ty",
      "variants": [
       "ty",
-      "heading there",
+      "nice",
       "great"
      ],
      "optional": false
@@ -716564,7 +716564,7 @@
      "variants": [
       "i will bring my cleric",
       "you will want healers, pst sent",
-      "count me in for heals"
+      "i would heal that"
      ],
      "optional": false
     },
@@ -717855,7 +717855,7 @@
      "text": "im in for heals",
      "variants": [
       "im in for heals",
-      "count me in",
+      "sounds good",
       "ill bring heals"
      ],
      "optional": false
@@ -717865,7 +717865,7 @@
      "text": "in, wanted that for ages",
      "variants": [
       "in, wanted that for ages",
-      "finally, count me in",
+      "finally, sounds good",
       "yes please"
      ],
      "optional": false
@@ -721198,7 +721198,7 @@
      "text": "i want in when it is up",
      "variants": [
       "i want in when it is up",
-      "count me as your fourth"
+      "i would be your fourth"
      ],
      "optional": false
     },
@@ -723016,7 +723016,7 @@
      "text": "i am in",
      "variants": [
       "i am in",
-      "count me in",
+      "sounds good",
       "sure, why not"
      ],
      "optional": false

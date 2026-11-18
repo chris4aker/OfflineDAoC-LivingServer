@@ -41,7 +41,7 @@ B: every starter town has trainers, and {capital} has all of them | look for the
 C: and spend your points while you are there | dont forget to train your specs when you visit
 A: wait i have points to spend? | i have been leveling with nothing trained lol | train? i thought it was automatic
 ?C: lol, go train, you will feel twice as strong | that explains why you hit like a wet noodle | oh no. go now
-A: ok, ty | heading there now, thx both | ok running to town
+A: ok, ty | thx both | ok running to town
 
 @topic stable_master
 @levels 5-30
@@ -671,7 +671,7 @@ A: gjalpinulva raid tonight, pst me | dragon raid on gjalpinulva later, need hea
 B: healer here, in | i can heal | how many so far
 A: enough to try | a few groups | we need more healers though
 ?C: last time half the raid died to the breath | bring resist buffs | stand where the leader says, please
-B: count me in | ill bring my healer | ok, tell sent
+B: sounds good | ill bring my healer | ok, tell sent
 A: meet in jordheim | gathering in jordheim soon | pst me
 
 @topic rez_request
@@ -820,7 +820,7 @@ A: until the next time | and then they come back with two rams | benowyc, the do
 @role C type=Leveler
 A: anyone on avalon isle? looking for drakoran | drakoran camp check on avalon isle | avalon isle, any good spots open
 B: the marauders are free | lots of space, nobody there | quiet tonight, take your pick
-A: ty | heading there | great
+A: ty | nice | great
 C: avalon isle is so pretty, wasted on xp | campacorentin is just as good and closer | i always end up back in cornwall
 B: empty beats crowded | avalon isle is more fun | to each their own
 ?A: ill try both | pretty and empty sounds good to me
@@ -858,7 +858,7 @@ A: gz | grats | gz wiz
 A: golestandt raid forming, pst | golestandt tonight, pst me | dragon raid, golestandt, need people, pst
 B: tell sent | pst sent | what time
 A: soon, gathering in camelot | when we fill up | in a couple of hours
-C: i will bring my cleric | you will want healers, pst sent | count me in for heals
+C: i will bring my cleric | you will want healers, pst sent | i would heal that
 ?B: last time we got so close | i hope this is the night | this time we win
 A: pst me | pst if you know more healers | ok
 
@@ -1046,8 +1046,8 @@ C: grudgingly agreed | fine, both then
 @role B class=Druid,Bard,Warden
 @role C type=Daredevil
 A: raid on cuuldurach the glimmer king tonight, pst | glimmer king later, pst me | glimmer king raid, need healers, pst
-B: im in for heals | count me in | ill bring heals
-C: in, wanted that for ages | finally, count me in | yes please
+B: im in for heals | sounds good | ill bring heals
+C: in, wanted that for ages | finally, sounds good | yes please
 ?A: we are short on healers | bring every resist you have | full power before the pull please
 B: see you there | tell sent | ok
 A: gathering in tir na nog | soon | pst me

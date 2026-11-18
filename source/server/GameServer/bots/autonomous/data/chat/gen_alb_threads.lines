@@ -209,7 +209,7 @@ A: go on, i still have to sit | save me a hill
 @role D type=Leveler
 @role E type=Daredevil
 A: who is going infil hunting in the frontier tonight, any takers | {q} any infiltrators up for a stealth hunt in Forest Sauvage tonight
-B: im in. last night in Snowdonia was a feast | count me in, i had a great run in Snowdonia last night
+B: im in. last night in Snowdonia was a feast | i like it, i had a great run in Snowdonia last night
 C: careful, their shadowblades love hunting other stealthers | heads up, their nightshades go looking for infils on purpose
 B: good. i want a stealther fight more than a lone caster anyway
 D: as someone who gets ganked on the way to the keeps, i hate all of you | every time i run to a keep alone i meet one of you. well, one of theirs
@@ -557,7 +557,7 @@ E: the city at night with all the torches lit, best place in the game | Camelot 
 ?D: until the lag hits when everyone is shopping | until a hundred people are in the same street and you lag out
 A: ok so housewarming saturday. bring furniture | saturday night, my lot. bring something to put in the house
 C: bringing a table, youre paying for the chairs
-B: i will bring my guild, they love a party | count me and the guild in
+B: i will bring my guild, they love a party | my guild would love that
 D: fine, but if i visit im telling you about spellcraft | if i visit i will quietly judge your template choices
 ~ 20
 A: deal. dress code is your best dye job | wear your best dye, we take a group screenshot
@@ -643,7 +643,7 @@ A: see everyone out there | albion wakes up eventually
 @role F type=Crafter
 A: Golestandt raid sunday, how many are we so far | {q} head count for the dragon on sunday, who is in
 B: i count thirty-one confirmed, we need more healers | around thirty so far. short on clerics as always
-C: cleric, im in. i will bring two more from my guild | count me and two rejuv clerics from my guild
+C: cleric, im in. i will bring two more from my guild | me and two rejuv clerics from my guild, maybe
 D: i have never seen the dragon. is it as bad as people say | first dragon for me. what am i walking into
 B: worse. the breath alone will wipe anyone in front | the worst fight in albion. stay off the front of it
 ~ 30

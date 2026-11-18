@@ -199,7 +199,7 @@ namespace DOL.GS.Tests
                 Assert.That(live.Any(s => s.Realm == realm && s.Needs.Contains("defending")), Is.True, realm);
             Assert.That(live.Select(s => s.Needs.First(n => !n.StartsWith('!'))).Distinct(),
                 Is.SupersetOf(new[] { "defending", "attacking", "keep_lost_recent", "keep_won_recent", "relic_lost_recent", "relic_won_recent" }));
-            var promise = new Regex(@"\b(omw|on my way|riding (in|out|over)|coming,|im coming|i will come|i will be there|heading over)\b");
+            var promise = new Regex(@"\b(omw|on my way|riding (in|out|over)|coming,|im coming|i will come|i will be there|heading over|count me in)\b");
             foreach ((VC.Scene scene, string text) in SceneWordings())
                 Assert.That(promise.IsMatch(text), Is.False, $"{scene.Id}: \"{text}\" promises to come");
         }

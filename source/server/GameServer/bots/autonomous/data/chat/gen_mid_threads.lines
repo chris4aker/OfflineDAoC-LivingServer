@@ -610,8 +610,8 @@ B: and the story is always the wipe | and the story is usually how we wiped
 ?C: the wipes are the best stories
 ~ 20
 A: ok forming groups now, send tells with class and level | form up, tell me class and level
-F: {level} {class}, ready | {class}, {level}, count me in
-E: count me in | tell sent, count me in
+F: {level} {class}, ready | {class}, {level}
+E: sounds good | tell sent
 C: healer, put me in the healer group | healer here, put me with the other healers
 ?D: and dont blame me when we wipe the first time
 A: ok, see you all there | see you at the bind
@@ -641,7 +641,7 @@ C: less dying, less fun
 ~ 20
 A: ok if i get a group together, whos in | if i make a group for the lair this weekend, anyone want to come
 C: me, obviously | im in, no question
-B: id go for the sights | count me in, i want to see the back
+B: id go for the sights | i like it, i want to see the back
 D: fine. but if we wipe im going back to spindel | fine, but im bringing my spindel groups healer
 ?A: deal, see you saturday
 
@@ -781,7 +781,7 @@ E: our puller once brought back the entire cursed tomb | in vendo our puller cam
 D: everyone has that puller | we all had that puller
 E: hes a 50 now, still pulls like that | still my friend, still a train machine
 ~ 25
-F: what did i miss, story time? | ooh story time, count me in
+F: what did i miss, story time? | ooh story time
 A: worst death stories | best wipes, go
 F: grouped with a healer who fell asleep at the keyboard in spindel | our healer went afk for pizza right as the pull came
 ?C: the pizza afk, a true classic
