@@ -58,8 +58,10 @@ STATUS_STALE_SECONDS = 15 * 60
 ENGAGED_LAPSE_SECONDS = 15 * 60
 # Return-wave steps that show headway after a step=stuck line (the wave recovered).
 RETURN_WAVE_HEADWAY = ("moving", "ahead", "cleared", "met", "passable")
-# The regroup row's share bar (docs/PLAYED-CHECK-1.2.md, "Regroups no longer flap", reasoning there).
-RELAY_SHARE_BAR = 10.0
+# The regroup row's share bar (docs/PLAYED-CHECK-1.2.md, "Regroups no longer flap", reasoning there). Owner decision
+# 2026-11-18: 11.5%, a backstop. The exact checks (a), (b) and (c) decide one hop and no echo; the share sits about halfway
+# between one hop (about 9.9-10.1% on 5378dbe without the in-contact starts) and two hops (about 12.7%; 13.4% on 453e01a).
+RELAY_SHARE_BAR = 11.5
 RETIRED_ACT_RE = re.compile(r'\bbot="?([^"\s]+)"? id=(\d+)')
 
 LEVELS = {"TRC", "DBG", "INF", "WRN", "ERR", "FTL"}
@@ -249,6 +251,7 @@ class Section:
         self.no_engage = {}                    # (region, boss) -> first line of a pull that logged no engage
         self.waves = {}                        # (event, wave) -> "stuck" or "recovered"
         self.retired = {}                      # custom-class bot id -> name (BOT_CUSTOM_CLASS_RETIRED)
+        self.copies = {}                       # retired buffbot copy id -> name (BOT_BUFFBOT_COPY_RETIRED)
         self.last_retreat = {}            # group -> reason of its last RVR_RETREAT
         self.relay_sends = {}             # group -> times it relayed (relayedTo>0) in the last 60 s
         self.recent_sends = deque()       # (time, group, (realm, region)) of relays in the last 60 s
@@ -346,6 +349,8 @@ def read_log(path: Path, since: dt.datetime | None = None, year: int | None = No
             m = TAG_RE.match(message)
             if sec.retired and "id=" in message and not message.startswith("BOT_CUSTOM_CLASS_RETIRED"):
                 retired_acts(sec, t, message)
+            if sec.copies and "id=" in message and not message.startswith("BOT_BUFFBOT_COP"):
+                copy_acts(sec, t, message)
             if m:
                 handler = HANDLERS.get(m.group(0))
                 if handler is not None:
@@ -974,6 +979,34 @@ def retired_acts(sec, t, message):
             return
 
 
+@handles("BOT_BUFFBOT_COPY_RETIRED")
+def _copy_retired(sec, t, message, level, near):
+    sec.ev["BOT_BUFFBOT_COPY_RETIRED"].add(t, message)
+    f = kv(message)
+    if f.get("id"):
+        sec.copies[f["id"]] = f.get("bot")
+
+
+@handles("BOT_BUFFBOT_COPY_SUSPECTED")
+def _copy_suspected(sec, t, message, level, near):
+    sec.ev["BOT_BUFFBOT_COPY_SUSPECTED"].add(t, message)
+
+
+@handles("BOT_BUFFBOT_COPIES")
+def _copies_summary(sec, t, message, level, near):
+    sec.ev["BOT_BUFFBOT_COPIES"].add(t, message)
+    sec.lists["copies_summary"].append(message.strip().partition(" ")[2])
+
+
+def copy_acts(sec, t, message):
+    """A retired buffbot copy that logs a line of its own (bot=<name> id=<id>, both matching): it plays. The buffbot itself
+    has its own id (1,800,000,000 plus its main's), so the same name does not count."""
+    for name, bot_id in RETIRED_ACT_RE.findall(message):
+        if sec.copies.get(bot_id) == name:
+            sec.ev["copies.acts"].add(t, message)
+            return
+
+
 @handles("BOT_SKILL_PROFILE")
 def _skill_profile(sec, t, message, level, near):
     f = kv(message)
@@ -1252,13 +1285,13 @@ def rvr(j: Judge, sec: Section, c):
     if named and one_fight:
         c_text += f"; {one_fight} relayed start(s) without from= among the groups of one fight"
     detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
-              f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:.0f}%); (a) relayed stance relayed again: "
+              f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:g}%); (a) relayed stance relayed again: "
               f"{counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, "
               f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}")
     bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
     if over:
         bad.append(j.ev("regroup.relay_started"))
-    row = (f"Regroups no longer flap: one hop, no echo, relay-started regroups {RELAY_SHARE_BAR:.0f}% of starts or less "
+    row = (f"Regroups no longer flap: one hop, no echo, relay-started regroups {RELAY_SHARE_BAR:g}% of starts or less "
            f"(RVR_REGROUP)")
     note = "relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop)"
     if bad:
@@ -1398,6 +1431,16 @@ def era(j: Judge, sec: Section, c):
     j.seen_if("era", "retired", "Custom-class gamebots kept and not played (BOT_CUSTOM_CLASS_RETIRED)",
               "BOT_CUSTOM_CLASS_RETIRED", f"{c('BOT_CUSTOM_CLASS_RETIRED')} line(s)", must=False,
               note="only on a world that has Sluaghbinder gamebots")
+    copies_row = "Buffbot copies from earlier builds retired once and never played (BOT_BUFFBOT_COPIES)"
+    copies_detail = (f"{'; '.join(sec.lists['copies_summary']) or 'no summary'}; {len(sec.copies)} retired, "
+                     f"{c('BOT_BUFFBOT_COPY_SUSPECTED')} suspected (left as they are); "
+                     f"{c('copies.acts')} line(s) of a retired copy playing")
+    copies_note = "once per world, on the first start of a build with the repair; a fresh world logs retired=0 found=0"
+    if c("copies.acts"):
+        j.add("era", "buffbot_copies", copies_row, CONTRADICTED, j.ev("copies.acts"), copies_detail, must=False,
+              note=copies_note)
+    else:
+        j.seen_if("era", "buffbot_copies", copies_row, "BOT_BUFFBOT_COPIES", copies_detail, must=False, note=copies_note)
 
 
 def people(j: Judge, sec: Section, c):

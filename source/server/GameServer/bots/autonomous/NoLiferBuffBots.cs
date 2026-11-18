@@ -113,6 +113,28 @@ public static class NoLiferBuffBots
         return null;
     }
 
+    /// <summary>
+    /// The buffbot's gender, race and generated name, fixed from its main's id (the same seed every start). The name also
+    /// depends on the names taken at that moment (<paramref name="names"/>, to which it is added); gender and race do not.
+    /// Shared by the login and by <see cref="BuffBotCopyRetirement"/>, which recognises the copies an earlier build saved.
+    /// </summary>
+    public static AutonomousBotIdentityGenerator.Identity DrawIdentity(long mainId, eRealm realm, ISet<string> names)
+    {
+        var random = new Random(unchecked((int)(AutonomousBotPersonality.Mix(mainId, (ulong)Salt) & 0x7FFF_FFFF)));
+        eGender gender = random.Next(2) == 0 ? eGender.Male : eGender.Female;
+        return AutonomousBotIdentityGenerator.GenerateForClass(realm, gender, ClassFor(realm), names, random);
+    }
+
+    /// <summary>The four "named after the main" names, in no particular order, when this main's buffbot is one of those
+    /// (<see cref="MainStyleName"/> takes the first of them not taken). Empty otherwise. Pure.</summary>
+    public static IReadOnlyList<string> MainStyleNames(string mainName, long mainId)
+    {
+        if (string.IsNullOrWhiteSpace(mainName) || Roll(mainId * 7 + 3) >= 0.35)
+            return Array.Empty<string>();
+        string stem = mainName.Trim();
+        return new[] { "buff", "buffs", "buffer", "bb" }.Select(suffix => stem + suffix).Where(name => name.Length <= 20).ToArray();
+    }
+
     #endregion
 
     #region The buff plan (pure)
@@ -328,9 +350,8 @@ public static class NoLiferBuffBots
             return null;
         try
         {
-            var random = new Random(unchecked((int)(AutonomousBotPersonality.Mix(main.DatabaseID, (ulong)Salt) & 0x7FFF_FFFF)));
-            eGender gender = random.Next(2) == 0 ? eGender.Male : eGender.Female;
-            var identity = AutonomousBotIdentityGenerator.GenerateForClass(main.Realm, gender, characterClass, names, random);
+            var identity = DrawIdentity(main.DatabaseID, main.Realm, names);
+            eGender gender = identity.Gender;
             string name = MainStyleName(main.Name, main.DatabaseID, names) ?? identity.Name;
             (ushort region, Vector3 spot, string where) = ParkSpot(main);
             if (region == 0)

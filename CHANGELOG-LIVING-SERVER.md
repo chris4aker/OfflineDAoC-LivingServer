@@ -742,7 +742,16 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     build. Examples: `BUFFBOT_LOGOUT "Eilriorrin"` at 22:26:05, then roster bot 5876 "Eilriorrin" `ERA_BUILD_ASSIGNED` at
     22:26:34. All 13 `ERA_BUILD_ASSIGNED` lines of that log were such copies, and names repeated across restarts. A
     buffbot is now never saved, like the Epic Special Forces. The buffbots themselves always kept their buff specs.
-    The copies already in a world stay there as gamebots. `UT_EraLifetimeBuild`.
+    `UT_EraLifetimeBuild`.
+  - **The copies already saved are retired (owner decision 2026-11-18: kept, never logged in, never deleted).** Once per
+    world, at the first start of this build (`living_server_world_repairs` records `buffbot-copies`), the server retires
+    each roster row that is provably a saved buffbot: no `ClassName` (the buffbot's record never had one; every other way
+    a row is made sets it), a buffbot class at level 50, and the realm, class, gender, race and one of the possible names
+    of the buffbot of a main with a lower id. Each one logs `BOT_BUFFBOT_COPY_RETIRED`, with a `BOT_BUFFBOT_COPIES`
+    summary; a row without a class name that matches no main is only logged (`BOT_BUFFBOT_COPY_SUSPECTED`). The rows
+    get `IsRetired` and the Activity "Not played: a copy of a buffbot an earlier build saved by mistake (kept, not
+    deleted)"; their items stay. The launcher's list shows an `IsRetired` row as "Deletion pending"; nothing deletes it unless the player presses Delete. Fresh worlds have none. All 48 `BUFFBOT_CREATED` names in the owner's logs (`5378dbe`,
+    `b1b6846`) are among the names it looks for. `UT_BuffBotCopyRetirement`.
   - **RvR: no relayed regroup in contact.** A group in contact and inside its own 60 s retreat cooldown that heard a
     relayed retreat took a "relayed" regroup, and the next board ended it ("contact while regrouping"). That happened
     123 times, 121 of them lasting 1 s. In contact the group now fights its own fight, and the relay still regroups it
@@ -762,6 +771,10 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     - `ERA_BUILD_CENSUS Sluaghbinder=` is held against the number of `BOT_CUSTOM_CLASS_RETIRED` lines.
     - `ERA_BUILD_TRAINED` reads "Not applicable" when no bot drew `draw=era`.
     - (c) "back at its sender" is exact from `from=`.
+    - The relay-started regroup share's bar is 11.5%, not 10% (owner decision 2026-11-18): the exact checks (a), (b)
+      and (c) decide one hop and no echo, and the share is a backstop about halfway between one hop (about 9.9-10.1%)
+      and two hops (about 12.7%). First PC result after the in-contact fix, on `b1b6846`: 9.5% (17 of 179), (c) = 0.
+    - A new row: buffbot copies retired once and never played (`BOT_BUFFBOT_COPIES`).
     - `source/tools/tests/test_played_check_log.py`.
 - **Raid regroups, return waves, Agmundr's pack and the Crypt Lord's court: fixes from sweep 5** (owner's PC, build
   5378dbe, 2026-11-17/18; tests only: none of it has been seen on the PC yet).
