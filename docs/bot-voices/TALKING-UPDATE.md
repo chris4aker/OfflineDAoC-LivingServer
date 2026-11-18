@@ -374,7 +374,7 @@ A realm hears at most one rumour every 20 minutes, a monster at most every six h
 
 ## Content
 
-The corpus went from 2,326 to about 3,820 lines (`talking_audit.lines` holds the audit's reply sets, `replies_pools.lines`
+The corpus went from 2,326 to about 3,820 lines (the audit's reply sets were in `talking_audit.lines`, since 1.2 in `followups.lines`, `replies_player.lines`, `replies_more.lines`, `closings_more.lines` and `combat_calls.lines`; `replies_pools.lines`
 the month simulation's). These files are new: `news.lines`, `news_replies.lines`, `tells.lines`,
 `memory_more.lines`, `combat_calls.lines`, `lfg_real.lines`, `followups.lines`, `closings_more.lines`, `camp_more.lines`,
 `guild_more.lines` and `experience.lines`. The existing files were annotated with place, news, xp and role flags,

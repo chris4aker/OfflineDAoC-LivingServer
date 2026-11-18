@@ -259,3 +259,93 @@ some random guy
 @topic boast
 me, of course
 all me lol
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; follow-ups with no family ----
+# ---- which one? (the bot can't name it, so it says so) --------------------------------------
+@kind reply
+@who *
+@answers followup_which
+cant remember the name lol
+the big one, you cant miss it
+not sure what its called
+the first one you come to
+dunno the name, sorry
+the one everyone uses
+couldnt tell you the name, i just go there
+the usual one heh
+whichever is closest honestly
+i always forget the name
+
+# ---- when? -----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_when
+soon i hope
+whenever people show up
+in a bit
+not sure yet
+later tonight maybe
+once i finish here
+no set time
+when enough people are on
+
+# ---- the one by the inn? / now? / for you too? (a yes, roughly) ------------------------------
+@kind reply
+@who *
+@answers followup_confirm
+yep yep
+yeah that one
+think so
+yea
+pretty sure
+yep, thats it
+i think so anyway
+mhm, that one
+yeah, right there
+sounds right
+
+# ---- how long did that take? / how high? -----------------------------------------------------
+@kind reply
+@who *
+@answers followup_howlong
+too long lol
+a few nights
+longer than i want to admit
+dont ask heh
+a while
+couple of sessions
+way too many hours
+lost count honestly
+
+
+# ---- where did they go? what stats? what happened? how many? (the holdout check) ----
+@kind reply
+@who *
+@answers followup_whereto
+no idea, lost track of them
+looked like they headed north
+didnt see where, sorry
+toward the next keep i think
+they scattered, couldnt tell you
+not sure, i was busy not dying
+@answers followup_detail
+nothing special, but it beats what i had
+decent, not amazing
+cant remember the numbers, it was ok
+meh, vendor trash mostly
+better than mine was, thats all i know
+pretty good for the level honestly
+@answers followup_specific
+eh, nothing exciting
+nothing special honestly
+just the usual stuff
+long story lol
+cant even remember now
+meh, not worth the story
+@answers followup_howmany
+a bunch
+didnt count, enough
+stopped counting after a while
+more than i wanted lol
+a few, maybe more
+too many lol

@@ -334543,6 +334543,526 @@
    "id": "3add592baf1a"
   },
   {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "cool",
+   "id": "7ed99ff8d07d"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "ok good",
+   "id": "3b911b41ba05"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "sweet",
+   "id": "96c17ae22610"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "alright",
+   "id": "9637b0476d18"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "good good",
+   "id": "1beff9f4aec2"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "perfect",
+   "id": "99c57f850e55"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "k cool",
+   "id": "bbd40e0f0b23"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_yes"
+   ],
+   "text": "nice, ok",
+   "id": "bcfe3e348e28"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "ah ok, np",
+   "id": "390772628947"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "fair enough, np",
+   "id": "517f2f7e97e8"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "no worries",
+   "id": "9dbff8bb219b"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "ok, maybe another time",
+   "id": "48d92ffa3517"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "k np",
+   "id": "fc4e7d9a8ae0"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "ok then",
+   "id": "466beb7f09e5"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "all good, np",
+   "id": "a88b46592c5d"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_no"
+   ],
+   "text": "np, just checking",
+   "id": "a0216bfba5cd"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "oh cool",
+   "id": "5a7cf18582db"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "heh nice",
+   "id": "3be4ee95085a"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "not bad at all",
+   "id": "82e94b894a3c"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "ah nice",
+   "id": "2a4eda91d0a0"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "cool, nice",
+   "id": "9b47b644d48d"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "oh wow",
+   "id": "233a0c37fc43"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "ha nice",
+   "id": "e23313340ceb"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "nice, good to know",
+   "id": "39f5bf553e2b"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "oh neat",
+   "id": "7836cc0aad92"
+  },
+  {
+   "kind": "closing",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_personal"
+   ],
+   "text": "nice nice",
+   "id": "a365ad09c518"
+  },
+  {
    "kind": "combat",
    "topic": "pull",
    "who": [],
@@ -343460,6 +343980,199 @@
    "id": "c04f52984608"
   },
   {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "noooo",
+   "id": "f658060c3db5"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ouch, sorry",
+   "id": "dd7a5b6638b8"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "that hit hard",
+   "id": "a4ee623e56ad"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "my bad, should have grabbed it",
+   "id": "fb6c7e19d9d6"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "argh, sorry",
+   "id": "f7e0d1cede7e"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "oh no",
+   "id": "ab916f959d71"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "that one came out of nowhere",
+   "id": "73cec869334a"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "can_rez"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "rez coming, dont release",
+   "id": "902df456f721"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "can_rez"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "hang on, ill rez you",
+   "id": "79398668e4e7"
+  },
+  {
+   "kind": "combat",
+   "topic": "player_down",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_player_group",
+    "can_rez"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "dont release, rezzing after this",
+   "id": "cf6cdb752468"
+  },
+  {
    "kind": "craft_reply",
    "topic": "craft_summary",
    "who": [
@@ -343494,8 +344207,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "im {skill} {recipe}. best i do is {item}, lvl {level} tops. {stock}",
-   "id": "214b544eab12"
+   "text": "im {skill} {recipe}. i make {item}, lvl {level} tops. {stock}",
+   "id": "cb6f0513be48"
   },
   {
    "kind": "craft_reply",
@@ -343771,6 +344484,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{stock} at {quality}%, {price}. {terms}",
+   "id": "98ffa9e2d628"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "have a {quality}% {stock}, {price}. {terms}",
+   "id": "d356fa35f2ef"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_stock_meet",
    "who": [
     "Crafter"
@@ -343849,6 +344600,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_cant",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cant do it, {recipe} is {skill} for now",
+   "id": "583eec1ac2c4"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not with {skill} {recipe}, sorry",
+   "id": "be7bf112baf7"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_cant_level",
    "who": [
     "Crafter"
@@ -343884,6 +344673,44 @@
    "weight": 1.0,
    "text": "not that high yet, {skill} {recipe}. lvl {level} is my limit",
    "id": "33970fd1550c"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant_level",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "lvl {level} is as high as i go, {skill} {recipe}",
+   "id": "128e72c3a033"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cant_level",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{skill} {recipe}, so lvl {level} max for now",
+   "id": "216f63f5aa68"
   },
   {
    "kind": "craft_reply",
@@ -343946,6 +344773,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_not_mine",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{recipe} only, sorry",
+   "id": "a8c13fed36d0"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_not_mine",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "wrong crafter, i do {recipe}",
+   "id": "dcff67997e39"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_ask_what",
    "who": [
     "Crafter"
@@ -344000,6 +344865,44 @@
    "weight": 1.0,
    "text": "whatcha need?",
    "id": "2fad9d1b7148"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ask_what",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "what do you need?",
+   "id": "9fbed44f67bd"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ask_what",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "sure, what piece?",
+   "id": "32f5b7530a2e"
   },
   {
    "kind": "craft_reply",
@@ -344062,6 +344965,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_deal",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "deal, {item} in about {when}. pay on handover",
+   "id": "81e730042f80"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deal",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "done. {item} at my next break, {when} or so. pay when you get it",
+   "id": "c9aea6942e23"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_deposit",
    "who": [
     "Crafter"
@@ -344097,6 +345038,44 @@
    "weight": 1.0,
    "text": "ok, {price} first. hand it over when you find me and its on my list",
    "id": "76ad38bcdffb"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deposit",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price} first, then i start",
+   "id": "bd16b458305a"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_deposit",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "deal, {price} up front and its on my list",
+   "id": "9865ebfd2e6a"
   },
   {
    "kind": "craft_reply",
@@ -344159,6 +345138,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_paid",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "coin got, {item} in {when}",
+   "id": "167f1247d042"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_paid",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ty, {item} will be done in {when}",
+   "id": "fa3ed6d7df92"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_haggle_accept",
    "who": [
     "Crafter"
@@ -344215,6 +345232,44 @@
    "text": "alright, {price}. deal?",
    "family": "9a522bdba3",
    "id": "f9e8618f6948"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_accept",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok ok, {price}. deal?",
+   "id": "7954a8a329d8"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_accept",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price} works. deal?",
+   "id": "216fa3a3311d"
   },
   {
    "kind": "craft_reply",
@@ -344277,6 +345332,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_haggle_counter",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "best i can do is {price}",
+   "id": "f951d0ea46a1"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_counter",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price}, thats fair",
+   "id": "bb311824abb5"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_haggle_refuse",
    "who": [
     "Crafter"
@@ -344336,6 +345429,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_haggle_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "no can do, {price}",
+   "id": "229de849f629"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "too low, {price} is the price",
+   "id": "9afb51d8e742"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_haggle_walk",
    "who": [
     "Crafter"
@@ -344371,6 +345502,44 @@
    "weight": 1.0,
    "text": "{price}, take it or leave it",
    "id": "1bfbe67da0da"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_walk",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price}, final offer",
+   "id": "5ccc955c01fb"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_haggle_walk",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{price} or no deal",
+   "id": "efc35a622d65"
   },
   {
    "kind": "craft_reply",
@@ -344412,6 +345581,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_declined",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "np, maybe next time",
+   "id": "29c94b7e582a"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_declined",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, pst if you change your mind",
+   "id": "05fa54147212"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_status",
    "who": [
     "Crafter"
@@ -344447,6 +345654,44 @@
    "weight": 1.0,
    "text": "still on my list, the {item} should be done in {when}",
    "id": "a23d9fed0694"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_status",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not done yet, {item} in about {when}",
+   "id": "24ec00942161"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_status",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is next, about {when}",
+   "id": "9349fb4cb82b"
   },
   {
    "kind": "craft_reply",
@@ -344488,6 +345733,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} done, find me at my break in {when}",
+   "id": "9c2a997c3fc2"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is finished, in town at my break in {when}",
+   "id": "614aeda6df50"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_ready_tell",
    "who": [
     "Crafter"
@@ -344523,6 +345806,44 @@
    "weight": 1.0,
    "text": "{item} is ready! in {zone} on a break, come get it and say ready",
    "id": "58e9f58b4098"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready_tell",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} is done, im in {zone}, come say ready",
+   "id": "37dc80ff42ea"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_ready_tell",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} finished, find me in {zone} and say ready",
+   "id": "3e5eb8abe9bc"
   },
   {
    "kind": "craft_reply",
@@ -344564,6 +345885,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_delivered",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "all yours, the {item}",
+   "id": "830fe4c2b1e2"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_delivered",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} handed over, enjoy",
+   "id": "c100e16f0e22"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_handover_trade",
    "who": [
     "Crafter"
@@ -344599,6 +345958,44 @@
    "weight": 1.0,
    "text": "{item} is in the trade window, {price}",
    "id": "e515b6ac2a38"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_handover_trade",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{item} in the window, {price}",
+   "id": "2397f73a2120"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_handover_trade",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "trade window up, {item} for {price}",
+   "id": "df7531103e65"
   },
   {
    "kind": "craft_reply",
@@ -344640,6 +346037,44 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, no {item} then",
+   "id": "d8db89ddbace"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "cancelled, np",
+   "id": "51c54a72186c"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_refuse",
    "who": [
     "Crafter"
@@ -344675,6 +346110,44 @@
    "weight": 1.0,
    "text": "no thanks, find another crafter",
    "id": "20330886bcad"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "not for you, sorry",
+   "id": "64a46dd341ca"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_refuse",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "pass, ask someone else",
+   "id": "2985b92f03df"
   },
   {
    "kind": "trade",
@@ -385687,6 +387160,1206 @@
    ],
    "text": "all me lol",
    "id": "c2f278d65177"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "cant remember the name lol",
+   "id": "9d0bf0a56c10"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "the big one, you cant miss it",
+   "id": "2b7caf29c805"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "not sure what its called",
+   "id": "0cd0e07e5dfa"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "the first one you come to",
+   "id": "5c3909a8a229"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "dunno the name, sorry",
+   "id": "fb6ece1b11cd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "the one everyone uses",
+   "id": "0465a2a60e6f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "couldnt tell you the name, i just go there",
+   "id": "f73ebc330408"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "the usual one heh",
+   "id": "d48d0eafeaa4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "whichever is closest honestly",
+   "id": "7dc4696b7568"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_which"
+   ],
+   "text": "i always forget the name",
+   "id": "dadf7537bce6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "soon i hope",
+   "id": "7a87270b2ef9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "whenever people show up",
+   "id": "23e9a54ae23e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "in a bit",
+   "id": "7ce303953d4e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "not sure yet",
+   "id": "47d70594cad8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "later tonight maybe",
+   "id": "e9d2d9e43d3d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "once i finish here",
+   "id": "ae91e31ec70c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "no set time",
+   "id": "ce2476a2e097"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_when"
+   ],
+   "text": "when enough people are on",
+   "id": "1d55cb4edc11"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "yep yep",
+   "id": "414da7cbbe88"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "yeah that one",
+   "id": "4ea0e189255f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "think so",
+   "id": "086a7a07342a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "yea",
+   "id": "aa5d81d45afe"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "pretty sure",
+   "id": "0aa541497a10"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "yep, thats it",
+   "id": "9dfd5610fb0e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "i think so anyway",
+   "id": "80d7b9ce52a6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "mhm, that one",
+   "id": "8786f05ade21"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "yeah, right there",
+   "id": "c4d6aea195d1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_confirm"
+   ],
+   "text": "sounds right",
+   "id": "837a3e089051"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "too long lol",
+   "id": "9e27a9bc0adc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "a few nights",
+   "id": "7dbcdeef1951"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "longer than i want to admit",
+   "id": "fa52d338fd1b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "dont ask heh",
+   "id": "beb5c78b1d73"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "a while",
+   "id": "fe8c4bbbeae8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "couple of sessions",
+   "id": "4e79691e2679"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "way too many hours",
+   "id": "5d3e1f67f6de"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howlong"
+   ],
+   "text": "lost count honestly",
+   "id": "81f061f24830"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "no idea, lost track of them",
+   "id": "87ee69fdfc3e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "looked like they headed north",
+   "id": "218cb5667d01"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "didnt see where, sorry",
+   "id": "9e66ed88b087"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "toward the next keep i think",
+   "id": "1e9def8df46a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "they scattered, couldnt tell you",
+   "id": "a74a94107f51"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_whereto"
+   ],
+   "text": "not sure, i was busy not dying",
+   "id": "6616553a3cd9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "nothing special, but it beats what i had",
+   "id": "cba377280cc5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "decent, not amazing",
+   "id": "3775712bd2f2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "cant remember the numbers, it was ok",
+   "id": "d4fa5257b455"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "meh, vendor trash mostly",
+   "id": "7d50ae7179b6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "better than mine was, thats all i know",
+   "id": "b28d026bf406"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_detail"
+   ],
+   "text": "pretty good for the level honestly",
+   "id": "c96bc361cf8f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "eh, nothing exciting",
+   "id": "943380a6483b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "nothing special honestly",
+   "id": "f43cc57d4e41"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "just the usual stuff",
+   "id": "814942219567"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "long story lol",
+   "id": "1f77a626e28b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "cant even remember now",
+   "id": "91d5f70cf070"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_specific"
+   ],
+   "text": "meh, not worth the story",
+   "id": "742e9ced28cb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "a bunch",
+   "id": "c3b42dc06d24"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "didnt count, enough",
+   "id": "8ab04d3e9d48"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "stopped counting after a while",
+   "id": "1cad1a1ca92e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "more than i wanted lol",
+   "id": "0603e43538c2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "a few, maybe more",
+   "id": "19d0c328c471"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "followup_howmany"
+   ],
+   "text": "too many lol",
+   "id": "388167d28e6d"
   },
   {
    "kind": "group",
@@ -584701,6 +587374,806 @@
    "needs": [],
    "intent": "",
    "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "id go with the first",
+   "id": "109fc42799bc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "second, no question",
+   "id": "c3f16e6bbde9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "the first, i never regretted it",
+   "id": "0601ec31da1c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "first one honestly",
+   "id": "c9ade725497e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "id say the second",
+   "id": "8b1bbf6b3ec2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "first, but its close",
+   "id": "d4c2e2478d4c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "cant go wrong either way, i did the first",
+   "id": "11b34c7f4d70"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_choice"
+   ],
+   "text": "the second, trust me",
+   "id": "658d86c285d2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "see, {player} gets it",
+   "id": "5c85cce11fa3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "thank you {player}",
+   "id": "d0ea3325d1b3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "ha, told you",
+   "id": "163ba503a205"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "finally, someone with sense",
+   "id": "998db9de6ef8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "{player} knows whats up",
+   "id": "8cce2a2ca7eb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "exactly my point",
+   "id": "a098208287c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "see? its not just me",
+   "id": "1f4c50ae1fc1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_agreed"
+   ],
+   "text": "ty {player}, glad someone agrees",
+   "id": "dc02dc0bc73d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "fair, but hear me out",
+   "id": "e2c43c0d99d6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "agree to disagree then",
+   "id": "ac94a74e4942"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "nah {player}, ive seen it happen",
+   "id": "d0aa39bf03b9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "ok but have you actually tried it",
+   "id": "9fa94a681828"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "heh, we will see",
+   "id": "941c50cdff1e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "you have a point, still think im right",
+   "id": "f0f4c03dcf2f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "lol fine, its close",
+   "id": "5eef36d27174"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_disagreed"
+   ],
+   "text": "not buying it, sorry",
+   "id": "7a6e5bd8d7b9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_backed"
+   ],
+   "text": "see, {player} is with me",
+   "id": "784f00231914"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_backed"
+   ],
+   "text": "thank you, {player} sees it",
+   "id": "9dbf2adc7fb2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_backed"
+   ],
+   "text": "ha, two against one now",
+   "id": "b4e75f1293cd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_backed"
+   ],
+   "text": "{player} has it right",
+   "id": "403f8851425f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_outnumbered"
+   ],
+   "text": "oh great, now there are two of you",
+   "id": "49aae29cf6aa"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_outnumbered"
+   ],
+   "text": "ok ok, outvoted",
+   "id": "f7ced12ce084"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_outnumbered"
+   ],
+   "text": "lol ganging up on me now",
+   "id": "c5c0044ecce6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_outnumbered"
+   ],
+   "text": "fine, but im still not convinced",
+   "id": "294a0cc17c54"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "good point {player}",
+   "id": "df15347ffe62"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "huh, didnt think of that",
+   "id": "f5c427bf2afd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "{player} has a point",
+   "id": "a4127f345728"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "thats one way to look at it",
+   "id": "15ccd7314c3f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "fair enough, {player}",
+   "id": "e7dbedc5b5f5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "interesting take",
+   "id": "2d20ca305923"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "ha, could be",
+   "id": "3fb212a199e9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "debate_opinion"
+   ],
+   "text": "maybe, depends on the group",
+   "id": "b5312ad3b773"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
    "weight": 0.2887,
    "answers": [
     "chat"
@@ -596375,6 +599848,1770 @@
    "text": "maybe ill check it out after this camp",
    "family": "4fa859890c",
    "id": "d627f4067f6e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "gz!! nice",
+   "id": "0150128bff63"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "grats on that",
+   "id": "a655c6b1ef63"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "nice, gz",
+   "id": "a83767b1c6cf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "gz, about time",
+   "id": "303b5a6e875e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "sweet, grats",
+   "id": "ef68403cd925"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "nice one",
+   "id": "02eddb2cf27c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "oh nice, gz",
+   "id": "d106da7f3fda"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "grats, well earned",
+   "id": "43d6598512e1"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "woot gz",
+   "id": "b76be01fa49d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "gz gz gz",
+   "id": "58456e961da5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "well done, gz",
+   "id": "40adfa368427"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "congrats",
+   "id": "6e11594bb814"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "gz!! so happy for you",
+   "id": "0220d9ea3a98"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_goodnews"
+   ],
+   "text": "gz, now the real grind starts",
+   "id": "af177a479902"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "oh ty!",
+   "id": "05887370fa02"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "sure, ty",
+   "id": "503394859901"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "ty, thats nice of you",
+   "id": "efb2b5b86f10"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "if its spare, sure ty",
+   "id": "a069984d396d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "im good, but thanks",
+   "id": "37f6ea4757c6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "nah im ok, ty though",
+   "id": "6da6b8de3a5b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "ty, appreciate it",
+   "id": "3d85ca659dbb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "sure, why not, ty",
+   "id": "cb41ccd141a8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "thats kind, ty",
+   "id": "65caa02b79c8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_offer"
+   ],
+   "text": "im ok for now, ty",
+   "id": "c8ccc6363748"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "k, holding up",
+   "id": "ca97e5f64b33"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "ok, holding",
+   "id": "c64c7c830026"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "will do",
+   "id": "14afb5b8d191"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "k, say when",
+   "id": "7ff6ed0c6178"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "np, waiting",
+   "id": "f33e349ea201"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "ok, ill wait",
+   "id": "8619f83efd97"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "k, ready when you are",
+   "id": "92933deab8a3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wait"
+   ],
+   "text": "sure, waiting",
+   "id": "c530be06f2d5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "thanks for the heads up, watching",
+   "id": "19739c13b18e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "got it",
+   "id": "5b29bdabb376"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "on it, ty",
+   "id": "f3b639d49ba2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "ty, watching for them",
+   "id": "f02c8f048de9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "k careful all",
+   "id": "f5d00e5e7132"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "noted, ty",
+   "id": "6cfdc357f2c2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "eyes open",
+   "id": "1a1959a54c04"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_headsup"
+   ],
+   "text": "k, ty",
+   "id": "5efe8c76f438"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_late"
+   ],
+   "text": "get some sleep lol",
+   "id": "22165b3af809"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_late"
+   ],
+   "text": "same, i should sleep too",
+   "id": "4e65e48512fc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_late"
+   ],
+   "text": "one more pull, right? heh",
+   "id": "a13b7718802f"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_late"
+   ],
+   "text": "ouch, coffee tomorrow then",
+   "id": "9c349574d51d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_school"
+   ],
+   "text": "go study lol",
+   "id": "d766076fdb90"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_school"
+   ],
+   "text": "good luck with it",
+   "id": "6fefb7654db3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_school"
+   ],
+   "text": "school stuff is the worst, gl",
+   "id": "dd4b6935ee81"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_school"
+   ],
+   "text": "study first, xp later",
+   "id": "e578cc2474a3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_food"
+   ],
+   "text": "food first, always",
+   "id": "5eac88339470"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_food"
+   ],
+   "text": "mmm now im hungry",
+   "id": "478d2c71cc7d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_tech"
+   ],
+   "text": "computers, never a dull moment",
+   "id": "65a27f2adebd"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_tech"
+   ],
+   "text": "heh, been there with mine",
+   "id": "c64adaa51fe2"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_tech"
+   ],
+   "text": "fingers crossed it behaves",
+   "id": "5e7d435b6923"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_tech"
+   ],
+   "text": "mine is held together with tape lol",
+   "id": "1e130d18b740"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_pet"
+   ],
+   "text": "lol pets",
+   "id": "f621f3903ef8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_pet"
+   ],
+   "text": "mine does the same",
+   "id": "f253538f7483"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_pet"
+   ],
+   "text": "pets have no respect for the grind",
+   "id": "29e225238158"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_pet"
+   ],
+   "text": "haha, they know when you are busy",
+   "id": "bb8ff89836a6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_weather"
+   ],
+   "text": "ugh, weather",
+   "id": "2bd57bcb423a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_weather"
+   ],
+   "text": "ugh, same here",
+   "id": "6efd7d39f70b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_weather"
+   ],
+   "text": "sounds like a good night to stay in and play",
+   "id": "5c632d176ddf"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_weather"
+   ],
+   "text": "glad im inside lol",
+   "id": "d2b10ce2bb28"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_media"
+   ],
+   "text": "missed it, was in here lol",
+   "id": "80614e16866c"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_media"
+   ],
+   "text": "ha, tell me later",
+   "id": "0041a9d2f5b3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_media"
+   ],
+   "text": "lucky, i never get to watch",
+   "id": "6397d8769318"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_media"
+   ],
+   "text": "been in here all night instead",
+   "id": "6a362962e25e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_work"
+   ],
+   "text": "ugh, gl with it",
+   "id": "d50f6aa3b9e9"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_work"
+   ],
+   "text": "work, the real grind",
+   "id": "8acbb484bd47"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_work"
+   ],
+   "text": "hope it goes ok",
+   "id": "210b8ee98290"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_work"
+   ],
+   "text": "long day huh",
+   "id": "b2cad43cb498"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "ouch, get up and stretch a bit",
+   "id": "b8e507bfbf76"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "been there, take a break",
+   "id": "2a3338cbff17"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "my back hates this game too",
+   "id": "b7e1fa4268ae"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "stand up for a min, it helps",
+   "id": "3a549b11f504"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "same, this chair is killing me",
+   "id": "107976c30cbc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_rl_body"
+   ],
+   "text": "go walk around a bit, the mobs will wait",
+   "id": "14882e5c5e1d"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "k np",
+   "id": "64b87592d6f0"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "kk will try",
+   "id": "554b89dba9c6"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "alright alright",
+   "id": "07294aa6d131"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "k, will try",
+   "id": "7f97dee0d413"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "ok ok",
+   "id": "1ddc7ea723bc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_order"
+   ],
+   "text": "roger",
+   "id": "0a05680642b8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "ty ty, back now",
+   "id": "e5596f053c7b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "thx, good to be back",
+   "id": "7cb5cfc8a9e8"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "heh ty",
+   "id": "1c51f5ce2a60"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "ty, missed anything?",
+   "id": "c445e8a87cbb"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "thanks, good to see you too",
+   "id": "0fd173e1c1a7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "player_wb"
+   ],
+   "text": "glad to be back",
+   "id": "3f60605a0471"
   },
   {
    "kind": "reply",
@@ -679699,4483 +684936,6 @@
    "weight": 1.0,
    "text": "honestly {player}? {target} paid you. had to be",
    "id": "f04d6dea9be2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "cant remember the name lol",
-   "id": "9d0bf0a56c10"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "the big one, you cant miss it",
-   "id": "2b7caf29c805"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "not sure what its called",
-   "id": "0cd0e07e5dfa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "the first one you come to",
-   "id": "5c3909a8a229"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "dunno the name, sorry",
-   "id": "fb6ece1b11cd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "the one everyone uses",
-   "id": "0465a2a60e6f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "couldnt tell you the name, i just go there",
-   "id": "f73ebc330408"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "the usual one heh",
-   "id": "d48d0eafeaa4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "whichever is closest honestly",
-   "id": "7dc4696b7568"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_which"
-   ],
-   "text": "i always forget the name",
-   "id": "dadf7537bce6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "soon i hope",
-   "id": "7a87270b2ef9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "whenever people show up",
-   "id": "23e9a54ae23e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "in a bit",
-   "id": "7ce303953d4e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "not sure yet",
-   "id": "47d70594cad8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "later tonight maybe",
-   "id": "e9d2d9e43d3d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "once i finish here",
-   "id": "ae91e31ec70c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "no set time",
-   "id": "ce2476a2e097"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_when"
-   ],
-   "text": "when enough people are on",
-   "id": "1d55cb4edc11"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yep yep",
-   "id": "414da7cbbe88"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yeah that one",
-   "id": "4ea0e189255f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "think so",
-   "id": "086a7a07342a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yea",
-   "id": "aa5d81d45afe"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "pretty sure",
-   "id": "0aa541497a10"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yep, thats it",
-   "id": "9dfd5610fb0e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "i think so anyway",
-   "id": "80d7b9ce52a6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "mhm, that one",
-   "id": "8786f05ade21"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "yeah, right there",
-   "id": "c4d6aea195d1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_confirm"
-   ],
-   "text": "sounds right",
-   "id": "837a3e089051"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "too long lol",
-   "id": "9e27a9bc0adc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "a few nights",
-   "id": "7dbcdeef1951"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "longer than i want to admit",
-   "id": "fa52d338fd1b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "dont ask heh",
-   "id": "beb5c78b1d73"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "a while",
-   "id": "fe8c4bbbeae8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "couple of sessions",
-   "id": "4e79691e2679"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "way too many hours",
-   "id": "5d3e1f67f6de"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howlong"
-   ],
-   "text": "lost count honestly",
-   "id": "81f061f24830"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "gz!! nice",
-   "id": "0150128bff63"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "grats on that",
-   "id": "a655c6b1ef63"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "nice, gz",
-   "id": "a83767b1c6cf"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "gz, about time",
-   "id": "303b5a6e875e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "sweet, grats",
-   "id": "ef68403cd925"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "nice one",
-   "id": "02eddb2cf27c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "oh nice, gz",
-   "id": "d106da7f3fda"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "grats, well earned",
-   "id": "43d6598512e1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "woot gz",
-   "id": "b76be01fa49d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "gz gz gz",
-   "id": "58456e961da5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "well done, gz",
-   "id": "40adfa368427"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "congrats",
-   "id": "6e11594bb814"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "gz!! so happy for you",
-   "id": "0220d9ea3a98"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "NoLifer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_goodnews"
-   ],
-   "text": "gz, now the real grind starts",
-   "id": "af177a479902"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "oh ty!",
-   "id": "05887370fa02"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "sure, ty",
-   "id": "503394859901"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "ty, thats nice of you",
-   "id": "efb2b5b86f10"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "if its spare, sure ty",
-   "id": "a069984d396d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "im good, but thanks",
-   "id": "37f6ea4757c6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "nah im ok, ty though",
-   "id": "6da6b8de3a5b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "ty, appreciate it",
-   "id": "3d85ca659dbb"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "sure, why not, ty",
-   "id": "cb41ccd141a8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "thats kind, ty",
-   "id": "65caa02b79c8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_offer"
-   ],
-   "text": "im ok for now, ty",
-   "id": "c8ccc6363748"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "k, holding up",
-   "id": "ca97e5f64b33"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "ok, holding",
-   "id": "c64c7c830026"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "will do",
-   "id": "14afb5b8d191"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "k, say when",
-   "id": "7ff6ed0c6178"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "np, waiting",
-   "id": "f33e349ea201"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "ok, ill wait",
-   "id": "8619f83efd97"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "k, ready when you are",
-   "id": "92933deab8a3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wait"
-   ],
-   "text": "sure, waiting",
-   "id": "c530be06f2d5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "id go with the first",
-   "id": "109fc42799bc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "second, no question",
-   "id": "c3f16e6bbde9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "the first, i never regretted it",
-   "id": "0601ec31da1c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "first one honestly",
-   "id": "c9ade725497e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "id say the second",
-   "id": "8b1bbf6b3ec2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "first, but its close",
-   "id": "d4c2e2478d4c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "cant go wrong either way, i did the first",
-   "id": "11b34c7f4d70"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "the second, trust me",
-   "id": "658d86c285d2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "thanks for the heads up, watching",
-   "id": "19739c13b18e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "got it",
-   "id": "5b29bdabb376"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "on it, ty",
-   "id": "f3b639d49ba2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "ty, watching for them",
-   "id": "f02c8f048de9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "k careful all",
-   "id": "f5d00e5e7132"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "noted, ty",
-   "id": "6cfdc357f2c2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "eyes open",
-   "id": "1a1959a54c04"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_headsup"
-   ],
-   "text": "k, ty",
-   "id": "5efe8c76f438"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_late"
-   ],
-   "text": "get some sleep lol",
-   "id": "22165b3af809"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_late"
-   ],
-   "text": "same, i should sleep too",
-   "id": "4e65e48512fc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_late"
-   ],
-   "text": "one more pull, right? heh",
-   "id": "a13b7718802f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_late"
-   ],
-   "text": "ouch, coffee tomorrow then",
-   "id": "9c349574d51d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_school"
-   ],
-   "text": "go study lol",
-   "id": "d766076fdb90"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_school"
-   ],
-   "text": "good luck with it",
-   "id": "6fefb7654db3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_school"
-   ],
-   "text": "school stuff is the worst, gl",
-   "id": "dd4b6935ee81"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_school"
-   ],
-   "text": "study first, xp later",
-   "id": "e578cc2474a3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_food"
-   ],
-   "text": "food first, always",
-   "id": "5eac88339470"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_food"
-   ],
-   "text": "mmm now im hungry",
-   "id": "478d2c71cc7d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_tech"
-   ],
-   "text": "computers, never a dull moment",
-   "id": "65a27f2adebd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_tech"
-   ],
-   "text": "heh, been there with mine",
-   "id": "c64adaa51fe2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_tech"
-   ],
-   "text": "fingers crossed it behaves",
-   "id": "5e7d435b6923"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_tech"
-   ],
-   "text": "mine is held together with tape lol",
-   "id": "1e130d18b740"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_pet"
-   ],
-   "text": "lol pets",
-   "id": "f621f3903ef8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_pet"
-   ],
-   "text": "mine does the same",
-   "id": "f253538f7483"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_pet"
-   ],
-   "text": "pets have no respect for the grind",
-   "id": "29e225238158"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_pet"
-   ],
-   "text": "haha, they know when you are busy",
-   "id": "bb8ff89836a6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_weather"
-   ],
-   "text": "ugh, weather",
-   "id": "2bd57bcb423a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_weather"
-   ],
-   "text": "ugh, same here",
-   "id": "6efd7d39f70b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_weather"
-   ],
-   "text": "sounds like a good night to stay in and play",
-   "id": "5c632d176ddf"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_weather"
-   ],
-   "text": "glad im inside lol",
-   "id": "d2b10ce2bb28"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_media"
-   ],
-   "text": "missed it, was in here lol",
-   "id": "80614e16866c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_media"
-   ],
-   "text": "ha, tell me later",
-   "id": "0041a9d2f5b3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_media"
-   ],
-   "text": "lucky, i never get to watch",
-   "id": "6397d8769318"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_media"
-   ],
-   "text": "been in here all night instead",
-   "id": "6a362962e25e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_work"
-   ],
-   "text": "ugh, gl with it",
-   "id": "d50f6aa3b9e9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_work"
-   ],
-   "text": "work, the real grind",
-   "id": "8acbb484bd47"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_work"
-   ],
-   "text": "hope it goes ok",
-   "id": "210b8ee98290"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_work"
-   ],
-   "text": "long day huh",
-   "id": "b2cad43cb498"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "cool",
-   "id": "7ed99ff8d07d"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "ok good",
-   "id": "3b911b41ba05"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "sweet",
-   "id": "96c17ae22610"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "alright",
-   "id": "9637b0476d18"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "good good",
-   "id": "1beff9f4aec2"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "perfect",
-   "id": "99c57f850e55"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "k cool",
-   "id": "bbd40e0f0b23"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "nice, ok",
-   "id": "bcfe3e348e28"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "ah ok, np",
-   "id": "390772628947"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "fair enough, np",
-   "id": "517f2f7e97e8"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "no worries",
-   "id": "9dbff8bb219b"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "ok, maybe another time",
-   "id": "48d92ffa3517"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "k np",
-   "id": "fc4e7d9a8ae0"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "ok then",
-   "id": "466beb7f09e5"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "all good, np",
-   "id": "a88b46592c5d"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_no"
-   ],
-   "text": "np, just checking",
-   "id": "a0216bfba5cd"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "oh cool",
-   "id": "5a7cf18582db"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "heh nice",
-   "id": "3be4ee95085a"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "not bad at all",
-   "id": "82e94b894a3c"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "ah nice",
-   "id": "2a4eda91d0a0"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "cool, nice",
-   "id": "9b47b644d48d"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "oh wow",
-   "id": "233a0c37fc43"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "ha nice",
-   "id": "e23313340ceb"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "nice, good to know",
-   "id": "39f5bf553e2b"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "oh neat",
-   "id": "7836cc0aad92"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_personal"
-   ],
-   "text": "nice nice",
-   "id": "a365ad09c518"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "k np",
-   "id": "64b87592d6f0"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "kk will try",
-   "id": "554b89dba9c6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "alright alright",
-   "id": "07294aa6d131"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "k, will try",
-   "id": "7f97dee0d413"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "ok ok",
-   "id": "1ddc7ea723bc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_order"
-   ],
-   "text": "roger",
-   "id": "0a05680642b8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "ty ty, back now",
-   "id": "e5596f053c7b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "thx, good to be back",
-   "id": "7cb5cfc8a9e8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "heh ty",
-   "id": "1c51f5ce2a60"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "ty, missed anything?",
-   "id": "c445e8a87cbb"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "thanks, good to see you too",
-   "id": "0fd173e1c1a7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_wb"
-   ],
-   "text": "glad to be back",
-   "id": "3f60605a0471"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "noooo",
-   "id": "f658060c3db5"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "ouch, sorry",
-   "id": "dd7a5b6638b8"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "that hit hard",
-   "id": "a4ee623e56ad"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "my bad, should have grabbed it",
-   "id": "fb6c7e19d9d6"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "argh, sorry",
-   "id": "f7e0d1cede7e"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "oh no",
-   "id": "ab916f959d71"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "that one came out of nowhere",
-   "id": "73cec869334a"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "can_rez"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "rez coming, dont release",
-   "id": "902df456f721"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "can_rez"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "hang on, ill rez you",
-   "id": "79398668e4e7"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group",
-    "can_rez"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "text": "dont release, rezzing after this",
-   "id": "cf6cdb752468"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "no idea, lost track of them",
-   "id": "87ee69fdfc3e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "looked like they headed north",
-   "id": "218cb5667d01"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "didnt see where, sorry",
-   "id": "9e66ed88b087"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "toward the next keep i think",
-   "id": "1e9def8df46a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "they scattered, couldnt tell you",
-   "id": "a74a94107f51"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_whereto"
-   ],
-   "text": "not sure, i was busy not dying",
-   "id": "6616553a3cd9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "nothing special, but it beats what i had",
-   "id": "cba377280cc5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "decent, not amazing",
-   "id": "3775712bd2f2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "cant remember the numbers, it was ok",
-   "id": "d4fa5257b455"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "meh, vendor trash mostly",
-   "id": "7d50ae7179b6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "better than mine was, thats all i know",
-   "id": "b28d026bf406"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_detail"
-   ],
-   "text": "pretty good for the level honestly",
-   "id": "c96bc361cf8f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "ouch, get up and stretch a bit",
-   "id": "b8e507bfbf76"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "been there, take a break",
-   "id": "2a3338cbff17"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "my back hates this game too",
-   "id": "b7e1fa4268ae"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "stand up for a min, it helps",
-   "id": "3a549b11f504"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "same, this chair is killing me",
-   "id": "107976c30cbc"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_body"
-   ],
-   "text": "go walk around a bit, the mobs will wait",
-   "id": "14882e5c5e1d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "eh, nothing exciting",
-   "id": "943380a6483b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "nothing special honestly",
-   "id": "f43cc57d4e41"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "just the usual stuff",
-   "id": "814942219567"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "long story lol",
-   "id": "1f77a626e28b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "cant even remember now",
-   "id": "91d5f70cf070"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_specific"
-   ],
-   "text": "meh, not worth the story",
-   "id": "742e9ced28cb"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "a bunch",
-   "id": "c3b42dc06d24"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "didnt count, enough",
-   "id": "8ab04d3e9d48"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "stopped counting after a while",
-   "id": "1cad1a1ca92e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "more than i wanted lol",
-   "id": "0603e43538c2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "a few, maybe more",
-   "id": "19d0c328c471"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "followup_howmany"
-   ],
-   "text": "too many lol",
-   "id": "388167d28e6d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "see, {player} gets it",
-   "id": "5c85cce11fa3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "thank you {player}",
-   "id": "d0ea3325d1b3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "ha, told you",
-   "id": "163ba503a205"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "finally, someone with sense",
-   "id": "998db9de6ef8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "{player} knows whats up",
-   "id": "8cce2a2ca7eb"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "exactly my point",
-   "id": "a098208287c8"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "see? its not just me",
-   "id": "1f4c50ae1fc1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_agreed"
-   ],
-   "text": "ty {player}, glad someone agrees",
-   "id": "dc02dc0bc73d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "fair, but hear me out",
-   "id": "e2c43c0d99d6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "agree to disagree then",
-   "id": "ac94a74e4942"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "nah {player}, ive seen it happen",
-   "id": "d0aa39bf03b9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "ok but have you actually tried it",
-   "id": "9fa94a681828"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "heh, we will see",
-   "id": "941c50cdff1e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "you have a point, still think im right",
-   "id": "f0f4c03dcf2f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "lol fine, its close",
-   "id": "5eef36d27174"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_disagreed"
-   ],
-   "text": "not buying it, sorry",
-   "id": "7a6e5bd8d7b9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_backed"
-   ],
-   "text": "see, {player} is with me",
-   "id": "784f00231914"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_backed"
-   ],
-   "text": "thank you, {player} sees it",
-   "id": "9dbf2adc7fb2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_backed"
-   ],
-   "text": "ha, two against one now",
-   "id": "b4e75f1293cd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_backed"
-   ],
-   "text": "{player} has it right",
-   "id": "403f8851425f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_outnumbered"
-   ],
-   "text": "oh great, now there are two of you",
-   "id": "49aae29cf6aa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_outnumbered"
-   ],
-   "text": "ok ok, outvoted",
-   "id": "f7ced12ce084"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_outnumbered"
-   ],
-   "text": "lol ganging up on me now",
-   "id": "c5c0044ecce6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_outnumbered"
-   ],
-   "text": "fine, but im still not convinced",
-   "id": "294a0cc17c54"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "good point {player}",
-   "id": "df15347ffe62"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "huh, didnt think of that",
-   "id": "f5c427bf2afd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "{player} has a point",
-   "id": "a4127f345728"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "thats one way to look at it",
-   "id": "15ccd7314c3f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "fair enough, {player}",
-   "id": "e7dbedc5b5f5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "interesting take",
-   "id": "2d20ca305923"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "ha, could be",
-   "id": "3fb212a199e9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "debate_opinion"
-   ],
-   "text": "maybe, depends on the group",
-   "id": "b5312ad3b773"
   },
   {
    "kind": "tell",

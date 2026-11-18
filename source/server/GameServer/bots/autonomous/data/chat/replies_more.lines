@@ -331,3 +331,59 @@ running back from the bind lol
 @levels 1-50
 @answers ask_story
 my pet ran off and brought the whole camp back
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; either-or picks and debate joins ----
+# ---- either or: more picks (the pool of 9 ran dry in an evening) -----------------------------
+@kind reply
+@who *
+@answers ask_choice
+id go with the first
+second, no question
+the first, i never regretted it
+first one honestly
+id say the second
+first, but its close
+cant go wrong either way, i did the first
+the second, trust me
+
+
+# ---- a player joins a running debate (AutonomousBotDebates.TryAnswerPlayer) ----------------
+@kind reply
+@who *
+@answers debate_agreed
+see, {player} gets it
+thank you {player}
+ha, told you
+finally, someone with sense
+{player} knows whats up
+exactly my point
+see? its not just me
+ty {player}, glad someone agrees
+@answers debate_disagreed
+fair, but hear me out
+agree to disagree then
+nah {player}, ive seen it happen
+ok but have you actually tried it
+heh, we will see
+you have a point, still think im right
+lol fine, its close
+not buying it, sorry
+@answers debate_backed
+see, {player} is with me
+thank you, {player} sees it
+ha, two against one now
+{player} has it right
+@answers debate_outnumbered
+oh great, now there are two of you
+ok ok, outvoted
+lol ganging up on me now
+fine, but im still not convinced
+@answers debate_opinion
+good point {player}
+huh, didnt think of that
+{player} has a point
+thats one way to look at it
+fair enough, {player}
+interesting take
+ha, could be
+maybe, depends on the group

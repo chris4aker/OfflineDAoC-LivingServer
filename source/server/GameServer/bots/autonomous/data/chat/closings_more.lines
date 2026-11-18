@@ -127,3 +127,46 @@ ok sweet
 nice, lets go
 k good
 great
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; yes, no and personal closings ----
+# ---- closings: a plain yes to the bot's question ("ya go" to "ready to pull?") --------------
+@kind closing
+@who *
+@answers ask_yes
+cool
+ok good
+sweet
+alright
+good good
+perfect
+k cool
+nice, ok
+
+# ---- closings: a no ("nah not my thing", "nah im good ty") -----------------------------------
+@kind closing
+@who *
+@answers ask_no
+ah ok, np
+fair enough, np
+no worries
+ok, maybe another time
+k np
+ok then
+all good, np
+np, just checking
+
+# ---- closings: an answer to a question about the player ("since beta lol") ------------------
+@kind closing
+@who *
+@answers ask_personal
+oh cool
+heh nice
+not bad at all
+ah nice
+cool, nice
+oh wow
+ha nice
+nice, good to know
+oh neat
+nice nice
+

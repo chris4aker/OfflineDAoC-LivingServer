@@ -821,3 +821,21 @@ hold on, rez
 rez cast, take it
 getting you up
 back up you go
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; the player died in the group ----
+# ---- the player died in the bot's group (a groupmate says something) --------------------------
+@kind combat
+@topic player_down
+@who *
+@needs in_player_group
+noooo
+ouch, sorry
+that hit hard
+my bad, should have grabbed it
+argh, sorry
+oh no
+that one came out of nowhere
+@needs in_player_group,can_rez
+rez coming, dont release
+hang on, ill rez you
+dont release, rezzing after this
