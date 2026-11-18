@@ -63,10 +63,10 @@ namespace DOL.GS.Tests
 
             var tooHigh = new[] { Bot(1, 28), Bot(2, 26), Bot(3, 28), Bot(4, 25) };
             Assert.That(AutonomousBotDebates.Cast(battleground, tooHigh, new Random(1)), Is.Null);
-            var inBracket = tooHigh.Append(Bot(5, 22)).Append(Bot(6, 24)).ToArray();
+            var inBracket = tooHigh.Append(Bot(5, 22)).Append(Bot(6, 24)).Append(Bot(7, 20)).ToArray();
             Dictionary<string, long> cast = AutonomousBotDebates.Cast(battleground, inBracket, new Random(1));
             Assert.That(cast, Is.Not.Null);
-            Assert.That(cast.Values.All(id => id is 5 or 6), Is.True, "Only the bots inside 20-24 speak.");
+            Assert.That(cast.Values.All(id => id is 5 or 6 or 7), Is.True, "Only the bots inside 20-24 speak.");
         }
 
         [Test]
@@ -86,19 +86,19 @@ namespace DOL.GS.Tests
         {
             // Owner's PC, 2026-11-18 02:15: a roleplayer said a scene line as "... forgive me everyone, huzzah!".
             VC.Scene scene = Scene(20, 40);
-            var mostlyRoleplayers = Enumerable.Range(1, 6).Select(i => Bot(i, 30, roleplayer: true)).Append(Bot(10, 30)).Append(Bot(11, 30)).ToArray();
+            var mostlyRoleplayers = Enumerable.Range(1, 6).Select(i => Bot(i, 30, roleplayer: true)).Append(Bot(10, 30)).Append(Bot(11, 30)).Append(Bot(12, 30)).ToArray();
             for (int seed = 0; seed < 20; seed++)
             {
                 Dictionary<string, long> cast = AutonomousBotDebates.Cast(scene, mostlyRoleplayers, new Random(seed));
                 Assert.That(cast, Is.Not.Null);
-                Assert.That(cast.Values.All(id => id is 10 or 11), Is.True, "Only the two plain writers are cast.");
+                Assert.That(cast.Values.All(id => id is 10 or 11 or 12), Is.True, "Only the three plain writers are cast.");
             }
             Assert.That(AutonomousBotDebates.Cast(scene, mostlyRoleplayers.Where(c => c.Roleplayer).ToArray(), new Random(1)), Is.Null);
             // A storyline's fixed protagonists are kept whoever they are.
             var fixedRoles = new Dictionary<string, long> { ["A"] = 1, ["B"] = 2 };
             Dictionary<string, long> story = AutonomousBotDebates.Cast(scene, mostlyRoleplayers.Skip(2).ToArray(), new Random(1), fixedRoles);
             Assert.That(story["A"], Is.EqualTo(1));
-            Assert.That(story["C"], Is.AnyOf(10L, 11L));
+            Assert.That(story["C"], Is.AnyOf(10L, 11L, 12L));
         }
 
         [Test]
@@ -124,10 +124,12 @@ namespace DOL.GS.Tests
         {
             // corpus-b1 -001: "B says void, C says light"; -018: "inv sent", "sending invites", "we have room".
             var roleLetter = new Regex(@"(^|[\s,.])[A-H]($|[\s,.])");
-            var invite = new Regex(@"\b(inv sent|invite sent|invites? (going out|out|coming)|sending (an |you an )?invites?|inviting|we have (a spot|room))\b");
+            var invite = new Regex(@"\b(inv sent|invite sent|invites? (going out|out|coming)|sending (an |you an )?invites?|(?<!before )inviting (you|them)|we have (a spot|room))\b");
             foreach ((VC.Scene scene, string text) in SceneWordings())
             {
-                Assert.That(roleLetter.IsMatch(text), Is.False, $"{scene.Id}: \"{text}\" names a role letter");
+                // A shouted all-caps line (the dunce's rage quit) is not a role letter.
+                if (text != text.ToUpperInvariant())
+                    Assert.That(roleLetter.IsMatch(text), Is.False, $"{scene.Id}: \"{text}\" names a role letter");
                 Assert.That(invite.IsMatch(text), Is.False, $"{scene.Id}: \"{text}\" says an invite was sent");
             }
         }

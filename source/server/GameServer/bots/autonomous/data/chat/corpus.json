@@ -690795,10 +690795,10 @@
     },
     {
      "role": "D",
-     "text": "fine, i will come. but im telling you about spellcraft while im there",
+     "text": "fine, but if i visit im telling you about spellcraft",
      "variants": [
-      "fine, i will come. but im telling you about spellcraft while im there",
-      "i will come and quietly judge your template choices"
+      "fine, but if i visit im telling you about spellcraft",
+      "if i visit i will quietly judge your template choices"
      ],
      "optional": false
     },
@@ -694344,7 +694344,7 @@
      "text": "enough talk, emain isnt going to fight itself",
      "variants": [
       "enough talk, emain isnt going to fight itself",
-      "anyway, who is riding out to emain"
+      "anyway, emain needs people more than this thread"
      ],
      "optional": false
     },
@@ -699087,7 +699087,7 @@
      "text": "count me in",
      "variants": [
       "count me in",
-      "i will be there"
+      "sounds fun, count me in"
      ],
      "optional": false
     },
@@ -710534,9 +710534,9 @@
     },
     {
      "role": "A",
-     "text": "ok on my way, is {frontier} dangerous?",
+     "text": "ok, is {frontier} dangerous?",
      "variants": [
-      "ok on my way, is {frontier} dangerous?",
+      "ok, is {frontier} dangerous?",
       "i see {frontier} on the map, is it safe"
      ],
      "optional": false
@@ -710963,9 +710963,9 @@
     },
     {
      "role": "A",
-     "text": "on my way, ty",
+     "text": "ok, ty",
      "variants": [
-      "on my way, ty",
+      "ok, ty",
       "heading there now, thx both",
       "ok running to town"
      ],
@@ -713589,7 +713589,7 @@
      "text": "leaving in a minute, meet me at the gate",
      "variants": [
       "leaving in a minute, meet me at the gate",
-      "on my way out of town, tag along",
+      "leaving town soon, tag along",
       "sure, find me by the stable and stay close"
      ],
      "optional": false
@@ -722800,7 +722800,7 @@
      "text": "heading to the nearest bindstone now",
      "variants": [
       "heading to the nearest bindstone now",
-      "already on my way to rebind"
+      "rebinding first, lesson learned"
      ],
      "optional": false
     }

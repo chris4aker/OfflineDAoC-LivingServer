@@ -41,7 +41,7 @@ B: every starter town has trainers, and {capital} has all of them | look for the
 C: and spend your points while you are there | dont forget to train your specs when you visit
 A: wait i have points to spend? | i have been leveling with nothing trained lol | train? i thought it was automatic
 ?C: lol, go train, you will feel twice as strong | that explains why you hit like a wet noodle | oh no. go now
-A: on my way, ty | heading there now, thx both | ok running to town
+A: ok, ty | heading there now, thx both | ok running to town
 
 @topic stable_master
 @levels 5-30
@@ -424,7 +424,7 @@ A: ok | heading back | going now
 @role B class=Minstrel,Skald,Bard
 @role C type=Socialite
 A: any speed classes heading out of {capital}? | can someone give me speed out of {capital} | lf speed from {capital}, anyone leaving soon
-B: leaving in a minute, meet me at the gate | on my way out of town, tag along | sure, find me by the stable and stay close
+B: leaving in a minute, meet me at the gate | leaving town soon, tag along | sure, find me by the stable and stay close
 ?C: speed taxi, now boarding | the speed bus is leaving lol | free rides, no refunds
 A: ty | thanks, see you at the gate | perfect
 B: dont fall behind | stay in range or you lose it | keep up, i dont stop

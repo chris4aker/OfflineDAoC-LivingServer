@@ -755,7 +755,7 @@ B: look at that, a guild is born | recruiting works, who knew
 A: {q} first night in the frontier, how do i even start | just went to the frontier for the first time, where do i go
 B: find a group, never walk alone | first rule: never alone
 C: go to {keep} and see who is there | head to {keep}, someone is always around there
-A: ok on my way, is {frontier} dangerous? | i see {frontier} on the map, is it safe
+A: ok, is {frontier} dangerous? | i see {frontier} on the map, is it safe
 B: nowhere is safe | lol no
 D: if you see nobody around, assume someone is there | stealthers on the roads, stick near other people
 ~ 25

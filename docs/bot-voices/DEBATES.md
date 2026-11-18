@@ -1677,7 +1677,7 @@ Levels 40–50 · 22 lines · about 4 min · roles: A, B (NoLifer), C (Socialite
 - **A:** "{q} first night in the frontier, how do i even start" / "just went to the frontier for the first time, where do i go"
 - **B:** "find a group, never walk alone" / "first rule: never alone"
 - **C:** "go to {keep} and see who is there" / "head to {keep}, someone is always around there"
-- **A:** "ok on my way, is {frontier} dangerous?" / "i see {frontier} on the map, is it safe"
+- **A:** "ok, is {frontier} dangerous?" / "i see {frontier} on the map, is it safe"
 - **B:** "nowhere is safe" / "lol no"
 - **D:** "if you see nobody around, assume someone is there" / "stealthers on the roads, stick near other people"
 - *(quiet for 25 seconds)*
@@ -1735,7 +1735,7 @@ Levels 1–10 · 6 lines · about 1 min · roles: B, C (Socialite)
 - **C:** "and spend your points while you are there" / "dont forget to train your specs when you visit"
 - **A:** "wait i have points to spend?" / "i have been leveling with nothing trained lol" / "train? i thought it was automatic"
 - **C:** *(sometimes)* "lol, go train, you will feel twice as strong" / "that explains why you hit like a wet noodle" / "oh no. go now"
-- **A:** "on my way, ty" / "heading there now, thx both" / "ok running to town"
+- **A:** "ok, ty" / "heading there now, thx both" / "ok running to town"
 
 ### sh stable master
 
@@ -2100,7 +2100,7 @@ Levels 10–50 · 6 lines · about 1 min · roles: B
 Levels 5–45 · 5 lines · about 1 min · roles: B (Minstrel/Skald/Bard), C (Socialite)
 
 - **A:** "any speed classes heading out of {capital}?" / "can someone give me speed out of {capital}" / "lf speed from {capital}, anyone leaving soon"
-- **B:** "leaving in a minute, meet me at the gate" / "on my way out of town, tag along" / "sure, find me by the stable and stay close"
+- **B:** "leaving in a minute, meet me at the gate" / "leaving town soon, tag along" / "sure, find me by the stable and stay close"
 - **C:** *(sometimes)* "speed taxi, now boarding" / "the speed bus is leaving lol" / "free rides, no refunds"
 - **A:** "ty" / "thanks, see you at the gate" / "perfect"
 - **B:** "dont fall behind" / "stay in range or you lose it" / "keep up, i dont stop"
@@ -2755,7 +2755,7 @@ Levels 15–50 · 18 lines · about 3 min · roles: B (Socialite), C (Leveler), 
 - **E:** "ok, at your body. rezzing" / "here, rezzing you now"
 - **A:** "ty!! sick but alive" / "thank you. i owe you"
 - **E:** "np, and rebind closer this time" / "np. bind closer lol"
-- **A:** "heading to the nearest bindstone now" / "already on my way to rebind"
+- **A:** "heading to the nearest bindstone now" / "rebinding first, lesson learned"
 
 ### soc leveling moments
 
@@ -8618,7 +8618,7 @@ Levels 10–50 · 20 lines · about 4 min · roles: B (Socialite), C (Crafter), 
 - **A:** "ok so housewarming saturday. bring furniture" / "saturday night, my lot. bring something to put in the house"
 - **C:** bringing a table, youre paying for the chairs
 - **B:** "i will bring my guild, they love a party" / "count me and the guild in"
-- **D:** "fine, i will come. but im telling you about spellcraft while im there" / "i will come and quietly judge your template choices"
+- **D:** "fine, but if i visit im telling you about spellcraft" / "if i visit i will quietly judge your template choices"
 - *(quiet for 20 seconds)*
 - **A:** "deal. dress code is your best dye job" / "wear your best dye, we take a group screenshot"
 - **E:** "i will find the way there eventually" / "if i get lost, someone send a search party"
@@ -11105,7 +11105,7 @@ Levels 30–50 · 24 lines · about 4 min · roles: B (Hero), C (Champion), D (B
 - **E:** "put all three in one group and stop arguing" / "a group with all three is a good group, honestly"
 - **A:** "hero tanks, champion debuffs, blademaster kills. everyone has a job" / "ok so everyone gets a job"
 - **B:** *(sometimes)* "and i get the job where things hit me, as usual" / "and i take the hits, like always"
-- **F:** "enough talk, emain isnt going to fight itself" / "anyway, who is riding out to emain"
+- **F:** "enough talk, emain isnt going to fight itself" / "anyway, emain needs people more than this thread"
 - **B:** "that settles it. heroes to the front" / "heroes first, see you out there"
 - **C:** "debuffs ready, someone call targets" / "heroes first, sure"
 
@@ -11790,7 +11790,7 @@ Levels 20–29 · 20 lines · about 4 min · roles: B (Bard), C (Daredevil), D (
 - *(quiet for 25 seconds)*
 - **A:** "anyway, the other realms will be back for more tomorrow" / "they will be back tomorrow, they always are"
 - **B:** "and we will be singing" / "and we will mez them again"
-- **C:** "count me in" / "i will be there"
+- **C:** "count me in" / "sounds fun, count me in"
 - **E:** "me too, i will try it" / "ok im going tomorrow"
 
 ### sh hib spraggon check
