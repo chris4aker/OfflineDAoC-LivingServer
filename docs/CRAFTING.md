@@ -167,10 +167,12 @@ Your world keeps every character's crafting. Exactly what you see:
 Crafter gamebots of your realm answer you by `/send` (and a `wtb ...` in `/trade`) from their real skill and the crafted
 pieces in their bag:
 
-- **"what do you make?"**: their title, skill and craft, what they make surely, and their stock with prices.
+- **"what do you make?"**: their title, skill and craft, what they make surely, and their stock with prices. A tell holds
+  160 characters: a long stock list comes as a second tell ("in stock: ..."), whole pieces only.
 - **"wtb chain hauberk lvl 23"**, **"can you make a studded helm"**, **"full leather set lvl 20"**: a price (materials plus
   the crafter's fee; less for a regular customer, materials only for a guildmate), when it will be ready and how you pay.
-  They say so when they cannot make it, and they never promise a quality.
+  They say so when they cannot make it, and they never promise a quality. A piece in their stock is offered instead only
+  when it is the piece you named (a stock piece that merely shares a word or two with it is not).
 - **"too much"**, **"how about 80s"**: a short haggle. **"deal"** takes the quote. **"ready?"** and **"cancel"** work too.
 - **Paying.** Up front: drag the coin onto the crafter when you are near it (only the price is taken); it is held until
   the piece is handed over and returned if it is not made in 6 hours (at your next login if you are offline then). On
@@ -178,7 +180,12 @@ pieces in their bag:
 - **Hand-over.** Gamebots craft and trade only at their natural task breaks, never during a hunt: when your piece is made
   the crafter tells you where it is; stand near it during its break and say "ready".
 - **Stock.** A piece it already holds you may buy at once, even while it hunts, if you stand next to it and it is not
-  fighting: see "Trading with gamebots" below.
+  fighting: see "Trading with gamebots" below. Say "deal" from afar and it tells you to catch it at its next break: the
+  agreement stands until half an hour after that break (say "yes" next to it then), but the piece is not set aside, so it
+  may be sold before you arrive.
+- **Finding crafters.** Ask in `/trade` ("wtb studded helm lvl 20"): the realm's best crafter in the game that can make it
+  answers by tell. The Camelot Herald (launcher) lists the top five crafters of each order. A GM's `/lscraft craft` lists
+  every crafter gamebot in the game with its order, skill, level and zone; `/lscraft crafter <name>` shows one.
 - A piece you ordered to pay on delivery and never collected stays the crafter's, and it will want your coin up front
   next time. Insult a crafter and it will not deal with you.
 

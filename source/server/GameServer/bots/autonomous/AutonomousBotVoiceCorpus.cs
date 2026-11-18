@@ -630,7 +630,24 @@ public sealed class AutonomousBotVoiceCorpus
             if (!after.Any(end => result.EndsWith(end, StringComparison.Ordinal)))
                 result += ".";
         }
-        return result.Length <= MaxLength ? result : result[..MaxLength];
+        return Fit(result);
+    }
+
+    /// <summary>
+    /// A line cut to <paramref name="max"/> characters without cutting a word: it ends at the last whole word that fits,
+    /// followed by "..." (plain ASCII: the 1.65 client's chat font is not trusted with the single ellipsis character).
+    /// A line that already fits is returned as it is. Seen on the owner's PC (build b1b6846, 2026-11-18): a crafter's
+    /// "what do you make?" answer was cut at 160 characters mid-word ("in stock: fine alloy except"). Pure.
+    /// </summary>
+    public static string Fit(string text, int max = MaxLength)
+    {
+        if (string.IsNullOrEmpty(text) || text.Length <= max)
+            return text;
+        const string more = "...";
+        int room = Math.Max(1, max - more.Length);
+        int cut = text.LastIndexOf(' ', Math.Min(room, text.Length - 1));
+        string head = (cut > 0 ? text[..cut] : text[..room]).TrimEnd(' ', ',', ';', ':', '.', '-');
+        return head + more;
     }
 
     /// <summary>Swaps two neighboring letters in one word of four or more letters.</summary>

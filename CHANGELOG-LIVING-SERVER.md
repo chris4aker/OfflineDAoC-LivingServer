@@ -8,6 +8,27 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Crafter replies and the crafter roster (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leofrunn, an Assistant Weaponcrafter at 499):
+- **"what do you make?" was cut mid-word** ("... in stock: fine alloy except"): every bot line is capped at 160 characters
+  (`AutonomousBotVoiceCorpus.MaxLength`) and the cap cut wherever it fell. The summary now fits its item list and stock
+  list, whole names only, to the room its longest line leaves; a material the names share is said once ("fine alloy
+  archmace, bardiche, needle mace"); a stock list that does not fit is said as "1 piece in stock" and listed whole in a
+  second tell. Any bot line still over the cap now ends at its last whole word with "..." instead of mid-word.
+- **"can you make a fine alloy needle mace" was answered with a different piece from stock** (a fine alloy exceptional
+  mace, which shares "fine alloy" and "mace") and the needle mace it makes was never quoted. A stock piece is now offered
+  only when it answers the request at least as well as the best piece the crafter makes; otherwise the named piece is
+  quoted as a commission.
+- **"deal" on a stock piece an hour before the crafter's break** got "catch me at my next break and ill trade it to u",
+  but the quote lapsed after 15 minutes and nothing was logged. The agreed sale now stands until half an hour after the
+  break the crafter named, and is logged (`ECON_PLAYER_ORDER outcome="stock_agreed"`, with `until=`). The piece is still
+  not set aside: if the crafter sells it first, there is nothing to trade at the break.
+- **`/lscraft craft` printed only "Crafter roster: registered."** It now lists each realm's crafter gamebots: how many,
+  how many are in the game, and those by name with their order, skill, level, zone and whether they are on a break or a
+  task (12 a realm, best skill first). The command's help line says so.
+- Tests: `UT_CrafterRepliesFit` (each case above, with every corpus summary line filled from the reply's slots).
+
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until

@@ -278,6 +278,12 @@ namespace DOL.GS.CraftingEconomy
             {
                 case CrafterTalk.Act.Quote:
                     Deals[key] = reply.Deal;
+                    // A stock sale agreed for the crafter's next break: kept in memory until then (CrafterTalk) and logged. The
+                    // piece is not set aside; if it is gone by then the crafter has nothing to open a trade with.
+                    if (reply.Topic == "craft_stock_meet" && reply.Deal?.Piece != null && Log.IsInfoEnabled)
+                        Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, ("outcome", "stock_agreed"), ("realm", bot.Realm), ("player", player.Name),
+                            ("crafter", bot.Name), ("crafterId", bot.DatabaseID), ("item", reply.Deal.Piece.Name), ("quality", reply.Deal.Piece.Quality),
+                            ("copper", reply.Deal.Ask), ("pay", "trade"), ("until", reply.Deal.UntilUtc.ToString("O", CultureInfo.InvariantCulture))));
                     break;
                 case CrafterTalk.Act.Haggle:
                     Deals[key] = reply.Deal;
@@ -405,6 +411,20 @@ namespace DOL.GS.CraftingEconomy
                 if (player.ObjectState == GameObject.eObjectState.Active)
                     SendTell(bot, player, text);
             });
+            // What did not fit one tell (the summary's stock list) follows as a second line, in the crafter's style.
+            string more = string.IsNullOrWhiteSpace(reply.More) ? null : MoreText(bot, reply.More);
+            if (more != null)
+                Schedule(bot, Math.Max(1, delayMs) + 1_500 + Math.Min(2_500, more.Length * 20), () =>
+                {
+                    if (player.ObjectState == GameObject.eObjectState.Active)
+                        SendTell(bot, player, more);
+                });
+        }
+
+        private static string MoreText(GameBot bot, string more)
+        {
+            try { return AutonomousBotVoiceCorpus.Fit(AutonomousBotVoices.StyleFor(bot, more)); }
+            catch { return AutonomousBotVoiceCorpus.Fit(more); }
         }
 
         public static string Voiced(GameBot bot, CrafterTalk.Reply reply)
@@ -414,11 +434,11 @@ namespace DOL.GS.CraftingEconomy
                 if (reply.Topic != null && AutonomousBotVoices.TryLine(bot, "craft_reply", out VC.Picked picked, topic: reply.Topic, slots: reply.Slots,
                         requireNeed: null) && !string.IsNullOrWhiteSpace(picked.Text))
                     return picked.Text;
-                return AutonomousBotVoices.StyleFor(bot, reply.Text);
+                return AutonomousBotVoiceCorpus.Fit(AutonomousBotVoices.StyleFor(bot, reply.Text));
             }
             catch
             {
-                return reply.Text;
+                return AutonomousBotVoiceCorpus.Fit(reply.Text);
             }
         }
 
