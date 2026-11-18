@@ -221,7 +221,8 @@ public class UT_ChatThirdPass
     {
         Assert.That(Budget.ReactionKind(text, "intent rvr", AutonomousChatIntentModel.Predict(text)), Is.EqualTo("alarm"));
         for (int seed = 0; seed < 10; seed++)
-            Assert.That(Budget.Rescue(Heard(text), "intent rvr", new SeededYes(seed)), Is.AnyOf("omw", "k", "on it", "otw"), text);
+            // 1.2 chat audit (DESIGN-006): no "omw" without the promise gate.
+            Assert.That(Budget.Rescue(Heard(text), "intent rvr", new SeededYes(seed)), Is.AnyOf("k", "k ty", "ugh, again", "ty", "not again"), text);
     }
 
     [Test]
@@ -250,7 +251,7 @@ public class UT_ChatThirdPass
             string thane = Budget.Rescue(Heard(text, "group"), "not sure", new SeededYes(seed));
             Assert.That(thane, Is.AnyOf("cant heal sry", "use a pot", "thane, no heals", "pot up!"), text);
             string druid = Budget.Rescue(Heard(text, "group", "Druid", heal: true), "not sure", new SeededYes(seed));
-            Assert.That(druid, Is.AnyOf("omw, where?", "where r u?", "on it"), text);
+            Assert.That(druid, Is.AnyOf("where?", "where r u?", "where are you?"), text);
         }
         Assert.That(Budget.ToContent(Tell(text), new Random(1)), Does.Contain("heal").And.Not.Contain("good"), "never 'nah im good ty' to a request");
     }

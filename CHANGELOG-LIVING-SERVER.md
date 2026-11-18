@@ -209,6 +209,33 @@ The voice layer, the corpus builder and the ambient corpus (chat audit E3; none 
   banned (owner: "Swearing is fine"); slurs, sexual content and politics still are. `preview.py` and SAMPLE.md show the
   server's real styles.
 
+## Bot chat audit fixes (1.2, 2026-11-18; tests only)
+
+Reading and replies (the chat audit's E1 items; unit tests only, none seen on the owner's PC yet):
+- **Read right:** "sorry guys dumb question", "ur not stupid", "my guild leader is an idiot" are no longer abuse that bots
+  remember; "no ding yet", "he is afk", "dont rez me", "is the inc over", "im out of power" are no longer answered as the
+  ding, the brb, the rez, the call or the goodbye; "stock up on arrows" is game talk; "albs inc from the south", "4 mids
+  on the bridge", "rams on the door at crim" are calls; "ttyl", "bbl", "signing off", "bak", "back in 5" are read. On the
+  design auditor's fresh 780-line set: positive lines 73.7% -> 85.4% (the held-out third, never tuned on: 71.4% -> 76.2%);
+  lines kept clear of a wrong reading 60.7% -> 92.7%.
+- **The group's questions:** "where we headed?", "what next", "whats the plan" have their answers; "ready?", "we pulling?",
+  "is the healer oom", "how much power you got" are answered from the bot's real power and health.
+- **Never lost:** a question without its "?" and a line that names a bot pass the reply cooldown; a named bot that is
+  fighting answers when free, in /faction and /say; a tell waits 90 s for a busy bot, which says "sec, fighting" once; a
+  quick second tell is queued; a reply to a tell or a named line is typed in 12 s at most; every dropped line is recorded
+  for `/lswhy me` with a reason code.
+- **No false promises:** every "omw", "coming", "ill be there", "healing" said to a player goes through one gate
+  (`ChatPromises.TryPromiseCome`, the duty that sends the bot); a bot the gate refuses reacts instead ("how many?",
+  "where are you?", "might make it").
+- **Threads in a busy channel:** an answer finds the question it answers past other lines (said to the player, or sharing
+  its words); an answer with other lines between names the asker; a closing after more than two such lines is dropped; a
+  bot's question that bots answered is closed; a bot's written question ("frontier later?") is answered; a price check is
+  answered as one, not as a sale; a closing after "no idea" is thanks anyway, and a tell's closing fits what the player
+  said about themselves; bot alarms are not asked what they said.
+- **Fairer answers:** thread answers spread over the realm's regulars (one rests 90 s after answering); a player's spec
+  question gets the spec answers bots give each other.
+- **/lswhy** reads plainly for players (codes, rules and scores for GMs); an event's reactions show as exempt, not held.
+
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until

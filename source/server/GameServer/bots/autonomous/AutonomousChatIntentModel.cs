@@ -94,14 +94,37 @@ public static partial class AutonomousChatIntentModel
 
     private static readonly HashSet<string> HardOutOfWorld = new(StringComparer.OrdinalIgnoreCase)
     {
-        "politics", "political", "president", "election", "congress", "democrat", "republican", "government",
-        "trump", "biden", "bitcoin", "crypto", "stock", "stocks", "football", "basketball", "netflix",
-        "twitter", "facebook", "instagram", "tiktok", "reddit", "headline", "headlines", "taxes", "yankees", "nfl", "nba",
+        "politics", "political", "president", "presidential", "congress", "democrat", "republican",
+        "trump", "biden", "bitcoin", "crypto", "netflix",
+        "twitter", "facebook", "instagram", "tiktok", "reddit", "headline", "headlines", "yankees", "nfl", "nba",
         "mlb", "nhl", "superbowl", "senate", "senator", "mortgage",
     };
 
-    /// <summary>Insults; abuse needs one aimed at someone ("you idiot", "ur garbage"), so "dumb question" or "this camp
-    /// is garbage" is not an insult (0.36-se.4: insults are remembered by bots).</summary>
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-011, CORPUS-C-017): words that are real-world talk only with a second real-world word ("taxes"
+    /// alone is a player's complaint about the bills, "government" a guild's joke). "stock" and "stocks" left the hard list:
+    /// "what do you have in stock" and "stock up on arrows" are game talk (crafters say "in stock: ..."), and the sports words
+    /// too (a remark about the game last night is real-life talk players had, answered in kind). "stock market" stays.
+    /// </summary>
+    private static readonly HashSet<string> SoftOutOfWorld = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "taxes", "government", "election", "football", "basketball", "vote", "voting", "campaign",
+    };
+
+    /// <summary>True for a line about the real world the bots stay out of (the hard words, a soft word with a second one, "stock market").</summary>
+    internal static bool IsOutOfWorld(string text, IReadOnlyCollection<string> tokens)
+    {
+        if (tokens.Any(HardOutOfWorld.Contains))
+            return true;
+        string padded = " " + string.Join(' ', tokens) + " ";
+        if (padded.Contains(" stock market ", StringComparison.Ordinal) || padded.Contains(" stocks and ", StringComparison.Ordinal))
+            return true;
+        return tokens.Where(SoftOutOfWorld.Contains).Distinct(StringComparer.OrdinalIgnoreCase).Count() >= 2;
+    }
+
+    /// <summary>Insults; abuse needs one aimed at the listener ("you idiot", "ur garbage"), so "dumb question" or "this camp
+    /// is garbage" is not an insult (0.36-se.4: insults are remembered by bots). 1.2 (DESIGN-001): every one of them, not only
+    /// the weak ones, must follow "you"/"ur" ("ppl say spiritmasters are useless in groups" is about a class).</summary>
     private static readonly HashSet<string> Insults = new(StringComparer.OrdinalIgnoreCase)
     {
         "dumb", "idiot", "idiots", "moron", "morons", "garbage", "worthless", "pathetic", "loser", "losers", "stupid",
@@ -110,20 +133,56 @@ public static partial class AutonomousChatIntentModel
         "suck", "noob", "newb", "clown",
     };
 
-    private static readonly HashSet<string> Targets = new(StringComparer.OrdinalIgnoreCase)
+    /// <summary>Always abuse, whoever it is aimed at.</summary>
+    private static readonly HashSet<string> HardAbuse = new(StringComparer.OrdinalIgnoreCase) { "stfu", "shutup", "l2p" };
+
+    /// <summary>
+    /// Name-calling that is abuse on its own ("idiot", "moron lol", "what an idiot") unless the line says who is meant and it is
+    /// not the listener (1.2 chat audit, DESIGN-001: "my guild leader is an idiot but i like him", "that idiot pulled the whole
+    /// room, not you" read as abuse of the bot, which then remembered it).
+    /// </summary>
+    private static readonly HashSet<string> NameCalling = new(StringComparer.OrdinalIgnoreCase)
+        { "idiot", "idiots", "moron", "morons", "dumbass" };
+
+    /// <summary>The thing an insult word describes, when it comes next: "dumb question", "stupid lag", "dumb luck" (DESIGN-001).</summary>
+    private static readonly HashSet<string> DescribedThings = new(StringComparer.OrdinalIgnoreCase)
     {
-        "you", "u", "ur", "your", "youre", "you're", "yall", "everyone", "everybody", "guys", "ppl", "people", "all",
+        "question", "questions", "idea", "ideas", "luck", "lag", "mob", "mobs", "quest", "quests", "cat", "dog", "game", "patch", "pull",
+        "pulls", "thing", "things", "mistake", "move", "bug", "server", "client", "computer", "pc", "keyboard", "mouse", "mez", "spell",
+        "zone", "camp", "drop", "drops", "loot", "item", "armor", "armour", "weapon", "pet", "horse", "boat", "door", "wall", "rule",
+        "rules", "name", "joke", "of", "for", "to", "about", "in", "at", "on", "with", "named", "boss", "add", "adds", "train",
     };
 
-    /// <summary>Always abuse, whoever it is aimed at.</summary>
-    private static readonly HashSet<string> HardAbuse = new(StringComparer.OrdinalIgnoreCase)
-        { "stfu", "shutup", "idiot", "idiots", "moron", "morons", "l2p", "dumbass" };
+    /// <summary>
+    /// "you idiot", "ur so dumb", "you are all pathetic", "u r such a loser": an insult word aimed at the listener. Not with
+    /// "not" between ("ur not stupid"), and not when the next word is what it describes ("can i ask you a stupid question").
+    /// </summary>
+    private static bool AimedAtListener(string[] words, int i)
+    {
+        static bool Target(string word) => word is "you" or "u" or "ur" or "youre" or "you're" or "yall";
+        return i >= 1 && Target(words[i - 1]) ||
+               i >= 2 && Target(words[i - 2]) && words[i - 1] is "are" or "r" or "so" or "such" or "is" or "look" or "smell" or "a" or "an" or "all" ||
+               i >= 3 && Target(words[i - 3]) && words[i - 2] is "are" or "r" or "is" or "all" && words[i - 1] is "so" or "such" or "really" or "just" or "all" or "a" or "an" ||
+               i >= 4 && Target(words[i - 4]) && words[i - 3] is "are" or "r" && words[i - 2] is "such" or "really" or "so" or "all" or "just" && words[i - 1] is "a" or "an";
+    }
 
-    /// <summary>Words that are insults only right after "you"/"ur" ("you are terrible", not "terrible lag for everyone").</summary>
-    private static readonly HashSet<string> WeakInsults = new(StringComparer.OrdinalIgnoreCase)
-        { "trash", "awful", "terrible", "garbage", "ugly", "suck", "noob", "newb", "clown",
-          // The holdout check: "ppl say spiritmasters are useless in groups, agree?" is about a class, not an insult.
-          "useless" };
+    /// <summary>"not", "isnt", "never" within two words before: "ur not stupid", "you are not a loser" (DESIGN-001).</summary>
+    private static bool NegatedBefore(string[] words, int i) =>
+        i >= 1 && IsNegation(words[i - 1]) || i >= 2 && IsNegation(words[i - 2]) || i >= 3 && IsNegation(words[i - 3]) && words[i - 1] is "a" or "an" or "so" or "that";
+
+    internal static bool IsNegation(string word) => word is "not" or "isnt" or "arent" or "aint" or "never" or "no" or "dont" or "didnt" or "wasnt" or
+        "werent" or "doesnt" or "nobody" or "nothing" or "neither" or "nor" or "cant";
+
+    /// <summary>A first- or third-person subject before the word: "my guild leader is an idiot", "that idiot", "im so stupid" (DESIGN-001).</summary>
+    private static bool OtherSubjectBefore(string[] words, int i)
+    {
+        for (int j = 0; j < i; j++)
+            if (words[j] is "my" or "his" or "her" or "their" or "our" or "that" or "the" or "this" or "these" or "those" or "im" or "i" or "he" or "she" or
+                    "hes" or "shes" or "they" or "theyre" or "him" or "them" or "someone" or "somebody" or "some" or "whoever" or "anyone" or "people" or
+                    "ppl" or "everyone" or "everybody" or "says" or "say" or "said" or "called" or "call")
+                return true;
+        return false;
+    }
 
     private static bool IsAbuse(string[] words)
     {
@@ -140,28 +199,44 @@ public static partial class AutonomousChatIntentModel
                 // Beta 1.1.2 (blind round 1: read as banter or a question): "ks much?", "stop ksing my camp jerk", "omg ur so bad",
                 // "u r teh suck lol", "gg albs, way to zerg", "can u not stand in the fire", a lone "noob" said to someone.
                 "ks much", "stop ksing", "quit ksing", "stop ks", "ksing my", "ks er", "kser", "ur so bad", "you re so bad", "youre so bad", "u r so bad",
-                "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob"))
-            return true;
-        if (!words.Any(Targets.Contains))
-            return false;
+                "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob",
+                // 1.2 chat audit: "what a loser", "you are a waste of space", "everyone here is awful".
+                "what a loser", "what an idiot", "what a moron", "what a noob", "waste of space", "waste of air", "everyone here is", "everybody here is",
+                "all of you are", "you all are", "you guys are", "you people are", "yall are"))
+        {
+            // "everyone here is" and "you guys are" are abuse only with an insult after them ("everyone here is nice" is not).
+            if (!AutonomousChatShortTalk.HasPhrase(words, "everyone here is", "everybody here is", "all of you are", "you all are", "you guys are",
+                    "you people are", "yall are") || words.Any(word => Insults.Contains(word) || NameCalling.Contains(word)) ||
+                words.Any(HardAbuse.Contains) || AutonomousChatShortTalk.HasPhrase(words, "shut up", "u suck", "you suck", "waste of space", "what a loser",
+                    "what an idiot", "what a moron", "what a noob", "ur the worst", "you are the worst", "learn to play"))
+                return !NegatedAt(words);
+        }
         for (int i = 0; i < words.Length; i++)
         {
-            if (!Insults.Contains(words[i]))
+            bool nameCalling = NameCalling.Contains(words[i]);
+            if (!nameCalling && !Insults.Contains(words[i]))
                 continue;
-            // "are you a noob friendly guild?", "u a newb too? just started" (review 2026-10-26)
-            if (i + 1 < words.Length && words[i + 1] is "friendly" or "too" or "like" or "guild" or "here" or "also" or "myself" or "either" or "zone" or "area")
+            // "are you a noob friendly guild?", "u a newb too? just started" (review 2026-10-26); "dumb question", "stupid lag" (1.2).
+            if (i + 1 < words.Length && (words[i + 1] is "friendly" or "too" or "like" or "guild" or "here" or "also" or "myself" or "either" or "area" ||
+                                         DescribedThings.Contains(words[i + 1])))
                 continue;
-            if (!WeakInsults.Contains(words[i]))
+            if (NegatedBefore(words, i))
+                continue;
+            // 1.2 (DESIGN-001): every insult word must be aimed at the listener ("you idiot", "ur so stupid"); "sorry guys dumb
+            // question", "im so stupid, sorry all" and "stupid lag, did you all freeze too" are not abuse.
+            if (AimedAtListener(words, i))
                 return true;
-            // "youre trash", "you are terrible", "ur so awful" (not "where do u sell trash loot")
-            static bool Target(string word) => word is "you" or "u" or "ur" or "youre" or "you're" or "yall";
-            if (i >= 1 && Target(words[i - 1]) ||
-                i >= 2 && Target(words[i - 2]) && words[i - 1] is "are" or "r" or "so" or "such" or "is" or "look" or "smell" or "a" ||
-                i >= 3 && Target(words[i - 3]) && words[i - 2] is "are" or "r" && words[i - 1] is "so" or "such" or "really" or "just")
+            // Name-calling said alone ("idiot", "moron lol", "what an idiot") is aimed at whoever heard it, unless the line says who.
+            if (nameCalling && !OtherSubjectBefore(words, i) && words.Length <= 4)
                 return true;
         }
         return false;
     }
+
+    /// <summary>"ur not the worst", "you dont suck": the abusive phrase negated.</summary>
+    private static bool NegatedAt(string[] words) =>
+        AutonomousChatShortTalk.HasPhrase(words, "not the worst", "dont suck", "don t suck", "not a waste", "not a loser", "not an idiot", "not so bad",
+            "not that bad", "arent so bad", "arent that bad", "not bad");
 
     /// <summary>Words that carry no topic; the classifier ignores them ("are" made "yellow cons are for warming up" read as abuse).</summary>
     private static readonly HashSet<string> StopWords = new(StringComparer.OrdinalIgnoreCase)
@@ -200,7 +275,7 @@ public static partial class AutonomousChatIntentModel
         string[] words = Words(text);
         if (words.Length == 0)
             return AutonomousChatShortTalk.TryRead(text, words, out eAutonomousChatIntent symbols) ? symbols : eAutonomousChatIntent.Unknown;
-        if (tokens.Any(HardOutOfWorld.Contains))
+        if (IsOutOfWorld(text, tokens))
             return eAutonomousChatIntent.IgnoreOutOfWorld;
         if (IsAbuse(words) || words.Length == 1 && words[0] is "noob" or "n00b" or "newb" or "nub" or "jerk" or "loser" ||
             words.Length <= 6 && words.Contains("jerk"))

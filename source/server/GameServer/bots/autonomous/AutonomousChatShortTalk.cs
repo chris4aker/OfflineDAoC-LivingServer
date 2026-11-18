@@ -19,18 +19,19 @@ public static class AutonomousChatShortTalk
         "thks", "ta", "tyfr", "cheers", "appreciated");
     private static readonly HashSet<string> CongratsWords = Set("gz", "grats", "gratz", "grtz", "congrats", "congratulations",
         "gratss", "gzz", "grats!");
-    private static readonly HashSet<string> AwayWords = Set("brb", "afk", "bio", "brt");
-    private static readonly HashSet<string> BackWords = Set("back", "re", "bk", "rebuffed");
+    // 1.2 chat audit (DESIGN-047): "bbiab", "bbs", "bak", "returned", "ttyl", "bbl", "ttfn" were read as nothing.
+    private static readonly HashSet<string> AwayWords = Set("brb", "afk", "bio", "brt", "bbiab", "bbs");
+    private static readonly HashSet<string> BackWords = Set("back", "re", "bk", "rebuffed", "bak", "returned");
     private static readonly HashSet<string> FarewellWords = Set("gn", "gnight", "goodnight", "nite", "bye", "byebye", "cya", "cu",
-        "laters", "gtg", "g2g", "farewell", "nn");
+        "laters", "gtg", "g2g", "farewell", "nn", "ttyl", "bbl", "ttfn");
     private static readonly HashSet<string> GreetingWords = Set("hi", "hello", "hey", "heya", "hiya", "yo", "hail", "sup", "greetings",
-        "howdy", "hallo", "hiho", "evening", "morning", "afternoon", "o", "evenin", "mornin", "morn", "eve", "hiya", "hallo", "salut", "hola");
+        "howdy", "hallo", "hiho", "evening", "morning", "afternoon", "o", "evenin", "mornin", "morn", "eve", "hiya", "hallo", "salut", "hola", "ello");
     private static readonly HashSet<string> GreetingObjects = Set("all", "everyone", "everybody", "guys", "folks", "realm", "there",
         "ppl", "people", "friends", "yall", "albion", "midgard", "hibernia", "albs", "mids", "hibs", "guild", "again", "back", "peeps", "gang",
         "folk", "lads", "ladies", "team", "crew", "fam", "everyone", "mates", "all");
     private static readonly HashSet<string> LaughWords = Set("lol", "lolol", "lololol", "lmao", "rofl", "roflmao", "haha", "hahaha",
         "hehe", "heh", "hah", "ha", "lul", "xd", "hehehe", "ahaha", "lawl", "kek", "gg", "omg", "wow", "nice");
-    private static readonly HashSet<string> RezWords = Set("rez", "res", "rezz", "rezzes", "ress", "resurrect", "resurrection");
+    private static readonly HashSet<string> RezWords = Set("rez", "res", "rezz", "rezzes", "ress", "resurrect", "resurrection", "rezzer", "rezzers");
     private static readonly HashSet<string> AlarmWords = Set("inc", "incs", "incoming");
     private static readonly HashSet<string> TradeWords = Set("wts", "wtb", "wtt", "pc", "selling", "buying", "sell", "buy",
         "price", "trade", "trading", "auction", "plat", "craft", "crafter", "crafting", "crafted", "spellcraft", "spellcrafter",
@@ -41,7 +42,9 @@ public static class AutonomousChatShortTalk
         "hadrian", "odins", "mg", "amg", "hmg", "mmg", "milegate", "stealther", "stealthers", "rps", "rp", "rr", "thid", "thidranki",
         "abermenai", "murdaigean", "caledonia", "cathal", "bg", "battleground", "siege", "realmpoints", "zerg", "zergs", "zerging",
         "benowyc", "berkstead", "boldiam", "bledmeer", "crauchon", "crimthainn", "nottmoor", "glenlock", "renaris", "erasleigh",
-        "sursbrooke", "hurbury", "blendrake", "arvakr", "fensalir", "hlidskialf", "nottmoor", "bolg", "ailline", "behnn", "scathaig");
+        "sursbrooke", "hurbury", "blendrake", "arvakr", "fensalir", "hlidskialf", "nottmoor", "bolg", "ailline", "behnn", "scathaig",
+        // 1.2 chat audit: the short keep names players typed ("lets take bled", "we lost beno again"), and keep talk.
+        "beno", "berk", "bled", "crim", "crau", "nott", "keeps", "defending", "defenders");
     private static readonly HashSet<string> DungeonWords = Set("dungeon", "dungeons", "tomb", "cave", "caves", "caverns",
         "barrows", "den", "lair", "spindelhalla", "spindel", "varulvhamn", "varulv", "df", "darkness", "treibh", "coruscating",
         "keltoi", "fogou", "tepok", "tepoks", "mithra", "vendo", "nisse", "nisses", "muire", "spraggon", "koalinth", "catacombs");
@@ -91,6 +94,20 @@ public static class AutonomousChatShortTalk
     public static string[] ClassWordsIn(string text) =>
         AutonomousChatIntentModel.Words(text).Where(ClassWords.Contains).Distinct().ToArray();
 
+    /// <summary>
+    /// "anyone know a good paladin spec?", "how should i spec my zerk", "what do i put points in on a thane": a question about how to
+    /// spec a class (1.2 chat audit, CORPUS-C-003, LOG-027: it drew a remark, "paladins have so many chants"). Pure.
+    /// </summary>
+    public static bool AsksSpec(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string[] words = AutonomousChatIntentModel.Words(text);
+        bool specWord = words.Any(word => word is "spec" or "specs" or "respec" or "build" or "specced") || HasPhrase(words, "points in", "put points", "spend points", "spend my points");
+        bool asks = text.Contains('?') || AutonomousChatQuestions.IsQuestion(text) || HasPhrase(words, "anyone know", "any tips", "any advice", "how should i", "how do i", "what should i");
+        return specWord && asks && !HasPhrase(words, "spec is", "specced into", "i specced", "my spec is", "nerf");
+    }
+
     /// <summary>True when a text names any class.</summary>
     public static bool NamesAClass(string text) => AutonomousChatIntentModel.Words(text).Any(ClassWords.Contains);
 
@@ -121,6 +138,25 @@ public static class AutonomousChatShortTalk
         return words.Length <= 5 && HasPhrase(words, "anyone on", "anybody on", "any1 on", "anyone here", "anybody here", "anyone around",
             "anybody around", "anyone awake", "anyone online", "anybody online", "who is on", "whos on", "whos around", "who is around",
             "anyone still on", "anyone still up", "anyone up");
+    }
+
+    /// <summary>
+    /// "ready?", "rdy?", "everyone ready", "we pulling or what", "is the healer oom", "how much power you got": a question about
+    /// whether the group can go on (1.2 chat audit, DESIGN-005). Pure.
+    /// </summary>
+    public static bool AsksReady(string[] words, string text)
+    {
+        if (words.Length == 0 || words.Length > 7)
+            return false;
+        bool asks = (text ?? string.Empty).Contains('?') || words[0] is "everyone" or "every1" or "all" or "u" or "you" or "we" or "is" or "are" or "r" or "how" or "hows";
+        if (words.Length <= 3 && words.All(word => word is "ready" or "rdy" or "rdy2" or "everyone" or "every1" or "all" or "u" or "you" or "guys" or "we" or "yet" or "r" or "are" or "to" or "go" or "pull") &&
+            words.Any(word => word is "ready" or "rdy") && asks)
+            return true;
+        return HasPhrase(words, "everyone ready", "every1 ready", "all ready", "everybody ready", "are we ready", "r we ready", "ready to pull", "rdy to pull",
+                   "ready for the pull", "ready to go", "we pulling", "are we pulling", "r we pulling", "can we pull", "ok to pull", "good to pull",
+                   "u oom", "you oom", "anyone oom", "is the healer oom", "healer oom", "how much power", "how much pow", "how much mana",
+                   "hows ur pow", "hows your pow", "how is your power", "hows ur power", "hows your power", "how is everyone on power", "hows everyone on pow",
+                   "everyone got pow", "everyone have power", "u got pow", "you got pow", "need to med") && asks && !HasPhrase(words, "how much for", "how much is", "how much are");
     }
 
     /// <summary>The question type a player's line asks, answered from that reply set before replies by topic: "ask_howareyou",
@@ -205,13 +241,25 @@ public static class AutonomousChatShortTalk
         if (HasPhrase(words, "how close are you to", "how close r u to", "how close is everyone to", "how far to your next level"))
             return "ask_xp";
         // "where to next?" in a group: the next hunt, not directions (live test 2026-10-18).
+        // 1.2 chat audit (DESIGN-005): "where we headed?", "where to?", "what next", "next camp?" were read as nothing, and in a
+        // group fell to "dunno" (docs/PLAYED-CHECK-1.2.md: "where we headed?" drew no answer).
         if (HasPhrase(words, "where to next", "where now", "where next", "where are we heading", "where are we going", "where should we go",
-                "where should we head", "where we going", "where we heading"))
+                "where should we head", "where we going", "where we heading", "where we headed", "where are we headed", "where r we going",
+                "where r we headed", "where r we heading", "where we off to", "where are we off to", "what next", "whats next", "what is next",
+                "next camp", "where to now") ||
+            words.Length <= 3 && HasPhrase(words, "where to"))
             return "ask_next";
         // "what are you up to?" in /gu drew "lol what" (live test of 0.37-se.1, 2026-10-18): what the bot is doing now, or,
         // with "tonight" or "later", its plans.
-        if (HasPhrase(words, "what are we doing", "what are we up to", "what r we doing", "what r we up to"))
+        if (HasPhrase(words, "what are we doing", "what are we up to", "what r we doing", "what r we up to", "whats the plan", "what is the plan",
+                "whats the plan tonight", "whats our plan", "what is our plan", "any plans tonight"))
             return "ask_plans";
+        // 1.2 chat audit (DESIGN-005, DESIGN-041): "ready?", "everyone ready", "we pulling or what", "is the healer oom", "how much
+        // power you got": the group's readiness, answered from the bot's real power and health (AutonomousChatContext).
+        if (AsksReady(words, text))
+            return "ask_ready";
+        if (HasPhrase(words, "who is pulling", "whos pulling", "who s pulling", "who pulls", "who is pulling next", "whos gonna pull", "who wants to pull"))
+            return "ask_who_pulls";
         if (HasPhrase(words, "what are you up to", "what r u up to", "what are u up to", "what you up to", "what u up to",
                 "what are you doing", "what r u doing", "what are u doing", "what you doing", "whatcha doing", "wyd",
                 "what is everyone up to", "whats everyone up to", "what is everyone doing", "whats everyone doing",
@@ -255,7 +303,9 @@ public static class AutonomousChatShortTalk
                 "whats going on in emain", "whats happening in emain", "hows rvr tonight", "any rvr tonight", "anything in rvr"))
             return "ask_enemy";
         if (HasPhrase(words, "how much", "price check", "pc on", "what do they go for", "what does it go for", "what do these go for",
-                "what are they worth", "what is it worth") || words.Contains("worth") && HasPhrase(words, "what is", "whats", "what are"))
+                "what are they worth", "what is it worth") || words.Contains("worth") && HasPhrase(words, "what is", "whats", "what are") ||
+            // "pc thrustbender mantle?": a price check (1.2 chat audit, CORPUS-C-007), not "pc crashed".
+            words.Length is > 1 and <= 6 && words[0] == "pc" && words[1] is not ("crashed" or "died" or "froze" or "is" or "keeps" or "broke" or "broken"))
             return "ask_price";
         if (!words.Any(GroupWords.Contains) && HasPhrase(words, "anyone want to", "anyone wanna", "anyone going", "anyone up for",
                 "anyone feel like", "anybody want to", "anybody wanna", "anybody going", "anybody up for", "any1 want to", "any1 wanna",
@@ -626,6 +676,9 @@ public static class AutonomousChatShortTalk
         if (string.IsNullOrWhiteSpace(text) || text.Contains('?'))
             return false;
         string[] words = AutonomousChatIntentModel.Words(text);
+        // "see ya", "see you all": a goodbye, not an acknowledgement (1.2 chat audit, DESIGN-047).
+        if (HasPhrase(words, "see ya", "see you", "see u", "see yas"))
+            return false;
         return words.Length is > 0 and <= 5 && Only(words, AckWords) && !words.All(word => word is "i" or "me" or "is" or "was" or "here" or "see");
     }
 
@@ -705,6 +758,17 @@ public static class AutonomousChatShortTalk
                 "no idea what its worth", "upgrade for an alt", "not my class", "no clue on pc", "depends who is buying", "check the exchange",
                 "a crafter can"))
             return false;
+        // 1.2 chat audit (CORPUS-C-053): an alarm that names its place, count or classes is not asked them back ("where?", "how
+        // many?", "what classes?" to "inc 8 mids at bled, 2 sbs").
+        if (AutonomousChatReplyBudget.IsAlarm(incoming, eAutonomousChatIntent.Unknown) || AutonomousChatIntentModel.Predict(incoming) == eAutonomousChatIntent.Alarm)
+        {
+            if (HasPhrase(words, "where", "where at", "which keep", "which way", "where exactly", "where are they", "wheres that") && AutonomousChatContext.CallNamesAPlace(incoming))
+                return false;
+            if (HasPhrase(words, "how many", "how big", "how many of them") && AutonomousChatContext.CallSaysHowMany(incoming))
+                return false;
+            if (HasPhrase(words, "what classes", "what class", "which classes", "what are they", "what kind") && NamesAClass(incoming))
+                return false;
+        }
         bool asksPrice = HasPhrase(said, "how much", "price check", "pc on") || said.Contains("worth");
         if (asksPrice && (HasPhrase(words, "how much", "whats the price", "what are you asking", "what price") || replyText == "price"))
             return false;
@@ -727,6 +791,130 @@ public static class AutonomousChatShortTalk
         "so" or "very" or "again" or "now" or "ok" or "k" or "kk" or "np" or "and" or "everyone" or "for" or "the" or "a" or
         "that" or "it" or "im" or "i'm" or "i" or "am" or "all" or "m8" or "mate" or "bud" or "buddy" or "friend" or "sir" or
         "bro" or "too" or "lol" or "heh" or "haha" or ":)" or "x" or "xx" or "o";
+
+    /// <summary>The index of the first word in <paramref name="set"/>, or -1.</summary>
+    private static int IndexIn(string[] words, HashSet<string> set) => Array.FindIndex(words, set.Contains);
+
+    /// <summary>The word index where the first of the phrases starts, or -1.</summary>
+    internal static int PhraseIndex(string[] words, params string[] phrases)
+    {
+        int best = -1;
+        foreach (string phrase in phrases)
+        {
+            string[] parts = phrase.Split(' ');
+            for (int i = 0; i + parts.Length <= words.Length; i++)
+            {
+                bool match = true;
+                for (int j = 0; j < parts.Length && match; j++)
+                    match = words[i + j] == parts[j];
+                if (match)
+                {
+                    if (best < 0 || i < best)
+                        best = i;
+                    break;
+                }
+            }
+        }
+        return best;
+    }
+
+    private static readonly HashSet<string> EnemyPeople = Set("albs", "mids", "hibs", "alb", "mid", "hib", "enemies", "enemy", "they", "zerg",
+        "zergs", "stealthers", "assassins");
+
+    /// <summary>Keep names and the short forms players typed ("beno", "berk", "crim"), for "they are hitting bold".</summary>
+    private static readonly HashSet<string> KeepWords = Set("benowyc", "beno", "berkstead", "berk", "boldiam", "bold", "bledmeer", "bled",
+        "crauchon", "crau", "crimthainn", "crim", "nottmoor", "nott", "glenlock", "glen", "renaris", "erasleigh", "sursbrooke", "hurbury",
+        "blendrake", "arvakr", "fensalir", "hlidskialf", "ailline", "behnn", "scathaig", "bolg", "keep", "relic", "gate", "door", "lord", "walls",
+        "wall", "milegate", "mg", "amg", "mmg", "hmg", "pk", "dock", "bridge");
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-009): plain calls without "inc": "4 mids on the bridge", "hibs everywhere at dc", "mids taking berk",
+    /// "rams on the door at crim", "they are hitting bold", "relic keep is being hit", "sb just jumped me at the dock", "big group
+    /// of hibs heading to emain", "they are in the keep". Pure.
+    /// </summary>
+    private static bool EnemyCall(string[] words)
+    {
+        string line = string.Join(' ', words);
+        if (System.Text.RegularExpressions.Regex.IsMatch(line,
+                @"\b\d+\+? ?(albs?|mids?|hibs?|enemies|stealthers|assassins) (on|at|by|near|in|inside|outside|heading|coming|going|moving|running|hitting|taking)\b|" +
+                @"\b(albs|mids|hibs|enemies|zerg) (are )?(taking|hitting|inside|everywhere|sieging|attacking|swarming|camping|all over|in our|at our|on our)\b|" +
+                @"\b(albs|mids|hibs|enemies|zerg|enemy) (are )?(heading|moving|coming|going|running|pushing) (to|for|towards|toward|into|at|on)\b|" +
+                @"\brams? (on|at|up|hitting)\b|\bbeing (hit|attacked|sieged|rammed|taken)\b|\bjumped me\b|" +
+                @"\b(they|theyre|they re) (are )?(in|inside|at|on|hitting|taking|sieging|attacking) (the |our )?"))
+        {
+            // "they are in the keep", "they are hitting bold": only about a keep, a gate, a relic or the like.
+            if (System.Text.RegularExpressions.Regex.IsMatch(line, @"^(they|theyre|they re) ") && !words.Any(KeepWords.Contains))
+                return false;
+            // "jumped me" from an assassin or a stealther only ("the cat jumped me" is no call).
+            if (line.Contains("jumped me") && !words.Any(word => word is "sb" or "ns" or "infil" or "infiltrator" or "nightshade" or "shadowblade" or
+                    "assassin" or "stealther" or "stealthers" or "albs" or "mids" or "hibs" or "alb" or "mid" or "hib" or "zerg" or "scout" or "hunter" or "ranger"))
+                return false;
+            return true;
+        }
+        return words.Any(word => word is "hitting" or "attacking" or "sieging" or "taking") && words.Any(KeepWords.Contains) &&
+               words.Any(EnemyPeople.Contains);
+    }
+
+    private static readonly HashSet<string> ThirdPersons = Set("he", "she", "they", "hes", "shes", "theyre", "him", "nobody", "noone");
+
+    /// <summary>Words a question starts with when it has no "?" ("who is afk", "when do you ding").</summary>
+    private static readonly HashSet<string> QuestionStarts = Set("who", "whos", "when", "where", "wheres", "is", "did", "does", "do", "was",
+        "were", "will", "why", "what", "how");
+
+    private static readonly HashSet<string> AskWords = Set("when", "who", "whos", "what", "whats", "where", "wheres", "how", "hows", "did", "does",
+        "do", "is", "was", "were", "why", "will", "any");
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-010): the social word at <paramref name="at"/> is talked about, not done: negated just before it
+    /// ("no ding yet", "dont rez me", "dont say gz yet", "nobody say gn"), short of it ("almost ding", "3 bubs from ding"), said
+    /// of someone else ("he dinged, not me", "he is afk", "did he say thanks?"), or the thing a question asks about ("when do you
+    /// ding", "who is afk", "is the inc over"). <paramref name="ask"/> are the question words that make it the object of a
+    /// question; null for the default set. Pure.
+    /// </summary>
+    internal static bool AboutTheAct(string[] words, int at, bool question, HashSet<string> ask = null)
+    {
+        if (at < 0)
+            return false;
+        for (int j = Math.Max(0, at - 3); j < at; j++)
+            if (AutonomousChatIntentModel.IsNegation(words[j]) || j == at - 1 && words[j] is "almost" or "nearly" or "from" or "till" or "until" or "before" or "til")
+                return true;
+        for (int j = 0; j < at; j++)
+            if (ThirdPersons.Contains(words[j]))
+                return true;
+        // "what a group, ty all", "how nice, thanks": an exclamation, no question.
+        bool asked = question || words.Length > 1 && QuestionStarts.Contains(words[0]) && (ask ?? AskWords).Contains(words[0]) &&
+                     !(words[0] is "what" or "how" && words[1] is "a" or "an" or "nice" or "cool" or "sweet" or "great" or "kind");
+        if (asked)
+            for (int j = 0; j < at; j++)
+                if ((ask ?? AskWords).Contains(words[j]))
+                    return true;
+        return false;
+    }
+
+    private static readonly HashSet<string> NoAskWords = Set();
+    private static readonly HashSet<string> RezAskWords = Set("when", "what", "whats", "how", "why", "does", "did");
+    private static readonly HashSet<string> AlarmAskWords = Set("is", "was", "were", "where", "wheres", "when", "did", "any", "how", "what", "whats");
+
+    /// <summary>"im out" is a goodbye at the end or before a comma, never "im out of power" (DESIGN-010). Pure.</summary>
+    private static bool SaysImOut(string text) =>
+        System.Text.RegularExpressions.Regex.IsMatch(text ?? string.Empty, @"\bi'?\s?m out\b(?!\s+(of|for|on|in|at|with|to|here|there)\b)",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// A goodbye word that is no goodbye (DESIGN-010): "not going to bed yet", "nobody say gn yet", "good night for a keep raid",
+    /// "bye bye strength relic". Pure.
+    /// </summary>
+    private static bool FarewellTalkedAbout(string[] words, bool question)
+    {
+        int at = PhraseIndex(words, "going to bed", "off to bed", "heading to bed", "gotta go", "got to go", "logging off", "log off", "good night");
+        if (at < 0)
+            at = IndexIn(words, FarewellWords);
+        if (AboutTheAct(words, at, question))
+            return true;
+        if (HasPhrase(words, "good night for", "good night to", "good night of", "a good night", "good night tonight"))
+            return true;
+        return words.Length >= 3 && words[0] is "bye" && words[1] is "bye" && !GreetingObjects.Contains(words[2]) && !IsNoise(words[2]);
+    }
 
     /// <summary>
     /// What a short or common chat line is, or false to let the classifier decide. <paramref name="words"/>
@@ -766,7 +954,11 @@ public static class AutonomousChatShortTalk
                 "you even real", "u even real", "you a real", "u a real", "even human", "all bots", "you bots", "u bots", "ur bots",
                 "real player", "real people", "actual person", "actual people", "actual player", "u human", "you human",
                 "are you macroing", "you macroing", "u macroing", "are you botting", "u botting", "you botting", "actually a person",
-                "actually human", "actually real", "a real human", "real or scripted", "real or a bot", "a person or", "human or"))
+                "actually human", "actually real", "a real human", "real or scripted", "real or a bot", "a person or", "human or",
+                // 1.2 chat audit (DESIGN-046): "am i talking to a computer", "are you automated", "anyone here human".
+                "talking to a computer", "talking to a bot", "talking to bots", "talking to npcs", "talking to a program", "are you automated",
+                "u automated", "you automated", "anyone here human", "anyone human", "anybody human", "controlled by the server", "run by the server",
+                "you are a bot", "u are a bot", "is that guy a bot", "that guy a bot", "is he a bot", "is she a bot"))
             return Is(eAutonomousChatIntent.BotCheck, out intent);
 
         // "thanks for the train buddy": sarcasm after a pull gone wrong, not thanks (the talking update audit).
@@ -775,24 +967,31 @@ public static class AutonomousChatShortTalk
             return Is(eAutonomousChatIntent.Laugh, out intent);
         bool thanks = Any(words, ThanksWords) || HasPhrase(words, "thank you", "much appreciated", "appreciate it", "appreciate the",
             "appreciate that", "appreciate you", "appreciated", "owe you one", "owe u one");
+        // 1.2 chat audit (DESIGN-010): "no thanks", "dont thank me yet", "did he say thanks?", "ty but no" are no thanks to answer.
+        if (thanks && (AboutTheAct(words, IndexIn(words, ThanksWords) is >= 0 and var thankAt ? thankAt : PhraseIndex(words, "thank you", "appreciate"), false, NoAskWords) ||
+                       HasPhrase(words, "but no", "but nah", "but im good", "but i m good", "but no thanks")))
+            thanks = false;
         // "ty for the rez" is thanks; "rez pls", "need a rez", "anyone rez?", "rez pls ty" ask for one. "heat res gear" is a resist.
         bool sickness = words.Contains("sick") || words.Contains("sickness");
-        bool rezWord = Any(words, RezWords) && !IsResist(words);
+        // 1.2 chat audit (DESIGN-010): "dont rez me", "no rez needed", "what level do clerics get rez" ask for no rez.
+        bool rezWord = Any(words, RezWords) && !IsResist(words) && !AboutTheAct(words, IndexIn(words, RezWords), question, RezAskWords) &&
+                       !HasPhrase(words, "rez needed", "need no rez");
         bool asking = question || HasPhrase(words, "need a", "need rez", "can someone", "can anyone", "anyone", "pls", "please", "plz",
             "rez me", "res me", "rez pls", "rezz me", "any healer", "any cleric", "any druid", "any shaman", "any friar", "any rezzer",
             "for a rez", "for rez", "need rez", "need res");
         if (rezWord && !sickness && (asking || !thanks && n <= 6))
             return Is(eAutonomousChatIntent.Rez, out intent);
         // "any healer around? died by the gate", "died in the lake, any druid nearby" ask for a rez without the word.
-        if (!thanks && words.Any(word => word is "died" or "dead" or "down") && HasPhrase(words, "any healer", "any healers", "any druid",
+        if (!thanks && words.Any(word => word is "died" or "dead" or "down") && !AboutTheAct(words, Array.FindIndex(words, word => word is "died" or "dead" or "down"), question, RezAskWords) &&
+            HasPhrase(words, "help", "help me", "pls", "plz", "any healer", "any healers", "any druid",
                 "any cleric", "any shaman", "any friar", "any rezzer", "anyone near", "anyone around", "anybody near", "any1 near", "nearby",
                 "anyone close", "can someone", "can anyone"))
             return Is(eAutonomousChatIntent.Rez, out intent);
         // "gotta log ty for the grp all": a goodbye with thanks in it is a goodbye (the holdout check). "im out, ty all", "i have to
         // go guys, sorry. thx for the group" (blind round 1).
         if (thanks && !question && !HasPhrase(words, "back to", "run back", "go back", "run to") && HasPhrase(words, "gotta log", "got to log", "gotta go", "got to go", "logging off", "logging out", "gotta run",
-                "heading to bed", "off to bed", "going to bed", "calling it", "night all", "gn all", "gnight", "im out", "i m out", "have to go",
-                "need to go", "heading out", "gotta bounce", "have to log", "need to log", "time to go", "i have to go"))
+                "heading to bed", "off to bed", "going to bed", "calling it", "night all", "gn all", "gnight", "have to go",
+                "need to go", "heading out", "gotta bounce", "have to log", "need to log", "time to go", "i have to go") || thanks && !question && SaysImOut(text))
             return Is(eAutonomousChatIntent.Farewell, out intent);
         // "thanks! how many are there, should I bring my cleric?": thanks with a real question after it asks about what the bot
         // just said; "anytime" ignored it and a guess read it as class talk (in-game check 2026-10-27). It is left unread, so a
@@ -807,28 +1006,44 @@ public static class AutonomousChatShortTalk
 
         // "gz on the ding" and "nice ding" congratulate someone; "ding!", "ding 20", "finally 35" announce one's own.
         bool praise = Any(words, CongratsWords) || words[0] is "nice" or "gj" or "wtg" or "woot";
-        if (praise && (Any(words, CongratsWords) || words.Contains("ding")))
+        // 1.2 chat audit (DESIGN-010): "no gz for me?", "dont say gz yet" are no grats; "gj on the kill" is.
+        if (praise && (Any(words, CongratsWords) || words.Contains("ding")) && !AboutTheAct(words, IndexIn(words, CongratsWords), question, RezAskWords))
             return Is(eAutonomousChatIntent.Congrats, out intent);
-        if (words.Contains("ding") && !HasPhrase(words, "ding dong") || words.Contains("dinged") || HasPhrase(words, "just dinged", "hit level", "made level") ||
+        if (words[0] is "gj" or "wtg" && n <= 6 && !question)
+            return Is(eAutonomousChatIntent.Congrats, out intent);
+        // "3 bubs from ding", "almost ding", "no ding yet", "when do you ding", "he dinged, not me" announce no level (DESIGN-010).
+        int dingAt = Array.FindIndex(words, word => word is "ding" or "dinged" or "leveled" or "levelled");
+        bool dingTalked = AboutTheAct(words, dingAt, question) || HasPhrase(words, "from ding", "to ding", "till ding", "until ding", "before ding", "ding yet");
+        if (!dingTalked && (words.Contains("ding") && !HasPhrase(words, "ding dong") || words.Contains("dinged") || HasPhrase(words, "just dinged", "hit level", "made level") ||
+            !question && HasPhrase(words, "i leveled", "i levelled", "leveled up", "levelled up", "new level", "got my level", "level up") ||
+            !question && System.Text.RegularExpressions.Regex.IsMatch(string.Join(' ', words), @"^(just turned|finally) (\d{1,2})\b|^(level|lvl) \d{1,2} (at last|finally|woot|yay)\b") ||
             !question && System.Text.RegularExpressions.Regex.IsMatch(string.Join(' ', words), @"\b(finally|just) (hit|reached|made) (\d{1,2}|fifty)\b") ||
             words.Contains("finally") && words.Any(word => int.TryParse(word, out int level) && level is >= 2 and <= 50) &&
-            (n <= 3 || words.Contains("level") || words.Contains("lvl")))
+            (n <= 3 || words.Contains("level") || words.Contains("lvl"))))
             return Is(eAutonomousChatIntent.Ding, out intent);
 
         // "free rps at mmg, mids are afk": a rally, not an away (Beta 1.1.2, round 2).
         if (HasPhrase(words, "free rps", "free rp", "free realm points", "free kills", "easy rps", "come get rps"))
             return Is(eAutonomousChatIntent.RvR, out intent);
         // "inventory full, gonna run to the merchant brb": a brb at the end of a longer line is still a brb (the audit).
+        // 1.2 chat audit (DESIGN-010): "he is afk", "dont go afk", "who is afk" are about someone else; "back from afk" is a return.
         if ((n <= 6 && HasPhrase(words, "be right back", "be back in", "one sec", "1 sec", "afk for", "hang on", "hold on", "doorbell", "door bell",
-                 "phone ringing", "phone call", "gotta get the door", "gotta answer") || Any(words, AwayWords) && !question) && words[^1] != "back" &&
-            !HasPhrase(words, "im back", "i'm back", "back now"))
+                 "phone ringing", "phone call", "gotta get the door", "gotta answer", "gimme a minute", "give me a minute", "gimme a min", "give me a min",
+                 "gimme 5", "give me 5") ||
+             Any(words, AwayWords) && !question && !AboutTheAct(words, IndexIn(words, AwayWords), question)) && words[^1] != "back" &&
+            words[0] is not ("back" or "bk") && !HasPhrase(words, "im back", "i'm back", "back now", "back from afk") ||
+            // "back in 5": gone, back in five minutes.
+            n <= 4 && n > 2 && words[0] == "back" && words[1] == "in" && words[2].Length > 0 && char.IsDigit(words[2][0]) && !question)
             return Is(eAutonomousChatIntent.Away, out intent);
         // "back from dinner", "back sorry phone call" (the audit); not "back to camp", "back in town".
         if (n <= 3 && Only(words, BackWords) || n <= 6 && (HasPhrase(words, "im back", "i'm back", "back now", "back again") ||
-                words[0] is "back" or "bk" && (n <= 2 || n <= 6 && !question && words[1] is "from" or "sorry" or "sry" or "all" or "guys" or "finally" or "again") ||
+                words[0] is "back" or "bk" or "bak" && (n <= 2 || n <= 6 && !question && words[1] is "from" or "sorry" or "sry" or "all" or "guys" or "finally" or "again" or "at" or "where") ||
+                // 1.2 chat audit (DESIGN-047): "alright back", "back at keyboard", "back, where were we", "im here again".
+                n <= 6 && words[0] is "back" && words[1] is "where" ||
+                HasPhrase(words, "im here again", "here again", "back at keyboard", "back at the keyboard", "back at the pc") ||
                 // "back from vacation guys miss me?" (the holdout check): a question can follow.
                 n <= 8 && words[0] is "back" or "bk" && words[1] == "from" ||
-                n > 1 && words[0] is "ok" or "k" or "and" or "aaand" && words[1] == "back"))
+                n > 1 && words[0] is "ok" or "k" or "and" or "aaand" or "alright" or "aight" or "right" && words[1] == "back"))
             return Is(eAutonomousChatIntent.Back, out intent);
         if (words[0] == "wb" && n <= 3)
             return Is(eAutonomousChatIntent.Greeting, out intent);
@@ -856,20 +1071,28 @@ public static class AutonomousChatShortTalk
             !question && (n <= 6 && HasPhrase(words, "well met") || words[0] == "gm" && words.Skip(1).All(word => GreetingObjects.Contains(word) || IsNoise(word))))
             return Is(eAutonomousChatIntent.Greeting, out intent);
         // "night guys work in the morning", "nite all" (the audit: read as nothing).
+        bool farewellTalked = FarewellTalkedAbout(words, question);
         if (!question && words[0] is "night" or "nite" or "gnite" && (n <= 3 || n <= 8 && words[1] is "all" or "guys" or "everyone" or "folks" or
                 "peeps" or "night" or "nite" or "yall" or "work" or "gotta" or "bed" or "wife" or "kids"))
             return Is(eAutonomousChatIntent.Farewell, out intent);
 
         // "inc", "inc 10 mids at amg", "zerg at the mile gate"; not "decent inc these days" or "made good inc today" (income;
         // the audit).
-        bool income = HasPhrase(words, "decent inc", "good inc", "bad inc", "nice inc", "great inc", "my inc", "some inc", "steady inc",
-            "inc these days", "inc today", "inc from", "inc per") || words.Contains("income");
+        // 1.2 chat audit (DESIGN-009): "albs inc from the south", "inc from behind" are calls; income is "inc from that camp".
+        bool income = (HasPhrase(words, "decent inc", "good inc", "bad inc", "nice inc", "great inc", "my inc", "some inc", "steady inc",
+                           "inc these days", "inc today", "inc per") || words.Contains("income") ||
+                       System.Text.RegularExpressions.Regex.IsMatch(string.Join(' ', words), @"\binc from (that|this|the|my) (camp|spot|drops?|loot|quest|named)\b")) &&
+                      !words.Any(word => word is "albs" or "mids" or "hibs" or "enemy" or "enemies" or "north" or "south" or "east" or "west" or "behind" or "left" or "right");
+        // "no inc", "is the inc over", "any inc tonight?", "where is the inc" are about a call, not one (DESIGN-010).
+        bool alarmTalked = AboutTheAct(words, IndexIn(words, AlarmWords), question, AlarmAskWords) ||
+                           (question || QuestionStarts.Contains(words[0])) && AlarmAskWords.Contains(words[0]) && !Any(words, AlarmWords) &&
+                           HasPhrase(words, "albs at", "mids at", "hibs at", "enemies at", "enemy at", "zerg at");
         // "pushing", "heading for our" and "watch out for" warn only with an enemy in the line: not "pushing the 40s finally",
         // "heading for our guild house" or "watch out for the pat" (review 2026-10-26).
         bool enemy = words.Any(word => word is "albs" or "mids" or "hibs" or "alb" or "mid" or "hib" or "enemy" or "enemies" or "zerg" or
             "stealther" or "stealthers" or "gankers" or "realm" or "group" or "fg" or "train" or "assassins" or "infils" or "nightshades" or
             "shadowblades" or "ns" or "sb" or "sbs");
-        if (!income && (Any(words, AlarmWords) || HasPhrase(words, "under attack", "under siege", "albs at", "mids at", "hibs at",
+        if (!income && !alarmTalked && (Any(words, AlarmWords) || EnemyCall(words) || HasPhrase(words, "under attack", "under siege", "albs at", "mids at", "hibs at",
                 // Beta 1.1.2 (blind round 1): "need defenders at dun crim NOW", "mids ganking at the dock".
                 "need defenders", "defenders at", "defenders needed", "need def", "ganking at", "ganking near", "ganking by", "camping the dock",
                 "enemies at", "enemy at", "stealthers at", "zerg at", "zerg heading", "zerg coming", "stealthers near", "stealther near",
@@ -889,17 +1112,29 @@ public static class AutonomousChatShortTalk
         bool errand = HasPhrase(words, "back to", "run back", "go back", "go get", "go sell", "go buy", "go to", "run to") ||
                       Any(words, GroupWords) || Any(words, TradeWords);
         // "cya all next week, going out of town" (blind round 1: read as travel): a line that starts with a goodbye is one.
-        if (!question && n <= 10 && words[0] is "cya" or "bye" or "gn" or "gnight" or "laters" or "cu" or "nite" or "goodnight" or "byebye")
+        if (!question && !farewellTalked && n <= 10 && words[0] is "cya" or "bye" or "gn" or "gnight" or "laters" or "cu" or "nite" or "goodnight" or "byebye" or "ttyl" or "bbl")
             return Is(eAutonomousChatIntent.Farewell, out intent);
-        if (!question && !errand && (HasPhrase(words, "gotta log", "got to log", "gotta go", "got to go", "logging off", "logging out", "gotta run",
+        // 1.2 chat audit (DESIGN-047): "signing off", "peace out", "see you all tomorrow", "logging for the night", "thats me done".
+        if (!question && !errand && !farewellTalked && (HasPhrase(words, "gotta log", "got to log", "gotta go", "got to go", "logging off", "logging out", "gotta run",
                 "thats it for me", "that s it for me", "done for tonight", "done for tonite", "done for the night", "im done for", "gn all",
-                "gnite all", "nite all") || n <= 3 && words[^1] is "later" or "laters" or "cya" or "bye" && !words.Contains("maybe")))
+                "gnite all", "nite all", "signing off", "peace out", "see you all tomorrow", "see you tomorrow", "see ya tomorrow", "see u tomorrow",
+                "see you all later", "logging for the night", "logging for tonight", "thats me done", "that s me done", "thats me for tonight",
+                "im gone", "i m gone", "off to bed", "see ya all", "see you all", "see ya guys", "see you guys") ||
+                n <= 3 && words[^1] is "later" or "laters" or "cya" or "bye" or "ttyl" && !words.Contains("maybe") ||
+                n <= 3 && HasPhrase(words, "see ya", "see you", "see u")))
             return Is(eAutonomousChatIntent.Farewell, out intent);
         // "pc crashed" is a computer, not a price check (the audit).
         bool computer = HasPhrase(words, "pc crashed", "my pc", "new pc", "pc died", "pc froze", "pc is", "pc keeps", "pc broke");
+        // "how much power you got" asks about power, not a price (1.2 chat audit, DESIGN-005).
+        bool howMuchElse = HasPhrase(words, "how much power", "how much pow", "how much mana", "how much hp", "how much health", "how much xp",
+            "how much exp", "how much longer", "how much time", "how much further", "how much farther");
         if (!computer && (words.Where(word => word != "pc").Any(TradeWords.Contains) || words.Contains("pc") && n <= 6) ||
-            HasPhrase(words, "how much", "price check", "anyone selling", "anyone buying", "what's it worth", "whats it worth", "will pay",
-                "ill pay", "i'll pay", "paying for", "spellcrafted", "make me a"))
+            !howMuchElse && HasPhrase(words, "how much") ||
+            HasPhrase(words, "price check", "anyone selling", "anyone buying", "what's it worth", "whats it worth", "will pay",
+                "ill pay", "i'll pay", "paying for", "spellcrafted", "make me a",
+                // 1.2 chat audit (DESIGN-046): "who sells dyes", "anyone have a spare shield", "what do you want for it", "is 5g fair".
+                "who sells", "where can i buy", "anyone have a spare", "anyone got a spare", "want for it", "want for that", "fair price") ||
+            System.Text.RegularExpressions.Regex.IsMatch(string.Join(' ', words), @"\b\d+ ?(g|p|gold|plat) (fair|ok|cheap|good|too much)\b"))
             return Is(eAutonomousChatIntent.Trading, out intent);
         // The audit: "not lfg just chatting", "inv full again" (inventory), "my old group quit the game", "group is full sorry" are
         // not group requests; a group that is only talked about is not one either.
@@ -928,12 +1163,12 @@ public static class AutonomousChatShortTalk
         if (notRequest && Any(words, GroupWords))
             return Is(eAutonomousChatIntent.Unknown, out intent);
 
-        if (n <= 6 && Any(words, FarewellWords) || HasPhrase(words, "bed time", "bedtime", "time for bed", "fall asleep", "off to sleep") ||
+        if (!farewellTalked && (n <= 6 && Any(words, FarewellWords) || HasPhrase(words, "bed time", "bedtime", "time for bed", "fall asleep", "off to sleep") ||
             System.Text.RegularExpressions.Regex.IsMatch(" " + string.Join(' ', words) + " ",
                 @" im off (?!(to|work|today|tomorrow|tmrw|tonight|this|from|next|on|for|the) )") ||
             HasPhrase(words, "logging off", "log off", "heading to bed", "off to bed",
-                "going to bed", "good night", "night all", "night everyone", "gotta go", "got to go", "calling it", "im out", "i'm out",
-                "see you later", "see ya later", "later all", "later guys", "later everyone"))
+                "going to bed", "good night", "night all", "night everyone", "gotta go", "got to go", "calling it",
+                "see you later", "see ya later", "later all", "later guys", "later everyone") || !question && SaysImOut(text)))
             return Is(eAutonomousChatIntent.Farewell, out intent);
 
         // "1 more for vendo" asks; "if i see one more pbae group im quitting lol" doesn't (the holdout check).
@@ -977,11 +1212,22 @@ public static class AutonomousChatShortTalk
             return Is(eAutonomousChatIntent.Grinding, out intent);
         if (HasPhrase(words, "how do i", "how does", "what do i", "what should i", "can someone help", "can anyone help", "need help",
                 "help me", "any tips", "any advice", "what level", "what lvl", "when do i", "trainer", "how do you", "what does",
-                "what is a", "whats a", "buff me", "buffs", "can i get") ||
+                "what is a", "whats a", "buff me", "buffs", "can i get",
+                // 1.2 chat audit (DESIGN-046): "can anyone explain realm abilities", "whats the command for anon", "i dont understand
+                // resists", "what happens when i die".
+                "explain", "command for", "dont understand", "don t understand", "what happens when", "what happens if", "can i respec",
+                "what is power") ||
             words.Contains("mean") && (words.Contains("what") || words.Contains("whats") || words.Contains("does")))
             return Is(eAutonomousChatIntent.Help, out intent);
 
         // "lol", "haha ok", "gg" with nothing else; "same", "true", "ouch" are a nod
+        // 1.2 chat audit (DESIGN-046): "haha yeah", "lol classic", "too funny", "hah good one", "*laughs*", "bwahaha".
+        if (n <= 3 && words[0] is "lol" or "lolol" or "haha" or "hahaha" or "hehe" or "heh" or "hah" or "lmao" or "rofl" or "bwahaha" or "muahaha" or "lolz" &&
+                words.Skip(1).All(word => word is "yeah" or "yea" or "ya" or "classic" or "good" or "one" or "funny" or "man" or "dude" or "oh" or "no" or "wow" or "nice") ||
+            n <= 3 && HasPhrase(words, "too funny", "so funny", "good one", "thats funny", "that s funny") ||
+            n == 1 && words[0] is "bwahaha" or "muahaha" or "lolz" or "hahah" or "ahahah" ||
+            (text ?? string.Empty).Trim().ToLowerInvariant() is "*laughs*" or "*giggles*" or "*chuckles*" or "*lol*")
+            return Is(eAutonomousChatIntent.Laugh, out intent);
         if (Only(words, LaughWords) && !Only(words, BanterWords))
             return Is(eAutonomousChatIntent.Laugh, out intent);
         if (n <= 3 && Only(words, BanterWords, LaughWords))

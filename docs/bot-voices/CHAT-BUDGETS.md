@@ -10,7 +10,10 @@ budgets:
 - **The reply budget** sets when a bot answers *you*, and (1.2) how many replies a channel carries. A reply has to fit
   what you said. A weak reply becomes something short that does fit ("ty", "lol", "dunno", "no heals on a thane sry"),
   or silence for spam, scams and lines said to someone else. Replies are counted apart from the ambient lines, against a
-  reply target and a reply ceiling of their own. **A tell to a bot, and a line that names a bot, are always answered.**
+  reply target and a reply ceiling of their own. **A tell to a bot, and a line that names a bot, are answered:** a bot that
+  is fighting or casting answers when it is free (a tell waits up to 90 s, with one "sec, fighting" after about 4 s; a
+  named line waits up to 90 s), a quick second tell is queued behind the first, and the reply cooldown never drops a line
+  that names an online bot or asks a question without its "?" (1.2 chat audit; tests only).
 
 Silence is only ever the answer to a line no bot should answer, or to a weak reply nothing short can fix. The ambient world is never held back to avoid a bad line:
 it picks another line or another channel.
@@ -259,7 +262,8 @@ something short that fits, or nothing. Bots also answer where they are from thei
 - **Questions:** a question, or a line said to one bot by name, gets exactly one answer.
 - **No interruptions:** no unprompted line starts in a channel until the answers are out.
 - **Timing:** a reply comes after reading the line, a moment's thought, and typing at the bot's own speed. Speeds run
-  from `wpm_min` to `wpm_max` (25–60 words a minute). So "?" arrives in about two seconds and a full sentence in 8–15.
+  from `wpm_min` to `wpm_max` (25–60 words a minute), so a 60-character answer takes 12–29 s to type. A reply to a
+  tell or to a line that names the bot is typed in 12 s at most (1.2 chat audit).
 
 ## Seeing it in game: /lswhy
 
@@ -273,10 +277,20 @@ held back, and `/lswhy budget` each channel's floor, target, ceiling and current
 **Reason codes** (`AutonomousChatWhy.Codes`):
 - **Said:** `exempt-tell`, `exempt-named`, `exempt-addressed`, `exempt-thread` (always answered); `reply-in-budget`,
   `reply-over-target` (the reply budget let it through); `pileon`; `self-knowledge` (from the bot's own state);
-  `short-below-minimum`, `rescue-below-minimum` (under the minimum fit, something short that fits); `ambient`, `sent`.
+  `short-below-minimum`, `rescue-below-minimum` (under the minimum fit, something short that fits); `ambient`,
+  `ambient-under-floor` (an opener because the channel ran under its floor); `exempt-event` (a realm event's reaction,
+  never held); `busy-ack` ("sec, fighting" to a tell); `sent`. `scene` is reserved: debate and tale beats are not yet
+  recorded in /lswhy.
 - **Held or silent:** `hold-reply-target`, `hold-reply-ceiling` (the reply budget); `below-minimum` (no reply fits well
   enough); `contradicts-self`; `spam`; `other-addressee` (said to someone else); `ack-line` ("ok", "k"); `undirected`
-  ("wb Sigrun" to nobody a bot knows); `no-false-credit` (thanks for heals it can't give); `no-fit`; `held`.
+  ("wb Sigrun" to nobody a bot knows); `no-false-credit` (thanks for heals it can't give); `no-fit`; `held`;
+  `nobody-heard` (no bot that heard it could answer); `no-answer-here` (a line like this draws no answer in this channel).
+- **Dropped before a reply was chosen** (1.2 chat audit): `cooldown` (bots answered you a moment ago and the line asks
+  nothing), `all-busy` (every bot that could answer stayed busy), `thread-consumed` (read as part of a bot's thread, which
+  let it be), `busy-at-send` (the bot got busy or left before its reply was due), `out-of-world` (real-world talk in /say),
+  `handled-elsewhere` (a storyline, guild, tale, debate or beggar answered it).
+- A player sees each decision in plain words ("2m ago [faction] Aldric said: ... -> "..."); the codes, rules, scores and
+  line ids are shown to GMs.
 
 ## Tuning
 
