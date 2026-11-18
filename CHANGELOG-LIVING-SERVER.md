@@ -765,6 +765,18 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
     with his spot, next point and closest approaches, so the next PC log can confirm it.
   - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+- **A boss with required adds is pulled as an attempt** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
+  Neither Aroon the Urlamhai nor Xaga's room had a `FINAL_ENGAGE` or an `EARLY_PULL`: a Scaith in combat during Aroon's
+  muster (0 of 86) and Beatha in combat during Xaga's (2 of 86) sent the route straight to the add with no attempt open,
+  so the 70% pull, the early-pull Hold or Commit, the regroup after a wipe and the return-wave hold never applied, and
+  all five wipes were "raid-wide deaths outside an attempt". The route now fights a mustered boss's required adds only
+  inside a committed attempt on it (`FightsRequiredAddsNow`); before that the boss stays the target, and the boss or any
+  of its adds in combat is an early pull answered by the muster (raiders at an add in the fight count as at the fight).
+  Once the boss's fight is off (a wipe), the route goes back to the boss so its muster scores the attempt and regroups.
+  Scurceol Hyrde's orbs, Soul Reckoner's souls, Xaga's fairies and Aroon's Scaiths all go through this. Stricter, never
+  easier: proven on the PC only once an Aroon or Xaga pull shows `FINAL_ENGAGE` or `EARLY_PULL` before the first
+  `REALM_EXPEDITION_TACTIC ... required-adds`.
+
 - **A boss moved home is no longer scored as killed** (tests only; owner's PC, build 5378dbe, 2026-11-17, Caer Sidi). Two
   full wipes at the Crypt Lord (93 raiders dead each, he never fell below 96%) ended `REALM_EXPEDITION_ATTEMPT_ENDED
   how="killed; it came back since" wipe=False`, so the raid had four attempts instead of two. The attempt took any new

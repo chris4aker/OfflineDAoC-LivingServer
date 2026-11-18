@@ -605,6 +605,23 @@ namespace DOL.GS
             (npc is IGameEpicNpc || _finalTypes.Contains(npc.GetType().Name)) && !IsEncounterHazard(npc) &&
             // A boss's required adds are fought as part of its fight, without a muster of their own (EpicEncounterTactics).
             !EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, _live);
+
+        /// <summary>
+        /// Whether the route may fight a boss's required adds now (pure): a boss with a muster has them fought only inside an
+        /// attempt on it, once the whole raid is committed (not while it holds for a skirmish); a boss with no muster as before.
+        /// Owner's PC, build 5378dbe, 2026-11-17 (Galladoria): an add in combat during Aroon's muster (0 of 86) and during
+        /// Xaga's (2 of 86) sent the route straight to it with no attempt open, so the 70% pull, the early-pull Hold or Commit,
+        /// the regroup after a wipe and the return-wave hold never applied, and all five wipes were scored "raid-wide deaths
+        /// outside an attempt". Before the attempt the boss stays the target and its muster answers the fight
+        /// (<see cref="EpicEncounterTactics.FightOn"/>: the boss or any of its adds in combat is an early pull).
+        /// </summary>
+        public static bool FightsRequiredAddsNow(bool ownerMustered, bool attemptOnOwner, bool skirmishHeld) =>
+            !ownerMustered || attemptOnOwner && !skirmishHeld;
+
+        /// <summary>An attempt is open on <paramref name="encounter"/> (its muster's pull went in).</summary>
+        private bool AttemptOn(GameNPC encounter) => _musterEngaged && encounter != null && _musterTarget == encounter;
+
+        private bool FightsAddsOf(GameNPC owner) => FightsRequiredAddsNow(IsMusteredEncounter(owner), AttemptOn(owner), _skirmishHeld);
         // The region's NPCs as of this turn (AdvanceCore), for the tactic checks.
         private IReadOnlyList<GameNPC> _live = [];
 
@@ -1328,7 +1345,11 @@ namespace DOL.GS
             // early pull, as an attempt: never fought piecemeal by a raid that waits (RealmRaidTetherReach.RegroupThreatened).
             bool regroupThreatened = _regrouping && _target.InCombat && RegroupThreatenedBy(participants) is { } threat &&
                                      LogRegroupThreat(threat, now);
-            if (_target.InCombat && (!_regrouping || regroupThreatened))
+            // The fight is on when the encounter or any of its required adds is in combat (EpicEncounterTactics.FightOn): an add
+            // that caught raiders during the muster is an early pull like the boss itself (Galladoria, build 5378dbe: Beatha
+            // and Aroon's Scaiths were fought with no attempt open).
+            bool fightOn = EpicEncounterTactics.FightOn(_target, _live);
+            if (fightOn && (!_regrouping || regroupThreatened))
             {
                 // A fight in progress is never interrupted. One the raid walked into without a muster (the encounter
                 // aggroed on the approach) is answered as a whole (EpicEncounterTactics.ChooseEarlyPull): everyone in at once,
@@ -1338,7 +1359,10 @@ namespace DOL.GS
                 // the ~70 at Soul Reckoner were in "inside=108" and "engaged=96-109"; the logged commits stand).
                 HashSet<GameLiving> pinnedNow = PinnedRaiders(participants, now).Raiders;
                 GameLiving[] inside = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region && !pinnedNow.Contains(p)).ToArray();
-                GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius)).ToArray();
+                // Those at the boss, and those at any of its adds in combat (they are in its fight).
+                GameNPC[] addsInFight = EpicEncounterTactics.LiveRequiredAdds(_target, _live).Where(a => a.InCombat).ToArray();
+                GameLiving[] fighting = inside.Where(p => p.IsWithinRadius(_target, TargetPresenceRadius) ||
+                                                          addsInFight.Any(a => p.IsWithinRadius(a, TargetPresenceRadius))).ToArray();
                 if (!_musterEngaged || _skirmishHeld)
                 {
                     bool resets = EpicEncounterTactics.ResetsWhenLeft(_target);
@@ -1348,7 +1372,8 @@ namespace DOL.GS
                     float musterFromSpawn = Vector3.Distance(_musterPoint, new Vector3(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z));
                     // ...and there it can't be hurt: the raid never pulls back to a rally past its reach (Summoner Roesia,
                     // owner's PC 2026-11-16: she followed the pull-back to her tether and killed 50 walking away).
-                    bool shakesOff = EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn) &&
+                    // A pull-back leads the boss itself home: with only its adds in the fight there is nothing to lead.
+                    bool shakesOff = _target.InCombat && EpicEncounterTactics.BreakOffShakesOff(resets, tether, musterFromSpawn) &&
                                      !RealmRaidTetherReach.PullBackLeavesReach(ReachOf(_target), musterFromSpawn);
                     // Pulled back from it a moment ago and it is still on the raid: it chases.
                     bool pulledBack = _lastBreakOff.TryGetValue(_target, out long last) && now - last < BreakOffRepeatMilliseconds;
@@ -2704,8 +2729,17 @@ namespace DOL.GS
             }
             if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
             if (TrailGate(live, participants, now)) return;
+            // A required add is the target only inside an attempt on its boss whose fight is on (FightsRequiredAddsNow): with
+            // no attempt open, or once the fight is off, the boss is the target again, so its muster holds the raid and judges
+            // the attempt (Galladoria, build 5378dbe).
+            if (_target?.IsAlive == true && EpicEncounterTactics.RequiredAddOwner(_target, live) is { } shieldOwner &&
+                IsMusteredEncounter(shieldOwner) && (!FightsAddsOf(shieldOwner) || !EpicEncounterTactics.FightOn(shieldOwner, live)))
+                SwitchByTactic(shieldOwner, AttemptOn(shieldOwner)
+                    ? $"the fight with \"{shieldOwner.Name}\" is off: its attempt is judged at its muster"
+                    : $"no attempt is open on \"{shieldOwner.Name}\": its adds are fought only in one", participants, now);
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active &&
-                EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target)
+                EpicEncounterTactics.RouteTarget(_target, live, Front, out string tacticReason) is { } tacticTarget && tacticTarget != _target &&
+                !(EpicEncounterTactics.RequiredAddOwner(tacticTarget, live) is { } heldOwner && !FightsAddsOf(heldOwner)))
             {
                 // A required add is fought from a floor spot its ranged raiders can reach and see it from, never walked to.
                 if (EpicEncounterTactics.RequiredAddOwner(tacticTarget, live) is { } addOwner)
@@ -2764,6 +2798,9 @@ namespace DOL.GS
                     // Never a switch to the target itself: the monster fighting the raid is answered (PC log e3b8238: "Crypt
                     // Lord -> Crypt Lord" every 10 s while his dark lights killed the raid).
                     if (attacker == _target) attacker = hostile;
+                    // Its adds only inside an attempt on it: until then the raid musters for the boss (FightsRequiredAddsNow).
+                    if (EpicEncounterTactics.RequiredAddOwner(attacker, live) is { } attackerOwner && !FightsAddsOf(attackerOwner))
+                        attacker = attackerOwner;
                     if (attacker != hostile)
                         log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{hostile.Name}\" fights=\"{attacker.Name}\" " +
                                  $"reason=\"{hostileTactic}\" tactic={EpicEncounterTactics.For(hostile)?.Encounter}");
@@ -3029,7 +3066,8 @@ namespace DOL.GS
                 if (EpicEncounterTactics.RequiredAddOwner(npc, live) is { } addOwner)
                 {
                     if (_routeRetry.GetValueOrDefault(addOwner) > now) continue;
-                    if (!EpicEncounterTactics.FightOn(addOwner, live)) npc = addOwner;
+                    // ...and only inside an attempt on it (FightsRequiredAddsNow): until then the raid musters for the boss.
+                    if (!EpicEncounterTactics.FightOn(addOwner, live) || !FightsAddsOf(addOwner)) npc = addOwner;
                     else
                     {
                         probes++;
