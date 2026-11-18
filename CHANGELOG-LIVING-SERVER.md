@@ -902,6 +902,19 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **Ten more storylines (owner 2026-11-18 09:14: "10 new arcs added to 1.2"; tests only until heard on the owner's PC).**
+  `storylines_more.lines` adds ten four-episode arcs, each with its three endings (the player sided with A, with B, or
+  nobody), 60 scenes of 18-24 beats with two wordings each, all realm-neutral and 1.65-era: `mentor` (an apprentice
+  outgrows the veteran who taught them), `bounty` (two archers race to drop the enemy stealther ganking the mile gate),
+  `ballad` (a bard's song about a drowning sweeps the realm), `masterpiece` (a crafted masterpiece sold to a merchant by
+  mistake), `mistell` (a tell about a healer's slow heals reaches the healer), `buffbot` (a rumour that a healer is
+  somebody's buffbot, and a buff strike), `keepgrudge` (the melee and caster leaders of a keep defense: door or wall),
+  `loan` (gold lent for armor, paid back in silver), `gimped` (a player kicked for their class gets one run to prove it)
+  and `campspot` (two strangers sharing one camp end up friends). The engine reads every `*.lines` file, so no code
+  changed; class-bound roles are cast from that class in every realm (the healer story's healer, the bard, the archers),
+  and a side character keeps its letter across an arc. A realm now has 15 arcs instead of 5, so it runs out of new stories
+  (each finished arc rests a week) far less often. `UT_LivingWorld.TheMoreArcsCastInEveryRealmAndKeepTheirRoles`.
+
 - **Bot chat audit fixes (tests only): more tales** (owner 2026-11-18 09:14: "Yes to all the new tales"; LORE-028).
   `data/chat/tales_more.lines` adds 14 storyteller tales, each with its fireside version: the open-world bosses (the
   Green Knight, Coliath, Lord Emthoro; the Glacier Giant, Mortufoghus, the Raumarik Revenant, the Wretch of Winter;

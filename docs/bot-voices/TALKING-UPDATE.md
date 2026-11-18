@@ -296,8 +296,24 @@ not there brings up an online player's reputation ("isnt Kaelith the one who sol
 
 ### 13. Storylines
 
-`bot_living_storylines` (on by default; `AutonomousBotStorylines`). Four four-episode dramas per realm, played in
-/faction through the debate engine: `killsteal`, `guildsplit`, `romance` and `ninjaloot` (`storylines.lines`, 24 scenes).
+`bot_living_storylines` (on by default; `AutonomousBotStorylines`). Fifteen four-episode dramas per realm, played in
+/faction through the debate engine: `killsteal`, `guildsplit`, `romance` and `ninjaloot` (`storylines.lines`, 24 scenes),
+the crafters' `pricewar` (`craft_drama.lines`), and since 1.2 ten more in `storylines_more.lines` (60 scenes, 18-24
+beats each; owner 2026-11-18: "10 new arcs added to 1.2"; tests only):
+- `mentor`: a veteran (A, 40-50) and the apprentice (B, 10-39) who joins a bigger RvR group and calls the lessons old school.
+- `bounty`: a realm member puts gold on an enemy stealther ganking the mile gate; two archers (Scout, Hunter, Ranger)
+  race to be first to drop it and fight over whose kill it was.
+- `ballad`: a Minstrel, Skald or Bard sings "the ballad of {name_b}" about B's drowning; B answers with a song of their own.
+- `masterpiece`: a crafter made B a masterpiece chest piece, and B sold it to a merchant by mistake.
+- `mistell`: A's tell about B's slow heals goes to B (a healer: Cleric, Friar, Healer, Shaman, Druid, Bard, Warden), and
+  B pays it back with a "mistell" of A's secret into faction.
+- `buffbot`: B tells the realm that A (Cleric, Healer, Shaman, Druid) is somebody's buffbot; A goes on a buff strike.
+- `keepgrudge`: the melee leader (A) and the caster leader (B) blame each other for nearly losing the arc's keep: door or wall.
+- `loan`: A lent B gold for armor; B pays in silver, then swears it was all paid in a trade at the bank.
+- `gimped`: a group leader kicks A for playing the class the boards called gimped (Friar, Warrior, Warden); one run decides it.
+- `campspot`: two strangers share one camp, draw a border at a rock, and end up friends.
+They are realm-neutral, and a letter C-H is one side character for the whole arc (the newbie, the scorekeeper, the
+rival crafter, the third camper).
 The same two bots (roles A and B, saved in `offline_bot_storylines`) play every episode and name each other; the other
 roles are cast fresh. A realm plays at most one episode every 45 minutes, an arc's episodes are 3-10 hours apart, a new
 arc starts at most every two hours, and a finished arc starts again with a new pair a week later. The first /faction scene
