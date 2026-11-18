@@ -585,7 +585,7 @@ public static class AutonomousChatExchange
         "next one will go better", "take a break maybe", "been there haha", "grr i know that one", "been like that all night haha",
         "aww sorry that is awful", "ha welcome to my week", "yep it does that", "forgive me unlucky", "gz u earned it", "gz you earned it",
         "ha nice now find something meaner", "now thats a good night", "lol", "heh", "haha", "hehe", "true", "lol true", "true true", "ha", "rip me",
-        "lol how",
+        "lol how", "lol ouch", "ouch gl",
     };
 
     /// <summary>A pure reaction ("oof", "rip", "lol", "gz"): it says nothing but how the speaker feels about the line before.</summary>

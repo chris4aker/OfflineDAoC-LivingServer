@@ -223,6 +223,30 @@ From the owner's PC log of build `b1b6846` (2026-11-18 06:33-08:55). None of thi
   `played_check_log.py` judges them (`chat` / `promises`, docs/PLAYED-CHECK-1.2.md). The replies that call the gate come with
   the other chat fixes. Tests: `UT_ChatPromises`, `test_played_check_log.py`.
 
+- **Field talk, market and realm event phrasing (engineer E2).** Nothing here has been seen
+  on the owner's PC yet; every item is covered by `UT_ChatFieldTalkAudit12`.
+- Out-of-era words gone from generated lines: "o/", the bare "rip", "dps" (now "nuker"), towers, "rn", "the map" (/realm),
+  "/t" (/send), item links, count-kill quests; spec tips corrected (wizard and runemaster PBAE lines, theurgist, ranger).
+- One realm word in two shapes ("hibs took nged", "hib zerg"), one name per keep ("beno", "bled", "ail") and per zone
+  ("pennine mountains", "black mtns south", no full stops), used by every feature that names them.
+- A defended siege is told as held ("hibs held nged"), never as a capture.
+- Market: a buyer says what it pays, no "still have it?" seconds after an ad, no "what lvl?" to a post with a level, more
+  ways to answer a group post, and a poster is asked at most once an hour. Exchange adverts are sales, never "pc x?", and
+  the exchange has one name.
+- Level 50s ask no beginner's questions; quest, hand-in and bind questions only in a home zone with towns; class plurals are
+  words ("arms", "wizards"); "quick q" is always followed by its question; answers that made things up ("decent stuff",
+  "by the inn", "nearest town", "not much") are gone; "did it" only from a bot of the quest's level; "saw" only from a bot in
+  that zone; battleground sightings only for an asker in the bracket.
+- Death openers: one a realm in four minutes, each wording once an evening, the cause named when known. Wipes are told only
+  when half the party is down, where it happened, and as an enemy wipe only when an enemy did it.
+- Town /say questions are questions and get answered; small talk has no orphan follow-up ("anyone for ?").
+- Frames have three wordings each, one per bot; new true frames (realm rank, group at its camp). A real level-up may be said
+  in /faction with its "gz" (`AutonomousBotChatCoordinator.TellDing`, once it is called from the level-up hook).
+- Owner's decision 6: one /faction opener in five goes to the written corpus, whose short lines true where the bot stands
+  pass every 90 seconds (the 20-minute rule stays for musings); a field line is said when none fits. Measured on a simulated
+  4.6-hour Albion evening (`CHAT_WRITTEN_SHARE`, see the PR). Decision 12: about one /broadcast question in three gets one
+  short answer in /say from a bot in range, at most one a region in three minutes.
+
 ## Crafter replies and the crafter roster (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leofrunn, an Assistant Weaponcrafter at 499):

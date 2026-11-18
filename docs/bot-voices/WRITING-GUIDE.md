@@ -113,7 +113,8 @@ levels, or plays a Catacombs class, and no line suggests the player can go. New 
 The tag is `@topic rumour_atlantis` (the sunken land) or `@topic rumour_below` (what lies under the capitals), on any kind
 or on a debate scene. Only those lines may say `atlantis` or `catacombs` (`build_corpus.py`, `ERA_RUMOUR_TOPICS`); every
 other banned word stays banned in them (`artifact`, master levels, `ml`, the classes and races), and the builder refuses a
-rumour line that claims a trip there ("been to atlantis", "lets go"). They live in `data/chat/era_rumours.lines`, with the
+rumour line that claims a trip there ("been to atlantis", "lets go"). The one place "ml" is said outside them is the glossary
+answer to "what does ml mean" (`AutonomousChatKnowledge`): "master level, from the atlantis rumours. nobody here has one". They live in `data/chat/era_rumours.lines`, with the
 storyteller's legend (`tale_atlantis`). Keep them rare: a handful of lines, sceptical or curious, never a theme. Atlantis is
 sailors' and grandmothers' talk (coral-crusted stone in the nets, lights under the water, a dream the three realms shared);
 the desert, the volcano and the city in the sky appear only as dream images inside the legend, never as places. Under the

@@ -694,15 +694,27 @@ public class UT_ChatBudgetSimulation
                 VC.Speaker speaker = choice.Name == "broadcast" ? SpeakerOf(bot, "in_town") : SpeakerOf(bot);
                 if (!Pick(recent, clock, random, kind, speaker, out VC.Picked picked, filter: CorpusFilter(choice.Name == "faction", now)) &&
                     (choice.Name is "lfg" or "trade" || !Pick(recent, clock, random, "ambient", speaker, out picked, filter: CorpusFilter(choice.Name == "faction", now))))
+                {
+                    // Chat 1.2 (owner's decision 6, AutonomousBotChatCoordinator.SpeakIn): with no written line that fits, the field
+                    // line is said after all.
+                    if (choice.Name is "faction" or "say" &&
+                        AutonomousChatFieldTalk.Line(choice.Name, FactsOf(bot, now, random), field, random, now) is { } fallback)
+                    {
+                        string text = AutonomousChatIdiolect.Apply(fallback.Text, bot.Id, false, random, terse: true);
+                        if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
+                            continue;
+                        Say(now, choice.Name, text, bot.Id);
+                        Field(now, bot, choice.Name, fallback, field, choice.Name == "faction" ? _ => true : mate => mate.NearPlayer);
+                        return true;
+                    }
                     continue;
+                }
                 if (!fresh.TryAdd(choice.Name.GetHashCode(), picked.Text, now))
                     continue;
-                // AutonomousBotChatCoordinator.NoteWritten: the line's idea rests, a musing starts the realm's 20 minutes.
+                // AutonomousBotChatCoordinator.NoteWritten: the line's idea rests, a musing starts the realm's 20 minutes (a
+                // situated line its 90 seconds, chat 1.2).
                 if (picked.Line?.Kind is "ambient" or "rvr" or "camp" or "group")
-                {
-                    field.Use(null, AutonomousChatFiller.IdeaOf(picked.Line), now);
-                    field.NoteWritten(now);
-                }
+                    AutonomousBotChatCoordinator.NoteWritten(field, picked.Line, now);
                 Say(now, choice.Name, picked.Text, bot.Id);
                 // A seller's macro (AutonomousChatBroadcast.StartMacro): again every few minutes for a while, under the ceiling.
                 if (choice.Name == "broadcast" && picked.Line?.Kind == "trade")
@@ -714,13 +726,9 @@ public class UT_ChatBudgetSimulation
             return false;
         }
 
-        Func<VC.Line, bool> CorpusFilter(bool faction, long now)
-        {
-            if (!field.WrittenAllowed(now))
-                return _ => false;
-            Func<VC.Line, bool> basic = AutonomousChatFiller.AmbientFilter(faction, random);
-            return line => basic(line) && !field.Rested(null, AutonomousChatFiller.IdeaOf(line), now);
-        }
+        // AutonomousBotChatCoordinator.AmbientLineFits(faction, realm), the live rule (chat 1.2: situated lines every 90 seconds).
+        Func<VC.Line, bool> CorpusFilter(bool faction, long now) =>
+            AutonomousBotChatCoordinator.WrittenFits(AutonomousChatFiller.AmbientFilter(faction, random), field, now);
 
         void Macro(long now, string text, long who)
         {

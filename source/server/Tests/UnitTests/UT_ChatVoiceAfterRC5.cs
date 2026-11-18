@@ -244,10 +244,11 @@ namespace DOL.GS.Tests
             for (int i = 0; i < 20; i++)
             {
                 Dictionary<string, string> chat = Spoken.ChatSlots(slots, random);
-                Assert.That(chat["keep"], Is.AnyOf("ailinne", "aili", "ailin"));
-                Assert.That(chat["enemy"], Is.AnyOf("hib", "hibs"));
-                Assert.That(chat["winner"], Is.AnyOf("mid", "mids"));
-                Assert.That(chat["loser"], Is.AnyOf("alb", "albs"));
+                // Chat 1.2 (TEXT-018, TEXT-021): one name per keep, a realm's people every time.
+                Assert.That(chat["keep"], Is.EqualTo("ail"));
+                Assert.That(chat["enemy"], Is.EqualTo("hibs"));
+                Assert.That(chat["winner"], Is.EqualTo("mids"));
+                Assert.That(chat["loser"], Is.EqualTo("albs"));
                 Assert.That(chat["raid"], Is.AnyOf("sh", "summoners hall", "summoners"));
                 Assert.That(chat["boss"], Is.EqualTo("govannon"));
                 Assert.That(chat["zone"], Does.StartWith("black m"));

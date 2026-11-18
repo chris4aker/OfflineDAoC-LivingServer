@@ -64,8 +64,21 @@ namespace DOL.GS
             ? $"Stand ready at {name}! The enemy's muster has about twenty minutes left; keep shields and supplies close."
             : $"About twenty minutes remain to muster for {name}. Close ranks, warbands; we need a fighting force before committing to the walls.";
 
+        /// <summary>
+        /// The written notice of a siege's end to one realm. <paramref name="timedOut"/> is a defended siege ("Siege defended: ..."),
+        /// whose <paramref name="winner"/> is the realm that held the keep when it is known. Chat 1.2 (LOG-004, owner's PC 00:06:17:
+        /// "hib took nged" for a siege Hibernia defended): a hold is told as a hold, "We held" to the defenders and "Hibernia held
+        /// Dun nGed." to the others, never as "has fallen to".
+        /// </summary>
         public static string SiegeOutcome(string name, bool defender, bool timedOut, bool failedRally, eRealm winner, eRealm audience)
         {
+            if (timedOut && !failedRally)
+            {
+                if (defender || winner != eRealm.None && winner == audience)
+                    return $"We held {name}! The enemy's time is spent and our banners still fly.";
+                if (winner != eRealm.None)
+                    return $"{GlobalConstants.RealmToName(winner)} held {name}. The siege there is over.";
+            }
             if (winner != eRealm.None)
                 return winner == audience ? $"{name} is ours! Raise our banners and honour those who fought for it."
                     : $"{name} has fallen to {GlobalConstants.RealmToName(winner)}. Tend the wounded; this struggle is not over.";

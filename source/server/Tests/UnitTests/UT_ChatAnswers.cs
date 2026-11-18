@@ -184,9 +184,12 @@ public class UT_ChatAnswers
     [Test]
     public void HelpAnswersFitTheirQuestion()
     {
-        Assert.That(AnswersTo("q_handin"), Is.Not.Empty.And.All.Match("town|gave it|journal|whoever"));
+        // Chat 1.2 (LOG-013): the hand-in question comes only from a bot still levelling in a home zone.
+        int n = 0;
+        Assert.That(AnswersTo("q_handin", () => Facts(n++, level: 30)), Is.Not.Empty.And.All.Match("town|gave it|journal|whoever"));
         Assert.That(AnswersTo("q_craft"), Is.Not.Empty.And.All.Match("crafting trainer|tools|money"));
-        Assert.That(AnswersTo("q_rps"), Is.Not.Empty.And.All.Match("kill|keep|rps|tower"));
+        // LOG-013: "how do realm points work?" only from one still at realm rank 1 (a 50 of unknown rank doesn't ask it).
+        Assert.That(AnswersTo("q_rps", () => Facts(n++, inRvR: true, level: 40)), Is.Not.Empty.And.All.Match("kill|keep|rps"));
         Assert.That(AnswersTo("q_epic"), Is.Not.Empty.And.All.Match("not yet|did|grp|guild|chain"));
         Assert.That(AnswersTo("ask_spec"), Is.Not.Empty.And.None.Match("^(me|x|ty)$"));
     }

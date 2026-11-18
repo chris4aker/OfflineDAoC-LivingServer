@@ -240,7 +240,8 @@ namespace DOL.GS.Tests
             DateTime now = DateTime.UtcNow;
             var item = new ChatNewsItem("enemy_seen", eRealm.Albion, now.AddMinutes(-3)) { Enemy = eRealm.Midgard, Zone = "Emain Macha", Size = 5 };
             string text = AutonomousChatLiveAnswers.SightingText(item, now, Always);
-            Assert.That(text, Is.EqualTo("5 mids in Emain Macha, couple min ago"));
+            // Chat 1.2 (LOG-033): the place in lower case, as chat typed it.
+            Assert.That(text, Is.EqualTo("5 mids in emain macha, couple min ago"));
             var big = item with { Size = 12, When = now };
             Assert.That(AutonomousChatLiveAnswers.SightingText(big, now, Always), Does.StartWith("big group of mids"));
         }

@@ -84,7 +84,7 @@ public static class AutonomousChatKnowledge
         else if (Has(@" (hand|turn) (in|it in) | where do i (finish|complete|return) ") && Has(@" quest | it "))
             pool = ["back to whoever gave it, your journal says who", "the npc that gave it, check the journal", "back to the quest giver"];
         else if (Has(@" (realm points|rps|rp) work | (get|earn|farm) (rps|realm points|rp) "))
-            pool = ["kill enemy players in the frontier, keeps and towers give some too", "enemy kills in the frontier, and taking keeps",
+            pool = ["kill enemy players in the frontier, taking keeps gives some too", "enemy kills in the frontier, and taking keeps",
                 "rvr kills, more if you group, keeps give a lot"];
         else if (Has(@" epic "))
             pool = ["its a long chain, your trainer starts it at 50", "ask your trainer at 50, long chain", "did mine, long chain, bring a group"];
