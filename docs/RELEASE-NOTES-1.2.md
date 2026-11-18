@@ -27,9 +27,9 @@ Server's own copy of shadowofze's release files.
 - **The bosses' own rules are back on.** In earlier versions many boss mechanics were softened or switched off so bot
   raids could win. 1.2 turns them back on: the horsemen's tether heal, Morbus's swarm, the Skeletal Sacristan's patrol,
   Soul Reckoner's souls and small room, Aroon's Scaiths in order, the Earthmenders, Beatha healing Xaga, Kvasir's cold
-  heal, King Tuscar and Queen Kula healing each other, the dragons' messengers, and more. Of the 18 restored rules that
-  are now server settings, 15 are on. Funus's class and weapon puzzle, the original fire patches and Govannon's full
-  300,000 health stay off.
+  heal, King Tuscar and Queen Kula healing each other, the dragons' messengers, and more. Of the 19 restored rules that
+  are now server settings, 13 are on. Funus's class and weapon puzzle, the original fire patches, Govannon's full
+  300,000 health and full heal, Easmarach's endless heal at the falls, and the Earthmenders healing each other stay off.
 - **They hit bots too.** Bosses used to choose their throws, glares, debuffs and "random target" spells from real players
   only. Now they choose from the whole raid: you, your companions and the gamebots. With bots around you are one target
   among many, never chosen more often than before.
@@ -49,7 +49,10 @@ encounter catalog lists 40 encounters with a raid tactic that is new or reworked
 - **Funus (Caer Sidi):** his class and weapon puzzle is off by default. Do not turn it on yet: the raid's tactic for it
   is not finished.
 - **The Earthmenders (Galladoria):** each one takes damage only from its own classes, so each raider takes one its class
-  can hurt, and the Earthmenders die before the primal.
+  can hurt, and the Earthmenders die before the primal. They heal only the primal, not each other, so the raid can win
+  (simulated: all four die in about 10 minutes). The original mutual heal is the server setting
+  `epic_earthmender_mutual_heal` (off). Turned on, it makes Galladoria unwinnable for bots: on build `b1b6846` the four
+  out-healed 1.44M damage in 48 minutes, and the raid's heal-watching tactic kills only one of them.
 - **Spindler Broodmother:** casters and archers kill each newborn spindler as it comes, the curers stand apart from her
   mesmerize so someone can always wake the raid, and the small spindlers that burst from her body are cleared before the
   raid moves on.

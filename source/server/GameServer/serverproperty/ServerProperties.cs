@@ -1299,8 +1299,8 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("npc", "epic_earthmender_quick_reset", "Galladoria: an Earthmender heals to full 30 s after its last fight even with raiders in the room (True, 1.2, as in the original).", true)]
 		public static bool EPIC_EARTHMENDER_QUICK_RESET = true;
 
-		[ServerProperty("npc", "epic_earthmender_mutual_heal", "Galladoria: Earthmenders heal each other as well as the Earth primal (True, 1.2, as in the original).", true)]
-		public static bool EPIC_EARTHMENDER_MUTUAL_HEAL = true;
+		[ServerProperty("npc", "epic_earthmender_mutual_heal", "Galladoria: Earthmenders heal each other as well as the Earth primal (as in the original). False by default (owner 2026-11-18): with it on the bot raid can't kill them.", false)]
+		public static bool EPIC_EARTHMENDER_MUTUAL_HEAL = false;
 
 		[ServerProperty("npc", "epic_beatha_heals_xaga", "Galladoria: damage to Beatha heals Xaga by twice the amount (True, 1.2). The raid kills Beatha, then Tine, then Xaga.", true)]
 		public static bool EPIC_BEATHA_HEALS_XAGA = true;

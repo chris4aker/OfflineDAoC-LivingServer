@@ -499,7 +499,8 @@ namespace DOL.UnitTests
             // Epic wave 2, Galladoria (UT_EpicWaveTwo.GalladoriaRestoresOn).
             nameof(EpicEncounterMechanics.AllowAroonDamageOrder), nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
             nameof(EpicEncounterMechanics.AllowEarthmendersPassive),
-            nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset), nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal),
+            nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset),
+            // (The Earthmenders' mutual heal is off by default: the owner's call, 2026-11-18.)
             nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowFairyFlight),
             // Tuscaran Glacier and Summoner's Hall (UT_EpicWave2MidHib).
             nameof(EpicEncounterMechanics.AllowTuscarTwinHeal), nameof(EpicEncounterMechanics.AllowKvasirColdHeal),

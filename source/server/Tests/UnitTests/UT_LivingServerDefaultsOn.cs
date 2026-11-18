@@ -104,7 +104,24 @@ namespace DOL.GS.Tests
                     change.NewDefault), Is.True, change.Key);
             Assert.That(Upgrade.Changes.Where(change => change.Since == "1.2.0.1").Select(change => change.Key),
                 Is.EquivalentTo(TurnedOn.Append("bot_schedule_mode")));
-            Assert.That(Upgrade.Version, Is.EqualTo("1.2.0.1"));
+            Assert.That(Upgrade.Version, Is.EqualTo("1.2.0.2"));
+        }
+
+        [Test]
+        public void TheEarthmendersMutualHealMovesOffOnlyWhereItWasTheUntouchedOldDefault()
+        {
+            // Owner 2026-11-18, "Mutual heal off": the code default is now False.
+            var change = Upgrade.Changes.Single(c => c.Since == "1.2.0.2");
+            Assert.That((change.Key, change.OldDefault, change.NewDefault), Is.EqualTo(("epic_earthmender_mutual_heal", "True", "False")));
+            Assert.That(Upgrade.SameStoredValue(Convert.ToString(Defaults()[change.Key], System.Globalization.CultureInfo.InvariantCulture),
+                change.NewDefault), Is.True, "the code default");
+            var untouched = new Dictionary<string, (string Value, string DefaultValue)> { ["epic_earthmender_mutual_heal"] = ("True", "True") };
+            Assert.That(Upgrade.Plan("1.2.0.1", untouched), Is.EqualTo(new[] { "epic_earthmender_mutual_heal" }), "a world that ran an earlier 1.2 build");
+            Assert.That(Upgrade.Plan("1.2", untouched), Is.EqualTo(new[] { "epic_earthmender_mutual_heal" }));
+            Assert.That(Upgrade.Plan("1.2.0.2", untouched), Is.Empty, "once only");
+            foreach (var row in new[] { ("True", ""), ("False", "True"), ("False", "False") }) // the launcher's choice; already off
+                Assert.That(Upgrade.Plan("1.2.0.1", new Dictionary<string, (string, string)> { ["epic_earthmender_mutual_heal"] = row }), Is.Empty,
+                    row.ToString());
         }
 
         [Test]

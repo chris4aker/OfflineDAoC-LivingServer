@@ -83,11 +83,14 @@ namespace DOL.UnitTests
             Assert.That(EpicEncounterMechanics.AllowFullFirePatches, Is.False);
             Assert.That(EpicEncounterMechanics.AllowFunusWeaponPuzzle, Is.False);
             Assert.That(EpicEncounterMechanics.AllowGovannonFullHealth, Is.False);
+            // Off (owner 2026-11-18, "Mutual heal off"): with the Earthmenders healing each other the bot raid can't kill them.
+            Assert.That(EpicEncounterMechanics.AllowEarthmenderMutualHeal, Is.False);
+            Assert.That(DefaultOf("epic_earthmender_mutual_heal"), Is.EqualTo(false));
             // On as their engineers set them.
             foreach (string on in new[]
                      {
                          nameof(EpicEncounterMechanics.AllowTuscarTwinHeal),
-                         nameof(EpicEncounterMechanics.AllowKvasirColdHeal), nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal),
+                         nameof(EpicEncounterMechanics.AllowKvasirColdHeal),
                          nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowSacristanPatrol),
                      })
                 Assert.That(Switch(on), Is.True, on);

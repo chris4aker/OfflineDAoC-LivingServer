@@ -25,8 +25,8 @@ namespace DOL.UnitTests
             // AllowFullFirePatches is off by default (the owner's 2026-10-19 nerf kept until he confirms); the raid plays both.
             nameof(EpicEncounterMechanics.AllowGalladoriaBridgeSpot),
             nameof(EpicEncounterMechanics.AllowEarthmendersPassive), nameof(EpicEncounterMechanics.AllowEarthmenderQuickReset),
-            nameof(EpicEncounterMechanics.AllowEarthmenderMutualHeal), nameof(EpicEncounterMechanics.AllowBeathaHealsXaga),
-            nameof(EpicEncounterMechanics.AllowFairyFlight),
+            nameof(EpicEncounterMechanics.AllowBeathaHealsXaga), nameof(EpicEncounterMechanics.AllowFairyFlight),
+            // AllowEarthmenderMutualHeal is off by default (owner 2026-11-18: with it on the bot raid can't kill them).
         ];
 
         private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;

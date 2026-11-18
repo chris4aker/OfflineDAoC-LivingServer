@@ -78,7 +78,7 @@ class ReleaseServerSettings(unittest.TestCase):
                 "bot_move_stick_line", "bot_move_sit_and_walls", "bot_living_milestones")
         defaults = code_defaults()
         upgraded = set()
-        for since in ("1.1", "1.1.2", "1.1.2.1", "1.2", "1.2.0.1"):
+        for since in ("1.1", "1.1.2", "1.1.2.1", "1.2", "1.2.0.1", "1.2.0.2"):
             upgraded |= set(upgrade_changes(since))
         for key in keys:
             self.assertEqual(defaults.get(key), "True", key)
@@ -90,6 +90,14 @@ class ReleaseServerSettings(unittest.TestCase):
         self.assertTrue(changes)
         for key, (_old, new) in changes.items():
             self.assertEqual(SETTINGS_FILE["Settings"][key], new, key)
+
+    def test_the_earthmenders_mutual_heal_ships_off_with_its_upgrade_line(self):
+        """Owner 2026-11-18, "Mutual heal off": off in the code, in the release world, and moved once on older worlds."""
+        self.assertEqual(upgrade_changes("1.2.0.2"), {"epic_earthmender_mutual_heal": ("True", "False")})
+        self.assertEqual(code_defaults()["epic_earthmender_mutual_heal"], "False")
+        self.assertEqual(SETTINGS_FILE["Settings"]["epic_earthmender_mutual_heal"], "False")
+        self.assertIn("epic_earthmender_mutual_heal", SETTINGS_FILE["KeptOff"])
+        self.assertEqual(SETTINGS_FILE["Settings"]["epic_earthmender_class_puzzle"], "True", "the class puzzle stays on")
 
     def test_the_developers_rows_are_replaced_and_checked(self):
         with tempfile.TemporaryDirectory() as tmp, closing(sqlite3.connect(Path(tmp) / "w.db")) as con:

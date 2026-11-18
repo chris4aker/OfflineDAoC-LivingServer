@@ -179,7 +179,7 @@
     ],
     "places": 4,
     "original": "Each Earthmender takes damage only from its class group (Guardian: blademaster, hero, champion; Magical: eldritch, enchanter, mentalist; Natural: bard, druid, warden; Shadowy: nightshade, ranger; animists, valewalkers and pets hurt all four); they never attack; they heal to full 30 s after a fight; they heal each other and the primal.",
-    "ours": "The original: all four on by default since 1.2, and the raid assigns each raider an Earthmender its class hurts. Off, as in 1.1: everyone hurts them, they fight back, no quick reset while raiders are in the room, and they heal the primal only.",
+    "ours": "The original: the class puzzle, passive menders and quick reset on by default since 1.2, and the raid assigns each raider an Earthmender its class hurts; mutual heal off by default (owner 2026-11-18: with it on the bot raid can't kill them). Off, as in 1.1: everyone hurts them, they fight back, no quick reset while raiders are in the room, and they heal the primal only.",
     "switch": "AllowEarthmenderClassPuzzle, AllowEarthmendersPassive, AllowEarthmenderQuickReset, AllowEarthmenderMutualHeal"
    },
    {
@@ -1282,7 +1282,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "aiTactics": {
     "summary": "900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
@@ -1339,7 +1339,7 @@
    "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
   "galladoria/earthprimal": {
-   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; from run 18 until 1.2 wave 2 they fought back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
+   "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; from run 18 until 1.2 wave 2 they fought back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2, 2026-11-18 (tests only; EpicEncounterTactics.Earthmenders.cs): each mender heals the first and the last hurt NPC of its radius list (two casts a round, the primal included, never itself); the raid watches the heals and kills the mender the fewest land on (animists, valewalkers and its own group), half of each other group keeps its mender hurt and half keeps the primal hurt. Simulated with b1b6846's raid: one mender dies in 5-10 minutes, the other three hold; winning needs about 2.0-2.75 times the raid's damage (3.5 times with the old split). Owner 2026-11-18, \"Mutual heal off\": AllowEarthmenderMutualHeal is off by default (the menders heal only the primal; the tactic above acts only when it is turned back on); simulated with b1b6846's raid, all four die in about 10 minutes. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "rules": {
     "heal@2607": {
@@ -1350,7 +1350,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1413,7 +1413,7 @@
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "aiTactics": {
     "hazards": [
@@ -1487,7 +1487,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "aiTactics": {
     "since": "1.2",
@@ -1497,7 +1497,7 @@
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port). 1.2 upstream port (tests only): its death runs in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb's intent); the main body still dies with the real killer and pays for both.",
    "aiTactics": {
@@ -1522,7 +1522,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -1604,7 +1604,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2"
    },
    "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "aiTactics": {

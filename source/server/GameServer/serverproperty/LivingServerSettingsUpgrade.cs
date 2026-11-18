@@ -28,13 +28,15 @@ namespace DOL.GS.ServerProperties
 	///   launcher, on a row the server wrote, can't be told from an untouched row (the launcher kept the server's
 	///   DefaultValue until 1.2): that row moves once, and the player's next choice in the tab is kept from then on, because
 	///   the launcher now clears DefaultValue on every save.
+	/// - 1.2, Galladoria's Earthmenders (owner 2026-11-18, "Mutual heal off"): they no longer heal each other by default.
+	///   "1.2.0.2" because worlds that ran an earlier 1.2 build have already recorded "1.2.0.1".
 	/// </summary>
 	public static class LivingServerSettingsUpgrade
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.2.0.1";
+		public const string Version = "1.2.0.2";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -76,6 +78,9 @@ namespace DOL.GS.ServerProperties
 			new("1.2.0.1", "bot_siege_supply", "False", "True"),
 			new("1.2.0.1", "bot_crafter_commerce", "False", "True"),
 			new("1.2.0.1", "bot_crafting_social", "False", "True"),
+			// 1.2 (owner 2026-11-18, "Mutual heal off"): with the Earthmenders healing each other the bot raid can't kill them
+			// (build b1b6846: 1.44M damage in 48 minutes, none below 99%). The class puzzle and the other epic options stay.
+			new("1.2.0.2", "epic_earthmender_mutual_heal", "True", "False"),
 		];
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>
