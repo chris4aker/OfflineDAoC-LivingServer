@@ -91,12 +91,25 @@ Hall) with a gamebot in your group, and a groupmate tells the short version in /
   of a play session. It starts only while a player of that realm is online.
 - The tale the realm heard longest ago comes first; one about the place a player is standing in is preferred six times in
   ten.
-- 1.2 ships twenty-five tales. The first fifteen: Golestandt, Apocalypse and Xanxicar (Albion); Gjalpinulva, King Tuscar
+- 1.2 ships thirty-nine tales. The first fifteen: Golestandt, Apocalypse and Xanxicar (Albion); Gjalpinulva, King Tuscar
   and Nosdoden (Midgard); Cuuldurach, Olcasgean and the Black Lady (Hibernia); and Legion and Govannon as each realm tells
   them. Ten more (2026-11-11), so that every raid's final boss has one: Aidon the Archwizard, Lord Gildas, Orylle and
   Dura'ek the Empowered (Albion); Aros the Spiritmaster, Iarnvidiur and Queen Kula (Midgard); Avartack the Champion,
   Chieftain Caimheul and Balor (Hibernia). The ten have passed the corpus check and the unit tests only; none has been
   heard in game yet. Each has its fireside version.
+- **Fourteen more tales** (2026-11-18, owner: "Yes to all the new tales"; `data/chat/tales_more.lines`), each with its
+  fireside version, so that every open-world raid has its tale too: the Green Knight, Coliath and Lord Emthoro
+  (Albion); the Glacier Giant, Mortufoghus, the Raumarik Revenant and the Wretch of Winter (Midgard; the five Wretch raids
+  share that one tale, `AutonomousTales.SameRaid`); Evern, Juggernaut, Curengkur, Marfoirwort and Mollunero (Hibernia);
+  Myrddraxis (Hibernia) and Behemoth (every realm). Myrddraxis and Behemoth have no raid of their own (Fomor has none
+  in this world; the Darkness Falls raid's tale stays Legion's): they are told in the rotation and on request, and the
+  rumour after them is always lore (`AutonomousTales.RaidlessTales`). Corpus check and unit tests only: none heard yet.
+- **Sixteen fireside tales for the thin places** (the lore audit's LORE-028, same file), in /group only: Overseer Tepok,
+  Keltoi Fogou, Lich Lord Ilron, Scurceol Hyrde and Lady Darra (Hall of the Corrupt) in Albion; Jarl Ormarr and a second
+  Aros (Dodens Gruva), Hresvelgr (Varulvhamn), the Cursed Tomb, Nisse's Lair and Vendo Caverns in Midgard; King Vian
+  (Treibh Caillte), Koalinth Caverns, Eraliwyr (Spraggon Den), the Ancient Black Oak and a second Black Lady (Marfach) in
+  Hibernia. A place with no boss file has a fireside under its own lore id (`fireside_keltoi-fogou`;
+  `AutonomousTales.FiresideLoreIds`). Tests only.
 - **One legend** (2026-11-15, the era rumours): the glass that spoke, a grandmother's tale of an orb a fisherman's net
   brought up, which spoke to a council of a land past the sea (Trials of Atlantis as a rumour only, owner 2026-11-15). Every
   realm's storyteller tells it in the rotation like any tale, and a player can ask for it ("tell the one about atlantis",
@@ -133,7 +146,7 @@ says why it could not form right now. `/lstest fireside` forgets today's firesid
 
 | Piece | File |
 |---|---|
-| The tales | `data/chat/tales.lines`: scenes like any debate. Topic `tale_<lore id>`; role B is the storyteller, `{name_b}` its name; A asks, C hushes, D asks the questions, E has heard it too often, F is new. Fireside scenes: topic `fireside_<lore id>`, A tells, B listens. |
+| The tales | `data/chat/tales.lines` and `data/chat/tales_more.lines`: scenes like any debate. Topic `tale_<lore id>`; role B is the storyteller, `{name_b}` its name; A asks, C hushes, D asks the questions, E has heard it too often, F is new. Fireside scenes: topic `fireside_<lore id>`, A tells, B listens. |
 | Scheduling, storytellers, requests, the rumour and raid, fireside | `AutonomousTales.cs` |
 | Playing the scene | `AutonomousBotDebates.cs`: `StartTale` (the storyteller is cast as B and never recast; a busy one is waited for like a storyline's protagonist), `TellerAside` (its answer to a player). Ordinary debates never pick a `tale_` or `fireside_` scene. |
 | The raid | `AutonomousRealmRaid.CouldStartForTale` and `StartForTale`: the scheduled raid's own checks and start. |
@@ -160,7 +173,11 @@ opened, reason), `REALM_RAID_CALL_CANCELLED`.
 - At least eight lines from the teller, at least one question from a listener, one `~ 8` breath in the middle.
 - End with a pause of 20 seconds or more, then one to three lines from listeners. The teller does not speak after it.
 - Every sentence of more than twelve characters must be unique across all scenes (`build_corpus.py` checks).
-- Each tale needs a fireside scene of the same lore id for the same realms, and a raid in `AutonomousTales.RaidStems`.
+- Each tale needs a fireside scene of the same lore id for the same realms, and a raid in `AutonomousTales.RaidStems`
+  (or a place in `RaidlessTales`, for a boss with no raid). A fireside may also be about a place with no boss file: its
+  topic is `fireside_<location id>`.
+- Tell only what the server's fight does (the boss file's `facts`, the script). Invented lore is said as a story
+  ("the woodsmen say"); vary the teller's yes and the ending (no closing line that just repeats the teller's phrase).
 - Run `python3 tools/bot-voices/build_corpus.py`, then the `UT_Tales` tests.
 
 ## Not built

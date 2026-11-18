@@ -54,6 +54,13 @@ namespace DOL.GS.Tests
                     Assert.That(LoreBible.Current.BossById(loreId), Is.Null, $"{tale.Id}: a legend is no boss");
                     continue;
                 }
+                // A fireside may be about a place with no boss file (tales_more.lines: Keltoi Fogou and the rest).
+                if (Tales.IsFireside(tale) && LoreBible.Current.BossById(loreId) == null)
+                {
+                    Assert.That(LoreBible.Current.LocationById(loreId), Is.Not.Null, $"{tale.Id}: no lore file \"{loreId}\"");
+                    Assert.That(LoreBible.Current.BossesAt(loreId), Is.Empty, $"{tale.Id}: a place with bosses tells a boss's fireside");
+                    continue;
+                }
                 Assert.That(LoreBible.Current.BossById(loreId), Is.Not.Null, $"{tale.Id}: no lore file \"{loreId}\"");
             }
         }
@@ -115,6 +122,12 @@ namespace DOL.GS.Tests
                         continue;
                     }
                     string raid = Tales.RaidIdFor(Tales.LoreIdOf(tale.Topic), realm);
+                    // Only the named raidless tales may have none (Myrddraxis: Fomor has no raid; Behemoth: Darkness Falls is Legion's).
+                    if (Tales.RaidlessTales.Contains(Tales.LoreIdOf(tale.Topic)))
+                    {
+                        Assert.That(raid, Is.Null, $"{tale.Id}: a raidless tale leads to no raid");
+                        continue;
+                    }
                     Assert.That(raid, Is.Not.Null, tale.Id);
                     Assert.That(AutonomousRealmRaid.Definitions.Any(d => d.Id == raid && d.Realm == realm), Is.True, $"{tale.Id}: no raid {raid} for {realm}");
                 }
@@ -122,6 +135,38 @@ namespace DOL.GS.Tests
             Assert.That(Tales.RaidIdFor("xanxicar", eRealm.Albion), Is.EqualTo("dungeon-albion-crystal"));
             Assert.That(Tales.RaidIdFor("nobody", eRealm.Albion), Is.Null);
             Assert.That(Tales.RaidIdFor("legion", eRealm.None), Is.Null);
+        }
+
+        [Test]
+        public void EveryOpenWorldRaidHasItsTaleAndTheWretchesShareOne()
+        {
+            // tales_more.lines (owner 2026-11-18: "Yes to all the new tales"): each of the seventeen open-world raids begins with a
+            // tale of its boss, and the five Wretches of Winter all take the one Wretch tale.
+            foreach (RealmRaidOpenWorld.OpenWorldRaid raid in RealmRaidOpenWorld.Raids)
+                Assert.That(Tales.HasTaleForRaid(raid.Id, raid.Realm), Is.True, $"{raid.Id}: no tale for its realm");
+            foreach (string wretch in RealmRaidOpenWorld.Raids.Where(r => r.Group == "wreths-of-winter").Select(r => r.Id))
+                Assert.That(Tales.LoreIdsForRaid(wretch, eRealm.Midgard), Is.EqualTo(new[] { "wretch-of-winter" }), wretch);
+            Assert.That(Tales.LoreIdsForRaid("openworld-midgard-revenant", eRealm.Midgard), Is.EqualTo(new[] { "raumarik-revenant" }),
+                "a raid outside the Wretches' choice keeps its own tale");
+            Assert.That(Tales.LoreIdsForRaid("darkness-albion", eRealm.Albion), Is.EqualTo(new[] { "legion" }), "Behemoth's tale is no raid's");
+            Assert.That(Tales.SameRaid("openworld-midgard-wreth-jotun", "openworld-midgard-wreth-crab"), Is.True);
+            Assert.That(Tales.SameRaid("openworld-midgard-wreth-jotun", "openworld-midgard-glaciergiant"), Is.False);
+            Assert.That(Tales.SameRaid("dragon-albion", "dragon-midgard"), Is.False);
+            Assert.That(Tales.SameRaid(null, "dragon-albion"), Is.False);
+            foreach (string lore in Tales.RaidlessTales)
+                Assert.That(TaleScenes.Any(t => Tales.LoreIdOf(t.Topic) == lore), Is.True, $"{lore}: a raidless tale is written");
+        }
+
+        [Test]
+        public void AFiresideCanBeAboutAPlaceWithNoBossFile()
+        {
+            var bible = LoreBible.Current;
+            Assert.That(Tales.FiresideLoreIds(bible, "keltoi-fogou"), Does.Contain("keltoi-fogou"));
+            Assert.That(Tales.FiresideLoreIds(bible, "tepoks-mine"), Does.Contain("overseer-tepok"));
+            Assert.That(Tales.FiresideLoreIds(bible, "nowhere-at-all"), Is.Empty);
+            Assert.That(Tales.FiresideLoreIds(null, "keltoi-fogou"), Is.Empty);
+            foreach (string place in new[] { "keltoi-fogou", "cursed-tomb", "nisses-lair", "vendo-caverns", "koalinth-caverns" })
+                Assert.That(FiresideScenes.Any(f => Tales.LoreIdOf(f.Topic) == place), Is.True, $"{place}: no fireside");
         }
 
         [Test]
