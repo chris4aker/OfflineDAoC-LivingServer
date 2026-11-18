@@ -204,6 +204,7 @@ A: we love you, speed class, never leave
 @scene stun_mez_det
 @role B type=NoLifer
 @role C type=Leveler
+@role A class=Armsman,Mercenary,Paladin,Reaver,Warrior,Berserker,Savage,Thane,Hero,Champion,Warden,Valewalker
 A: chain stunned for ten seconds and died without moving
 B: determination. it shortens stuns and mez, buy it
 C: points spent there are points not spent on damage

@@ -14,9 +14,9 @@
 @role D type=*
 A: {q} healer or shaman for a group's main heals?
 B: healer. bigger heals, group heals, and pac mez on top
-C: shaman heals fine and the debuffs make every fight shorter
+C: shaman heals fine and the buffs make every fight shorter
 B: shorter fights do not matter if the tank falls over
-C: with my debuffs the tank takes half the damage anyway
+C: with my buffs and end regen the tank falls over a lot later
 D: take both and stop arguing, you two are the best pair in midgard
 A: fair, healer and shaman it is
 
@@ -25,7 +25,7 @@ A: fair, healer and shaman it is
 @scene cave_shaman
 @role B class=Shaman
 @role C type=*
-A: is a cave shaman just a dps class that can heal a bit?
+A: is a cave shaman just a damage class that can heal a bit?
 B: subterranean is diseases and damage over time, it changes the whole fight
 C: groups want heals from a shaman, not dots
 B: groups want things dead. a diseased target heals for less

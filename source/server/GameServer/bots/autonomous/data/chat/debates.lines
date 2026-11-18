@@ -18,7 +18,7 @@ A: fair points both. still kind of want one
 @levels 35-50
 @scene stealthers
 @role B type=Leveler,Crafter,Socialite
-@role C type=NoLifer,Daredevil
+@role C class=Infiltrator,Shadowblade,Nightshade type=NoLifer,Daredevil
 A: got killed by a stealther on the way to {keep} again
 B: stealthers ruin the frontier for anyone who travels alone
 C: then do not travel alone. that is the whole point of them
@@ -78,6 +78,7 @@ A: ok who is coming to the frontier
 @scene twinks
 @role B type=Daredevil,NoLifer
 @role C type=Leveler,Socialite
+@role A levels=20-24
 A: thidranki tonight, but the twinks are out in force
 B: a twink is just someone who planned ahead
 C: or someone who hit 24 and refused to grow up
@@ -236,6 +237,7 @@ A: turning effects down, thanks
 @scene new_player
 @role B type=Explorer,Socialite
 @role C type=NoLifer
+@role A levels=1-12
 A: new player here, any advice?
 B: do not rush, group a lot, enjoy the camps
 C: learn your class, train every level, and get to 50
