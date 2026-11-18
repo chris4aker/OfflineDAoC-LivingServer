@@ -45,10 +45,15 @@ public static class AutonomousChatIdiolect
             result = trimmed + "?";
         // Beta 1.1.2, round 4: no trailing "..." any more (the blind judge's tell); the TrailOff habit is kept for its id draw.
         if (!terse && habits.HasFlag(Habit.LolTail) && random.NextDouble() < 0.15 && !Contains(result, "lol") && !Contains(result, "heh") &&
-            !Contains(result, "haha") && result.Split(' ').Length >= 3)
+            !Contains(result, "haha") && !EndsWithSmiley(result) && result.Split(' ').Length >= 3)
             result = result.TrimEnd('.') + " lol";
         return result.Length <= AutonomousBotVoiceCorpus.MaxLength ? result : text;
     }
+
+    /// <summary>A line the voice already ended with a smiley (":P", ":)", ":D", "XD"): a "lol" after it is a second laugh (1.2 CI,
+    /// UT_ChatVoiceAfterRC5: "best night ever :P lol"). Pure.</summary>
+    public static bool EndsWithSmiley(string text) =>
+        System.Text.RegularExpressions.Regex.IsMatch(text ?? string.Empty, @"(:\)|:\(|:P|:p|:D|;\)|XD|xD|\^\^|<3)\s*$");
 
     private static bool Contains(string text, string word) =>
         (" " + text.ToLowerInvariant() + " ").Contains(" " + word + " ", StringComparison.Ordinal) ||

@@ -225,6 +225,25 @@ namespace DOL.UnitTests
 
         #endregion
 
+        #region One laugh a line (1.2 CI after the rebase onto E3's voice layer)
+
+        [Test]
+        public void ALineEndingInASmileyGetsNoLolTail()
+        {
+            Assert.That(AutonomousChatIdiolect.EndsWithSmiley("best night ever :P"), Is.True);
+            Assert.That(AutonomousChatIdiolect.EndsWithSmiley("best night ever"), Is.False);
+            // Every bot id and many draws: a smiley-ended line never comes back with " lol" after it.
+            for (long botId = 1; botId <= 400; botId++)
+            {
+                var random = new Random((int)botId);
+                for (int i = 0; i < 20; i++)
+                    Assert.That(AutonomousChatIdiolect.Apply("i grouped with a minstrel, best night ever :P", botId, false, random),
+                        Does.Not.EndWith("lol"), $"bot {botId}");
+            }
+        }
+
+        #endregion
+
         #region Crafters (CORPUS-C-037, C-038, LOG-024, LOG-026, LOG-036)
 
         [Test]
