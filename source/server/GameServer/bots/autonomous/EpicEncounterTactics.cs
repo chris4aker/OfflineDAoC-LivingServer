@@ -747,6 +747,8 @@ namespace DOL.GS
             Vector3 at = new(raider.X, raider.Y, raider.Z);
             // The curers' post (Spindler Broodmother): while somebody fights her, every second curer keeps it (ThinkPartyPost).
             WatchPartyPosts(target, now);
+            // Summoner Pain's split camps (Summoner Roesia): while somebody fights her, the back lines keep their camps (ThinkPainCamp).
+            WatchPainCamps(target, now);
             // A raid breaking off from the fight (the boss, or the boss of this add or of this hazard) goes to the muster first.
             GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
@@ -1479,6 +1481,8 @@ namespace DOL.GS
             if (!PostWatch.IsEmpty && ThinkPartyPost(bot, now)) return true;
             // A boss fought at home chasing this raider out of it: the raider leads it back, whatever it was doing.
             if (!HomeWatch.IsEmpty && ThinkLeadHome(bot, now)) return true;
+            // A boss with Summoner Pain is fought (Summoner Roesia): each party's back line walks to its camp (sweep 6f).
+            if (!PainWatch.IsEmpty && ThinkPainCamp(bot, now)) return true;
             // Soul Reckoner out of his room: the raider chosen to lead him back walks in, whatever it was doing (CaerSidi).
             if (ThinkSoulReckonerLead(bot, now)) return true;
             if (System.Threading.Volatile.Read(ref _blastBosses) == 0 && System.Threading.Volatile.Read(ref _standOffHoldCount) == 0 &&
@@ -1627,6 +1631,7 @@ namespace DOL.GS
             LeadHomeRepath.Clear();
             lock (SeenHazards) { SeenHazards.Clear(); System.Threading.Volatile.Write(ref _liveHazardCount, 0); }
             ResetPartyPostsForTests();
+            ResetPainCampsForTests();
         }
 
         public static bool CanShootFlyers(GameBot bot)

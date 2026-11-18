@@ -2209,7 +2209,7 @@ namespace DOL.GS
         /// <summary>How far from its spawn <paramref name="npc"/>'s muster may stand: where it can be fought, and inside its
         /// catalog fight-at-home radius (RealmRaidTetherReach.MusterReach; 0: no limit). Sweep 6e (S-1, Aidon).</summary>
         private static int ReachOf(GameNPC npc) => npc == null ? 0 :
-            RealmRaidTetherReach.MusterReach(TetherOf(npc), EpicEncounterTactics.For(npc)?.FightAtHomeRadius ?? 0);
+            RealmRaidTetherReach.MusterReach(TetherOf(npc), EpicEncounterTactics.For(npc)?.FightAtHomeRadius ?? 0, AggroOf(npc));
 
         private static int AggroOf(GameNPC npc) => npc?.Brain is DOL.AI.Brain.StandardMobBrain brain ? brain.AggroRange : 0;
 

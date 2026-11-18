@@ -99,6 +99,12 @@ WAVE_HEADWAY_SECONDS = 4 * 60
 # A wave stuck this little before its raid won is not "never made headway" (the stuck-wave row; Crystal Cave's wave 2,
 # stuck 51 s before Xanxicar died).
 STUCK_BEFORE_WIN_SECONDS = 5 * 60
+# Sweep 6f (build b1b6846, W-2): a return wave rebased onto its catching-up raiders at a step none of them stood at
+# (standing=0, or no standing= field: builds before the fix put the wave at the step they walked to) that then shows no
+# act of its own (REBASE_ACTS: a step, a fight, its end) for this long sat still: Tur Suil's wave 1, 27.5 minutes from
+# 15:38:03; Trollheim's wave 4, 34.8 minutes from 15:10:54 (raiders joining it, step=waiting and step=stuck are not acts).
+REBASE_SILENT_SECONDS = 10 * 60
+REBASE_ACTS = ("moving", "fighting", "cleared", "met", "passable", "left", "released", "ended", "lost", "rebased")
 END_OUTCOME_SECONDS = 15
 REQUIRED_ADD_RE = re.compile(r'required-add \d+/\d+ of "([^"]+)"')
 CATALOG = Path(__file__).resolve().parents[2] / "docs" / "encounters" / "epic-encounters.json"
@@ -369,6 +375,9 @@ class Section:
         self.gate_bosses = set()          # monsters a raid fought as route gates (REALM_EXPEDITION_ROUTE_GATE bosses=)
         self.wave_headway = {}            # (event, wave) -> [last headway t, kills, ended]
         self.stall_waves = []             # (t, line, event, wave, seconds since its headway) MUSTER_STALLED beside a wave
+        # Sweep 6f (build b1b6846)
+        self.rebases = {}                 # (event, wave) -> (t, line) of a rebase to a step none of its raiders stood at
+        self.silent_rebases = []          # (t, line, key, minutes silent, what ended the silence)
 
     @property
     def commit7(self):
@@ -616,6 +625,8 @@ def _raid_ended(sec, t, message, level, near):
     if f.get("wipes") is not None:
         run.wipes = max(run.wipes, int(num(f.get("wipes"))))
     sec.open_raids.pop(event, None)
+    for key in [k for k in sec.rebases if k[0] == event]:
+        close_rebase(sec, key, t, f"the raid ended at {stamp(t)[6:]}")
     outcome = f.get("outcome", "")
     end = {"t": t, "event": event, "members": {}, "regions": set()}
     # The raid's dungeon and the one its way in leads through (sweep 6e: Summoner's Hall's Hall of the Corrupt, Crystal
@@ -661,6 +672,8 @@ def _return_wave(sec, t, message, level, near):
     f = kv(message)
     step = f.get("step")
     key = (f.get("event", "?"), f.get("wave"))
+    if f.get("wave"):
+        rebase_silence(sec, t, f, step, key, message)
     wave_step(sec, t, message, key, step, f.get("at") or "")
     if f.get("wave"):
         wave_headway(sec, t, f, step, key)
@@ -681,6 +694,27 @@ def _return_wave(sec, t, message, level, near):
         sec.ev["return.wave"].add(t, message)
     if step in ("moving", "ahead", "cleared", "met"):
         sec.ev["return.went_in"].add(t, message)
+
+
+def rebase_silence(sec, t, f, step, key, message):
+    """W-2 (sweep 6f): a rebase to a step none of the new core stands at is held open until the wave's next act of its own
+    (REBASE_ACTS); REBASE_SILENT_SECONDS or more without one is a silent rebase."""
+    if step not in REBASE_ACTS:
+        return
+    if key in sec.rebases:
+        close_rebase(sec, key, t, f"step={step} at {stamp(t)[6:]}")
+    if step == "rebased":
+        sec.ev["return.rebased"].add(t, message)
+        standing = f.get("standing")
+        if standing is None or num(standing) <= 0:
+            sec.rebases[key] = (t, message)
+
+
+def close_rebase(sec, key, t, why):
+    since, line = sec.rebases.pop(key)
+    seconds = (t - since).total_seconds()
+    if seconds >= REBASE_SILENT_SECONDS:
+        sec.silent_rebases.append((since, line, key, seconds / 60, why))
 
 
 WAVE_STEP_RE = re.compile(r"(\d+)/\d+$")
@@ -1841,6 +1875,7 @@ def raids(j: Judge, sec: Section, c):
     sweep6c_rows(j, sec, c)
     sweep6d_rows(j, sec, c)
     sweep6e_rows(j, sec, c)
+    sweep6f_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
@@ -2048,6 +2083,31 @@ def sweep6e_rows(j: Judge, sec: Section, c):
               SEEN if waits or c("muster.stalled") else NOT_SEEN,
               j.ev("REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE") if waits else (j.ev("muster.stalled") if c("muster.stalled") else None),
               f"{c('muster.stalled')} muster(s) set aside, none beside a moving wave; {waits} MUSTER_WAITS_FOR_WAVE line(s)")
+
+
+def sweep6f_rows(j: Judge, sec: Section, c):
+    """Sweep 6f (build b1b6846): a return wave rebased to a step none of its raiders stood at that then sat silent (W-2)."""
+    end = sec.run_end()
+    for key in list(sec.rebases):
+        if end is not None:
+            close_rebase(sec, key, end, "the log ends")
+    silent = sorted(sec.silent_rebases)
+    text = (f"A rebased return wave moves: none is rebased to a step none of its raiders stand at and then makes no step, "
+            f"fight or end of its own for {REBASE_SILENT_SECONDS // 60} minutes or more (REALM_RAID_RETURN_WAVE step=rebased, "
+            f"sweep 6f)")
+    if silent:
+        bad = Evidence()
+        bad.add(silent[0][0], silent[0][1], len(silent))
+        j.add("raids", "rebase_silent", text, CONTRADICTED, bad,
+              "; ".join(f"{k[0]} wave {k[1]} rebased at {stamp(t)[6:]} to {kv(line).get('at')} "
+                        f"(standing={kv(line).get('standing', 'not logged')}), silent {m:.1f} min until {why}"
+                        for t, line, k, m, why in silent),
+              note="standing= is the new core standing at the step (builds before sweep 6f don't log it: their rebase "
+                   "used the step the raiders walked to); joins, step=waiting and step=stuck are not the wave's own acts")
+    else:
+        j.add("raids", "rebase_silent", text, SEEN if c("return.rebased") else NOT_SEEN,
+              j.ev("return.rebased") if c("return.rebased") else None,
+              f"{c('return.rebased')} rebase(s), none silent {REBASE_SILENT_SECONDS // 60}+ minutes at a step nobody stood at")
 
 
 def rvr(j: Judge, sec: Section, c):

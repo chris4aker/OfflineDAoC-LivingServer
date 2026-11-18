@@ -5935,6 +5935,9 @@ namespace DOL.AI.Brain
                 }
                 else
                 {
+                    // Sweep 6f: a raid's cure poison casts are summed in the log (RAID_CURE_POISON, logging only).
+                    if (spellToCast.SpellType == eSpellType.CurePoison && spellTarget != null)
+                        RaidCureLog.Record(BotBody, spellTarget, GameLoop.GameLoopTime);
                     if (spellToCast.IsInstantCast)
                     {
                         BotBody.TargetObject = oldTarget;

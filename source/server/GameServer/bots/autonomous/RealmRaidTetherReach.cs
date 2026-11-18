@@ -45,9 +45,15 @@ public static class RealmRaidTetherReach
     /// is this far inside it): EpicEncounterTactics' stand-inside-home rule walks raiders back to it.</summary>
     public const int HomeInset = 200;
 
+    /// <summary>The home cap of <see cref="MusterReach"/> for a boss whose home radius is not inside its damage reach applies only
+    /// when it leaves the muster at least this far outside the boss's aggro range.</summary>
+    public const int HomeCapAggroClearance = 150;
+
     /// <summary>
     /// How far from its spawn a boss's muster may stand (pure; 0: no limit): its <see cref="DamageReach"/>, and for a boss
-    /// with a catalog fight-at-home radius never past <see cref="HomeInset"/> inside that radius.
+    /// with a catalog fight-at-home radius never past <see cref="HomeInset"/> inside that radius, when that radius lies inside
+    /// the damage reach, or otherwise when the capped muster still stands <see cref="HomeCapAggroClearance"/> or more outside
+    /// <paramref name="aggroRange"/>.
     /// <para>
     /// Owner's PC, build b1b6846, 2026-11-18 (Summoner's Hall, Albion; S-1): Aidon the Archwizard (tether 1,500, fight at home
     /// 1,100, aggro 600) had his muster at 1,100 from his spawn, his fight-at-home edge; healers and regroupers stood at
@@ -55,19 +61,29 @@ public static class RealmRaidTetherReach
     /// His script's out-of-tether heal is the original anti-kite rule and is unchanged; the raid now stands in his room: his
     /// muster's reach is 900 and the muster stands about 800 from his spawn (<see cref="MusterStandOff"/>).
     /// </para>
+    /// <para>
+    /// Sweep 6f (same build, Summoner's Hall, Midgard): the summoners' home radius (1,000) is their damage reach (tether 1,300
+    /// less 300), so the cap only moved their musters in, from 900 to 700 from the spawn: 100 outside their 600 aggro instead
+    /// of 300, which invites the early pull that cost Cunovinda's attempt 1 (raiders arriving into her aggro). Their muster
+    /// stays at 900 (as on b1b6846); the stand-inside-home rule still walks their raiders inside 800 in the fight.
+    /// </para>
     /// </summary>
-    public static int MusterReach(int tetherRange, int fightAtHomeRadius)
+    public static int MusterReach(int tetherRange, int fightAtHomeRadius, int aggroRange)
     {
         int reach = DamageReach(tetherRange);
         if (fightAtHomeRadius <= 0) return reach;
         int home = Math.Max(1, fightAtHomeRadius - HomeInset);
-        return reach > 0 ? Math.Min(reach, home) : home;
+        if (reach <= 0) return home;
+        if (fightAtHomeRadius < reach) return Math.Min(reach, home);
+        float cappedMuster = home > MusterInset ? home - MusterInset : home;
+        return cappedMuster >= Math.Max(0, aggroRange) + HomeCapAggroClearance ? Math.Min(reach, home) : reach;
     }
 
     /// <summary>As <see cref="MusterStandOff(float, int, int)"/> with the reach of <see cref="MusterReach"/>: a boss with a
-    /// fight-at-home radius is mustered for inside its home (Aidon: about 800 from his spawn, 200 outside his aggro).</summary>
+    /// fight-at-home radius is mustered for inside its home (Aidon: about 800 from his spawn, 200 outside his aggro; the summoners,
+    /// whose home is their damage reach: 900, 300 outside it).</summary>
     public static float MusterStandOff(float preferred, int aggroRange, int tetherRange, int fightAtHomeRadius) =>
-        MusterStandOff(preferred, aggroRange, MusterReach(tetherRange, fightAtHomeRadius));
+        MusterStandOff(preferred, aggroRange, MusterReach(tetherRange, fightAtHomeRadius, aggroRange));
 
     /// <summary>
     /// How far from a boss its muster stands (pure): <paramref name="preferred"/> (the 1,400 every muster stood at), but
