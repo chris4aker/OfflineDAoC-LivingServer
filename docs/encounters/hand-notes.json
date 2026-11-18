@@ -1282,7 +1282,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "aiTactics": {
     "summary": "900 health, flies a ring 690 up around the room's middle and never lands: casters and archers shoot it from the middle (within 1,450 at every point of the ring), melee fight another primal, pets leave it (they do 5). Killed last, after Water, Fire, the Earthmenders and Earth (the period's order). The period's Air primal took only ground-targeted area spells and Annihilation; this script's takes any damage. (EpicEncounterTactics.Galladoria, Living Server 1.2; tests only)",
@@ -1342,7 +1342,7 @@
    "notes": "The four Earthmenders (Guardian, Magical, Natural, Shadowy) spawn with it and heal (2,000) whoever needs it; from run 18 until 1.2 wave 2 they fought back. Tether 890: it barely leaves its spot. 1.2 wave 2: the original Earthmenders are back (AllowEarthmendersPassive: they never attack; AllowEarthmenderQuickReset: one left alone 30 s heals to full; AllowEarthmenderMutualHeal: they heal each other): the raid keeps each class on its own Earthmender until it dies. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "currentRaidAi": "Run 14 (2026-10-16): skipped at full health while the Earthmenders healed it; the route now treats script-spawned adds near the front as part of the fight (EncounterAddRadius 3,000). 2026-11-06 (build 86eddd8): the raid never reached the primals (deadPrimals=0 all day: the bridge room was not started), so this tactic has not been seen in a run.",
    "rules": {
-    "heal@2584": {
+    "heal@2607": {
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI"
@@ -1350,7 +1350,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1413,7 +1413,7 @@
   "galladoria/fireprimal": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "aiTactics": {
     "hazards": [
@@ -1487,7 +1487,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "aiTactics": {
     "since": "1.2",
@@ -1497,7 +1497,7 @@
   "galladoria/olcasgean2": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "notes": "Olcasgean's second body: it shares his 250,000-health pool. Killed, it kills Olcasgean with the same killer and passes him its attackers, so Olcasgean pays out for both and this body pays nothing (1.2, True 1.65 port). 1.2 upstream port (tests only): its death runs in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb's intent); the main body still dies with the real killer and pays for both.",
    "aiTactics": {
@@ -1513,7 +1513,7 @@
      "tactic": "Today they are ordinary targets; with the hazard switch on, route parties around them.",
      "difficulty": "needs new raid AI"
     },
-    "immune_while@3240": {
+    "immune_while@3263": {
      "kind": "hazard",
      "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
      "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
@@ -1522,7 +1522,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    }
   },
   "galladoria/organicenergymechanism": {
@@ -1604,7 +1604,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862"
    },
    "notes": "1.2 wave 2: its teleport (a raider within 2,500, to either side of the bridge) is on for bots: they walk back. 1.2 upstream port (tests only): its death (the dead-primal count) runs in ProcessDeath instead of Die, once per death (OpenDAoC-Core 0b581e3fb's intent).",
    "aiTactics": {
@@ -3206,7 +3206,7 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764"
    },
    "aiTactics": {
     "after": "QueenKula",
@@ -3275,7 +3275,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764"
    },
    "aiTactics": {
     "fightAtHomeRadius": 1400,

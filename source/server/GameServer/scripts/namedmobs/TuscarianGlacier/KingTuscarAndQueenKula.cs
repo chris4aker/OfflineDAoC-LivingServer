@@ -59,8 +59,8 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
-            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
+            // Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is
+            // behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
             {
@@ -535,8 +535,8 @@ namespace DOL.GS
         }
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)
         {
-            // Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below
-            // full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.
+            // Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is
+            // behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.
             if (!EpicEncounterActors.IsCombatant(source)) return;
             if (IsOutOfTetherRange)
             {

@@ -8,6 +8,53 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 6c: Galladoria's primals, a Krondon return wave, the raid-end stall (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 10:27-12:00, `DIAG-b1b6-sweep6c`). Nothing below is seen in game yet.
+- **The Earth primal walks home once nobody is on his aggro list** (Galladoria). His script sets his speed to 0 while he
+  chases a raider standing more than 900 from his spawn, and gave it back only when someone stood inside 900 or on a full
+  reset; every leash then sent him home at speed 0. He stood 1,044 from his spawn, outside his 890 tether, through 13
+  leashes in a row (10:51-11:12), took no damage there, and killed 177 raiders. Out of his tether with an empty aggro list
+  he now gets his template speed back (a return begun at speed 0 is begun again), and `AutonomousTetherReset` walks any
+  leashed boss its script left at speed 0 home at its template's speed (`AUTONOMOUS_TETHER_LEASH` now logs `speed=`). The
+  freeze in the fight, his health, damage, tether and Earthmenders are unchanged.
+- **No melee are sent to a primal outside its own tether.** The Fire primal's rule sent every melee raider to the nearest
+  Water or Earth primal (1,735 retargets to the frozen Earth primal, each stopped at once by the tether rule). A primal out
+  of its tether is skipped; with none left the melee fight the Fire primal in the fire, as they do when it is the last.
+- **A target switch keeps the raid's front on the floor.** Both switches to the flying Air primal set the front to his
+  raw position 690 above the floor (`front=38492,62016,12372 approach=raw`): 102 stranded regroups and the Fire primal's
+  muster went there, 335 route retries came from it, and a return wave of up to 48 stood there for 37 minutes. When the
+  approach does not resolve, a switch (the "on its way" switch and the switch to a monster fighting the raid) now takes the
+  navmesh floor under the monster (`approach=floor`), and with none keeps the old front (`approach=unresolved-front-kept`),
+  as the front refresh already did.
+- **A stuck return wave is released to the muster.** In Krondon a wave stuck at step 14 of 34 from 11:28 with its help
+  used up ("the stall clock decides") grew to 19 raiders while the Krevo Ricik muster stood at 6 of 44; the route's kills
+  elsewhere kept the stall clock from deciding. While the raid musters, such a wave now ends (`REALM_RAID_RETURN_WAVE
+  step=released`) and its raiders take the raid's own view; the stranded regroup still moves one that can't walk.
+- **The raid-end sweep no longer stalls the server.** Right after a raid ended, the broken-party sweep ended all its parties
+  at once under the coordinator lock (`pulse.broken_sessions` 1,914 ms, `SERVER_STALL worstTickMs=2060` at 12:00:08, 5 s after
+  epic-midgard ended; 1,091 ms at 08:03 and 734 ms at 10:04 after the earlier raid ends). It now ends at most 2 parties a
+  tick and goes on at the next tick from where it stopped. Every party still ends, with the same reason; no gameplay change.
+- **Queen Kula's lore said her frozen circle and her drag to the throne were off** (and, before #341, the twin heal).
+  All are on since 1.2 (`AllowPositionPuzzle`, `AllowDisplacement` and `AllowBotDisplacement` for QueenKula,
+  `AllowTuscarTwinHeal`; on `b1b6846` 22 teleports and 97 step-outs of the circle). Her facts, legend and two chapter passages
+  now say so, and the script comment the encounter catalog quotes ("no heal-on-hit for bot raids") was corrected (catalog
+  regenerated with `epic_encounter_catalog.py`).
+- **Investigated, not changed: the RvR relay share** rose from about 10% to about 14% after 10:00 (12.6% over the log, bar
+  11.5%). The hop checks (a), (b) and (c) are 0 with `from=` on every relayed start; each relaying retreat reached more
+  groups as the warbands' fights grew denser (0.49 to 1.10 groups a retreat), while a delivered relay started a regroup no
+  more often. A legitimate rise of one hop, not an over-fire (`docs/PLAYED-CHECK-1.2.md`, the regroup row). The bar stays 11.5%.
+- **Checker** (`played_check_log.py`): three new raid rows. "A leashed boss goes home" is Contradicted by 3 or more
+  `AUTONOMOUS_TETHER_LEASH` lines in a row for one boss at about the same `fromSpawn`; "No regroup point at a monster's raw
+  position raiders can't walk from" by a `TARGET_SWITCH approach=raw` front with 10 or more stranded regroups to it and 10
+  or more route retries from it; "A return wave moves" by a wave whose `at=` step stays the same for 15 minutes (the
+  stuck-wave row counts `step=ahead`, raiders leaving the wave, as headway). On `cb1b6.log.all` (`--build b1b6846`) all
+  three are Contradicted: the Earth primal (13 at 1,044), the Air primal's front (102 regroups, 335 retries) and 6 waves.
+  A released wave counts as no longer stuck in the stuck-wave row.
+- Tests: `UT_RaidSweep6c` (the Earth primal's legs and the leash speed; no melee to a primal out of its tether; the switch
+  front kept; the stuck wave released only while mustering with no help left; the capped sweep reaches every party) and
+  `test_played_check_log.py` (the three rows).
+
 ## Raid fixes from sweep 6b: Fornfrusenen, Aroon, Easmarach (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 08:55-10:27, `DIAG-b1b6-sweep6b`). Nothing below is seen in game yet.

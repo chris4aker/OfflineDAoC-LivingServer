@@ -31,6 +31,22 @@ namespace DOL.GS
         public const long OutOfTetherLeashMilliseconds = 90_000;
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, long> OutOfTetherSince = new();
 
+        /// <summary>
+        /// The speed a leashed boss walks home at: its own, or its template's when its script has left it at 0 (its aggro
+        /// list is cleared by then, so this is never a fight). Owner's PC, build b1b6846, 2026-11-18 (Galladoria): the Earth
+        /// primal's script froze him (speed 0) while he chased a raider out of reach, and 13 leashes in a row sent him home at
+        /// speed 0; he stood 1,044 from his spawn, outside his 890 tether, untouchable. A boss with no speed in its template
+        /// either (one that never moves) keeps 0.
+        /// </summary>
+        public static short LeashSpeed(GameNPC boss)
+        {
+            if (boss.MaxSpeedBase > 0) return boss.MaxSpeed;
+            short template = boss.NPCTemplate?.MaxSpeed ?? 0;
+            if (template <= 0) return boss.MaxSpeed;
+            boss.MaxSpeedBase = template;
+            return boss.MaxSpeed;
+        }
+
         private static void LeashIfStranded(GameNPC boss)
         {
             long now = GameLoop.GameLoopTime;
@@ -60,9 +76,10 @@ namespace DOL.GS
             (boss.Brain as StandardMobBrain)?.ClearAggroList();
             boss.StopAttack();
             boss.TargetObject = null;
-            boss.ReturnToSpawnPoint(boss.MaxSpeed);
+            short speed = LeashSpeed(boss);
+            boss.ReturnToSpawnPoint(speed);
             Log.Info($"AUTONOMOUS_TETHER_LEASH boss=\"{boss.Name}\" region={boss.CurrentRegionID} fromSpawn={(int)boss.GetDistanceTo(boss.SpawnPoint)} " +
-                     $"tether={boss.TetherRange} reason=\"out of its tether {StrandedLeashMilliseconds / 1000} s with nobody fighting it in reach\"");
+                     $"tether={boss.TetherRange} speed={speed} reason=\"out of its tether {StrandedLeashMilliseconds / 1000} s with nobody fighting it in reach\"");
         }
 
         // Epic encounters, and scripted named monsters with their own short tether: ordinary monsters also carry a

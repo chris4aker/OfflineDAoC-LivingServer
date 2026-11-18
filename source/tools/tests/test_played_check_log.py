@@ -1059,6 +1059,94 @@ class ChatPromises(unittest.TestCase):
         self.assertEqual(check(only(Log().start(at(0)).run()[1]), "promises")["status"], pcl.NOT_SEEN)
 
 
+class Sweep6c(unittest.TestCase):
+    """Rows from DIAG-b1b6-sweep6c: a boss the leash never brings home, a regroup point at a monster's raw position, and a
+    return wave that holds one step (synthetic lines shaped like build b1b6846's)."""
+
+    @staticmethod
+    def leash(log, minute, from_spawn, boss="Corrupt Primal of Earth"):
+        log.add(at(minute), f'AUTONOMOUS_TETHER_LEASH boss="{boss}" region=191 fromSpawn={from_spawn} tether=890 '
+                            f'reason="out of its tether 30 s with nobody fighting it in reach"', "INF",
+                "DOL.GS.AutonomousTetherReset")
+
+    def test_a_boss_leashed_again_and_again_from_the_same_spot_contradicts(self):
+        log = Log().start(at(0))
+        for minute in (10, 12, 14, 16):
+            self.leash(log, minute, 1044 if minute != 14 else 1040)
+        row = check(only(log.run()[1]), "leash_home")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("Corrupt Primal of Earth at fromSpawn=1044 x4", row["detail"])
+        self.assertIn("fromSpawn=1044", row["line"])
+
+    def test_a_boss_that_goes_home_between_leashes_is_seen(self):
+        log = Log().start(at(0))
+        for minute, distance in ((10, 1044), (20, 940), (30, 1200)):
+            self.leash(log, minute, distance)
+        self.assertEqual(check(only(log.run()[1]), "leash_home")["status"], pcl.SEEN)
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "leash_home")["status"], pcl.NOT_SEEN)
+
+    @staticmethod
+    def raw_front(log, approach="raw", regroups=12, retries=12):
+        log.add(at(5), 'REALM_EXPEDITION_TARGET_SWITCH region=191 from="Corrupt Primal of Water" to="Corrupt Primal of Air" '
+                       f'level=83 front=38492,62016,12372 approach={approach} reason="it is fighting the raid"', "WRN")
+        for i in range(regroups):
+            log.add(at(6, i), f"REALM_EXPEDITION_STRANDED_REGROUP bot=B{i} id={i} region=191 from=1,2,3 to=38492,62016,12372",
+                    "WRN")
+        for i in range(retries):
+            log.add(at(8, i), f"REALM_EXPEDITION_ROUTE_RETRY bot=B{i} id={i} region=191 position=38492,62016,12372 "
+                              "reason=No navigable dungeon corridor to the next route stage", "WRN")
+        return check(only(log.run()[1]), "raw_front")
+
+    def test_a_raw_front_raiders_regroup_to_and_cannot_walk_from_contradicts(self):
+        row = self.raw_front(Log().start(at(0)))
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("12 stranded regroups to it, 12 route retries from it", row["detail"])
+        self.assertIn("approach=raw", row["line"])
+
+    def test_a_resolved_front_or_a_raw_one_nobody_is_stuck_at_is_not_a_finding(self):
+        self.assertEqual(self.raw_front(Log().start(at(0)), approach="resolved")["status"], pcl.SEEN)
+        self.assertEqual(self.raw_front(Log().start(at(0)), retries=3)["status"], pcl.SEEN)
+        self.assertEqual(self.raw_front(Log().start(at(0)), approach="unresolved-front-kept")["status"], pcl.SEEN)
+
+    @staticmethod
+    def wave(log, minute, step, at_step, extra=""):
+        log.add(at(minute), f"REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step={step} wave=1 {extra}"
+                            f"at={at_step}/34 members=7", "INF", "DOL.GS.AutonomousRealmRaid")
+
+    def test_a_wave_that_holds_one_step_for_fifteen_minutes_contradicts_even_after_headway_lines(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=formed wave=1 members=7 steps=34", "INF")
+        self.wave(log, 2, "moving", 13)
+        self.wave(log, 3, "rebased", 14)
+        log.add(at(13), 'REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=stuck wave=1 at=14/34 living=7 helps=1 '
+                        'reason="no headway for 4 minutes and no help left; the stall clock decides"', "WRN")
+        self.wave(log, 14, "ahead", 14, "reached=1 ")
+        self.wave(log, 23, "joined", 14, "joined=8 ")
+        sec = only(log.run()[1])
+        row = check(sec, "wave_moves")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("dungeon-albion-krondon wave 1 at step 14 from 06:03:00 (counted as headway)", row["detail"])
+        self.assertEqual(check(sec, "return_stuck")["status"], pcl.SEEN, "the old row counts step=ahead as headway")
+
+    def test_a_wave_that_moves_on_or_is_released_is_not_a_finding(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=formed wave=1 members=7 steps=34", "INF")
+        for minute in range(2, 40, 5):
+            self.wave(log, minute, "moving", minute)
+        self.assertEqual(check(only(log.run()[1]), "wave_moves")["status"], pcl.SEEN)
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=formed wave=1 members=7 steps=34", "INF")
+        self.wave(log, 3, "rebased", 14)
+        log.add(at(8), 'REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=stuck wave=1 at=14/34 living=7 helps=1', "WRN")
+        log.add(at(12), 'REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=released wave=1 at=14/34 living=7 helps=1',
+                "WRN")
+        self.wave(log, 30, "joined", 1)
+        sec = only(log.run()[1])
+        self.assertNotEqual(check(sec, "wave_moves")["status"], pcl.CONTRADICTED)
+        self.assertIn("1 stuck wave(s) released to the muster", check(sec, "wave_moves")["detail"])
+        self.assertNotEqual(check(sec, "return_stuck")["status"], pcl.CONTRADICTED, "released, not left stuck")
+
+
 class TextOutput(unittest.TestCase):
     def test_wording_names_the_build_and_never_says_works(self):
         log = Log().start(at(0), commit="5555555eeeee")

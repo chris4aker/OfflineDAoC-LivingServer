@@ -2672,14 +2672,40 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>
+        /// The front a target switch takes (pure): the resolved approach; unresolved, the navmesh floor under the monster;
+        /// with neither, the old front is kept, as RefreshFront keeps it. Owner's PC, build b1b6846, 2026-11-18 (Galladoria):
+        /// both switches to the flying Air primal set the front to its raw position, 690 above the floor
+        /// (front=38492,62016,12372 approach=raw); 102 stranded regroups and the Fire primal's muster went there, 335 route
+        /// retries came from it, and a return wave of up to 48 stood there for 37 minutes.
+        /// </summary>
+        public static Vector3 SwitchFront(Vector3 old, Vector3 approach, bool resolved, Vector3? floor) =>
+            resolved ? approach : floor ?? old;
+
+        /// <summary>The navmesh floor under (or over) a monster whose approach did not resolve, within
+        /// <see cref="RangedFlyerReach"/> up or down; null without a navmesh or a point.</summary>
+        private Vector3? FloorUnder(GameNPC npc)
+        {
+            var nav = PathfindingProvider.Instance;
+            Zone zone = WorldMgr.GetRegion(_region)?.GetZone(npc.X, npc.Y);
+            return zone != null && nav.IsAvailable && nav.HasNavmesh(zone)
+                ? nav.GetClosestPoint(zone, new Vector3(npc.X, npc.Y, npc.Z), 128, 128, RangedFlyerReach, nav.DefaultFilters)
+                : null;
+        }
+
+        private static string SwitchApproach(bool resolved, Vector3? floor) =>
+            resolved ? "resolved" : floor != null ? "floor" : "unresolved-front-kept";
+
         private void TurnOn(GameNPC attacking, GameLiving[] participants, long now, string reason)
         {
             bool resolved = TryEncounterApproach(attacking, participants, out Vector3 approach);
+            Vector3? floor = resolved ? null : FloorUnder(attacking);
+            Vector3 front = SwitchFront(Front, approach, resolved, floor);
             log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{TargetName}\" to=\"{attacking.Name}\" level={attacking.Level} " +
-                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"front={(int)front.X},{(int)front.Y},{(int)front.Z} approach={SwitchApproach(resolved, floor)} " +
                      $"reason=\"{reason}\"");
             _target = attacking; TargetName = attacking.Name; TargetLevel = attacking.Level;
-            Front = Destination = approach;
+            Front = Destination = front;
             _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacking.Health;
             _targetClosest = float.MaxValue; _targetApproachTick = now;
             Hold = false; Status = "Clearing " + attacking.Name;
@@ -2703,11 +2729,13 @@ namespace DOL.GS
                 if (wiped) _routeWipeKiller = WipeEncounter(_target, _live);
                 if (wiped && Defeated) return true;
             }
+            Vector3? floor = resolved ? null : FloorUnder(attacker);
+            Vector3 front = SwitchFront(Front, approach, resolved, floor);
             log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
-                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"front={(int)front.X},{(int)front.Y},{(int)front.Z} approach={SwitchApproach(resolved, floor)} " +
                      $"reason=\"it is fighting the raid\"");
             _target = attacker; TargetName = attacker.Name; TargetLevel = attacker.Level;
-            Front = Destination = approach;
+            Front = Destination = front;
             _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacker.Health;
             _targetClosest = float.MaxValue; _targetApproachTick = now;
             Hold = false; Status = "Clearing " + attacker.Name;

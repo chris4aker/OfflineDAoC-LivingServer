@@ -2357,11 +2357,34 @@ namespace DOL.AI.Brain
                         Body.MaxSpeedBase = npcTemplate.MaxSpeed;
                 }
             }
+            ReturnHomeIfListEmpty();
+            base.Think();
+        }
+
+        /// <summary>Out of his tether with nobody on his aggro list: home, on his own legs (<see cref="ReturnHomeWithLegs"/>).</summary>
+        public void ReturnHomeIfListEmpty()
+        {
             if (Body.IsOutOfTetherRange && !HasAggro)
             {
+                ReturnHomeWithLegs();
                 FSM.SetCurrentState(eFSMStateType.RETURN_TO_SPAWN);
             }
-            base.Think();
+        }
+
+        /// <summary>
+        /// Living Server 1.2 (owner's PC, build b1b6846, 2026-11-18, Galladoria): out of his tether with nobody left on his
+        /// aggro list he walks home. The script's freeze (speed 0 while his target stands more than 900 from his spawn) is
+        /// unchanged in the fight; only once his list is empty does he get his template speed back. Before this his speed
+        /// stayed 0, so every leash (AutonomousTetherReset) sent him home at speed 0: he stood 1,044 from his spawn through
+        /// 13 leashes, untouchable, and killed 177 raiders. A return already begun at speed 0 is begun again at his speed.
+        /// </summary>
+        public void ReturnHomeWithLegs()
+        {
+            if (Body.MaxSpeedBase > 0) return;
+            short speed = NpcTemplateMgr.GetTemplate(60159436)?.MaxSpeed ?? Body.NPCTemplate?.MaxSpeed ?? 0;
+            if (speed <= 0) return;
+            Body.MaxSpeedBase = speed;
+            if (Body.IsReturningToSpawnPoint) Body.ReturnToSpawnPoint(Body.MaxSpeed);
         }
         private Spell m_EarthRoot;
         private Spell EarthRoot

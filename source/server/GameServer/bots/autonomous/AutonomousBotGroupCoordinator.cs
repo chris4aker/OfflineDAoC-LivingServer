@@ -236,8 +236,9 @@ public static partial class AutonomousBotGroupCoordinator
                 if (now >= _nextBrokenSessionSweep)
                 {
                     _nextBrokenSessionSweep = now + BrokenSessionSweepMilliseconds;
+                    // Capped (BrokenSessionFinishesPerSweep): with parties left to end, the next tick goes on.
                     using (AiProfile.Scope(AiSystem.PulseBrokenSessions))
-                        RemoveBrokenSessions();
+                        if (RemoveBrokenSessions()) _nextBrokenSessionSweep = now + 1;
                 }
                 using (AiProfile.Scope(AiSystem.PulseFormSiegeParties))
                     FormSiegeParties();
@@ -3455,18 +3456,53 @@ public static partial class AutonomousBotGroupCoordinator
     private static long _nextBrokenSessionSweep;
     public const int BrokenSessionSweepMilliseconds = 500;
 
-    private static void RemoveBrokenSessions()
+    /// <summary>
+    /// At most this many parties are ended (FinishGroupTask) in one sweep; the rest are ended on the next ticks. Owner's PC,
+    /// build b1b6846, 2026-11-18: the sweep right after a raid ended released its parties all at once under the coordinator
+    /// lock (pulse.broken_sessions 1,914 ms; SERVER_STALL worstTickMs=2060 at 12:00:08, 5 s after REALM_RAID_ENDED
+    /// epic-midgard; 1,091 ms at 08:03 and 734 ms at 10:04 after the earlier raid ends). Each party still ends with its
+    /// own reason; only when changes, by a tick or a few.
+    /// </summary>
+    public const int BrokenSessionFinishesPerSweep = 2;
+
+    private static int _brokenSessionCursor;
+
+    /// <summary>Returns true when the sweep stopped at its cap with sessions left to look at (the next one goes on from
+    /// there).</summary>
+    private static bool RemoveBrokenSessions()
     {
-        foreach ((Group group, Session session) in Sessions.ToArray())
-            RemoveBrokenSession(group, session);
+        int next = SweepBrokenSessions(Sessions.ToArray(), _brokenSessionCursor, pair => RemoveBrokenSession(pair.Key, pair.Value),
+            BrokenSessionFinishesPerSweep);
+        _brokenSessionCursor = Math.Max(0, next);
+        return next >= 0;
     }
 
-    private static void RemoveBrokenSession(Group group, Session session)
+    /// <summary>One broken-session sweep (pure but for <paramref name="finishIfBroken"/>, true when it ended a party): from
+    /// <paramref name="start"/> round the list, until <paramref name="maxFinishes"/> parties were ended. Returns where the
+    /// next sweep goes on, or -1 when this one looked at every session.</summary>
+    public static int SweepBrokenSessions<T>(IReadOnlyList<T> sessions, int start, Func<T, bool> finishIfBroken, int maxFinishes)
+    {
+        int n = sessions.Count;
+        if (n == 0) return -1;
+        start = (start % n + n) % n;
+        int finished = 0;
+        for (int k = 0; k < n; k++)
+        {
+            int i = (start + k) % n;
+            if (finished >= maxFinishes) return i;
+            if (finishIfBroken(sessions[i])) finished++;
+        }
+        return -1;
+    }
+
+    /// <summary>True when it ended the party (FinishGroupTask on a session not already ending).</summary>
+    private static bool RemoveBrokenSession(Group group, Session session)
     {
         if (AutonomousRealmRaid.TryConsumeRelease(group, out string releaseReason))
         {
+            bool wasEnding = session.Ending;
             FinishGroupTask(session, releaseReason);
-            return;
+            return !wasEnding;
         }
         GameBot[] members = BotMembers(group);
         bool requiredSize = AutonomousRealmRaid.GetView(group) != null || session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
@@ -3474,11 +3510,13 @@ public static partial class AutonomousBotGroupCoordinator
                             AutonomousPartyReplacement.HoldsParty(session.Replacement, GameLoop.GameLoopTime);
         if (members.Length >= 2 && requiredSize && members.All(member => member.Group == group) &&
             (!group.GetMembersInTheGroup().Any(member => member is GamePlayer) || OnlyHostedPlayer(group, session)))
-            return;
+            return false;
+        bool ending = session.Ending;
         FinishGroupTask(session, session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && !requiredSize
             ? "The PvE party lost its viable tank, healer, or attacker core"
             : members.Length < 2
             ? "Fewer than two active members remain; dissolving the orphaned party"
             : "The group roster is no longer valid");
+        return !ending;
     }
 }

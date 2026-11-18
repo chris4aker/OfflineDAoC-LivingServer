@@ -60,6 +60,17 @@ STATUS_STALE_SECONDS = 15 * 60
 ENGAGED_LAPSE_SECONDS = 15 * 60
 # Return-wave steps that show headway after a step=stuck line (the wave recovered).
 RETURN_WAVE_HEADWAY = ("moving", "ahead", "cleared", "met", "passable")
+# Sweep 6c (build b1b6846). A return wave whose at= step stays the same this long did not move, whatever its lines say
+# (Galladoria's wave 10 at step 2 and Krondon's at step 14 were counted as "made headway again").
+WAVE_STEP_STILL_SECONDS = 15 * 60
+# A boss leashed this many times in a row from (about) the same distance never went home: frozen or untouchable out of
+# its tether (the Earth primal: 13 leashes in a row at fromSpawn=1044).
+FROZEN_LEASH_RUN = 3
+FROZEN_LEASH_UNITS = 25
+# A monster's raw position taken as the raid's front (approach=raw) that this many stranded regroups went to and this
+# many route retries came from: a regroup point raiders can't walk from (the Air primal's, 690 above the floor).
+RAW_FRONT_REGROUPS = 10
+RAW_FRONT_RETRIES = 10
 # The regroup row's share bar (docs/PLAYED-CHECK-1.2.md, "Regroups no longer flap", reasoning there). Owner decision
 # 2026-11-18: 11.5%, a backstop. The exact checks (a), (b) and (c) decide one hop and no echo; the share sits about halfway
 # between one hop (about 9.9-10.1% on 5378dbe without the in-contact starts) and two hops (about 12.7%; 13.4% on 453e01a).
@@ -263,6 +274,12 @@ class Section:
         self.recent_sends = deque()       # (time, group, (realm, region)) of relays in the last 60 s
         self.last_retreat_from = {}       # group -> from= of its last RVR_RETREAT (a relayed one's sender)
         self.send_origin = {}             # group -> (time, the group whose relay started the stance it sent, or None)
+        self.leash_runs = {}              # (region, boss) -> [fromSpawn, run length, first t, first line, counted]
+        self.frozen_runs = {}             # "boss at fromSpawn=N" -> the longest such run of leashes
+        self.raw_fronts = {}              # (region, "x,y,z") -> (t, line) of a TARGET_SWITCH with approach=raw
+        self.regroups_to = Counter()      # (region, "x,y,z") -> STRANDED_REGROUP lines to it
+        self.retries_at = Counter()       # (region, "x,y,z") -> ROUTE_RETRY lines from it
+        self.wave_steps = {}              # (event, wave) -> [step, since, line, flagged]
 
     @property
     def commit7(self):
@@ -544,6 +561,12 @@ def _return_wave(sec, t, message, level, near):
     f = kv(message)
     step = f.get("step")
     key = (f.get("event", "?"), f.get("wave"))
+    wave_step(sec, t, message, key, step, f.get("at") or "")
+    if step == "released":
+        sec.ev["return.released"].add(t, message)
+        if sec.waves.get(key, ("",))[0] == "stuck":
+            sec.waves[key] = ("released", t, message)
+        return
     if step == "stuck":
         run = sec.raid(f.get("event", "?"), t)
         run.stuck_waves += 1
@@ -556,6 +579,63 @@ def _return_wave(sec, t, message, level, near):
         sec.ev["return.wave"].add(t, message)
     if step in ("moving", "ahead", "cleared", "met"):
         sec.ev["return.went_in"].add(t, message)
+
+
+WAVE_STEP_RE = re.compile(r"(\d+)/\d+$")
+
+
+def wave_step(sec, t, message, key, step, at):
+    """A wave whose at= step stays the same for WAVE_STEP_STILL_SECONDS did not move (sweep 6c): its joins, "ahead" lines
+    (raiders leaving it) and catch-ups are not the wave's own headway. A wave's end, or a new wave of that number, closes it."""
+    if step == "formed" or step in ("ended", "lost", "cleared", "met", "released"):
+        sec.wave_steps.pop(key, None)
+        return
+    m = WAVE_STEP_RE.fullmatch(at)
+    if not m:
+        return
+    n = int(m.group(1))
+    held = sec.wave_steps.get(key)
+    if held is None or held[0] != n:
+        sec.wave_steps[key] = [n, t, message, False]
+        return
+    if not held[3] and (t - held[1]).total_seconds() >= WAVE_STEP_STILL_SECONDS:
+        held[3] = True
+        minutes = (t - held[1]).total_seconds() / 60
+        sec.ev["return.step_still"].add(held[1], f"{held[2].rstrip()} [the same step to {stamp(t)[6:]}, {minutes:.0f} min]")
+        sec.lists["still_waves"].append((key, n, held[1]))
+
+
+@handles("AUTONOMOUS_TETHER_LEASH")
+def _tether_leash(sec, t, message, level, near):
+    """A boss leashed FROZEN_LEASH_RUN times in a row from about the same distance never went home (sweep 6c, build
+    b1b6846: the Earth primal, 13 leashes at fromSpawn=1044 while his script held his speed at 0)."""
+    f = kv(message)
+    key, distance = (f.get("region"), f.get("boss")), num(f.get("fromSpawn"), -1)
+    sec.ev["tether.leash"].add(t, message)
+    run = sec.leash_runs.get(key)
+    if run is None or abs(run[0] - distance) > FROZEN_LEASH_UNITS:
+        sec.leash_runs[key] = [distance, 1, t, message, False]
+        return
+    run[1] += 1
+    if run[1] >= FROZEN_LEASH_RUN and not run[4]:
+        run[4] = True
+        sec.ev["tether.frozen"].add(run[2], f"{run[3].rstrip()} [leashed {FROZEN_LEASH_RUN}+ times in a row from about here]")
+    if run[4]:
+        label = f"{key[1]} at fromSpawn={int(run[0])}"
+        sec.frozen_runs[label] = max(sec.frozen_runs.get(label, 0), run[1])
+
+
+@handles("REALM_EXPEDITION_TARGET_SWITCH")
+def _target_switch(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("approach") == "raw" and f.get("front"):
+        sec.raw_fronts.setdefault((f.get("region"), f["front"]), (t, message))
+
+
+@handles("REALM_EXPEDITION_ROUTE_RETRY")
+def _route_retry(sec, t, message, level, near):
+    f = kv(message)
+    sec.retries_at[(f.get("region"), f.get("position"))] += 1
 
 
 @handles("REALM_EXPEDITION_ENCOUNTER_RESET")
@@ -763,6 +843,7 @@ def _stranded(sec, t, message, level, near):
     f = kv(message)
     region, to = f.get("region"), point(f.get("to"))
     sec.ev["stranded.all"].add(t, message)
+    sec.regroups_to[(region, f.get("to"))] += 1
     if to is None:
         return
     for target, (in_combat, health, at, seen, lvl) in sec.bosses.get(region, {}).items():
@@ -1314,7 +1395,9 @@ def raids(j: Judge, sec: Section, c):
     stuck = [v for v in sec.waves.values() if v[0] == "stuck"]
     recovered = [v for v in sec.waves.values() if v[0] == "recovered"]
     stuck_detail = (f"{c('return.stuck')} step=stuck line(s), {len(sec.waves)} wave(s) stuck at least once: "
-                    f"{len(recovered)} made headway again, {len(stuck)} never did")
+                    f"{len(recovered)} made headway again, {len(stuck)} never did"
+                    + (f", {sum(1 for v in sec.waves.values() if v[0] == 'released')} released to the muster (sweep 6c)"
+                       if c("return.released") else ""))
     if stuck:
         bad = Evidence()
         first = min(stuck, key=lambda v: v[1])
@@ -1365,12 +1448,58 @@ def raids(j: Judge, sec: Section, c):
           f"TARGET_STATUS had inCombat=False and that was not engaged",
           note="a boss rests from its last TARGET_STATUS inCombat=False unless engaged: from a FINAL_ENGAGE, EARLY_PULL "
                "Commit, TARGET_CALLED, fight-ledger damage or required-adds switch until its wipe, defeat or heal")
+    sweep6c_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
           f"{c('EPIC_SWEEP_RAID_START')} raid starts, {c('EPIC_SWEEP_RAID_DONE')} done, "
           f"{c('EPIC_SWEEP_RAID_NOT_STARTED')} not started, {c('EPIC_SWEEP_HELD')} held; "
           f"end: {'; '.join(sec.lists['sweep_end']) or 'none in this build'}", must=False)
+
+
+def sweep6c_rows(j: Judge, sec: Section, c):
+    """Sweep 6c (build b1b6846): a boss the leash never brought home, a regroup point at a monster's raw position that
+    raiders could not walk from, and a return wave that did not move."""
+    frozen = j.ev("tether.frozen")
+    runs = ", ".join(f"{label} x{n}" for label, n in sorted(sec.frozen_runs.items(), key=lambda kv_: -kv_[1]))
+    j.add("raids", "leash_home",
+          f"A leashed boss goes home: none leashed {FROZEN_LEASH_RUN}+ times in a row from the same spot "
+          f"(AUTONOMOUS_TETHER_LEASH, sweep 6c)",
+          CONTRADICTED if frozen.count else (SEEN if c("tether.leash") else NOT_SEEN),
+          frozen if frozen.count else j.ev("tether.leash"),
+          f"{c('tether.leash')} leash(es); frozen or untouchable out of its tether: {runs or 'none'}",
+          note="the same fromSpawn (within 25) leash after leash: the boss never walked home")
+    raw = []
+    for key, (t, message) in sec.raw_fronts.items():
+        regroups, retries = sec.regroups_to[key], sec.retries_at[key]
+        if regroups >= RAW_FRONT_REGROUPS and retries >= RAW_FRONT_RETRIES:
+            raw.append((t, message, key, regroups, retries))
+    if raw:
+        first = min(raw, key=lambda r: r[0])
+        bad = Evidence()
+        bad.add(first[0], first[1])
+        detail = "; ".join(f"region {k[0]} {k[1]}: {g} stranded regroups to it, {r} route retries from it"
+                           for _, _, k, g, r in raw)
+        j.add("raids", "raw_front", "No regroup point at a monster's raw position raiders can't walk from (sweep 6c)",
+              CONTRADICTED, bad, detail, note="for a flyer that is in the air (the Air primal, 690 above the floor)")
+    else:
+        j.add("raids", "raw_front", "No regroup point at a monster's raw position raiders can't walk from (sweep 6c)",
+              SEEN if c("stranded.all") else NOT_SEEN, j.ev("stranded.all") if c("stranded.all") else None,
+              f"{len(sec.raw_fronts)} raw front(s); none with {RAW_FRONT_REGROUPS}+ stranded regroups to it and "
+              f"{RAW_FRONT_RETRIES}+ route retries from it")
+    still = j.ev("return.step_still")
+    # "counted as headway": the stuck row counts this wave as having made headway again
+    held = [f"{key[0]} wave {key[1]} at step {n} from {stamp(since)[6:]}"
+            + (" (counted as headway)" if sec.waves.get(key, ("",))[0] == "recovered" else "")
+            for key, n, since in sec.lists["still_waves"]]
+    j.add("raids", "wave_moves",
+          f"A return wave moves: none holds one step {WAVE_STEP_STILL_SECONDS // 60} minutes or more "
+          f"(REALM_RAID_RETURN_WAVE at=, sweep 6c)",
+          CONTRADICTED if still.count else (SEEN if c("return.went_in") else NOT_SEEN),
+          still if still.count else (j.ev("return.went_in") if c("return.went_in") else None),
+          f"{still.count} wave(s) held one step: {'; '.join(held) or 'none'}; "
+          f"{c('return.released')} stuck wave(s) released to the muster",
+          note="joins, catch-ups and step=ahead (raiders leaving the wave) are not the wave's own headway")
 
 
 def rvr(j: Judge, sec: Section, c):

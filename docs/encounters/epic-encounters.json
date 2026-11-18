@@ -94,7 +94,7 @@
   "source/server/GameServer/scripts/namedmobs/Galladoria/GiantSporiteCluster.cs": "f2ab131fba683b917c0d7a439de5a01e2adee5fdb4421107051f064f321426f9",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Hurionthex.cs": "ec7559dc4df5cecda9b671c9dec34ffb683df7c5c3bca00d8036477ad826aa9a",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "e4a4c685603dcd217bf1f5d22ef0ec02cd6e0cc99fa43c1f49328ac70810bb04",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "539ac0d146952792bcdfef4a84dfca0468443553bb44bf5ea07b604f61b0c7e4",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "322b9ef40dea448f44e37a5c501e6d3324a579fb5f37fc5b8141493a456a2862",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
   "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "db0a97bcbcffb9823f7c7e3a875be6b4293d04b4642c66eefc96bec4733b148b",
@@ -214,7 +214,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "5fc3fb943a4d6fed2643892bae9a22f4007b8c145aac8ce34844b0eb043be2c9",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
@@ -12160,7 +12160,7 @@
      "maxHealth": 5000,
      "level": "87",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3229
+     "line": 3252
     }
    ],
    "rules": [
@@ -12168,8 +12168,8 @@
      "kind": "hazard",
      "summary": "Watery Vortex: an invulnerable hazard when AllowInvulnerableHazards is on (no damage from anyone). Today the switch is false and a vortex takes normal damage.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3240,
-     "lineEnd": 3253,
+     "line": 3263,
+     "lineEnd": 3276,
      "anchor": "{",
      "confidence": "inferred",
      "sourceClass": "Vortex",
@@ -12182,14 +12182,14 @@
      "tactic": "Off today. With the switch on: stay out of the vortices and never target them.",
      "difficulty": "off today",
      "verified": true,
-     "key": "hazard@3240"
+     "key": "hazard@3263"
     },
     {
      "kind": "reflect",
      "summary": "Hits back when damaged: if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3236,
-     "lineEnd": 3236,
+     "line": 3259,
+     "lineEnd": 3259,
      "anchor": "if (EpicEncounterActors.IsCombatant(source)) base.TakeDamage(source, damageType, damageAmount, criticalAmount);",
      "confidence": "inferred",
      "sourceClass": "Vortex",
@@ -12202,7 +12202,7 @@
      "tactic": "Off today (AllowInvulnerableHazards is false). To play it: follow the mechanic.",
      "difficulty": "off today",
      "tacticSource": "default for its kind",
-     "key": "reflect@3236"
+     "key": "reflect@3259"
     },
     {
      "kind": "adds",
@@ -12425,7 +12425,7 @@
      "value": "50",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3326,
+     "line": 3349,
      "sourceClass": "VortexBrain"
     }
    ],
@@ -12488,7 +12488,7 @@
      "maxHealth": null,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3415
+     "line": 3438
     },
     {
      "class": "WaterfallAntipass",
@@ -12501,7 +12501,7 @@
      "maxHealth": null,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3356
+     "line": 3379
     }
    ],
    "rules": [
@@ -12688,8 +12688,8 @@
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo Body.CurrentRegionID, 39664, 60792, 11542, 4078)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3402,
-     "lineEnd": 3402,
+     "line": 3425,
+     "lineEnd": 3425,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(player, Body.CurrentRegionID, 39664, 60792, 11542, 4078, DisplacementKind.Barr",
      "confidence": "inferred",
      "sourceClass": "WaterfallAntipassBrain",
@@ -12704,7 +12704,7 @@
      "tactic": "On here since 1.2 (AllowDisplacement ships on for this encounter: EpicEncounterMechanics.ShippedPerEncounter). Bots are moved too (AllowBotDisplacement is on for this encounter): a moved bot walks back to its party, or is recalled when it can't (EncounterDisplacementRecovery); healers heal displaced raiders first.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "teleport@3402"
+     "key": "teleport@3425"
     },
     {
      "kind": "position_puzzle",
@@ -13405,7 +13405,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2407
+     "line": 2430
     },
     {
      "class": "MagicalEarthmender",
@@ -13418,7 +13418,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2612
+     "line": 2635
     },
     {
      "class": "NaturalEarthmender",
@@ -13431,7 +13431,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2820
+     "line": 2843
     },
     {
      "class": "ShadowyEarthmender",
@@ -13444,7 +13444,7 @@
      "maxHealth": 60000,
      "level": "73",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3025
+     "line": 3048
     }
    ],
    "rules": [
@@ -13452,8 +13452,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2433,
-     "lineEnd": 2435,
+     "line": 2456,
+     "lineEnd": 2458,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13473,7 +13473,7 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@2433"
+     "key": "immune_while@2456"
     },
     {
      "kind": "tether",
@@ -13513,8 +13513,8 @@
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2543,
-     "lineEnd": 2543,
+     "line": 2566,
+     "lineEnd": 2566,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13530,14 +13530,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@2543"
+     "key": "reset@2566"
     },
     {
      "kind": "heal",
      "summary": "Each Earthmender casts a 2,000-point heal (target realm: the primal or another Earthmender).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2584,
-     "lineEnd": 2584,
+     "line": 2607,
+     "lineEnd": 2607,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13551,14 +13551,14 @@
      "tactic": "Kill the four Earthmenders first (split one party per Earthmender), then the primal; interrupt their casts if a class can.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "heal@2584"
+     "key": "heal@2607"
     },
     {
      "kind": "offline_change",
      "summary": "Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group, pets always) is behind EpicEncounterMechanics.AllowEarthmenderClassPuzzle. Keep real damage, armor/resists, health, death phases, and the encounter tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2427,
-     "lineEnd": 2429,
+     "line": 2450,
+     "lineEnd": 2452,
      "anchor": "// Offline DAoC: no class puzzle for bot raids; the original (each Earthmender is hurt only by its own class group,",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13577,14 +13577,14 @@
      "tactic": "On: the original is back (AllowEarthmenderClassPuzzle is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2427"
+     "key": "offline_change@2450"
     },
     {
      "kind": "offline_change",
      "summary": "Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals never turned on them and all four were skipped, leaving the Earth primal healed and Olcasgean asleep).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2446,
-     "lineEnd": 2447,
+     "line": 2469,
+     "lineEnd": 2470,
      "anchor": "// Run 18 (2026-10-17): the Earthmenders fight back now (they never attacked, so raiders busy with the primals",
      "confidence": "read",
      "sourceClass": "GuardianEarthmender",
@@ -13607,14 +13607,14 @@
      "tactic": "On: the original is back (AllowEarthmendersPassive is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2446"
+     "key": "offline_change@2469"
     },
     {
      "kind": "offline_change",
      "summary": "Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender healed to full 30 s later; all four were skipped in turn. It keeps its damage while raiders are in the room.",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2539,
-     "lineEnd": 2540,
+     "line": 2562,
+     "lineEnd": 2563,
      "anchor": "// Run 17 (2026-10-17): the raid hit each Earthmender, the primals pulled the raiders off and the Earthmender",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13633,14 +13633,14 @@
      "tactic": "On: the original is back (AllowEarthmenderQuickReset is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2539"
+     "key": "offline_change@2562"
     },
     {
      "kind": "offline_change",
      "summary": "Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four kept every one of them at full health through the bot raid (2,000 every 3 s from each of three).",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2551,
-     "lineEnd": 2552,
+     "line": 2574,
+     "lineEnd": 2575,
      "anchor": "// Mechanic change (run 15, 2026-10-16): Earthmenders heal only the Earth primal. Healing each other, the four",
      "confidence": "read",
      "sourceClass": "GuardianEarthmenderBrain",
@@ -13659,7 +13659,7 @@
      "tactic": "On: the original is back (AllowEarthmenderMutualHeal is true) and the raid AI plays it (see Encounters with raid tactics).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "offline_change@2551"
+     "key": "offline_change@2574"
     }
    ],
    "spells": [
@@ -13674,7 +13674,7 @@
      "value": "99",
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2373,
+     "line": 2396,
      "sourceClass": "EarthPrimalBrain"
     },
     {
@@ -13688,7 +13688,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2584,
+     "line": 2607,
      "sourceClass": "GuardianEarthmenderBrain"
     },
     {
@@ -13702,7 +13702,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2792,
+     "line": 2815,
      "sourceClass": "MagicalEarthmenderBrain"
     },
     {
@@ -13716,7 +13716,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 2997,
+     "line": 3020,
      "sourceClass": "NaturalEarthmenderBrain"
     },
     {
@@ -13730,7 +13730,7 @@
      "value": "2000",
      "target": "REALM",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs",
-     "line": 3202,
+     "line": 3225,
      "sourceClass": "ShadowyEarthmenderBrain"
     }
    ],
@@ -34206,11 +34206,11 @@
     },
     {
      "kind": "offline_change",
-     "summary": "Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.",
+     "summary": "Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
      "line": 62,
      "lineEnd": 63,
-     "anchor": "// Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below",
+     "anchor": "// Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is",
      "confidence": "read",
      "sourceClass": "QueenKula",
      "method": "TakeDamage",
@@ -34506,11 +34506,11 @@
     },
     {
      "kind": "offline_change",
-     "summary": "Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal. Keep real damage, armor/resists, tether.",
+     "summary": "Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is behind EpicEncounterMechanics.AllowTuscarTwinHeal, on since 1.2 (off as in 1.1). Keep real damage, armor/resists, tether.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs",
      "line": 538,
      "lineEnd": 539,
-     "anchor": "// Offline DAoC: no heal-on-hit for bot raids; the original (damage to one twin heals the other while it is below",
+     "anchor": "// Offline DAoC: the original heal-on-hit (damage to one twin heals the other while it is below full health) is",
      "confidence": "read",
      "sourceClass": "KingTuscar",
      "method": "TakeDamage",
