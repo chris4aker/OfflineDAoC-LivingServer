@@ -220,7 +220,7 @@ namespace DOL.UnitTests
             bot.ObjectState = GameObject.eObjectState.Inactive;
             OfflineWorldBotRecord saved = SaveSnapshot(bot);
             Assert.That(saved.IsAlive, Is.False, "a faded body stays dead");
-            Assert.That(Summon(), Is.EqualTo("Pannax is dead. Any healer of your realm brings them back, free."));
+            Assert.That(Summon(), Is.EqualTo("Pannax is dead. Any healer of your realm brings them back, free (/hire revive 1 beside one)."));
 
             // /hire revive 1 beside a healer: alive again, saved, then summoned (which fails here only at joining the world)
             string revived = HiredCompanions165.Revive(_owner, 0);

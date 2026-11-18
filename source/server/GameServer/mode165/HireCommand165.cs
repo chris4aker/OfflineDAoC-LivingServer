@@ -10,14 +10,15 @@ using DOL.GS.PacketHandler;
 
 namespace DOL.GS.Commands
 {
-    [CmdAttribute("&hire", ePrivLevel.Player, "Hire and manage your companions (beside a healer of a capital or major town)",
+    [CmdAttribute("&hire", ePrivLevel.Player, "Hire and manage your companions (beside a healer of your realm)",
         "/hire - beside a healer: open the hire window and show it in chat",
         "/hire list - your companions",
         "/hire race+|race-|class+|class-|gender|look+|look-|hair+|hair-|height+|height-|look - change the companion you design",
-        "/hire name [name] - name it (no name: a random one); /hire confirm - hire it",
+        "/hire name [name] - name them (no name: a random one); /hire confirm - hire them",
         "/hire summon|dismiss|release|revive <n> - companion n of /hire list",
         "/hire gear|stats|spec|trainer|ra|options|repair <n>; /hire train <n> <line>; /hire buyra <n> <ability>; /hire respec <n>",
-        "/hire option <n> <row> <choice> - set an AI option from /hire options")]
+        "/hire option <n> <row> <choice> - set an AI option from /hire options",
+        "/hire help - every /hire word")]
     public sealed class HireCommand165Handler : AbstractCommandHandler, ICommandHandler
     {
         public void OnCommand(GameClient client, string[] args)
@@ -72,11 +73,11 @@ namespace DOL.GS.Commands
         [
             "/hire beside a healer opens the hire window. Your first companion is free; slots open at levels 5, 10, 15, 20, 30, 40 and 45.",
             "/hire race+ race- class+ class- gender look+ look- hair+ hair- height+ height- look (random) - design the companion.",
-            "/hire name <name> names it, /hire confirm hires it. /hire list shows your companions, numbered.",
+            "/hire name <name> names them (/hire name alone: a random name), /hire confirm hires them. /hire list shows your companions, numbered.",
             "/hire summon <n> (beside a healer), dismiss <n>, release <n>, revive <n> (beside a healer, free).",
-            "/hire gear <n> opens its gear window: drag from your backpack onto it, or off it to take items back.",
+            "/hire gear <n> opens their gear window: drag from your backpack onto it, or off it to take items back.",
             "/hire stats <n>, spec <n>, train <n> <line>, trainer <n> (the trainer window), respec <n>, ra <n>, buyra <n> <ability>, options <n>, option <n> <row> <choice>, repair <n> (beside a smith).",
-            "Right-click your companion for its own links; a healer's [companions] link opens hiring.",
+            "Right-click your companion for their own links; a healer's [companions] link opens hiring.",
         ];
 
         private static readonly HashSet<string> DesignVerbs = new(StringComparer.Ordinal)
@@ -138,7 +139,7 @@ namespace DOL.GS.Commands
             GameNPC healer = HealerNear(player);
             if (needsHealer && healer == null)
             {
-                player.Out.SendMessage(verb == "revive" ? "Bring your companion back beside a healer of your realm (/hire revive there)."
+                player.Out.SendMessage(verb == "revive" ? "A healer of your realm brings your companion back: /hire revive <n> beside one."
                         : verb == "summon" ? Hire165.SummonWhereMessage : Hire165.HireWhereMessage,
                     eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return false;
@@ -262,12 +263,12 @@ namespace DOL.GS.Commands
             string sex = d.Gender == eGender.Female ? "female" : "male";
             if (!links)
                 return $"Companion to hire: {d.Name}, {d.Race} {className}, {sex}, look {d.Face + 1} of {Hire165.LookCount(d)}" +
-                       (hair > 1 ? $", hair colour {d.HairColour + 1} of {hair}" : string.Empty) +
+                       (hair > 1 ? $", hair color {d.HairColour + 1} of {hair}" : string.Empty) +
                        $", {height}. Cost: {price}. /hire confirm to hire, /hire name <name> to name.";
             return $"A companion for you: {d.Name} [new name] (or /hire name <name>), a level 5 {className} " +
                    $"[previous class] [next class], {d.Race} [previous race] [next race], {sex} [other sex], " +
                    $"look {d.Face + 1} of {Hire165.LookCount(d)} [previous look] [next look] [random look]" +
-                   (hair > 1 ? $", hair colour {d.HairColour + 1} of {hair} [next hair colour]" : string.Empty) +
+                   (hair > 1 ? $", hair color {d.HairColour + 1} of {hair} [next hair color]" : string.Empty) +
                    $", {height} [shorter] [taller]. Cost: {price}. [hire]";
         }
 
@@ -284,7 +285,7 @@ namespace DOL.GS.Commands
             var lines = new List<string>();
             List<OfflineHiredCompanionRecord> roster = HiredCompanions165.RosterOf(player);
             int open = HiredCompanions165.OpenSlots(player.Level), next = HiredCompanions165.NextSlotLevel(player.Level);
-            lines.Add($"Your companions: {roster.Count} of {open} open" + (next > 0 ? $" (next slot at level {next})." : "."));
+            lines.Add($"Your companions: {roster.Count} of {open} slots filled" + (next > 0 ? $" (next slot at level {next})." : "."));
             foreach (OfflineHiredCompanionRecord hired in roster)
             {
                 if (HiredCompanions165.Record(hired.BotId) is not { } rec)
@@ -294,7 +295,7 @@ namespace DOL.GS.Commands
                 int n = hired.Row + 1;
                 string state = links
                     ? dead ? $"dead [revive {n}] [release {n}]" : live != null ? $"with you [dismiss {n}]" : $"waiting [summon {n}] [release {n}]"
-                    : dead ? "dead (/hire revive beside a healer)" : live != null ? "with you" : "waiting (/hire summon beside a healer)";
+                    : dead ? $"dead (/hire revive {n} beside a healer)" : live != null ? "with you" : $"waiting (/hire summon {n} beside a healer)";
                 lines.Add($"{n}. {rec.Name}, {rec.ClassName} {live?.Level ?? rec.Level}: {state}");
             }
             return lines;
@@ -393,7 +394,7 @@ namespace DOL.GS.Commands
             IReadOnlyList<CompanionOptions165.OptionRow> rows = CompanionOptions165.TextRows(bot);
             var lines = new List<string>();
             if (rows.Count == 0)
-                lines.Add($"{bot.Name} has no AI options at its level.");
+                lines.Add($"{bot.Name} has no AI options at their level.");
             else
             {
                 lines.Add($"/hire option {row + 1} <row> <choice> sets one; the [choice] is the current one.");

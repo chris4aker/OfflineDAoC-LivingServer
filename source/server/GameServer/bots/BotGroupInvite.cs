@@ -72,14 +72,14 @@ public static class BotGroupInvite
         if (player == null || bot == null || player.Realm != bot.Realm)
         {
             if (player != null)
-                ChatUtil.SendSystemMessage(player, "Only a bot of your realm will accept the invitation.");
+                ChatUtil.SendSystemMessage(player, "Only a gamebot of your realm will accept the invitation.");
             return false;
         }
 
         // Play with friends (1.2): another player's companion follows only its owner (BotHumanBinding).
         if (bot.Owner != null && bot.Owner != player)
         {
-            ChatUtil.SendSystemMessage(player, $"{bot.Name} is {bot.Owner.Name}'s companion and follows only them.");
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} is {bot.Owner.Name}'s helper and follows only them.");
             return false;
         }
 
@@ -118,14 +118,14 @@ public static class BotGroupInvite
             bool autonomousGroup = bot.PlayerGroupLeader == null;
             if (!autonomousGroup)
             {
-                ChatUtil.SendSystemMessage(player, $"{bot.Name} is already following another player-led group.");
+                ChatUtil.SendSystemMessage(player, $"{bot.Name} is already in another player's group.");
                 if (bot.IsAutonomousWorldBot && bot.PlayerGroupLeader != player)
                     AutonomousLivingServer.OnInviteDeclined(player, bot, Duty.None, true);
                 return false;
             }
 
             bot.Group.RemoveMember(bot);
-            ChatUtil.SendSystemMessage(player, $"{bot.Name} leaves the autonomous group to answer your invitation.");
+            ChatUtil.SendSystemMessage(player, $"{bot.Name} leaves their group to answer your invitation.");
         }
 
         if (player.Group == null)

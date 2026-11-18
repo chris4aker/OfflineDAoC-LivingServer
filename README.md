@@ -93,7 +93,7 @@ in a crash-safe mode and is backed up every day
   really are.
 
 ### Bots with lives
-- **Personalities.** Every bot is a Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, with five
+- **Personalities.** Every bot is a Leveler, Socialite, Daredevil, Explorer, Crafter or No Lifer, with five
   traits that decide who grinds, who parks in town, who hunts orange cons and who lives in the frontier.
   Target one and type `/personality`.
 - **Bot guilds.** Leveling, social, RvR, raiding and crafting guilds that recruit you, talk in /gu, claim
@@ -187,9 +187,9 @@ A fresh world has no bots yet, and most of these features need some.
 
 1. **Make bots.** On the launcher's main screen, use the **+ Lv.1**, **+ Lv.20** and **+ Lv.50** buttons for each
    realm (**+ Lv.20** makes levels 20–24, for the Thidranki battleground). Raids need level 50s, and a realm needs 8 bots of level 5 or higher before it forms a guild.
-2. **Switch features on.** With the server stopped, open the **Living Server** tab, tick what you want
-   and click **Save settings**. Good first picks: Bot voices with /faction debates, Bot personalities and
-   the Server life parts. Add Bot guilds once you have enough bots.
+2. **Check the features.** Everything on the **Living Server** tab is on by default since 1.2. To turn
+   something off, stop the server, untick it in the tab and click **Save settings**. Bot guilds need enough
+   bots before they form.
 3. **Start the server and play.** Settings apply at the next server start. A session starts when you log
    in, or come back after half an hour away, and the first /faction scenes come within about its first
    half hour.

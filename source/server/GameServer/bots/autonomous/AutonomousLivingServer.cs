@@ -235,8 +235,11 @@ public static partial class AutonomousLivingServer
     #region Speaking
 
     // A No Lifer's buffbot is a parked second character: it never joins the realm's chatter (NoLiferBuffBots has its few lines).
+    // A hired companion is a speaker like any gamebot (owner 2026-11-18 09:14: "Companions should have all the same chat
+    // framework and structure as any bot you interact or group with"): grats, memory, group talk, rez thanks, tells. One whose
+    // player set its Speech to Formal keeps to its True 1.65 companion lines (CompanionChat165), so it has one voice too.
     internal static bool IsSpeaker(GameBot bot) => bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-        !bot.IsNoLiferBuffBot && bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
+        !CompanionChat165.IsFormal(bot) && !bot.IsNoLiferBuffBot && bot.ObjectState == GameObject.eObjectState.Active && bot.DatabaseID > 0;
 
     internal static bool CanTalk(GameBot bot) => IsSpeaker(bot) && bot.IsAlive && !bot.InCombat && !bot.IsCasting;
 
@@ -268,7 +271,7 @@ public static partial class AutonomousLivingServer
                 if (GroupHasPlayer(bot.Group))
                 {
                     bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-                    BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
+                    BotChatTranscript.Bot("group", bot.Name, bot.Realm, text, who: bot);
                 }
                 break;
             case Channel.Faction:
@@ -394,7 +397,7 @@ public static partial class AutonomousLivingServer
             return;
         text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
-        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
+        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
         // The talking update: the player's next tell to this bot continues this exchange.
         AutonomousChatThreads.Log.Record(AutonomousChatThreads.Tell(player.Name, bot.Name), bot.DatabaseID, bot.Name, text, invites,
             GameLoop.GameLoopTime);

@@ -83,7 +83,7 @@ one tier with play, or the same start roll when `bot_skill_profiles` is off. In 
 | Circle-strafing in RvR | `bot_move_strafe` | Melee bots circle-strafe their target (20/50/85% of fights, never into its front); casters and healers face a melee enemy and back off, healers along their usual kite (also needs `rvr_bot_field_tactics`) |
 | /stick lines | `bot_move_stick_line` | A travelling bot group follows in a line at 80-200 units, with now and then a lost stick for 3-10 s |
 | Sitting, and keep walls | `bot_move_sit_and_walls` | After 30-50 s of waiting, most waits sit (wait sites, rendezvous, the bank). At a keep the realm holds, with no siege and no enemy noticed, formation members sit on the guard archers' floors and stand within 1 s when an enemy comes within 2,500 |
-| Personal milestones (master) | `bot_living_milestones` | One goal at a time, from the bot's real numbers: the ding to 50 from level 45; at 50 realm rank 5 (an RvR leaning: Daredevils, No-lifers, Risk 7+) or a dragon trophy (a raid leaning: Socialites, No-lifers, some Explorers, Daredevils and Levelers), an item the bot really received from the loot of a dragon, an epic boss or a raid's final boss, never a boss's add. A raid drop is remembered whatever the bot is chasing, so none ever says it won nothing after winning. No epic armour (owner decision 2). At about 50% and 90% of the way (the trophy: the 2nd and 5th big kill without a drop) a bot may say so (35-80% by chattiness), in its group with you, /say near you, its guild or /faction: at most one milestone line a realm in /faction every 5 minutes and one a minute elsewhere, under the channel's ceiling. Fighting when its line is due, it tries again after 15-30 s (at most 8 times); nobody hearing, it waits 10 minutes. Realm rank 5 and a trophy are told in /faction and the realm cheers (1-3 reactions), one moment a kill; the ding to 50 keeps its own ding line, story and grats. The Herald lists the last 40 under **Milestones of the Realm**. The small push: within 2 levels of 50, 40-60% of the town breaks; past halfway to realm rank 5, x1.5 (x2 past 90%) the wish for an RvR slot, inside the realm's exact goal mix |
+| Personal milestones (master) | `bot_living_milestones` | One goal at a time, from the bot's real numbers: the ding to 50 from level 45; at 50 realm rank 5 (an RvR leaning: Daredevils, No Lifers, Risk 7+) or a dragon trophy (a raid leaning: Socialites, No Lifers, some Explorers, Daredevils and Levelers), an item the bot really received from the loot of a dragon, an epic boss or a raid's final boss, never a boss's add. A raid drop is remembered whatever the bot is chasing, so none ever says it won nothing after winning. No epic armour (owner decision 2). At about 50% and 90% of the way (the trophy: the 2nd and 5th big kill without a drop) a bot may say so (35-80% by chattiness), in its group with you, /say near you, its guild or /faction: at most one milestone line a realm in /faction every 5 minutes and one a minute elsewhere, under the channel's ceiling. Fighting when its line is due, it tries again after 15-30 s (at most 8 times); nobody hearing, it waits 10 minutes. Realm rank 5 and a trophy are told in /faction and the realm cheers (1-3 reactions), one moment a kill; the ding to 50 keeps its own ding line, story and grats. The Herald lists the last 40 under **Milestones of the Realms**. The small push: within 2 levels of 50, 40-60% of the town breaks; past halfway to realm rank 5, x1.5 (x2 past 90%) the wish for an RvR slot, inside the realm's exact goal mix |
 
 **Log tags** (each event line is rate-limited; the summaries come every 5 minutes, one `BOT_PEOPLE_SUMMARY` line with the
 switches, the rows saved and the scope's answers, then one line per package):
@@ -211,12 +211,12 @@ Each character gets at most one grats chain every 20 seconds. This is separate f
 - `off`: every bot stays online (the default before 1.2).
 - `session`: each bot plays sessions of 1–4 hours, with 20 minutes to 2 hours away. Timing is
   counted from server start. About two-thirds of the roster is online at any time.
-  - No-lifers play longer and are away less; Socialites play a little longer.
+  - No Lifers play longer and are away less; Socialites play a little longer.
 - `clock` (the default since 1.2): follows your PC's clock like a 2002 North American server.
   - About 95% of the roster is online from 8 to 10 p.m.
   - About 20% at 4–5 a.m.
   - Weekends (from Friday 6 p.m.) are busier in the daytime.
-  - The same bots stay on as the evening fills up; no-lifers stay up late.
+  - The same bots stay on as the evening fills up; No Lifers stay up late.
 
 **How logging out works:**
 - Only bots that can leave without breaking anything log out: ungrouped, alive, out of combat, not
@@ -351,7 +351,7 @@ final encounter, once a quarter of the raid is there but not all of it (half, at
 there; a few raiders react in /say ("oh my god he just ran in", "stick to the plan!!") and one tells /faction. The
 raid's own rules take it from there: a wipe still regroups and tries again. After the raid a raider tells /faction how
 it went ("thanks a lot ..." or "cant believe that worked"). He is a damage dealer, never a healer or support class, and
-usually a Daredevil or No-lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
+usually a Daredevil or No Lifer. Never on a retry after a wipe. Logs `RAID_LEEROY_ROLLED`, `RAID_LEEROY`,
 `REALM_EXPEDITION_LEEROY` (dungeons) and `REALM_RAID_LEEROY_START` (dragons).
 
 ### Raid wipes and the Epic Special Forces (always on)
@@ -681,7 +681,7 @@ Automated (no running world):
 - **Server, `UT_AutonomousBotVoices`:**
   - every server life kind has lines for every personality;
   - topic filtering;
-  - the six-hour no-repeat window.
+  - the no-repeat window (three days; six hours once a kind of line runs short).
 - **Launcher:**
   - `SocialExpansionSettingsTests`: the new keys and defaults match the server, the schedule mode
     is read like the server reads it, and ALL OFF;

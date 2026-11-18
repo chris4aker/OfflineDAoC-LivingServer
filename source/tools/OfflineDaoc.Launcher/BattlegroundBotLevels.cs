@@ -100,7 +100,7 @@ public static class BattlegroundBotLevels
     public static string ButtonTip(Bracket bracket) =>
         $"Make bots at levels {bracket.MinLevel}–{bracket.MaxLevel}, the {bracket.Name} battleground bracket: each gets a random level " +
         "in it with that level's experience and a small purse (its level squared in silver), and starts in its capital.\n" +
-        "At its first login the server gives it plain merchant armour and weapons for its level, free (\"+ Lv.1\" bots still earn theirs).\n" +
+        "At its first login the server gives it plain merchant armor and weapons for its level, free (\"+ Lv.1\" bots still earn theirs).\n" +
         "Shift-click makes 10, Ctrl-click 100.\n" +
         "They go to the battleground only for the share Bot Goals Setting gives Levels 20–49 as Battlegrounds % (15% by default).";
 }

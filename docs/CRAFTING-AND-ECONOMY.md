@@ -142,7 +142,7 @@ code map confirmed every line below):
   "trained crafter" branches (buying material stacks, keeping stackables from the vendor,
   `AutonomousBotEconomy.cs:146-193, 566-612`) are dead.
 - **The Crafter personality is 12% of bots, not 7%** (`AutonomousBotPersonality.TypeSharePercent = [28, 20, 20,
-  16, 12, 4]` in the order Leveler, Socialite, Daredevil, Explorer, Crafter, No-lifer; `:36`). A bot's type is a
+  16, 12, 4]` in the order Leveler, Socialite, Daredevil, Explorer, Crafter, No Lifer; `:36`). A bot's type is a
   fixed bucket of a hash of its id, so **changing the shares re-types existing bots** near the bucket edges,
   including which ones are beggars and how they talk; a test pins the shares (`UT_AutonomousBotPersonality:15`).
   With `bot_personalities_enabled` (off in code, **on** after Setup's Recommended profile) a Crafter takes longer

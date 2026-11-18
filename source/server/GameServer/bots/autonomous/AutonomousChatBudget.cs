@@ -106,7 +106,7 @@ public static class AutonomousChatBudget
             }
         root.TryGetProperty("texture", out JsonElement texture);
         root.TryGetProperty("reply", out JsonElement reply);
-        return new Settings((int)Math.Max(1, Num(root, "design_bots_per_realm", 1000)), Math.Clamp(Num(root, "population_exponent", 0.75), 0.1, 1.5),
+        return new Settings((int)Math.Max(1, Num(root, "design_bots_per_realm", 1000)), Math.Clamp(Num(root, "population_exponent", 0.65), 0.1, 1.5),
             channels, Curve(root, "hours"), Curve(root, "hours_clock_schedule"),
             Math.Clamp(Num(texture, "macro_chance", 0.5), 0, 1), (int)Num(texture, "macro_repeat_min_s", 180), (int)Num(texture, "macro_repeat_max_s", 480),
             (int)Num(texture, "macro_last_min_s", 900), (int)Num(texture, "macro_last_max_s", 2400),

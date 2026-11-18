@@ -173,7 +173,7 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
     {
         if (!AutonomousBotVoices.Enabled || !AutonomousBotDebates.Enabled)
         {
-            Say(client, "Bot voices or debates are off (bot_voices, bot_debates).");
+            Say(client, "Bot voices or debates are off (bot_voices_enabled, bot_voices_debates).");
             return;
         }
         // "" is any debate; null lets a due storyline episode come first.
@@ -287,7 +287,13 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
 
     private static string OnOff(bool on) => on ? "on" : "OFF";
 
-    private static string Off(bool on, string setting) => on ? null : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
+    // Settings the launcher's Living Server tab has no switch for (chat audit TEXT-041).
+    private static readonly HashSet<string> ServerOnlySettings = new(StringComparer.Ordinal) { "bot_living_tales", "bot_living_tale_raids" };
+
+    /// <summary>What /lstest says when the part asked for is switched off; null when it is on. Pure.</summary>
+    public static string Off(bool on, string setting) => on ? null : ServerOnlySettings.Contains(setting)
+        ? $"That part is off ({setting}); it is a server setting, not in the launcher."
+        : $"That part is off ({setting}); turn it on in the launcher's Living Server tab.";
 
     /// <summary>When a line asked for now really reaches /faction (live test 2026-11-08: "within a second" came 4.5 minutes later).</summary>
     private static string WhenFaction(eRealm realm) =>

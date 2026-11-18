@@ -49,6 +49,7 @@ namespace DOL.GS
             {
                 if (!Enabled(notice.Kind)) continue;
                 LoreAtmosphere.NoteNews();   // realm news always wins over atmosphere lines (Living Server 1.2)
+                BotChatTranscript.Screen("announcement", notice.Text);   // chat audit TEXT-051
                 foreach (GamePlayer player in ClientService.Instance.GetPlayers())
                 {
                     player.Out.SendMessage(notice.Text, eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);

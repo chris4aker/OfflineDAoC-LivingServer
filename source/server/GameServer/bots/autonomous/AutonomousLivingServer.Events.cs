@@ -29,6 +29,8 @@ public static partial class AutonomousLivingServer
     /// <summary>A player or an autonomous gamebot gained a level: grats chains and server firsts.</summary>
     public static void OnLevelUp(GameLiving who, int level)
     {
+        // A hired companion counts as any gamebot here (owner 2026-11-18 09:14): its groupmates and the bots near it say grats,
+        // and it can claim a server first (it never outlevels its player, so it can only tie them).
         if (who == null || who is GameBot { IsAutonomousWorldBot: false } || who is GameBot { IsTemporaryGroupHelper: true })
             return;
         try
@@ -174,6 +176,8 @@ public static partial class AutonomousLivingServer
         if (!Firsts.TryAdd(title, row))
             return false;
         Log.Info($"LIVING_SERVER_FIRST title=\"{title}\" name=\"{who.Name}\" realm={GlobalConstants.RealmToName(who.Realm)} class=\"{row.ClassName}\"");
+        // Chat audit TEXT-051: the sentence players see, as their realm and the others read it.
+        BotChatTranscript.Screen("first", $"Server first: {who.Name} is the first on the server to reach {what}.", who.Realm);
         foreach (GamePlayer player in ClientService.Instance.GetPlayers())
         {
             if (player?.Client == null)

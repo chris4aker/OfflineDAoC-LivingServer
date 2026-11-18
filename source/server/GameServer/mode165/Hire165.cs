@@ -101,9 +101,9 @@ namespace DOL.GS
         private static readonly ConditionalWeakTable<GamePlayer, object> OwnPreview = new();
 
         /// <summary>Where hiring happens in Living Server (True 1.65: at the innkeeper of a traveler's inn).</summary>
-        public const string HireWhereMessage = "Hire beside a healer of a capital or major town (/hire there).";
-        public const string SummonWhereMessage = "Summon your companions beside a healer of a capital or major town (/hire there).";
-        public const string NotOpenMessage = "Stand beside a healer of a capital or major town and type /hire to hire a companion.";
+        public const string HireWhereMessage = "Hire beside a healer of your realm (every capital and large town has one): /hire there.";
+        public const string SummonWhereMessage = "Summon your companions beside a healer of your realm: /hire summon <n> there.";
+        public const string NotOpenMessage = "Stand beside a healer of your realm (every capital and large town has one) and type /hire to hire a companion.";
 
         public static Session Get(GamePlayer player) => player != null && Sessions.TryGetValue(player, out Session s) ? s : null;
 
@@ -414,14 +414,14 @@ namespace DOL.GS
             Text(player, 2, className);
             Text(player, 3, d.Gender == eGender.Female ? "Female" : "Male");
             Text(player, 4, $"Look {d.Face + 1} of {LookCount(d)}");
-            Text(player, 5, HairCount(d) > 1 ? $"Hair colour {d.HairColour + 1} of {HairCount(d)}" : string.Empty);
+            Text(player, 5, HairCount(d) > 1 ? $"Hair color {d.HairColour + 1} of {HairCount(d)}" : string.Empty);
             Text(player, 6, d.Name);
             var roster = HiredCompanions165.RosterOf(player);
             int open = HiredCompanions165.OpenSlots(player.Level), next = HiredCompanions165.NextSlotLevel(player.Level);
             long cost = HiredCompanions165.NextCost(player);
             Text(player, 7, cost == 0 ? "Cost: free (your first companion)" : $"Cost: {Money.GetString(cost)}");
             Text(player, 8, s.Problem);
-            Text(player, 9, $"Companions: {roster.Count} of {open} open" + (next > 0 ? $" (next at level {next})" : string.Empty));
+            Text(player, 9, $"Companions: {roster.Count} of {open} slots" + (next > 0 ? $" (next at level {next})" : string.Empty));
             Text(player, 10, $"A level 5 {className} who joins you with a training");
             Text(player, 11, "weapon and nothing else. Give them gear and train");
             Text(player, 12, s.Test ? "(GM test window)" : "their specs from the GEAR and SPEC buttons.");

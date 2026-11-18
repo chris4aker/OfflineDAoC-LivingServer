@@ -168,7 +168,7 @@ public class HeraldPageTests
             INSERT INTO offline_world_bots VALUES (4, 'Aldwin', 1, 'Cleric', 50, 600000, 0);
             """);
         string html = HeraldPage.Build(_database, Path.Combine(_folder, "none.sqlite3"), DateTime.Now);
-        Assert.That(html, Does.Contain("Milestones of the Realm"));
+        Assert.That(html, Does.Contain("Milestones of the Realms"), "three realms on one page (chat audit TEXT-050)");
         Assert.That(html, Does.Contain("Won Glimmering Ring from Cuuldurach the Glimmer King"));
         Assert.That(html, Does.Contain("Earned realm rank 5").And.Contain("Reached level 50"));
         Assert.That(html, Does.Not.Contain("Waiting"), "an arc still being chased is not news");

@@ -17,9 +17,9 @@ namespace DOL.GS.Commands
         ePrivLevel.GM,
         "Crafting 2.0 in game: what is built, and what a bot or an item looks like to the economy",
         "/lscraft craft - bot crafting: switches, the recipe catalog, and the crafter roster: each realm's crafter gamebots in the game (name, order, skill, level, where, on a break or a task)",
-        "/lscraft wtb - bots' want-to-buy posts (WP6)",
-        "/lscraft commission - realm quartermaster commissions (WP5)",
-        "/lscraft ledger - the realm's coin now (online gamebots) and the economy ledger (WP2)",
+        "/lscraft wtb - bots' want-to-buy posts",
+        "/lscraft commission - realm quartermaster commissions",
+        "/lscraft ledger - the realm's coin now (online gamebots) and the economy ledger",
         "/lscraft index - what the price index says of the first item in your backpack",
         "/lscraft crafter <name> - a gamebot's type, crafting skills, purse and crafter record")]
     public sealed class CraftEconomyTestCommandHandler : AbstractCommandHandler, ICommandHandler
@@ -114,7 +114,7 @@ namespace DOL.GS.Commands
             };
             IRecipeCatalog catalog = RecipeCatalogs.Current;
             if (!IsBuilt(catalog, typeof(RecipeCatalogs)))
-                lines.Add("Recipe catalog: not built yet (WP1 registers it; until then recipes load one at a time as today).");
+                lines.Add("Recipe catalog: not registered on this server (bot_crafters off, or still starting); recipes load one at a time.");
             else if (!catalog.IsLoaded)
                 lines.Add("Recipe catalog: registered, still loading.");
             else
@@ -123,7 +123,7 @@ namespace DOL.GS.Commands
                 lines.Add("Recipe catalog: " + string.Join(", ", skills.Select(s => (s, n: catalog.ForSkill(s)?.Count ?? 0)).Where(p => p.n > 0).Select(p => $"{p.s} {p.n}")) + ".");
             }
             if (!IsBuilt(BotCrafters.Roster, typeof(BotCrafters)))
-                lines.Add("Crafter roster: not built yet (WP4: DividedRealms' crafting and craft trip). No gamebot crafts; Crafter-type bots only take longer town breaks.");
+                lines.Add("Crafter roster: not registered on this server (bot_crafters off, or still starting). No gamebot crafts; Crafter-type bots only take longer town breaks.");
             else
                 lines.AddRange(RosterLines(roster ?? []));
             return lines.ToArray();
@@ -193,7 +193,7 @@ namespace DOL.GS.Commands
 
         public static string[] WtbLines() =>
         [
-            "Want-to-buy: not built yet (WP6: the gear check at task breaks, template valuation at 50, WTB posts).",
+            "Want-to-buy: not registered on this server (bot_crafters off, or still starting).",
             "Today a gamebot buys an upgrade on the Realm Exchange or from a vendor at a task break, scored by EquipmentValue; nothing is posted.",
         ];
 
@@ -202,7 +202,7 @@ namespace DOL.GS.Commands
             var lines = new List<string> { $"Realm commissions: setting {CraftingEconomyProperties.REALM_COMMISSIONS}; Exchange tax {CraftingEconomyProperties.EXCHANGE_TAX_PERCENT}%." };
             lines.Add(IsBuilt(CraftOrders.Board, typeof(CraftOrders))
                 ? "Order board: registered."
-                : "Order board and quartermaster commissions: not built yet (WP5). The settings do nothing until then.");
+                : "Order board and quartermaster commissions: not registered on this server (bot_craft_orders off, or still starting). The settings do nothing until then.");
             return lines.ToArray();
         }
 
@@ -212,7 +212,7 @@ namespace DOL.GS.Commands
             var lines = new List<string>
             {
                 sink == null
-                    ? $"Economy ledger: not built yet (WP2: hourly ECON_SUPPLY / ECON_FLOWS lines and offline_economy_ledger rows; economy_ledger_enabled {OnOff(CraftingEconomyProperties.ECONOMY_LEDGER_ENABLED)})."
+                    ? $"Economy ledger: not registered on this server (economy_ledger_enabled {OnOff(CraftingEconomyProperties.ECONOMY_LEDGER_ENABLED)}, or still starting)."
                     : $"Economy ledger: {sink.GetType().Name} records every gamebot coin move (economy_ledger_enabled {OnOff(CraftingEconomyProperties.ECONOMY_LEDGER_ENABLED)}).",
                 "Online gamebots' coin now (offline bots' purses are not counted here):",
             };
@@ -237,7 +237,7 @@ namespace DOL.GS.Commands
             var band = MarketBand.Of(realm, item);
             string source = IsBuilt(index, typeof(PriceIndexes))
                 ? $"index {index.GetType().Name}"
-                : "today's numbers (the merchant appraisal and the listing valuation; WP5/WP6's index is not built yet)";
+                : "the merchant appraisal and the listing valuation (no price index is registered on this server)";
             return
             [
                 $"{item.Name} (level {item.Level}, quality {item.Quality}{(item.IsCrafted ? ", crafted" : "")}), band {band.Key}, from {source}:",
@@ -279,7 +279,7 @@ namespace DOL.GS.Commands
                 lines.Add($"  Crafter: order {state.Order}, lifetime net {Coin(state.LifetimeNetCopper)}, " +
                           $"reinvests up to {state.Policy?.MaxReinvestShareOfProfit:P0} of profit.");
             else
-                lines.Add(rosterBuilt ? "  Not on the crafter roster." : "  Crafter record and stock: not built yet (WP4).");
+                lines.Add(rosterBuilt ? "  Not on the crafter roster." : "  Crafter record and stock: not registered on this server (bot_crafters off, or still starting).");
             return lines.ToArray();
         }
     }

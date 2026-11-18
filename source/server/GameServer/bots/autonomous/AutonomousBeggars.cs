@@ -110,9 +110,9 @@ public static class AutonomousBeggars
         }
     }
 
-    /// <summary>An autonomous gamebot that is a beggar while the setting is on.</summary>
+    /// <summary>An autonomous gamebot that is a beggar while the setting is on (never a hired companion: chat audit TEXT-003).</summary>
     public static bool Is(GameBot bot) => On && bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-                                          !bot.IsEpicSpecialForce && IsBeggarId(bot.DatabaseID);
+                                          !bot.IsHiredCompanion && !bot.IsEpicSpecialForce && IsBeggarId(bot.DatabaseID);
 
     /// <summary>A saved record that logs in as a beggar.</summary>
     public static bool IsBeggarRecord(OfflineWorldBotRecord record) => On && record != null && !record.IsRetired && IsBeggarId(record.BotId);

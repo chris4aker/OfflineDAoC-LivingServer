@@ -15,7 +15,7 @@ namespace DOL.GS
         public static string RaidOutcome(string name, string outcome) => outcome switch
         {
             "Boss defeated" => Pick($"Victory at {name}! Raise a cup for those who stood beside us.",
-                $"Word from {name}: the final foe has fallen! Honour to our realm and its brave company."),
+                $"Word from {name}: the final foe has fallen! Honor to our realm and its brave company."),
             "Timed out" => Pick($"Our time at {name} is spent. We could not finish the fight; rally home and tend the wounded.",
                 $"The expedition to {name} must withdraw. No victory this time, but we shall return."),
             "Beaten to it" => $"Another realm reached the end of {name} before us and took the prize. Fall back; next time we strike first.",
@@ -28,13 +28,13 @@ namespace DOL.GS
 
         public static string RaidWipe(string name, string boss) =>
             // A dragon raid is named after its dragon (2026-10-30): no "Golestandt struck us down in Golestandt". So is every
-            // open-world raid (Coliath, the Green Knight, Evern), which has no staging ring and is not a dragon (1.2).
+            // open-world raid (Coliath, the Green Knight, Evern), which has no gathering place before it and is not a dragon (1.2).
             !NamedForBoss(name, boss)
                 ? Pick($"{boss} has struck down our company in {name}! Regroup at the front: we go in once more together.",
                     $"We have fallen to {boss}. Rise, rebuff and gather; one more assault on {boss} awaits.")
                 : IsDragon(boss)
-                    ? Pick($"{boss} has struck down our company! Regroup at the staging ring: we go in once more together.",
-                        $"We have fallen to {boss}. Rise, rebuff and gather at the ring; one more assault on the dragon awaits.")
+                    ? Pick($"{boss} has struck down our company! Regroup where the raid gathered: we go in once more together.",
+                        $"We have fallen to {boss}. Rise, rebuff and return to where the raid gathered; one more assault on the dragon awaits.")
                     : Pick($"{boss} has struck down our company! Regroup and rebuff: we go in once more together.",
                         $"We have fallen to {boss}. Rise, rebuff and gather; one more assault on {boss} awaits.");
 
@@ -80,12 +80,12 @@ namespace DOL.GS
                     return $"{GlobalConstants.RealmToName(winner)} held {name}. The siege there is over.";
             }
             if (winner != eRealm.None)
-                return winner == audience ? $"{name} is ours! Raise our banners and honour those who fought for it."
+                return winner == audience ? $"{name} is ours! Raise our banners and honor those who fought for it."
                     : $"{name} has fallen to {GlobalConstants.RealmToName(winner)}. Tend the wounded; this struggle is not over.";
             if (failedRally) return defender ? $"The enemy muster at {name} has broken up. The walls remain ours; stay watchful."
                 : $"The muster for {name} failed to gather enough fighters in time. Stand down, warbands; there will be another campaign.";
             if (timedOut) return defender ? $"We held {name}! The enemy's time is spent and our banners still fly."
-                : $"Our time to take {name} has run out. Withdraw in good order; we could not break the defence.";
+                : $"Our time to take {name} has run out. Withdraw in good order; we could not break the defense.";
             return $"The fighting for {name} has ended. Await confirmed word before claiming victory.";
         }
 

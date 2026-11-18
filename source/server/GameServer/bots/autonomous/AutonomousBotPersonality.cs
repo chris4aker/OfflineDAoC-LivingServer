@@ -370,7 +370,10 @@ public static class AutonomousBotPersonality
 
     #endregion
 
+    /// <summary>The personality's name as players read it ("No Lifer", not the enum's "NoLifer"; chat audit TEXT-036).</summary>
+    public static string DisplayName(BotPersonalityType type) => type == BotPersonalityType.NoLifer ? "No Lifer" : type.ToString();
+
     public static string Describe(BotPersonality personality) =>
-        $"{personality.Type} (curiosity {personality.Traits.Curiosity}, risk {personality.Traits.Risk}, " +
+        $"{DisplayName(personality.Type)} (curiosity {personality.Traits.Curiosity}, risk {personality.Traits.Risk}, " +
         $"sociability {personality.Traits.Sociability}, patience {personality.Traits.Patience}, chattiness {personality.Traits.Chattiness})";
 }

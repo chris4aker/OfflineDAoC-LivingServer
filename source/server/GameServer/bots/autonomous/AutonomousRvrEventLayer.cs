@@ -2026,7 +2026,7 @@ public static partial class AutonomousRvrEventLayer
                         ? $"{name} has gone back to its shrine. The struggle on the road has ended."
                         : winner == eRealm.None
                         ? $"{name} has been secured at a shrine. The struggle on the road has ended."
-                        : realm == winner ? $"{name} is safe in our shrine! Honour to its bearers and defenders."
+                        : realm == winner ? $"{name} is safe in our shrine! Honor to its bearers and defenders."
                         : $"{GlobalConstants.RealmToName(winner)} has secured {name} at a shrine. Our struggle on the road is over.",
                         // The world news tells the shrine's realm in a bot's words; the other realms keep the notice.
                         realm == winner ? "-" : null);

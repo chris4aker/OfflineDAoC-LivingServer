@@ -3,7 +3,7 @@ using DOL.GS.PacketHandler;
 namespace DOL.GS.Commands;
 
 [CmdAttribute("&faction", ePrivLevel.Player,
-    "Talk to players and active playerbots in your realm", "/faction <message>")]
+    "Talk to the players and gamebots of your realm", "/faction <message>")]
 public sealed class FactionChatCommand : AbstractCommandHandler, ICommandHandler
 {
     private const string FactionChatTick = "Offline_Faction_Chat_Tick";

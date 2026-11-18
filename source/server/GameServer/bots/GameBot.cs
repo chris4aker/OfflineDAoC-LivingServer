@@ -310,11 +310,19 @@ namespace DOL.GS
         /// <summary>A bot's /say, recorded in the chat transcript (CHAT_LINE) when a player is near enough to hear it.</summary>
         public override bool Say(string str)
         {
-            str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou
+            str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou (never a hired companion)
             bool said = base.Say(str);
             if (said && AutonomousLivingServer.PlayerHears(this))
-                BotChatTranscript.Bot("say", Name, Realm, str);
+                BotChatTranscript.Bot("say", Name, Realm, str, who: this);
             return said;
+        }
+
+        /// <summary>A bot's emote, recorded (CHAT_EMOTE) when a player is near enough to see it (chat audit TEXT-051).</summary>
+        public override void Emote(eEmote emote)
+        {
+            base.Emote(emote);
+            if (AutonomousLivingServer.PlayerHears(this))
+                BotChatTranscript.Emote(this, emote);
         }
 
         public override int MaxConcentration => GetModified(eProperty.MaxConcentration);
@@ -1114,14 +1122,16 @@ namespace DOL.GS
             if (IsAutonomousWorldBot && !IsNoLiferBuffBot)
             {
                 AutonomousBotStatusPersistence.Queue(this);
-                // a hired companion is no world bot: no guild grief, world voices or Living Server tales of its death
+                // A hired companion has its death lines, rez asks and nemesis like any gamebot (owner 2026-11-18 09:14: the
+                // same chat framework); it has no guild to grieve and no skill profile.
                 if (!IsHiredCompanion)
                 {
                     AutonomousBotGuildSocial.OnBotDeath(this);
-                    AutonomousBotVoices.OnBotDeath(this, killer, attackers);
-                    AutonomousLivingServer.OnBotDied(this, killer);
                     BotSkill.OnDied(this); // Bots as people WP1: a death is a lesson (at most one in 10 minutes)
                 }
+                if (!CompanionChat165.IsFormal(this))
+                    AutonomousBotVoices.OnBotDeath(this, killer, attackers);
+                AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
             // a hired companion's player sees it DEAD in the roster at once (True 1.65, 2026-11-01)
@@ -1372,7 +1382,7 @@ namespace DOL.GS
             HiredCompanions165.OnRaised(this);   // back in its player's group and at their side
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
-            if (IsAutonomousWorldBot && !IsHiredCompanion && AutonomousLivingServer.OnBotResurrected(this, caster))
+            if (IsAutonomousWorldBot && AutonomousLivingServer.OnBotResurrected(this, caster))
                 return;
             Say(Random.Shared.Next(3) switch
             {
@@ -1603,12 +1613,14 @@ namespace DOL.GS
                 return;
             text = AutonomousRoleplayers.Voice(this, text);
             Group.SendMessageToGroupMembers(this, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-            BotChatTranscript.Bot("group", Name, Realm, text);
+            BotChatTranscript.Bot("group", Name, Realm, text, who: this);
         }
 
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
         // the companion bots' formal voice. A gamebot talks like a player.
-        private string ReturnDialogue(string stage) => IsAutonomousWorldBot
+        // A hired companion talks as any gamebot (owner 2026-11-18 09:14); with its Speech option on Formal it keeps the
+        // True 1.65 companion's return lines.
+        private string ReturnDialogue(string stage) => IsAutonomousWorldBot && !(IsHiredCompanion && CompanionChat165.IsFormal(this))
             ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
             : CompanionReturnDialogue(stage);
 

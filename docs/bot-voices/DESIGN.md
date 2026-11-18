@@ -32,18 +32,20 @@ Set in `voices.json` and applied after a line is chosen:
 
 | Voice | Rough share | Style |
 |---|---|---|
-| plain | 35% | the line as written: lowercase, light punctuation |
-| proper | 15% | capitalized, full stops, some abbreviations spelled out (u → you, pls → please) |
+| plain | 46% | the line as written: lowercase, light punctuation |
+| proper | 4% | capitalized, a full stop on a line of more than three words, some abbreviations spelled out (u → you, pls → please); a line that starts with a chat word ("lol", "np", "ty") stays as typed |
 | terse | 25% | shortened: more abbreviations (you → u, thanks → ty), no punctuation |
 | chatty | 20% | adds ":)", "heh", "lol" and a little extra |
-| typo-prone | 5% | plain, plus an occasional swapped-letter typo (at most one per line, 1 line in 6) |
+| typo-prone | 5% | plain, plus a typing slip in 1 line in 12: in one lowercase word of five letters or more, a dropped letter 3 times in 4, else two neighbouring letters swapped, never the first or last letter; a "*word" correction follows about half the time |
+
+The shares changed on 2026-11-03 (fewer tidy writers: proper 15% → 8% → 4%, plain 35% → 42% → 46%, and the typo
+chance 1 in 6 → 1 in 12, after the blind rounds found ambient chat too polished).
 
 ### 1.3 Experience: what it knows
 
-Taken from the bot's level and played time:
-- **Newbie** (below 15, or its first character): asks.
-- **Regular:** asks and answers.
-- **Veteran** (40+, or 50 with alts): answers, gives camp and spec advice, joins debates.
+Taken from the bot's level, as the line flags `newbie` and `veteran` (`AutonomousBotVoices`): a line with `@needs newbie`
+is said only by a low-level bot, one with `@needs veteran` only by a high-level one; every other line by anyone. (The
+plan was three bands with preferred kinds and topics; that was never read and is not built.)
 
 ## 2. Memory of you
 
@@ -67,6 +69,9 @@ One row per bot per character of yours, in a new table `offline_bot_player_memor
 | Affinity | −100 to +100, from the counters, fading toward 0 over weeks without contact |
 
 ### 2.2 How affinity moves
+
+As built (`AutonomousLivingServer.Memory`), a bot reads you as friendly, neutral or cool from what it remembers; the
+arithmetic below is the first plan and was not checked against the code line by line.
 
 - **Up:** +2 per group, +1 per 10 kills together, +4 per heal (at most 3 a fight), +10 per revive,
   +3 per trade.
@@ -217,6 +222,11 @@ words. "tonight" and "all night" need no flag: by day the server says "today" an
 ### 3.4 Choosing a line
 
 1. **Filter** by kind, the speaker's realm, class, level band, type (with type weight) and flags.
+2. **Skip** any line used in this realm in the last three days: the time each line was last used,
+   per realm (up to 5,000 entries per realm, the oldest forgotten first; the corpus holds about 35,000 lines, so a
+   realm heard all day can forget early). When a kind's pool is used up, a line not heard for six hours may come back.
+   Grats and rez thanks are short and frequent, so they skip this check (a "gz" can repeat).
+
 2. **Skip** any line used in this realm within the no-repeat window (three days, see 3.8): the time each line was last used,
    per realm (up to 5,000 entries, well above the corpus size). Grats and rez thanks are short and
    frequent, so they skip this check (a "gz" can repeat).
@@ -289,12 +299,15 @@ ding in /faction gets 1-3, a "lol" usually none, a named bot always answers. A s
   social, rvr, raiding, crafting, general), with the no-repeat window, voices on or off. A guildmate answers
   when the line invites it. Player /gu lines are answered from `reply` lines by intent.
 
-### 3.8 Pacing (0.36-se.4, voices on)
+### 3.8 Pacing
 
-- Unprompted lines: 2-4 minutes apart per realm in /faction and 1-2 minutes per region in /say (they were a
-  fixed 3 minutes and 90 seconds).
-- About one bot in seven is a regular who talks 2.5 times as often; about a third talk half as often.
-- Replies take longer to type when longer (about 40-60 ms a character after a moment to read).
+How often bots talk, in every channel, is set by the chat budget: [CHAT-BUDGETS.md](CHAT-BUDGETS.md) (floors, targets
+and ceilings per channel, the population and hour scaling, `bot_voices_chat_rate`, bursts and the reply budget). The
+0.36-se.4 numbers that stood here (2-4 minutes between /faction openers) are two versions old.
+
+- Each bot also has a fixed talkativeness from its id (`AutonomousBotPersonality.RegularFactor`): about one bot in seven
+  is talkative (2.5 times as often), about a third quiet (half as often). On top of that each realm has a few rotating
+  regulars (CHAT-BUDGETS.md); the two stack.
 - Typo-prone writers send a "*word" correction for about half their typos.
 - The no-repeat window is three days (it was six hours, which had expired by the next evening), saved in
   `offline_bot_lines_heard` and read back at start-up. When a kind's pool is used up within three days, lines
@@ -304,34 +317,17 @@ ding in /faction gets 1-3, a "lol" usually none, a named bot always answers. A s
 
 ## 4. Rates
 
-- **Kept from today:** never in combat or while casting; only when you can hear (for /say) or are
-  online (for /faction); per-bot cooldowns.
-- **Changed:**
-  - **/faction openers** scale gently with realm population: about 20 an hour at up to 300 online,
-    rising to about 40 an hour at 1,000 or more (`bot_voices_faction_rate`).
-  - **Debates:** at most one per realm every 30–45 minutes.
-  - **Gossip about you:** at most one line per realm every 30 minutes.
-  - **Greetings:** at most one per bot every 2 hours. Nearby greetings to you are capped at 1 a
-    minute.
+The rates are in [CHAT-BUDGETS.md](CHAT-BUDGETS.md). What stays from the first plan: never in combat or while casting;
+only when you can hear (for /say) or are online (for /faction); per-bot cooldowns; at most one debate per realm every
+30–45 minutes.
 
 ## 5. Settings
 
-**Beta 1.1 (the talking update):** `bot_voices_enabled` is on by default, `bot_voices_chat_rate` (the planned
-`bot_voices_faction_rate`) and `bot_voices_tells` exist; see [TALKING-UPDATE.md](TALKING-UPDATE.md). The table below is
-the original plan.
-
-**Status (2026-10-12):** `bot_voices_enabled` and `bot_voices_debates` exist (see
-[../BOT-PERSONALITIES.md](../BOT-PERSONALITIES.md)). The others come with memory (step 3) and aren't
-in the server yet.
-
-| Setting | Default | Meaning |
-|---|---|---|
-| `bot_voices_enabled` | False | use the corpus; off keeps today's lines |
-| `bot_memory_enabled` | False | record and use memory of your characters |
-| `bot_voices_faction_rate` | 1.0 | multiplier on /faction openers |
-| `bot_voices_debates` | True | allow debate scenes (when voices are on) |
-| `bot_voices_gossip` | True | allow /faction lines about you (when memory is on) |
-| `bot_invites_player` | True | friendly bots may invite you (when memory is on) |
+The settings are server settings, category `bots`, and most are in the launcher's Living Server tab, all on by default
+since 1.2: `bot_voices_enabled`, `bot_voices_debates`, `bot_voices_chat_rate` (how much bots talk, 0–3, default 2),
+`bot_voices_tells`, `bot_living_memory` and the other Server life parts. Each one's text is in the launcher and in
+[../LIVING-SERVER.md](../LIVING-SERVER.md). The first plan's `bot_memory_enabled`, `bot_voices_faction_rate`,
+`bot_voices_gossip` and `bot_invites_player` were never built under those names.
 
 ## 6. Tests
 
@@ -347,7 +343,7 @@ in the server yet.
   code.
 - **Unit tests:**
   - the voice transforms;
-  - line choice respects the filters and the 6-hour repeat window;
+  - line choice respects the filters and the three-day repeat window;
   - slot filling never leaves `{…}`;
   - affinity math and fading;
   - memory rows survive save and reload;
@@ -361,9 +357,8 @@ in the server yet.
 
 ## 7. Order of work
 
-**Status (2026-10-12):** steps 1, 2 and 4 are in the server on `feature/bot-personalities`, off by
-default, with unit tests; nothing has been checked in game yet. Step 3 (memory) hasn't started, so
-lines with `{player}`, `{place}` or `{player_class}` are skipped. Details:
+**Status:** all four steps are built and, since 1.2, on by default; memory shipped as `bot_living_memory` (Beta 1.1).
+The list below is the plan as written on 2026-10-12, kept for its history. Details:
 [../BOT-PERSONALITIES.md](../BOT-PERSONALITIES.md).
 
 1. **Research brief, this design and the first corpus** (this branch). No game code yet.

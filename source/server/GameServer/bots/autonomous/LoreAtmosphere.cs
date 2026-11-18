@@ -248,6 +248,7 @@ public static class LoreAtmosphere
         if (line.OnceKey != null && Shown(state, player, line))
             return;
         player.Out.SendMessage(line.Text, line.Large ? eChatType.CT_ScreenCenter : eChatType.CT_ScreenCenterSmaller, eChatLoc.CL_SystemWindow);
+        BotChatTranscript.Screen("atmosphere", line.Text, player.Realm, player.Name);   // chat audit TEXT-051
         if (!string.IsNullOrWhiteSpace(line.ChatCopy))
             player.Out.SendMessage(line.ChatCopy, eChatType.CT_Important, eChatLoc.CL_SystemWindow);
         if (line.OnceKey == null)

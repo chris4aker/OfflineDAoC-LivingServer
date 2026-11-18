@@ -8,6 +8,57 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Bot chat audit fixes (1.2, 2026-11-18; tests only)
+
+The owner's chat audit (2026-11-18 08:10: "fully audit all bot language and chat design ... then make the fixes"). Nothing
+below has been seen on the owner's PC yet: **tests only**.
+
+### Hired companions, buffbots, system text, launcher and docs
+
+- **A hired companion talks in one voice, the same as any gamebot** (owner 2026-11-18 09:14: "Companions should have all
+  the same chat framework and structure as any bot you interact or group with, if not more"). Seen on build b1b6846
+  (11/18 02:26 and 07:28): Pannax said "Say the word and I will follow, Testrunner." in /say and "heya, thx for the invite"
+  and "nice xp, next :P" in /group. Now a companion keeps every gamebot part it had (grats, memory, group talk, fight
+  calls, the "X went ld" line) and gains the rest: its death lines, rez asks and rez thanks, nemesis, the gamebot return
+  lines, and tells (`/send` to your companion reaches it). Its own lines (`CompanionChat165`: follow, rest, power, health,
+  level, quiet) are rewritten as a 2003 player types them and sent in its own writing style. **Assumption to confirm with
+  the owner:** that voice is a normal per-bot chat voice; True 1.65's formal register is the companion's new **Speech**
+  AI option ("Formal"), and a formal companion then says only its own formal lines (no gamebot chat), so it too has one
+  voice. Never a roleplayer or a beggar (world characters). Server firsts: a companion counts, as any character (it never
+  outlevels its player, so it can only tie them). /personality shows its personality and voice. The launcher's Living
+  Server tab has a **Hired companions** switch (`hired_companions`, on) and the Thanksgiving choice
+  (`bot_living_holidays_thanksgiving`: us, canada or off).
+- **The companion's own lines:** "keep quiet" is kept (no ambient line, an answer only when named, until told to talk
+  again); the quiet and health words are whole words ("don't stop", "shut the gate" and "healthy" no longer trigger them);
+  no danger line in a capital or town, and a city is named plainly; twelve idle lines instead of five, never the one it
+  said last.
+- **Words:** /spawn and /raid bots are "helpers" and /hire bots "companions" in every message and command text; "gamebot"
+  for the world's bots; "No Lifer"; "they/them" for companions; one phrase for where to hire ("a healer of your realm"),
+  with the number in every "/hire revive <n>" hint; "slots filled"; US spelling in game text (color, traveling, honor,
+  defense, armor); `/hire help` in its usage; "stays behind", not "stays at the inn"; a dragon wipe notice says "where the
+  raid gathered", not "the staging ring"; /lfg and /trade say they post to the realm.
+- **GM and player command text:** /lstest names the real setting keys and says when a setting is server-only;
+  /lscraft drops its work-package notes ("not registered on this server"); /lswhy skill and way read as words ("learns
+  from what they do: yes; makes mistakes right now: no (on a realm raid)"), not the person key and refusal codes.
+- **Transcript:** each bot line carries `kind=gamebot|companion|buffbot|helper`, and a companion's and a buffbot's lines
+  their own class and level. Alliance chat is a `CHAT_LINE`; bots' emotes are `CHAT_EMOTE`; atmosphere lines, game-wide
+  announcements and server firsts are `CHAT_SCREEN` (separate tags, so chat_audit's line counts are unchanged).
+- **Settings text:** the launcher and the server now hold one text per setting (65 keys; 30 differed), without
+  work-package notes, dates, "today's" or "towers"; body language no longer says bots can't sit. `release-server-settings.json` lists every key the Living Server
+  tab writes (18 were missing, `bot_voices_chat_rate` among them), so a developer's saved value never ships.
+- **ALL SERVER COMMANDS.txt** is written by `source/tools/make_command_reference.py` from the source (302 registrations;
+  /hire, /lswhy, /personality, /invites, /lead, /lore, /tradewindow, /lstest, /lscraft and others were missing).
+- **Docs made true:** voice shares 46/4/25/20/5 and the typo rule; the three-day no-repeat window; the chat budget's gaps,
+  population exponent 0.65 (also the code's fallback), what the rate multiplies, bursts of at most three, the regulars and
+  each bot's fixed talkativeness, and what the owner's PC delivered (5 to 7 /faction lines a minute on a full realm, the
+  pace the owner chose; pacing unchanged); the release note's "/faction can get too busy" (an earlier build's result)
+  replaced by build 5378dbe's; power rest floors 25/35/45; new bots' personality shares; a "Beta
+  1.1 as shipped" banner on TALKING-UPDATE.md; README's "switch features on".
+- Buffbot copies: on build b1b6846 (which has #334) seven buffbot logouts wrote no new roster row; the copies seen there
+  were rows from earlier builds, which #338 retires. No change.
+- Tests: `UT_ChatAuditCompanionsSystemText`, `UT_BotPeopleTables`, `UT_CraftEconomyTestCommand`, `UT_EggPolish12`,
+  `test_release_server_settings.py`, `test_command_reference.py`; launcher `HeraldPageTests` (Windows CI).
+
 ## Raid fixes from sweep 6e: Aidon's room, an attempt over his reset, epic trash on the way in, musters a wave walks to (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 13:31-15:15, `DIAG-b1b6-sweep6e`). Nothing below is seen in game yet.
@@ -402,7 +453,7 @@ Reading and replies (the chat audit's E1 items; unit tests only, none seen on th
   per channel: the turns, its open question, the place, item, class and level in play, and who has the floor. Your next
   line goes on with the bot you were talking to (not a hello, goodbye, call or group post); "how do i get there", "is it
   far", "how much for it" are completed from the last place or item; a bot never asks the level, class, place or item you
-  already gave. Gamebots in /faction, /say, /group and tells; hired companions are to join it (their chat is being rebuilt).
+  already gave. Gamebots in /faction, /say, /group and tells; hired companions too (their /say lines, with the chat audit E7 entry).
 
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 

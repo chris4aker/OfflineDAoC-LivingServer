@@ -17,7 +17,7 @@ namespace DOL.GS.Commands
 		"/lswhy - your target, or the last gamebot that spoke near you or to you",
 		"/lswhy <name> - that gamebot's last chat decisions",
 		"/lswhy last [count] - the last chat decisions in your realm, the quiet ones too",
-		"/lswhy me - why bots answered your own lines, or didn't",
+		"/lswhy me - why gamebots answered your own lines, or didn't",
 		"/lswhy held [count] - the last replies the reply budget held back in your realm",
 		"/lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now",
 		"/lswhy duty [name] - what has that gamebot's time (your target without a name): its duty lease and the last claims on it",
@@ -59,7 +59,7 @@ namespace DOL.GS.Commands
 			// 1.2: your own lines, with each answer's or silence's reason code.
 			if (sub == "me")
 			{
-				Show(client, "Why bots answered your lines, or didn't (newest first):", AutonomousChatWhy.ForPlayer(player.Name, 8), now);
+				Show(client, "Why gamebots answered your lines, or didn't (newest first):", AutonomousChatWhy.ForPlayer(player.Name, 8), now);
 				return;
 			}
 			if (sub == "held")
@@ -108,9 +108,10 @@ namespace DOL.GS.Commands
 				bot = player.TargetObject as GameBot;
 			else
 				AutonomousBotRegistry.TryGetByName(name, out bot);
-			if (bot is { IsAutonomousWorldBot: false })
+			// A hired companion is an autonomous row too, but its time is its player's (chat audit TEXT-005).
+			if (bot is { IsAutonomousWorldBot: false } or { IsHiredCompanion: true })
 			{
-				DisplayMessage(client, $"{bot.Name} is a companion: its time is its owner's, it holds no duty lease.");
+				DisplayMessage(client, $"{bot.Name} is a {(bot.IsHiredCompanion ? "hired companion" : "helper")}: their time is their player's, they hold no duty lease.");
 				return;
 			}
 			if (bot == null && name == null)

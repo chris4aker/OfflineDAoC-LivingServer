@@ -16,13 +16,21 @@ namespace DOL.GS.Tests
         [Test]
         public void EachPartSaysWhatIsNotBuiltYet()
         {
-            Assert.That(CraftEconomyTestCommandHandler.CraftLines(), Has.Some.Contains("Recipe catalog: not built yet (WP1"));
-            Assert.That(CraftEconomyTestCommandHandler.CraftLines(), Has.Some.Contains("Crafter roster: not built yet (WP4"));
-            Assert.That(CraftEconomyTestCommandHandler.WtbLines()[0], Does.Contain("not built yet (WP6"));
-            Assert.That(CraftEconomyTestCommandHandler.CommissionLines(), Has.Some.Contains("not built yet (WP5)"));
-            Assert.That(CraftEconomyTestCommandHandler.LedgerLines([], null)[0], Does.Contain("not built yet (WP2"));
+            // Chat audit TEXT-042: every package is built now; an empty part is one not registered on this server.
+            const string NotRegistered = "not registered on this server";
+            Assert.That(CraftEconomyTestCommandHandler.CraftLines(), Has.Some.Contains("Recipe catalog: " + NotRegistered));
+            Assert.That(CraftEconomyTestCommandHandler.CraftLines(), Has.Some.Contains("Crafter roster: " + NotRegistered));
+            Assert.That(CraftEconomyTestCommandHandler.WtbLines()[0], Does.Contain(NotRegistered));
+            Assert.That(CraftEconomyTestCommandHandler.CommissionLines(), Has.Some.Contains(NotRegistered));
+            Assert.That(CraftEconomyTestCommandHandler.LedgerLines([], null)[0], Does.Contain(NotRegistered));
             Assert.That(CraftEconomyTestCommandHandler.CrafterLines("Bob", eRealm.Albion, 30, BotPersonalityType.Crafter, "", 12_345, null, false),
-                Has.Some.Contains("not built yet (WP4)"));
+                Has.Some.Contains(NotRegistered));
+            string[] every = CraftEconomyTestCommandHandler.CraftLines().Concat(CraftEconomyTestCommandHandler.WtbLines())
+                .Concat(CraftEconomyTestCommandHandler.CommissionLines()).Concat(CraftEconomyTestCommandHandler.LedgerLines([], null))
+                .Concat(CraftEconomyTestCommandHandler.CrafterLines("Bob", eRealm.Albion, 30, BotPersonalityType.Crafter, "", 12_345, null, false))
+                .ToArray();
+            Assert.That(every.Where(line => line.Contains("not built yet") || System.Text.RegularExpressions.Regex.IsMatch(line, @"\bWP\d")),
+                Is.Empty, "no work-package notes in what a GM reads");
         }
 
         [Test]
@@ -60,7 +68,7 @@ namespace DOL.GS.Tests
                 DPS_AF = 60, MaxCondition = 50_000, Condition = 50_000, Price = 10_000, IsDropable = true, IsTradable = true, PackSize = 1 };
             DbInventoryItem item = GameInventoryItem.Create(template);
             string[] lines = CraftEconomyTestCommandHandler.IndexLines(item, eRealm.Midgard, PriceIndexes.Current);
-            Assert.That(lines[0], Does.Contain("test helm").And.Contain("today's numbers").And.Contain(MarketBand.Of(eRealm.Midgard, item).Key));
+            Assert.That(lines[0], Does.Contain("test helm").And.Contain("the merchant appraisal and the listing valuation").And.Contain(MarketBand.Of(eRealm.Midgard, item).Key));
             Assert.That(lines[1], Does.Contain("floor " + CraftEconomyTestCommandHandler.Coin(AutonomousBotEconomy.CalculateStandardVendorSaleCopper(item))));
             Assert.That(CraftEconomyTestCommandHandler.IndexLines(null, eRealm.Midgard, null)[0], Does.StartWith("Put an item"));
         }

@@ -34,8 +34,18 @@ def code_defaults() -> dict:
             continue
         for key, default in ATTRIBUTE.findall(text):
             default = default.strip()
-            out[key] = {"true": "True", "false": "False"}.get(default, default.strip('"'))
+            default = {"true": "True", "false": "False"}.get(default, default.strip('"'))
+            # A double is stored as the server writes it (double.ToString: 2.0 -> "2", 0.70 -> "0.7").
+            if re.fullmatch(r"-?\d+\.\d+", default):
+                default = "%.15g" % float(default)
+            out[key] = default
     return out
+
+
+def launcher_tab_keys() -> list:
+    """The settings the launcher's Living Server tab writes (SocialExpansionSettings.Settings)."""
+    text = (REPO / "source/tools/OfflineDaoc.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
+    return re.findall(r'\(\s*"([a-z0-9_]+)"\s*,\s*"[a-z]+"\s*,', text)
 
 
 def upgrade_changes(since: str) -> dict:
@@ -56,6 +66,16 @@ class ReleaseServerSettings(unittest.TestCase):
         for key, value in SETTINGS_FILE["Settings"].items():
             self.assertIn(key, defaults, key)
             self.assertEqual(defaults[key], value, key)
+
+    def test_every_setting_the_launcher_tab_writes_ships_at_its_release_value(self):
+        """Chat audit DESIGN-028: a row the developer's launcher saved (bot_voices_chat_rate 1 or 2.5 in the owner's play)
+        shipped as it was, because only keys listed here are overwritten. Every key of the Living Server tab is listed."""
+        keys = launcher_tab_keys()
+        self.assertGreater(len(keys), 50, "the parser found the tab's settings")
+        missing = [key for key in keys if key not in SETTINGS_FILE["Settings"]]
+        self.assertEqual(missing, [], "launcher settings a release world would ship at the developer's value")
+        self.assertEqual(SETTINGS_FILE["Settings"]["bot_voices_chat_rate"], "2")
+        self.assertEqual(SETTINGS_FILE["Settings"]["bot_crafter_chat_rate"], "1")
 
     def test_the_features_ship_on_and_each_switch_kept_off_says_why(self):
         settings = SETTINGS_FILE["Settings"]

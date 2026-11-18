@@ -50,7 +50,12 @@ needs no new saved data.
 | Daredevil | 20% | dungeons, the harder cons of its legal range |
 | Explorer | 16% | new zones, prefers solo |
 | Crafter | 12% | long town breaks, avoids RvR, easy camps |
-| NoLifer | 4% | barely stops, wants groups, dungeons |
+| No Lifer | 4% | barely stops, wants groups, dungeons |
+
+These are the shares of bots created before Crafting 2.0's stored types. With `bot_crafters` on (the default), a bot
+created later is typed from a table with the Crafter share set by `bot_crafter_share_percent` (7 by default) and the
+rest spread in proportion: Leveler 30%, Socialite 21%, Daredevil 21%, Explorer 17%, Crafter 7%, No Lifer 4%. A release
+world ships without bots, so on a fresh install every bot is typed that way.
 
 Each bot also has five traits from 0 to 9 (curiosity, risk, sociability, patience, chattiness),
 drawn within its type's range, so two Daredevils still differ.
@@ -64,12 +69,12 @@ never bypassed.
 | Choice | Today | With personalities |
 |---|---|---|
 | Town break at a task boundary | 15% for every bot | about 4–37.5% by type, scaled by sociability (the realm average is about 16–17%) |
-| Town break length | 15–30 minutes | ×0.7 (Leveler, NoLifer) to ×1.5 (Socialite), at least 5 minutes |
+| Town break length | 15–30 minutes | ×0.7 (Leveler, No Lifer) to ×1.5 (Socialite), at least 5 minutes |
 | Goal (solo, group, RvR...) | the allocator fills the mix's slots with bots in random order | the mix still decides **how many** bots get each goal; personality decides **who** (below) |
 | Dungeon or outdoors | the configured dungeon preference | 60% (Crafter) to 170% (Daredevil) of it; a group uses its leader's |
 | Which outdoor camp | weighted by live spawns | also weighted by taste: Daredevils like yellow and orange cons, Explorers like zones they haven't visited in 6 hours, Levelers like full camps. Every legal camp keeps at least 10% weight |
 | How often it chats | the normal rate | ×0.25 to ×1.56 by chattiness (the realm average stays about the same) |
-| How fast it answers a player's attack (`bot_incoming_fire_reaction`) | a 0.3–2.5 s reaction delay by kind of hit and class | ×1.3 (risk 0) to ×0.75 (risk 9) of that delay, so Daredevils and No-lifers turn first and Crafters last |
+| How fast it answers a player's attack (`bot_incoming_fire_reaction`) | a 0.3–2.5 s reaction delay by kind of hit and class | ×1.3 (risk 0) to ×0.75 (risk 9) of that delay, so Daredevils and No Lifers turn first and Crafters last |
 
 Zone memory is kept in memory only (32 zones per bot, forgotten when the server restarts).
 
@@ -92,7 +97,7 @@ In a test of 1,000 bots with a 40% solo, 40% group and 20% RvR mix:
 | Daredevil | 21% | 28% | 52% |
 | Explorer | 61% | 21% | 19% |
 | Crafter | 70% | 25% | 5% |
-| No-lifer | 3% | 47% | 50% |
+| No Lifer | 3% | 47% | 50% |
 
 Personality doesn't choose goals in two cases:
 - A bot given a new goal between passes (for example when its group breaks up) uses the older re-draw rule, and
@@ -153,7 +158,7 @@ Status: **tests only** (`UT_NoLiferBuffBots`). Nothing about buffbots has been s
 ## 3. Voices
 
 When voices are on, a bot's chat comes from the corpus in
-`source/server/GameServer/bots/autonomous/data/chat/` (979 lines and 296 scenes, written for
+`source/server/GameServer/bots/autonomous/data/chat/` (about 35,000 lines and 450 scenes, written for
 2002–2003; see [bot-voices/DESIGN.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/bot-voices/DESIGN.md)). The corpus is built into
 `GameServer.dll`. Nothing is generated freely.
 
@@ -164,10 +169,10 @@ When voices are on, a bot's chat comes from the corpus in
 - lines written for a personality type are three times as likely for that type and never used by
   other types
 - replies to you match the intent the chat model reads from your message
-- no line is repeated in a realm within 6 hours
+- no line is repeated in a realm within three days (six hours once a kind of line runs short)
 
-**Writing styles** (fixed from the bot's id): plain 35%, terse 25%, chatty 20%, proper 15%,
-typo-prone 5%.
+**Writing styles** (fixed from the bot's id): plain 46%, terse 25%, chatty 20%, typo-prone 5%,
+proper 4%.
 
 **Where voices are heard:**
 - ambient chat that a bot starts, in /say or /faction
@@ -175,7 +180,7 @@ typo-prone 5%.
   answers)
 - "ding" (35% chance) and death (25% chance) lines in /say, only when you are nearby
 
-When no corpus line fits, the bot uses its old line.
+When no corpus line fits, the bot stays quiet.
 
 **Lines that name you,** a place you met or your class (`{player}`, `{place}`, `{player_class}`) need
 bot memory of the player. They're used by server life's "Bots remember you" part (greetings,
@@ -215,7 +220,7 @@ While a scene runs, bots don't start other /faction chatter in that realm.
   7, patience 5, chattiness 9); writes chatty".
   - A Python copy of `AutonomousBotPersonality.For` gives exactly that for id 6.
   - Over the 50-bot roster it gives every type: Leveler 18, Daredevil 9, Explorer 9,
-    Socialite 7, Crafter 6, NoLifer 1. The variety comes from that calculation; only one bot
+    Socialite 7, Crafter 6, No Lifer 1. The variety comes from that calculation; only one bot
     was read in game.
 - **Debate:** `BOT_DEBATE_START scene=camp_etiquette speakers=3` 5½ minutes after start. It
   showed in `/faction` ("someone just walked into our camp and started pulling haha", "first

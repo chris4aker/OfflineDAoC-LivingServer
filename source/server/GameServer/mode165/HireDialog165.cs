@@ -28,6 +28,8 @@ namespace DOL.GS
             ["next class"] = "class+", ["previous class"] = "class-",
             ["other sex"] = "gender",
             ["next look"] = "look+", ["previous look"] = "look-", ["random look"] = "look",
+            ["next hair color"] = "hair+", ["previous hair color"] = "hair-",
+            // Older chat links (UK spelling, before the 1.2 chat audit) still work.
             ["next hair colour"] = "hair+", ["previous hair colour"] = "hair-",
             ["taller"] = "height+", ["shorter"] = "height-",
             ["new name"] = "name",

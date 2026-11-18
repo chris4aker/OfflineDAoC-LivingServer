@@ -177,6 +177,9 @@ namespace DOL.GS
         public static IEnumerable<GameBot> LiveFor(GamePlayer player) =>
             RosterOf(player).Select(h => LiveBot(h.BotId)).Where(bot => bot != null).ToArray();
 
+        /// <summary>Every hired companion in the world now (the chat transcript's kind= and cls= for a companion's line).</summary>
+        public static IEnumerable<GameBot> LiveBots() => Live.Values.Where(bot => bot?.ObjectState == GameObject.eObjectState.Active);
+
         public static GameBot LiveBot(long botId) =>
             Live.TryGetValue(botId, out GameBot bot) && bot.ObjectState == GameObject.eObjectState.Active ? bot : null;
 
@@ -270,9 +273,9 @@ namespace DOL.GS
             // Bots never play the custom class (owner 2026-11-17): a companion hired as a Sluaghbinder before 1.2 stays in
             // the roster with its items, but never comes into the world.
             if (!OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(record.ClassId))
-                return $"{record.Name} stays at the inn: {OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage}";
+                return $"{record.Name} stays behind: {OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage}";
             if (!record.IsAlive)
-                return $"{record.Name} is dead. Any healer of your realm brings them back, free.";
+                return $"{record.Name} is dead. Any healer of your realm brings them back, free (/hire revive {hired.Row + 1} beside one).";
             // GitHub #49: an earlier copy of this companion that is no longer in the world (a move that never finished)
             // may still sit in the group; the new one would then show as a second row of the same companion.
             RetireStaleCopies(player, hired.BotId);
@@ -402,7 +405,7 @@ namespace DOL.GS
                 bot.Group?.RemoveMember(bot);
                 if (bot.PersistentRecord is { } record)
                 {
-                    record.Activity = keepWithOwner ? $"Resting with {hired.OwnerName} (offline)" : "Waiting for its player (dismissed)";
+                    record.Activity = keepWithOwner ? $"Resting with {hired.OwnerName} (offline)" : "Waiting for their player (dismissed)";
                     record.Dirty = true;
                 }
                 bot.RemoveFromWorld();   // saves the record and inventory
@@ -633,7 +636,7 @@ namespace DOL.GS
                 record.Dirty = true;
             }
             Park(hired, keepWithOwner: false);
-            owner?.Out.SendMessage($"{bot.Name}'s body has faded. Any healer of your realm brings them back, free (/hire beside the healer).",
+            owner?.Out.SendMessage($"{bot.Name}'s body has faded. Any healer of your realm brings them back, free (/hire revive {hired.Row + 1} beside one).",
                 eChatType.CT_Important, eChatLoc.CL_SystemWindow);
             if (owner != null)
                 Hire165.Refresh(owner);

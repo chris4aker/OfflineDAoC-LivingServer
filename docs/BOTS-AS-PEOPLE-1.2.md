@@ -91,7 +91,7 @@ The first five are RVR-FIELD-1.2's, applied to people instead of groups.
 | Pulls | The chance a pull takes a mob with a neighbour inside its aggro range instead of the cleanest one | 10% of pulls | 5% | 1.5% |
 | Standing in fire | The delay before stepping out of a ground or point-blank area effect it is taking damage from (RvR field, and raids only with WP2R) | 2-5 s | 1-3 s | 0.5-1.5 s |
 | Buffs | The share of buff expiries not renewed at once, and for how long | 25%, 20-90 s | 12%, 10-45 s | 4%, 5-20 s |
-| Power use | The chance a caster picks its most expensive useful spell instead of the efficient one, and the power floor it rests at | 30%, rests at 15% | 15%, 25% | 5%, 35% |
+| Power use | The chance a caster picks its most expensive useful spell instead of the efficient one, and the power floor it rests at | 30%, rests at 25% | 15%, 35% | 5%, 45% |
 
   All the values are design values to tune in tests, except the tier shares (RVR-FIELD-1.2, owner-approved
   2026-11-16).
@@ -276,7 +276,7 @@ target, which is how a strafe looks on screen. No navigation mesh changes.
   existing chat budgets and claim only what the bot's real numbers say.
 - **The moment.** Reaching it raises the existing grats chain, and from 1 to 3 realm-mates react in /faction. Server
   firsts stay as they are. A bot with a reached arc may mention it later ("since i dinged 50").
-- **The Herald.** A new section, "Milestones of the Realm", lists the last 40 reached arcs: name, class, realm, the arc
+- **The Herald.** A new section, "Milestones of the Realms", lists the last 40 reached arcs: name, class, realm, the arc
   and when. Enemy names are shown as in Server Firsts.
 - **A small push.** A bot near the end of an arc leans its next goal toward it: within 2 levels of 50 it takes fewer town
   breaks; chasing realm rank 5 it leans to RvR. The tilt goes through `AutonomousBotPersonality.PlanGoals`, so the
