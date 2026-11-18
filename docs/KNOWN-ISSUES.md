@@ -181,7 +181,8 @@ meetup fix drop two no-shows (in the server log).
     `CHAT_PROMISE` lines in the server log show each promise made, kept or broken).
   - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
     levelled, and other replies guess from the words alone.
-  - Chat volume: see "/faction can get too busy" at the top.
+  - Chat volume: about 5 to 7 /faction lines a minute on a full realm, by design; see "/faction is busy by design" in
+    [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md).
   - Chat has been tested one line at a time, not as conversations over several turns.
 - **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
   launcher gets the Living Server tab and its gate fixes too.

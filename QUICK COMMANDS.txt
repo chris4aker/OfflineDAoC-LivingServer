@@ -32,10 +32,10 @@ On the launcher, click + Lv.1, + Lv.20 or + Lv.50 under a faction
   Jumps to your realm's Shrouded Isles stable routes.
 
 /grind
-  Starts automated grinding with a companion bot group, including for AFK use.
+  Starts automated grinding with a helper group, including for AFK use.
 
 /pull
-  Orders your companion group and pets to engage your selected enemy. When possible,
+  Orders your helper group and pets to engage your selected enemy. When possible,
   a tank makes first contact before the rest of the group joins the fight.
 
 /train <line> <level>
@@ -43,7 +43,7 @@ On the launcher, click + Lv.1, + Lv.20 or + Lv.50 under a faction
   points. Select a valid trainer for your class first.
 
 /spawn
-  Opens a menu of valid companion bots to summon.
+  Opens a menu of valid helpers to summon.
 
 /spawn X
   X = a class name, if you prefer not to use the menu or want a macro. The build
@@ -52,7 +52,7 @@ On the launcher, click + Lv.1, + Lv.20 or + Lv.50 under a faction
 /spawn specs
   Opens a menu of every class of your realm with its builds, for example
   Healer (Mending), Healer (Augmentation), Healer (Pacification). Click one to add
-  that companion. Each build is named after the spec line it trains highest.
+  that helper. Each build is named after the spec line it trains highest.
 
 /spawn X Y
   X = a class name, Y = one of its specs as /spawn specs shows it, written in full.
@@ -61,17 +61,17 @@ On the launcher, click + Lv.1, + Lv.20 or + Lv.50 under a faction
 
 /raid 40
 /raid 80
-  Enables a 40- or 80-member companion raid. Use BEFORE /spawn.
+  Enables a 40- or 80-member helper raid. Use BEFORE /spawn.
   Requires level 50. The total includes your own character.
 
 /aggressive
-  Companions automatically attack what you attack and react defensively.
+  Helpers and companions automatically attack what you attack and react defensively.
 
 /defensive
-  Companions engage nearby threats while staying near you, letting you pull mobs
+  Helpers and companions engage nearby threats while staying near you, letting you pull mobs
   back to the group. Useful for harder content.
 
-These controls apply to your companions, not autonomous gamebots.
+These controls apply to your /spawn helpers and hired companions, not gamebots.
 /spawn 40 and /spawn 80 are not raid-size commands; use /raid 40 or /raid 80.
 See docs/PLAY.md for setup and docs/LLM-QUICKSTART.md for modifying your own version.
 ALL SERVER COMMANDS.txt is the exhaustive advanced reference, not this quick guide.

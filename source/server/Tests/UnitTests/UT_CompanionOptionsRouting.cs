@@ -25,7 +25,7 @@ namespace DOL.UnitTests
                 CompanionOptions165.KindHealerRole, CompanionOptions165.KindShamanRole, CompanionOptions165.KindFriarRole,
                 CompanionOptions165.KindLifeTransfer, CompanionOptions165.KindAmnesia, CompanionOptions165.KindSavePower,
                 CompanionOptions165.KindSavePowerCaster, CompanionOptions165.KindAttackSpells, CompanionOptions165.KindStance,
-                CompanionOptions165.KindCrowdControl,
+                CompanionOptions165.KindCrowdControl, CompanionOptions165.KindSpeech,
             ];
             for (byte kind = 5; kind <= 60; kind++)
                 Assert.That(CompanionOptions165.Option(kind) != null, Is.EqualTo(System.Array.IndexOf(offered, kind) >= 0), $"kind {kind}");

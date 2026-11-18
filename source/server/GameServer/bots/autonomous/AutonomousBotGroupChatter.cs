@@ -329,7 +329,8 @@ public static class AutonomousBotGroupChatter
     {
         // 1.1.3, after RC6: the time-of-day pass every bot line takes (AutonomousBotVoiceCorpus.ForNow).
         text = AutonomousBotVoiceCorpus.ForNow(text);
-        if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group))
+        // A formal companion (its Speech option) says only its own companion lines (CompanionChat165): one voice.
+        if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group) && !CompanionChat165.IsFormal(bot))
         {
             bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
             BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);

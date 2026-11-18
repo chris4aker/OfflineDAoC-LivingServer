@@ -64,7 +64,7 @@ namespace DOL.GS.Commands
             _owner = owner;
             _specs = specs;
             _previousTarget = owner.TargetObject;
-            Name = "Companion Class Menu";
+            Name = "Helper Class Menu";
             Realm = owner.Realm;
             Level = 1;
             Model = InvisibleModel;
@@ -83,7 +83,7 @@ namespace DOL.GS.Commands
                 .Select(entry => $"[{entry.CharacterClass}]")
                 .ToArray();
             string links = string.Join('\n', choices.Chunk(4).Select(chunk => string.Join("   ", chunk)));
-            return $"Choose a {GlobalConstants.RealmToName(realm)} companion to add to your group:\n\n{links}\n\nClick one class name.";
+            return $"Choose a {GlobalConstants.RealmToName(realm)} helper to add to your group:\n\n{links}\n\nClick one class name.";
         }
 
         /// <summary>/spawn specs: every class with its builds on one line, named after the spec line each trains highest.</summary>
@@ -96,7 +96,7 @@ namespace DOL.GS.Commands
                     ? $"[{entry.CharacterClass}]"
                     : string.Join("   ", options.Select(option => $"[{entry.CharacterClass} ({option.Label})]"));
             });
-            return $"Choose a {GlobalConstants.RealmToName(realm)} companion and its build:\n\n{string.Join('\n', lines)}\n\n" +
+            return $"Choose a {GlobalConstants.RealmToName(realm)} helper and their build:\n\n{string.Join('\n', lines)}\n\n" +
                    "Click one. In a macro: /spawn <class> <spec>, for example /spawn healer augmentation.";
         }
 
@@ -190,11 +190,11 @@ namespace DOL.GS.Commands
             DisplayMessage(client, $"{GlobalConstants.RealmToName(client.Player.Realm)} Classic + SI classes:");
             foreach (string line in entries.Chunk(4).Select(chunk => string.Join("  |  ", chunk)))
                 DisplayMessage(client, line);
-            DisplayMessage(client, "Use /spawn <class name> to create a temporary same-level party helper.");
+            DisplayMessage(client, "Use /spawn <class name> to create a temporary same-level helper.");
         }
     }
 
-    [CmdAttribute("&spawn", ePrivLevel.Player, "Opens the companion class menu or creates a temporary helper",
+    [CmdAttribute("&spawn", ePrivLevel.Player, "Opens the helper class menu or creates a temporary helper",
         "/spawn [class name] [spec]", "/spawn specs")]
     public sealed class SpawnTemporaryGroupBotCommandHandler : AbstractCommandHandler, ICommandHandler
     {
@@ -210,7 +210,7 @@ namespace DOL.GS.Commands
                 }
 
                 if (!TemporaryGroupSpawnMenu.Open(player))
-                    DisplayMessage(client, "The companion class menu could not open here. Use /spawn <class name> instead.");
+                    DisplayMessage(client, "The helper class menu could not open here. Use /spawn <class name> instead.");
                 return;
             }
 
@@ -223,7 +223,7 @@ namespace DOL.GS.Commands
                     return;
                 }
                 if (!TemporaryGroupSpawnMenu.Open(player, specs: true))
-                    DisplayMessage(client, "The companion menu could not open here. Use /spawn <class name> <spec> instead.");
+                    DisplayMessage(client, "The helper menu could not open here. Use /spawn <class name> <spec> instead.");
                 return;
             }
 
@@ -273,7 +273,7 @@ namespace DOL.GS.Commands
                 return true;
             string known = TemporaryGroupSpecCatalog.Describe(characterClass);
             problem = known.Length == 0
-                ? $"The {characterClass} companion has a single build. Use /spawn {characterClass.ToString().ToLowerInvariant()}."
+                ? $"The {characterClass} helper has a single build. Use /spawn {characterClass.ToString().ToLowerInvariant()}."
                 : $"'{specText}' is not a {characterClass} build. {characterClass} specs: {known}.";
             return false;
         }
@@ -377,7 +377,7 @@ namespace DOL.GS.Commands
         }
     }
 
-    [CmdAttribute("&pull", ePrivLevel.Player, "Orders party bots and their pets to engage your target", "/pull")]
+    [CmdAttribute("&pull", ePrivLevel.Player, "Orders your group's bots and their pets to engage your target", "/pull")]
     public sealed class PullGroupCommandHandler : AbstractCommandHandler, ICommandHandler
     {
         public void OnCommand(GameClient client, string[] args)

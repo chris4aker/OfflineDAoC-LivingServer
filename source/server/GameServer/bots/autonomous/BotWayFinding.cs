@@ -686,7 +686,7 @@ public static class BotWayFinding
         string dest = AutonomousBotVoices.TravelingTo(target);
         return $"{target.Name}'s next trip to a place it does not know takes a wrong road (still never on a stable ride, in a group, " +
                $"a frontier, a dungeon or near a monster more than 2 levels above it; 3 minutes at most). " +
-               (dest == null ? "It is not travelling now." : $"It is travelling to {dest} ({KnowingName(KnowingOf(target, dest))}); " +
+               (dest == null ? "It is not traveling now." : $"It is traveling to {dest} ({KnowingName(KnowingOf(target, dest))}); " +
                    "an unknown trip that has not had its wrong road takes it within 15 s of walking.");
     }
 

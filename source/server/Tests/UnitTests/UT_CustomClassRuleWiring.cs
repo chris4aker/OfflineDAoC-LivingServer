@@ -172,7 +172,7 @@ namespace DOL.UnitTests
             Db.Record = new OfflineWorldBotRecord { BotId = botId, Name = "Innsluagh", ClassId = (int)eCharacterClass.Sluaghbinder,
                 Realm = (int)eRealm.Hibernia, Level = 30, IsAlive = true };
             string answer = HiredCompanions165.Summon(player, 1);
-            Assert.That(answer, Does.StartWith("Innsluagh stays at the inn").And.Contains(BotCustomClassRule.RefusedMessage));
+            Assert.That(answer, Does.StartWith("Innsluagh stays behind").And.Contains(BotCustomClassRule.RefusedMessage));
             Assert.That(HiredCompanions165.LiveBot(botId), Is.Null, "never comes into the world");
         }
 

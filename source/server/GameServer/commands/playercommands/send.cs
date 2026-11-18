@@ -53,6 +53,15 @@ namespace DOL.GS.Commands
                 return;
             }
 
+            // A tell to one's own hired companion (chat audit TEXT-009; owner 2026-11-18 09:14: the same chat framework as any
+            // bot): it answers as a gamebot answers a tell, or in its own formal lines when its Speech option is Formal.
+            if (targetPlayer == null && CompanionChat165.OwnCompanionNamed(client.Player, targetName) is GameBot companion)
+            {
+                ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, companion.Name);
+                CompanionChat165.OnPlayerTell(client.Player, companion, message);
+                return;
+            }
+
             if (targetPlayer == null)
             {
                 // Message: "{0} is not in the game, or is a member of another realm."

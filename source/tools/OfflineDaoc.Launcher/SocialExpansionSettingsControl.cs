@@ -51,6 +51,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _characters = Switch("Spammers and roleplayers");
     private readonly CheckBox _rumours = Switch("True rumours");
     private readonly CheckBox _holidays = Switch("Holiday chatter");
+    private readonly ComboBox _thanksgiving = Choice("Thanksgiving", "US (November)", "Canada (October)", "Off");
+    private readonly CheckBox _hiredCompanions = Switch("Hired companions");
     private readonly CheckBox _leeroy = Switch("Leeroy in raids");
     private readonly CheckBox _atmosphere = Switch("Atmosphere lines");
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
@@ -88,7 +90,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _eraBuilds = Switch("2003 builds");
     private readonly RuneButton _economy = Action("ECONOMY PAGE", DaocTheme.Midgard);
     private readonly XpRow _playerXp = new("YOUR CHARACTERS", SocialExpansionSettings.SuggestedPlayerXp, "3× · 5× · 12×");
-    private readonly XpRow _botXp = new("AUTONOMOUS BOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
+    private readonly XpRow _botXp = new("GAMEBOTS", SocialExpansionSettings.SuggestedBotXp, "1.5× · 2.5× · 6×");
     private readonly Label _status = new()
     {
         Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft,
@@ -141,14 +143,14 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(guilds, _playerGuildEconomy, null, "Gamebots you /ginvite pay your guild's dues from real loot and earn it merit from levels and realm ranks. Even with bot guilds off.");
 
         var voices = Card("PERSONALITIES AND VOICES", DaocTheme.Gold, 4);
-        Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No-lifer, tilting how each bot spends its time. Target a bot and type /personality.");
+        Add(voices, _personalities, null, "Leveler, Socialite, Daredevil, Explorer, Crafter or No Lifer, tilting how each bot spends its time. Target a bot and type /personality.");
         Add(voices, _voices, null, "Period chat lines from 2002–2003, chosen by realm, class, level and moment, each bot in its own writing style.");
         Dependent(_debates, Add(voices, _debates, null, "Spec arguments, relic alerts and long threads in /faction, every 30–45 minutes while you play. Needs bot voices."),
             v => v.Voices);
         Dependent(Caption("HOW MUCH THEY TALK"), Add(voices, null, WithUnit(_chatRate, "×"),
             "2 (the default) sounds like a busy server; 1 is calmer, 3 very busy; 0 only answers. Chat still follows the hour and the bots online. Needs bot voices."), v => v.Voices);
 
-        var living = Card("SERVER LIFE", DaocTheme.Gold, 19);
+        var living = Card("SERVER LIFE", DaocTheme.Gold, 20);
         // First in the card (1.1.3, owner's PC 2026-11-09: off, 2,673 bots were online at 05:20): who is online when.
         Captioned(Caption("BOT SCHEDULE", part: false), Add(living, null, _schedule,
             "Off: every bot online day and night. Real clock: your PC's hour and weekday, busiest 7–11 pm and weekends, a few hundred at dawn. Session: 1–4 hour sessions."));
@@ -159,7 +161,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _alarms, null, "A frontier bot that sees 3+ enemies calls size, classes and place in /faction (once per 2 minutes).");
         Add(living, _nemesis, null, "Bots remember who killed them, name the killer in /faction and gloat when they get revenge.");
         Add(living, _breaks, null, "Idle bots go brb for 5–25 minutes; a bot in your group rarely goes linkdead for a minute.");
-        Add(living, _body, null, "Idle bots look around, emote, shift their feet in town, wave when you walk up and cheer a ding. No jumping or sitting.");
+        Add(living, _body, null, "Idle bots look around, emote, shift their feet in town, wave when you walk up and cheer a ding. No jumping.");
         Add(living, _beggars, null, "A few Crafter bots beg in their capital and hoard coin. Ask anyone for gold and they follow you, insulting you, until you leave.");
         Add(living, _buffBots, null, "Some No Lifer bots run a level-50 buffbot (Cleric, Shaman, Druid) that follows them or parks at the nearest bind and keeps them buffed. Buffbots never group, fight or loot.");
         Func<SocialExpansionSettings, bool> buffBotsOn = v => v.LivingBuffBots;
@@ -172,6 +174,9 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _characters, null, "Gold spammers flood /faction until they're banned; a few bots roleplay in thee and thou and get mocked.");
         Add(living, _rumours, null, "Bots pass on true rumours: a rare named that just spawned, an enemy keep with its guards down.");
         Add(living, _holidays, null, "Around Halloween, Christmas, New Year and other holidays on your PC's calendar, bots talk about them and wish you well.");
+        Dependent(Caption("THANKSGIVING"), Add(living, null, _thanksgiving,
+            "Which Thanksgiving bots talk about: the US one (fourth Thursday of November), Canada's (second Monday of October) or none."),
+            v => v.LivingHolidays);
         Add(living, _leeroy, null, "One end-game raid in twenty has a bot who charges the final boss early, yelling his name. The raid follows him in.");
         Add(living, _atmosphere, null, "Short lines in the middle of the screen: entering a dungeon, a boss's lair, a boss's phase, a dragon waking, a realm's first kill. One every 30 s at most; realm news first.");
 
@@ -187,7 +192,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
         power.Grid.SetColumnSpan(powerNote, 3);
 
-        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 4);
+        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 5);
+        Add(groups, _hiredCompanions, null, "Hire up to seven companions of your own with /hire beside a healer of your realm. They level with you, keep their gear and talk like the other bots. Off: nobody can hire, and hired ones stay home.");
         Add(groups, _botGroupInvites, null, "A bot party leader of your level may send you a tell and the group invite box (at most every 45 minutes; /lfg asks for one). Say yes and just follow.");
         Captioned(Caption("YOUR LOOT SHARE", part: false), Add(groups, null, WithUnit(_lootWeight, "members"),
             "In any group with gamebots you count as this many members for coin and items, and upgrades for your class come to you first."));
@@ -238,7 +244,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         var economyNote = new Label
         {
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
-            Text = "Only autonomous gamebots craft and trade here; your /spawn companions never do. ALL OFF switches bot crafters and orders off.",
+            Text = "Only gamebots craft and trade here; your /spawn helpers and hired companions never do. ALL OFF switches bot crafters and orders off.",
         };
         economy.Grid.Controls.Add(economyNote, 0, economy.Grid.RowCount - 1);
         economy.Grid.SetColumnSpan(economyNote, 3);
@@ -317,7 +323,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
                      _botCrafters, _craftOrders, _ledger, _level50Kit, _eraClassShares, _eraBuilds, _buffBotConcRange,
                      _skillProfiles, _placeKnowledge, _movementHabits, _milestones,
                      _personalities, _voices, _debates,
-                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere })
+                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere, _hiredCompanions })
             box.CheckedChanged += (_, _) => Edited();
         _skillProfiles.CheckedChanged += (_, _) =>
         {
@@ -326,6 +332,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         };
         _schedule.SelectedIndexChanged += (_, _) => Edited();
         _joinMode.SelectedIndexChanged += (_, _) => Edited();
+        _thanksgiving.SelectedIndexChanged += (_, _) => Edited();
         _upkeep.SelectedIndexChanged += (_, _) => Edited();
         _craftPace.ValueChanged += (_, _) => Edited();
         _botCraftPace.SelectedIndexChanged += (_, _) => Edited();
@@ -407,6 +414,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingCharacters = _characters.Checked,
         LivingRumours = _rumours.Checked,
         LivingHolidays = _holidays.Checked,
+        Thanksgiving = SocialExpansionSettings.ThanksgivingModes[Math.Max(0, _thanksgiving.SelectedIndex)],
+        HiredCompanions = _hiredCompanions.Checked,
         LivingLeeroy = _leeroy.Checked,
         LivingAtmosphere = _atmosphere.Checked,
         PlayerXpByLevel = _playerXp.Value,
@@ -513,6 +522,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _characters.Checked = settings.LivingCharacters;
         _rumours.Checked = settings.LivingRumours;
         _holidays.Checked = settings.LivingHolidays;
+        _thanksgiving.SelectedIndex = Math.Max(0, Array.IndexOf(SocialExpansionSettings.ThanksgivingModes, settings.Thanksgiving));
+        _hiredCompanions.Checked = settings.HiredCompanions;
         _leeroy.Checked = settings.LivingLeeroy;
         _atmosphere.Checked = settings.LivingAtmosphere;
         _playerXp.Value = settings.PlayerXpByLevel;
@@ -654,6 +665,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
             s.ScheduleMode != "off", s.LivingBreaks, s.LivingBodyLanguage, s.LivingBeggars,
             s.LivingDeeds, s.LivingStorylines, s.LivingCharacters, s.LivingRumours, s.LivingHolidays, s.LivingLeeroy, s.LivingAtmosphere }.Count(x => x);
         if (living > 0) on.Add($"Server life ({living} of 17 parts)");
+        if (s.HiredCompanions) on.Add("hired companions");
         if (s.BotGroupInvites) on.Add("bot leaders' invites");
         if (s.BotRaidInvites) on.Add("raid leaders' invites");
         if (s.BotCrafters) on.Add(s.BotCraftOrders ? "bot crafters and craft orders" : "bot crafters");
@@ -733,7 +745,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Margin = new Padding(20, 6, 18, 0),
         // Living Server 1.2 (owner 2026-11-16): every feature here is on by default (before 1.2 they all started off).
         Text = "Bots that feel like 2003 players. Everything here is on by default; with ALL OFF the game plays exactly like the normal " +
-               "release. Your /spawn companions never change. Saved settings are used on the next server startup.",
+               "release. Your /spawn helpers never change. Saved settings are used on the next server startup.",
     };
 
     private static CheckBox Switch(string text, bool part = false) => new()

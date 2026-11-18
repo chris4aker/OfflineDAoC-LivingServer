@@ -25,24 +25,24 @@ modifier, create one bot. Start small and increase population for your PC's capa
 | `/stables classic` | Jump to your realm's Classic stable routes. |
 | `/stables si` | Jump to your realm's Shrouded Isles stable routes. |
 
-## Companion groups, grinding, and raids
+## Helper groups, grinding, and raids
 
 | Command | What it does |
 |---|---|
-| `/grind` | Start automated grinding with a companion-bot group, including for AFK use. |
-| `/pull` | Order your companion group and pets to engage your selected enemy. When possible, a tank makes first contact before the rest of the group joins the fight. |
+| `/grind` | Start automated grinding with a helper group, including for AFK use. |
+| `/pull` | Order your helper group and pets to engage your selected enemy. When possible, a tank makes first contact before the rest of the group joins the fight. |
 | `/train <line> <level>` | Train a specialization to the chosen level using your available specialization points. Select a valid trainer for your class first. |
-| `/spawn` | Open the menu of valid companion bots to summon. |
-| `/spawn X` | Summon a companion by class name instead of using the menu; useful for macros. Its build (spec) is random. |
+| `/spawn` | Open the menu of valid helpers to summon. |
+| `/spawn X` | Summon a helper by class name instead of using the menu; useful for macros. Its build (spec) is random. |
 | `/spawn specs` | Open a menu of every class of your realm with its builds, for example Healer (Mending), Healer (Augmentation), Healer (Pacification). Each build is named after the spec line it trains highest. |
 | `/spawn X Y` | Summon class X with spec Y, written in full as `/spawn specs` shows it, for example `/spawn healer augmentation`; useful for macros (`/macro aug /spawn healer augmentation`). |
-| `/raid 40` | Enable a 40-member companion raid. Use **before** `/spawn`. Requires level 50; the total includes you. |
-| `/raid 80` | Enable an 80-member companion raid. Use **before** `/spawn`. Requires level 50; the total includes you. |
-| `/aggressive` | Companions automatically engage what you attack, while retaining defensive reactions. |
-| `/defensive` | Companions stay near you and engage nearby threats, letting you pull mobs back to the group; useful for harder content. |
+| `/raid 40` | Enable a 40-member helper raid. Use **before** `/spawn`. Requires level 50; the total includes you. |
+| `/raid 80` | Enable an 80-member helper raid. Use **before** `/spawn`. Requires level 50; the total includes you. |
+| `/aggressive` | Helpers and companions automatically engage what you attack, while retaining defensive reactions. |
+| `/defensive` | Helpers and companions stay near you and engage nearby threats, letting you pull mobs back to the group; useful for harder content. |
 
 `/spawn 40` and `/spawn 80` are **not** the raid-size commands. Use `/raid` first.
-The aggressive/defensive commands control your companions, not autonomous gamebots.
+The aggressive/defensive commands control your /spawn helpers and hired companions, not gamebots.
 The `/raid` command does not implement Darkness Falls raid AI. In the v0.32/
 v0.32b Darkness Falls Beta, Legion, the hardest level-70+ encounters,
 unreachable flying targets, and unverified routes are excluded from ordinary

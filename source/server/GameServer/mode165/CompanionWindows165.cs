@@ -427,7 +427,7 @@ namespace DOL.GS
         {
             if (item.Object_Type == (int)eObjectType.Shield && bot.ActiveWeaponSlot != eActiveWeaponSlot.Standard)
                 player.Out.SendMessage(BotWeaponStats.CanUseMelee(bot, bot.Inventory.GetItem(eInventorySlot.RightHandWeapon))
-                    ? $"{bot.Name} wears {item.Name} but keeps fighting with its two-handed weapon, the one it is trained in more."
+                    ? $"{bot.Name} wears {item.Name} but keeps fighting with their two-handed weapon, the one they are trained in more."
                     : $"{bot.Name} wears {item.Name}, but needs a one-handed weapon to fight with a shield.",
                     eChatType.CT_System, eChatLoc.CL_SystemWindow);
         }

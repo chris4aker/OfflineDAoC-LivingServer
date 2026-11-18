@@ -131,7 +131,8 @@ public sealed class BattlegroundBotLevelsTests
         Assert.That(tip, Does.Contain("levels 20–24, the Thidranki battleground bracket"));
         Assert.That(tip, Does.Contain("Shift-click makes 10, Ctrl-click 100"));
         Assert.That(tip, Does.Contain("Battlegrounds %"));
-        Assert.That(tip, Does.Not.Contain("no armour"), "they arrive with starter gear (owner 2026-11-15)");
-        Assert.That(tip, Does.Contain("plain merchant armour and weapons for its level, free"));
+        Assert.That(tip, Does.Not.Contain("no armour").And.Not.Contain("no armor"), "they arrive with starter gear (owner 2026-11-15)");
+        // US spelling in game and launcher text (chat audit TEXT-033, "armour" -> "armor"); the clause itself is unchanged.
+        Assert.That(tip, Does.Contain("plain merchant armor and weapons for its level, free"));
     }
 }

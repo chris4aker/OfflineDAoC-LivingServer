@@ -184,6 +184,12 @@ A few friends can now join your bot world from their own PCs, with the original 
   already have get back the points a player of their level would have. Bots never play the Sluaghbinder, in either edition; a gamebot that
   already is one is kept with its items but no longer logs in. Switches: "2003 class mix" and "2003 builds" in the
   Living Server tab.
+- **Hired companions talk like the other bots (tests only).** One voice: a companion types like a 2003 player in its own
+  writing style, in its own lines ("lead the way", "oom, need to med", "k, quiet till u tell me to talk again") and in
+  everything a gamebot says with you: grats, rez asks and thanks, group talk and fight calls, tells (`/send` reaches it).
+  Its **Speech** option (AI Options) keeps True 1.65's formal companion instead ("Lead the way, Testrunner."), which then
+  says only its own lines. A companion can claim a server first like any character (it never outlevels you, so it can only
+  tie you). The **Hired companions** switch is in the Living Server tab now.
 - **Quieter /faction on a small server.** With 10 gamebots a realm, /faction ran about four times faster than its own
   budget. In the automated playtester's runs (10 gamebots a realm, two half-hour listens each, on a development machine) it went from 1.20 and 1.33
   lines a minute to 0.87 and 0.97. A full server is not quieter: its channels were rebalanced, not cut.
@@ -219,7 +225,7 @@ automatically only: none of it has been seen on a played world yet**. The four s
   trophy: an item they really won from a dragon's or an epic boss's raid loot (no epic armour, no artifacts). As they get
   close they may say so ("4 bubbles to 50", "over halfway to rr5") in your group, /say, their guild or /faction, never more
   than one such line a realm in /faction every 5 minutes (one a minute elsewhere). The realm cheers realm rank 5 and a trophy, the ding to 50
-  keeps its grats, and the Camelot Herald lists the last 40 under **Milestones of the Realm**. Near 50 a bot takes fewer
+  keeps its grats, and the Camelot Herald lists the last 40 under **Milestones of the Realms**. Near 50 a bot takes fewer
   town breaks; near realm rank 5 it leans to RvR, inside the realm's goal mix.
 
 ### Questing and battlegrounds
@@ -334,9 +340,12 @@ only".
   Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were beaten later.
 - **Play with friends is experimental.** It needs the original client, and it has been tried on a home network only.
 - **Some fights are harder than before**, and a raid of bots may lose them for a while (see above).
-- **/faction can get too busy.** On an evening with about 600 bots a realm, it ran well above its ceiling, up to 20
-  lines a minute, with bursts of 10 to 16 reactions. Lower **How much they talk** in the Living Server tab if it is too
-  much.
+- **/faction is busy by design: about 5 to 7 lines a minute on a full realm.** That is the pace the owner chose
+  (2026-11-18). On the owner's PC (build 5378dbe, about 930 Albion bots, 4.6 hours) /faction averaged 5.1 lines a minute;
+  the busiest minute had 13 against a ceiling of 17, and no line was said over the ceiling. Bursts are at most three
+  reactions. The budget's own target (8 new lines a minute at the default **How much they talk**, 2) is an upper aim the
+  realm stays under. Lower **How much they talk** in the Living Server tab if it is too much. (The earlier "up to 20 a
+  minute, bursts of 10 to 16" was the 1.1.3 build's result.)
 - **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, it stopped for
   up to 6.2 seconds.
 - **Some gamebots wait a long time at frontier teleporters.** In one night, 368 times a gamebot stood 15 minutes waiting

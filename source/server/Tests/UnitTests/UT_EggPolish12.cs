@@ -168,9 +168,10 @@ namespace DOL.GS.Tests
             for (int i = 0; i < 40; i++)
             {
                 string coliath = RealmEventBanter.RaidWipe("Coliath", "Coliath");
-                Assert.That(coliath, Does.Contain("Coliath").And.Not.Contain("dragon").And.Not.Contain("ring").And.Not.Contain("in Coliath"), coliath);
+                Assert.That(coliath, Does.Contain("Coliath").And.Not.Contain("dragon").And.Not.Contain("where the raid gathered").And.Not.Contain("in Coliath"), coliath);
                 string dragon = RealmEventBanter.RaidWipe("Golestandt", "Golestandt");
-                Assert.That(dragon, Does.Contain("ring").And.Not.Contain("in Golestandt"), dragon);
+                // Chat audit TEXT-039: "the staging ring" was internal; the realm reads "where the raid gathered".
+                Assert.That(dragon, Does.Contain("where the raid gathered").And.Not.Contain("ring").And.Not.Contain("in Golestandt"), dragon);
                 Assert.That(RealmEventBanter.RaidWipe("Galladoria", "Conservator"), Does.Contain("Conservator"));
             }
         }

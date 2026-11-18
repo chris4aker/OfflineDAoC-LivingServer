@@ -249,11 +249,17 @@ namespace DOL.UnitTests
             Assert.That(BotPeopleWhy.TryTopic("skill", out var skill) && skill == BotPeopleWhy.Topic.Skill, Is.True);
             Assert.That(BotPeopleWhy.TryTopic("WAY", out var way) && way == BotPeopleWhy.Topic.Way, Is.True);
             Assert.That(BotPeopleWhy.TryTopic("duty", out _), Is.False);
-            Assert.That(BotPeopleWhy.ScopeLine(BotPersonKey.Character(4), BotPeopleRefusal.None, BotPeopleRefusal.None, BotPeopleRule.Mistakes, true),
-                Is.EqualTo("Person c:4: records yes; mistakes now: yes (spared: a player is in its group)"));
-            Assert.That(BotPeopleWhy.ScopeLine(BotPersonKey.Character(4), BotPeopleRefusal.None, BotPeopleRefusal.RealmRaid, BotPeopleRule.WayFinding, false),
-                Is.EqualTo("Person c:4: records yes; way now: no (realm_raid)"));
-            Assert.That(BotPeopleWhy.Lines(BotPeopleWhy.Topic.Skill, null).Single(), Does.Contain("never touches it"));
+            // Chat audit TEXT-044: a player reads words, not the person key and refusal codes.
+            Assert.That(BotPeopleWhy.ScopeLine("Marelle", BotPeopleRefusal.None, BotPeopleRefusal.None, BotPeopleRule.Mistakes, true),
+                Is.EqualTo("Marelle: learns from what they do: yes; makes mistakes right now: yes (spared: a player is in their group)"));
+            Assert.That(BotPeopleWhy.ScopeLine("Marelle", BotPeopleRefusal.None, BotPeopleRefusal.RealmRaid, BotPeopleRule.WayFinding, false),
+                Is.EqualTo("Marelle: learns from what they do: yes; finds their own way right now: no (on a realm raid)"));
+            Assert.That(BotPeopleWhy.ScopeLine("Marelle", BotPeopleRefusal.PlayerGroup, BotPeopleRefusal.StableRide, BotPeopleRule.Mistakes, false),
+                Is.EqualTo("Marelle: learns from what they do: no (in a player's group); makes mistakes right now: no (on a stable ride)"));
+            foreach (BotPeopleRefusal refusal in System.Enum.GetValues<BotPeopleRefusal>())
+                Assert.That(BotPeopleWhy.Reason(refusal), Does.Not.Contain("_"), refusal.ToString());
+            Assert.That(BotPeopleWhy.Lines(BotPeopleWhy.Topic.Skill, null).Single(),
+                Is.EqualTo("That bot is a companion or helper: they have no skill profile or place knowledge."));
         }
     }
 }

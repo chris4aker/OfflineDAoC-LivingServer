@@ -263,7 +263,7 @@ namespace DOL.GS.CraftingEconomy
             if (!CanTradeWith(bot, player))
             {
                 why = bot.IsTemporaryGroupHelper ? $"{bot.Name} is your companion: give it gear with /bot." :
-                    bot.IsHiredCompanion ? $"{bot.Name} is a hired companion: hand it gear, or right-click it for its gear window." :
+                    bot.IsHiredCompanion ? $"{bot.Name} is a hired companion: hand them gear, or right-click them for their gear window." :
                     $"{bot.Name} does not trade.";
                 return null;
             }

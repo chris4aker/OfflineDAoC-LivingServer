@@ -1694,8 +1694,9 @@ namespace DOL.AI.Brain
             if (BotBody?.IsAutonomousWorldBot == true && BotBody.IsPlayerLedGroup)
                 AutonomousBotGroupCoordinator.Pulse(BotBody);
 
-            // A hired companion speaks as a companion while it follows its player (CompanionChat165, rate-limited inside),
-            // never in the world bots' talk; and it never sells or shops on its own: what it carries is its player's to give.
+            // A hired companion says its own lines while it follows its player (CompanionChat165, rate-limited inside; the
+            // gamebots' grats, group talk and calls reach it as they reach any gamebot), and starts no world talk of its own;
+            // it never sells or shops on its own: what it carries is its player's to give.
             if (BotBody?.IsHiredCompanion == true)
             {
                 if (BotBody.IsPlayerLedGroup)

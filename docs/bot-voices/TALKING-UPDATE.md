@@ -1,5 +1,11 @@
 # The talking update (Living Server Beta 1.1)
 
+> **Beta 1.1 as shipped.** This page describes the talking update as it was in Beta 1.1. Several numbers and rules here
+> have changed since: the chat rate defaults to 2 (not 1.0), how often bots talk is set by the chat budget
+> ([CHAT-BUDGETS.md](CHAT-BUDGETS.md); gaps are no longer held to 40 seconds), every Living Server part is on by
+> default since 1.2, and bot-led groups invite players (`bot_group_invite_player`). For the current rules read
+> [DESIGN.md](DESIGN.md), [CHAT-BUDGETS.md](CHAT-BUDGETS.md) and [../LIVING-SERVER.md](../LIVING-SERVER.md).
+
 Bot chat in Beta 1.0 had three problems. Bots said things that weren't true: a Hibernian in Ardee asked about an
 Albion dungeon, "heading into myrkwood" came from anywhere in Midgard, and Darkness Falls lines came from inside Tomb
 of Mithra. Every line also stood alone: a player who answered a bot's question got no reply, and a "why?" got nothing.

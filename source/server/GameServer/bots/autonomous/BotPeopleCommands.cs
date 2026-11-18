@@ -101,17 +101,17 @@ public static class BotPeopleWhy
         BotPersonKey person = BotPersonKey.Of(bot);
         if (person.IsNone)
         {
-            lines.Add($"{bot?.Name ?? "That bot"} is not an autonomous gamebot with a person: Bots as people never touches it.");
+            lines.Add($"{bot?.Name ?? "That bot"} is a companion or helper: they have no skill profile or place knowledge.");
             return lines;
         }
         BotPeopleRule rule = topic == Topic.Skill ? BotPeopleRule.Mistakes : BotPeopleRule.WayFinding;
-        lines.Add(ScopeLine(person, BotPeopleScope.Refusal(bot, BotPeopleRule.Record), BotPeopleScope.Refusal(bot, rule), rule,
+        lines.Add(ScopeLine(bot.Name, BotPeopleScope.Refusal(bot, BotPeopleRule.Record), BotPeopleScope.Refusal(bot, rule), rule,
             BotPeopleScope.FactsOf(bot).InPlayerGroup));
         if (!Providers.TryGetValue(topic, out Provider provider))
         {
             lines.Add(topic == Topic.Skill
-                ? "  Skill profiles are not built yet (Bots as people work package 1)."
-                : "  Place knowledge and way finding are not built yet (Bots as people work packages 3 and 4).");
+                ? "  No skill profile is loaded for them."
+                : "  No place knowledge is loaded for them.");
             return lines;
         }
         try
@@ -125,12 +125,43 @@ public static class BotPeopleWhy
         return lines;
     }
 
-    /// <summary>"Person c:12: records yes; mistakes now: no (realm_raid)". Pure.</summary>
-    public static string ScopeLine(BotPersonKey person, BotPeopleRefusal record, BotPeopleRefusal behaviour, BotPeopleRule rule,
+    /// <summary>
+    /// "Marelle: learns from what they do: yes; makes mistakes right now: no (on a realm raid)". Pure. Chat audit TEXT-044:
+    /// /lswhy is a player command, so the line reads as words, not the person key and the log's refusal codes.
+    /// </summary>
+    public static string ScopeLine(string name, BotPeopleRefusal record, BotPeopleRefusal behaviour, BotPeopleRule rule,
         bool inPlayerGroup) =>
-        $"Person {person}: records {(record == BotPeopleRefusal.None ? "yes" : "no (" + BotPeopleScope.RefusalName(record) + ")")}; " +
-        $"{BotPeopleScope.RuleName(rule)} now: " +
+        $"{name}: learns from what they do: {(record == BotPeopleRefusal.None ? "yes" : "no (" + Reason(record) + ")")}; " +
+        $"{RuleWords(rule)} right now: " +
         (behaviour == BotPeopleRefusal.None
-            ? "yes" + (rule == BotPeopleRule.Mistakes && inPlayerGroup ? " (spared: a player is in its group)" : "")
-            : "no (" + BotPeopleScope.RefusalName(behaviour) + ")");
+            ? "yes" + (rule == BotPeopleRule.Mistakes && inPlayerGroup ? " (spared: a player is in their group)" : "")
+            : "no (" + Reason(behaviour) + ")");
+
+    /// <summary>What a rule does, as a player reads it. Pure.</summary>
+    public static string RuleWords(BotPeopleRule rule) => rule switch
+    {
+        BotPeopleRule.Record => "learns from what they do",
+        BotPeopleRule.Mistakes => "makes mistakes",
+        BotPeopleRule.WayFinding => "finds their own way",
+        BotPeopleRule.Movement => "moves like a person",
+        _ => BotPeopleScope.RuleName(rule),
+    };
+
+    /// <summary>Why a rule is off for the bot, as a player reads it (the log keeps the snake-case code). Pure.</summary>
+    public static string Reason(BotPeopleRefusal refusal) => refusal switch
+    {
+        BotPeopleRefusal.NotAGamebot => "not a gamebot",
+        BotPeopleRefusal.InMemoryOnly => "not a saved gamebot",
+        BotPeopleRefusal.PlayerGroup => "in a player's group",
+        BotPeopleRefusal.RealmRaid => "on a realm raid",
+        BotPeopleRefusal.DungeonRaid => "on a dungeon raid",
+        BotPeopleRefusal.BattlegroundAssault => "on a battleground assault",
+        BotPeopleRefusal.RelicCarrier => "carrying a relic",
+        BotPeopleRefusal.SiegeOperator => "working a siege engine",
+        BotPeopleRefusal.AtObjective => "holding an objective",
+        BotPeopleRefusal.StableRide => "on a stable ride",
+        BotPeopleRefusal.OtherDuty => "on another duty",
+        BotPeopleRefusal.SwitchedOff => "switched off",
+        _ => BotPeopleScope.RefusalName(refusal).Replace('_', ' '),
+    };
 }

@@ -334,7 +334,7 @@ edition.** `ENABLE_SLUAGHBINDER` (`classes / enable_sluaghbinder`) stays the edi
   start one line per bot: `BOT_CUSTOM_CLASS_RETIRED bot="Name" id=123 class=Sluaghbinder level=50 realm=Hibernia: kept
   with its items, never logged in (bots never play the custom class)`, and the launcher's bot list shows it offline with
   the Activity "Not played: bots don't play the Sluaghbinder (kept, not deleted)". A companion hired as one stays in the
-  player's roster and stays at the inn when summoned; a saved `/bot` companion of the class is not loaded.
+  player's roster and stays behind when summoned; a saved `/bot` companion of the class is not loaded.
 - **Played check 4** becomes: a `+ Lv.50 ×100` Hibernia batch on a 0.37b and on a 0.37 world gives `Sluaghbinder=0` in
   the census, and a test world with Sluaghbinder gamebots logs one `BOT_CUSTOM_CLASS_RETIRED` line each.
 

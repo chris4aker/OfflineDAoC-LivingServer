@@ -52,6 +52,10 @@ public sealed record SocialExpansionSettings
     public bool LivingRumours { get; init; } = true;
     /// <summary>Holiday chatter and Leeroy in raids (Beta 1.1). On by default.</summary>
     public bool LivingHolidays { get; init; } = true;
+    /// <summary>Which Thanksgiving the holiday chatter marks: "us" (the default), "canada" or "off" (owner 2026-11-18).</summary>
+    public string Thanksgiving { get; init; } = "us";
+    /// <summary>Players may hire companions with /hire (hired_companions, from True 1.65). On by default.</summary>
+    public bool HiredCompanions { get; init; } = true;
     public bool LivingLeeroy { get; init; } = true;
     /// <summary>The lore's screen-centre atmosphere lines (Living Server 1.2, docs/LORE.md). On by default.</summary>
     public bool LivingAtmosphere { get; init; } = true;
@@ -154,6 +158,9 @@ public sealed record SocialExpansionSettings
 
     public static readonly string[] JoinModes = ["follow", "lead"];
 
+    /// <summary>The Thanksgiving choices the server knows (bot_living_holidays_thanksgiving).</summary>
+    public static readonly string[] ThanksgivingModes = ["us", "canada", "off"];
+
     public const int DefaultPlayerLootWeight = 2, MinPlayerLootWeight = 1, MaxPlayerLootWeight = 8;
 
     public const double DefaultManaRegenModifier = 1.5, MinManaRegenModifier = 0.25, MaxManaRegenModifier = 10;
@@ -179,8 +186,8 @@ public sealed record SocialExpansionSettings
         Personalities = true, Voices = true, Debates = true,
         LivingMemory = true, LivingGrats = true, LivingFirsts = true, LivingDeath = true, LivingAlarms = true, LivingNemesis = true,
         ScheduleMode = "clock", LivingBreaks = true, LivingBodyLanguage = true, LivingBeggars = true, LivingBuffBots = true, LivingDeeds = true,
-        LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, LivingLeeroy = true,
-        LivingAtmosphere = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
+        LivingStorylines = true, LivingCharacters = true, LivingRumours = true, LivingHolidays = true, Thanksgiving = "us", LivingLeeroy = true,
+        LivingAtmosphere = true, HiredCompanions = true, PlayerXpByLevel = SuggestedPlayerXp, BotXpByLevel = SuggestedBotXp,
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
@@ -194,24 +201,24 @@ public sealed record SocialExpansionSettings
         ("bot_guild_share", "guild", "Share (0 to 1) of eligible autonomous gamebots that bot guild formation places in guilds."),
         ("bot_guild_min_level", "guild", "Lowest level at which an autonomous gamebot is placed in a bot guild."),
         ("bot_guild_social", "guild", "When bot guilds are on: guild members greet, congratulate and chat in guild chat when a real member can hear, answer your /gu, and bot guild officers recruit in /faction."),
-        ("bot_guild_recruit_player", "guild", "When bot guild social life is on: bot guild officers may invite you to their guild with a yes/no dialog."),
-        ("bot_guild_claims_keeps", "guild", "When bot guilds are on: bot guilds claim keeps and towers their realm takes, and defend them first."),
-        ("bot_guild_economy", "guild", "When bot guilds are on: guilded gamebots pay dues from real loot, level-ups and realm ranks earn merit points, and leaders buy guild buffs."),
+        ("bot_guild_recruit_player", "guild", "When bot guild social life is on: bot guild officers may invite you to their guild with a yes/no dialog (when you ask for a guild, or now and then when you are nearby and unguilded)."),
+        ("bot_guild_claims_keeps", "guild", "When bot guilds are on: after a realm takes a keep, a bot guild with enough members inside claims it (claim_num; guilds_claim_limit), never while a real player of that realm is inside. Its members answer first when that keep is attacked."),
+        ("bot_guild_economy", "guild", "When bot guilds are on: guilded gamebots pay their guild's dues from the real coin they loot, their level-ups and realm ranks earn the guild merit points as a player's do, and bot guild leaders spend 1,000 merit points on a 24-hour guild buff."),
         ("bot_player_guild_economy", "guild", "Gamebots you invite into your guild pay its dues (the rate its leader set) from the real coin they loot, and their level-ups and realm ranks earn it merit points as a player's do. Guild realm points, keep claims and guild buffs still never count a bot. Works whether bot guilds are on or off."),
-        ("bot_guild_alliances", "guild", "When bot guilds are on: each realm's RvR and raiding bot guilds form one alliance."),
-        ("bot_personalities_enabled", "bots", "Autonomous gamebots get a personality and traits that tilt town breaks, goals, dungeons, camps and chattiness (see docs/BOT-PERSONALITIES.md)."),
-        ("bot_voices_enabled", "bots", "Autonomous gamebots say pre-written, period lines in their own writing style (docs/bot-voices/DESIGN.md)."),
-        ("bot_voices_debates", "bots", "When bot voices are on: bots of a realm play debates and long threads in /faction while you are online."),
+        ("bot_guild_alliances", "guild", "When bot guilds are on: each realm's RvR and raiding bot guilds form one alliance (up to four guilds); a player in one of them hears its alliance chat. Alliances with a player's guild are never touched."),
+        ("bot_personalities_enabled", "bots", "Autonomous gamebots get a personality (Leveler, Socialite, Daredevil, Explorer, Crafter, No Lifer) and traits, fixed from their id, that tilt town breaks, solo versus group goals, dungeon choice, camp choice and how often they talk (see docs/BOT-PERSONALITIES.md). Hard rules never change. False: no personalities."),
+        ("bot_voices_enabled", "bots", "Autonomous gamebots say pre-written, period lines (docs/bot-voices/DESIGN.md) chosen by personality, level, realm, class and situation, each in its own writing style, without repeating a line in a realm for three days (six hours once a kind of line runs short). False keeps the old lines."),
+        ("bot_voices_debates", "bots", "When bot voices are on: bots of a realm play the corpus's debates and long threads in /faction while you are online, one at a time, 30-45 minutes apart, never repeating a scene until all have played."),
         ("bot_voices_chat_rate", "bots", ChatRateDescription),
-        ("bot_living_memory", "bots", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. False keeps today's bots."),
+        ("bot_living_memory", "bots", "Server life: autonomous gamebots of your realm remember grouping with you, your rezzes and rude words; they greet you by name, thank you for an old rez, answer you by name, mention you in /faction now and then, and stay cool after insults. Chat only. False: bots do not remember you."),
         ("bot_living_grats", "bots", "Server life: when you or a bot gains a level, groupmates say grats in /group and bots nearby in /say, and a realm's bots cheer a new level 50 in /faction."),
         ("bot_living_firsts", "bots", "Server life: the first character on the server (you or a bot) to reach level 50, the first of each class to reach 50 and the first to each realm rank from 2 up are announced to everyone and recorded for the Camelot Herald."),
         ("bot_living_death", "bots", "Server life: a bot that dies near you asks you for a rez if your class can rez, waits longer for it and thanks you after; a bot healer that is not in your group may rez you (you still accept or decline); bots talk about corpse runs and resurrection sickness."),
         ("bot_living_alarms", "bots", "Server life: a bot in the frontier that sees 3 or more enemies calls it out in /faction (rough size, classes, place), at most one call per realm every 2 minutes."),
         ("bot_living_nemesis", "bots", "Server life: a bot killed by an enemy remembers its killer, names it (by race and class) in /faction after the second kill, and celebrates when it kills that enemy back. Kills are recorded for the Camelot Herald's Most Wanted."),
-        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default since Living Server 1.2) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
+        ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock (the default) = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
-        ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots cannot jump or sit (the game sends no such state for them)."),
+        ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits)."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
         ("bot_nolifer_buffbots", "bots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off."),
         ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
@@ -219,41 +226,43 @@ public sealed record SocialExpansionSettings
         ("bot_living_characters", "bots", "Server life: now and then a gold spammer floods /faction until it is banned, and a few bots roleplay in thee-and-thou speech while the realm mocks them."),
         ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
         ("bot_living_holidays", "bots", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes."),
+        ("bot_living_holidays_thanksgiving", "bots", "Server life: which Thanksgiving the holiday chatter marks: us (the fourth Thursday of November, the default), canada (the second Monday of October) or off."),
+        ("hired_companions", "bots", "Hired companions (from True 1.65): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
-        ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn companions out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
+        ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
         ("bot_led_group_join_mode", "bots", "Bot-led groups: when you say yes to a gamebot leader's invite. follow = the leader runs the group and you follow (/lead takes over at any time); lead = you become the leader at once and the bots follow you, as bots you /invite do (/lead bot hands it back)."),
         ("bot_raid_invite_player", "bots", "Raid leaders: when a dragon or epic dungeon raid forms in your realm and you are level 50, its raid leader (an officer of a raiding guild) may send you a tell and a box, once per raid. Yes puts you in a party that needs your class (one gamebot of your role steps out); you travel to the muster town yourself. A no is final for that raid. /invites off stops these too."),
-        ("crafting_era_start", "crafting", "Era start: a new character joins a crafting order at a Master (1.65) instead of starting with Basic Crafting. Existing crafting rows are untouched. Set in the launcher's Living Server tab."),
-        ("crafting_secondary_caps", "crafting", "Secondary crafting skills capped at 75% (the order's own secondary) and 40% (the others) of the primary, as a 2002 player reported. Set in the launcher's Living Server tab."),
-        ("crafting_skill_rate", "crafting", "Player crafting pace: skill points per gain (1 = classic). A gain still needs the normal chance, so a grey recipe gives nothing. Set in the launcher's Living Server tab."),
-        ("player_upkeep", "crafting", "Player repair upkeep: classic (smith's price and durability), light (half price, no durability loss) or free. Set in the launcher's Living Server tab."),
-        ("player_coin_by_level", "crafting", "A real player's monster coin follows the XP-by-level multiplier of their band (bots' coin unchanged). Set in the launcher's Living Server tab."),
-        ("crafting_classic_quality", "crafting", "Classic quality: 94-99% with a small masterpiece chance at every skill (off = the 1.87 rules, 96-99% and masterpieces only at 1000 or grey). Set in the launcher's Living Server tab."),
-        ("crafting_classic_losses", "crafting", "Classic losses: a failed craft costs its materials and a spellcraft explosion destroys the item. Set in the launcher's Living Server tab."),
-        ("bot_crafters", "bots", "Master switch for gamebot crafters: Crafter-type gamebots join an order, buy real materials, work at real stations and sell what they make. Off: no gamebot crafts. Set in the launcher's Living Server tab."),
-        ("bot_crafter_share_percent", "bots", "Percent of NEW gamebots that are Crafters (existing bots keep their stored type). Set in the launcher's Living Server tab."),
-        ("bot_crafting_pace", "bots", "Gamebot crafting pace: xp (points per gain follow the bot XP multiplier of the crafter's level band) or classic (one point). Needs bot_crafters. Set in the launcher's Living Server tab."),
-        ("bot_craft_orders", "bots", "Gamebots pay crafter gamebots of their realm to make an upgrade, with the coin held until delivery. Needs bot_crafters. Set in the launcher's Living Server tab."),
-        ("realm_commissions", "bots", "Realm quartermaster commissions to crafter gamebots: classic (30 an hour), doubled (60) or off. Needs bot_crafters. Set in the launcher's Living Server tab."),
-        ("bot_crafter_exchange_listings", "bots", "Realm Exchange posts a crafter gamebot may hold for its own work (other bots hold 3). Set in the launcher's Living Server tab."),
-        ("bot_crafter_chat_rate", "bots", "Crafter gamebots' trade and station chat, as a multiple of normal (0 = silent). Set in the launcher's Living Server tab."),
-        ("exchange_tax_percent", "bots", "Realm Exchange tax in percent of a sale, taken from the seller's proceeds (0 = none; 5 is the documented option). Only a trade pays it. Set in the launcher's Living Server tab."),
-        ("economy_ledger_enabled", "bots", "Hourly economy ledger: money supply, faucets and sinks per realm (ECON_SUPPLY, ECON_FLOWS). Logs and one table row an hour only; changes no amount. Set in the launcher's Living Server tab."),
-        ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world). Set in the launcher's Living Server tab."),
-        ("bot_era_builds", "bots", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep today's builds. Off: today's builds for new bots too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS."),
-        ("bot_era_class_shares", "bots", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class. Set in the launcher's Living Server tab."),
+        ("crafting_era_start", "crafting", "Era start: a new character joins a crafting order at a Master (1.65) instead of starting with Basic Crafting. Existing crafting rows are untouched."),
+        ("crafting_secondary_caps", "crafting", "Secondary crafting skills capped at 75% (the order's own secondary) and 40% (the others) of the primary, as a 2002 player reported."),
+        ("crafting_skill_rate", "crafting", "Player crafting pace: skill points per gain (1 = classic). A gain still needs the normal chance, so a grey recipe gives nothing."),
+        ("player_upkeep", "crafting", "Player repair upkeep: classic (smith's price and durability), light (half price, no durability loss) or free."),
+        ("player_coin_by_level", "crafting", "A real player's monster coin follows the XP-by-level multiplier of their band (bots' coin unchanged)."),
+        ("crafting_classic_quality", "crafting", "Classic quality: 94-99% with a small masterpiece chance at every skill (off = the 1.87 rules, 96-99% and masterpieces only at 1000 or grey)."),
+        ("crafting_classic_losses", "crafting", "Classic losses: a failed craft costs its materials and a spellcraft explosion destroys the item."),
+        ("bot_crafters", "bots", "Master switch for gamebot crafters: Crafter-type gamebots join an order, buy real materials, work at real stations and sell what they make. Off: no gamebot crafts."),
+        ("bot_crafter_share_percent", "bots", "Percent of NEW gamebots that are Crafters (existing bots keep their stored type)."),
+        ("bot_crafting_pace", "bots", "Gamebot crafting pace: xp (points per gain follow the bot XP multiplier of the crafter's level band) or classic (one point). Needs bot_crafters."),
+        ("bot_craft_orders", "bots", "Gamebots pay crafter gamebots of their realm to make an upgrade, with the coin held until delivery. Needs bot_crafters."),
+        ("realm_commissions", "bots", "Realm quartermaster commissions to crafter gamebots: classic (30 an hour), doubled (60) or off. Needs bot_crafters."),
+        ("bot_crafter_exchange_listings", "bots", "Realm Exchange posts a crafter gamebot may hold for its own work (other bots hold 3)."),
+        ("bot_crafter_chat_rate", "bots", "Crafter gamebots' trade and station chat, as a multiple of normal (0 = silent)."),
+        ("exchange_tax_percent", "bots", "Realm Exchange tax in percent of a sale, taken from the seller's proceeds (0 = none; 5 is the documented option). Only a trade pays it."),
+        ("economy_ledger_enabled", "bots", "Hourly economy ledger: money supply, faucets and sinks per realm (ECON_SUPPLY, ECON_FLOWS). Logs and one table row an hour only; changes no amount."),
+        ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world)."),
+        ("bot_era_builds", "bots", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep the standard builds. Off: new bots get the standard builds too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS."),
+        ("bot_era_class_shares", "bots", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class."),
         ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),
         ("bot_nolifer_buffbot_era_conc_range", "bots", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range."),
-        ("bot_skill_profiles", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. Mistakes: Casual pulls an add in 10% of party pulls (Average 5%, Veteran 1.5%), lets 25% of expired buffs stay off 20-90 s (12%, 4%), casts its dearest nuke in 30% of casts (15%, 5%) and rests at 25% power (35%, today's 45%), circles into a monster's face in 12% of steps (6%, 2%), reacts x1.3 slower (x1.0, x0.75) and in open-field RvR steps out of an area effect after 2-5 s (1-3 s, 0.5-1.5 s; an RvR group keeps its group tier) and follows its group's call after a delay inside the group tier's band, sooner with better reactions."),
+        ("bot_skill_profiles", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. Mistakes: Casual pulls an add in 10% of party pulls (Average 5%, Veteran 1.5%), lets 25% of expired buffs stay off 20-90 s (12%, 4%), casts its dearest nuke in 30% of casts (15%, 5%) and rests at 25% power (35%, 45%), circles into a monster's face in 12% of steps (6%, 2%), reacts x1.3 slower (x1.0, x0.75) and in open-field RvR steps out of an area effect after 2-5 s (1-3 s, 0.5-1.5 s; an RvR group keeps its group tier) and follows its group's call after a delay inside the group tier's band, sooner with better reactions."),
         ("bot_place_knowledge", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): a gamebot knows the places it has been, and at the start what a player of its level would: its capital, its home town, its realm's zones below its level (and their towns) and, from level 20, its border keep. Dungeons, the frontier and the next zones are new ground until it goes there; it learns a place on arrival. Saved per bot; /lswhy way lists them. On its own it changes no route and no camp: asking the way and wrong roads read it. False turns bot_ask_the_way and bot_wrong_roads off with it. Log: BOT_PLACE_LEARNED, BOT_PLACE_BUDGET."),
         ("bot_movement_habits", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): gamebots move like people: melee bots circle-strafe in open-field RvR, bot groups travel on /stick in a line, bots overshoot where they stop, sit when they wait, crowd the bank and sit on the walls of keeps their realm holds. Never in raids, battleground waves, fights at a keep, stable rides or a group with you. False turns bot_move_strafe, bot_move_stick_line and bot_move_sit_and_walls off with it. Log: BOT_MOVE_HABITS."),
         ("bot_living_milestones", "bots", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): autonomous gamebots chase a personal goal (the ding to 50 from level 45; at 50 realm rank 5 if they lean to RvR, or a dragon trophy, an item really won from a dragon or epic boss raid's loot, if they lean to raids) and say so as they get close, in their group, in /say near you, in their guild or in /faction, within the chat budgets; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's plans (fewer town breaks near 50, more RvR near realm rank 5). Log: BOT_MILESTONE_ARC, BOT_MILESTONE_PROGRESS, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED, BOT_MILESTONE_SUMMARY."),
         ("raid_learns_from_raiders", "bots", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything; companions and buffbots are not counted, and a raid with a real player in it (or a player's own group) keeps the record's familiarity. Wired for Xanxicar's stomp. A played world is seeded once at its first start with the switch (each level 50 of a realm with a counted attempt, with a chance of the record's familiarity but at least 80%), so its familiarity stays the same on average. False: the record's familiarity alone, as before. Log: RAID_LEARN, RAID_MECHANIC_SEEN."),
-        ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters (set in the launcher's Living Server tab)."),
-        ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots (set in the launcher's Living Server tab)."),
-        ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground. Set in the launcher's Living Server tab."),
+        ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate."),
+        ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots, for example 1-19:1.5;20-34:2.5;35-50:6. Inside a listed range its rate replaces bot_xp_rate; other levels keep bot_xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate, as bot_xp_rate is. Empty (the default) or an invalid value keeps the flat bot_xp_rate. Companion bots and real players are not affected."),
+        ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground."),
         ("mana_regen_amount_halved_below_50_percent", "rates", "Halve power regeneration below 50% power for list casters (the classic rule). Applies to real players and gamebots alike. Off by default in the Living Server; set in the launcher's Living Server tab."),
     ];
 
@@ -293,6 +302,8 @@ public sealed record SocialExpansionSettings
         ["bot_living_characters"] = Bool(LivingCharacters),
         ["bot_living_rumours"] = Bool(LivingRumours),
         ["bot_living_holidays"] = Bool(LivingHolidays),
+        ["bot_living_holidays_thanksgiving"] = Thanksgiving,
+        ["hired_companions"] = Bool(HiredCompanions),
         ["bot_living_leeroy"] = Bool(LivingLeeroy),
         ["living_atmosphere_lines"] = Bool(LivingAtmosphere),
         ["xp_rate_by_level"] = PlayerXpByLevel.Trim(),
@@ -434,6 +445,16 @@ public sealed record SocialExpansionSettings
             }
             else
                 lootWeight = weight;
+        }
+        string thanksgiving = d.Thanksgiving;
+        if (stored.TryGetValue("bot_living_holidays_thanksgiving", out string? thanksText) && !string.IsNullOrWhiteSpace(thanksText))
+        {
+            thanksgiving = thanksText.Trim().ToLowerInvariant();
+            if (!ThanksgivingModes.Contains(thanksgiving))
+            {
+                Problem("bot_living_holidays_thanksgiving", $"bot_living_holidays_thanksgiving = \"{thanksText}\" is not us, canada or off.");
+                thanksgiving = d.Thanksgiving;
+            }
         }
         string joinMode = d.JoinMode;
         if (stored.TryGetValue("bot_led_group_join_mode", out string? joinText) && !string.IsNullOrWhiteSpace(joinText))
@@ -591,6 +612,8 @@ public sealed record SocialExpansionSettings
             LivingCharacters = ReadBool("bot_living_characters", d.LivingCharacters),
             LivingRumours = ReadBool("bot_living_rumours", d.LivingRumours),
             LivingHolidays = ReadBool("bot_living_holidays", d.LivingHolidays),
+            Thanksgiving = thanksgiving,
+            HiredCompanions = ReadBool("hired_companions", d.HiredCompanions),
             LivingLeeroy = ReadBool("bot_living_leeroy", d.LivingLeeroy),
             LivingAtmosphere = ReadBool("living_atmosphere_lines", d.LivingAtmosphere),
             // Kept as written: an invalid range setting shows its own error in the tab (the server ignores it).
@@ -655,14 +678,14 @@ public sealed record SocialExpansionSettings
         LivingMemory = false, LivingGrats = false, LivingFirsts = false, LivingDeath = false, LivingAlarms = false,
         LivingNemesis = false, ScheduleMode = "off", LivingBreaks = false, LivingBodyLanguage = false, LivingBeggars = false, LivingBuffBots = false,
         LivingDeeds = false, LivingStorylines = false, LivingCharacters = false, LivingRumours = false,
-        LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, BotGroupInvites = false, BotRaidInvites = false,
+        LivingHolidays = false, LivingLeeroy = false, LivingAtmosphere = false, HiredCompanions = false, BotGroupInvites = false, BotRaidInvites = false,
         BotCrafters = false, BotCraftOrders = false,
         BotSkillProfiles = false, BotPlaceKnowledge = false, BotMovementHabits = false, LivingMilestones = false,
         RaidLearnsFromRaiders = false, BotEraClassShares = false, BotEraBuilds = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
-    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !BotGroupInvites && !BotRaidInvites &&
+    public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !HiredCompanions && !BotGroupInvites && !BotRaidInvites &&
                             !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && !RaidLearnsFromRaiders && !BotEraClassShares && !BotEraBuilds &&
                             PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
@@ -676,6 +699,7 @@ public sealed record SocialExpansionSettings
         if (GuildMinLevel is < 0 or > 50) return "The lowest guild level must be 0 to 50.";
         if (!ScheduleModes.Contains(ScheduleMode)) return "The bot schedule must be off, session or clock.";
         if (!JoinModes.Contains(JoinMode)) return "Joining a bot's group must be follow or lead.";
+        if (!ThanksgivingModes.Contains(Thanksgiving)) return "Thanksgiving must be us, canada or off.";
         if (PlayerLootWeight is < MinPlayerLootWeight or > MaxPlayerLootWeight)
             return $"Your loot share must be {MinPlayerLootWeight} to {MaxPlayerLootWeight} members.";
         if (double.IsNaN(ManaRegenModifier) || ManaRegenModifier < MinManaRegenModifier || ManaRegenModifier > MaxManaRegenModifier)

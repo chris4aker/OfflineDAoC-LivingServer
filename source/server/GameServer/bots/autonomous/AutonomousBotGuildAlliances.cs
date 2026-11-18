@@ -137,6 +137,9 @@ public static class AutonomousBotGuildAlliances
         if (safe.Length > AutonomousBotGuildChatLines.MaxLength)
             safe = safe[..AutonomousBotGuildChatLines.MaxLength];
         string message = $"[Alliance] {speaker}: \"{safe}\"";
+        // Chat audit TEXT-051: alliance chat is in the transcript, as guild chat is.
+        if (HasListener(alliance))
+            BotChatTranscript.Bot("alliance", speaker, alliance.Guilds.Count > 0 ? (eRealm)alliance.Guilds[0].Realm : eRealm.None, safe);
         foreach (Guild guild in alliance.Guilds)
         {
             foreach (GamePlayer player in guild.GetListOfOnlineMembers())

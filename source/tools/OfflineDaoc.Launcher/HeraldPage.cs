@@ -211,7 +211,7 @@ public static class HeraldPage
     /// <summary>A reached personal milestone of a gamebot (Bots as people WP6, offline_bot_milestones).</summary>
     public sealed record Milestone(string Name, string ClassName, int Realm, string Arc, string Trophy, string Source, string When);
 
-    /// <summary>Milestones of the Realm shows the last this many reached arcs.</summary>
+    /// <summary>Milestones of the Realms shows the last this many reached arcs.</summary>
     public const int MilestoneRows = 40;
 
     /// <summary>What the Herald says a milestone was (Bots as people WP6 arcs: the ding to 50, realm rank 5, a dragon trophy).</summary>
@@ -350,7 +350,7 @@ public static class HeraldPage
 
         // Server firsts.
         h.Append("<section><h2>Server Firsts</h2>");
-        if (firsts.Count == 0) h.Append("<p class=\"muted\">No firsts recorded yet. The first of each class to reach level 50 or a new realm rank will be named here.</p>");
+        if (firsts.Count == 0) h.Append("<p class=\"muted\">No firsts recorded yet. The first to reach level 50, the first of each class to 50 and the first to each realm rank will be named here.</p>");
         else
         {
             h.Append("<table><tr><th>Achievement</th><th>Who</th><th>Realm</th><th>When</th></tr>");
@@ -361,7 +361,7 @@ public static class HeraldPage
         h.Append("</section>");
 
         // Bots as people (1.2, WP6): the personal milestones the realms' people reached, newest first.
-        h.Append("<section><h2>Milestones of the Realm</h2>");
+        h.Append("<section><h2>Milestones of the Realms</h2>");
         if (milestones is not { Count: > 0 })
             h.Append("<p class=\"muted\">No milestones told yet. When one of the realm's adventurers reaches level 50, earns realm rank 5 or wins a trophy from a dragon or a great foe, the criers will tell it here.</p>");
         else

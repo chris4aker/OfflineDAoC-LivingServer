@@ -29,8 +29,9 @@ public static class AutonomousRoleplayers
         AutonomousBotPersonality.TypeFor(botId) is BotPersonalityType.Socialite or BotPersonalityType.Explorer &&
         AutonomousBotSchedule.Unit(botId, Salt) < ShareOfTypes;
 
+    // A hired companion is never one (chat audit TEXT-003; owner 2026-11-18: roleplayers are world characters).
     public static bool Is(GameBot bot) => On && bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-                                          !bot.IsEpicSpecialForce && IsRoleplayerId(bot.DatabaseID) && !AutonomousBeggars.Is(bot);
+                                          !bot.IsHiredCompanion && !bot.IsEpicSpecialForce && IsRoleplayerId(bot.DatabaseID) && !AutonomousBeggars.Is(bot);
 
     #region Speech (pure, unit tested)
 

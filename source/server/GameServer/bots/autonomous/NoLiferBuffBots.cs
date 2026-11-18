@@ -681,7 +681,7 @@ public static class NoLiferBuffBots
         LastLineTo[key] = now;
         string text = Line(lines, MainOf(bot)?.Name, Random.Shared.Next());
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
-        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name);
+        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
     }
 
     #endregion

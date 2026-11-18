@@ -45,8 +45,9 @@ that allows it, and only to players who are there. Town broadcast is mostly sell
 Each channel has three numbers, in lines per minute as one player hears that channel, at the **design point**:
 `design_bots_per_realm` bots online in the realm (1,000, a full 2003 server) at prime time.
 
-- **Target:** the pace at which bots start unprompted lines. The gap between two openers is a minute divided by the
-  target, varied from 0.4 to 1.6 times, so chat comes in bursts and lulls.
+- **Target:** the pace at which bots start unprompted lines. The mean gap between two openers is a minute divided by the
+  target; six gaps in ten are short (0.25-0.6 times the mean), three ordinary (0.6-1.6 times) and one a lull (2.5-4.5
+  times), never under 4 seconds, so chat comes in bursts and lulls.
 - **Floor:** below it, a bot with something to say starts at once without waiting for the gap. While a channel is under
   its target, bots there also try to talk more often, up to four times as often, resting two minutes between lines
   instead of four. A thin crowd can still keep a capital or a guild alive.
@@ -64,12 +65,14 @@ A bot that wants to talk picks the channel it can be heard in that runs furthest
 ### Scaling
 
 - **Bots online:** the band is multiplied by `(bots / design_bots_per_realm) ^ population_exponent`. With the default
-  0.75, 300 bots a realm talk at 41% of a full server and 3,000 at 228%. There is no cap. Beta 1.1.1 stopped growing at
+  0.65, 300 bots a realm talk at 46% of a full server and 3,000 at 204%. There is no cap. Beta 1.1.1 stopped growing at
   about 390 bots a realm. A guild scales with its own members online, as `(online / members) ^ members_exponent`.
 - **The hour:** `hours` holds 24 factors by the PC's clock, with prime time (20:00–21:00) at 1. With
   `bot_schedule_mode clock` the night already has fewer bots online, so `hours_clock_schedule`, a flatter curve, is used
   instead.
-- **`bot_voices_chat_rate`** (the existing setting) still multiplies every target. 0 means bots only answer.
+- **`bot_voices_chat_rate`** (the existing setting) multiplies each channel's floor, target and ceiling, and its reply
+  band. 0 means bots only answer. The table below is at rate 1; at the default 2 a full realm at prime time has
+  /faction 4 / 8 / 20 and replies 8 / 16, /say 2 / 4 / 10 and replies 4 / 8.
 
 ### Where the starting values come from
 
@@ -114,6 +117,17 @@ same). The model has no gold spammer and no debates; on the server they make mos
 because they came at the same pace on any server. They count against the openers' budget (bots start fewer lines while
 one runs).
 
+**What the owner's PC delivered (chat audit 2026-11-18, builds 5378dbe and b1b6846, Albion, one player, rate 2).** The
+budget holds: no /faction line was said over its ceiling. But most channels run under their targets:
+- /faction openers at about half their target at every population (3.5 a minute against 7.0 at 809 bots a realm, 1.4
+  against 2.6 at 288), and under the floor 40% of the time on a two-minute measure; replies also at about half;
+- /broadcast at 30% of its target, under its floor two thirds of the time; /trade at 121%, over its ceiling 6% of the time;
+- /say beside a player standing idle: 6 lines in 276 minutes, against a floor of 1.3 a minute.
+
+As a listener, 5 to 7 /faction lines a minute at 700 to 800 bots a realm reads busy and followable, and that is the pace
+the owner chose (2026-11-18: "5-7 is the right pace"). The pacing stays as it is: the targets above are the budget's
+upper aim, which a realm stays under; what a player hears on a full realm is 5 to 7 /faction lines a minute.
+
 **Scenes on a small roster (1.2, owner 2026-11-05).** Debates and the gold spammer's waves wait longer below 300 bots a
 realm: their gap is divided by `SceneScale` = the square root of (bots online / 300), between 0.1 and 1, read when a
 scene comes due (a server start has few bots on yet), and a wave's ads are scaled the same way (two at least). 10 bots a
@@ -133,11 +147,16 @@ The research also found that `/advice` was probably not a public channel in 2002
 A keep taken or lost, a relic moved, a siege held or broken, a realm raid won or wiped, Darkness Falls changing hands, a
 server first, and a bot killed by or paying back its nemesis each start a burst of reactions in /faction:
 
-- 3–6 lines (`burst_min`, `burst_max`), fewer on a thin server;
-- most of them in the first minute, all within about 90 seconds (`burst_spread_s`);
+- at most 3 lines for realm news, and 1 or 2 for a bot's own moment (a nemesis, a revenge) (owner 2026-11-08: three
+  congratulations within 13 seconds to one kill line were already too many);
+- all within 40 seconds of the news, 20 for a bot's own moment;
 - each from a different bot, with no near-copies;
 - they are replies to the news (1.2): said up to /faction's reply ceiling, not stopped at its reply target, since a big
-  moment may be loud.
+  moment may be loud. A tagged realm event's reactions (a keep, a relic, a raid) are not held by the reply budget; the cap
+  of three holds them.
+
+`chat-budget.json` still has `burst_min` 3, `burst_max` 6 and `burst_spread_s` 90; the code caps them (at most 3 and
+40 seconds), so values above those do nothing.
 
 A keep lost, a relic moved or Darkness Falls also reaches the capital's /broadcast, wherever a player can hear it.
 
@@ -167,6 +186,10 @@ where the bot stands (it needs a place or moment flag such as at_camp, in_dungeo
 no joke or tip) waits only 90 seconds and is heard once an evening (1.2, owner 2026-11-18: one /faction opener in five goes to
 the written corpus, and when none fits a field line is said, so the pace holds). Lore is never recited unasked, and nobody
 answers a remark with "i know right". Gaps between lines are uneven: quick runs, ordinary stretches and the odd lull.
+
+These rotating regulars (`AutonomousChatRegulars`, chosen afresh every six hours) come on top of each bot's fixed
+talkativeness from its id (`AutonomousBotPersonality.RegularFactor`): about one bot in seven is talkative (2.5 times as
+often) and about a third quiet (half as often). The two stack: a quiet bot can be a regular for an evening.
 
 Questions come in many shapes (gear, quests, travel, crafting, the frontier, trainers, named monsters, epic steps), and one
 shape ("good xp for...", "any healers on?", "still lf...") is heard at most four times an hour per realm, ten minutes apart

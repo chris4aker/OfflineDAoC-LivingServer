@@ -1,16 +1,17 @@
-OFFLINE DAOC 0.3 - SERVER COMMAND REFERENCE
+OFFLINE DAOC - SERVER COMMAND REFERENCE
 
-286 command registrations read from the shipped server assemblies.
+302 command registrations read from the server source (source/tools/make_command_reference.py).
 Normal commands can still have level, realm, cooldown or state requirements.
 GM/admin commands can change or delete game data. Back up before using them.
 Descriptions containing a localization key have no matching shipped English text.
 
-COMMON COMPANION COMMANDS
-/spawn opens the companion class picker; /spawn <class> creates that class.
+COMMON HELPER AND COMPANION COMMANDS
+/spawn opens the helper class picker; /spawn <class> creates that class.
 /spawn specs opens the class and build picker; /spawn <class> <spec> creates that build (for macros).
-/raid 40 or /raid 80 enables a level-50 companion raid (total includes you).
+/raid 40 or /raid 80 enables a level-50 helper raid (total includes you).
 There is no /spawn 40 or /spawn 80 raid-size command.
-/aggressive and /defensive control companion engagement.
+/aggressive and /defensive control how your helpers and companions engage.
+/hire beside a healer of your realm hires and manages your companions; /hire help lists every /hire word.
 /grind, /tc and /disband are documented in their registrations below.
 Fresh accounts are normal players; the launcher GM option is OFF by default.
 
@@ -38,9 +39,14 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.AFKCommandHandler
 
 /aggressive
-  Restore normal companion assisting (default)
+  Your helpers and companions assist your attacks again (default)
   /aggressive
   Handler: DOL.GS.Commands.CompanionAggressiveCommand
+
+/allrelease (aliases: /grouprelease)
+  Every dead bot in your group releases at once and makes its way back to you.
+  /allrelease
+  Handler: DOL.GS.Commands.AllReleaseCommandHandler
 
 /angry
   Look angrily around
@@ -143,6 +149,11 @@ NORMAL PLAYER COMMANDS
   Useage: /boot [playername]
   Handler: DOL.GS.Commands.BootCommandHandler
 
+/bountylocation
+  Show the location of your active bounty target.
+  /bountylocation
+  Handler: DOL.GS.Commands.BountyLocationCommand
+
 /bountyrent
   Pay house rent with bountypoints
   Use /bountyrent personal/guild <amount> to pay.
@@ -243,6 +254,12 @@ NORMAL PLAYER COMMANDS
   /combatstats <on/off>
   Handler: DOL.GS.Commands.CombatStatsCommandHandler
 
+/companionui
+  True 1.65 Mode companion hiring window
+  /companionui race-|race+|class-|class+|gender|face-|face+|hair-|hair+|look|name [name]|hire|tab <n>|close
+  /companionui summon|dismiss|release|revive <row>
+  Handler: DOL.GS.Commands.CompanionUiCommandHandler
+
 /confuse
   Confused
   /confuse
@@ -279,7 +296,7 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.EmoteCommandHandler
 
 /defensive
-  Companions wait for enemies to approach you
+  Your helpers and companions wait for enemies to approach you
   /defensive
   Handler: DOL.GS.Commands.CompanionDefensiveCommand
 
@@ -354,7 +371,7 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.LocFaceCommandHandler
 
 /faction
-  Talk to players and active playerbots in your realm
+  Talk to the players and gamebots of your realm
   /faction <message>
   Handler: DOL.GS.Commands.FactionChatCommand
 
@@ -439,6 +456,18 @@ NORMAL PLAYER COMMANDS
   /helm
   Handler: DOL.GS.Commands.HelmCommandHandler
 
+/hire
+  Hire and manage your companions (beside a healer of your realm)
+  /hire - beside a healer: open the hire window and show it in chat
+  /hire list - your companions
+  /hire race+|race-|class+|class-|gender|look+|look-|hair+|hair-|height+|height-|look - change the companion you design
+  /hire name [name] - name them (no name: a random one); /hire confirm - hire them
+  /hire summon|dismiss|release|revive <n> - companion n of /hire list
+  /hire gear|stats|spec|trainer|ra|options|repair <n>; /hire train <n> <line>; /hire buyra <n> <ability>; /hire respec <n>
+  /hire option <n> <row> <choice> - set an AI option from /hire options
+  /hire help - every /hire word
+  Handler: DOL.GS.Commands.HireCommand165Handler
+
 /hood
   Toggles the hood on and off when wearing a hooded cloak.
   /hood
@@ -495,6 +524,11 @@ NORMAL PLAYER COMMANDS
   /invite <player>
   Handler: DOL.GS.Commands.InviteCommandHandler
 
+/invites
+  Turn gamebot leaders' unasked group and raid invites on or off (/lfg still asks for one)
+  /invites on|off
+  Handler: DOL.GS.Commands.InvitesCommandHandler
+
 /kiss
   Blow a kiss
   /kiss
@@ -522,13 +556,19 @@ NORMAL PLAYER COMMANDS
   /bang
   Handler: DOL.GS.Commands.EmoteCommandHandler
 
+/lead
+  Take the lead of a group a gamebot leads, or hand your group's lead to a gamebot
+  /lead (take the lead)
+  /lead bot [name] (a gamebot leads; the highest level one, or the one named or targeted)
+  Handler: DOL.GS.Commands.LeadCommandHandler
+
 /level
   Allows you to level 20 instantly if you have a level 50
   /level
   Handler: DOL.GS.Commands.LevelCommandHandler
 
 /lfg
-  Broadcast a LFG message to other players in the same region
+  Post a looking-for-group message to your realm (a gamebot may answer by tell)
   /lfg <message>
   Handler: DOL.GS.Commands.LFGCommandHandler
 
@@ -541,6 +581,25 @@ NORMAL PLAYER COMMANDS
   Lets you look into the distance
   /lookfar
   Handler: DOL.GS.Commands.EmoteCommandHandler
+
+/lore
+  The lore of your realm's places and bosses, and whether your realm has slain them
+  /lore
+  /lore <place or boss>
+  /lore <place or boss> <page>
+  Handler: DOL.GS.LoreChannels.LoreCommandHandler
+
+/lswhy
+  Shows why gamebots said what they said in chat
+  /lswhy - your target, or the last gamebot that spoke near you or to you
+  /lswhy <name> - that gamebot's last chat decisions
+  /lswhy last [count] - the last chat decisions in your realm, the quiet ones too
+  /lswhy me - why gamebots answered your own lines, or didn't
+  /lswhy held [count] - the last replies the reply budget held back in your realm
+  /lswhy budget - the chat budget around you: each channel's floor, target, ceiling and lines a minute now
+  /lswhy duty [name] - what has that gamebot's time (your target without a name): its duty lease and the last claims on it
+  /lswhy skill [name] | way [name] - Bots as people: that gamebot's skill, or the places it knows and how it finds its way (your target without a name)
+  Handler: DOL.GS.Commands.LivingServerWhyCommandHandler
 
 /makeleader (aliases: /m)
   Set a new group leader (can be used by current leader).
@@ -603,6 +662,11 @@ NORMAL PLAYER COMMANDS
   /password <current_password> <new_password>
   Handler: DOL.GS.Commands.PasswordCommand
 
+/personality
+  Shows the personality of the gamebot you have targeted
+  /personality (with a gamebot targeted)
+  Handler: DOL.GS.Commands.PersonalityCommandHandler
+
 /played
   Returns the age of the character
   /played
@@ -629,7 +693,7 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.EmoteCommandHandler
 
 /pull
-  Orders party bots and their pets to engage your target
+  Orders your group's bots and their pets to engage your target
   /pull
   Handler: DOL.GS.Commands.PullGroupCommandHandler
 
@@ -638,13 +702,19 @@ NORMAL PLAYER COMMANDS
   /quest
   Handler: DOL.GS.Commands.QuestCommandHandler
 
+/questguide
+  Read the period (2001-2004) Allakhazam walkthrough of a quest
+  /questguide - next page of your active quests' guides
+  /questguide <quest name> [page]
+  Handler: DOL.GS.Commands.QuestGuideCommandHandler
+
 /quit (aliases: /q)
   Removes the player from the world
   /quit
   Handler: DOL.GS.Commands.QuitCommandHandler
 
 /raid
-  Open a level-50 companion raid (40 or 80 total)
+  Open a level-50 helper raid (40 or 80 total)
   /raid 40
   /raid 80
   Handler: DOL.GS.Commands.CompanionRaidCommand
@@ -863,7 +933,7 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.SpacingHandler
 
 /spawn
-  Opens the companion class menu or creates a temporary helper
+  Opens the helper class menu or creates a temporary helper
   /spawn [class name] [spec]
   /spawn specs
   Handler: DOL.GS.Commands.SpawnTemporaryGroupBotCommandHandler
@@ -958,8 +1028,10 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.TargetStatsCommandHandler
 
 /task
-  Show the actual task
-  /task
+  Ask the targeted guard or townsperson for a task, or show your current task
+  /task (target a named guard for a kill task, another townsperson for a delivery task)
+  /task (nothing targeted) or /task status - your current task
+  /task abort
   Handler: DOL.GS.Commands.TaskCommandHandler
 
 /taunt
@@ -984,9 +1056,17 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.TimeCommandHandler
 
 /trade
-  Broadcast a trade message to other players in the same region
+  Post a trade message to your realm (gamebots may answer, a crafter by tell)
   /trade <message>
   Handler: DOL.GS.Commands.TradeChannelCommandHandler
+
+/tradewindow
+  Trade with a gamebot of your realm (target it first)
+  /tradewindow - open a trade with your target
+  /tradewindow list - what it sells
+  /tradewindow buy <number> - put one of its goods on its side
+  /tradewindow put|take <backpack slot>, coin <copper>, repair on|off, combine on|off, accept, close
+  Handler: DOL.GS.Commands.TradeWindowCommandHandler
 
 /train (aliases: /trainline, /trainskill)
   Trains a line by the specified amount
@@ -1095,6 +1175,11 @@ NORMAL PLAYER COMMANDS
 GM ONLY COMMANDS
 ================
 
+/]jump
+  Teleports yourself to the specified location
+  ']jump <zoneID> <locX> <locY> <locZ> <heading>' Autoused for *jump in debug mode
+  Handler: DOL.GS.Commands.OnDebugJump
+
 /addbind
   Adds a bindpoint to the game.
   /addbind [radius=750]
@@ -1186,6 +1271,30 @@ GM ONLY COMMANDS
   '/door unlocked' unlock the door - you can code items to lock it
   Handler: DOL.GS.Commands.NewDoorCommandHandler
 
+/epic
+  Show or change a character's epic chain (your target, or you)
+  /epic - the chain and the state of each step
+  /epic done <level> - mark every step below <level> finished
+  /epic goto - go to the current stage's map marker, or to the next step's giver
+  /epic reset - remove every step of the chain, active and finished
+  Handler: DOL.GS.Commands.EpicCommandHandler
+
+/epictest
+  Play test: open a realm raid of a chosen size on a chosen encounter
+  /epictest list - every raid, its realm, period size and hub
+  /epictest start <event> [size|era|start] [focus=Name,Name] [nohub] [atstaging] - a forced raid of <size> bots (era = the period size, start = 125%); the reserved bots are moved to its hub unless nohub; atstaging musters it at its own staging post instead of the realm's hub
+  /epictest gather <event> - move the raid's party members still away from its hub to it (before it leaves), or those not yet on its staging ring to the entrance (before it goes in)
+  /epictest front <event> - move the raid's living members inside its dungeon to the route's front (its next target, or the final encounter's trigger): skips the climb, for testing a final room
+  /epictest reset <event> - clear an event's cooldown after a raid ended (the launcher's reset)
+  /epictest status - the running raids
+  /epictest familiarity <0..1|off> - test only: how well the realm knows every encounter for the raid discipline (calls, reactions, lapses; off = from the raid record). Also familiarity=<0..1> on start
+  /epictest latecall <threshold|all|off> - test only: the raid's call of that blast threshold (Xanxicar 80/60/40/20) always comes late. Also latecall=<threshold|all> on start
+  /epictest stop <event> - end a running raid
+  /epictest sweep start [all|openworld|event,event] [guest] [parallel] [cap=<minutes>|off] - every raid once, one after another, in the list's order (Darkness Falls last; openworld: the open-world big bosses only); guest: you take a seat in each, your realm set to its realm until the sweep ends; parallel: one lane per realm side by side, bots only; cap: stop a raid after that long (default 240, off: its own clocks only)
+  /epictest sweep add event,event - add raids to the running sweep, after those waiting in their lane (a long list typed in parts)
+  /epictest sweep status | skip [event] | stop - the sweep's progress, end a raid running now (its lane goes on), or end the sweep
+  Handler: DOL.GS.Commands.EpicPlaytestCommandHandler
+
 /fly
   Toggle invulnerable observer flight
   /fly — toggle observer flight; returns to your starting position when disabled
@@ -1193,7 +1302,7 @@ GM ONLY COMMANDS
 
 /genuniques
   /genuniques ([TOA] || [L51] || [self] || [suit] || [objecttype]) [itemtype] : generate 8 unique items
-  Handler: DOL.GS.LootGeneratorUniqueItem+LootGeneratorUniqueObjectCommandHandler
+  Handler: DOL.GS.LootGeneratorUniqueObjectCommandHandler
 
 /gmappeal (aliases: /gmhelp)
   Commands for server staff to assist players with their Appeals.
@@ -1410,6 +1519,43 @@ GM ONLY COMMANDS
   /kick <#ClientID>
   /kick account <account>
   Handler: DOL.GS.Commands.KickCommandHandler
+
+/lscraft
+  Crafting 2.0 in game: what is built, and what a bot or an item looks like to the economy
+  /lscraft craft - bot crafting: switches, the recipe catalog, and the crafter roster: each realm's crafter gamebots in the game (name, order, skill, level, where, on a break or a task)
+  /lscraft wtb - bots' want-to-buy posts
+  /lscraft commission - realm quartermaster commissions
+  /lscraft ledger - the realm's coin now (online gamebots) and the economy ledger
+  /lscraft index - what the price index says of the first item in your backpack
+  /lscraft crafter <name> - a gamebot's type, crafting skills, purse and crafter record
+  Handler: DOL.GS.Commands.CraftEconomyTestCommandHandler
+
+/lsprofile
+  Show the AI profiler's last minute: tick percentiles, serial and brain time, lock waits and the costliest AI systems
+  /lsprofile - the last minute's tick numbers and the ten costliest systems
+  /lsprofile all - every system that ran in the last minute
+  /lsprofile line - the AI_PROFILE log line as written
+  Handler: DOL.GS.Commands.LivingServerProfileCommandHandler
+
+/lstest
+  Fire a Living Server moment now, to check it in game
+  /lstest list - every part, on or off
+  /lstest storyline | debate | dunce - the next /faction scene starts now (a storyline episode, any debate, a dunce rage quit)
+  /lstest spammer | roleplayer | rumour - a gold spammer, a roleplayer's line, a rumour about a rare named in this region
+  /lstest tale [boss] [raid] | fireside - the realm's storyteller tells a tale in /faction now (of that boss: legion, golestandt, ...; with raid: the rumour after it is the raid, when it can form); fireside: sit down in a boss's place with a gamebot in your group and a groupmate tells the short one
+  /lstest tell - a bot starts a tell to you
+  /lstest memory - what bots remember about you
+  /lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted
+  /lstest greet | gossip - a remembered bot near you greets you; a bot that likes you mentions you in /faction
+  /lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that
+  /lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)
+  /lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid
+  /lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)
+  /lstest raid [dragon] [alb|mid|hib] - a realm's automatic raid opens now, sized to its free level 50s (launcher raids need 300)
+  /lstest lore - which lore place you are in; its first-entry, area and lair lines may show again (atmosphere lines)
+  /lstest craft | wtb | commission - Crafting 2.0 parts, as /lscraft (what is built, what is not yet)
+  /lstest skill | lost | ask | milestone | wall - Bots as people (target a gamebot): its skill profile; its next unknown trip takes a wrong road; it asks the way now; its milestone reaches its next talk point; bots at the nearest held keep take the walls
+  Handler: DOL.GS.Commands.LivingServerTestCommandHandler
 
 /merchant
   Various merchant creation commands!
@@ -1813,11 +1959,6 @@ GM ONLY COMMANDS
   /zonepoint add <id> <realm> <class>
   Handler: DOL.GS.Commands.ZonepointCommandHandler
 
-/]jump
-  Teleports yourself to the specified location
-  ']jump <zoneID> <locX> <locY> <locZ> <heading>' Autoused for *jump in debug mode
-  Handler: DOL.GS.Commands.OnDebugJump
-
 ADMIN ONLY COMMANDS
 ===================
 
@@ -1874,6 +2015,7 @@ ADMIN ONLY COMMANDS
 /keepdoorteleport
   Manage keepdoor teleport destinations
   '/keepdoorteleport add <enter|exit> <in|out> add a teleport destination
+  '/keepdoorteleport reload' reload all teleport locations from the db
   Handler: DOL.GS.Commands.KeepDoorTeleportCommandHandler
 
 /plvl

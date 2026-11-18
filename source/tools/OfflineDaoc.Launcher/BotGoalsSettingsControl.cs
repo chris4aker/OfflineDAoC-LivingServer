@@ -61,7 +61,7 @@ internal sealed class BotGoalsSettingsControl : UserControl
                 "Caledonia 30–35. Bots outside those levels (1–14 and 36–49) do solo or group PvE with that share instead. Level 50 cannot.\n" +
                 "Percentages are population targets, not exact head counts at every moment. Existing allowed tasks finish normally.\n" +
                 "Group-only bots wait for a complete eight-member role roster; they never fall back to a 0% goal.\n" +
-                "Normal training, selling, recovery and town breaks remain. Player characters and /spawn companions are unchanged." });
+                "Normal training, selling, recovery and town breaks remain. Player characters, /spawn helpers and hired companions are unchanged." });
         var buttons = new FlowLayoutPanel { AutoSize = true, Margin = new Padding(0, 14, 0, 10) };
         buttons.Controls.AddRange([_save, _undo, _defaults]);
         body.Controls.Add(buttons);

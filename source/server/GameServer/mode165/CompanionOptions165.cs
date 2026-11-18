@@ -44,6 +44,8 @@ namespace DOL.GS
         public const byte KindTwist = 40, KindStance = 41, KindCrowdControl = 42, KindPetJob = 43, KindWeapon = 44,
             KindStag = 47, KindCriticalShot = 48, KindOpeningStun = 49, KindEngage = 50, KindSlamSwap = 51,
             KindTripleWield = 52;
+        /// <summary>How the companion talks (owner 2026-11-18 09:14: one voice; the True 1.65 formal register is an option).</summary>
+        public const byte KindSpeech = 53;
         /// <summary>The fourth Role choice of every healer's Role row (owner 2026-11-11; CompanionSpellOptions165).</summary>
         public const string MeleeHealChoice = "Melee and heal, no attack spells (melee interrupts casts)";
         public static readonly HashSet<string> Verbs = ["charm", "pet", "subpet", "song", "option"];
@@ -97,6 +99,9 @@ namespace DOL.GS
             // /defensive (Living Server has no /passive, True 1.65's fourth choice)
             new(KindStance, "stance", "Stance", ["Automatic (the group's stance)", "Aggressive", "Defensive"], _ => true),
             // crowd control: Off controls nothing (no mez or stun); True 1.65's Main CC and Adds only steer its veteran CC AI
+            // how it talks (CompanionChat165.IsFormal): like any 2003 player in its own writing style, or True 1.65's formal
+            // companion, which then keeps to its companion lines (no gamebot chat: one voice either way)
+            new(KindSpeech, "speech", "Speech", ["Automatic (talks like a player)", "Formal (the True 1.65 companion)"], _ => true),
             new(KindCrowdControl, "cc", "Crowd control", ["Automatic", "Off (no mez or stun)"],
                 bot => bot.CanCastCrowdControlSpells || bot.Spells?.Any(spell => spell?.SpellType is eSpellType.Mesmerize or
                     eSpellType.Mez or eSpellType.Stun) == true, [0, 3]),
@@ -361,7 +366,7 @@ namespace DOL.GS
                         list.Add(new OptionRow(row.Kind, row.Slot, $"Sub-pet {row.Slot} ({row.Used} of {row.Cap} levels)", row.Choices, row.Chosen));
                         break;
                     case KindSong:
-                        list.Add(new OptionRow(row.Kind, row.Slot, row.Slot switch { 1 => "Song in a fight", 2 => "Song standing around", _ => "Song travelling" },
+                        list.Add(new OptionRow(row.Kind, row.Slot, row.Slot switch { 1 => "Song in a fight", 2 => "Song standing around", _ => "Song traveling" },
                             row.Choices, row.Chosen));
                         break;
                     default:

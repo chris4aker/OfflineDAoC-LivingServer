@@ -489,7 +489,7 @@ public static class BotSkill
         {
             $"Skill: {BotSkillProfile.TierName(profile.Tier)} (started {BotSkillProfile.TierName(profile.StartTier)}, " +
             $"{(profile.BandPosition * 100).ToString("0", CultureInfo.InvariantCulture)}% up its band; can reach " +
-            $"{BotSkillProfile.TierName(profile.MaxTier)} in 1.2).",
+            $"{BotSkillProfile.TierName(profile.MaxTier)} at most).",
         };
         BotSkillProfile p = profile;
         lines.Add("Facets (0 worst, 1 best in its tier): " + string.Join(", ", BotSkillFacets.All.Select(f =>
@@ -497,7 +497,7 @@ public static class BotSkill
         double hours = BotSkillGrowth.HoursToNextTier(profile);
         lines.Add($"Experience: {(profile.Experience.Mean / 60).ToString("0.0", CultureInfo.InvariantCulture)} hours of fighting; " +
                   (!growthOn ? "growth is off (bot_skill_growth)." :
-                   double.IsPositiveInfinity(hours) ? "it has grown as far as it can in 1.2." :
+                   double.IsPositiveInfinity(hours) ? "it has grown as far as it can." :
                    $"about {Math.Ceiling(hours).ToString(CultureInfo.InvariantCulture)} more to {BotSkillProfile.TierName(profile.Tier + 1)}."));
         return lines;
     }
