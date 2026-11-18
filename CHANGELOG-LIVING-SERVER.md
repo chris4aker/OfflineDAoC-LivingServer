@@ -749,8 +749,10 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     a row is made sets it), a buffbot class at level 50, and the realm, class, gender, race and one of the possible names
     of the buffbot of a main with a lower id. Each one logs `BOT_BUFFBOT_COPY_RETIRED`, with a `BOT_BUFFBOT_COPIES`
     summary; a row without a class name that matches no main is only logged (`BOT_BUFFBOT_COPY_SUSPECTED`). The rows
-    get `IsRetired` and the Activity "Not played: a copy of a buffbot an earlier build saved by mistake (kept, not
-    deleted)"; their items stay. The launcher's list shows an `IsRetired` row as "Deletion pending"; nothing deletes it unless the player presses Delete. Fresh worlds have none. All 48 `BUFFBOT_CREATED` names in the owner's logs (`5378dbe`,
+    get `IsRetired` and the Activity "Retired: copy of <main>'s buffbot (kept, never logs in)"; their items stay. The
+    launcher's bot list shows that text and the state "Retired" for such a row (IsRetired, no class name and that
+    marker; `BotDeletionText`), not "Deletion pending"; every other `IsRetired` row still shows as a deletion, and Delete
+    works as before (nothing deletes a copy unless the player presses Delete). Fresh worlds have none. All 48 `BUFFBOT_CREATED` names in the owner's logs (`5378dbe`,
     `b1b6846`) are among the names it looks for. `UT_BuffBotCopyRetirement`.
   - **RvR: no relayed regroup in contact.** A group in contact and inside its own 60 s retreat cooldown that heard a
     relayed retreat took a "relayed" regroup, and the next board ended it ("contact while regrouping"). That happened

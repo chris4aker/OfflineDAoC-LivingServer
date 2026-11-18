@@ -29,7 +29,6 @@ public static class BuffBotCopyRetirement
     public const string RetiredLogTag = "BOT_BUFFBOT_COPY_RETIRED";
     public const string SuspectedLogTag = "BOT_BUFFBOT_COPY_SUSPECTED";
     public const string SummaryLogTag = "BOT_BUFFBOT_COPIES";
-    public const string RetiredActivity = "Not played: a copy of a buffbot an earlier build saved by mistake (kept, not deleted)";
     /// <summary>How many generated names a seed is followed through (each one taken gives the next). On the owner's logs
     /// (5378dbe and b1b6846) all 48 buffbots' names are in this list; the deepest, Okke (main 4290, a common first name), is
     /// the 40th.</summary>
@@ -128,14 +127,17 @@ public static class BuffBotCopyRetirement
     }
 
     /// <summary>Retires one copy: IsRetired (never logged in again, out of the roster, guilds and friends), offline, and the
-    /// launcher's Activity says why. Nothing is deleted. True when the record changed (and needs saving).</summary>
-    public static bool Retire(OfflineWorldBotRecord record)
+    /// launcher's Activity says why ("Retired: copy of Ashfury's buffbot (kept, never logs in)"; the launcher shows that
+    /// instead of "Deletion pending", OfflineDaoc.Shared.BuffBotCopyMarker). Nothing is deleted. True when the record
+    /// changed (and needs saving).</summary>
+    public static bool Retire(Copy copy)
     {
+        OfflineWorldBotRecord record = copy?.Record;
         if (record == null || record.IsRetired)
             return false;
         record.IsRetired = true;
         record.IsOnline = false;
-        record.Activity = RetiredActivity;
+        record.Activity = OfflineDaoc.Shared.BuffBotCopyMarker.ActivityFor(copy.Main?.Name);
         record.Dirty = true;
         return true;
     }

@@ -467,7 +467,7 @@ public static class AutonomousPopulationController
                 BuffBotCopyRetirement.PercentFor(ServerProperties.Properties.BOT_NOLIFER_BUFFBOT_PERCENT));
             var changed = new List<OfflineWorldBotRecord>();
             foreach (BuffBotCopyRetirement.Copy copy in result.Copies)
-                if (BuffBotCopyRetirement.Retire(copy.Record))
+                if (BuffBotCopyRetirement.Retire(copy))
                     changed.Add(copy.Record);
             if (changed.Count > 0)
             {

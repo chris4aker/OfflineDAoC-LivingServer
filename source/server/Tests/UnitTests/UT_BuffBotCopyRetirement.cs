@@ -58,12 +58,14 @@ namespace DOL.GS.Tests
             Assert.That(result.Copies[0].Main, Is.SameAs(main));
             Assert.That(result.Suspected, Is.Empty, "a gamebot with a class name is never even a suspect");
 
-            Assert.That(R.Retire(copy), Is.True);
+            Assert.That(R.Retire(result.Copies[0]), Is.True);
             Assert.Multiple(() =>
             {
                 Assert.That(copy.IsRetired, Is.True, "never logged in again");
                 Assert.That(copy.IsOnline, Is.False);
-                Assert.That(copy.Activity, Is.EqualTo(R.RetiredActivity));
+                Assert.That(copy.Activity, Is.EqualTo("Retired: copy of Mainguy's buffbot (kept, never logs in)"));
+                Assert.That(OfflineDaoc.Shared.BuffBotCopyMarker.IsRetiredCopy(copy.IsRetired, copy.ClassName, copy.Activity), Is.True,
+                    "the launcher shows it as kept, not as a deletion");
                 Assert.That(sameName.IsRetired || similar.IsRetired || main.IsRetired, Is.False);
             });
             Assert.That(R.RetiredLine(result.Copies[0]), Does.StartWith(
@@ -73,7 +75,7 @@ namespace DOL.GS.Tests
             // a second run changes nothing
             R.Result again = R.Find(rows, _ => false, 30);
             Assert.That(again.Copies, Is.Empty);
-            Assert.That(R.Retire(copy), Is.False);
+            Assert.That(R.Retire(result.Copies[0]), Is.False);
         }
 
         [Test]
