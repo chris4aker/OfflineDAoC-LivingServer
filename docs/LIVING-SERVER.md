@@ -312,8 +312,11 @@ Your own gear and your companions are never touched.
 ### Deeds, storylines, spammers, roleplayers and rumours
 - **Deeds and reputation** (`bot_living_deeds`): bots that see you solo a named monster, go on a kill streak, get zerged
   or die to something silly tell /faction and others react. It builds a reputation the realm brings up, and a nickname.
-- **Storylines** (`bot_living_storylines`): pairs of bots live out four-episode dramas in /faction over days (a kill steal,
-  a guild split, a romance, a ninja-loot trial). Name one of them during an episode to take a side; the ending follows you.
+- **Storylines** (`bot_living_storylines`): pairs of bots live out four-episode dramas in /faction, episodes hours apart
+  (a kill steal, a guild split, a romance, a ninja-loot trial, a crafters' price war, and from 1.2 ten more: a mentor and
+  the apprentice who outgrows them, a race for a ganker's bounty, a bard's song about a drowning, a sold masterpiece, a
+  mistell, a buffbot rumour, a keep-defense grudge, an unpaid loan, a "gimped" class, a camp feud that ends in
+  friendship). Name one of them during an episode to take a side; the ending follows you.
 - **Spammers and roleplayers** (`bot_living_characters`): a gold spammer floods /faction now and then until it is
   banned; a few bots always speak in thee and thou and get mocked for it.
 - **True rumours** (`bot_living_rumours`): a rare named monster that just spawned, or an enemy keep with its guards down.
