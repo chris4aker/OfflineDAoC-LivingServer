@@ -765,6 +765,15 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
     with his spot, next point and closest approaches, so the next PC log can confirm it.
   - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+- **A boss dragged off his floor no longer loses his adds' stands, and a fight in progress is never set aside for
+  want of one** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria). Aroon, dragged 3,700 from his spawn and
+  370 higher, left "none of 463 floor spots ... on his floor" for the six Scaiths still alive in his room, and
+  `REALM_EXPEDITION_TACTIC_ASIDE` (23:38:08) sent the route to an olcasar muster while he and the Scaiths killed 68 more
+  raiders. The ranged stands for a boss's required adds are now looked for on his spawn's floor (his room), still clear
+  of where he stands; and a boss whose fight is on with the raid is kept (`REALM_EXPEDITION_TACTIC_KEPT`, at most once a
+  minute) and its stands are tried again, never set aside. Scurceol Hyrde's orbs, searched from his own spot at home,
+  find the same stands as before.
+
 - **Wipes are counted per encounter, not per monster** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
   One continuous 19-minute fight in Xaga's room (408 deaths) was scored as four wipes on three names: Beatha (00:15:21),
   Tine (00:19:13, ten seconds after Beatha died), then Xaga twice, so the two-attempt rule ran per monster. A wipe at a

@@ -214,6 +214,60 @@ namespace DOL.UnitTests
             Assert.That(failures.Values.Single(), Is.EqualTo(RealmRaidDungeonRoute.MaximumFailedAttempts), "defeated at the encounter");
         }
 
+        // ---- D: an add's stand is on its boss's room floor, and a fight in progress is never set aside -------------------
+
+        // Aroon's room as geometry: his adds' floor at height 1,000 (the Scaiths at about 10,260 in Galladoria, his spawn
+        // floor 10,369), and a ledge 3,700 from his spawn and 370 over the room, where the fight dragged him (51350,47078,10736).
+        private static readonly Vector3 Scaith = new(0, 0, 1000), AroonSpawn = new(1800, 0, 1000), AroonDragged = new(1800, 3700, 1370);
+
+        private static LayeredMesh AroonRoom() =>
+            new LayeredMesh(50).Disk(0, 0, 2500, 1000, true).Disk(AroonDragged.X, AroonDragged.Y, 300, AroonDragged.Z, true);
+
+        private static Vector3? WalkTheRoom(Vector3 p, Func<Vector3, bool> accept) =>
+            MathF.Abs(p.Z - 1000) < 1 && (accept == null || accept(p)) ? p : null;
+
+        [Test]
+        public void AScaithsStandIsFoundOnTheRoomFloorWhileAroonIsDraggedAway()
+        {
+            LayeredMesh mesh = AroonRoom();
+            Zone zone = UT_RealmRaidFormation.Zone();
+            // What 5378dbe searched: the floor under where Aroon stood (23:38:08 TACTIC_ASIDE "none of 463 floor spots ... on
+            // his floor").
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(mesh, zone, Scaith, AroonDragged, WalkTheRoom, out _, out string old), Is.False);
+            Assert.That(old, Does.Contain("on his floor"));
+            // Now: his spawn's floor, his room.
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(mesh, zone, Scaith, AroonDragged, WalkTheRoom, out Vector3 stand, out string why,
+                AroonSpawn), Is.True, why);
+            Assert.Multiple(() =>
+            {
+                Assert.That(stand.Z, Is.EqualTo(1000), "on the room floor");
+                Assert.That(Vector3.Distance(stand, Scaith), Is.LessThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddRangedReach));
+                Assert.That(Vector3.Distance(stand, AroonDragged), Is.GreaterThanOrEqualTo(RealmRaidDungeonRoute.RequiredAddStandMinimumBossDistance),
+                    "still clear of where he stands now");
+            });
+            // With him at home the spawn floor and his own are one floor: the same stand as before.
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(mesh, zone, Scaith, AroonSpawn, WalkTheRoom, out Vector3 home, out _), Is.True);
+            Assert.That(RealmRaidDungeonRoute.TryRangedStand(mesh, zone, Scaith, AroonSpawn, WalkTheRoom, out Vector3 homeBySpawn, out _, AroonSpawn), Is.True);
+            Assert.That(homeBySpawn, Is.EqualTo(home));
+        }
+
+        [Test]
+        public void AnEncounterFightingTheRaidIsNeverSetAsideForWantOfAStand()
+        {
+            Assert.Multiple(() =>
+            {
+                // 23:38:08: Aroon and six Scaiths in combat, killing raiders: kept, the stands tried again next turn.
+                Assert.That(RealmRaidDungeonRoute.KeepsFightOn(fightOn: true, onTheRaid: true), Is.True);
+                // No fight, or a fight with nobody of the raid in it: set aside as before.
+                Assert.That(RealmRaidDungeonRoute.KeepsFightOn(false, false), Is.False);
+                Assert.That(RealmRaidDungeonRoute.KeepsFightOn(true, false), Is.False);
+            });
+            // The fight is on while any Scaith is in combat, Aroon himself or not.
+            var (xaga, beatha, _, live) = Room();
+            beatha.Fighting = true;
+            Assert.That(EpicEncounterTactics.FightOn(xaga, live), Is.True);
+        }
+
         [Test]
         public void EveryBossWithRequiredAddsTheOwnerNamedHasAMuster()
         {

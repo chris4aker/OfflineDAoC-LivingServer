@@ -858,8 +858,12 @@ namespace DOL.GS
         /// </summary>
         /// <param name="reach">The approach the raid can walk to for a floor point (only approaches the filter accepts), or null
         /// when none is proven.</param>
+        /// <param name="bossFloorAt">Where the raid's floor is looked for: the boss's spawn, his room (null: where he stands).
+        /// Owner's PC, build 5378dbe, 2026-11-17 (Galladoria): Aroon, dragged 3,700 from his spawn and 370 higher, left "none of
+        /// 463 floor spots ... on his floor" for the six Scaiths still alive at about 10,260, and his fight was set aside. The
+        /// stands stay clear of where he stands now (<see cref="RequiredAddStandMinimumBossDistance"/>).</param>
         public static bool TryRangedStand(IPathfindingMgr nav, Zone zone, Vector3 add, Vector3 boss,
-            Func<Vector3, Func<Vector3, bool>, Vector3?> reach, out Vector3 stand, out string why)
+            Func<Vector3, Func<Vector3, bool>, Vector3?> reach, out Vector3 stand, out string why, Vector3? bossFloorAt = null)
         {
             stand = default;
             if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
@@ -870,13 +874,14 @@ namespace DOL.GS
                 if (p is Vector3 v && !floors.Any(f => Vector3.DistanceSquared(f, v) < 48 * 48)) floors.Add(v);
             }
             Add(nav.GetClosestPoint(zone, add, 128, 128, RangedFlyerReach, nav.DefaultFilters));
-            Vector3? bossFloor = nav.GetClosestPoint(zone, boss, 64, 64, 256, nav.DefaultFilters);
+            Vector3 room = bossFloorAt ?? boss;
+            Vector3? bossFloor = nav.GetClosestPoint(zone, room, 64, 64, 256, nav.DefaultFilters);
             Add(bossFloor);
-            var level = new Vector3(add.X, add.Y, boss.Z);
+            var level = new Vector3(add.X, add.Y, room.Z);
             foreach (float t in new[] { 0.67f, 0.33f })
-                Add(nav.GetClosestPoint(zone, Vector3.Lerp(boss, level, t), 96, 96, 256, nav.DefaultFilters));
-            // The raid's floor around the add: the boss's own height, where the raid fights.
-            float floorZ = bossFloor?.Z ?? boss.Z;
+                Add(nav.GetClosestPoint(zone, Vector3.Lerp(room, level, t), 96, 96, 256, nav.DefaultFilters));
+            // The raid's floor around the add: the boss's own height (his room's), where the raid fights.
+            float floorZ = bossFloor?.Z ?? room.Z;
             // Every 50 out and every 10 degrees: on the real mesh orb 3's clear spots are a few patches of the platform's far edge,
             // and a sparser ring (every 100, every 15 degrees) found one.
             for (int radius = 200; radius <= RequiredAddRangedReach; radius += 50)
@@ -2677,7 +2682,7 @@ namespace DOL.GS
             foreach (GameNPC a in adds)
             {
                 Zone zone = WorldMgr.GetRegion(_region)?.GetZone(a.X, a.Y);
-                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out Vector3 own, out string found))
+                if (TryRangedStand(nav, zone, At(a), At(boss), Reach, out Vector3 own, out string found, SpawnFloorOf(boss)))
                 {
                     EpicEncounterTactics.SetStand(a, own);
                     if (add == null) { add = a; stand = own; reasons.Insert(0, found); }
@@ -2690,6 +2695,37 @@ namespace DOL.GS
             if (add == null) return false;
             EpicEncounterTactics.SetStand(boss, stand);
             return true;
+        }
+
+        /// <summary>The boss's spawn (his room), where his adds' stands are looked for; null when he has none recorded.</summary>
+        private static Vector3? SpawnFloorOf(GameNPC boss) =>
+            boss.SpawnPoint is { } spawn && (spawn.X != 0 || spawn.Y != 0) ? new Vector3(spawn.X, spawn.Y, spawn.Z) : null;
+
+        /// <summary>
+        /// A boss's fight with the raid is on (pure): it or one of its adds is in combat, and one of them is on a raider
+        /// (<see cref="FightsTheRaid"/>). Such an encounter is never set aside because no stand was found this turn: the stands
+        /// are tried again next turn (Aroon, build 5378dbe: set aside with six Scaiths fighting the raid, which killed 68 more).
+        /// </summary>
+        public static bool KeepsFightOn(bool fightOn, bool onTheRaid) => fightOn && onTheRaid;
+
+        private bool FightingTheRaid(GameNPC boss, GameLiving[] participants)
+        {
+            if (!EpicEncounterTactics.FightOn(boss, _live ?? [])) return false;
+            var raiders = participants.Where(p => p.IsAlive && p.CurrentRegionID == _region).ToHashSet<GameLiving>();
+            return KeepsFightOn(true, EpicEncounterTactics.LiveRequiredAdds(boss, _live ?? []).Append(boss)
+                .Any(n => n.InCombat && FightsTheRaid(n, n.TargetObject as GameLiving, raiders)));
+        }
+
+        // When a fight kept on with no stand was last logged.
+        private long _nextStandRetryLog;
+
+        private void KeepFightWithoutStand(GameNPC boss, string why, long now)
+        {
+            if (now < _nextStandRetryLog) return;
+            _nextStandRetryLog = now + 60_000;
+            log.Warn($"REALM_EXPEDITION_TACTIC_KEPT region={_region} encounter=\"{boss.Name}\" at={boss.X},{boss.Y},{boss.Z} " +
+                     $"tactic={EpicEncounterTactics.For(boss)?.Encounter} reason=\"{why}\" " +
+                     $"note=\"it is fighting the raid: not set aside; the stands are tried again\"");
         }
 
         /// <summary>No required add of <paramref name="boss"/> can be fought (no ranged raider sees one from the floor):
@@ -2767,6 +2803,8 @@ namespace DOL.GS
                 {
                     if (TryRequiredAddStand(addOwner, tacticTarget, participants, now, out GameNPC add, out Vector3 stand, out string why))
                         SwitchByTactic(add, $"{tacticReason}; {why}", participants, now, stand);
+                    // A fight in progress is never dropped for want of a stand: the raid stays on the boss and tries again.
+                    else if (FightingTheRaid(addOwner, participants)) KeepFightWithoutStand(addOwner, why, now);
                     else SetTacticAside(addOwner, why, now);
                 }
                 else SwitchByTactic(tacticTarget, tacticReason, participants, now);
@@ -3098,8 +3136,13 @@ namespace DOL.GS
                             _probeCursor = 0; _blockedSince = 0;
                             return;
                         }
-                        SetTacticAside(addOwner, why, now);
-                        continue;
+                        // A fight in progress is never dropped for want of a stand: the raid takes the boss and tries again.
+                        if (FightingTheRaid(addOwner, participants)) { KeepFightWithoutStand(addOwner, why, now); npc = addOwner; }
+                        else
+                        {
+                            SetTacticAside(addOwner, why, now);
+                            continue;
+                        }
                     }
                 }
                 probes++;
