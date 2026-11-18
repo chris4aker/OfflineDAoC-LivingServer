@@ -194,6 +194,8 @@ public static class AutonomousChatBudget
         BotThread,
         /// <summary>The realm reacting to a big moment (a burst): answered below the reply ceiling.</summary>
         Burst,
+        /// <summary>A realm event's own reactions (a keep or relic taken): said as the event, never held (1.2 chat audit, DESIGN-017).</summary>
+        Event,
     }
 
     /// <summary>What the reply budget says about a reply.</summary>
@@ -207,7 +209,7 @@ public static class AutonomousChatBudget
     /// </summary>
     public static ReplyVerdict DecideReply(ReplyKind kind, double measuredPerMinute, (double Target, double Ceiling) band, double roll)
     {
-        if (kind == ReplyKind.Direct)
+        if (kind is ReplyKind.Direct or ReplyKind.Event)
             return ReplyVerdict.Exempt;
         if (band.Ceiling <= 0.0005)
             return ReplyVerdict.Speak;
@@ -507,7 +509,7 @@ public static class AutonomousChatBudget
         catch (Exception)
         {
             // No world (tests without the game loop or properties): replies go out as before.
-            verdict = kind == ReplyKind.Direct ? ReplyVerdict.Exempt : ReplyVerdict.Speak;
+            verdict = kind is ReplyKind.Direct or ReplyKind.Event ? ReplyVerdict.Exempt : ReplyVerdict.Speak;
         }
         AutonomousChatWhy.CountReply(channel, verdict);
         return verdict;

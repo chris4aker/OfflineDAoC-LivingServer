@@ -6,19 +6,33 @@ namespace DOL.GS;
 
 /// <summary>
 /// Replies chosen by the player's situation, not only by the words' intent (Beta 1.1.2, the blind evaluation's fix 3):
-/// goodnights get "gn", "stuck" gets "/stuck", "inc" a direction question or "omw", a call for help an offer to come, a
-/// sale a price or a no, a counter-offer a price, realm news a reaction in kind. Pure: the caller gives the bot's facts and
-/// styles the text. Routes are "context ..." (AutonomousChatReplyFit: known).
+/// goodnights get "gn", "stuck" gets "/stuck", "inc" a direction or count question, a call for help "where are you?", a
+/// sale a price or a no, a counter-offer a price, realm news a reaction in kind, "ready?" the bot's real power and health.
+/// A reply that says the bot is coming ("omw", "ill be there") is said only when <see cref="Facts.TryCome"/> says the bot
+/// really took a duty to go (ChatPromises; 1.2 chat audit, DESIGN-006 and CORPUS-C-018; WRITING-GUIDE "Never"); otherwise
+/// one that promises nothing. Pure apart from that callback: the caller gives the bot's facts and styles the text. Routes are
+/// "context ..." (AutonomousChatReplyFit: known).
 /// </summary>
 public static class AutonomousChatContext
 {
     /// <summary>
     /// What the bot knows of the moment. <paramref name="Channel"/>: faction, say, group, guild or tell. <paramref name="Near"/>:
     /// close enough to come (the same region, or in the player's group). <paramref name="LastBotLine"/>: the bot's own last
-    /// line to this player in this conversation, if any.
+    /// line to this player in this conversation, if any. <paramref name="HealthPercent"/> and <paramref name="PowerPercent"/>: the
+    /// bot's own, for "ready?" (1.2).
     /// </summary>
     public sealed record Facts(string BotName, string PlayerName, string Channel, bool Near, bool CanHeal, bool InRvr, int Level,
-        string LastBotLine = null, string Capital = null);
+        string LastBotLine = null, string Capital = null, int HealthPercent = 100, int PowerPercent = 100)
+    {
+        /// <summary>
+        /// The promise gate (ChatPromises.TryPromiseCome for this bot): true when the bot has taken a real duty to go to the
+        /// place (may be null) for the reason, so it may say "omw". Null: it never promises.
+        /// </summary>
+        public Func<string, ChatPromiseReason, bool> TryCome { get; init; }
+
+        /// <summary>Asks the gate once; true commits the bot.</summary>
+        public bool Comes(string place, ChatPromiseReason reason) => TryCome?.Invoke(place, reason) == true;
+    }
 
     private static string Pick(Random random, params string[] options) => options[random.Next(options.Length)];
 
@@ -44,29 +58,41 @@ public static class AutonomousChatContext
         if (Regex.IsMatch(text, @" (fake inc|false alarm|no inc|nvm inc|inc nvm|not inc|was a pet|just a pet|was nothing) "))
             return ("context inc", Pick(random, "k", "kk", "ok", "k ty"));
         if (Regex.IsMatch(text, @" (free rps|free rp|free realm points|free kills|easy rps|come get rps) "))
-            return ("context rvr", Pick(random, "omw", "on my way", "omw!", "coming", "omw, save me some"));
+            return ("context rvr", facts.Comes(PlaceIn(incoming), ChatPromiseReason.RealmPoints)
+                ? Pick(random, "omw", "on my way", "omw!", "coming", "omw, save me some")
+                : Pick(random, "nice", "save me some", "nice, save me some", "lol nice", "gl, get em"));
+        // 1.2 chat audit (DESIGN-005): "ready?", "we pulling?", "how much power you got": the bot's real power and health.
+        if (shape == "ask_ready" && facts.Channel is "group" or "say" or "tell")
+            return ("context ready", Ready(facts, random));
+        if (shape == "ask_who_pulls" && facts.Channel is "group" or "say" or "tell")
+            return ("context ready", facts.PowerPercent < 50 || facts.HealthPercent < 60 ? Ready(facts, random)
+                : Pick(random, "you pull", "your call", "you, go ahead", "go ahead, im ready", "whoever, im rdy"));
         if (Stuck(words, text))
             return ("context stuck", Pick(random, "/stuck", "type /stuck", "try /stuck, takes a few secs", "/stuck works for that", "/stuck then run back",
                 "/stuck, happens to everyone"));
         if (intent == eAutonomousChatIntent.Farewell)
             return ("context farewell", Farewell(text, player, random));
-        // A warning ("stealthers near the dock watch out") gets thanks from its own set; a call ("inc 3 albs at amg") a question or "omw".
+        // A warning ("stealthers near the dock watch out") gets thanks from its own set; a call ("inc 3 albs at amg") a question.
         // "inc": never ask what the line already says (blind round 2: "zerg at mmg, 40+ hibs" drew "how many?").
+        // 1.2 chat audit (DESIGN-006, CORPUS-C-018): "omw" only from a bot the promise gate sends there; any other reacts, and one
+        // already in the frontier may say it has seen them.
         if (intent == eAutonomousChatIntent.Alarm && shape != "player_headsup")
         {
             bool place = NamesAPlace(incoming, text), count = SaysHowMany(text);
-            bool come = facts.Near || facts.InRvr || facts.Level >= 35;
             if (facts.Channel == "group")
-                return ("context inc", place || count ? Pick(random, "on it", "k", "got it", "ok") : Pick(random, "where", "where?", "which way", "where?!"));
-            string reply = place && count ? come ? Pick(random, "omw", "on my way", "omw, 2 min", "coming", "omw!!") : Pick(random, "ugh", "ugh, again", "gl all", "not again")
-                : place ? come ? Pick(random, "omw", "omw, how many?", "how many?", "coming") : Pick(random, "how many?", "how many are there?")
+                return ("context inc", place || count ? Pick(random, "k", "got it", "ok", "k ty") : Pick(random, "where", "where?", "which way", "where?!"));
+            bool comes = place && facts.Comes(PlaceIn(incoming), ChatPromiseReason.Alarm);
+            string reply = place && count ? comes ? Pick(random, "omw", "on my way", "coming", "omw!!")
+                    : facts.InRvr ? Pick(random, "seen them", "ugh, again", "k ty", "not again") : Pick(random, "ugh", "ugh, again", "gl all", "not again", "k ty")
+                : place ? comes ? Pick(random, "omw", "omw, how many?", "coming")
+                    : facts.InRvr ? Pick(random, "how many?", "seen them, ugh", "how many are there?") : Pick(random, "how many?", "how many are there?", "ugh, again")
                 : count ? Pick(random, "where?", "where at?", "where??")
                 : Pick(random, "where?", "where at?", "how many and where?", "where");
             return ("context inc", reply);
         }
         if (shape == "player_help")
             return ("context help", Help(text, facts, random));
-        if (RealmNews(text, random) is { } news)
+        if (RealmNews(text, facts, random) is { } news)
             return ("context rvr", news);
         if (intent == eAutonomousChatIntent.Trading || Selling(text) || Buying(text))
         {
@@ -79,6 +105,21 @@ public static class AutonomousChatContext
                     "sold my last one, sorry", "nope, gl"));
         }
         return null;
+    }
+
+    /// <summary>The place a line names, as a place key, or null (what the promise gate is told).</summary>
+    private static string PlaceIn(string line) => AutonomousChatQuestions.PlaceNamed(line, AutonomousChatPlaces.All)?.Key;
+
+    /// <summary>"rdy", "need pow", "sec, low hp": what the bot's own power and health say about going on (DESIGN-005). Pure.</summary>
+    public static string Ready(Facts facts, Random random)
+    {
+        if (facts.PowerPercent < 40)
+            return Pick(random, "need pow", "oom, sec", "need to med", "low pow, sec", $"{facts.PowerPercent}% pow, sec");
+        if (facts.HealthPercent < 60)
+            return Pick(random, "sec, low hp", "need hp", "hp first, sec");
+        if (facts.PowerPercent < 70)
+            return Pick(random, $"{facts.PowerPercent}% pow, ok to go", "half pow but ok", "go, im ok");
+        return Pick(random, "rdy", "ready", "yep", "go", "rdy when u are", "full pow, go");
     }
 
     private static bool Stuck(string[] words, string text) =>
@@ -107,29 +148,45 @@ public static class AutonomousChatContext
         if (Regex.IsMatch(text, @" quest "))
             return Pick(random, "which quest?", "what quest?", "sure, which one?");
         if (Regex.IsMatch(text, @" corpse run "))
-            return facts.Near ? Pick(random, "omw, where in there?", "how deep?", "sure, where?") : Pick(random, "how deep?", "where in there?");
+            return facts.Near && facts.Comes(PlaceIn(text), ChatPromiseReason.Help) ? Pick(random, "omw, where in there?", "sure, where?")
+                : Pick(random, "how deep?", "where in there?", "how far in?");
+        // 1.2 chat audit (DESIGN-006): "omw", "coming" or "healing" only from a bot the promise gate sends; any other asks where.
         bool close = facts.Near || facts.Channel is "say" or "group";
-        if (close && facts.CanHeal && Regex.IsMatch(text, @" (heal|heals|healing|dying|low hp|oom|getting hit|killing me) "))
-            return Pick(random, "healing", "got u", "hold on, healing", "heals coming", "on it");
-        if (close)
-            return Pick(random, "omw", "hang on", "coming, hold on", "on it", "hold on!", "omw hang in there");
+        bool healCall = facts.CanHeal && Regex.IsMatch(text, @" (heal|heals|healing|dying|low hp|oom|getting hit|killing me) ");
+        if (close && facts.Comes(PlaceIn(text), healCall ? ChatPromiseReason.Heal : ChatPromiseReason.Help))
+            return healCall ? Pick(random, "healing", "got u", "hold on, healing", "heals coming", "on it")
+                : Pick(random, "omw", "hang on", "coming, hold on", "on it", "hold on!", "omw hang in there");
+        if (healCall)
+            return Pick(random, "where r u?", "where are you?", "where at?");
         return Pick(random, "where are you?", "whats up?", "what do u need?", "where at?", "whats wrong?");
     }
 
     /// <summary>A reaction in kind to the realm's news a player reports ("DF is ours again", "they got our pwr relic, ugh",
     /// "relic raid at 9, meet at portal keep", "Emain is hot tonight").</summary>
-    private static string RealmNews(string text, Random random)
+    private static string RealmNews(string text, Facts facts, Random random)
     {
         if (Regex.IsMatch(text, @" (is ours|are ours|ours again|we took|we got (it|the|their)|took (it )?back|we won|we hold) "))
-            return Pick(random, "nice!", "finally", "woot", "about time", "gj all", "\\o/");
+            return Pick(random, "nice!", "finally", "woot", "about time", "gj all", "yay");
+        // 1.2 chat audit (DESIGN-006, CORPUS-C-018, TEXT-010): no "omw", "ill be there" or "count me in": the bot will not come.
         if (Regex.IsMatch(text, @" (got our|took our|lost our|taking our|have our|stole our) "))
-            return Pick(random, "ugh", "again??", "not again", "where are they?", "omw", "how many?");
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "omw, where are they?")
+                : Pick(random, "ugh", "again??", "not again", "where are they?", "how many?");
         if (Regex.IsMatch(text, @" (raid|meet|forming|form up) .*(at \d|at the|tonight|tmrw|tomorrow) |(at \d{1,2}|tonight) .*(raid|meet) "))
-            return Pick(random, "ill be there", "count me in", "x", "might make it", "ill try to make it", "k ill be there");
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.RaidTime) ? Pick(random, "ill be there", "count me in", "x", "k ill be there")
+                : Pick(random, "might make it", "ill try to make it", "maybe, depends when i get on", "good luck all", "where do we meet?");
         if (Regex.IsMatch(text, @" (is hot|is busy|zerg at|zerg in|everywhere|swarming) "))
-            return Pick(random, "omw", "how many?", "where at?", "nice, omw");
+            return facts.Comes(PlaceIn(text), ChatPromiseReason.Alarm) ? Pick(random, "omw", "nice, omw")
+                : Pick(random, "how many?", "where at?", "nice", "busy night");
         return null;
     }
+
+    /// <summary>Whether a call names where (1.2: public for the bot-to-bot alarm replies, CORPUS-C-053). Pure.</summary>
+    public static bool CallNamesAPlace(string incoming) =>
+        NamesAPlace(incoming, " " + string.Join(' ', AutonomousChatIntentModel.Words(incoming).Select(word => word.Replace("'", string.Empty))) + " ");
+
+    /// <summary>Whether a call says how many (CORPUS-C-053). Pure.</summary>
+    public static bool CallSaysHowMany(string incoming) =>
+        SaysHowMany(" " + string.Join(' ', AutonomousChatIntentModel.Words(incoming).Select(word => word.Replace("'", string.Empty))) + " ");
 
     private static bool NamesAPlace(string incoming, string text) =>
         Regex.IsMatch(text, @" (at|near|by|in|on|outside|behind|inside) (the )?[a-z]{3,}") ||

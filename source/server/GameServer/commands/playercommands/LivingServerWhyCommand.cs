@@ -158,6 +158,7 @@ namespace DOL.GS.Commands
 		private static void Budget(GameClient client, GamePlayer player, long now)
 		{
 			int bots = AutonomousBotChatCoordinator.RealmBots(player.Realm);
+			bool gm = client.Account?.PrivLevel > 1;
 			client.Out.SendMessage($"Chat budget for {GlobalConstants.RealmToName(player.Realm)}, {bots} gamebots online, hour {DateTime.Now.Hour} (lines a minute):",
 				eChatType.CT_System, eChatLoc.CL_SystemWindow);
 			void Line(string label, AutonomousChatBudget.Channel channel, long key, int count)
@@ -169,8 +170,10 @@ namespace DOL.GS.Commands
 					? AutonomousChatBudget.Meter.AmbientPerMinute(channel, key, now, band.Target)
 					: AutonomousChatBudget.Meter.PerMinute(channel, key, now, AutonomousChatBudget.LineKind.Ambient, AutonomousChatBudget.WindowMs(band.Target));
 				string text = $"  {label}: {measured:0.00} now; floor {band.Floor:0.00}, target {band.Target:0.00}, ceiling {band.Ceiling:0.00}" +
-					$" (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Gap)} gap, {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Ceiling)} ceiling)";
-				if (replies.Ceiling > 0)
+					(gm ? $" (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Gap)} gap, {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.Ceiling)} ceiling)" : "");
+				if (replies.Ceiling > 0 && !gm)
+					text += $"; replies {AutonomousChatBudget.Meter.RepliesPerMinute(channel, key, now, replies.Target):0.00} now, target {replies.Target:0.00}, ceiling {replies.Ceiling:0.00}";
+				else if (replies.Ceiling > 0)
 					text += $"; replies {AutonomousChatBudget.Meter.RepliesPerMinute(channel, key, now, replies.Target):0.00} now, target {replies.Target:0.00}, " +
 						$"ceiling {replies.Ceiling:0.00} (held back: {AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.ReplyTarget)} target, " +
 						$"{AutonomousChatWhy.HeldCount(channel, AutonomousChatWhy.Held.ReplyCeiling)} ceiling; let through {AutonomousChatWhy.RepliesAllowed(channel)})";
@@ -187,8 +190,11 @@ namespace DOL.GS.Commands
 				Line("your guild", AutonomousChatBudget.Channel.Guild, AutonomousBotGuildSocial.KeyOf(player.Guild), player.Guild.GetOnlineBotMembers().Length + 1);
 			if (player.Group != null)
 				Line("your group", AutonomousChatBudget.Channel.Group, AutonomousBotGroupChatter.KeyOf(player.Group), 0);
-			client.Out.SendMessage($"  A reply to you needs a fit of {AutonomousChatBudget.MinReplyFit} (4 known, 3 specific, 2 fits, 1 weak). " +
-				"A tell, or a line that names a bot, is always answered.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			client.Out.SendMessage(gm
+					? $"  A reply to you needs a fit of {AutonomousChatBudget.MinReplyFit} (4 known, 3 specific, 2 fits, 1 weak). " +
+					  "A tell, or a line that names a bot, is answered, after its fight if it is busy."
+					: "  A bot answers you only with a reply that fits what you said. A tell, or a line that names a bot, is answered, after its fight if it is busy.",
+				eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
 		private static void Show(GameClient client, string title, List<AutonomousChatWhy.Decision> decisions, long now)
@@ -199,8 +205,11 @@ namespace DOL.GS.Commands
 				return;
 			}
 			client.Out.SendMessage(title, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			// 1.2 chat audit (TEXT-043): a player reads what happened and why; codes, rules, scores and line ids are for GMs.
+			bool gm = client.Account?.PrivLevel > 1;
 			foreach (AutonomousChatWhy.Decision decision in decisions)
-				client.Out.SendMessage("  " + AutonomousChatWhy.Describe(decision, now), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+				client.Out.SendMessage("  " + (gm ? AutonomousChatWhy.Describe(decision, now) : AutonomousChatWhy.DescribeForPlayer(decision, now)),
+					eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 	}
 }

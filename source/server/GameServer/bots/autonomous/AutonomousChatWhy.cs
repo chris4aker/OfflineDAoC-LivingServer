@@ -35,7 +35,6 @@ public static class AutonomousChatWhy
         public const string ReplyInBudget = "reply-in-budget";
         public const string ReplyOverTarget = "reply-over-target";
         public const string PileOn = "pileon";
-        public const string Fits = "fits";
         public const string ShortBelowMinimum = "short-below-minimum";
         public const string RescueBelowMinimum = "rescue-below-minimum";
         public const string SelfKnowledge = "self-knowledge";
@@ -57,6 +56,16 @@ public static class AutonomousChatWhy
         public const string NoFit = "no-fit";
         public const string Held = "held";
         public const string Sent = "sent";
+        // 1.2 chat audit (DESIGN-017): a realm event's line said over the reply ceiling (events are not held).
+        public const string ExemptEvent = "exempt-event";
+        // 1.2 chat audit (DESIGN-004): why a player's line was dropped before any bot looked at an answer.
+        public const string Cooldown = "cooldown";
+        public const string AllBusy = "all-busy";
+        public const string ThreadConsumed = "thread-consumed";
+        public const string BusyAtSend = "busy-at-send";
+        public const string OutOfWorld = "out-of-world";
+        public const string HandledElsewhere = "handled-elsewhere";
+        public const string BusyAck = "busy-ack";
 
         /// <summary>The code a reply budget verdict is recorded with.</summary>
         public static string Of(AutonomousChatBudget.ReplyVerdict verdict, AutonomousChatBudget.ReplyKind kind) => verdict switch
@@ -64,7 +73,7 @@ public static class AutonomousChatWhy
             AutonomousChatBudget.ReplyVerdict.HoldCeiling => HoldReplyCeiling,
             AutonomousChatBudget.ReplyVerdict.HoldTarget => HoldReplyTarget,
             AutonomousChatBudget.ReplyVerdict.SpeakOverTarget => ReplyOverTarget,
-            AutonomousChatBudget.ReplyVerdict.Exempt => ExemptNamed,
+            AutonomousChatBudget.ReplyVerdict.Exempt => kind == AutonomousChatBudget.ReplyKind.Event ? ExemptEvent : ExemptNamed,
             _ => kind == AutonomousChatBudget.ReplyKind.PileOn ? PileOn : ReplyInBudget,
         };
     }
@@ -137,6 +146,15 @@ public static class AutonomousChatWhy
         string code = null) =>
         Record(new Decision(at ?? Now(), 0, null, realm, channel, trigger, "silent", rule, score, null, reason, null, to) { Code = code });
 
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-004): a player's line dropped before a reply was chosen, with its code (<see cref="Codes.Cooldown"/>,
+    /// <see cref="Codes.AllBusy"/>, <see cref="Codes.ThreadConsumed"/>, <see cref="Codes.BusyAtSend"/>, <see cref="Codes.OutOfWorld"/>,
+    /// <see cref="Codes.HandledElsewhere"/>), so <c>/lswhy me</c> is never empty where a line went unanswered.
+    /// </summary>
+    public static void Dropped(string player, eRealm realm, string channel, string code, string reason, string bot = null, long botId = 0) =>
+        Record(new Decision(Now(), botId, bot, realm, channel, "player " + player, "silent", "dropped " + code, 0, null, reason, null, player)
+            { Code = code });
+
     /// <summary>The newest decisions about lines a player said (and a bot answered or didn't), for <c>/lswhy me</c> (1.2).</summary>
     public static List<Decision> ForPlayer(string name, int max) =>
         Recent(max, decision => !string.IsNullOrEmpty(name) && string.Equals(decision.To, name, StringComparison.OrdinalIgnoreCase));
@@ -182,7 +200,31 @@ public static class AutonomousChatWhy
         return last.Count > 0 ? last[0].BotId : 0;
     }
 
-    /// <summary>A decision as one readable line: how long ago, where, what, by which rule and why.</summary>
+    /// <summary>
+    /// A decision as a player reads it (1.2 chat audit, TEXT-043): how long ago, where, who, what it did and why, with no codes,
+    /// rules, scores or line ids ("2m ago [faction] Aldric said: answers what was asked -> "try the barrows"").
+    /// </summary>
+    public static string DescribeForPlayer(in Decision decision, long now)
+    {
+        var text = new StringBuilder(160);
+        long ago = Math.Max(0, now - decision.At) / 1000;
+        text.Append(ago < 120 ? $"{ago}s ago" : $"{ago / 60}m ago").Append(" [").Append(decision.Channel).Append("] ");
+        bool named = !string.IsNullOrEmpty(decision.Bot);
+        text.Append(decision.Outcome switch
+        {
+            "said" or "ack" => (named ? decision.Bot : "a bot") + " said",
+            "pileon" => (named ? decision.Bot : "a bot") + " joined in",
+            "held" => (named ? decision.Bot : "a bot") + " was held back",
+            _ => named ? decision.Bot + " stayed silent" : "nobody answered",
+        });
+        if (!string.IsNullOrEmpty(decision.Reason))
+            text.Append(": ").Append(decision.Reason);
+        if (!string.IsNullOrEmpty(decision.Text))
+            text.Append(" -> \"").Append(decision.Text).Append('"');
+        return text.ToString();
+    }
+
+    /// <summary>A decision as one readable line for a GM: how long ago, where, what, by which rule and why.</summary>
     public static string Describe(in Decision decision, long now)
     {
         var text = new StringBuilder(160);
