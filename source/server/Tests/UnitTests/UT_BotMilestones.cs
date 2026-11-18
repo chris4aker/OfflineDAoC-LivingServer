@@ -219,10 +219,37 @@ namespace DOL.UnitTests
             Assert.That(BotMilestoneTalk.Pick(false, false, false, false, false, true), Is.EqualTo(BotMilestoneChannel.None), "nobody hears");
             Assert.That(BotMilestoneTalk.Pick(true, true, true, true, true, true), Is.EqualTo(BotMilestoneChannel.Faction), "the moment is realm news");
             Assert.That(BotMilestoneTalk.Pick(true, false, true, true, true, false), Is.EqualTo(BotMilestoneChannel.Guild));
+            // The realm's turn outside /faction: one group, /say or guild line a minute.
+            Assert.That(BotMilestoneTalk.Pick(false, true, true, true, true, true, localGapOpen: false), Is.EqualTo(BotMilestoneChannel.Faction));
+            Assert.That(BotMilestoneTalk.Pick(false, true, true, true, false, true, localGapOpen: false), Is.EqualTo(BotMilestoneChannel.None));
+            Assert.That(BotMilestoneTalk.Pick(true, true, true, true, true, false, localGapOpen: false), Is.EqualTo(BotMilestoneChannel.None),
+                "a second winner seconds later has no channel: its moment is folded");
+            Assert.That(BotMilestoneTalk.LocalGapOpen(BotMilestoneTalk.LocalGapMs, 0), Is.True);
+            Assert.That(BotMilestoneTalk.LocalGapOpen(BotMilestoneTalk.LocalGapMs - 1, 0), Is.False);
             Assert.That(BotMilestoneTalk.FactionGapOpen(BotMilestoneTalk.FactionGapMs, 0), Is.True);
             Assert.That(BotMilestoneTalk.FactionGapOpen(BotMilestoneTalk.FactionGapMs - 1, 0), Is.False);
             for (int seed = 0; seed < 50; seed++)
                 Assert.That(BotMilestoneTalk.TypingDelayMs(new Random(seed)), Is.InRange(2_000, 5_999));
+        }
+
+        [Test]
+        public void A_bot_busy_fighting_tries_again_in_15_to_30_seconds_at_most_8_times()
+        {
+            for (int seed = 0; seed < 200; seed++)
+                Assert.That(BotMilestoneTalk.BusyRetryMs(new Random(seed)), Is.InRange(15_000, 30_000));
+            Assert.That(BotMilestoneTalk.RetriesWhenBusy(0), Is.True);
+            Assert.That(BotMilestoneTalk.RetriesWhenBusy(BotMilestoneTalk.MaxBusyTries - 1), Is.True);
+            Assert.That(BotMilestoneTalk.RetriesWhenBusy(BotMilestoneTalk.MaxBusyTries), Is.False, "then it waits the 10 minutes");
+            Assert.That(BotMilestoneTalk.MaxBusyTries * 30_000L, Is.LessThan(BotMilestoneTalk.RetryMs), "bounded: under the long wait");
+        }
+
+        [Test]
+        public void Only_a_real_boss_is_a_big_kill_never_a_bosss_add()
+        {
+            Assert.That(BotMilestones.IsBigKill(epicAdd: true, raidBossType: false), Is.False, "Xanxicar's champions, shades, rains of fire");
+            Assert.That(BotMilestones.IsBigKill(epicAdd: false, raidBossType: false), Is.True, "an epic boss, a dragon");
+            Assert.That(BotMilestones.IsBigKill(epicAdd: true, raidBossType: true), Is.True, "a class a raid names as its boss stays one");
+            Assert.That(BotMilestones.IsBigKill(epicAdd: false, raidBossType: true), Is.True);
         }
 
         [Test]
@@ -235,7 +262,9 @@ namespace DOL.UnitTests
             Assert.That(BotMilestones.Topic(BotMilestoneArc.RealmRank5, 90, 0), Is.EqualTo("rr5_close"));
             Assert.That(BotMilestones.Topic(BotMilestoneArc.DragonTrophy, 50, 0), Is.EqualTo("trophy_try"));
             Assert.That(BotMilestones.ReachedTopic(BotMilestoneArc.Ding50), Is.Null, "the ding's own line and the grats chain are its moment");
-            Assert.That(BotMilestones.ReachedTopic(BotMilestoneArc.DragonTrophy), Is.EqualTo("trophy_reached"));
+            Assert.That(BotMilestones.ReachedTopic(BotMilestoneArc.DragonTrophy), Is.EqualTo("trophy_reached"), "a first win claims no wait");
+            Assert.That(BotMilestones.ReachedTopic(BotMilestoneArc.DragonTrophy, 1), Is.EqualTo("trophy_reached_wait"));
+            Assert.That(BotMilestones.ReachedTopic(BotMilestoneArc.RealmRank5, 3), Is.EqualTo("rr5_reached"));
         }
 
         [Test]
@@ -245,6 +274,7 @@ namespace DOL.UnitTests
                 [4, 1, 2]);
             Assert.That(line, Does.StartWith("BOT_MILESTONE_SUMMARY seconds=300 active=ding50:4,rr5:1,dragon_trophy:2 chosen=3 "));
             Assert.That(line, Does.Contain("talks=group:0,say:0,guild:0,faction:1").And.Contain("reached=ding50:0,rr5:2,dragon_trophy:0"));
+            Assert.That(line, Does.Contain(" busy=0 ").And.Contain(" unsought=0 folded=0 "));
         }
 
         // ---- the arc's life in the store -------------------------------------------------------------------------------------
@@ -318,13 +348,57 @@ namespace DOL.UnitTests
             Assert.That(BotMilestoneLife.Advance(store, at50, now, new BotMilestoneRaidKill("Gjalpinulva", "Another Scale")).Where(e => e.Step == BotMilestoneStep.Reached),
                 Is.Empty, "one trophy arc per character");
 
-            // A raid kill means nothing to a bot chasing something else.
-            var otherStore = new BotPeopleStore(() => null);
-            var daredevil = Personality(BotPersonalityType.Daredevil, risk: 9, sociability: 1);
-            BotMilestoneSubject rvrBot = Subject(50, realmPoints: 10, personality: daredevil, id: 99);
-            BotMilestoneLife.Advance(otherStore, rvrBot, now);
-            Assert.That(BotMilestoneLife.Advance(otherStore, rvrBot, now, new BotMilestoneRaidKill("Gjalpinulva", "Scale")), Is.Empty);
-            Assert.That(BotMilestoneLife.ActiveRow(otherStore, rvrBot.Person, 99).Count, Is.Zero);
+        }
+
+        [Test]
+        public void A_drop_won_while_chasing_something_else_is_remembered_so_no_bot_ever_says_it_won_nothing()
+        {
+            // A No-lifer leans both ways (BotMilestones.Choose): find one whose first arc is realm rank 5.
+            var store = new BotPeopleStore(() => null);
+            var nolifer = Personality(BotPersonalityType.NoLifer, risk: 8);
+            long id = Enumerable.Range(1, 500).First(i => BotMilestones.Choose(50, 0, nolifer, i, _ => null) == BotMilestoneArc.RealmRank5);
+            var now = DateTime.UtcNow;
+            BotMilestoneSubject bot = Subject(50, realmPoints: 10, personality: nolifer, id: id);
+            Assert.That(BotMilestoneLife.Advance(store, bot, now).Single().Arc, Is.EqualTo(BotMilestoneArc.RealmRank5));
+
+            // A big kill without a drop means nothing to a bot chasing realm rank 5.
+            Assert.That(BotMilestoneLife.Advance(store, bot, now, new BotMilestoneRaidKill("Gjalpinulva", null)), Is.Empty);
+            Assert.That(store.Milestones.TryGet((bot.Person, id, "dragon_trophy"), out _), Is.False);
+
+            // A drop is its trophy, there and then, though it never chased one.
+            var events = BotMilestoneLife.Advance(store, bot, now, new BotMilestoneRaidKill("Gjalpinulva", "Gjalpinulva's Scale"));
+            BotMilestoneEvent won = events.Single();
+            Assert.That((won.Step, won.Arc, won.Unsought), Is.EqualTo((BotMilestoneStep.Reached, BotMilestoneArc.DragonTrophy, true)));
+            Assert.That((won.Row.State, won.Row.Trophy, won.Row.Source), Is.EqualTo((OfflineBotMilestoneRecord.Reached, "Gjalpinulva's Scale", "Gjalpinulva")));
+            Assert.That(BotMilestoneLife.ActiveRow(store, bot.Person, id).Arc, Is.EqualTo("rr5"), "it goes on chasing realm rank 5");
+            Assert.That(BotMilestoneLife.Advance(store, bot, now, new BotMilestoneRaidKill("Gjalpinulva", "Another")), Is.Empty, "one trophy");
+
+            // Realm rank 5 reached: the trophy arc is never taken (it is reached), so "not one item for me" is never said.
+            events = BotMilestoneLife.Advance(store, bot with { RealmPoints = 513_500, RealmLevel = 40 }, now);
+            Assert.That(events.Select(e => (e.Step, e.Arc)), Is.EqualTo(new[] { (BotMilestoneStep.Reached, BotMilestoneArc.RealmRank5) }));
+            Assert.That(BotMilestoneLife.ActiveRow(store, bot.Person, id), Is.Null);
+
+            // Below level 45 too: a drop won at 40 is remembered, and nothing else starts.
+            var young = Subject(40, personality: Personality(BotPersonalityType.Socialite), id: 4040);
+            Assert.That(BotMilestoneLife.Advance(store, young, now, new BotMilestoneRaidKill("Orylle", null)), Is.Empty);
+            events = BotMilestoneLife.Advance(store, young, now, new BotMilestoneRaidKill("Orylle", "Orylle's Ring"));
+            Assert.That(events.Single().Unsought, Is.True);
+            Assert.That(BotMilestoneLife.Advance(store, young with { Level = 50 }, now), Is.Empty, "at 50 its trophy is already won");
+        }
+
+        [Test]
+        public void A_moment_stamps_the_bots_last_talk_on_its_next_arc()
+        {
+            var store = new BotPeopleStore(() => null);
+            var daredevil = Personality(BotPersonalityType.Daredevil, risk: 8, sociability: 2);
+            var now = new DateTime(2026, 11, 17, 20, 0, 0, DateTimeKind.Utc);
+            BotMilestoneLife.Advance(store, Subject(49, XpAt(49), personality: daredevil), now);
+            BotMilestoneLife.Advance(store, Subject(50, XpAt(50), realmPoints: 300_000, personality: daredevil), now);
+            OfflineBotMilestoneRecord next = BotMilestoneLife.ActiveRow(store, BotPersonKey.Character(1234), 1234);
+            Assert.That((next.Arc, next.LastTalkUtc), Is.EqualTo(("rr5", string.Empty)));
+            BotMilestoneLife.StampTalk(store, BotPersonKey.Character(1234), 1234, now);
+            Assert.That(DateTime.Parse(next.LastTalkUtc, null, System.Globalization.DateTimeStyles.AdjustToUniversal), Is.EqualTo(now),
+                "the next arc's talk point (already past halfway) keeps the 15 minutes after the ding");
         }
 
         [Test]
@@ -404,7 +478,7 @@ namespace DOL.UnitTests
         private static readonly (string Topic, int Level)[] Topics =
         [
             ("ding50_half", 45), ("ding50_half", 49), ("ding50_bubbles", 49), ("ding50_close", 47), ("rr5_half", 50), ("rr5_close", 50),
-            ("rr5_reached", 50), ("trophy_try", 50), ("trophy_long", 50), ("trophy_reached", 50),
+            ("rr5_reached", 50), ("trophy_try", 50), ("trophy_long", 50), ("trophy_reached", 50), ("trophy_reached_wait", 50),
         ];
 
         [Test]
@@ -445,10 +519,148 @@ namespace DOL.UnitTests
                 Assert.That(Regex.IsMatch(line.Text, @"\b(epic|artifact|armou?r)\b", RegexOptions.IgnoreCase), Is.False, "decisions 2 and 3: " + line.Text);
             }
             Assert.That(lines.Where(l => l.Topic == "ding50_bubbles").All(l => l.Text.Contains("{bubbles}")), Is.True);
-            Assert.That(lines.Where(l => l.Topic == "trophy_reached").All(l => l.Text.Contains("{item}") && l.Text.Contains("{boss}")), Is.True);
+            Assert.That(lines.Where(l => l.Topic.StartsWith("trophy_reached")).All(l => l.Text.Contains("{item}") && l.Text.Contains("{boss}")), Is.True);
+            // No line says what no number backs (review 2026-11-17): a first win is never "finally" or "worth the wait", and
+            // no line counts deaths, raids or hours the server does not count for it.
+            Assert.That(lines.Where(l => l.Topic == "trophy_reached").Select(l => l.Text)
+                .Where(t => Regex.IsMatch(t, @"\b(finally|at last|wait|about time|all those|every raid|turn)\b")), Is.Empty);
+            Assert.That(lines.Select(l => l.Text).Where(t => Regex.IsMatch(t, @"\b(died|deaths?|twice|hours?|every night|at least the xp)\b")), Is.Empty);
             Assert.That(lines.Where(l => l.Topic == "trophy_long").All(l => l.Text.Contains("{count}")), Is.True);
             Assert.That(lines.Where(l => l.Topic.StartsWith("ding50")).All(l => l.LevelLow >= 45 && l.LevelHigh <= 49), Is.True);
             Assert.That(lines.Where(l => !l.Topic.StartsWith("ding50")).All(l => l.LevelLow == 50), Is.True);
+        }
+    }
+
+    /// <summary>
+    /// The scope around a big raid kill's loot (AbstractServerRules.OnNpcKilled opens it; GameBot.TryAutoPickUpItem reports
+    /// each item really stored): an add's death and an add's drop are nothing; at a boss the raider that received an item
+    /// has its trophy with that item and that boss, and the raiders that received nothing have a kill without a drop.
+    /// Gamebots without a world (DutyLeaseTestKit). Tests only.
+    /// </summary>
+    [TestFixture, NonParallelizable]
+    public class UT_BotMilestonesRaidLoot : DutyLeaseFixture
+    {
+        public sealed class Champion : GameEpicNPC { }
+        public sealed class Dragon : GameEpicBoss { }
+
+        private BotPeopleStore _previous;
+
+        [SetUp]
+        public void UseAStore()
+        {
+            _previous = BotPeopleStore.UseForTests(new BotPeopleStore(() => null));
+            BotMilestoneLife.ResetForTests();
+        }
+
+        [TearDown]
+        public void RestoreTheStore() => BotPeopleStore.UseForTests(_previous);
+
+        private static T Npc<T>(string name) where T : GameNPC
+        {
+            var npc = (T)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(T));
+            typeof(GameObject).GetField("m_name", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(npc, name);
+            return npc;
+        }
+
+        /// <summary>A level 50 gamebot whose id leans to raids and not to RvR, so its arc is the dragon trophy.</summary>
+        private static DutyLeaseTestKit.Bot Raider(ref long from)
+        {
+            DutyLeaseTestKit.Bot bot = DutyLeaseTestKit.Gamebot();
+            for (long id = from; ; id++)
+            {
+                BotPersonality? p = AutonomousBotPersonality.Enabled ? AutonomousBotPersonality.For(id) : null;
+                if (!BotMilestones.LeansRaid(p, id) || BotMilestones.LeansRvr(p, id))
+                    continue;
+                bot.DatabaseID = id;
+                from = id + 1;
+                return bot;
+            }
+        }
+
+        [Test]
+        public void An_add_is_no_big_kill_and_a_boss_is()
+        {
+            Assert.That(BotMilestoneLife.IsBigKill(Npc<Champion>("xanxicarian champion")), Is.False);
+            Assert.That(BotMilestoneLife.IsBigKill(Npc<GameEpicDungeonNPC>("shade of Aelfgar")), Is.False);
+            Assert.That(BotMilestoneLife.IsBigKill(Npc<Dragon>("Cuuldurach the Glimmer King")), Is.True);
+            Assert.That(BotMilestoneLife.IsBigKill(null), Is.False);
+            foreach (string boss in new[] { "Xanxicar", "HibCuuldurach", "Legion", "KingTuscar", "Olcasgean" })
+                Assert.That(AutonomousRealmRaid.RaidIdForBoss(boss), Is.Not.Null, boss + " is a raid's boss");
+        }
+
+        [Test]
+        public void An_adds_death_and_drop_are_nothing_and_a_bosss_drop_is_the_winners_trophy()
+        {
+            long from = 7_500_000_000;
+            DutyLeaseTestKit.Bot winner = Raider(ref from), other = Raider(ref from), outsider = Raider(ref from);
+            BotPeopleStore store = BotPeopleStore.Current;
+            BotMilestoneLife.OnLoggedIn(winner);
+            BotMilestoneLife.OnLoggedIn(other);
+            OfflineBotMilestoneRecord RowOf(GameBot bot) =>
+                store.Milestones.TryGet((BotPersonKey.Of(bot), bot.DatabaseID, "dragon_trophy"), out var row) ? row : null;
+            Assert.That(RowOf(winner)?.State, Is.EqualTo(OfflineBotMilestoneRecord.Active), "a raid leaning at 50: the trophy arc");
+            Assert.That(RowOf(other)?.State, Is.EqualTo(OfflineBotMilestoneRecord.Active));
+            var scale = new DbInventoryItem { Name = "Glimmering Scale" };
+
+            // Twelve champions die in one fight, and one drops something: nobody's count moves, nobody has a trophy.
+            for (int i = 0; i < 12; i++)
+                using (BotMilestoneLife.RaidLootScope add = BotMilestoneLife.RaidLoot(Npc<Champion>("xanxicarian champion"), [winner, other]))
+                {
+                    Assert.That(add.IsOpen, Is.False);
+                    BotMilestoneLife.OnItemReceived(winner, new DbInventoryItem { Name = "champion's shard" });
+                    Assert.That(add.WonBy(winner), Is.Null);
+                }
+            Assert.That((RowOf(winner).Count, RowOf(winner).State, RowOf(other).Count), Is.EqualTo((0, OfflineBotMilestoneRecord.Active, 0)));
+
+            // Outside any kill a pickup is nothing.
+            BotMilestoneLife.OnItemReceived(winner, scale);
+            Assert.That(RowOf(winner).State, Is.EqualTo(OfflineBotMilestoneRecord.Active));
+
+            // The dragon: the winner's first item is its trophy; a raider outside the roster and a second item are not.
+            using (BotMilestoneLife.RaidLootScope kill = BotMilestoneLife.RaidLoot(Npc<Dragon>("Cuuldurach the Glimmer King"), [winner, other, null, winner]))
+            {
+                Assert.That(kill.IsOpen, Is.True);
+                BotMilestoneLife.OnItemReceived(outsider, scale);
+                BotMilestoneLife.OnItemReceived(winner, scale);
+                BotMilestoneLife.OnItemReceived(winner, new DbInventoryItem { Name = "a second drop" });
+                Assert.That((kill.WonBy(winner), kill.WonBy(other), kill.WonBy(outsider)), Is.EqualTo(("Glimmering Scale", (string)null, (string)null)));
+                Assert.That(RowOf(winner).State, Is.EqualTo(OfflineBotMilestoneRecord.Active), "settled when the loot is done");
+            }
+            Assert.That((RowOf(winner).State, RowOf(winner).Trophy, RowOf(winner).Source, RowOf(winner).Count),
+                Is.EqualTo((OfflineBotMilestoneRecord.Reached, "Glimmering Scale", "Cuuldurach the Glimmer King", 0)));
+            Assert.That((RowOf(other).State, RowOf(other).Count, RowOf(other).Source),
+                Is.EqualTo((OfflineBotMilestoneRecord.Active, 1, "Cuuldurach the Glimmer King")), "one big kill without a drop");
+            Assert.That(RowOf(outsider), Is.Null);
+
+            // After the scope a pickup is nothing again (the marker is cleared).
+            BotMilestoneLife.OnItemReceived(other, scale);
+            Assert.That(RowOf(other).State, Is.EqualTo(OfflineBotMilestoneRecord.Active));
+
+            // With the switch off nothing opens.
+            bool on = DOL.GS.ServerProperties.Properties.BOT_LIVING_MILESTONES;
+            try
+            {
+                DOL.GS.ServerProperties.Properties.BOT_LIVING_MILESTONES = false;
+                using BotMilestoneLife.RaidLootScope off = BotMilestoneLife.RaidLoot(Npc<Dragon>("Cuuldurach the Glimmer King"), [other]);
+                Assert.That(off.IsOpen, Is.False);
+            }
+            finally
+            {
+                DOL.GS.ServerProperties.Properties.BOT_LIVING_MILESTONES = on;
+            }
+            Assert.That(RowOf(other).Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void A_companion_or_a_special_force_at_the_kill_gets_nothing()
+        {
+            DutyLeaseTestKit.Bot companion = DutyLeaseTestKit.Companion(), force = DutyLeaseTestKit.SpecialForce();
+            using (BotMilestoneLife.RaidLoot(Npc<Dragon>("Gjalpinulva"), [companion, force]))
+            {
+                BotMilestoneLife.OnItemReceived(companion, new DbInventoryItem { Name = "x" });
+                BotMilestoneLife.OnItemReceived(force, new DbInventoryItem { Name = "y" });
+            }
+            Assert.That(BotPeopleStore.Current.Milestones.Count, Is.Zero);
         }
     }
 }

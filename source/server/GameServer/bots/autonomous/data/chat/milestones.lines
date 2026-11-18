@@ -4,7 +4,8 @@
 # bubbles left to 50 at level 49 (2-9); {count} for realm rank 5 the thousands of realm points left, for the trophy the
 # high-end raid kills it was at without winning anything; {boss} the last such boss (or the one that dropped its trophy);
 # {item} the item it really received from that boss's loot. A half line is said at 50% of the way or later, a close line
-# at 90% or later, so "over halfway" and "almost" are true whenever they are said. No epic armour (owner decision 2), no
+# at 90% or later, so "over halfway" and "almost" are true whenever they are said. A line says nothing a number does not
+# back: no deaths counted, no hours played, no "finally" on a first win (review of 2026-11-17). No epic armour (owner decision 2), no
 # artifacts (Trials of Atlantis), no realm rank 5 abilities: realm rank 5 is a title here, nothing more.
 
 # ---- the ding to 50: halfway (level 45-49, at least half the experience from 45 to 50) ------------------------------
@@ -27,9 +28,9 @@ halfway to 50 [guys|all]! [someone throw a party|ill throw a party at 50]
 @who NoLifer
 [over halfway to 50|halfway to 50]. [no sleep till 50|sleep is for 50s]
 @who Daredevil
-halfway to 50 and [i havent died in a while|only died twice today]. [new record|not bad]
+halfway to 50. [the reckless way|the hard way], [but here i am|still counts]
 @who Explorer
-{level} and halfway to 50. [still havent seen half the map|so many places left to see]
+{level} and halfway to 50. [so many places left to see|and so much left to see]
 @who Crafter
 halfway to 50, [then back to the forge|then i can craft in peace]
 
@@ -61,7 +62,7 @@ halfway to 50, [then back to the forge|then i can craft in peace]
 @who Leveler
 [almost|nearly] 50. [one more good camp|a few more pulls] and its done
 @who Daredevil
-almost 50, [if i dont die first|as long as i stop dying]
+almost 50, [if i dont die first|if nothing eats me first]
 
 # ---- realm rank 5: halfway (level 50, at least half of 513,500 realm points) ----------------------------------------
 @topic rr5_half
@@ -74,7 +75,7 @@ almost 50, [if i dont die first|as long as i stop dying]
 @who Daredevil
 halfway to rr5 [and counting|and climbing]. [who is coming out|anyone want to roam]
 @who NoLifer
-[over halfway|halfway] to rr5. [frontier every night|living in the frontier]
+[over halfway|halfway] to rr5. [more frontier for me|back out to the frontier]
 @who Socialite
 halfway to rr5 [thanks to you all|thanks to the groups]. [best realm|good fights]
 
@@ -98,10 +99,10 @@ halfway to rr5 [thanks to you all|thanks to the groups]. [best realm|good fights
 [finally|at last] rr5!
 rr5 [finally|at last]. [thanks all|ty all for the groups]
 [woot|yes] rr5!! [took long enough|took forever]
-just hit rr5. [what a night|good fights out there]
+just hit rr5. [good fights out there|thanks for the fights]
 rr5 [baby|woot]. [see you in the frontier|back to the keeps]
 @who Daredevil
-rr5! [and i still pull too much|now who wants to roam]
+rr5! [now who wants to roam|who is coming out to roam]
 @who Socialite
 [rr5!!|rr5 woot!] couldnt have done it without you [guys|all]
 
@@ -116,7 +117,7 @@ no drop off {boss} for me [again|this time]. [next time|maybe next raid]
 @who Socialite
 nothing off {boss} for me but [what a raid|great raid all]
 @who Leveler
-no loot off {boss} again. [at least the xp|oh well]
+no loot off {boss} again. [oh well|maybe next time]
 
 @topic trophy_long
 @who *
@@ -130,18 +131,32 @@ no loot off {boss} again. [at least the xp|oh well]
 {count} big kills, zero drops. [i want my dragon loot|someday i get my drop]
 
 # ---- a dragon trophy: the moment ({item} it really received from {boss}'s loot) -------------------------------------
+# trophy_reached is said on any win, a first raid kill too, so it claims no wait. trophy_reached_wait is said only when
+# the bot was at one or more big kills without a drop before ({count} of them): only there "finally" and "the wait".
 @topic trophy_reached
+@who *
+@levels 50-50
+{item} off {boss}!!
+[woot|yes], {item} [from|off] {boss}
+[cant believe it|no way], {item} off {boss}
+got a drop off {boss}: {item}
+{boss} dropped {item} [for me|and its mine]
+@who Socialite
+{item} off {boss}!! [thanks everyone|ty all who came]
+@who NoLifer
+{item} off {boss}. [now for the next one|whats next]
+
+@topic trophy_reached_wait
 @who *
 @levels 50-50
 [finally|at last] got a drop off {boss}! {item}
 {item} off {boss}!! [finally|at last]
-[woot|yes], {item} [from|off] {boss}. [worth every raid|worth the wait]
-[cant believe it|no way], {item} off {boss}
+[woot|yes], {item} [from|off] {boss}. [worth the wait|about time]
 [finally|at last] some loot off {boss}: {item}
 @who Socialite
-{item} off {boss}!! [thanks everyone|ty all who came]
+[finally|at last]!! {item} off {boss}. [thanks everyone|ty all who came]
 @who NoLifer
-[finally|at last], {item} off {boss}. [all those raids paid off|worth all those raids]
+[finally|at last], {item} off {boss}. [knew my turn would come|my turn at last]
 
 # ---- the realm cheers (BotMilestoneLife: AutonomousChatBursts in /faction) -------------------------------------------
 @kind reply
@@ -162,7 +177,7 @@ gz rr5, now come roam with us
 [nice drop|sweet drop], [gz|grats]
 [gz|grats] on the loot
 [nice|sweet], [gz|grats] on the {item}
-[gz|grats], {boss} finally gave something up
+[gz|grats], {boss} drops the good stuff
 [lucky|nice], [gz|grats]
 @who Socialite
 [gz!!|grats!!] [so happy for you|well deserved]

@@ -132,7 +132,6 @@ public static partial class AutonomousLivingServer
     /// <summary>A gamebot's realm points were added (its realm level may have changed).</summary>
     public static void OnBotRealmLevel(GameBot bot, int previousRealmLevel)
     {
-        BotMilestoneLife.OnRealmLevel(bot); // Bots as people WP6: realm rank 5 (its talk points and the moment)
         if (!FirstsOn || bot == null || !bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper)
             return;
         int before = previousRealmLevel / 10 + 1, after = bot.RealmLevel / 10 + 1;

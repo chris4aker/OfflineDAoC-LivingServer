@@ -211,7 +211,7 @@ automatically only: none of it has been seen on a played world yet**. The four s
 - **Personal milestones.** From level 45 a bot chases the ding to 50; at 50 some chase realm rank 5 and others a dragon
   trophy: an item they really won from a dragon's or an epic boss's raid loot (no epic armour, no artifacts). As they get
   close they may say so ("4 bubbles to 50", "over halfway to rr5") in your group, /say, their guild or /faction, never more
-  than one such line a realm in /faction every 5 minutes. The realm cheers realm rank 5 and a trophy, the ding to 50
+  than one such line a realm in /faction every 5 minutes (one a minute elsewhere). The realm cheers realm rank 5 and a trophy, the ding to 50
   keeps its grats, and the Camelot Herald lists the last 40 under **Milestones of the Realm**. Near 50 a bot takes fewer
   town breaks; near realm rank 5 it leans to RvR, inside the realm's goal mix.
 

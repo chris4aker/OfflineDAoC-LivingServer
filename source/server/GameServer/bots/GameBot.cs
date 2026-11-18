@@ -1972,6 +1972,7 @@ namespace DOL.GS
             RealmLevel = Math.Max(RealmLevel, AutonomousBotRealmPointRewards.RealmLevelFor(AutonomousRealmPoints));
             AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.RealmPoints);
             MarkAutonomousStateDirty();
+            BotMilestoneLife.OnRealmPoints(this); // Bots as people WP6: realm rank 5 (its talk points and the moment)
             if (RealmLevel != previousRealmLevel)
             {
                 // Realm ranks earn the bot's guild merit points as a player's do (GuildEvents.RealmRankUp).

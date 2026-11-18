@@ -212,14 +212,23 @@ public static class BotMilestones
         _ => null,
     };
 
-    /// <summary>The topic of the moment itself ("rr5_reached", "trophy_reached"); null for the ding to 50, whose moment the
-    /// existing ding line, its /faction story and the grats chain already are.</summary>
-    public static string ReachedTopic(BotMilestoneArc arc) => arc switch
+    /// <summary>The topic of the moment itself: "rr5_reached"; "trophy_reached", or "trophy_reached_wait" when the bot was
+    /// at one or more big kills without a drop before (only then may a line say "finally"); null for the ding to 50, whose
+    /// moment the existing ding line, its /faction story and the grats chain already are.</summary>
+    public static string ReachedTopic(BotMilestoneArc arc, int dryKills = 0) => arc switch
     {
         BotMilestoneArc.RealmRank5 => "rr5_reached",
-        BotMilestoneArc.DragonTrophy => "trophy_reached",
+        BotMilestoneArc.DragonTrophy => dryKills >= 1 ? "trophy_reached_wait" : "trophy_reached",
         _ => null,
     };
+
+    /// <summary>
+    /// Whether a high-end raid kill is a big kill for the trophy: a dragon, an epic boss or a raid's final boss, never a
+    /// boss's add. Adds are the game's GameEpicNPC (Xanxicar's champions, shades, rains of fire); bosses are GameEpicBoss
+    /// or a class a raid names as its boss. <paramref name="epicAdd"/>: the victim is a GameEpicNPC;
+    /// <paramref name="raidBossType"/>: a raid names its class as its boss or final boss. Pure.
+    /// </summary>
+    public static bool IsBigKill(bool epicAdd, bool raidBossType) => !epicAdd || raidBossType;
 
     /// <summary>What the realm's reactions answer (reply lines' @answers, then the general good news).</summary>
     public static string[] ReactionAnswers(BotMilestoneArc arc) => arc switch
@@ -245,13 +254,21 @@ public static class BotMilestones
 /// When a milestone line may be said (WP6, pure; UT_BotMilestones). A bot passes each talk point once (saved in the row, so
 /// a restart never repeats one); whether it says so is a fixed roll by its chattiness (35% to 80%), the rest pass in
 /// silence. A point nobody can hear waits (retried at most every 10 minutes), and a later point replaces an earlier one
-/// that was never said ("over halfway" stays true). The realm's /faction hears at most one milestone line every
-/// 5 minutes; the channel's own ceiling (AutonomousBotChatCoordinator.BroadcastFaction) and the chat budgets still hold.
+/// that was never said ("over halfway" stays true). A bot that is fighting when its point is due tries again on a timer
+/// (15-30 s, at most 8 times). The realm's /faction hears at most one milestone line every 5 minutes, its group, /say and
+/// guild channels one a minute; the channel's own ceiling (AutonomousBotChatCoordinator.BroadcastFaction) and the chat
+/// budgets still hold.
 /// </summary>
 public static class BotMilestoneTalk
 {
     public const long RetryMs = 10 * 60_000L;
     public const long FactionGapMs = 5 * 60_000L;
+    /// <summary>A realm's milestone lines outside /faction (group, /say, guild): at least a minute apart, so several bots near
+    /// the player never say theirs within seconds.</summary>
+    public const long LocalGapMs = 60_000L;
+    /// <summary>A bot that is fighting, casting or dead when its point is due tries again after 15-30 s, at most this many
+    /// times (about 3 minutes), then waits <see cref="RetryMs"/>.</summary>
+    public const int MaxBusyTries = 8;
     /// <summary>A bot's own lines about its arc: at least 15 minutes apart.</summary>
     public const long OwnGapMs = 15 * 60_000L;
 
@@ -271,9 +288,11 @@ public static class BotMilestoneTalk
     /// news), then group, guild and /say. None when nobody would hear. Pure.
     /// </summary>
     public static BotMilestoneChannel Pick(bool moment, bool groupHasPlayer, bool playerHears, bool guildListens, bool factionAudience,
-        bool factionGapOpen)
+        bool factionGapOpen, bool localGapOpen = true)
     {
         bool faction = factionAudience && factionGapOpen;
+        if (!localGapOpen)
+            return faction ? BotMilestoneChannel.Faction : BotMilestoneChannel.None;
         if (moment && faction)
             return BotMilestoneChannel.Faction;
         if (groupHasPlayer)
@@ -290,6 +309,15 @@ public static class BotMilestoneTalk
     /// <summary>Whether the realm's /faction gap is open at <paramref name="nowMs"/> (last line at <paramref name="lastMs"/>). Pure.</summary>
     public static bool FactionGapOpen(long nowMs, long lastMs) => nowMs - lastMs >= FactionGapMs;
 
+    /// <summary>Whether the realm's gap for group, /say and guild lines is open. Pure.</summary>
+    public static bool LocalGapOpen(long nowMs, long lastMs) => nowMs - lastMs >= LocalGapMs;
+
+    /// <summary>The wait before a busy bot (fighting, casting, dead) tries its line again: 15-30 s. Our design.</summary>
+    public static int BusyRetryMs(Random random) => 15_000 + random.Next(15_001);
+
+    /// <summary>Whether a busy bot tries again on its timer (<paramref name="tries"/> so far) or gives up for <see cref="RetryMs"/>. Pure.</summary>
+    public static bool RetriesWhenBusy(int tries) => tries < MaxBusyTries;
+
     public static string ChannelName(BotMilestoneChannel channel) => channel switch
     {
         BotMilestoneChannel.Group => "group",
@@ -303,9 +331,11 @@ public static class BotMilestoneTalk
     public static int TypingDelayMs(Random random) => 2_000 + random.Next(4_000);
 
     /// <summary>
-    /// BOT_MILESTONE_SUMMARY seconds= active=ding50:N,rr5:N,dragon_trophy:N chosen= dropped= points= silent= talks=group:N,
-    /// say:N,guild:N,faction:N waiting= held= reached=ding50:N,rr5:N,dragon_trophy:N raidKills= trophies= lines= suppressed=.
-    /// Pure.
+    /// BOT_MILESTONE_SUMMARY seconds= active=ding50:N,rr5:N,dragon_trophy:N chosen= dropped= points= (talk points handled:
+    /// said or passed in silence) silent= talks=group:N,say:N,guild:N,faction:N waiting= (nobody hears, or the channel's
+    /// gap) busy= (retries while fighting) held= reached=ding50:N,rr5:N,dragon_trophy:N raidKills= (big kills, one each)
+    /// trophies= unsought= (won while chasing something else) folded= (moments not said: another winner spoke) lines=
+    /// suppressed=. Pure.
     /// </summary>
     public static string SummaryLine(long seconds, IReadOnlyDictionary<string, long> counts, int[] active)
     {
@@ -314,8 +344,9 @@ public static class BotMilestoneTalk
         return $"BOT_MILESTONE_SUMMARY seconds={seconds} active=ding50:{A(0)},rr5:{A(1)},dragon_trophy:{A(2)} " +
                $"chosen={C("chosen")} dropped={C("dropped")} points={C("points")} silent={C("silent")} " +
                $"talks=group:{C("talk.group")},say:{C("talk.say")},guild:{C("talk.guild")},faction:{C("talk.faction")} " +
-               $"waiting={C("waiting")} held={C("held")} " +
+               $"waiting={C("waiting")} busy={C("busy")} held={C("held")} " +
                $"reached=ding50:{C("reached.ding50")},rr5:{C("reached.rr5")},dragon_trophy:{C("reached.dragon_trophy")} " +
-               $"raidKills={C("raidKills")} trophies={C("trophies")} lines={C("lines")} suppressed={C("suppressed")}";
+               $"raidKills={C("raidKills")} trophies={C("trophies")} unsought={C("unsought")} folded={C("folded")} " +
+               $"lines={C("lines")} suppressed={C("suppressed")}";
     }
 }

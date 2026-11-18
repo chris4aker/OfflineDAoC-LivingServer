@@ -561094,9 +561094,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to 50 and i havent died in a while. new record",
-   "family": "2bdfaaad10",
-   "id": "9411ceb3ad53"
+   "text": "halfway to 50. the reckless way, but here i am",
+   "family": "2f5095a6db",
+   "id": "8fe9847a6eb8"
   },
   {
    "kind": "milestone",
@@ -561114,9 +561114,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to 50 and i havent died in a while. not bad",
-   "family": "2bdfaaad10",
-   "id": "09d6cdfac383"
+   "text": "halfway to 50. the reckless way, still counts",
+   "family": "2f5095a6db",
+   "id": "82e842ecb702"
   },
   {
    "kind": "milestone",
@@ -561134,9 +561134,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to 50 and only died twice today. new record",
-   "family": "2bdfaaad10",
-   "id": "b953bfa7e692"
+   "text": "halfway to 50. the hard way, but here i am",
+   "family": "2f5095a6db",
+   "id": "7afbe1348586"
   },
   {
    "kind": "milestone",
@@ -561154,29 +561154,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to 50 and only died twice today. not bad",
-   "family": "2bdfaaad10",
-   "id": "06b1233159bc"
-  },
-  {
-   "kind": "milestone",
-   "topic": "ding50_half",
-   "who": [
-    "Explorer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    45,
-    49
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.7071,
-   "text": "{level} and halfway to 50. still havent seen half the map",
-   "family": "d48c15f11f",
-   "id": "b05b58568f56"
+   "text": "halfway to 50. the hard way, still counts",
+   "family": "2f5095a6db",
+   "id": "76cb7a9dd954"
   },
   {
    "kind": "milestone",
@@ -561195,8 +561175,28 @@
    "mood": "",
    "weight": 0.7071,
    "text": "{level} and halfway to 50. so many places left to see",
-   "family": "d48c15f11f",
+   "family": "6defa67020",
    "id": "5b0b291ab2cc"
+  },
+  {
+   "kind": "milestone",
+   "topic": "ding50_half",
+   "who": [
+    "Explorer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    45,
+    49
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{level} and halfway to 50. and so much left to see",
+   "family": "6defa67020",
+   "id": "a90e2f828813"
   },
   {
    "kind": "milestone",
@@ -562084,7 +562084,7 @@
    "mood": "",
    "weight": 0.7071,
    "text": "almost 50, if i dont die first",
-   "family": "0244933ed3",
+   "family": "639d0ace9a",
    "id": "c271190e7b07"
   },
   {
@@ -562103,9 +562103,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "almost 50, as long as i stop dying",
-   "family": "0244933ed3",
-   "id": "3add75a559d2"
+   "text": "almost 50, if nothing eats me first",
+   "family": "639d0ace9a",
+   "id": "7792aabebc08"
   },
   {
    "kind": "milestone",
@@ -562527,9 +562527,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "over halfway to rr5. frontier every night",
-   "family": "229e506dce",
-   "id": "431a134c7649"
+   "text": "over halfway to rr5. more frontier for me",
+   "family": "32a104898c",
+   "id": "45937b32aa29"
   },
   {
    "kind": "milestone",
@@ -562547,9 +562547,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "over halfway to rr5. living in the frontier",
-   "family": "229e506dce",
-   "id": "54bdc14f59b8"
+   "text": "over halfway to rr5. back out to the frontier",
+   "family": "32a104898c",
+   "id": "f83a5ef4d04c"
   },
   {
    "kind": "milestone",
@@ -562567,9 +562567,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to rr5. frontier every night",
-   "family": "229e506dce",
-   "id": "e852e2d3153e"
+   "text": "halfway to rr5. more frontier for me",
+   "family": "32a104898c",
+   "id": "466023043e5d"
   },
   {
    "kind": "milestone",
@@ -562587,9 +562587,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "halfway to rr5. living in the frontier",
-   "family": "229e506dce",
-   "id": "e0e1388935d7"
+   "text": "halfway to rr5. back out to the frontier",
+   "family": "32a104898c",
+   "id": "127720c86755"
   },
   {
    "kind": "milestone",
@@ -563237,9 +563237,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "just hit rr5. what a night",
-   "family": "15edb872e3",
-   "id": "b1eb0514b423"
+   "text": "just hit rr5. good fights out there",
+   "family": "9f01bdf1d3",
+   "id": "f75219f2b8f4"
   },
   {
    "kind": "milestone",
@@ -563255,9 +563255,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "just hit rr5. good fights out there",
-   "family": "15edb872e3",
-   "id": "f75219f2b8f4"
+   "text": "just hit rr5. thanks for the fights",
+   "family": "9f01bdf1d3",
+   "id": "a83e45874531"
   },
   {
    "kind": "milestone",
@@ -563347,9 +563347,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "rr5! and i still pull too much",
-   "family": "b947cbe1da",
-   "id": "3c34068a19a6"
+   "text": "rr5! now who wants to roam",
+   "family": "826b7ccae5",
+   "id": "a4ea7ecd28f7"
   },
   {
    "kind": "milestone",
@@ -563367,9 +563367,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "rr5! now who wants to roam",
-   "family": "b947cbe1da",
-   "id": "a4ea7ecd28f7"
+   "text": "rr5! who is coming out to roam",
+   "family": "826b7ccae5",
+   "id": "e8218a3c80d5"
   },
   {
    "kind": "milestone",
@@ -563939,9 +563939,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "no loot off {boss} again. at least the xp",
-   "family": "dc593221a9",
-   "id": "1f11deba0af1"
+   "text": "no loot off {boss} again. oh well",
+   "family": "e1fc4686f2",
+   "id": "6da084f7384e"
   },
   {
    "kind": "milestone",
@@ -563959,9 +563959,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "no loot off {boss} again. oh well",
-   "family": "dc593221a9",
-   "id": "6da084f7384e"
+   "text": "no loot off {boss} again. maybe next time",
+   "family": "e1fc4686f2",
+   "id": "c3a93c435bea"
   },
   {
    "kind": "milestone",
@@ -564384,10 +564384,9 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
-   "text": "finally got a drop off {boss}! {item}",
-   "family": "a73fa8d7dd",
-   "id": "8f42a873793e"
+   "weight": 1.0,
+   "text": "{item} off {boss}!!",
+   "id": "c7c5dd686b6d"
   },
   {
    "kind": "milestone",
@@ -564402,10 +564401,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
-   "text": "at last got a drop off {boss}! {item}",
-   "family": "a73fa8d7dd",
-   "id": "ec9da29ca28f"
+   "weight": 0.5,
+   "text": "woot, {item} from {boss}",
+   "family": "37766d86f4",
+   "id": "0058c8362f07"
   },
   {
    "kind": "milestone",
@@ -564420,10 +564419,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
-   "text": "{item} off {boss}!! finally",
-   "family": "655beaf9f2",
-   "id": "1b388f10ac37"
+   "weight": 0.5,
+   "text": "woot, {item} off {boss}",
+   "family": "37766d86f4",
+   "id": "a8b672fc583a"
   },
   {
    "kind": "milestone",
@@ -564438,10 +564437,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
-   "text": "{item} off {boss}!! at last",
-   "family": "655beaf9f2",
-   "id": "5f4f854faae8"
+   "weight": 0.5,
+   "text": "yes, {item} from {boss}",
+   "family": "37766d86f4",
+   "id": "dcadc8d02a6d"
   },
   {
    "kind": "milestone",
@@ -564456,136 +564455,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3536,
-   "text": "woot, {item} from {boss}. worth every raid",
-   "family": "967d0f93f6",
-   "id": "a78a78938ecb"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "woot, {item} from {boss}. worth the wait",
-   "family": "967d0f93f6",
-   "id": "1b799f6685ab"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "woot, {item} off {boss}. worth every raid",
-   "family": "967d0f93f6",
-   "id": "d2add09122ad"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "woot, {item} off {boss}. worth the wait",
-   "family": "967d0f93f6",
-   "id": "3cb6378a6782"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "yes, {item} from {boss}. worth every raid",
-   "family": "967d0f93f6",
-   "id": "398b6ac2d057"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "yes, {item} from {boss}. worth the wait",
-   "family": "967d0f93f6",
-   "id": "70c5d845e10a"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "yes, {item} off {boss}. worth every raid",
-   "family": "967d0f93f6",
-   "id": "2d572fcd9acf"
-  },
-  {
-   "kind": "milestone",
-   "topic": "trophy_reached",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    50,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3536,
-   "text": "yes, {item} off {boss}. worth the wait",
-   "family": "967d0f93f6",
-   "id": "c751ebb55531"
+   "weight": 0.5,
+   "text": "yes, {item} off {boss}",
+   "family": "37766d86f4",
+   "id": "6e5fb51f767b"
   },
   {
    "kind": "milestone",
@@ -564636,10 +564509,9 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
-   "text": "finally some loot off {boss}: {item}",
-   "family": "d501b41170",
-   "id": "4397b7118f7c"
+   "weight": 1.0,
+   "text": "got a drop off {boss}: {item}",
+   "id": "4607941b7055"
   },
   {
    "kind": "milestone",
@@ -564655,9 +564527,27 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "at last some loot off {boss}: {item}",
-   "family": "d501b41170",
-   "id": "b15224853ea3"
+   "text": "{boss} dropped {item} for me",
+   "family": "0ba7758deb",
+   "id": "5157d385606e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{boss} dropped {item} and its mine",
+   "family": "0ba7758deb",
+   "id": "d7c8e9626003"
   },
   {
    "kind": "milestone",
@@ -564714,10 +564604,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.5,
-   "text": "finally, {item} off {boss}. all those raids paid off",
-   "family": "b2d2ca6724",
-   "id": "37b489ec15de"
+   "weight": 0.7071,
+   "text": "{item} off {boss}. now for the next one",
+   "family": "1aae8778c2",
+   "id": "430eedf1879d"
   },
   {
    "kind": "milestone",
@@ -564734,14 +564624,346 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.5,
-   "text": "finally, {item} off {boss}. worth all those raids",
-   "family": "b2d2ca6724",
-   "id": "2c35d4f597ae"
+   "weight": 0.7071,
+   "text": "{item} off {boss}. whats next",
+   "family": "1aae8778c2",
+   "id": "961b3dd5d4d2"
   },
   {
    "kind": "milestone",
-   "topic": "trophy_reached",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally got a drop off {boss}! {item}",
+   "family": "a73fa8d7dd",
+   "id": "8f42a873793e"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "at last got a drop off {boss}! {item}",
+   "family": "a73fa8d7dd",
+   "id": "ec9da29ca28f"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! finally",
+   "family": "655beaf9f2",
+   "id": "1b388f10ac37"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "{item} off {boss}!! at last",
+   "family": "655beaf9f2",
+   "id": "5f4f854faae8"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} from {boss}. worth the wait",
+   "family": "4220bbebc5",
+   "id": "1b799f6685ab"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} from {boss}. about time",
+   "family": "4220bbebc5",
+   "id": "7b2731d52798"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} off {boss}. worth the wait",
+   "family": "4220bbebc5",
+   "id": "3cb6378a6782"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "woot, {item} off {boss}. about time",
+   "family": "4220bbebc5",
+   "id": "4bb6fa61bb1d"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} from {boss}. worth the wait",
+   "family": "4220bbebc5",
+   "id": "70c5d845e10a"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} from {boss}. about time",
+   "family": "4220bbebc5",
+   "id": "6387fe4ec232"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} off {boss}. worth the wait",
+   "family": "4220bbebc5",
+   "id": "c751ebb55531"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "text": "yes, {item} off {boss}. about time",
+   "family": "4220bbebc5",
+   "id": "39f44f85e734"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "finally some loot off {boss}: {item}",
+   "family": "d501b41170",
+   "id": "4397b7118f7c"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "text": "at last some loot off {boss}: {item}",
+   "family": "d501b41170",
+   "id": "b15224853ea3"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "finally!! {item} off {boss}. thanks everyone",
+   "family": "5cb22cf621",
+   "id": "3e944d130fb6"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "finally!! {item} off {boss}. ty all who came",
+   "family": "5cb22cf621",
+   "id": "ad1a01148067"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last!! {item} off {boss}. thanks everyone",
+   "family": "5cb22cf621",
+   "id": "ba84809bb7c0"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last!! {item} off {boss}. ty all who came",
+   "family": "5cb22cf621",
+   "id": "c0186c8cf8b2"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
    "who": [
     "NoLifer"
    ],
@@ -564755,13 +564977,13 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "at last, {item} off {boss}. all those raids paid off",
-   "family": "b2d2ca6724",
-   "id": "2413cdfc5414"
+   "text": "finally, {item} off {boss}. knew my turn would come",
+   "family": "1b9e944468",
+   "id": "d3f2964564a3"
   },
   {
    "kind": "milestone",
-   "topic": "trophy_reached",
+   "topic": "trophy_reached_wait",
    "who": [
     "NoLifer"
    ],
@@ -564775,9 +564997,49 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "at last, {item} off {boss}. worth all those raids",
-   "family": "b2d2ca6724",
-   "id": "f904b1bab144"
+   "text": "finally, {item} off {boss}. my turn at last",
+   "family": "1b9e944468",
+   "id": "06e740561e99"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last, {item} off {boss}. knew my turn would come",
+   "family": "1b9e944468",
+   "id": "a621bcc6c303"
+  },
+  {
+   "kind": "milestone",
+   "topic": "trophy_reached_wait",
+   "who": [
+    "NoLifer"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    50,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "text": "at last, {item} off {boss}. my turn at last",
+   "family": "1b9e944468",
+   "id": "d87e93bd3871"
   },
   {
    "kind": "reply",
@@ -565368,9 +565630,9 @@
    "answers": [
     "milestone_trophy"
    ],
-   "text": "gz, {boss} finally gave something up",
-   "family": "134abadc65",
-   "id": "705affc33552"
+   "text": "gz, {boss} drops the good stuff",
+   "family": "3eab9c6198",
+   "id": "acd33da5601c"
   },
   {
    "kind": "reply",
@@ -565389,9 +565651,9 @@
    "answers": [
     "milestone_trophy"
    ],
-   "text": "grats, {boss} finally gave something up",
-   "family": "134abadc65",
-   "id": "1a49ef479642"
+   "text": "grats, {boss} drops the good stuff",
+   "family": "3eab9c6198",
+   "id": "4f5b91f82b59"
   },
   {
    "kind": "reply",
