@@ -1522,7 +1522,7 @@ GM ONLY COMMANDS
 
 /lscraft
   Crafting 2.0 in game: what is built, and what a bot or an item looks like to the economy
-  /lscraft craft - bot crafting: switches, the recipe catalog, the crafter roster (a crafter's next session)
+  /lscraft craft - bot crafting: switches, the recipe catalog, and the crafter roster: each realm's crafter gamebots in the game (name, order, skill, level, where, on a break or a task)
   /lscraft wtb - bots' want-to-buy posts
   /lscraft commission - realm quartermaster commissions
   /lscraft ledger - the realm's coin now (online gamebots) and the economy ledger

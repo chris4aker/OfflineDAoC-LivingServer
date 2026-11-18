@@ -213,25 +213,46 @@ namespace DOL.GS
             if (near.Length == 0)
                 return;
             GameBot named = near.FirstOrDefault(b => AutonomousBotChatCoordinator.ContainsMention(message, b.Name));
-            if (named == null && Random.Shared.NextDouble() > 0.35)
-                return;
-            // A companion told to keep quiet answers only when named.
-            GameBot[] open = near.Where(b => !IsQuiet(b.DatabaseID)).ToArray();
-            if (named == null && open.Length == 0)
-                return;
-            GameBot speaker = named ?? open[Random.Shared.Next(open.Length)];
             long now = GameLoop.GameLoopTime;
+            // Conversation memory (#350): the player's line is already a turn of the /say conversation (the coordinator notes
+            // it first); a companion that has the floor takes a line that names nobody, as a gamebot would.
+            string room = AutonomousChatThreads.Say(player.CurrentRegionID);
+            GameBot speaker = ChooseSpeaker(near, named, ChatConversations.Live.FloorHolder(player.Name, room, now), Random.Shared);
+            if (speaker == null)
+                return;
             if (NextReply.TryGetValue(speaker.DatabaseID, out long next) && now < next)
                 return;
             NextReply[speaker.DatabaseID] = now + ReplyGapMs;
             string reply = Typed(speaker, Reply(speaker, player, message, Random.Shared));
             _ = new ECSGameTimer(speaker, _ =>
             {
-                if (CanSpeak(speaker, player))
-                    speaker.Say(reply);
+                if (CanSpeak(speaker, player) && speaker.Say(reply))
+                    NoteSaid(player.Name, room, speaker, reply, GameLoop.GameLoopTime);
                 return 0;
             }, 1_200 + Random.Shared.Next(1_200));
         }
+
+        /// <summary>
+        /// Which companion answers the player's /say: the one named; else the one that has the floor (the last to speak to the
+        /// player in this conversation); else, now and then (35%), one that was not told to keep quiet. Null: nobody.
+        /// </summary>
+        public static GameBot ChooseSpeaker(IReadOnlyList<GameBot> near, GameBot named, long floorBot, Random random)
+        {
+            if (named != null)
+                return named;
+            if (near == null || near.Count == 0)
+                return null;
+            if (floorBot > 0 && near.FirstOrDefault(b => b.DatabaseID == floorBot && !IsQuiet(b.DatabaseID)) is { } floor)
+                return floor;
+            if (random.NextDouble() > 0.35)
+                return null;
+            GameBot[] open = near.Where(b => !IsQuiet(b.DatabaseID)).ToArray();
+            return open.Length == 0 ? null : open[random.Next(open.Length)];
+        }
+
+        /// <summary>A companion's line to its player is a turn of their conversation and gives it the floor (#350).</summary>
+        public static void NoteSaid(string player, string room, GameBot bot, string text, long now) =>
+            ChatConversations.Live.NoteBot(player, bot.DatabaseID, bot.Name, room, text, now);
 
         /// <summary>A companion's answer to its player's /say, as written (in the formal register when its Speech is Formal).</summary>
         public static string Reply(GameBot bot, GamePlayer owner, string message, Random random)

@@ -176,6 +176,37 @@ namespace DOL.UnitTests
             }
         }
 
+        // E1's conversation memory (#350) for companions: the companion with the floor answers a line that names nobody.
+        [Test]
+        public void The_companion_with_the_floor_answers_the_next_unnamed_line()
+        {
+            ChatConversations.Live.Clear();
+            try
+            {
+                Bot first = Hired(Gamebot());
+                Bot second = Hired(Gamebot());
+                var near = new GameBot[] { first, second };
+                const string room = "say:1";
+                Assert.That(ChatConversations.Live.FloorHolder("Testrunner", room, 1_000), Is.Zero, "nobody has the floor yet");
+                CompanionChat165.NoteSaid("Testrunner", room, second, "eyes open, Isle of Glass can get nasty", 1_000);
+                long floor = ChatConversations.Live.FloorHolder("Testrunner", room, 2_000);
+                Assert.That(floor, Is.EqualTo(second.DatabaseID), "its line gave it the floor");
+                ChatConversations.Live.NotePlayer("Testrunner", room, "how far is it", 2_000);
+                Assert.That(ChatConversations.Live.With("Testrunner", second.DatabaseID, 2_000)?.Turns.Count, Is.EqualTo(2),
+                    "the player's next line is a turn of that companion's conversation");
+                for (int seed = 0; seed < 20; seed++)
+                    Assert.That(CompanionChat165.ChooseSpeaker(near, null, floor, new Random(seed)), Is.SameAs(second), "always the floor");
+                Assert.That(CompanionChat165.ChooseSpeaker(near, first, floor, new Random(1)), Is.SameAs(first), "a name beats the floor");
+                CompanionChat165.Reply(second, RealPlayer(), "be quiet", new Random(1));
+                Assert.That(Enumerable.Range(0, 40).Select(seed => CompanionChat165.ChooseSpeaker(near, null, floor, new Random(seed))),
+                    Has.None.SameAs(second), "a quiet companion gives up the floor");
+            }
+            finally
+            {
+                ChatConversations.Live.Clear();
+            }
+        }
+
         // TEXT-036: the personality's name as players read it.
         [Test]
         public void The_no_lifer_reads_no_lifer()

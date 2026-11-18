@@ -1623,10 +1623,11 @@ public static partial class AutonomousBotChatCoordinator
         using var aiProfile = AiProfile.Scope(AiSystem.ChatPlayerReply); // AI_PROFILE: measures only
         if (player == null || string.IsNullOrWhiteSpace(message) || player.CurrentRegion == null)
             return;
-        // a player's hired companions near them answer as companions (CompanionChat165, from True 1.65)
+        // The player's line is a turn of the /say conversation first, so their hired companion (CompanionChat165) answers with
+        // the conversation in hand: the companion that has the floor takes a line that names nobody (chat audit E7).
+        ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Say(player.CurrentRegionID), message, GameLoop.GameLoopTime);
         CompanionChat165.OnPlayerSay(player, message);
         BotChatTranscript.Player("say", player, message);
-        ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Say(player.CurrentRegionID), message, GameLoop.GameLoopTime);
         // The screen first: a scam draws nothing, not even from a beggar (round 3).
         if (Screened(player, message, "say"))
             return;

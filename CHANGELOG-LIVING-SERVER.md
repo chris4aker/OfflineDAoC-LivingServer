@@ -28,6 +28,9 @@ below has been seen on the owner's PC yet: **tests only**.
   outlevels its player, so it can only tie them). /personality shows its personality and voice. The launcher's Living
   Server tab has a **Hired companions** switch (`hired_companions`, on) and the Thanksgiving choice
   (`bot_living_holidays_thanksgiving`: us, canada or off).
+- **Conversation memory for companions** (with #350): the player's /say line is a turn of the conversation before their
+  companion answers; the companion that has the floor answers a line that names nobody, and its answer is a turn that
+  gives it the floor (`CompanionChat165.ChooseSpeaker`, `NoteSaid`).
 - **The companion's own lines:** "keep quiet" is kept (no ambient line, an answer only when named, until told to talk
   again); the quiet and health words are whole words ("don't stop", "shut the gate" and "healthy" no longer trigger them);
   no danger line in a capital or town, and a city is named plainly; twelve idle lines instead of five, never the one it
