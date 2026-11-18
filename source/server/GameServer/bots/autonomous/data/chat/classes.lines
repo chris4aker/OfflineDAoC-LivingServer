@@ -21,7 +21,7 @@ paladin endurance chant, the group's best friend
 @class Mercenary
 dual wield merc, more swings more fun
 @invites chat
-merc tip: evade is your friend, train it
+merc tip: parry is your friend, train it
 @invites
 @class Reaver
 flex is weird at first but the reach is nice
@@ -36,7 +36,9 @@ longbow and patience, that is the whole class
 people complain about scout range, they should try aiming
 @invites
 @class Infiltrator
+@needs !day
 quiet night, just me and my envenom
+@needs
 @invites ask_opinion
 crit strike or envenom first, cant decide
 @invites
@@ -108,7 +110,7 @@ battlesongs up, everyone run faster
 @invites joke
 zerker, two axes, no plan
 @invites
-left axe zerker, the berserk style never gets old
+left axe zerker, going berserk never gets old
 @class Savage
 @invites boast
 savage buffs cost me health but look at those numbers

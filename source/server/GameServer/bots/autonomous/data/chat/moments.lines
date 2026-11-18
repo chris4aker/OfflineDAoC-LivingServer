@@ -46,14 +46,13 @@ there goes my xp, ugh
 @who *
 @needs at_camp
 anyone else camping here? happy to share
-camp check, anyone at {camp}?
 @invites ask_anyone
 mind if i hunt nearby? wont take your pulls
 @invites none
-this spot is taken, i think, will move on
+this spot looks taken, i think
 @invites
 been here an hour, {monsters} respawn nice and fast
-room for one more here if anyone needs it
+plenty of room at this camp if anyone needs it
 @needs at_camp,in_group
 holding {camp}, we pull left, you can have the right side
 @who Daredevil
@@ -66,10 +65,10 @@ pulling the whole room, stand back
 @who *
 @needs bag_full
 @invites complaint
-bags are full again, heading to town
+bags are full again, town soon
 how do my bags fill up this fast
 @invites none
-off to the merchant, back in a bit
+need a merchant soon
 selling junk, then right back to it
 @invites
 @who Crafter
@@ -79,7 +78,6 @@ full bags of materials, best kind of full
 @topic travel
 @who *
 @needs traveling
-on my way to {destination}, long walk
 heading to {destination}, anyone want to travel together?
 @invites none
 taking the horse to {destination}, back in a few
@@ -95,7 +93,7 @@ anyone know the fastest way to {destination}?
 @who *
 @needs in_town
 @invites none
-taking a break in {capital}, legs need it
+taking a break in town, legs need it
 @invites
 town is busy tonight
 @invites joke
@@ -106,7 +104,9 @@ anyone in town want to group after this?
 just restocked, heading back out soon
 @invites
 @who Socialite
+@needs in_town,!day
 best part of the night is hanging out in town honestly
+@needs in_town
 @who Crafter
 @invites joke
 the forge is warm and the coin is cold

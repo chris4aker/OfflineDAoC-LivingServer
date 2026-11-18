@@ -18,7 +18,7 @@
    "end_period": true,
    "no_period_after": [":)", ":P", ":D", "?", "!", "."],
    "abbreviate": {},
-   "expand": {"u": "you", "ur": "your", "pls": "please", "ty": "thanks", "np": "no problem", "dont": "don't", "cant": "can't", "im": "I'm", "i": "I", "isnt": "isn't", "wont": "won't", "doesnt": "doesn't", "didnt": "didn't"},
+   "expand": {"u": "you", "ur": "your", "pls": "please", "ty": "thanks", "np": "no problem", "dont": "don't", "cant": "can't", "im": "I'm", "i": "I", "isnt": "isn't", "wont": "won't", "doesnt": "doesn't", "didnt": "didn't", "r": "are", "any1": "anyone", "ne1": "anyone", "plz": "please"},
    "emote_chance": 0.0,
    "typo_chance": 0.0
   },

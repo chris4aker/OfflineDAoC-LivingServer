@@ -81,6 +81,33 @@ Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leof
   `UT_CrafterCommerce` (a held piece is kept from another buyer, the trade-window goods and the Exchange; released when it lapses
   or is called off; the break tell comes once, only to a player in the game, only with an open deal).
 
+## Bot chat audit fixes (1.2, 2026-11-18; tests only)
+
+The voice layer, the corpus builder and the ambient corpus (chat audit E3; none of it seen in game yet):
+- **Writing styles:** a tidy writer no longer capitalises or full-stops trade, group and call lines ("Wts 97% chain hauberk
+  /send."); words expand at word boundaries ("where r u?" -> "Where are you?"); no capital after "..." or "!!". No laugh is
+  added to a line that already laughs, a trade/group/call line, a line in capitals or a gold-spam ad, alarm, rez ask, death,
+  news, combat call, roleplay or beggar line (the owner's PC: "SUPER CHEAP GOLD!!! ... N3T haha"); a storyline's lovers and a
+  rage quit's cast say their beats with no "lol". Gold spam is said exactly as written. The terse style keeps a list's commas,
+  "!!!" in capitals and a sentence break ("i do both, zerg when..."). Typos and "teh" never land in a class, monster, item or
+  place name. A line too long once filled is skipped, never cut in mid-word.
+- **Field talk, threads and market answers** take the speaker's writing style too, functional lines (wts, lfg, pc, inc)
+  staying as typed (only one line in five had a style before).
+- **The enemy:** `{enemy}` is the people ("hibs"), new `{enemy_mod}` ("hib stealther") and `{enemy_realm}` ("Hibernia"):
+  no more "crawling with Albion" or "the Midgard took a relic". Alarms are picked by head count: "small group of" under 8,
+  "or more" from 8, "zerg" only from 16 ("Hibs zerg at Breifine, 3 or more" on the owner's PC).
+- **Season flags** winter, spring, summer, autumn from the PC's calendar for weather lines.
+- **Ambient corpus (corpus-a slice):** no more sieges and keep news nobody checked (now on the real siege and keep flags),
+  "still leveling" lines kept from level 50s, 43 broken word-by-word templates rewritten whole, leaked `@invites`/`@who`
+  reset, newbie questions sent to the right answers (with new answers for "can i lose a level", "oom" and "pst"),
+  `{monsters} at {camp}` only at a camp, class and place facts, out-of-era words ("toon", horses, food), time-of-day flags,
+  untrue camp scenery, group and errand promises, Caledon, battleground rumours about one's own realm, near-copies, and 20
+  short lines for level 50s.
+- **Builder checks** (`chat_rules.py`, `banned.txt`, `vocabulary.txt`, `voice_style.py`): see docs/bot-voices/DESIGN.md
+  section 6. They fail for the ambient corpus now and warn for the other files until their fixes land. Swearing is no longer
+  banned (owner: "Swearing is fine"); slurs, sexual content and politics still are. `preview.py` and SAMPLE.md show the
+  server's real styles.
+
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until

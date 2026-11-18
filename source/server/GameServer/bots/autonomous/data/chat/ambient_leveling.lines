@@ -11,9 +11,9 @@ first time out of {capital}, how do people find groups?
 @invites complaint
 ok {monsters} hit way harder than the con said
 @invites ask_power
-is it normal to run out of power this fast? asking for a friend
+is it normal to run out of power this fast?
 @invites
-just figured out what /stick does. game changer
+just learned to strafe properly, no more backing into walls
 @needs outdoors
 @invites complaint
 anyone else get lost on the way to {zone}? the roads all look the same
@@ -39,7 +39,7 @@ need a few more {monsters} for my quest, anyone seen them?
 been soloing {monsters} for an hour, slow but steady
 @needs
 @invites ask_train
-my trainer said to check back at {count} levels, what does that mean
+do i have to go back to my trainer every level?
 @invites ask_advice
 @invites
 is it worth doing the town quests or just grind?
@@ -85,7 +85,9 @@ who says you cant solo oranges at {level}
 @invites
 @who Leveler
 @needs xp_high
+@needs xp_high,!day
 almost there, staying up till i ding
+@needs xp_high
 @needs
 sticking to {monsters} till {count} more levels, xp is steady
 
@@ -137,7 +139,9 @@ found a quiet spot with {monsters} and no competition, not telling where :)
 @who Daredevil
 @invites boast
 pulled {count} at once and lived. healer may hate me
+@needs in_group
 {dungeon} was full of reds today. we went in anyway
+@needs
 @invites
 @who Leveler
 logged in early to beat the crowd to {camp}
@@ -159,44 +163,70 @@ anyone want company at {camp}? i bring snacks and bad jokes
 the push from 40 to 50 is a real grind
 @invites
 anyone running {dungeon} tonight?
+@levels 35-49
 {camp} is still the best xp i have found at this level
+@levels 35-50
+@levels 40-49
 level 4x and still learning how to play this class properly
+@levels 35-50
+@levels 40-49
 starting to feel like 50 is actually reachable
+@levels 35-50
 anyone else pick up a few last levels in the frontier?
+@levels 35-49
 spent all night at {camp}, half a level. worth it though
+@levels 35-50
 @invites ask_opinion
 is it just me or do the 40s go faster than the 30s
 @invites
 @invites ask_know
+@needs at_camp
 anyone know who camps {monster} at {camp}? want to take turns
+@needs
 @invites
 @invites complaint
 @levels 48-49
 almost 50 and my gear is still a mess
 @levels 35-50
 @invites
+@levels 35-49
 thinking about rerolling an alt once this one hits 50
+@levels 35-50
 how does everyone fill the time at 50 besides the frontier?
 @needs !day
 @invites complaint
+@needs night
 {dungeon} groups are hard to fill this late at night
+@needs !day
 @needs
 @invites boast
+@levels 35-49
 got a level from a single run of {dungeon}, nice group
+@levels 35-50
 @invites lfg
-anybody up for a few hours at {camp}? need pull help
+@levels 35-49
+anybody else camping {camp} for a while?
+@levels 35-50
 @invites
 @who Explorer
 @needs outdoors
+@levels 35-49
 went to {zone} just to look around, ended up staying for the xp
+@levels 35-50
 @needs
 heard there is a named that wanders near {camp}, anyone seen it?
 @who Daredevil
 @invites boast
+@needs !day
+@needs !day,in_group
 three purples in {dungeon} and we did not wipe. legendary night
+@needs !day
+@needs
 @invites
 @who NoLifer
+@levels 35-49
 mapping out which realm abilities to buy first at 50
+@levels 35-50
 @who Leveler
 @invites joke
 @levels 48-48
@@ -204,7 +234,9 @@ mapping out which realm abilities to buy first at 50
 @levels 35-50
 @invites
 @who Crafter
+@levels 35-49
 taking a break from leveling to work on crafting, my bags thank me
+@levels 35-50
 
 # Answers to the specific questions above (0.36-se.4).
 @kind reply

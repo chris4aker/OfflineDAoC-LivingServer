@@ -6,30 +6,52 @@
 @topic newbie
 @who *
 @needs newbie
+@invites ask_train
 how do i get my new spells?
+@invites
+@invites ask_train
 do i have to visit my trainer every level?
+@invites
+@invites ask_train
 where do i spend my spec points?
+@invites
+@invites ask_oom
 what does oom mean? everyone keeps saying it
+@invites
 is it bad to put all my points in one line?
 how do i bind? woke up miles from anywhere
+@invites ask_con
 whats the difference between blue and green con?
+@invites
+@invites ask_delevel
 can i lose a level if i die?
+@invites
+@invites ask_merchant
 where do people sell all this loot?
-how do you all type and fight at the same time
+@invites
+how do you all type and fight at the same time?
+@levels 1-4
 when do i get to pick my real class?
+@levels 1-50
 is it rude to loot when someone else did most of the damage?
-what does pst mean
+@invites ask_pst
+what does pst mean?
+@invites
 how do people make money? i have like 40 copper
 should i buy armor from the merchant or wait for drops?
 how do the horse routes work?
+@invites ask_xpneeded
 what are those little bubbles on the xp bar?
+@invites
 anyone know where to get a better weapon at my level?
 first time grouping, what do i do besides hit stuff?
 this world is huge, i had no idea
 just figured out sitting gets my health back faster
 everyone is so helpful here, ty all
 i keep getting lost, do people use maps?
+@invites ask_realmability
 whats a realm ability? heard someone mention it
+@invites
 how high can quality go on armor?
 what level can i go to the frontier?
 is it normal that {monsters} hit this hard?
@@ -49,7 +71,9 @@ how do people find their way around down here?
 @needs newbie,just_died
 died again, how do people not die all the time?
 @needs newbie,just_leveled
+@invites ask_train
 just leveled, do i need to see my trainer now?
+@invites
 @needs newbie,outdoors,night
 {zone} at night is spooky
 @needs newbie
@@ -132,3 +156,37 @@ spindelhalla used to be the place to be, every night a full house
 coruscating mine was where everyone went back then
 @about
 @realm *
+
+# ---------------- At 50 (1.2 chat audit, CORPUS-A-022: 87% of the speakers in the owner's logs were level 50) ----------------
+# Short and true anywhere: no claim about where the bot is, what it holds or who it is with.
+@kind ambient
+@topic veteran
+@who *
+@levels 50-50
+fifty and the xp bar is just decoration now
+rp per hour is my new xp per hour
+cant decide on my next realm ability
+nothing left to level but crafting and realm rank
+remember when yellow cons scared me? now its all grey
+still dying to stealthers at 50, some things never change
+spellcraft prices are going to ruin me
+my template still has holes in it
+thinking about an alt, the main needs a rest
+everything i kill out here is grey, time for the frontier
+fifty feels quiet some nights
+seen every camp in the realm, still miss the 20s
+@invites ask_anyone
+any 50s up for the frontier later?
+dragon raid sometime? been ages
+@invites ask_opinion
+which realm ability should i save for next?
+@invites
+@who NoLifer
+@needs !day
+another night at 50, another night in the frontier
+@who Crafter
+fifty and all i want is a better crafting title
+@who Explorer
+fifty and i still find corners of the map i never saw
+@who Leveler
+no more levels, so i count realm points now

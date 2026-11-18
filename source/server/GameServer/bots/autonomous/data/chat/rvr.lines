@@ -11,10 +11,14 @@
 {frontier} was busy tonight, lots of fighting near {keep}
 @needs
 @invites complaint
+@needs in_frontier
 got ganked by a stealther on the way in, again
+@needs
 @invites
 anyone seen enemies near {keep}?
+@needs in_frontier
 first night in the frontier, keep me alive pls
+@needs
 @invites complaint
 realm points are slow tonight, quiet out there
 @invites
@@ -24,9 +28,9 @@ it is never quiet in {frontier} for long
 small groups beat the zerg if you play it right
 @invites boast
 @needs in_group
-8man ready, looking for a fight
+full group ready, looking for a fight
 @needs
-chain-killed three {enemy} stealthers tonight, feeling good
+chain-killed three {enemy_mod} stealthers tonight, feeling good
 @invites
 @who *
 @needs in_frontier
@@ -40,8 +44,10 @@ anyone near {keep}? i see a group headed that way
 @needs in_frontier, defending
 they are hitting the door at {keep}, need defenders
 @needs in_frontier
-heading back to {keep}, run home if you can
-watch out near {frontier}, stealthers about
+@needs in_frontier,defending
+heading back to {keep}, come if you can
+@needs in_frontier
+watch yourself in {frontier}, stealthers like it there
 @invites
 @levels 20-50
 @needs in_frontier, attacking
@@ -96,7 +102,7 @@ the demons in darkness falls keep me humble
 @levels 20-24
 @invites lfg
 @about place
-anyone going to thidranki? need a few more friendlies
+anyone going to thidranki? more friendlies would help
 @about
 @invites
 @about place
@@ -110,7 +116,7 @@ twinks in thidranki again, they hit like trucks
 @levels 25-29
 @invites ask_anyone
 @about place
-murdaigean tonight, who is in?
+anyone heading to murdaigean tonight?
 @about
 @invites
 @about place

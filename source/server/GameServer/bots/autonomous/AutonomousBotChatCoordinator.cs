@@ -390,7 +390,8 @@ public static partial class AutonomousBotChatCoordinator
             AutonomousChatWhy.CountHeld(choice.Channel, AutonomousChatWhy.Held.Ceiling);
             return false;
         }
-        string text = AutonomousChatIdiolect.Apply(said.Text, starter.DatabaseID, false, random, terse: true);
+        // 1.2 chat audit (DESIGN-043): in the starter's writing style too, unless it is a functional line (AutonomousBotVoices.StyleGenerated).
+        string text = AutonomousBotVoices.StyleGenerated(starter, said.Text, random);
         if (!Fresh(choice, text))
             return false;
         // 1.1.3: the field line is line 0 of its thread (CHAT_LINE src=field ex=... i=0).
@@ -625,7 +626,8 @@ public static partial class AutonomousBotChatCoordinator
                              (faction ? HasFactionAudience(bot.Realm) && !AutonomousBotDebates.IsRunning(bot.Realm) && FactionRoom(bot.Realm) : HasLocalAudience(bot)),
             (bot, line) =>
             {
-                string text = AutonomousChatIdiolect.Apply(line.Text, bot.DatabaseID, false, Random.Shared, terse: true);
+                // 1.2 chat audit (DESIGN-043): a thread's line in its speaker's writing style, functional lines as typed.
+                string text = AutonomousBotVoices.StyleGenerated(bot, line.Text);
                 if (faction)
                 {
                     if (!BroadcastFaction(bot.Name, bot.Realm, text, AsReply))
@@ -1016,7 +1018,8 @@ public static partial class AutonomousBotChatCoordinator
                 string text = line.Role == "closing" ? MarketClosing(poster, post, item) : line.Text;
                 if (string.IsNullOrWhiteSpace(text))
                     return false;
-                text = AutonomousChatIdiolect.Apply(text, bot.DatabaseID, false, Random.Shared, terse: true);
+                // 1.2 chat audit (DESIGN-043): a market answer in its speaker's style; wts/wtb/pc lines stay as typed.
+                text = AutonomousBotVoices.StyleGenerated(bot, text);
                 SendRealmChannel(bot, channel, text);
                 Note(channel + ":" + bot.Realm, bot, text, null);
                 return true;

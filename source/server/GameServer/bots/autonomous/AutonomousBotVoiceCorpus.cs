@@ -412,18 +412,34 @@ public sealed class AutonomousBotVoiceCorpus
             Line line = pool[index].Line;
             pool.RemoveAt(index);
             IReadOnlyDictionary<string, string> lineSlots = SlotsForLine(line, request.Slots, request.NeedSlots);
-            if (NamesTheBossTwice(line.Text, lineSlots) || !TryFill(line.Text, lineSlots, out string filled))
+            if (NamesTheBossTwice(line.Text, lineSlots) || !TryFillMasked(line.Text, lineSlots, out string masked, out List<string> values))
                 continue;
+            string filled = Unmask(masked, values);
             // 1.1.3, after RC5: no item paired with a class that can't use it ("wtb a shield for a 30 cabalist").
             if (AutonomousChatGear.PairsUnusable(filled, speaker?.Level ?? 50))
                 continue;
             if (request.LocalHour is int hour)
-                filled = ForTimeOfDay(filled, hour);
-            Voice voice = VoiceFor(speaker.Id);
-            string text = Style(filled, voice, random, out string correction);
-            // Beta 1.1.2, the style layer: the bot's own typing habits on top of its writing style.
-            // In-character lines keep their diction.
-            text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random);
+                masked = ForTimeOfDay(masked, hour);
+            string text;
+            string correction = null;
+            // 1.2 chat audit (CORPUS-B2-010, LOG-022): a gold spammer's ad is said exactly as written, with no bot's style.
+            if (line.Kind == "spam")
+                text = Unmask(masked, values);
+            else
+            {
+                Voice voice = VoiceFor(speaker.Id);
+                // 1.2 chat audit (DESIGN-015): the style and the typing habits work on the template with its slot values
+                // masked, so no typo or "teh" lands in a class, monster, item or place name ("wtb fine aloy great hammer").
+                text = Style(masked, voice, random, out correction, line.Kind);
+                // Beta 1.1.2, the style layer: the bot's own typing habits on top of its writing style.
+                // In-character lines keep their diction.
+                text = AutonomousChatIdiolect.Apply(text, speaker.Id, voice.Capitalize || line.Kind == "roleplay" || line.Intent == "roleplay", random,
+                    terse: !TakesEmote(line.Kind, masked));
+                text = Unmask(text, values);
+            }
+            // 1.2 chat audit (DESIGN-014): a line too long once filled is not cut in mid-word; the next candidate is tried.
+            if (text.Length > MaxLength)
+                continue;
             request.Recent?.Use(speaker.Realm, line.Id, request.Now);
             if (line.Family.Length > 0)
                 request.Recent?.Use(speaker.Realm, "f:" + line.Family, request.Now);
@@ -436,6 +452,18 @@ public sealed class AutonomousBotVoiceCorpus
     #endregion
 
     #region Time of day
+
+    /// <summary>
+    /// The season on the PC's calendar, northern hemisphere by month (owner, 2026-11-18 09:14: season-aware weather lines):
+    /// "winter" December-February, "spring" March-May, "summer" June-August, "autumn" September-November. Pure.
+    /// </summary>
+    public static string SeasonFlag(DateTime date) => date.Month switch
+    {
+        12 or 1 or 2 => "winter",
+        3 or 4 or 5 => "spring",
+        6 or 7 or 8 => "summer",
+        _ => "autumn",
+    };
 
     /// <summary>"day" 6-17, "evening" 17-23, "night" 23-6, on the PC's local clock.</summary>
     public static string TimeFlag(int localHour) => localHour is >= 6 and < 17 ? "day" : localHour is >= 17 and < 23 ? "evening" : "night";
@@ -545,7 +573,23 @@ public sealed class AutonomousBotVoiceCorpus
     /// <summary>Fills every {slot}; false if any slot has no value (a line is never sent half-filled).</summary>
     public static bool TryFill(string template, IReadOnlyDictionary<string, string> slots, out string filled)
     {
+        bool ok = TryFillMasked(template, slots, out string masked, out List<string> values);
+        filled = ok ? Unmask(masked, values) : null;
+        return ok;
+    }
+
+    /// <summary>The first private-use character a masked slot value is written as (one character per value).</summary>
+    private const char MaskBase = '';
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-015): <see cref="TryFill"/>, but each non-empty slot value is one private-use character in the
+    /// text (<paramref name="values"/> holds the values in order), so a writing style and typing habits leave names alone. The
+    /// mask is neither a letter nor lower case, so no rule touches it. <see cref="Unmask"/> puts the values back. Pure.
+    /// </summary>
+    public static bool TryFillMasked(string template, IReadOnlyDictionary<string, string> slots, out string masked, out List<string> values)
+    {
         bool ok = true;
+        var found = new List<string>();
         // "a {class}" before a vowel reads "an elementalist" (playtest 2026-11-04: "first to 50 as a elementalist"). Not
         // before u: "a unique".
         template = ArticleBeforeSlot.Replace(template ?? string.Empty, match =>
@@ -557,13 +601,38 @@ public sealed class AutonomousBotVoiceCorpus
         {
             if (slots != null && slots.TryGetValue(match.Groups[1].Value, out string value) && value != null &&
                 (value.Length > 0 || match.Groups[1].Value == "q"))
-                return value;
+            {
+                // {q} is a chat opener ("hey", "quick question,"), styled like the rest of the line; and past 255 values
+                // a value is left as plain text.
+                if (value.Length == 0 || match.Groups[1].Value == "q" || found.Count > 255)
+                    return value;
+                found.Add(value);
+                return ((char)(MaskBase + found.Count - 1)).ToString();
+            }
             ok = false;
             return match.Value;
         });
-        filled = ok ? Regex.Replace(result, @"\s+", " ").Trim().TrimStart(',', ' ') : null;
-        return ok && !string.IsNullOrEmpty(filled);
+        values = found;
+        masked = ok ? Regex.Replace(result, @"\s+", " ").Trim().TrimStart(',', ' ') : null;
+        return ok && !string.IsNullOrEmpty(masked);
     }
+
+    /// <summary>A masked text (<see cref="TryFillMasked"/>) with its slot values back in. Pure.</summary>
+    public static string Unmask(string masked, IReadOnlyList<string> values)
+    {
+        if (string.IsNullOrEmpty(masked) || values == null || values.Count == 0)
+            return masked;
+        var output = new StringBuilder(masked.Length + 32);
+        foreach (char c in masked)
+        {
+            int index = c - MaskBase;
+            output.Append(index >= 0 && index < values.Count ? values[index] : c.ToString());
+        }
+        return output.ToString();
+    }
+
+    /// <summary>A text cut to <paramref name="max"/> characters at a word, never in mid-word (DESIGN-014): <see cref="Fit"/>. Pure.</summary>
+    public static string CutAtWord(string text, int max = MaxLength) => Fit(text, max);
 
     #endregion
 
@@ -593,23 +662,104 @@ public sealed class AutonomousBotVoiceCorpus
     /// Applies a writing style. <paramref name="correction"/> is "*word" when the style made a typo and the
     /// writer would fix it in a second line (typo-prone writers often did), else null.
     /// </summary>
-    public static string Style(string text, Voice voice, Random random, out string correction)
+    public static string Style(string text, Voice voice, Random random, out string correction) =>
+        Style(text, voice, random, out correction, null);
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-013, CORPUS-B2-032, LOG-022): kinds whose lines take no laugh or emoticon from a writing style or
+    /// the "lol" habit: ads, alarms, rez asks, deaths, news, combat calls, in-character lines, beggars' pleas.
+    /// </summary>
+    public static readonly HashSet<string> NoEmoteKinds = new(StringComparer.Ordinal)
+    {
+        "spam", "alarm", "rez_ask", "death", "news", "combat", "roleplay", "beggar",
+    };
+
+    /// <summary>
+    /// 1.2 chat audit (DESIGN-012): words that make a line a functional one, a trade, group or call line ("wts ...", "lf healer",
+    /// "pc on a staff?", "inc 8 mids"). Such a line is typed the same by every writer: no capital, no stop, no expansion, no
+    /// laugh, and the terse style keeps its commas.
+    /// </summary>
+    private static readonly Regex FunctionalWords = new(
+        @"(?<![a-z0-9])(wts|wtb|wtt|lfg|lfm|lf|lf[1-7]m|pc|pst|inc|/send|/tell|/t|/gu|cc'?d|oom|rdy|bio)(?![a-z0-9])",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    /// <summary>A trade, group or call line (see <see cref="FunctionalWords"/>). Pure.</summary>
+    public static bool IsFunctional(string text) => !string.IsNullOrEmpty(text) && FunctionalWords.IsMatch(text);
+
+    private static readonly Regex Laugh = new(@"(?<![a-z])(lol|lmao|rofl|haha+|hehe+|heh|ha|hah)(?![a-z])|[:;]-?[)(PpDdOo/\\|]|\^\^|<g>",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    /// <summary>The line already laughs or has an emoticon ("lol", "haha", ":)"). Pure.</summary>
+    public static bool HasLaugh(string text) => !string.IsNullOrEmpty(text) && Laugh.IsMatch(text);
+
+    /// <summary>A line typed in capitals ("SUPER CHEAP GOLD!!!", a rage quit): most of its letters are upper case. Pure.</summary>
+    public static bool IsShouted(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return false;
+        int letters = text.Count(char.IsLetter), upper = text.Count(char.IsUpper);
+        return letters >= 6 && upper >= letters * 0.6;
+    }
+
+    /// <summary>Whether a style or habit may add a laugh to a line of this kind (DESIGN-013). Pure.</summary>
+    public static bool TakesEmote(string kind, string text) =>
+        !(kind != null && NoEmoteKinds.Contains(kind)) && !IsFunctional(text) && !HasLaugh(text) && !IsShouted(text);
+
+    /// <summary>
+    /// "inc 8 mids at Caer Benowyc, healer, warrior, skald": three or more comma parts whose later parts are one or two words
+    /// each. The terse style keeps these commas (DESIGN-013). Pure.
+    /// </summary>
+    public static bool IsCommaList(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return false;
+        string[] parts = text.TrimEnd('.', '!', '?').Split(',');
+        return parts.Length >= 3 && parts.Skip(1).All(part => part.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length is >= 1 and <= 2);
+    }
+
+    /// <summary>Chat tokens that are also plain words a tidy writer starts a sentence with ("This is why.", "No, not yet.").</summary>
+    private static readonly HashSet<string> SentenceWords = new(StringComparer.Ordinal)
+        { "this", "no", "yes", "true", "same", "sure", "nice", "cool", "later", "night", "agreed", "hey", "hi" };
+
+    private static readonly Regex SentenceStart = new(@"(?<![.!?])([.!?] )([a-z][a-z0-9]*)", RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// Applies a writing style to a line of <paramref name="kind"/> (null: any). 1.2 chat audit: a functional line keeps its
+    /// shape (DESIGN-012); no laugh is added to a line that has one, a functional line, a line in capitals or a kind in
+    /// <see cref="NoEmoteKinds"/> (DESIGN-013); the terse strip keeps a list's commas, keeps "!" in capitals and keeps a
+    /// sentence break as a comma (CORPUS-B1-028); words are expanded at word boundaries ("u?" -> "you?"); no capital after
+    /// "..." or "!!". A text over <see cref="MaxLength"/> is cut at a word and ends "..." (<see cref="Fit"/>, DESIGN-014).
+    /// </summary>
+    public static string Style(string text, Voice voice, Random random, out string correction, string kind)
     {
         correction = null;
         if (string.IsNullOrEmpty(text) || voice == null)
             return text;
         string result = text;
+        bool functional = IsFunctional(text);
+        bool shouted = IsShouted(text);
+        bool emote = TakesEmote(kind, text);
         // A "proper" writer still types chat words as chat words: "lol" and "ty ty", not "Lol." or "Thanks thanks."
         // (audit 2026-10-18).
         // Beta 1.1.2: "np, back to it", "lol yeah thats it": a line that starts with a chat word stays as typed, even by a
         // tidy writer.
-        bool chatToken = IsChatToken(text) || StartsWithChatToken(text);
+        bool chatToken = IsChatToken(text) || StartsWithChatToken(text) || functional || shouted;
         foreach ((string from, string to) in voice.Abbreviate)
             result = Regex.Replace(result, $@"(?<=^|\s){Regex.Escape(from)}(?=$|[\s,.?!])", to, RegexOptions.CultureInvariant);
         if (voice.Expand.Count > 0 && !chatToken)
-            result = string.Join(' ', result.Split(' ').Select(word => voice.Expand.TryGetValue(word, out string full) ? full : word));
+            foreach ((string from, string full) in voice.Expand)
+                result = Regex.Replace(result, $@"(?<=^|\s){Regex.Escape(from)}(?=$|[\s,.?!])", full, RegexOptions.CultureInvariant);
         if (voice.StripPunctuation)
-            result = result.TrimEnd('.', '!').Replace(",", string.Empty);
+        {
+            if (!shouted)
+                result = result.TrimEnd('.', '!');
+            else
+                result = result.TrimEnd('.');
+            if (!IsCommaList(result))
+                result = result.Replace(",", string.Empty);
+            // CORPUS-B1-028: "i do both. zerg when i want points" read "i do both zerg when..."; a sentence break stays a break.
+            result = Regex.Replace(result, @"(?<!\.)\. (?=\S)", ", ");
+        }
         if (voice.TypoChance > 0 && random.NextDouble() < voice.TypoChance)
         {
             string typed = SwapTypo(result, random, out string fixedWord);
@@ -617,12 +767,15 @@ public sealed class AutonomousBotVoiceCorpus
                 correction = "*" + fixedWord;
             result = typed;
         }
-        if (voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance)
+        if (emote && voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance)
             result += " " + voice.Emotes[random.Next(voice.Emotes.Length)];
         if (voice.Capitalize && result.Length > 0 && !chatToken)
             result = char.ToUpperInvariant(result[0]) + result[1..];
-        if (voice.CapitalizeSentences)
-            result = Regex.Replace(result, @"([.!?] )([a-z])", m => m.Groups[1].Value + m.Groups[2].Value.ToUpperInvariant());
+        if (voice.CapitalizeSentences && !chatToken)
+            // A chat word starts no sentence with a capital ("...beg? nope", not "beg? Nope"; the builder's round trip found them).
+            result = SentenceStart.Replace(result, m => ChatTokens.Contains(m.Groups[2].Value) && !SentenceWords.Contains(m.Groups[2].Value)
+                ? m.Value
+                : m.Groups[1].Value + char.ToUpperInvariant(m.Groups[2].Value[0]) + m.Groups[2].Value[1..]);
         // Beta 1.1.2: even a tidy writer leaves a short reply unstopped ("Np, have fun", not "Np, have fun.").
         if (voice.EndPeriod && result.Length > 0 && !chatToken && result.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 3)
         {
@@ -691,10 +844,13 @@ public sealed class AutonomousBotVoiceCorpus
     {
         "lol", "heh", "hehe", "haha", "ha", "rofl", "lmao", "gz", "grats", "gratz", "ty", "thx", "np", "k", "kk", "ok", "brb",
         "afk", "wb", "gn", "gl", "omw", "inc", "re", "hm", "hmm", "huh", "yw", "sry", "nm", "nvm", "pst", "ding", "lfg", "lfm",
-        "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",
+        "oom", "med", "rez", "r", "y", "n", "yep", "nope", "ikr", "bah", "ugh", "doh", "w00t", "woot",   // chat-check: input
         // Beta 1.1.2: "Lol yes." read as a bot (the blind spot-the-bot judge); short acks stay lowercase for every writer.
         "yes", "ya", "yeah", "yea", "no", "nah", "sure", "same", "true", "nice", "cool", "hey", "hi", "yo", "sup", "cya", "later", "night",
-        "rip", "oof", "phew", "gg", "x", "this", "agreed", "hehe", "lmao",
+        "rip", "oof", "phew", "gg", "x", "this", "agreed", "hehe", "lmao",   // chat-check: input
+        // 1.2 chat audit (DESIGN-012): "Wts 97% chain hauberk /send.", "Pc on a runed staff?", "Where r u?" came from a tidy writer.
+        "wts", "wtb", "wtt", "lf", "lf1m", "lf2m", "lf3m", "lf4m", "pc", "sm", "zerk", "any1", "ne1", "gtg", "bbl", "bio", "rdy",
+        "plz", "pls",
     };
 
     /// <summary>A line whose first word is a chat word ("np, back to it"). Pure.</summary>

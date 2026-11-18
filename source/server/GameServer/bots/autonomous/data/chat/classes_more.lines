@@ -59,7 +59,6 @@ is it worth putting points in shields on a scout?
 
 @class Infiltrator
 @invites complaint
-infil in a pve group is a lonely thing, nobody asks for us
 @invites boast
 perfect backstab chain, it never stood a chance
 @invites joke
@@ -145,7 +144,7 @@ soloed the whole camp with my pet, no healer needed
 @invites joke
 necromancer: not evil, just misunderstood. and a little bit dead
 @invites ask_advice
-what pet do you run at {level} as a necro?
+what do you spec at {level} as a necro?
 
 # ---------------- Midgard ----------------
 @kind ambient
@@ -170,7 +169,7 @@ stormcalling crit took half its health, love this class
 @invites joke
 thane: a tank that thinks it is a caster
 @invites ask_advice
-how much stormcalling do you put on a thane?
+stormcalling or hammers first on a thane?
 
 @class Skald
 @invites complaint
@@ -206,7 +205,7 @@ how much parry does a savage really need?
 @invites complaint
 my pet ran off and pulled half the camp again
 @invites boast
-two shots and it never reached me, hunter is in a good spot
+two shots and it never reached me, hunters are better than people say
 @invites joke
 hunters dont lose pets, we lend them to the monsters
 @invites ask_opinion
@@ -250,7 +249,7 @@ bolted it twice before it even crossed the room
 @invites joke
 runemasters write runes, then we write our wills
 @invites ask_advice
-how much suppression do you put on a rm?
+suppression or darkness for a solo rm?
 
 @class Spiritmaster
 @invites complaint
@@ -268,7 +267,7 @@ rebuffing every pet after a death takes forever
 @invites boast
 three pets, one bd, zero healer, cleared the whole camp
 @invites joke
-bonedancer family dinner: me and my skeletons
+bonedancer family reunion: me and my skeletons
 @invites ask_advice
 what pets do you run as a bd at {level}?
 
@@ -295,13 +294,13 @@ debuffed it, struck it, dropped it. champs are doing fine
 @invites joke
 champion: half fighter, half caster, fully confused
 @invites ask_advice
-how much valor do you put on a champ?
+is valor worth it on a champ?
 
 @class Blademaster
 @invites complaint
 bm life: great damage, zero respect
 @invites boast
-triple attack on a blue con, it never had a chance
+celtic dual on a blue con, it never had a chance
 @invites joke
 blademasters count to two a lot
 @invites ask_opinion
@@ -321,7 +320,7 @@ nurture or regrowth warden for groups?
 @invites complaint
 my pet dies, i resummon, it dies again. druid life
 @invites boast
-pet tanked a yellow while i healed it, solo druid is easy mode
+pet tanked a yellow while i healed it, solo druid is not as hard as people say
 @invites joke
 druids talk to trees, the trees mostly agree with us
 @invites ask_opinion
@@ -361,7 +360,7 @@ how do you solo a nightshade past 30?
 @invites complaint
 one add and my eldritch is on the floor
 @invites boast
-light bolt took half its health before it even moved
+void bolt took half its health before it even moved
 @invites joke
 eldritch: bright robes, brighter spells, very short life
 @invites ask_opinion
@@ -401,7 +400,7 @@ arboreal or creeping animist for solo?
 @invites complaint
 people think a valewalker is a druid with a farm tool
 @invites boast
-one scythe swing hit two mobs at once, vw is better than people think
+one scythe swing took half its health, vw is better than people think
 @invites joke
 valewalker: i bring the scythe, nature brings the harvest
 @invites ask_advice

@@ -54,11 +54,11 @@ nothing left to level, so now i level my alts in my head
 @topic loot
 @who *
 [finally|at last] got a drop worth [selling|keeping], my luck is turning
-[three hours|a whole session] of [rings i cant use|cloth caps|junk] and then a [nice|decent] weapon. thats how it goes
+[three hours|a whole session] of [boots i cant wear|cloth caps|junk] and then a [nice|decent] weapon. thats how it goes
 the loot table and i have a long running feud
 some nights mobs carry nothing but [rusty junk|broken bits|bones]
 every time i give up on a camp, the next guy gets the drop
-[heh|well|ha], [another|got a] [shiny|fancy] [cloak|ring|belt] for [the wrong class|a class i dont play]
+[heh|well|ha], [another|got a] [shiny|fancy] [helm|pair of boots|pair of gloves] for [the wrong class|a class i dont play]
 random drops with silly names are [half the fun|the best part] of the game
 the [named|named mob] [dropped|coughed up] [two copper|a single copper|a bent nail]. [thanks for nothing|truly generous]
 people say luck isnt real but they have never watched me loot
@@ -201,7 +201,7 @@ pickup groups are a gamble, but sometimes you win big
 the best groups tell you whats going on before it goes wrong
 [assisting|/assist] is the most important button [nobody uses|people forget]
 [a good|one good] [puller|pull] can make or break the whole group
-[bring|carry] your own [food|potions|arrows] to a group, nobody likes a leech
+[bring|carry] your own [potions|arrows] to a group, nobody likes a leech
 the group that wipes together laughs together, eventually
 @invites ask
 {q} what do you all think of groups that kick people right before a ding?
@@ -254,7 +254,7 @@ anyone else find crafting oddly relaxing?
 [spent|blew] my last gold on [armor|a new weapon|a dye], [worth it|no regrets|maybe a mistake]
 i have exactly enough money to be worried
 platinum is a myth invented by crafters
-selling loot at a natural break is the best feeling, bags empty, pockets full
+selling a full bag is the best feeling, bags empty, pockets full
 my bank is worth more than my character
 a gold here, a gold there, it adds up. slowly. very slowly
 merchants buy for pennies and sell it back for ten times more, nice work if you can get it
@@ -321,7 +321,9 @@ solo pulled three and walked away, still shaking
 made it across a whole zone without aggroing anything, im basically a ghost
 pulled a perfect single out of a pack of five, someone frame that
 [got|finally have] my spec exactly where i want it
+@levels 1-49
 [two|three] levels [this week|in a week], not bad for someone with a job
+@levels 1-50
 i can name every mob in a zone by the way it walks
 [outran|outlasted] a [runner|whole add] [on foot|with no snare], [still proud|proud of that one]
 never once broke mezz, ask anyone
@@ -346,9 +348,9 @@ stuck on a rock again. the rocks in this game are sticky
 [ugh|man], [my|the] [buffs|buff timers] always [run out|drop] [mid fight|at the worst time]
 [i hate|nothing worse than] [three|four] resists in a row
 [pathing|mob pathing] [is|has been] [weird|silly] lately, [stuff|things] walking through walls
-my keyboard needs a new sit key, the old one is worn out
 i swear quest npcs move when you are not looking
 @class Scout,Hunter,Ranger
+@invites complaint
 [ugh|again|of course], [out of arrows|my quiver is empty] [mid fight|at the worst time]
 
 # ---------------- Late at night ----------------
@@ -359,8 +361,12 @@ i swear quest npcs move when you are not looking
 [still up|up way too late], [one more|just one more] [pull|camp|level] and then sleep
 the realm gets so quiet at this hour
 best time to camp is when everyone else is asleep
+@levels 1-49
 if i stop now i sleep. if i keep going i level. hard choice
+@levels 1-50
+@levels 1-49
 my eyes are closing but [my xp bar|the bar] is [so close|right there]
+@levels 1-50
 i should be asleep, but here we are
 nothing like a quiet realm at this hour, every camp is free
 [work|class] in a few hours and im still [here|playing]
@@ -379,7 +385,9 @@ the moon in game is [prettier|nicer] than the real one [tonight|]
 @topic evening
 @who *
 @needs evening
+@levels 1-49
 dinner done, [time to level|back to the grind|back to business]
+@levels 1-50
 [the|] evening crowd is [rolling|coming] in, [chat|faction] is picking up
 long day at work, [this|a few kills] is exactly what i needed
 the best part of the day is logging in after it
@@ -439,7 +447,7 @@ the first big mob i saw made me hide behind a tree
 every time i level i run back to the trainer like its a birthday
 even the merchants are exciting when everything is new
 [wow|whoa], so [that|this] is what a named mob looks like
-just [figured out|noticed] the [map|compass] shows which way im facing
+just [figured out|noticed] the compass shows which way im facing
 my backpack is full of things i dont understand
 [i|] still [get|feel] [excited|giddy] every time [i loot|something drops]
 @invites ask_anyone
@@ -451,7 +459,7 @@ does it ever stop feeling this big?
 @needs newbie,in_capital
 the capital is so big i keep walking in circles
 @needs newbie,outdoors
-[i|] [keep stopping|stopped] to watch the [sunset|clouds|water]
+[i|] [keep stopping|stopped] to watch the [clouds|water]
 @needs newbie,in_group
 my first group! [tell me if|let me know if] i do something wrong
 @needs newbie,just_leveled
@@ -494,6 +502,7 @@ old habit: i still check behind me before every pull
 my first group leader taught me more than any guide ever did
 @invites ask
 {q} remember your first ever group?
+@invites
 @levels 50-50
 fifty and still finding new things to do
 the [best|funniest] part about 50 is [helping|watching] the new folks find their feet
@@ -511,7 +520,7 @@ i log out with a fresh ding or not at all
 tracking my xp per hour on a notepad like an accountant
 the fastest way to 50 is to never stop moving
 @invites boast
-[two|three] levels since [dinner|lunch], [anyone beat that|not bad]
+[two|three] levels since i logged on, [anyone beat that|not bad]
 
 # ---------------- Personality: Crafter ----------------
 @kind ambient
@@ -541,7 +550,7 @@ i remember everyones name, [just not|but never] their [spec|level]
 @invites ask_howareyou
 how is everyone [doing|getting on]? [quiet|slow] in here
 @invites ask
-{q} tell me something good that happened to you lately
+tell me something good that happened to you lately
 
 # ---------------- Personality: Explorer ----------------
 @kind ambient
@@ -686,7 +695,7 @@ the loot is fine, the company is better
 full bags and a long walk to the merchant, story of my life
 had to leave a drop on the ground [because|cause] my bags are full, [painful|it hurt]
 i carry too much junk, i know, i know
-my pack weighs more than [i do|my horse]
+my pack weighs more than [i do|a pony]
 
 # ---------------- Just leveled ----------------
 @kind ambient
@@ -767,7 +776,6 @@ i [always|] [say|tell myself] ill stop at the next [ding|level], [and then i don
 @kind ambient
 @topic grouping
 @who *
-[a quick|a short|one little] [hello|hi] when you join a group goes a long way
 [i|] [always|] [thank|say ty to] the healer [after|at the end of] a [long|good] [session|group]
 the best [puller|tank|healer] i [ever|have ever] [grouped with|played with] [never said a word|barely talked|just knew what to do]
 
@@ -790,7 +798,7 @@ the best [puller|tank|healer] i [ever|have ever] [grouped with|played with] [nev
 @invites joke
 [i bet|i think] the [route horses|stable horses] [gossip|talk] about [us|the riders] [behind our backs|when we dismount]
 if patience [was|were] a stat [i would|id] have it [capped|maxed] by now
-my [character|toon] has [fallen off|walked off] more [ledges|bridges|cliffs] than anyone alive
+my character has [fallen off|walked off] more [ledges|bridges|cliffs] than anyone alive
 
 @kind ambient
 @topic gripe
