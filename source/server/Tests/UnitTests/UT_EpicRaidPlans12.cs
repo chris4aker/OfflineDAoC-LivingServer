@@ -465,7 +465,7 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(agmundr, live, _ => true, front), Is.Null, "his fight is on");
             string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs");
             Assert.That(route, Does.Contain("EpicEncounterTactics.ClearsAgainBeforePull(_target)) &&"));
-            Assert.That(route, Does.Contain("ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front) is { } back"));
+            Assert.That(route, Does.Contain("ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front, ReclearFree(now)) is { } back"));
         }
 
         [Test]
@@ -754,6 +754,261 @@ namespace DOL.UnitTests
             Assert.That(RealmRaidDungeonRoute.PullWaitExpired(start, start + RealmRaidDungeonRoute.PullWaitLimitMilliseconds), Is.True,
                 "an add the raid can never reach does not keep the boss waiting for ever");
             Assert.That(RealmRaidDungeonRoute.PullWaitExpired(long.MinValue, start), Is.True, "an expired hold stays expired");
+        }
+
+        // ---- build b1b6846 (owner's PC, 2026-11-18, Caer Sidi): a dropped wipe and a re-clear held on one court monster ------
+
+        private static RealmRaidDungeonRoute CaerSidiRoute()
+        {
+            ConstructorInfo ctor = typeof(RealmRaidDungeonRoute).GetConstructors(Hidden).Single(c => c.GetParameters().Length == 7);
+            Vector3 muster = new(29617, 41288, 15375);
+            return (RealmRaidDungeonRoute)ctor.Invoke([(ushort)60, null, muster, muster, new[] { "Apocalypse" }, null, eRealm.Albion]);
+        }
+
+        private static void Set(RealmRaidDungeonRoute route, string field, object value) =>
+            typeof(RealmRaidDungeonRoute).GetField(field, Hidden)!.SetValue(route, value);
+        private static object Get(RealmRaidDungeonRoute route, string field) =>
+            typeof(RealmRaidDungeonRoute).GetField(field, Hidden)!.GetValue(route);
+
+        /// <summary>Fight A at 07:26-07:28: an early-pull Commit on the Crypt Lord engaged <paramref name="engaged"/> raiders, of
+        /// whom <paramref name="fallen"/> fell; he left combat inside the 120 s grace while his forerunner still fought the raid.</summary>
+        private (RealmRaidDungeonRoute Route, TestCryptLord Lord, Mob Forerunner) OpenAttemptOnTheCryptLord(int engaged, int fallen, int failedBefore = 0)
+        {
+            var (lord, forerunner, live) = CryptLordRoom(28711, 40297);
+            lord.Name = "Crypt Lord";
+            forerunner.Name = "forerunner";
+            var raiders = new List<GameLiving>();
+            for (int i = 0; i < engaged; i++)
+            {
+                var raider = Npc<Mob>(28400 + i * 5, 40400, 15373);
+                raider.Dead = i < fallen;
+                raiders.Add(raider);
+            }
+            RealmRaidDungeonRoute route = CaerSidiRoute();
+            Set(route, "_target", lord);
+            Set(route, "_musterTarget", lord);
+            Set(route, "_musterEngaged", true);
+            ((HashSet<GameLiving>)Get(route, "_engaged")).UnionWith(raiders);
+            Set(route, "_attemptRaidSize", 114);
+            Set(route, "_live", (IReadOnlyList<GameNPC>)live);
+            ((RealmRaidDungeonRoute.PullContact)Get(route, "_pulls")).SawCombat();
+            if (failedBefore > 0) ((Dictionary<string, int>)Get(route, "_failedAttempts"))["Crypt Lord"] = failedBefore;
+            lord.Fighting = false;
+            forerunner.Fighting = true;
+            return (route, lord, forerunner);
+        }
+
+        private static bool SwitchToHostile(RealmRaidDungeonRoute route, GameNPC to) =>
+            (bool)typeof(RealmRaidDungeonRoute).GetMethod("SwitchToHostile", Hidden)!.Invoke(route, [to, new Vector3(to.X, to.Y, to.Z), true, 60_000L]);
+
+        [Test]
+        public void AWipeIsJudgedBeforeTheRouteTurnsToTheCourtMonsterFightingTheRaid()
+        {
+            var (route, lord, forerunner) = OpenAttemptOnTheCryptLord(engaged: 70, fallen: 60);
+            using var logs = new TestLogCapture(nameof(RealmRaidDungeonRoute));
+            Assert.That(SwitchToHostile(route, forerunner), Is.False, "one wipe of two: the raid goes on");
+            string[] lines = logs.Lines.ToArray();
+            int wipe = Array.FindIndex(lines, l => l.StartsWith("REALM_EXPEDITION_WIPE ") && l.Contains("target=\"Crypt Lord\"") &&
+                                                   l.Contains("failures=1 ") && l.Contains("engaged=70 fallen=60"));
+            int turn = Array.FindIndex(lines, l => l.StartsWith("REALM_EXPEDITION_TARGET_SWITCH ") && l.Contains("to=\"forerunner\""));
+            Assert.Multiple(() =>
+            {
+                Assert.That(wipe, Is.GreaterThanOrEqualTo(0), "build b1b6846 scored nothing for fight A (88 deaths): " + string.Join(" | ", lines));
+                Assert.That(turn, Is.GreaterThan(wipe), "the wipe first, then the switch");
+                Assert.That(route.FailedAttempts("Crypt Lord"), Is.EqualTo(1));
+                Assert.That(route.WipesSoFar, Is.EqualTo(1));
+                Assert.That(route.TargetName, Is.EqualTo("forerunner"), "the survivors still answer the court monster");
+                Assert.That(Get(route, "_musterEngaged"), Is.False, "the attempt is closed");
+            });
+        }
+
+        [Test]
+        public void AnAttemptWithTheRaidStandingEndsWithoutAWipeBeforeTheSwitch()
+        {
+            var (route, _, forerunner) = OpenAttemptOnTheCryptLord(engaged: 70, fallen: 5);
+            using var logs = new TestLogCapture(nameof(RealmRaidDungeonRoute));
+            Assert.That(SwitchToHostile(route, forerunner), Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(route.FailedAttempts("Crypt Lord"), Is.Zero, "5 of 70 fell: no wipe");
+                Assert.That(logs.Lines.Any(l => l.StartsWith("REALM_EXPEDITION_ATTEMPT_ENDED ") && l.Contains("wipe=False")), Is.True);
+                Assert.That(route.TargetName, Is.EqualTo("forerunner"));
+            });
+            Assert.That(RealmRaidDungeonRoute.JudgesAttemptBeforeSwitch(attemptOnTarget: false, switchesAway: true), Is.False,
+                "no attempt open: nothing to judge");
+        }
+
+        [Test]
+        public void ASecondWipeJudgedAtTheSwitchDefeatsTheRaid()
+        {
+            var (route, _, forerunner) = OpenAttemptOnTheCryptLord(engaged: 70, fallen: 60, failedBefore: 1);
+            using var logs = new TestLogCapture(nameof(RealmRaidDungeonRoute));
+            Assert.That(SwitchToHostile(route, forerunner), Is.True, "the route stops");
+            Assert.Multiple(() =>
+            {
+                Assert.That(route.Defeated, Is.True);
+                Assert.That(route.DefeatedAt, Is.EqualTo("Crypt Lord"));
+                Assert.That(logs.Lines.Any(l => l.StartsWith("REALM_EXPEDITION_TARGET_SWITCH ")), Is.False, "no switch after the defeat");
+            });
+        }
+
+        /// <summary>Lord at his corner P1 walking north to P2: the reckoned soul by that corner is held (his patrol is on it);
+        /// the western forerunner is clear of him (TheWalkWindowStillOpensOnHisFarSide's court check).</summary>
+        private (TestCryptLord Lord, Mob Held, Mob Free, List<GameNPC> Live, Vector3 Front) HeldAndFreeCourt()
+        {
+            var lord = Npc<TestCryptLord>((int)CryptLordCorner.X, (int)CryptLordCorner.Y, (int)CryptLordCorner.Z);
+            T.CryptLordNextPoint = _ => 1;
+            var held = Npc<Mob>(28513, 39881, 15373);
+            held.Name = "reckoned soul"; held.PackageID = T.CryptLordCourt;
+            var free = Npc<Mob>((int)WesternForerunner.X, (int)WesternForerunner.Y, (int)WesternForerunner.Z);
+            free.Name = "forerunner"; free.PackageID = T.CryptLordCourt;
+            var live = new List<GameNPC> { lord, held, free };
+            // The front by the held one: nearest by walk, as the 07:38:51 pick was.
+            return (lord, held, free, live, new Vector3(28650, 40000, 15373));
+        }
+
+        [Test]
+        public void TheReclearTakesACourtMonsterWhoseWindowIsOpenBeforeANearerOneThatMustWait()
+        {
+            var (lord, held, free, live, front) = HeldAndFreeCourt();
+            Func<GameNPC, bool> freeNow = n => T.PullWait(n, live, 1_000, null) == null;
+            Assume.That(T.PullWait(held, live, 1_000), Does.Contain("patrol comes within"));
+            Assume.That(T.PullWait(free, live, 1_000), Is.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(lord, live, _ => true, front), Is.SameAs(held), "by walk alone: the 07:38:51 pick");
+                Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(lord, live, _ => true, front, freeNow), Is.SameAs(free),
+                    "one whose window is open now first");
+                Assert.That(RealmRaidDungeonRoute.ReclearBeforePull(lord, live, _ => true, front, _ => false), Is.SameAs(held),
+                    "none free: the nearest, and its hold's 20-minute lapse stands as before");
+            });
+        }
+
+        [Test]
+        public void WhileHeldOnACourtMonsterTheRouteTakesAnotherWhoseWindowOpened()
+        {
+            var (lord, held, free, live, front) = HeldAndFreeCourt();
+            Func<GameNPC, bool> freeNow = n => T.PullWait(n, live, 1_000, null) == null;
+            Assert.That(RealmRaidDungeonRoute.FreeReclearInstead(held, live, _ => true, front, freeNow, false), Is.SameAs(free),
+                "07:38:51-07:59:33: 20 minutes held on the reckoned soul");
+            Assert.Multiple(() =>
+            {
+                Assert.That(RealmRaidDungeonRoute.FreeReclearInstead(held, live, _ => true, front, _ => false, false), Is.Null,
+                    "no other free: it keeps holding");
+                Assert.That(RealmRaidDungeonRoute.FreeReclearInstead(held, live, n => n != free, front, freeNow, false), Is.Null,
+                    "one the route set aside is not taken");
+            });
+            lord.Fighting = true;
+            Assert.That(RealmRaidDungeonRoute.FreeReclearInstead(held, live, _ => true, front, freeNow, false), Is.Null, "his fight is on");
+            lord.Fighting = false;
+            free.Dead = true;
+            Assert.That(RealmRaidDungeonRoute.FreeReclearInstead(held, live, _ => true, front, freeNow, false), Is.Null);
+            string route = Source("bots", "autonomous", "RealmRaidDungeonRoute.cs");
+            Assert.That(route, Does.Contain("FreeReclearInstead(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front, ReclearFree(now),"));
+            Assert.That(RealmRaidDungeonRoute.PullWaitLimitMilliseconds, Is.EqualTo(20 * 60_000), "the lapse is the owner's call: unchanged");
+        }
+
+        // ---- the court fought at the gather point (owner, 2026-11-18, after b1b6846's fight B) -----------------------------
+
+        /// <summary>The muster of the 5378dbe/b1b6846 court pulls (MUSTER_GUARDED 29617,41288): far from his patrol.</summary>
+        private static readonly Vector3 CourtMuster = new(29617, 41288, 15375);
+
+        private (TestCryptLord Lord, Mob Court, Mob Raider, List<GameNPC> Live) CourtFight(Vector3 courtAt)
+        {
+            var lord = Npc<TestCryptLord>(26567, 40143, 15372);
+            var court = Npc<Mob>((int)courtAt.X, (int)courtAt.Y, (int)courtAt.Z);
+            court.Name = "dark light"; court.PackageID = T.CryptLordCourt; court.Fighting = true;
+            var raider = Npc<Mob>((int)courtAt.X + 50, (int)courtAt.Y, (int)courtAt.Z);
+            return (lord, court, raider, new List<GameNPC> { lord, court });
+        }
+
+        [Test]
+        public void ACourtFightDriftingTowardsHisPatrolIsHeldAtTheMuster()
+        {
+            // By his corner P1, as fight B's pack drifted within 800 of his legs (07:36, he joined 109 s after the pull).
+            Vector3 drift = T.CryptLordPatrol[1] + new Vector3(0, -300, 1);
+            Assume.That(T.DistanceToPatrol(drift), Is.LessThan(T.CourtHoldPatrolReach));
+            Assume.That(T.DistanceToPatrol(CourtMuster), Is.GreaterThan(T.CourtHoldPatrolReach), "the muster keeps clear of his loop");
+            var (lord, court, raider, live) = CourtFight(drift);
+            try
+            {
+                Assert.That(T.CourtLeash(court, 1_000), Is.Null, "no court fight from a muster: no leash (as before)");
+                T.SetCourtHold(lord, CourtMuster);
+                Assert.That(T.CourtLeash(court, 1_000), Is.EqualTo(CourtMuster));
+                T.Advice advice = T.Decide(raider, court, live, 0, false, 2_000, 0);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(advice.Action, Is.EqualTo(T.BotAction.StandOff), "not followed");
+                    Assert.That(advice.StandAt, Is.EqualTo(CourtMuster), "the raider goes back to the muster; it chases them there");
+                    Assert.That(advice.Reason, Does.StartWith("court-leash:"));
+                });
+                Assert.That(T.CourtLeashHolds(drift, CourtMuster, T.DistanceToPatrol(drift), 30_000), Is.True);
+                // Held a minute: it is fought where it stands (a caster that never comes does not hold the raid under its spells).
+                Assert.That(T.CourtLeash(court, 1_000 + T.CourtHoldLimitMilliseconds), Is.Null);
+                // The Crypt Lord, his patrol and his court are unchanged: only where the raid stands.
+                Assert.That(T.CryptLordCourtLink, Is.EqualTo(800));
+                string tactics = Source("bots", "autonomous", "EpicEncounterTactics.cs");
+                Assert.That(tactics, Does.Contain("!HasDungeonRule(target) &&\n                !IsCryptLordCourt(target))"),
+                    "court monsters reach the tactic hook (TryHandle)");
+            }
+            finally { T.SetCourtHold(lord, null); }
+        }
+
+        [Test]
+        public void ACourtFightAtTheMusterOrAwayFromHisPatrolIsFoughtAsUsual()
+        {
+            var (lord, court, raider, live) = CourtFight(CourtMuster + new Vector3(-400, 150, 0));
+            try
+            {
+                T.SetCourtHold(lord, CourtMuster);
+                Assert.That(T.CourtLeash(court, 1_000), Is.Null, "within the leash: the fight goes on at the muster");
+                Assert.That(T.Decide(raider, court, live, 0, false, 1_000, 0).Reason ?? "", Does.Not.StartWith("court-leash"));
+                // Away from his loop (farther than his link plus the margin): no leash however far from the muster.
+                Vector3 far = CourtMuster + new Vector3(0, 900, 0);
+                Assume.That(T.DistanceToPatrol(far), Is.GreaterThan(T.CourtHoldPatrolReach));
+                Move(court, far.X, far.Y, far.Z);
+                Assert.That(T.CourtLeash(court, 1_000), Is.Null);
+                // Drifted to his loop, but he fights already: nothing to keep him out of.
+                Vector3 drift = T.CryptLordPatrol[1] + new Vector3(0, -300, 1);
+                Move(court, drift.X, drift.Y, drift.Z);
+                Assert.That(T.CourtLeash(court, 1_000), Is.Not.Null);
+                lord.Fighting = true;
+                Assert.That(T.CourtLeash(court, 1_000), Is.Null, "his fight is on");
+                lord.Fighting = false;
+                court.Dead = true;
+                Assert.That(T.CourtLeash(court, 1_000), Is.Null, "killed: the court fight completed");
+            }
+            finally { T.SetCourtHold(lord, null); }
+            Assert.That(T.CourtHoldIn(60), Is.Null);
+        }
+
+        [Test]
+        public void TheRouteSetsTheCourtHoldAtItsMusterAndLogsTheLeash()
+        {
+            Vector3 drift = T.CryptLordPatrol[1] + new Vector3(0, -300, 1);
+            var (lord, court, raider, live) = CourtFight(drift);
+            RealmRaidDungeonRoute route = CaerSidiRoute();
+            Set(route, "_target", court);
+            Set(route, "_musterTarget", court);
+            Set(route, "_musterPoint", CourtMuster);
+            MethodInfo observe = typeof(RealmRaidDungeonRoute).GetMethod("ObserveCourtHold", Hidden)!;
+            using var logs = new TestLogCapture(nameof(RealmRaidDungeonRoute));
+            try
+            {
+                observe.Invoke(route, [live.ToArray(), new GameLiving[] { raider }, 5_000L]);
+                Assert.That(T.CourtHoldIn(60)?.Hold, Is.EqualTo(CourtMuster));
+                string line = logs.Lines.SingleOrDefault(l => l.StartsWith("REALM_EXPEDITION_COURT_LEASH "));
+                Assert.That(line, Is.Not.Null, "the PC log shows the leash holding the raid back");
+                Assert.That(line, Does.Contain("court=\"dark light\"").And.Contain("muster=29617,41288"));
+                Assert.That(Source("bots", "autonomous", "RealmRaidDungeonRoute.cs"),
+                    Does.Contain("EpicEncounterTactics.CourtLeash(_target, now) is Vector3 courtHold"),
+                    "while it holds, the route holds the raid at the muster instead of calling it on to the court monster");
+                // The route turns to the Crypt Lord himself: no court hold any more.
+                Set(route, "_target", lord);
+                observe.Invoke(route, [live.ToArray(), new GameLiving[] { raider }, 6_000L]);
+                Assert.That(T.CourtHoldIn(60), Is.Null);
+            }
+            finally { T.SetCourtHold(lord, null); }
         }
     }
 }

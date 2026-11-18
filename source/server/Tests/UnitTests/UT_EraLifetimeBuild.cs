@@ -502,6 +502,25 @@ namespace DOL.UnitTests
             Assert.That(buffbot.BotSpec.EraBuildId, Is.Empty, "and it keeps its buff spec");
         }
 
+        [Test]
+        public void ABuffbotsLogoutSavesNoRosterRow()
+        {
+            // b1b6846 on the owner's PC: seven "Error saving data object (0 rows affected) in table offline_world_bots", each in
+            // the second of a BUFFBOT_LOGOUT (Sanna, Rexettir, Algalkis, Okke, Inellabb, Snoture, Firgys): RemoveFromWorld's
+            // offline save skipped only the Special Forces. The fixture's database throws on any write.
+            OfflineWorldBotRecord record = Record(eCharacterClass.Druid, 50, NoLiferBuffBots.FirstBotId + 5148);
+            GameBot buffbot = GameBot.CreateNoLiferBuffBot(record, 5148);
+            _constructed.Add(buffbot);
+            Assert.That(buffbot.IsInMemoryOnly, Is.True);
+            Assert.That(() => buffbot.SaveOfflineAtRemoval(), Throws.Nothing, "no write reached the database");
+            Assert.That(buffbot.SaveOfflineAtRemoval(), Is.False);
+            // A roster gamebot's row is still saved at its logout (the write reaches this fixture's database, which refuses it).
+            GameBot roster = New(Record(eCharacterClass.Wizard, 50, 424_244));
+            Assert.That(roster.IsInMemoryOnly, Is.False);
+            Assert.That(() => roster.SaveOfflineAtRemoval(), Throws.InstanceOf<InvalidOperationException>().With.Message.Contains("SaveObject"));
+            Assert.That(roster.PersistentRecord.Activity, Is.EqualTo("Offline"));
+        }
+
         // ---- the census
 
         [Test]

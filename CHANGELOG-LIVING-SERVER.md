@@ -8,6 +8,33 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Sweep 6 fixes: Caer Sidi's Crypt Lord, the stall count, buffbot logouts (1.2, 2026-11-18; tests only)
+
+From the owner's PC log of build `b1b6846` (2026-11-18 06:33-08:55). None of this has been seen on the PC yet.
+- **A wipe is no longer dropped when the raid turns to a monster fighting it.** In Caer Sidi the Crypt Lord left combat
+  71 s after an early-pull Commit while his court still fought; the route switched to a forerunner and the next muster
+  cleared the open attempt unjudged, so 88 raiders' deaths (fight A, 07:26-07:28) were never scored. The attempt is now
+  judged (REALM_EXPEDITION_WIPE or ATTEMPT_ENDED) before the TARGET_SWITCH; a second wipe ends the raid there.
+- **The re-clear before the Crypt Lord's pull prefers a court monster it may pull now.** It took the nearest one, a
+  reckoned soul on his patrol leg whose window never opened, and held on it for 20 minutes (07:38-07:59); the untimed pull
+  after the lapse brought him in and ended the raid. A free court monster now comes first, and while the raid holds on one
+  it takes another that is free (checked every 10 s). The 20-minute lapse is unchanged (the owner's call), and neither he nor
+  his court is changed.
+- **His court is fought at the raid's muster** (owner, 2026-11-18: "I err towards holding at the gather point"). In fight B
+  a clean court pull came as a pack and the raid followed it to within 800 of his legs; he joined 109 s later. While the
+  route fights his court from a muster and he is out of combat, a court monster in combat more than 600 from the muster and
+  within 950 of his patrol is not followed: the raiders stand at the muster and it comes to them, for at most 60 s per
+  monster. `REALM_EXPEDITION_COURT_LEASH` says when it holds the raid back.
+- **The checker counts every stall minute.** `played_check_log.py` merged one minute's AI_PROFILE line into the next
+  minute's SERVER_STALL (59 s apart) and reported 10 stalls, at most 9 in an hour, where the log has 14 and 13. The overnight
+  row's definition is unchanged; on `b1b6846` it stays Contradicted because of the 13 stalls of the login burst (06:35-06:47).
+- **A buffbot's logout writes no roster row.** `GameBot.RemoveFromWorld` saved every bot but the Special Forces; seven
+  "0 rows affected" errors in `offline_world_bots` came with buffbot logouts. It now skips every in-memory bot.
+- **A resurrecting bot reads its group once** (two NullReferenceExceptions at 07:08:17 in `TryResurrectGroupMember`).
+- **A Savage buys on the Realm Exchange only a weapon it would wear.** The buy side asked the Savage weapon policy only;
+  the no-undress guard asks the set score. Fre paid 39,863 copper for a "Lifetaker Greatsword" that scored 11 below the
+  worn "Sturdy Greatsword" and stayed in the backpack (`ECON_UNDRESS_GUARD event="blocked"`). Both now use one rule.
+
 ## Bot chat audit fixes (1.2, 2026-11-18; tests only)
 
 - **"omw" is true** (owner decision 2 of 2026-11-18: "Make it real for 1.2"; audit DESIGN-006, CORPUS-C-018, CORPUS-B2-047,

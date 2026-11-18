@@ -912,6 +912,26 @@ class StallsAndErrors(unittest.TestCase):
         self.assertEqual(row["status"], pcl.CONTRADICTED)
         self.assertIn("at most 6 in an hour", row["detail"])
 
+    def test_each_minute_of_a_stalling_hour_counts_once(self):
+        # b1b6846 on the owner's PC: SERVER_STALL at mm:03 and AI_PROFILE at mm:04, every minute for 13 minutes. The next
+        # minute's SERVER_STALL is 59 s after this minute's AI_PROFILE: it is a stall of its own, not a third line.
+        # The 06:35-06:47 values of that log (worstTickMs, then AI_PROFILE max): a minute longer than the last one's AI line
+        # was merged into it.
+        minutes = [(1290, 1294.81), (1241, 1241.83), (1654, 1657.88), (1356, 1356.74), (1515, 1519.31), (1431, 1432.06),
+                   (1411, 1415.43), (1798, 1799.28), (1501, 1512.84), (1701, 1702.40), (1579, 1580.66), (1291, 1293.18),
+                   (1078, 1079.70)]
+        log = Log().start(at(0))
+        for m, (ss, ai) in enumerate(minutes):
+            self.stall(log, at(2 + m, 3), ss)
+            log.add(at(2 + m, 4), f"AI_PROFILE tick_p50=0.66 p95=8.85 p99=30.48 max={ai} serial_ms=1.179",
+                    logger="DOL.GS.AiProfile")
+        self.stall(log, at(90, 4), 1091)
+        log.stop(at(9 * 60))
+        row = check(only(log.run()[1]), "overnight")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("14 stall(s) of 1.0 s or more", row["detail"])
+        self.assertIn("at most 13 in an hour", row["detail"])
+
     def test_a_short_run_is_not_seen(self):
         log = Log().start(at(0))
         self.stall(log, at(30), 1100)
