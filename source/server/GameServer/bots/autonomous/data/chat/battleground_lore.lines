@@ -130,7 +130,7 @@ A: ty {name_b}, lovely telling | thanks {name_b}, i never knew that one
 @role E type=NoLifer,Daredevil
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} you on? tell the battle of the trees for the new ones | {name_b}, tell them why the trees in cale stand in ranks
-C: hush in faction, {name_b} is telling the trees | quiet everyone, this one is very old
+C: hush in faction, {name_b} is telling the trees | quiet everyone, this one goes back before arthur
 ?E: the walking trees again lol | here we go, the grovewood
 D: go on {name_b}, those trees keep killing me | please {name_b}, i want to know why they hate us
 B: Long before Arthur, a man of Gwynedd stole a white roebuck and a hound pup out of Annwn.
@@ -160,7 +160,7 @@ A: ty {name_b}. i will be nicer to the trees | thanks {name_b}, nobody does the 
 @levels 15-50
 @about place
 @invites chat
-[heard|someone said] the masters at the abermenai portal keeps watch every muster go down the slope till its out of sight
+[heard|someone said] the portal keep masters at abermenai watch every muster walk down the slope until its out of sight
 [heard|word is] the spectres on the abermenai flats are waiting on a ship that never came back
 my guildie says a kings daughter sailed from abermenai once with thirteen ships, and only seven men came home
 
@@ -179,7 +179,11 @@ my guildie says a kings daughter sailed from abermenai once with thirteen ships,
 @levels 25-50
 @about place
 @invites chat
+@realm alb
 [heard|someone said] the hibs braid their hair before they go into murdaigean and nobody knows who started it
+@realm mid
+[heard|a skald told me] hibs braid their hair before murdaigean and not even they know why
+@realm *
 [heard|word is] the wolves in murdaigean were the fianna's hounds once, before they went wild
 
 @kind ambient
@@ -189,7 +193,11 @@ my guildie says a kings daughter sailed from abermenai once with thirteen ships,
 @about place
 @invites chat
 [heard|someone said] the grovewood in caledonia all face the arawnite hills, like an army still lined up
+@realm alb
 [heard|word is] mids never cut green wood in caledonia. not even for a fire
+@realm hib
+[heard|a bard told me] the mids wont cut green wood in caledonia, not even for a campfire
+@realm *
 
 # ---------------------------------------------------------------- said in the field itself
 @kind rvr

@@ -441,8 +441,10 @@ namespace DOL.GS.Tests
                                 foreach (Match m in Regex.Matches(piece, @"[.!?] ([A-Z][a-z']*)"))
                                     if (m.Groups[1].Value != "I" && !m.Groups[1].Value.StartsWith("I'", StringComparison.Ordinal))
                                         Assert.That(filled, Does.Contain(m.Groups[1].Value), "a capital the scene didn't write: " + where);
+                                // 1.2 chat audit (CORPUS-B1-028): a terse writer types no stop, but a sentence break stays a comma
+                                // ("i do both, zerg when i want points", not "i do both zerg when...").
                                 if (Speech.IsTerse(voice))
-                                    Assert.That(piece.Contains(',') || Regex.IsMatch(piece, @"(?<!\.)\. "), Is.False, where);
+                                    Assert.That(Regex.IsMatch(piece, @"(?<!\.)\. "), Is.False, where);
                                 Assert.That(Spoken.SystemVoice(piece), Is.False, where);
                             }
                         }

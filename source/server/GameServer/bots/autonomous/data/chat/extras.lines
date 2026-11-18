@@ -19,10 +19,12 @@ one more pull, then bed. probably
 coffee and camping, the perfect combo
 @needs !day
 @invites none
+@levels 1-49
 kids are asleep, time to level
+@levels 1-50
 @needs
 @invites
-weekend at last, long session tonight
+cant wait for the weekend, long sessions
 @invites ask
 just got home, what did i miss?
 @invites
@@ -50,7 +52,7 @@ my health bar is filling slower than the respawn
 @invites none
 waiting for my usual group to log in
 @needs traveling
-waiting on the boat, could be a while
+long trip, could be a while
 @needs
 waiting for buffs to come back up
 @invites complaint
@@ -68,7 +70,9 @@ anyone else waiting on a group or just me?
 heard someone saw a named near {zone} that drops something great
 @needs
 someone said there is a secret room in {dungeon}
+@needs at_camp
 rumor is the {monsters} at {camp} drop more than coin sometimes
+@needs
 @needs outdoors
 @invites
 anyone know if the stories about {zone} at night are true?
@@ -108,9 +112,9 @@ how many are you? i can fill a spot if you inv
 @intent trading
 @who Crafter
 @levels 1-50
-i can make that, send me the details
+pst me what you need
 my prices are fair, ask anyone
-got materials for that, give me an hour
+depends on the materials, pst me
 
 @kind lfg
 @topic lfg
@@ -147,7 +151,7 @@ still talk about that group at {place}, ty {player}
 {player}! the best {player_class} i know
 there you are {player}, we were just talking about you
 @who Leveler
-{player}, still leveling? i am two ahead of you now :)
+{player}, still at it? i am trying to catch up :)
 @who Crafter
 {player}, need anything crafted? friend price for you
 @who Daredevil

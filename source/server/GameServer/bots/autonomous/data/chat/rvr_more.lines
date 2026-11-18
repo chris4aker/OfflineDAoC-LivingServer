@@ -8,48 +8,57 @@
 @who *
 @levels 36-50
 @needs in_frontier
+@needs in_frontier,defending
 zerg at the mg, careful
+@needs in_frontier
 anyone near {keep}?
-stealthers out tonight, stick together
-lost my group, anyone near amg?
+stick together out here, stealthers love this ground
+lost my group, anyone near the mg?
 @invites news
 @needs in_frontier, defending
-{enemy} 8man roaming near {keep}
+{enemy_mod} 8man roaming near {keep}
 @needs in_frontier
 @invites
 @needs in_frontier, defending
 ram on the door at {keep}!
 @needs in_frontier
-{frontier} is crawling with {enemy} tonight
+@needs in_frontier,defending
+{frontier} is crawling with {enemy_mod} stealthers tonight
+@needs in_frontier
 @invites ask_anyone
 anyone have speed? long run to {keep}
 @invites
 waiting at the portal keep for a group
 almost got ganked at the bridge, close one
-lots of {enemy} at the mile gate, dont go alone
+@needs in_frontier,defending
+lots of {enemy_mod} groups at the mile gate, dont go alone
+@needs in_frontier
 @needs in_frontier, !defending
 dead quiet near {keep}, i dont trust it
 @needs in_frontier
-realm points are flowing tonight
+need a good run for realm points tonight
 @needs in_frontier, defending
 {keep} lord is still up, we have time
 @needs in_frontier
 group up at the portal keep, safer that way
-saw a {enemy} stealther near the mg, heads up
+@needs in_frontier,defending
+saw a {enemy_mod} stealther near the mg, heads up
+@needs in_frontier
+@needs in_frontier,keep_won_recent
 our realm owns {frontier} tonight
+@needs in_frontier
 stuck in the zerg, cant see a thing for the lag
 sitting by the mg waiting for a fight
 @needs in_frontier, defending
 watch the hill near {keep}, archers up there
 @needs in_frontier
 @invites ask_where
-anyone know where the {enemy} zerg went?
 @invites ask_anyone
 small group heading toward {keep}, anyone want in?
 @invites boast
 got my first kill out here, heart still pounding
 @invites complaint
-died to a {enemy} archer i never even saw
+died to a {enemy_mod} archer i never even saw
 @invites chat
 keep fights in {frontier} are the best part of the game
 
@@ -63,19 +72,21 @@ frontier later?
 relic raid this weekend?
 anyone going out to {frontier} tonight?
 anyone know if {keep} is ours right now?
-who wants to make an 8man for {frontier}?
+anyone thinking of an 8man for {frontier} tonight?
 @invites ask
 did we lose {keep} again?
 @invites chat
+@levels 30-44
 need a few more levels before i try the frontier
+@levels 30-50
 saving realm points for my next realm ability, so close
 keep takes are fun but defending pays better rp
 @invites ask_advice
 thinking of trying rvr for the first time, any tips?
 @invites news
-heard the {enemy} took a relic, any truth to that?
+heard {enemy} took a relic, any truth to that?
 @invites complaint
-my realm points are pitiful, need a good night out there
+my realm points are pitiful, need a good run out there
 stealthers ruined my last frontier trip, trying again tonight
 @invites joke
 relic raid at some strange hour again, i bet

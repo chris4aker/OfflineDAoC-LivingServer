@@ -1,102 +1,130 @@
 # Bot voices: sample output
 
-Made by `tools/bot-voices/preview.py`, a rough stand-in for the server code still to come: slots are filled with sample values and the voices applied. "Chris" stands in as the remembered player.
+Made by `tools/bot-voices/preview.py` (`python tools/bot-voices/preview.py 20 <seed>`): slots are filled with sample values and the
+server's writing styles applied (`voice_style.py`, a port of `AutonomousBotVoiceCorpus.Style`; the per-bot typing habits are left
+out). "Chris" stands in as the remembered player. Regenerated for the 1.2 chat audit (DESIGN-032): the old samples showed a style
+the server no longer has ("Lol yeah.", "learn your lcass").
 
 ## Sample 3
 
 ```
-[Mid reply   plain     ] i went that way earlier, watch out for adds near the bridge
-[Hib ambient plain     ] been soloing pit spraggon for an hour, slow but steady
-[Hib reply   proper    ] Lol yeah.
-[Hib ambient plain     ] hibernia: we mez you, then we sing about it
-[Alb ambient chatty    ] thinking of trying Tomb of Mithra, anyone been at this level?
-[Alb ambient chatty    ] saw some amazing houses in the housing area today, someday :P
-[Alb ambient typo_prone] grats on the drop
-[Alb reply   terse     ] might be able to join in a bit
-[Alb trade   chatty    ] 99 percent quality, close enough to perfect for me
-[Alb reply   terse     ] gn safe travels
-[Alb ambient proper    ] Anyone else up way too late?
-[Mid ambient plain     ] one more level, then sleep. i say that every night
-[Mid reply   chatty    ] group up before you head out there
-[Alb ambient typo_prone] dont rush, the 20s are where u learn your lcass
-[Mid ambient terse     ] i log in i grind i log out. perfect night
-[Alb gossip  typo_prone] anyone grouped with Chris? great Cleric, highly recommend
-[Alb rvr     terse     ] it is never quiet in Hadrian's Wall for long
-[Hib lfg     proper    ] 20 Hero looking for a group, can be on in a minute.
-[Hib reply   chatty    ] nice, grats
-[Hib rvr     plain     ] got ganked by a stealther on the way in, again
+[Mid news    plain     ] Albion has darkness falls now
+[Alb beggar  plain     ] wtf you still in Camelot, Chris? the gates are that way
+[Mid beggar  plain     ] WHAT? YOU want MY coin? i am the beggar here?
+[Mid ambient typo_prone] say what u like, midgard makes the toughest fighters in any realm
+[Hib rumour_reply terse     ] smells like a trap, still tempting
+[Mid deed    plain     ] word is Chris has 2 realm kills
+[Alb reply   plain     ] hah, seen that, more than once
+[Alb news    chatty    ] hibs tried Caer Benowyc again and bounced, every single time
+[Alb ambient terse     ] the two headed dragon sleeps beneath the ruins so dont linger or else the cave lights up with lightning
+[Mid guild   typo_prone] i keep saying one more, i have said it six times
+[Alb guild   plain     ] the house is finally quiet, best part of the day
+[Hib combat  chatty    ] got tossed, omw back
+[Alb ambient plain     ] backstab, follow up, gone, that is the job
+[Alb ambient plain     ] albion music is all lutes and pipes, not drums and shouting
+[Alb deed_reply chatty    ] watch your feet out there
+[Hib beggar  terse     ] Chris begged ME for loot, tell ur friends, i will
+[Hib beggar  plain     ] coin. apology. but now off my corner
+[Hib milestone plain     ] almost rr5, 3k left. staying out till i get it
+[Alb reply   plain     ] happens
+[Mid deed    terse     ] the newbie mobs love Chris, 4 silly deaths
 
--- debate scene: leveling_pace (Hibernia, /faction) --
-(Hero1) <Faction> should i rush to 50 or take my time?
-(Druid2) <Faction> take your time, the camps and the people are the best part
-(Enchanter3) <Faction> the real game starts at 50, get there
-(Druid2) <Faction> you only get to see the 20s once :)
-(Enchanter3) <Faction> and at 50 u can see the frontier every night
-(Hero1) <Faction> somewhere in the middle then
+-- debate scene: alb_armsman_three_weapons (Albion, /faction) --
+(Wizard1) <Faction> polearm or two handed, and is crossbow worth any points at all :)
+(Friar2) <Faction> polearm, the reach the positional styles it feels like what an armsman should be
+(Wizard3) <Faction> two handed. bigger swings, simpler setup, less fussing with positions
+(Friar2) <Faction> the dancing is the fun part :D
+(Wizard3) <Faction> the dancing gets you killed when the healer runs out of power :P
+   ... quiet for 25 seconds ...
+(Wizard4) <Faction> nobody is mentioning shields and parry. a tanking armsman needs them
+(Friar2) <Faction> shield is for the group tank i get that, but the damage is what gets u invites
+(Wizard4) <Faction> a damage armsman just means the healer works twice as hard
+(Wizard1) <Faction> and the crossbow? i see some armsmen pullign with one
+(Wizard3) <Faction> a pull tool, not a weapon. dont sink much into it :D
+(Friar2) <Faction> some guys swear by it in the frontier to tag runners
+   ... quiet for 30 seconds ...
+(Wizard3) <Faction> two hander, i want to drop a caster fast
+(Friar2) <Faction> polearm, and i stand at the door like a gate
+(Wizard4) <Faction> that is the most armsman sentence ever written
+(Wizard5) <Faction> and i heal both of you either way heh
+   ... quiet for 20 seconds ...
+(Wizard1) <Faction> i think i am more confused than when i asked
+(Friar2) <Faction> polearm. trust me :)
+(Wizard3) <Faction> two hander, trust me instead
+(Wizard4) <Faction> spec one and if u hate it respec, not the end of the world
+(Wizard1) <Faction> ...i will think about it while i level
 ```
 
 ## Sample 8
 
 ```
-[Mid ambient plain     ] selling junk, then right back to it
-[Mid lfg     plain     ] lfg Spindelhalla or anywhere with xp
-[Alb ambient proper    ] I keep a journal of every camp I find.
-[Alb ambient plain     ] best group i have had all week honestly
-[Alb ambient plain     ] sitting by the trainer pretending to be busy
-[Alb reply   plain     ] spec for what you enjoy, the rest comes later
-[Hib ambient chatty    ] anyone know a good group camp at 50 on our side?
-[Hib ambient terse     ] ok who left a train on the road to Lough Derg
-[Hib reply   plain     ] head out the gate and follow the road, cant miss it
-[Mid reply   terse     ] the deeper rooms are worth it if u can hold the adds
-[Hib ambient terse     ] what does lfg mean?
-[Hib thanks  terse     ] ty again for the rez at Spraggon Den Chris
-[Alb lfg     plain     ] lfg, 1 Armsman, will travel
-[Alb lfg     plain     ] 32 Friar lfg, i heal, you pull, everyone wins
-[Mid lfg     chatty    ] looking for a duo partner, 43 Healer :)
-[Alb ding    terse     ] ding!! ty everyone who grouped with me tonite
-[Hib ambient proper    ] Anyone ever climbed the hills behind Lough Derg?
-[Hib ambient plain     ] blademaster, celtic dual, two blades, no thoughts
-[Mid ambient terse     ] are the other realms going to attack me here?
-[Mid ambient proper    ] Waiting for my group to log in.
+[Mid deed    plain     ] from today you are Chris nickname. pass it on
+[Hib beggar  terse     ] psst Chris any coin to spare?
+[Hib rvr     chatty    ] awful quiet out here, the mids must be lost again
+[Hib beggar  plain     ] you have the face of a drowned rat, Chris
+[Mid ambient terse     ] nice camp, good xp, zero drama
+[Hib ambient chatty    ] support classes keep groups together and no one says thanks
+[Hib ambient terse     ] the named dropped two copper, ty for nothing
+[Alb beggar  plain     ] good. now back to my corner. coin for the poor!
+[Mid ambient terse     ] some explorers claim spindelhalla goes deeper than the maps, the webs hide another stair
+[Alb ambient terse     ] cynewulf the ghostwalker is not a briton name, someone else's war ended in salisbury
+[Mid beggar  plain     ] ...fine. coin gets you my silence. but dont beg here
+[Hib guild   terse     ] hey all just stopping by to say hi
+[Mid bond    plain     ] Brannoc, we waited. we really did
+[Mid ambient terse     ] the yggdra forest feels old like the trees remembers the gods
+[Alb spam    plain     ] !!! site $$$ BEST PRICE PROMISE $$$
+[Hib guild   plain     ] hows the family treating everyone these days?
+[Mid deed    terse     ] we finally got Chris! Chris was the mvp
+[Alb ambient chatty    ] chants are great but some days i envy the armsman polearm
+[Hib ambient plain     ] firbolgs make the most loyal friends in the realm, dont tell the others
+[Hib beggar  chatty    ] no more room in the pack, Chris. but coin? i have room for coin
 
--- debate scene: leveling_pace (Albion, /faction) --
-(Wizard1) <Faction> should i rush to 50 or take my time?
-(Friar2) <Faction> take your time, the camps and the people are the best part
-(Wizard3) <Faction> the real game starts at 50, get there
-(Friar2) <Faction> You only get to see the 20s once.
-(Wizard3) <Faction> and at 50 you can see the frontier every night
-(Wizard1) <Faction> somewhere in the middle then
+-- debate scene: lore_tale_promised_relics (Albion, /faction) --
+(Armsman1) <Faction> ever hear the story of the relics we were promised
+(Cleric2) <Faction> right at the start, when the six relics were set up, the devs wrote that more were coming. they never did
+(Cleric2) <Faction> and the story the old timers tell is that the relic keeps were built for more, go look at the pedestals, room for one more every realm
+(Friar3) <Faction> and the bards have filled that pedestal with songs, every realm's version is different
+(Friar3) <Faction> the albion song is that the seventh relic is excalibur itself, the scabbard went to the pedestal the blade went back into the lake to wait
+(Friar3) <Faction> the mids sing of odin's spear. thor's hammer on one pedestal, his father's spear missing from the next lol
+(Friar3) <Faction> the hibs sing of the stone that cried out under the true king. the tuatha brought four treasures, and only two stand on pedestals
+(Cleric2) <Faction> none and all of them, the old tales are real, the relics they promised never came, we got dragons and islands instead
+(Friar4) <Faction> i'd take a dragon over a relic. a relic's just a reason for three realms to stay up fighting
+   ... quiet for 15 seconds ...
+(Friar3) <Faction> the songs all end the same way. whoever finds the seventh doesnt carry it home. the other two realms come for it
+(Cleric2) <Faction> Which is why, if one ever turns up, the frontier will burn for a month.
+(Wizard5) <Faction> i'll look out for a stone that talks
+(Cleric2) <Faction> look in the places the songs point to. water, stone, old trees. the tellers never made it easy
 ```
 
 ## Sample 21
 
 ```
-[Mid ambient proper    ] Just spent my whole evening at the forge, worth it.
-[Alb ambient terse     ] a good healer is worth more than any drop
-[Alb reply   plain     ] grind is a grind, keep going
-[Alb ambient proper    ] Anyone else track how long each level takes?
-[Hib ambient typo_prone] late night crew checking in
-[Mid ambient proper    ] Late night crew checking in.
-[Alb ambient plain     ] if your spellcraft is not capped you are leaving power on the table
-[Mid ambient terse     ] that one had friends
-[Mid reply   terse     ] haha love it
-[Mid reply   plain     ] hey hey
-[Alb ambient plain     ] if your spellcraft is not capped you are leaving power on the table
-[Mid ambient terse     ] any1 want to talk group setups with me?
-[Hib reply   terse     ] i can try to help what is it?
-[Hib greet   plain     ] Chris, found a spot near Spraggon Den you would love
-[Mid ambient plain     ] thane life: half caster, half tank, all fun
-[Mid trade   terse     ] got a masterpiece today almost fell out of my chair
-[Mid reply   chatty    ] it is a long walk, bring a friend
-[Mid reply   plain     ] i can make that, send me the details
-[Mid greet   chatty    ] hey there Chris
-[Mid rvr     chatty    ] uppland is calm, heading to the front instead
+[Mid guild   plain     ] our healers put up with so much from us
+[Alb rez_ask terse     ] Chris could u rez me when u are clear
+[Hib guild   plain     ] us night owls is the real guild, the day people just visit
+[Hib storyline terse     ] ty Chris, not many stood up to Chris like that
+[Hib deed    plain     ] heard Chris soloed Chris. true?
+[Hib spam    plain     ] PLAT READY NOW!!! QUICK TRADE!!! site
+[Mid ambient plain     ] bubbles bubbles, a few more pulls and i ding
+[Alb ambient plain     ] i dare you: wade out into that still fog off the coast and report everyone what you find
+[Alb lfg     plain     ] lfg 25 Minstrel, fast xp only pst
+[Mid ambient terse     ] the north pays the steady just keep swinging
+[Hib spam_react plain     ] will a gm ban Chris plz
+[Mid reply   chatty    ] farming spindel silksters in Spindelhalla :P
+[Mid ambient plain     ] the walk from mularn is where i learned to keep my eyes open
+[Hib beggar  chatty    ] YOU need coin? i want you GONE
+[Alb trade   terse     ] making weapons for the guild
+[Alb reply   proper    ] Good point Chris
+[Mid guild   plain     ] the guild record for deaths in one night is safe, thank goodness
+[Hib spam    plain     ] PLAT READY NOW!!! QUICK TRADE!!! site
+[Mid deed    chatty    ] someone told me Chris has 3 kills
+[Alb ambient terse     ] spent all my coin on spells worth it
 
--- debate scene: nerfs (Midgard, /faction) --
-(Thane1) <Faction> did they nerf my class again or am i just unlucky tonight
-(Healer2) <Faction> every patch nerfs somebody, adapt and move on
-(Berserker3) <Faction> Everyone thinks their class got nerfed and everyone else's is overpowered.
-(Healer2) <Faction> some classes really are overpowered tho
-(Berserker3) <Faction> and it is always the ones that kill u funny that
-(Thane1) <Faction> ok maybe i just had a bad night
+-- debate scene: paladin_worth (Albion, /faction) --
+(Cleric1) <Faction> is a paladin worth inviting over another fighter?
+(Minstrel2) <Faction> the chants carry the whole group, endurance alone wins long fights
+(Armsman3) <Faction> the damage is low though
+(Minstrel2) <Faction> the damage is low because i am busy keeping you running
+(Armsman3) <Faction> twisting chants is hard to do well
+(Cleric1) <Faction> a good paladin is gold then
 ```

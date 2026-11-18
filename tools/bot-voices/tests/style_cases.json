@@ -1,0 +1,134 @@
+[
+ [
+  "i cant go, im afk",
+  "proper",
+  null,
+  "I can't go, I'm afk."
+ ],
+ [
+  "anyone for tomb?",
+  "proper",
+  null,
+  "Anyone for tomb?"
+ ],
+ [
+  "nice :)",
+  "proper",
+  null,
+  "nice :)"
+ ],
+ [
+  "np, have fun",
+  "proper",
+  null,
+  "np, have fun"
+ ],
+ [
+  "thanks, see you tonight.",
+  "terse",
+  null,
+  "ty see u tonite"
+ ],
+ [
+  "wts 97% chain hauberk /send",
+  "proper",
+  "trade",
+  "wts 97% chain hauberk /send"
+ ],
+ [
+  "lf healer for spindelhalla, 2 spots",
+  "proper",
+  "lfg",
+  "lf healer for spindelhalla, 2 spots"
+ ],
+ [
+  "pc on a runed staff?",
+  "proper",
+  null,
+  "pc on a runed staff?"
+ ],
+ [
+  "where r u?",
+  "proper",
+  null,
+  "Where are you?"
+ ],
+ [
+  "hmm... not sure about that one",
+  "proper",
+  null,
+  "hmm... not sure about that one"
+ ],
+ [
+  "well... not sure about that one",
+  "proper",
+  null,
+  "Well... not sure about that one."
+ ],
+ [
+  "gz!! you earned it",
+  "proper",
+  null,
+  "gz!! you earned it"
+ ],
+ [
+  "inc 8 mids at Caer Benowyc, healer, warrior, skald",
+  "terse",
+  "alarm",
+  "inc 8 mids at Caer Benowyc, healer, warrior, skald"
+ ],
+ [
+  "WANT PLATINUM? CLICK HERE NOW!!!",
+  "terse",
+  "spam",
+  "WANT PLATINUM? CLICK HERE NOW!!!"
+ ],
+ [
+  "i do both. zerg when i want points",
+  "terse",
+  null,
+  "i do both, zerg when i want points"
+ ],
+ [
+  "same, the zerg is a warm bath",
+  "terse",
+  null,
+  "same the zerg is a warm bath"
+ ],
+ [
+  "good luck out there",
+  "proper",
+  null,
+  "Good luck out there."
+ ],
+ [
+  "long walk back to camp, see you soon",
+  "plain",
+  null,
+  "long walk back to camp, see you soon"
+ ],
+ [
+  "please tell me you have potions",
+  "terse",
+  null,
+  "pls tell me u have potions"
+ ],
+ [
+  "i think u should go",
+  "proper",
+  null,
+  "I think you should go."
+ ],
+ [
+  "you thought you could beg? nope, not today",
+  "proper",
+  null,
+  "You thought you could beg? nope, not today."
+ ],
+ [
+  "good fight. this is why we group",
+  "proper",
+  null,
+  "Good fight. This is why we group."
+ ]
+]

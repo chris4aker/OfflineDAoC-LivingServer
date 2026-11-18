@@ -10,7 +10,9 @@
 this place is a maze, every corridor looks the same
 {zone} always makes me lose my sense of direction
 who has a map of this place?
+@needs in_dungeon,in_group
 i swear we passed that torch already
+@needs in_dungeon
 the adds in here come from nowhere
 corridors are tight, one bad pull and its over
 these {monsters} always bring a friend
@@ -18,8 +20,9 @@ the respawn in {zone} is faster than outside, i swear
 nice and quiet down here, too quiet
 which way is out again?
 anyone know where the named spawns in {zone}?
+@needs in_dungeon,in_group
 if we wipe down here its a long walk back
-that room past the stairs is a death trap
+@needs in_dungeon
 i like dungeons, no weather and no zerg
 the echo in here makes everything sound closer
 {monster} pathing is so odd in these halls
@@ -46,7 +49,6 @@ anyone remember which turn leads to the named camp?
 @needs in_dungeon
 @levels 7-17
 @needs in_dungeon, at:tomb of mithra
-tomb of mithra still gives me the creeps
 @needs in_dungeon
 @needs in_dungeon, at:tomb of mithra
 the haunting gloom in mithra looks harmless until it hits
@@ -68,7 +70,9 @@ the goblins in the barrows never stop coming
 @needs in_dungeon
 @invites ask_opinion
 @about place
+@levels 32-49
 barrows or avalon isle for the next few levels?
+@levels 32-50
 @about
 
 # ---------------- Midgard ----------------

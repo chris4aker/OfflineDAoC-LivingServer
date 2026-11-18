@@ -82,11 +82,16 @@ says "today").
   gz") must fit any boast. A specific question gets specific answers via `ask_<topic>`.
 
 ## Never
-- Profanity; insults about real groups; anything sexual; politics or real-world news.
+- Slurs or insults about real groups; anything sexual; politics or real-world news; cruelty. Swearing in 2003 style is fine
+  (owner, 2026-11-18: "Swearing is fine"): "hell", "damn", "crap", "shit", even the odd f-word from a frustrated player, the way
+  people really typed. Keep it in character and occasional; the builder no longer bans it (`tools/bot-voices/banned.txt`).
 - Self-aware bot lines ("i am just a bot", "why do we all say the same thing"). Exception: intent
   `botcheck` replies may joke around the question in character ("lol no", "i wish, id level while asleep").
 - Later internet phrases: change my mind, fight me, vibes, love language, no thoughts, lifestyle, salty,
-  the meta, i felt that, pog, based, no cap, sus, gg ez, main character, "o/" (do not add new ones).
+  the meta, i felt that, pog, based, no cap, sus, gg ez, main character, "o/", "\o/", "o7", "<3", "xd", l2p, toon, imba, "rn",
+  dps as everyday chat, woke up and chose, touch grass, i ship it, love to see it, the grind is real, skill issue, extra steps,
+  hot take, feel attacked, taking questions, toxic. Every banned word, with its reason, is in `tools/bot-voices/banned.txt`
+  (1.2 chat audit); a line that needs one on purpose says `@allow <id>` and why.
 - Jokes and memes from after October 2003 (owner, 2026-11-15): "achievement unlocked", "over 9000", "cool story",
   "i see what you did there", "ikr", "ftw", "the cake is a lie", the chicken punchline of the 2005 raid video. The builder
   bans them.

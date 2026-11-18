@@ -1,0 +1,113 @@
+# The one banned-word list for bot chat (1.2 chat audit, DESIGN-045 a). Read by build_corpus.py (every corpus line, scene beat
+# and lore bible line) and check_runtime_names.py (dungeon names, guild words and the chat string literals in code).
+#
+# Each entry: id | level | regex (case-insensitive, matched on the line as said, slots removed) | why
+#   ban     fails the build in every file
+#   audit   new in 1.2: fails the build for the files of the owners in build_corpus.STRICT_OWNERS, a warning elsewhere
+#   unsure  a warning only (the period research is not sure); a person decides
+# A line may use a banned entry on purpose with "@allow <id>" above it (until the next @kind); say why in a comment.
+# Kind "spam" (the fake gold sites) may name a web address.
+
+# ---- Out of era (Trials of Atlantis, New Frontiers, Catacombs), the custom class, real-world names, slurs ----
+# Owner, 2026-11-18 09:14: "Swearing is fine". Profanity in 2003 style (hell, damn, crap, shit...) is allowed; slurs, sexual
+# content, politics and cruelty are not.
+atlantis | ban | atlantis | Trials of Atlantis (Oct 2003 on); only a rumour line may name it (ERA_RUMOUR_TOPICS)
+toa | ban | \btoa\b | Trials of Atlantis
+artifact | ban | artifact | Trials of Atlantis artifacts
+master-level | ban | master ?levels? | Trials of Atlantis master levels
+ml | ban | \bml\d*\b | Trials of Atlantis master levels
+champion-level | ban | champion levels? | Catacombs champion levels
+cl | ban | \bcl\d*\b | Catacombs champion levels
+catacombs | ban | catacombs | Catacombs (2005); only a rumour line may name it
+labyrinth | ban | labyrinth | Labyrinth of the Minotaur
+new-frontiers | ban | new frontiers? | New Frontiers (2004)
+towers | ban | \btowers?\b | New Frontiers towers
+oceanus | ban | oceanus | Trials of Atlantis zone
+stygia | ban | stygia | Trials of Atlantis zone
+aerus | ban | aerus | Trials of Atlantis zone
+volcanus | ban | volcanus | Trials of Atlantis zone
+mauler | ban | mauler | Catacombs class (the Sluaghbinder uses its slot)
+vampiir | ban | vampiir | Catacombs class
+bainshee | ban | bainshee | Catacombs class
+heretic | ban | heretic | Catacombs class
+valkyr | ban | valkyr | Catacombs class
+warlock | ban | warlock | Catacombs class
+frostalf | ban | frostalf | Catacombs race
+shar | ban | \bshar\b | Catacombs race
+deifrang | ban | deifrang | Catacombs race
+minotaur | ban | minotaur | Labyrinth race
+sluagh | ban | sluagh | the custom class is not talked about by gamebots
+mythic | ban | mythic | the real company
+ign | ban | \bign\b | real-world site
+vault | ban | \bvault\b | real-world site (the Camelot Vault)
+allakhazam | ban | allakhazam | real-world site
+everquest | ban | everquest | real-world game
+wow | ban | world of warcraft | real-world game (and from 2004)
+bitch | ban | \bbitch | a gendered slur, not plain swearing
+# Later internet phrases (audit 2026-10-18)
+change-my-mind | ban | change my mind | meme, 2018
+fight-me | ban | fight me | later internet phrase
+vibes | ban | \bvibes?\b | later internet phrase
+love-language | ban | love language | later internet phrase
+no-thoughts | ban | no thoughts | later internet phrase
+lifestyle | ban | \blifestyle\b | later internet phrase
+salty | ban | \bsalty\b | later internet phrase
+the-meta | ban | \bthe meta\b | later gaming word
+felt-that | ban | i felt that | later internet phrase
+pog | ban | \bpog | streaming slang
+based | ban | \bbased\b | later internet phrase
+no-cap | ban | \bno cap\b | later internet phrase
+gg-ez | ban | \bgg ez\b | later gaming phrase
+sus | ban | \bsus\b | later internet phrase
+main-character | ban | \bmain character\b | later internet phrase
+# Jokes from after October 2003 (owner, 2026-11-15: cut them; Leeroy himself stays)
+achievement | ban | achievement unlocked | later meme
+over-9000 | ban | over 9000 | later meme
+has-chicken | ban | \bhas chicken\b | Leeroy's line, 2005
+had-chicken | ban | we had chicken | Leeroy's line, 2005
+cake | ban | cake is a lie | Portal, 2007
+cool-story | ban | cool story | later meme
+see-what-you-did | ban | i see what you did | later meme
+ikr | ban | \bikr\b | later chat word
+ftw | ban | \bftw\b | later chat word
+
+# ---- 1.2 chat audit (DESIGN-035/045, CORPUS-C-044, CORPUS-B2-036, CORPUS-B1-016, TEXT-028) ----
+o-slash | audit | (?<![a-z0-9\\])o/(?![a-z0-9]) | WRITING-GUIDE: "o/" reads later; no new ones
+o-cheer | audit | \\o/ | as "o/"
+o7 | audit | \bo7\b | salute emoticon, later
+l2p | audit | \bl2p\b | PERIOD-CHAT-RESEARCH "probably too late"
+toon | audit | \btoons?\b | PERIOD-CHAT-RESEARCH A1 "probably too late"
+heart | audit | <3 | later chat
+xd | audit | \bxd\b | later chat
+imba | audit | \bimba\b | later gaming word
+rn | audit | \brn\b | "right now", later chat
+dps | audit | \bdps\b | PERIOD-CHAT-RESEARCH: DPS as everyday chat is later
+woke-up | audit | woke up and chose | meme, about 2020
+touch-grass | audit | touch (grass|a real rock) | "touch grass", about 2020
+ship | audit | \bi ship it\b|\bship name\b|\bthe ship sailed\b | fandom "shipping", late 2000s on
+love-to-see | audit | love to see it | about 2018
+grind-is-real | audit | the grind is real | later phrase
+friends-we-made | audit | friends we made along the way | 2010s meme
+season-two | audit | \bseason (two|2) when\b | later meme
+toxic | audit | \btoxic\b | later gaming word
+asking-for | audit | \basking for (nobody|the enemy)\b | play on "asking for a friend", later
+skill-issue | audit | skill issue | later meme
+extra-steps | audit | extra steps | 2010s meme
+hot-take | audit | hot take | later phrase
+gang | audit | \bgang here\b | later phrase
+feel-attacked | audit | feel attacked | later phrase
+taking-questions | audit | taking questions | later meme
+nf-names | audit | \b(agramon|molvik|leirvik|cathal|killaloe|proving grounds|braemar|wilton)\b | New Frontiers and later battleground names
+url | audit | https?:|www\.|\.com\b | no web addresses in chat (kind spam is exempt)
+# UNSURE: a warning only
+im-dead | unsure | \bi'?m dead\b(?!,? never) | "im dead" for laughing is later; "three arrows and im dead" is fine
+onions | unsure | chopping onions | later phrase
+wholesome | unsure | \bwholesome\b | later internet word
+oof | unsure | \boof\b | probably later
+bar-floor | unsure | the bar is on the floor | later phrase
+prayers | unsure | thoughts and prayers | later phrase
+feeding | unsure | \bkeep feeding\b|\bfed (them|the enemy|kills)\b | "feeding" kills, DotA (2005 on)
+pics | unsure | pics or it didn.?t happen | could stay
+asking-friend | unsure | asking for a friend | probably later
+real-talk | unsure | \breal talk\b | probably later
+no-lifed | unsure | no-?lifed | probably later

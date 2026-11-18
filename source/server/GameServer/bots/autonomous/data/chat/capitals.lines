@@ -7,14 +7,18 @@
 @who *
 @needs in_capital
 {capital} is busy tonight
+@levels 1-49
 trainer at last, three levels of points to spend
+@levels 1-50
 selling off a whole bag of loot, the merchants love me
 spent ten minutes looking for the bank again
 repairs cost more than the loot was worth
 need to train and sell, then straight back out
 i love town breaks, nothing here tries to eat me
 people shouting wares everywhere, cant hear myself think
+@levels 1-49
 picked up new spells at the trainer, cant wait to try them
+@levels 1-50
 spent all my coin on spells, worth it
 the guards here never smile
 the dye merchant has new colors, or i never noticed them before
@@ -36,7 +40,7 @@ bind here or out near the camp, what do you think?
 back at the forge, my favorite part of the day
 @who Leveler
 @invites complaint
-every minute in town is a minute not leveling
+@levels 1-50
 
 # ---------------- Camelot ----------------
 @kind ambient

@@ -14,7 +14,7 @@ namespace DOL.GS.Tests
     {
         // Slots the server fills (AutonomousBotVoices.SlotsFor and SharedSlots).
         private static readonly string[] KnownSlots =
-            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "capital", "dungeon", "camp", "monsters", "destination",
+            ["me", "class", "level", "realm", "zone", "monster", "item", "count", "q", "keep", "frontier", "enemy", "enemy_mod", "enemy_realm", "capital", "dungeon", "camp", "monsters", "destination",
              // The talking update: the xp bubbles, what a recruiting group needs, and the names in a piece of news.
              "bubbles", "need", "relic", "raid", "boss", "winner", "loser"];
 
@@ -61,7 +61,7 @@ namespace DOL.GS.Tests
         {
             ["me"] = "Aldwin", ["class"] = "armsman", ["level"] = "20", ["realm"] = "Albion", ["zone"] = "Black Mountains South",
             ["monster"] = "bwca", ["item"] = "Bloodied Sword", ["count"] = "3", ["q"] = q, ["keep"] = "Caer Benowyc",
-            ["frontier"] = "Pennine Mountains", ["enemy"] = "Midgard", ["capital"] = "Camelot", ["dungeon"] = "Tomb of Mithra",
+            ["frontier"] = "Pennine Mountains", ["enemy"] = "mids", ["enemy_mod"] = "mid", ["enemy_realm"] = "Midgard", ["capital"] = "Camelot", ["dungeon"] = "Tomb of Mithra",
             ["camp"] = "Tomb of Mithra",
         };
 

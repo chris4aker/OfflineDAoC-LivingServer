@@ -170,7 +170,8 @@ the server like the camp catalog.
 | `{monsters}` | the plural of `{monster}` ("2 hill cats", "giant wolves") |
 | `{camp}` | a real camp from the catalog for the speaker's (or listener's) level and realm |
 | `{dungeon}` | a real dungeon of the speaker's realm, by level |
-| `{capital}`, `{enemy}` | its capital; an enemy realm |
+| `{capital}` | its capital |
+| `{enemy}`, `{enemy_mod}`, `{enemy_realm}` | one enemy realm in three shapes (1.2 chat audit, TEXT-018): the people as players typed them ("hibs": "lots of {enemy} at the mile gate"), the word before a noun ("hib": "a {enemy_mod} stealther"), the realm's name ("Hibernia": "{enemy_realm} took a relic"). The news board's lines still get the realm's name in `{enemy}` until news.lines moves to `{enemy_realm}`. The builder refuses `{enemy} is/has` and `{enemy}` before a noun. |
 | `{keep}`, `{frontier}` | a real keep or frontier zone (from the world database) |
 | `{player}`, `{player_class}`, `{place}` | from memory: your name, your class, where the event happened. In a reply, `{player}` is whoever is answered. |
 | `{q}` | an optional opener ("hey", "so", "random question but") |
@@ -204,7 +205,10 @@ words. "tonight" and "all night" need no flag: by day the server says "today" an
 2. **Skip** any line used in this realm in the last 6 hours: the time each line was last used,
    per realm (up to 5,000 entries, well above the corpus size). Grats and rez thanks are short and
    frequent, so they skip this check (a "gz" can repeat).
-3. **Pick** by weight, fill the slots, apply the voice, and cap the length at 160 characters.
+3. **Pick** by weight, fill the slots, apply the voice, and cap the length at 160 characters. 1.2 chat audit: the voice works on
+   the line with its slot values masked (no typo lands in a name), adds no laugh to a functional, laughing, shouted or
+   spam/alarm/news/combat/roleplay line, and a line over 160 characters once filled is skipped for the next, never cut in
+   mid-word.
 
 ### 3.5 Long threads
 
@@ -315,7 +319,14 @@ in the server yet.
 
 **Automated:**
 - **Build script:** every line parses; only known slots, flags and kinds; no out-of-era words; no
-  duplicates; length limits; coverage minimums per realm and level band.
+  duplicates; length limits; coverage minimums per realm and level band. 1.2 chat audit (`tools/bot-voices/chat_rules.py`):
+  the banned list with reasons (`banned.txt`, `@allow <id>`), the length with the longest real slot values (155), realm and
+  class sanity, promise words only where the code acts, the enemy's shapes, keep claims, `{monster}` with `{camp}`, `{capital}`
+  claims, `{q}` only before a question, role letters in scene beats, the extra time words, near-copies (lines and scene
+  beats), a reviewed vocabulary (`vocabulary.txt`), the style round trip (`voice_style.py`, a port of the server's Style) and
+  every `@needs` flag set by the server. A hit fails in the files of `STRICT_OWNERS` and is a warning elsewhere
+  (`--check --warnings` lists them by owner). `check_runtime_names.py` runs the banned list over the chat string literals in
+  code.
 - **Unit tests:**
   - the voice transforms;
   - line choice respects the filters and the 6-hour repeat window;

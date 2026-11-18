@@ -214,6 +214,14 @@ public static class AutonomousBotDebates
         return true;
     }
 
+    /// <summary>
+    /// 1.2 chat audit (CORPUS-B2-032): beats a writing style adds no laugh to: roles A and B of a storyline ("story_" topic), whose
+    /// vows and confessions read as mockery with a "lol", and every role of a scene that ends in a rage quit (@exit). Pure.
+    /// </summary>
+    public static bool NoLaughBeat(VC.Scene scene, string role) =>
+        scene != null && (!string.IsNullOrEmpty(scene.Exit) ||
+                          (scene.Topic ?? string.Empty).StartsWith("story_", StringComparison.Ordinal) && role is "A" or "B");
+
     /// <summary>A beat's variants that fill with these slots, filled; empty when none do.</summary>
     public static string[] FilledVariants(VC.Beat beat, IReadOnlyDictionary<string, string> slots) =>
         beat.Variants.Select(variant => VC.TryFill(variant, slots, out string filled) ? filled : null)
@@ -842,6 +850,10 @@ public static class AutonomousBotDebates
                 continue;
             // 1.1.3, after RC5: typed in the speaker's own style, a long turn in two or three chat lines (AutonomousChatDebateSpeech).
             VC.Voice voice = AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID);
+            // 1.2 chat audit (CORPUS-B2-032): a storyline's two protagonists and every role of a rage-quit scene say their beats
+            // with no added laugh ("yes. i do lol" at a wedding).
+            if (voice != null && NoLaughBeat(running.Scene, beat.Role))
+                voice = voice with { EmoteChance = 0 };
             string filled = VC.ForTimeOfDay(AutonomousChatDebateSpeech.Variant(filledVariants, voice, Random.Shared), DateTime.Now.Hour);
             List<string> pieces = AutonomousChatDebateSpeech.Typed(filled, voice, speaker.DatabaseID, Random.Shared);
             if (pieces.Count == 0)

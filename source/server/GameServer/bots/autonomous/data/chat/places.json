@@ -143,7 +143,7 @@
   {"key": "darkness falls", "realm": "*", "type": "dungeon", "aliases": ["darkness falls", "df"], "zones": ["Darkness Falls"], "levels": [29, 57]},
   {"key": "thidranki", "realm": "*", "type": "battleground", "aliases": ["thidranki", "thid"], "zones": ["Thidranki"], "levels": [20, 24]},
   {"key": "abermenai", "realm": "*", "type": "battleground", "aliases": ["abermenai"], "zones": ["Abermenai"], "levels": [15, 19]},
-  {"key": "murdaigean", "realm": "*", "type": "battleground", "aliases": ["murdaigean"], "zones": ["Murdaigean"], "levels": [25, 29]},
-  {"key": "caledonia", "realm": "*", "type": "battleground", "aliases": ["caledonia"], "zones": ["Caledonia"], "levels": [30, 35]}
+  {"key": "murdaigean", "realm": "*", "type": "battleground", "aliases": ["murdaigean", "murd"], "zones": ["Murdaigean"], "levels": [25, 29]},
+  {"key": "caledonia", "realm": "*", "type": "battleground", "aliases": ["caledonia", "cale", "caledon"], "zones": ["Caledonia", "Caledon"], "levels": [30, 35]}
  ]
 }

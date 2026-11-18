@@ -20,6 +20,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import chat_rules  # noqa: E402  (the 1.2 chat audit checks: failures for STRICT_OWNERS, warnings elsewhere)
+
 ROOT = Path(__file__).resolve().parents[2]
 CHAT = ROOT / 'source/server/GameServer/bots/autonomous/data/chat'
 OUT = CHAT / 'corpus.json'
@@ -112,7 +115,11 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          'has_open_order',     # it has posted an order it is waiting on ({order}, {budget})
          'took_order',         # it is making an order for someone ({order}, {customer})
          'wants_gear',         # its gear check found a gap it is shopping for ({item}, {budget})
-         'exploded_recent'}    # a spellcraft explosion of its own in the last hour
+         'exploded_recent',    # a spellcraft explosion of its own in the last hour
+         # 1.2 chat audit (TEXT-020): an alarm's head count, under 8, 8 or more, 16 or more (AutonomousLivingServer.AlarmFlags)
+         'few', 'many', 'zerg',
+         # The season on the PC's calendar, northern hemisphere (AutonomousBotVoiceCorpus.SeasonFlag; owner decision 12)
+         'winter', 'spring', 'summer', 'autumn'}
 # Places a line may claim the speaker is at, heading to, or either (@needs at:<place>, going:<place>, near:<place>).
 PLACE_NEED_RE = re.compile(r'(at|going|near):(.+)')
 
@@ -163,24 +170,34 @@ SLOTS = {'me', 'class', 'level', 'realm', 'zone', 'monster', 'npc', 'item', 'cou
          # Crafting 2.0 (WP0): a crafter's real stock, price, title, order, skill, quality, customer, recipe and a budget
          'stock', 'price', 'title', 'order', 'skill', 'quality', 'customer', 'recipe', 'budget',
          # WP8: when a commissioned piece will be ready ("about 40 min") and how it is paid ("pay when i hand it over")
-         'when', 'terms'}
+         'when', 'terms',
+         # 1.2 chat audit (TEXT-018): {enemy} is the people ("hibs"), {enemy_mod} the word before a noun ("hib stealther"),
+         # {enemy_realm} the realm's name ("Hibernia")
+         'enemy_mod', 'enemy_realm'}
 MEMORY_SLOTS = {'player', 'player_class', 'place'}
 MAX_RAW = 140
 
-# Out of era (Trials of Atlantis, New Frontiers, Catacombs), the custom class, real-world names, profanity.
-BANNED = [
-    r'atlantis', r'\btoa\b', r'artifact', r'master ?levels?', r'\bml\d*\b', r'champion levels?', r'\bcl\d*\b',
-    r'catacombs', r'labyrinth', r'new frontiers?', r'\btowers?\b', r'oceanus', r'stygia', r'aerus', r'volcanus',
-    r'mauler', r'vampiir', r'bainshee', r'heretic', r'valkyr', r'warlock', r'frostalf', r'\bshar\b', r'deifrang',
-    r'minotaur', r'sluagh', r'mythic', r'\bign\b', r'\bvault\b', r'allakhazam', r'everquest', r'world of warcraft',
-    r'\bfuck', r'\bshit', r'\bbitch', r'\bdamn', r'\bass\b', r'\bcrap\b', r'\bhell\b',
-    # Later internet phrases (audit 2026-10-18)
-    r'change my mind', r'fight me', r'\bvibes?\b', r'love language', r'no thoughts', r'\blifestyle\b', r'\bsalty\b',
-    r'\bthe meta\b', r'i felt that', r'\bpog', r'\bbased\b', r'\bno cap\b', r'\bgg ez\b', r'\bsus\b', r'\bmain character\b',
-    # Jokes from after October 2003 (owner, 2026-11-15: cut them; Leeroy himself stays)
-    r'achievement unlocked', r'over 9000', r'\bhas chicken\b', r'we had chicken', r'cake is a lie', r'cool story',
-    r'i see what you did', r'\bikr\b', r'\bftw\b',
-]
+# The banned list lives in banned.txt with its reasons (1.2 chat audit, DESIGN-045 a). BANNED (level "ban") fails every file;
+# "audit" entries fail the files of STRICT_OWNERS and warn elsewhere; "unsure" entries only warn.
+BANNED_FILE = Path(__file__).resolve().parent / 'banned.txt'
+
+
+def load_banned(path=BANNED_FILE):
+    entries = []
+    for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        line = raw.strip()
+        if not line or line.startswith('#'):
+            continue
+        parts = [p.strip() for p in line.split(' | ', 3)]
+        if len(parts) < 3 or parts[1] not in ('ban', 'audit', 'unsure'):
+            raise SystemExit(f'{path.name}:{number}: expected "id | ban|audit|unsure | regex | why": {raw}')
+        entries.append(dict(id=parts[0], level=parts[1], regex=re.compile(parts[2], re.IGNORECASE),
+                            pattern=parts[2], why=parts[3] if len(parts) > 3 else ''))
+    return entries
+
+
+BANNED_ENTRIES = load_banned()
+BANNED = [e['pattern'] for e in BANNED_ENTRIES if e['level'] == 'ban']
 # A line that assumes a time of day needs a time flag (in game a noon session heard "late night crew checking in").
 # "tonight" and "all night" need none: by day the server says "today" and "all day" (AutonomousBotVoiceCorpus.ForTimeOfDay).
 TIME_WORDS_RE = re.compile(r"\b(late night|so late|up late|off to bed|to bed|bedtime|in the morning|"
@@ -280,6 +297,27 @@ def check_text(text, tags, where, problems):
             'outdoors', 'in_dungeon', 'in_capital', 'in_rvr', 'at_camp', 'traveling', 'in_town', 'in_battleground', 'in_frontier'}:
         problems.append(f'{where}: {{zone}} needs a place flag (outdoors, at_camp, in_dungeon...) so it is not said '
                         f'from a city or a dungeon by mistake: {text}')
+    if AUDIT is not None:
+        audit_text(text, tags, where, needs)
+
+
+# The 1.2 chat audit checks (chat_rules.py); set by main, None when the module is imported (check_runtime_names, tests).
+AUDIT = None
+
+
+def audit_text(text, tags, where, needs):
+    chat_rules.banned_audit(text, tags, where, AUDIT, BANNED_ENTRIES)
+    chat_rules.length_audit(text, tags, where, AUDIT)
+    chat_rules.class_audit(text, tags, where, AUDIT)
+    chat_rules.promise_audit(text, tags, where, AUDIT)
+    chat_rules.enemy_audit(text, tags, where, AUDIT)
+    chat_rules.keep_audit(text, tags, where, AUDIT, CLAIM_KINDS)
+    chat_rules.slot_place_audit(text, tags, where, AUDIT, OPENER_KINDS)
+    chat_rules.time_audit(text, needs, where, AUDIT)
+    if tags['kind'] == 'debate':
+        chat_rules.beat_audit(text, where, AUDIT)
+    elif '{q}' in text:
+        chat_rules.q_audit(text, where, AUDIT)
 
 
 def check_tags(tags, where, problems):
@@ -320,7 +358,7 @@ def check_tags(tags, where, problems):
 
 def fresh_tags():
     return dict(kind='ambient', topic='general', who=[], realm='*', **{'class': []}, levels=[1, 50], needs=[],
-                intent='', mood='', weight=1.0, invites='', answers=[], about=False)
+                intent='', mood='', weight=1.0, invites='', answers=[], about=False, allow=[])
 
 
 DOING_RE = re.compile(r"\bwhat (is|are|r) (every(one|body)|you|u|yall|you (all|guys)|u guys)( all)? (up to|doing)\b|"
@@ -331,6 +369,9 @@ LATER_RE = re.compile(r"\b(tonight|later|tomorrow|this weekend|after)\b")
 NOT_A_CHOICE_RE = re.compile(
     r"\bor (something|anything|what|so|not|is it just me|is that just me|just me|is it me|am i|is that a myth|is that true|just a|no|nah|"
     r"is it|is that|a bot|bot|an npc|a waste|waste|real|human|a person|a real)\b|\b(real|human) or\b")
+
+
+AMOUNT_OR_RE = re.compile(r"\bor (two|so|three|more|less|better|four|five)\b")
 
 
 def infer_invites(text, kind):
@@ -349,14 +390,17 @@ def infer_invites(text, kind):
         # Not a choice: "or just me", "or not", "or is it a myth", "real or scripted" (the same list as
         # AutonomousChatShortTalk.IsEitherOr; in-game check 2026-10-27: "anyone else waiting on a group or just me?" drew
         # "whichever is more fun").
-        if re.search(r"\bor\b", t) and not NOT_A_CHOICE_RE.search(t):
+        # 1.2 chat audit (CORPUS-C-005): "a ring or two", "20 or so", "50 or better" are amounts, not a choice.
+        if re.search(r"\bor\b", t) and not NOT_A_CHOICE_RE.search(t) and not AMOUNT_OR_RE.search(t):
             return 'ask_choice'
         # "where to next?": where the group goes, answered "your call" or "somewhere with more xp", not directions.
         if re.search(r"\bwhere (to next|now|next|are we (heading|going|off to)|should we (go|head)|we (going|heading))\b", t):
             return 'ask_next'
         if re.search(r"\bwhere\b|\bwheres\b|how do (i|you) get|which way|how far", t):
             return 'ask_where'
-        if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t):
+        # CORPUS-C-005: "who is our best weaponcrafter?", "what is the best camp?" ask who or what, not an opinion of the asker's.
+        if re.search(r"\b(best(?! (thing|part|moment|day))|better|worth it|what do (you|u) think|thoughts on|should i|is it worth|favorite|favourite)\b", t) \
+                and not re.match(r"(who|what|whats|which|where|how)\b", t):
             return 'ask_opinion'
         # "tell me your best death story": a story, not "pretty sure yes" (live test 2026-10-18).
         if re.search(r"\b(tell me|whats|what is) your (best|worst|favorite|funniest|dumbest)\b|\bbest thing that happened\b", t):
@@ -376,8 +420,12 @@ def infer_invites(text, kind):
         if re.search(r"\b(still ours|still holding|ours right now|did we lose|how much do (merchants|vendors) pay)\b", t):
             return 'ask_know'
         # "anyone know if x is ours?": a question about the world, answered "no idea" or "last i saw" (live test 2026-10-18).
-        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (know|knows|seen|heard)\b", t):
+        # CORPUS-C-005: only "know if/whether/who", "seen" and "heard": "anyone know a good camp?" asks for advice, not yes or no.
+        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) (knows? (if|whether|who)|seen|heard)\b", t):
             return 'ask_know'
+        # "anyone know a good camp around 20?": advice (CORPUS-C-005), not "last i saw, yes".
+        if re.search(r"\b(anyone|anybody|any1|does anyone|someone) knows? (a|an|any|some|where|how|what|which|good|the best)\b", t):
+            return 'ask_advice'
         # "anyone else up at this hour?": company, answered "same here", not "sorry, busy".
         if re.search(r"\b(anyone|anybody|any1) else\b", t):
             return 'chat'
@@ -397,6 +445,8 @@ def parse_file(path, problems):
     lines, scenes = [], []
     tags = fresh_tags()
     scene = None
+    # CORPUS-A-003/004: an @invites or @who set before a @class change and still in force on the next line.
+    carried, used = {}, set()
     for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
         where = f'{path.name}:{number}'
         text = raw.strip()
@@ -446,6 +496,17 @@ def parse_file(path, problems):
             else:
                 scene = None
                 try:
+                    if key in ('invites', 'who', 'kind'):
+                        carried.pop('invites' if key != 'who' else 'who', None)
+                        used.discard('invites' if key != 'who' else 'who')
+                        if key == 'kind':
+                            carried.clear()
+                    if key == 'class':
+                        # Only a tag that already applied to a line above is carried by mistake; one set right before
+                        # the @class is meant for its lines.
+                        for k in ('invites', 'who'):
+                            if tags[k] and k in used:
+                                carried[k] = where
                     if key == 'kind':
                         tags = fresh_tags() | dict(kind=value)
                     elif key == 'topic':
@@ -470,6 +531,12 @@ def parse_file(path, problems):
                         tags['invites'] = value
                     elif key == 'answers':
                         tags['answers'] = split_list(value)
+                    elif key == 'allow':
+                        # "@allow <id>": the lines below may use that banned.txt entry (until the next @kind).
+                        tags['allow'] = split_list(value)
+                        unknown = [a for a in tags['allow'] if a not in {e['id'] for e in BANNED_ENTRIES}]
+                        if unknown:
+                            problems.append(f'{where}: @allow names no banned.txt entry: {", ".join(unknown)}')
                     elif key == 'about':
                         # "@about place": the following lines name places without claiming to be there; "@about" ends it.
                         if value not in ('', 'place'):
@@ -497,13 +564,21 @@ def parse_file(path, problems):
             if any(not v for v in variants):
                 problems.append(f'{where}: empty alternative')
             for v in variants:
-                check_text(v, dict(kind='debate', needs=scene['needs'], realm=scene['realm'], topic=scene.get('topic') or ''), where, problems)
+                check_text(v, dict(kind='debate', needs=scene['needs'], realm=scene['realm'], topic=scene.get('topic') or '',
+                                   allow=tags.get('allow') or []), where, problems)
                 if re.match(r'\??[A-H]:\s', v):
                     problems.append(f'{where}: an alternative starts with a role marker: {v}')
             scene['beats'].append(dict(role=role, text=variants[0], variants=variants, optional=bool(optional),
                                        where=where))
             continue
         check_tags(tags, where, problems)
+        if AUDIT is not None:
+            for k, set_at in list(carried.items()):
+                AUDIT(where, f'@{k} {tags[k] if k == "invites" else ",".join(tags[k])} set before the @class change above '
+                             f'({set_at}) still applies here; reset it with a bare "@{k}" (or "@who *") under the @class')
+                carried.pop(k)
+            chat_rules.agreement_audit(text, where, AUDIT)
+        used.update(('invites', 'who'))
         if '[' in text and not CHOICE_RE.search(text):
             problems.append(f'{where}: "[" without a "|" choice: {text}')
         family = expand(text)
@@ -511,6 +586,7 @@ def parse_file(path, problems):
         for said in family:
             check_text(said, tags, where, problems)
             line = dict(tags, text=said, where=where, **{'class': list(tags['class'])})
+            line.pop('allow', None)
             # Kept only when set and the line names a place, so a test can tell talk about a place from a claim to be there.
             if not (line.pop('about') and places_in(said)):
                 pass
@@ -527,6 +603,8 @@ def parse_file(path, problems):
                 # A plain "ask" tag takes a more specific question type when the words show one ("how is everyone?").
                 if line['invites'] == 'ask' and infer_invites(said, tags['kind']).startswith('ask_'):
                     line['invites'] = infer_invites(said, tags['kind'])
+                if AUDIT is not None and not tags['invites']:
+                    chat_rules.invite_audit(said, line['invites'], where, AUDIT, places_in)
             else:
                 line.pop('invites')
             if not line['answers']:
@@ -643,8 +721,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--verify', action='store_true', help='fail if the committed corpus.json differs from the sources')
+    parser.add_argument('--warnings', action='store_true', help='list every 1.2 chat audit warning, by owner')
+    parser.add_argument('--write-vocabulary', action='store_true',
+                        help='after reviewing the new words a check reported, write them all to vocabulary.txt')
     args = parser.parse_args()
     problems, lines, scenes = [], [], []
+    global AUDIT
+    AUDIT = chat_rules.Audit(problems)
     files = sorted(CHAT.glob('*.lines'))
     if not files:
         raise SystemExit('No .lines files found in ' + str(CHAT))
@@ -652,6 +735,16 @@ def main():
         l, s = parse_file(path, problems)
         lines += l
         scenes += s
+    # 1.2 chat audit: near-copies, the vocabulary, the style round trip and the flags (chat_rules.py).
+    chat_rules.scene_duplicates_audit(scenes, AUDIT)
+    chat_rules.duplicates_audit(lines, AUDIT)
+    items = [(x['where'], x['text']) for x in lines] + [(b['where'], v) for sc in scenes for b in sc['beats']
+                                                         for v in b.get('variants', []) if 'where' in b]
+    if args.write_vocabulary:
+        print(f'vocabulary.txt: {chat_rules.write_vocabulary(items)} words')
+    chat_rules.vocabulary_audit(items, AUDIT, chat_rules.load_vocabulary())
+    chat_rules.style_audit(lines, AUDIT)
+    chat_rules.flags_audit({n.lstrip('!') for x in lines for n in x['needs'] if not PLACE_NEED_RE.fullmatch(n.lstrip('!'))}, problems)
     # A sentence may appear in only one scene, or every thread starts sounding the same.
     beat_seen = {}
     for sc in scenes:
@@ -708,6 +801,7 @@ def main():
                     problems.append(f'coverage: {kind} for {realm} {lo}-{hi} has {have}, needs {need}')
 
     lore_lines = check_lore(problems)
+    AUDIT.report(args.warnings)
 
     if problems:
         print(f'{len(problems)} problem(s):')
