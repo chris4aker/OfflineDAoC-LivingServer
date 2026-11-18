@@ -15,7 +15,7 @@ could be, tell me more
 @intent greeting
 @who *
 not bad, and you?
-good, slow night though
+good, slow going though
 cant complain, xp is coming
 tired but still going
 not much happening, you?
@@ -47,7 +47,7 @@ sure, holler if you get adds
 depends what you like
 the first one
 second one imo
-both are fine honestly
+either is fine honestly
 go with your gut
 whichever is more fun
 the first, no contest
@@ -109,7 +109,9 @@ cya around
 take it easy
 later, take care
 safe travels, see ya
+@needs !day
 gn, good hunting tomorrow
+@needs
 
 @kind reply
 @intent ignoreoutofworld

@@ -308670,6 +308670,28 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "none",
+   "text": "need {need} at {camp}, send a tell",
+   "family": "27a406284b",
+   "id": "5cbbf96aba0c"
+  },
+  {
+   "kind": "lfg",
+   "topic": "lead_lf_more",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group",
+    "lead_call"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.7071,
+   "invites": "none",
    "text": "need {need} at {camp}, pst",
    "family": "27a406284b",
    "id": "b0b469faaa5d"
@@ -317924,8 +317946,8 @@
    "answers": [
     "lfg"
    ],
-   "text": "will try that",
-   "id": "2dd08234b96a"
+   "text": "will try it, ty",
+   "id": "1aded768124f"
   },
   {
    "kind": "closing",
@@ -320086,8 +320108,8 @@
    "answers": [
     "news"
    ],
-   "text": "yep, thats what i heard",
-   "id": "a550d941797e"
+   "text": "yep, heard the same",
+   "id": "943bff1f6cca"
   },
   {
    "kind": "closing",
@@ -320986,8 +321008,8 @@
    "answers": [
     "ask_no"
    ],
-   "text": "ok, maybe another time",
-   "id": "48d92ffa3517"
+   "text": "ok, another time then",
+   "id": "16adfd92c368"
   },
   {
    "kind": "closing",
@@ -321323,8 +321345,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "here it comes",
-   "id": "642fb0b67e8f"
+   "text": "here it comes, ready",
+   "id": "cbb381f44845"
   },
   {
    "kind": "combat",
@@ -324002,8 +324024,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "got tossed, omw back",
-   "id": "f898762df2ec"
+   "text": "got tossed, ugh",
+   "id": "341eca32a9ea"
   },
   {
    "kind": "combat",
@@ -324078,8 +324100,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "lol got punted, omw",
-   "id": "b12226d7800b"
+   "text": "lol got punted",
+   "id": "57743535c6ad"
   },
   {
    "kind": "combat",
@@ -324878,8 +324900,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "stop dps on tuscar, it heals kula",
-   "id": "4168751fbc89"
+   "text": "stop nukers on tuscar, it heals kula",
+   "id": "599fd5b4f53e"
   },
   {
    "kind": "combat",
@@ -326517,8 +326539,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "hold dps, {boss} is outside the room",
-   "id": "b9330c05eda8"
+   "text": "nukers hold, {boss} is outside the room",
+   "id": "2f9e6da92519"
   },
   {
    "kind": "combat",
@@ -327220,8 +327242,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "hold dps, lead {boss} back",
-   "id": "f7f4e6e8c4f2"
+   "text": "nukers hold, lead {boss} back",
+   "id": "765fa87a40c4"
   },
   {
    "kind": "combat",
@@ -327353,8 +327375,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "ow, out of the fire omw",
-   "id": "2df2f5858231"
+   "text": "ow, out of the fire",
+   "id": "869eba323d22"
   },
   {
    "kind": "combat",
@@ -327467,8 +327489,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "snared in the pit, omw back",
-   "id": "68b13394ca81"
+   "text": "snared in the pit, ugh",
+   "id": "fa3554dd30de"
   },
   {
    "kind": "combat",
@@ -327562,8 +327584,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "landed in a camp, omw",
-   "id": "699a8aed6a49"
+   "text": "landed in a camp, great",
+   "id": "4bd8ae4dbf76"
   },
   {
    "kind": "combat",
@@ -327695,8 +327717,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "sent off again, omw",
-   "id": "16d46530e1fa"
+   "text": "sent off again, ugh",
+   "id": "06cff082d012"
   },
   {
    "kind": "combat",
@@ -330395,8 +330417,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{title}, {skill} {recipe}. i can do {item}, up to lvl {level}. {stock}",
-   "id": "957b9150e1b7"
+   "text": "{skill} {recipe}, lvl {level} tops. {stock}",
+   "id": "40b991ff9b75"
   },
   {
    "kind": "craft_reply",
@@ -330452,8 +330474,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{title} here, {skill} {recipe}. i make {item} up to lvl {level}. {stock}",
-   "id": "a319d94e47f0"
+   "text": "{skill} {recipe}, up to lvl {level}. {stock}",
+   "id": "612e9d32c510"
   },
   {
    "kind": "craft_reply",
@@ -330471,8 +330493,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{skill} {recipe}, i can do {item} up to lvl {level}. {stock}, pst if you want any",
-   "id": "16a04f166411"
+   "text": "{recipe} {skill}, lvl {level} max. {stock}, pst",
+   "id": "79a82a0d4f9f"
   },
   {
    "kind": "craft_reply",
@@ -373858,8 +373880,8 @@
    "answers": [
     "followup_which"
    ],
-   "text": "cant remember the name lol",
-   "id": "9d0bf0a56c10"
+   "text": "the name escapes me lol",
+   "id": "333bf4bd62fb"
   },
   {
    "kind": "reply",
@@ -376415,8 +376437,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "none",
-   "text": "brb, getting a drink",
-   "id": "3d308957db23"
+   "text": "brb, grabbing a drink",
+   "id": "af9f066fa139"
   },
   {
    "kind": "group",
@@ -378565,8 +378587,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news",
-   "text": "{enemy} relic raid rumors again, watch out",
-   "id": "acf1cd7faaac"
+   "text": "{enemy_mod} relic raid rumors again, watch out",
+   "id": "d9f4896c5ac0"
   },
   {
    "kind": "guild",
@@ -379405,8 +379427,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_anyone",
-   "text": "slow night, anyone doing anything?",
-   "id": "630f9382e6f6"
+   "text": "slow in here, anyone doing anything?",
+   "id": "a7feeaba851d"
   },
   {
    "kind": "guild",
@@ -379477,8 +379499,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "nothing beats a quiet night with the guild",
-   "id": "1a76037601c0"
+   "text": "nothing beats a quiet hour with the guild",
+   "id": "9f7f74fc3d95"
   },
   {
    "kind": "guild",
@@ -380612,9 +380634,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is the guild doing tonight?",
-   "family": "223454a86f",
-   "id": "6b6b0b9506a6"
+   "text": "so how are you lot getting on tonight?",
+   "family": "6660d5c969",
+   "id": "249a0fe08b62"
   },
   {
    "kind": "guild",
@@ -380631,9 +380653,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is the guild doing these days?",
-   "family": "223454a86f",
-   "id": "3d53d4c6d7eb"
+   "text": "so how are you lot getting on these days?",
+   "family": "6660d5c969",
+   "id": "28ba3e459b89"
   },
   {
    "kind": "guild",
@@ -380650,9 +380672,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is the guild holding up tonight?",
-   "family": "223454a86f",
-   "id": "931009b2666e"
+   "text": "so how are you lot holding up tonight?",
+   "family": "6660d5c969",
+   "id": "f072dbff7727"
   },
   {
    "kind": "guild",
@@ -380669,9 +380691,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is the guild holding up these days?",
-   "family": "223454a86f",
-   "id": "ad2392b0baf0"
+   "text": "so how are you lot holding up these days?",
+   "family": "6660d5c969",
+   "id": "04d9e3f0824c"
   },
   {
    "kind": "guild",
@@ -380688,9 +380710,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is everybody doing tonight?",
-   "family": "223454a86f",
-   "id": "01be1b0fab30"
+   "text": "so how are you all getting on tonight?",
+   "family": "6660d5c969",
+   "id": "52e13bd9bc9c"
   },
   {
    "kind": "guild",
@@ -380707,9 +380729,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is everybody doing these days?",
-   "family": "223454a86f",
-   "id": "19b4a2f4f810"
+   "text": "so how are you all getting on these days?",
+   "family": "6660d5c969",
+   "id": "264a8c578baf"
   },
   {
    "kind": "guild",
@@ -380726,9 +380748,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is everybody holding up tonight?",
-   "family": "223454a86f",
-   "id": "844ff7908027"
+   "text": "so how are you all holding up tonight?",
+   "family": "6660d5c969",
+   "id": "0a70d140bfb8"
   },
   {
    "kind": "guild",
@@ -380745,9 +380767,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "so how is everybody holding up these days?",
-   "family": "223454a86f",
-   "id": "69eb4319c1c6"
+   "text": "so how are you all holding up these days?",
+   "family": "6660d5c969",
+   "id": "7205a7a72031"
   },
   {
    "kind": "guild",
@@ -380764,9 +380786,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is the guild doing tonight?",
-   "family": "223454a86f",
-   "id": "ce7c7a334c69"
+   "text": "ok how are you lot getting on tonight?",
+   "family": "6660d5c969",
+   "id": "09ea63ec5f7e"
   },
   {
    "kind": "guild",
@@ -380783,9 +380805,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is the guild doing these days?",
-   "family": "223454a86f",
-   "id": "1678152c4ec1"
+   "text": "ok how are you lot getting on these days?",
+   "family": "6660d5c969",
+   "id": "2be311c28968"
   },
   {
    "kind": "guild",
@@ -380802,9 +380824,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is the guild holding up tonight?",
-   "family": "223454a86f",
-   "id": "2075179a0f1f"
+   "text": "ok how are you lot holding up tonight?",
+   "family": "6660d5c969",
+   "id": "e43fcfba3526"
   },
   {
    "kind": "guild",
@@ -380821,9 +380843,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is the guild holding up these days?",
-   "family": "223454a86f",
-   "id": "1effb2d3bf91"
+   "text": "ok how are you lot holding up these days?",
+   "family": "6660d5c969",
+   "id": "f026f3530ac2"
   },
   {
    "kind": "guild",
@@ -380840,9 +380862,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is everybody doing tonight?",
-   "family": "223454a86f",
-   "id": "13085bcdf580"
+   "text": "ok how are you all getting on tonight?",
+   "family": "6660d5c969",
+   "id": "76c3768eb9d6"
   },
   {
    "kind": "guild",
@@ -380859,9 +380881,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is everybody doing these days?",
-   "family": "223454a86f",
-   "id": "edb81bd7007c"
+   "text": "ok how are you all getting on these days?",
+   "family": "6660d5c969",
+   "id": "d33a9376cc1b"
   },
   {
    "kind": "guild",
@@ -380878,9 +380900,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is everybody holding up tonight?",
-   "family": "223454a86f",
-   "id": "1c0b9f0b52e5"
+   "text": "ok how are you all holding up tonight?",
+   "family": "6660d5c969",
+   "id": "2b57bc85c9ce"
   },
   {
    "kind": "guild",
@@ -380897,9 +380919,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "ask_howareyou",
-   "text": "ok how is everybody holding up these days?",
-   "family": "223454a86f",
-   "id": "197bb33e0512"
+   "text": "ok how are you all holding up these days?",
+   "family": "6660d5c969",
+   "id": "7df7dbe39a4e"
   },
   {
    "kind": "guild",
@@ -401216,9 +401238,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "anyone have spare leather lying around?",
-   "family": "c7ee07c0ce",
-   "id": "9c47c65cbe90"
+   "text": "spare leather anyone?",
+   "family": "7f3f350faa",
+   "id": "244d4c18d84d"
   },
   {
    "kind": "guild",
@@ -401237,9 +401259,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "anyone have spare metal lying around?",
-   "family": "c7ee07c0ce",
-   "id": "fa5de183dab1"
+   "text": "spare cloth anyone?",
+   "family": "7f3f350faa",
+   "id": "6cd4dbbd7219"
   },
   {
    "kind": "guild",
@@ -401258,9 +401280,30 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "anyone have spare wood lying around?",
-   "family": "c7ee07c0ce",
-   "id": "0c68bf4212b9"
+   "text": "spare metal anyone?",
+   "family": "7f3f350faa",
+   "id": "5e39420abb33"
+  },
+  {
+   "kind": "guild",
+   "topic": "crafting",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "chat",
+   "text": "spare wood anyone?",
+   "family": "7f3f350faa",
+   "id": "8a8685405139"
   },
   {
    "kind": "guild",
@@ -405968,11 +406011,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a quiet night with the guild",
-   "family": "30e8420a4e",
-   "id": "71b12c0c5f91"
+   "text": "i love a quiet session with the guild",
+   "family": "396dda4fe9",
+   "id": "f797bfaee428"
   },
   {
    "kind": "guild",
@@ -405987,11 +406030,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a quiet night with you lot",
-   "family": "30e8420a4e",
-   "id": "37c07bf17fcb"
+   "text": "i love a quiet session with you lot",
+   "family": "396dda4fe9",
+   "id": "d7a9827e1fb4"
   },
   {
    "kind": "guild",
@@ -406006,11 +406049,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a quiet night with good company",
-   "family": "30e8420a4e",
-   "id": "67f6d6326b33"
+   "text": "i love a quiet session with good company",
+   "family": "396dda4fe9",
+   "id": "9bfbf13d9dc0"
   },
   {
    "kind": "guild",
@@ -406025,11 +406068,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a lazy night with the guild",
-   "family": "30e8420a4e",
-   "id": "63df0162357f"
+   "text": "i love a lazy session with the guild",
+   "family": "396dda4fe9",
+   "id": "c0dcb0cb1d79"
   },
   {
    "kind": "guild",
@@ -406044,11 +406087,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a lazy night with you lot",
-   "family": "30e8420a4e",
-   "id": "7e847723150b"
+   "text": "i love a lazy session with you lot",
+   "family": "396dda4fe9",
+   "id": "921cfe5df840"
   },
   {
    "kind": "guild",
@@ -406063,11 +406106,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a lazy night with good company",
-   "family": "30e8420a4e",
-   "id": "97d1c62c4e9b"
+   "text": "i love a lazy session with good company",
+   "family": "396dda4fe9",
+   "id": "799d376ee0ec"
   },
   {
    "kind": "guild",
@@ -406082,11 +406125,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a slow night with the guild",
-   "family": "30e8420a4e",
-   "id": "768c5be69e9a"
+   "text": "i love a slow session with the guild",
+   "family": "396dda4fe9",
+   "id": "f838303ac719"
   },
   {
    "kind": "guild",
@@ -406101,11 +406144,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a slow night with you lot",
-   "family": "30e8420a4e",
-   "id": "ebaf9756c7cb"
+   "text": "i love a slow session with you lot",
+   "family": "396dda4fe9",
+   "id": "52d02ba1706e"
   },
   {
    "kind": "guild",
@@ -406120,11 +406163,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "i love a slow night with good company",
-   "family": "30e8420a4e",
-   "id": "15ece0acc6fe"
+   "text": "i love a slow session with good company",
+   "family": "396dda4fe9",
+   "id": "fb4bca821f65"
   },
   {
    "kind": "guild",
@@ -406139,11 +406182,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a quiet night with the guild",
-   "family": "30e8420a4e",
-   "id": "590e12a9ccf2"
+   "text": "gotta love a quiet session with the guild",
+   "family": "396dda4fe9",
+   "id": "0c67d675a326"
   },
   {
    "kind": "guild",
@@ -406158,11 +406201,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a quiet night with you lot",
-   "family": "30e8420a4e",
-   "id": "383b64437c72"
+   "text": "gotta love a quiet session with you lot",
+   "family": "396dda4fe9",
+   "id": "f9313a087e01"
   },
   {
    "kind": "guild",
@@ -406177,11 +406220,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a quiet night with good company",
-   "family": "30e8420a4e",
-   "id": "f78a8d51effe"
+   "text": "gotta love a quiet session with good company",
+   "family": "396dda4fe9",
+   "id": "5050a36cf47b"
   },
   {
    "kind": "guild",
@@ -406196,11 +406239,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a lazy night with the guild",
-   "family": "30e8420a4e",
-   "id": "a4a7dd8e7730"
+   "text": "gotta love a lazy session with the guild",
+   "family": "396dda4fe9",
+   "id": "3410d913a0ce"
   },
   {
    "kind": "guild",
@@ -406215,11 +406258,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a lazy night with you lot",
-   "family": "30e8420a4e",
-   "id": "e61d32cae453"
+   "text": "gotta love a lazy session with you lot",
+   "family": "396dda4fe9",
+   "id": "0c3840b56cbe"
   },
   {
    "kind": "guild",
@@ -406234,11 +406277,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a lazy night with good company",
-   "family": "30e8420a4e",
-   "id": "bd83f6291847"
+   "text": "gotta love a lazy session with good company",
+   "family": "396dda4fe9",
+   "id": "17c96af1945f"
   },
   {
    "kind": "guild",
@@ -406253,11 +406296,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a slow night with the guild",
-   "family": "30e8420a4e",
-   "id": "e31db8cb8099"
+   "text": "gotta love a slow session with the guild",
+   "family": "396dda4fe9",
+   "id": "dd3e873f232a"
   },
   {
    "kind": "guild",
@@ -406272,11 +406315,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a slow night with you lot",
-   "family": "30e8420a4e",
-   "id": "04ce419ee354"
+   "text": "gotta love a slow session with you lot",
+   "family": "396dda4fe9",
+   "id": "7240c572209b"
   },
   {
    "kind": "guild",
@@ -406291,182 +406334,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1925,
+   "weight": 0.2357,
    "invites": "chat",
-   "text": "theres nothing like a slow night with good company",
-   "family": "30e8420a4e",
-   "id": "4ba8a5d4929f"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a quiet night with the guild",
-   "family": "30e8420a4e",
-   "id": "61989d1f3c09"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a quiet night with you lot",
-   "family": "30e8420a4e",
-   "id": "0b54971d7a6b"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a quiet night with good company",
-   "family": "30e8420a4e",
-   "id": "326b9082cf47"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a lazy night with the guild",
-   "family": "30e8420a4e",
-   "id": "e445ff153d04"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a lazy night with you lot",
-   "family": "30e8420a4e",
-   "id": "6254a455bbf3"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a lazy night with good company",
-   "family": "30e8420a4e",
-   "id": "00d5f4c4799c"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a slow night with the guild",
-   "family": "30e8420a4e",
-   "id": "0f58c97ced63"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a slow night with you lot",
-   "family": "30e8420a4e",
-   "id": "26d3a14c4dc5"
-  },
-  {
-   "kind": "guild",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1925,
-   "invites": "chat",
-   "text": "gotta love a slow night with good company",
-   "family": "30e8420a4e",
-   "id": "35669aad3c8c"
+   "text": "gotta love a slow session with good company",
+   "family": "396dda4fe9",
+   "id": "0baa8dd78798"
   },
   {
    "kind": "guild",
@@ -412836,8 +412708,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "afk 10, dinner",
-   "id": "b9f28328b0f9"
+   "text": "afk 10, food",
+   "id": "7a448e070e73"
   },
   {
    "kind": "guild",
@@ -427027,10 +426899,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling dye, pst",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "9ff825d36459"
   },
   {
@@ -427048,10 +426920,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling dye, paying fair",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "072da056c8f9"
   },
   {
@@ -427069,10 +426941,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling dye",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "5905c25a5c86"
   },
   {
@@ -427090,10 +426962,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling thread, pst",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "8c78917b2c17"
   },
   {
@@ -427111,10 +426983,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling thread, paying fair",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "0663b6c9e9ce"
   },
   {
@@ -427132,10 +427004,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "anyone selling thread",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "2b40bdf463c9"
   },
   {
@@ -427153,73 +427025,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
-   "invites": "trade",
-   "text": "anyone selling leather, pst",
-   "family": "92780dcb53",
-   "id": "255101a890d6"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "trade",
-   "text": "anyone selling leather, paying fair",
-   "family": "92780dcb53",
-   "id": "9e61e59bba21"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "trade",
-   "text": "anyone selling leather",
-   "family": "92780dcb53",
-   "id": "21db9681f4ea"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "wtb dye, paying fair",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "6c8790671117"
   },
   {
@@ -427237,10 +427046,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "wtb dye",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "6102b60c53e6"
   },
   {
@@ -427258,10 +427067,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "wtb thread, pst",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "c59dd74bb3ba"
   },
   {
@@ -427279,10 +427088,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "wtb thread, paying fair",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "bb932ab400eb"
   },
   {
@@ -427300,53 +427109,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "trade",
    "text": "wtb thread",
-   "family": "92780dcb53",
+   "family": "d11701366b",
    "id": "8d6ebfa54d72"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "trade",
-   "text": "wtb leather, paying fair",
-   "family": "92780dcb53",
-   "id": "472f903a920b"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "trade",
-   "text": "wtb leather",
-   "family": "92780dcb53",
-   "id": "f4e1d917c8f2"
   },
   {
    "kind": "trade",
@@ -427785,8 +427552,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "lfg {level} {class}, anything",
-   "id": "eb39981f711b"
+   "text": "lfg {level} {class}, anything goes",
+   "id": "9109de4fea34"
   },
   {
    "kind": "lfg",
@@ -428672,8 +428439,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "need {need} at {camp}, send a tell",
-   "id": "5cbbf96aba0c"
+   "text": "{camp} group needs {need}, send a tell",
+   "id": "f9be27855168"
   },
   {
    "kind": "lfg",
@@ -429444,8 +429211,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "none",
-   "text": "ty, on my way",
-   "id": "5671820b018b"
+   "text": "ty, glad to join",
+   "id": "5f40f87240dc"
   },
   {
    "kind": "lfg",
@@ -429570,8 +429337,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask",
-   "text": "hey, who is main assist?",
-   "id": "bada7eb25ca3"
+   "text": "hey, who are we assisting?",
+   "id": "03eca6f02fd5"
   },
   {
    "kind": "lfg",
@@ -429708,7 +429475,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "none",
+   "invites": "lfg",
    "text": "hey, tank here, pull to me",
    "id": "a50e7a07e11c"
   },
@@ -537516,6 +537283,29 @@
    "answers": [
     "milestone_trophy"
    ],
+   "text": "gz!! so happy for you",
+   "family": "089eca8ff3",
+   "id": "0220d9ea3a98"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
    "text": "gz!! well deserved",
    "family": "089eca8ff3",
    "id": "81dc5b17e837"
@@ -561101,8 +560891,8 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "what do you need?",
-   "id": "024e0b835fe6"
+   "text": "what do you need help with?",
+   "id": "57d5feccab5c"
   },
   {
    "kind": "reply",
@@ -562651,8 +562441,8 @@
    "answers": [
     "player_mishap"
    ],
-   "text": "happens to everyone heh",
-   "id": "91b01f753665"
+   "text": "happens to all of us heh",
+   "id": "0cef9548af55"
   },
   {
    "kind": "reply",
@@ -562977,8 +562767,8 @@
    "answers": [
     "player_close"
    ],
-   "text": "yeah that was close",
-   "id": "10e661f6d898"
+   "text": "yeah, close one",
+   "id": "08ce6366d47f"
   },
   {
    "kind": "reply",
@@ -568503,8 +568293,8 @@
    "answers": [
     "boast"
    ],
-   "text": "not bad at all",
-   "id": "09e20e1546f1"
+   "text": "not bad, not bad",
+   "id": "56215e657ad8"
   },
   {
    "kind": "reply",
@@ -568909,8 +568699,8 @@
    "answers": [
     "complaint"
    ],
-   "text": "happens to the best of us",
-   "id": "e22fe98b6dae"
+   "text": "happens to the best",
+   "id": "f7db91913d11"
   },
   {
    "kind": "reply",
@@ -569257,8 +569047,8 @@
    "answers": [
     "news"
    ],
-   "text": "huh, didnt know that",
-   "id": "ba5e63cfe6aa"
+   "text": "huh, news to me",
+   "id": "be51424e18ba"
   },
   {
    "kind": "reply",
@@ -569537,8 +569327,8 @@
    "answers": [
     "news"
    ],
-   "text": "ill keep an eye out",
-   "id": "b889aa63fc44"
+   "text": "ill watch for it",
+   "id": "8cd7617aa171"
   },
   {
    "kind": "reply",
@@ -570329,8 +570119,8 @@
    "answers": [
     "ask"
    ],
-   "text": "good question",
-   "id": "31e1b13755da"
+   "text": "hm, no clue there",
+   "id": "18dc915b3148"
   },
   {
    "kind": "reply",
@@ -570569,8 +570359,8 @@
    "answers": [
     "ask"
    ],
-   "text": "couldnt tell you",
-   "id": "43cf9799fd9c"
+   "text": "couldnt say",
+   "id": "2013f545924c"
   },
   {
    "kind": "reply",
@@ -572336,8 +572126,8 @@
    "answers": [
     "ask_howareyou"
    ],
-   "text": "good, slow night though",
-   "id": "592fdc48f8f7"
+   "text": "good, slow going though",
+   "id": "206a044ff8bc"
   },
   {
    "kind": "reply",
@@ -572742,8 +572532,8 @@
    "answers": [
     "ask_choice"
    ],
-   "text": "both are fine honestly",
-   "id": "ef89e0966fff"
+   "text": "either is fine honestly",
+   "id": "d189f82fe84c"
   },
   {
    "kind": "reply",
@@ -573435,7 +573225,9 @@
     1,
     50
    ],
-   "needs": [],
+   "needs": [
+    "!day"
+   ],
    "intent": "farewell",
    "mood": "",
    "weight": 1.0,
@@ -577630,33 +577422,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "ha, cant argue with that",
-   "family": "d73fb748b3",
-   "id": "f2698bf45bb5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
+   "weight": 0.5,
    "answers": [
     "chat"
    ],
    "text": "ha, no arguing with that",
-   "family": "d73fb748b3",
+   "family": "9fb158f399",
    "id": "51ce4443b2e5"
   },
   {
@@ -577672,12 +577443,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.4082,
+   "weight": 0.5,
    "answers": [
     "chat"
    ],
    "text": "ha, wont argue with that",
-   "family": "d73fb748b3",
+   "family": "9fb158f399",
    "id": "91fd53897573"
   },
   {
@@ -577693,33 +577464,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "heh, cant argue with that",
-   "family": "d73fb748b3",
-   "id": "079535326be1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
+   "weight": 0.5,
    "answers": [
     "chat"
    ],
    "text": "heh, no arguing with that",
-   "family": "d73fb748b3",
+   "family": "9fb158f399",
    "id": "13ea7e83bf7d"
   },
   {
@@ -577735,12 +577485,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.4082,
+   "weight": 0.5,
    "answers": [
     "chat"
    ],
    "text": "heh, wont argue with that",
-   "family": "d73fb748b3",
+   "family": "9fb158f399",
    "id": "8c504bf9c1a2"
   },
   {
@@ -577950,7 +577700,7 @@
     "chat"
    ],
    "text": "i know, it never changes",
-   "family": "7e6f36a6ec",
+   "family": "8ebdf1b661",
    "id": "76b5ac611643"
   },
   {
@@ -577971,7 +577721,7 @@
     "chat"
    ],
    "text": "i know, every single night",
-   "family": "7e6f36a6ec",
+   "family": "8ebdf1b661",
    "id": "49fa6527450a"
   },
   {
@@ -577992,7 +577742,7 @@
     "chat"
    ],
    "text": "i know",
-   "family": "7e6f36a6ec",
+   "family": "8ebdf1b661",
    "id": "050a3793fdd5"
   },
   {
@@ -578012,9 +577762,9 @@
    "answers": [
     "chat"
    ],
-   "text": "tell me about it, it never changes",
-   "family": "7e6f36a6ec",
-   "id": "9396b35fcfac"
+   "text": "oh i know, it never changes",
+   "family": "8ebdf1b661",
+   "id": "2f6d0734b23b"
   },
   {
    "kind": "reply",
@@ -578033,9 +577783,9 @@
    "answers": [
     "chat"
    ],
-   "text": "tell me about it, every single night",
-   "family": "7e6f36a6ec",
-   "id": "26c3e93dee88"
+   "text": "oh i know, every single night",
+   "family": "8ebdf1b661",
+   "id": "2775caced3ac"
   },
   {
    "kind": "reply",
@@ -581788,117 +581538,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "good to hear, ty",
-   "family": "6fe62b3578",
-   "id": "0740c2c3894b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "good to hear, thanks",
-   "family": "6fe62b3578",
-   "id": "935dac186abe"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "good to hear",
-   "family": "6fe62b3578",
-   "id": "52aa7d8675aa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "good to know, thanks",
-   "family": "6fe62b3578",
-   "id": "4cd412085061"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "nice to hear, ty",
-   "family": "6fe62b3578",
-   "id": "15fa43e0cf2c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.5,
    "answers": [
     "news"
    ],
    "text": "nice to hear, thanks",
-   "family": "6fe62b3578",
+   "family": "757e653f5b",
    "id": "1e163538d400"
   },
   {
@@ -581914,12 +581559,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.5,
    "answers": [
     "news"
    ],
    "text": "nice to hear",
-   "family": "6fe62b3578",
+   "family": "757e653f5b",
    "id": "27c8e40f0517"
   },
   {
@@ -581935,13 +581580,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.5,
    "answers": [
     "news"
    ],
-   "text": "nice to know, ty",
-   "family": "6fe62b3578",
-   "id": "2a4cbc6a71ad"
+   "text": "glad to hear, thanks",
+   "family": "757e653f5b",
+   "id": "d1c76999af73"
   },
   {
    "kind": "reply",
@@ -581956,34 +581601,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.5,
    "answers": [
     "news"
    ],
-   "text": "nice to know, thanks",
-   "family": "6fe62b3578",
-   "id": "f2229a6150ee"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "news"
-   ],
-   "text": "nice to know",
-   "family": "6fe62b3578",
-   "id": "a3af6b100cab"
+   "text": "glad to hear",
+   "family": "757e653f5b",
+   "id": "fa5f48633f43"
   },
   {
    "kind": "reply",
@@ -587600,6 +587224,27 @@
    "answers": [
     "trade"
    ],
+   "text": "check the exchange",
+   "family": "a9d4fc7583",
+   "id": "433fecbafef4"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "answers": [
+    "trade"
+   ],
    "text": "check the broker, prices are fair",
    "family": "a9d4fc7583",
    "id": "87cb486c7823"
@@ -588388,8 +588033,8 @@
    "answers": [
     "player_goodnews"
    ],
-   "text": "gz!! so happy for you",
-   "id": "0220d9ea3a98"
+   "text": "gz!! so happy for ya",
+   "id": "e668a6d7bacd"
   },
   {
    "kind": "reply",
@@ -588550,8 +588195,8 @@
    "answers": [
     "player_offer"
    ],
-   "text": "ty, appreciate it",
-   "id": "3d85ca659dbb"
+   "text": "ty, much appreciated",
+   "id": "9c42c3841bdc"
   },
   {
    "kind": "reply",
@@ -588750,8 +588395,8 @@
    "answers": [
     "player_wait"
    ],
-   "text": "k, ready when you are",
-   "id": "92933deab8a3"
+   "text": "k, whenever you are",
+   "id": "15abaa40212b"
   },
   {
    "kind": "reply",
@@ -589930,8 +589575,8 @@
    "answers": [
     "chat"
    ],
-   "text": "thats about right",
-   "id": "9e21f4816a80"
+   "text": "about right, yeah",
+   "id": "58360b906946"
   },
   {
    "kind": "reply",
@@ -592310,8 +591955,8 @@
    "answers": [
     "complaint"
    ],
-   "text": "heh, still beats a quiet night",
-   "id": "977d8c28415e"
+   "text": "heh, still beats a quiet one",
+   "id": "24524b4bc7c1"
   },
   {
    "kind": "reply",
@@ -593102,8 +592747,8 @@
    "answers": [
     "player_rl_pet"
    ],
-   "text": "lol mine does the same",
-   "id": "a5fb97efd79d"
+   "text": "lol mine too",
+   "id": "daa2f6bbe53a"
   },
   {
    "kind": "reply",
@@ -593222,8 +592867,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "nice, enjoy it",
-   "id": "221ceaf48f34"
+   "text": "nice, have fun with it",
+   "id": "98ecf74d277d"
   },
   {
    "kind": "reply",
@@ -594757,8 +594402,8 @@
    "intent": "congrats",
    "mood": "",
    "weight": 1.0,
-   "text": "ty, feels good",
-   "id": "bc2f98eb41c1"
+   "text": "ty, feels great",
+   "id": "329e2d5eebac"
   },
   {
    "kind": "reply",
@@ -595012,8 +594657,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "happens to all of us",
-   "id": "fa2ee033b97c"
+   "text": "it happens to all of us",
+   "id": "2f830dab9616"
   },
   {
    "kind": "reply",
@@ -596252,8 +595897,8 @@
    "answers": [
     "ask_ready"
    ],
-   "text": "ready when you are",
-   "id": "e447847340d1"
+   "text": "ready whenever",
+   "id": "16a7e66745c0"
   },
   {
    "kind": "reply",
@@ -596712,8 +596357,8 @@
    "answers": [
     "ask_price"
    ],
-   "text": "depends on the bonuses",
-   "id": "09abcfa5ef96"
+   "text": "all about the bonuses",
+   "id": "7e542a62131b"
   },
   {
    "kind": "reply",
@@ -599093,8 +598738,8 @@
    "intent": "away",
    "mood": "",
    "weight": 1.0,
-   "text": "ok, ill be around",
-   "id": "53e19593148d"
+   "text": "ok, ill be nearby",
+   "id": "57499e030c4e"
   },
   {
    "kind": "reply",
@@ -602049,8 +601694,8 @@
    "intent": "trading",
    "mood": "",
    "weight": 1.0,
-   "text": "check the exchange",
-   "id": "433fecbafef4"
+   "text": "the exchange might have one",
+   "id": "7b800be5f757"
   },
   {
    "kind": "reply",

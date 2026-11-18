@@ -10,7 +10,7 @@
 @needs in_player_group
 incoming
 inc, get ready
-here it comes
+here it comes, ready
 one coming, on me
 inc 1
 
@@ -258,11 +258,11 @@ jail on {target}, hang tight
 @topic displaced_self
 @who *
 @needs in_player_group
-got tossed, omw back
+got tossed, ugh
 ow. running back
 landed, coming back
 got thrown, be right there
-lol got punted, omw
+lol got punted
 that hurt, heading back
 need a heal, got tossed
 
@@ -352,7 +352,7 @@ dont touch the king, all on kula
 off tuscar! hitting him heals her
 [only the mt|just the tank] on the king, rest on kula
 kula first, leave the king to the tank
-stop dps on tuscar, it heals kula
+stop nukers on tuscar, it heals kula
 everyone on {target}, king is tank only
 
 # ---- epic_frost_circle: out of Queen Kula's frost circle by her throne ---------------------------------------------
@@ -521,7 +521,7 @@ let him go, catch him next lap
 @needs in_player_group
 {boss} is out of his room, stop hitting
 pull {boss} back in the room, he cant be hurt out here
-hold dps, {boss} is outside the room
+nukers hold, {boss} is outside the room
 drag him back to the middle, no damage outside
 
 @kind combat
@@ -598,7 +598,7 @@ out of the fire!
 too far out, drag {boss} back
 stop hitting, {boss} is leashing, pull him home
 bring {boss} back before he resets
-hold dps, lead {boss} back
+nukers hold, lead {boss} back
 
 # ---- displaced, by encounter: the throw's own lines (EncounterDisplacementRecovery.EncounterTopics) --------------------
 @kind combat
@@ -616,7 +616,7 @@ fire toss on {target}, get out of there
 @needs in_player_group
 thrown in the fire, getting out
 on fire, moving
-ow, out of the fire omw
+ow, out of the fire
 
 @kind combat
 @topic displaced_heal_pit
@@ -632,7 +632,7 @@ ow, out of the fire omw
 @needs in_player_group
 in the pit, running out
 pit again, climbing out
-snared in the pit, omw back
+snared in the pit, ugh
 
 @kind combat
 @topic displaced_heal_wind
@@ -647,7 +647,7 @@ snared in the pit, omw back
 @who *
 @needs in_player_group
 blown into a camp, fighting my way back
-landed in a camp, omw
+landed in a camp, great
 in the mobs, coming back
 
 @kind combat
@@ -664,7 +664,7 @@ in the mobs, coming back
 @needs in_player_group
 ported away, dotted, running back
 got ported, need a heal
-sent off again, omw
+sent off again, ugh
 
 # ---- more calls for the core moments (chat audit CORPUS-C-048, 2026-11-18: 7 to 13 lines each). Pull and add lines never
 # say "pull" or "bringing" (the call comes once the fight has started) and count enemies only as the code checks them. ----

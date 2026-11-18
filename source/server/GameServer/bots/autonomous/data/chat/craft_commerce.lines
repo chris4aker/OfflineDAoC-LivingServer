@@ -11,13 +11,13 @@
 @levels 1-50
 
 @topic craft_summary
-{title}, {skill} {recipe}. i can do {item}, up to lvl {level}. {stock}
+{skill} {recipe}, lvl {level} tops. {stock}
 im {skill} {recipe}. i make {item}, lvl {level} tops. {stock}
 {recipe} {skill}, so {item} up to lvl {level}. {stock}
 
 @topic craft_summary_stock
-{title} here, {skill} {recipe}. i make {item} up to lvl {level}. {stock}
-{skill} {recipe}, i can do {item} up to lvl {level}. {stock}, pst if you want any
+{skill} {recipe}, up to lvl {level}. {stock}
+{recipe} {skill}, lvl {level} max. {stock}, pst
 
 @topic craft_quote
 [can do|i can make] the {item} (lvl {level}) for {price}, ready in {when}, {terms}. [deal?|want it?]

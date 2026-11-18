@@ -51,6 +51,9 @@ public class UT_ChatBudgetSimulation
         /// <summary>1.2: replies said per channel (lines counted against the reply budget), and exchanges the reply budget held.</summary>
         public readonly Dictionary<string, int> RepliesSaid = new(), RepliesHeld = new();
         public double RepliesPerMinute(string channel) => RepliesSaid.GetValueOrDefault(channel) / (double)Minutes;
+        /// <summary>The /faction scene lines said (debate beats and gold spammer ads), for the scene-scaling check.</summary>
+        public int SceneLines;
+        public double ScenesPerMinute => SceneLines / (double)Minutes;
         /// <summary>Who said each channel's lines, for the share of the busiest speaker.</summary>
         public readonly Dictionary<string, List<long>> Speakers = new();
 
@@ -263,7 +266,7 @@ public class UT_ChatBudgetSimulation
 
     /// <summary>One realm's evening hour (after a ten-minute warm-up) with <paramref name="bots"/> online.</summary>
     public static Result Evening(int bots, bool budget, int seed, int minutes = 60, bool repliesBudgeted = true, double rate = 1.0,
-        bool scaledScenes = true)
+        bool scaledScenes = true, bool fieldFallback = true)
     {
         var random = new Random(seed);
         var recent = new VC.RecentLines();
@@ -446,6 +449,8 @@ public class UT_ChatBudgetSimulation
             if (beat >= 0 && now >= nextBeat)
             {
                 Say(now, "faction", $"{Word()} {Word()} {Word()} {Word()}", all[random.Next(all.Count)].Id);
+                if (now >= start && now < end)
+                    result.SceneLines++;
                 nextBeat = now + 5_000 + random.Next(3_000);
                 if (++beat == 6)
                 {
@@ -465,6 +470,8 @@ public class UT_ChatBudgetSimulation
                 {
                     adsLeft--;
                     Say(now, "faction", $"CHEAP GOLD {Word()} {Word()} AT G0LDSHOP", -1);
+                    if (now >= start && now < end)
+                        result.SceneLines++;
                     if (++adsSaid <= 3 && random.NextDouble() < 0.8)
                         React(now, 1 + random.Next(2), 4_000);
                     nextAd = now + 18_000 + random.Next(30_000);
@@ -697,7 +704,7 @@ public class UT_ChatBudgetSimulation
                 {
                     // Chat 1.2 (owner's decision 6, AutonomousBotChatCoordinator.SpeakIn): with no written line that fits, the field
                     // line is said after all.
-                    if (choice.Name is "faction" or "say" &&
+                    if (fieldFallback && choice.Name is "faction" or "say" &&
                         AutonomousChatFieldTalk.Line(choice.Name, FactsOf(bot, now, random), field, random, now) is { } fallback)
                     {
                         string text = AutonomousChatIdiolect.Apply(fallback.Text, bot.Id, false, random, terse: true);
@@ -784,7 +791,7 @@ public class UT_ChatBudgetSimulation
 
     private static readonly string[] SideNames = ["1.1.1", "1.1.2", "1.2 first cut (scenes at a full pace)", "1.2"];
 
-    public static string Report(int[] populations, out Dictionary<(int, int), Result> results, double rate = 1.0)
+    public static string Report(int[] populations, out Dictionary<(int, int), Result> results, double rate = 1.0, bool fieldFallback = true)
     {
         results = new Dictionary<(int, int), Result>();
         var text = new StringBuilder();
@@ -808,8 +815,9 @@ public class UT_ChatBudgetSimulation
                 foreach (int seed in seeds)
                 {
                     Result evening = Evening(bots, budget > Beta111, seed + bots, repliesBudgeted: budget >= Pr82, rate: rate,
-                        scaledScenes: budget == Replies12);
+                        scaledScenes: budget == Replies12, fieldFallback: fieldFallback);
                     result.Minutes += evening.Minutes;
+                    result.SceneLines += evening.SceneLines;
                     foreach (var pair in evening.RepliesSaid)
                         result.RepliesSaid[pair.Key] = result.RepliesSaid.GetValueOrDefault(pair.Key) + pair.Value;
                     foreach (var pair in evening.RepliesHeld)
@@ -1002,7 +1010,17 @@ public class UT_ChatBudgetSimulation
             Assert.That(now.PerMinute("faction"), Is.GreaterThanOrEqualTo(band.Target * 0.7), $"and not quiet at {bots}");
             Assert.That(now.RepliesPerMinute("faction"), Is.LessThanOrEqualTo(replies.Ceiling), $"replies under their ceiling at {bots}");
             // 1.2, scenes scaled to the roster: a small realm's /faction is no longer mostly debates and gold spam.
-            Assert.That(now.PerMinute("faction"), Is.LessThan(results[(bots, Pr82)].PerMinute("faction")), $"scenes scaled at {bots}");
+            // At 30 bots the check is on the scene lines themselves (chat audit, 2026-11-18). Owner decision 6 (2026-11-18 09:14:
+            // "let short hand-written lines that are true where the bot stands through far more often", #351) added the field-line
+            // fallback: a turn with no written line that fits says a field line after all, so the turns scaling frees are filled
+            // and /faction's total no longer falls with them. Measured at bot_voices_chat_rate 2, five evenings: fallback on,
+            // /faction 1.73 a minute unscaled against 1.76 scaled, scene lines 0.263 against 0.123; with the fallback switched off
+            // (Evening's fieldFallback), /faction 1.72 against 1.55, scene lines 0.257 against 0.123. At 10 bots the total still
+            // falls clearly (0.92 against 0.78) and keeps its bar.
+            if (bots == 30)
+                Assert.That(now.ScenesPerMinute, Is.LessThan(results[(bots, Pr82)].ScenesPerMinute), $"scene lines scaled at {bots}");
+            else
+                Assert.That(now.PerMinute("faction"), Is.LessThan(results[(bots, Pr82)].PerMinute("faction")), $"scenes scaled at {bots}");
         }
     }
 

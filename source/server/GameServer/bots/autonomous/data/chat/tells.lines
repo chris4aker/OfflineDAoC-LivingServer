@@ -70,8 +70,10 @@ lfg? i could use a partner out here
 hi, im {level} {class}, want to duo in {zone}?
 @needs !knows_player
 @class Cleric,Friar,Druid,Bard,Healer,Shaman
+@invites ask
 duo? i can heal, you hit things
 @class
+@invites ask
 @needs !knows_player,is_tank
 want a tank? im {level} {class}, you pull i hold
 @needs !knows_player,is_caster
