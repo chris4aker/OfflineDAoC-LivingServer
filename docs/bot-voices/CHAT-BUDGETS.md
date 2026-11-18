@@ -265,6 +265,16 @@ something short that fits, or nothing. Bots also answer where they are from thei
   from `wpm_min` to `wpm_max` (25–60 words a minute), so a 60-character answer takes 12–29 s to type. A reply to a
   tell or to a line that names the bot is typed in 12 s at most (1.2 chat audit).
 
+## Conversation memory (1.2; tests only)
+
+`ChatConversations` (AutonomousChatConversation.cs) keeps a conversation per (player, bot) and per (player, channel) for
+five minutes after its last turn: up to 12 turns, the bot's open question, the place, item, class and level in play, and
+the bot with the floor (the last one that spoke to the player, for 45 s). A player's next line said to nobody by name goes
+to that bot unless it is said to everyone (a hello, goodbye, call, group or trade post, grats, a brb); "how do i get there",
+"what about there", "is it far", "where is it", "how much for it" are completed from the conversation before they are read;
+and a reply that asks the level, class, place or item the conversation holds is dropped (route `none known`), so the reply
+budget answers with something short instead.
+
 ## Seeing it in game: /lswhy
 
 `/lswhy` (every player) shows why your target, or the last gamebot that spoke to or near you, said what it said. Each

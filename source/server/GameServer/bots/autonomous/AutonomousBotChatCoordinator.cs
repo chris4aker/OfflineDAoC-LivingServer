@@ -1154,8 +1154,23 @@ public static partial class AutonomousBotChatCoordinator
         bot.Inventory.AllItems.Any(entry => entry != null && string.Equals(entry.Name, item, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>Remembers what a bot said in a channel, so the player's next line can follow it up (AutonomousChatThreads).</summary>
-    internal static void Note(string channel, GameBot bot, string text, string invites, string to = null) =>
+    internal static void Note(string channel, GameBot bot, string text, string invites, string to = null)
+    {
         AutonomousChatThreads.Log.Record(channel, bot?.DatabaseID ?? 0, bot?.Name, text, invites, GameLoop.GameLoopTime, to);
+        // Conversation memory (DESIGN-040): a bot's line to a player is a turn of their conversation, and gives it the floor.
+        if (!string.IsNullOrEmpty(to) && bot != null)
+            ChatConversations.Live.NoteBot(to, bot.DatabaseID, bot.Name, channel, text, GameLoop.GameLoopTime);
+    }
+
+    /// <summary>The conversation key of a reply channel ("faction", "say", "group", "tell") for this player and bot.</summary>
+    internal static string ConversationChannel(string channel, GamePlayer player, GameBot bot) => channel switch
+    {
+        "faction" => AutonomousChatThreads.Faction(player.Realm),
+        "say" => AutonomousChatThreads.Say(player.CurrentRegionID),
+        "group" => AutonomousChatThreads.GroupChannel(player.Group),
+        "tell" when bot != null => AutonomousChatThreads.Tell(player.Name, bot.Name),
+        _ => null,
+    };
 
     /// <summary>Where a conversation thread is: realm chat, /say near the player, or the player's /group.</summary>
     internal enum ThreadScope { Faction, Say, Group }
@@ -1433,6 +1448,7 @@ public static partial class AutonomousBotChatCoordinator
             return;
         BotChatTranscript.Player("faction", player, message);
         SendFaction(player.Name, player.Realm, message);
+        ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Faction(player.Realm), message, GameLoop.GameLoopTime);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.FactionKey(player.Realm), player.Name, GameLoop.GameLoopTime);
         // Asking anyone for gold or items marks the player for the beggars (AutonomousBeggars).
         AutonomousBeggars.OnPlayerAsked(player, message, "faction");
@@ -1492,6 +1508,7 @@ public static partial class AutonomousBotChatCoordinator
         // a player's hired companions near them answer as companions (CompanionChat165, from True 1.65)
         CompanionChat165.OnPlayerSay(player, message);
         BotChatTranscript.Player("say", player, message);
+        ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Say(player.CurrentRegionID), message, GameLoop.GameLoopTime);
         // The screen first: a scam draws nothing, not even from a beggar (round 3).
         if (Screened(player, message, "say"))
             return;
@@ -1537,6 +1554,17 @@ public static partial class AutonomousBotChatCoordinator
             player?.Name);
         return true;
     }
+
+    /// <summary>
+    /// Whether a player's line goes on with the bot that has the floor (DESIGN-040): a question, an answer or a remark does; a line
+    /// said to everyone (hello, goodbye, a call, a group or trade post, grats) does not. Pure.
+    /// </summary>
+    public static bool KeepsTheFloor(string message, eAutonomousChatIntent intent) =>
+        !string.IsNullOrWhiteSpace(message) && intent is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Alarm or
+            eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Trading or eAutonomousChatIntent.Congrats or eAutonomousChatIntent.Ding or
+            eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or eAutonomousChatIntent.Rez or eAutonomousChatIntent.Abuse or
+            eAutonomousChatIntent.IgnoreOutOfWorld) &&
+        !BroadcastsLfg(message);
 
     /// <summary>A line that names an autonomous gamebot of the realm that is online (busy or not): it is said to that bot (DESIGN-003).</summary>
     internal static bool NamesOnlineBot(eRealm realm, string message) =>
@@ -1673,6 +1701,7 @@ public static partial class AutonomousBotChatCoordinator
         if (player == null || bot == null || string.IsNullOrWhiteSpace(message))
             return;
         BotChatTranscript.Player("tell", player, message, bot.Name);
+        ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Tell(player.Name, bot.Name), message, GameLoop.GameLoopTime, bot.DatabaseID);
         // The screen first: a scam by tell draws nothing, not even from a beggar (round 3).
         if (Screened(player, message, "tell"))
             return;
@@ -1735,6 +1764,7 @@ public static partial class AutonomousBotChatCoordinator
                     if (!AutonomousLivingServer.IsSpeaker(bot) || !bot.IsAlive || player.ObjectState != GameObject.eObjectState.Active)
                         return 0;
                     AutonomousLivingServer.Tell(bot, player, reply.Text, reply.Route == FriendInviteRoute ? AutonomousLivingServer.AskGroupInvite : null);
+                    ChatConversations.Live.NoteBot(player.Name, bot.DatabaseID, bot.Name, AutonomousChatThreads.Tell(player.Name, bot.Name), reply.Text, GameLoop.GameLoopTime);
                     AutonomousChatWhy.Record(bot, "tell", "tell from " + player.Name, reply.Route.StartsWith("ack", StringComparison.Ordinal) ? "ack" : "said",
                         reply.Route, AutonomousChatReplyFit.Of(reply.Route, message), "a tell to it gets an answer", reply.Text, reply.Line?.Id, player.Name);
                     return 0;
@@ -1757,6 +1787,13 @@ public static partial class AutonomousBotChatCoordinator
         bool voices = AutonomousBotVoices.Enabled;
         long now = GameLoop.GameLoopTime;
         string channel = AutonomousChatThreads.Tell(player.Name, bot.Name);
+        // Conversation memory (DESIGN-040): "how do i get there", "how much for it" completed from what the tell holds.
+        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.For(player.Name, bot.DatabaseID, channel, now)) is { } resolved &&
+            resolved != message)
+        {
+            message = resolved;
+            intent = AutonomousChatIntentModel.Predict(message);
+        }
         // Bot-led groups: the answer to a leader's invite tell. "no thanks" is a no to that leader (as No in the box).
         if (AutonomousChatThreads.Log.OpenQuestion(channel, now, AutonomousChatThreads.TellMemoryMs) is { } invite &&
             invite.Invites == BotLedGroups.InviteThread && !message.Contains('?') && AutonomousChatThreads.SaysYes(message) is bool joining)
@@ -2370,8 +2407,14 @@ public static partial class AutonomousBotChatCoordinator
 
     private static void SchedulePlayerReplies(GamePlayer player, string message, bool faction)
     {
-        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
         bool voices = AutonomousBotVoices.Enabled;
+        long nowMs = GameLoop.GameLoopTime;
+        string room = faction ? AutonomousChatThreads.Faction(player.Realm) : AutonomousChatThreads.Say(player.CurrentRegionID);
+        // Conversation memory (DESIGN-040): the bot that has the floor with this player, and "how do i get there" completed.
+        long floor = voices ? ChatConversations.Live.FloorHolder(player.Name, room, nowMs) : 0;
+        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, room, nowMs)) is { } resolved)
+            message = resolved;
+        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
         bool shortTalk = voices && !message.Contains('?') && intent is eAutonomousChatIntent.Thanks or eAutonomousChatIntent.Congrats or
             eAutonomousChatIntent.Ding or eAutonomousChatIntent.Laugh or eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or
             eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.BotCheck;
@@ -2388,6 +2431,14 @@ public static partial class AutonomousBotChatCoordinator
         bool directed = mentioned.Length > 0;
         // 1.2: a line that names a bot is always answered (the reply budget never holds it), as is a /say to the bot in front of you.
         bool namedInLine = directed;
+        // Conversation memory (DESIGN-040): a player's next line to nobody by name goes on with the bot they were talking to, unless
+        // it is said to everyone (a hello, a goodbye, a call, a group post) or names someone else.
+        if (voices && !directed && floor > 0 && KeepsTheFloor(message, intent) && AutonomousChatScreen.OtherAddressee(message, null) == null &&
+            eligible.FirstOrDefault(bot => bot.DatabaseID == floor) is { } talking)
+        {
+            mentioned = [talking];
+            directed = true;
+        }
         // Beta 1.1.2, round 3: a /say line is for one bot also when the player targets it, answers its line, or stands right in
         // front of it with nobody else that close. That bot answers, once.
         if (voices && !faction && !directed && SayAddressee(player, eligible) is { } addressee)
@@ -3364,8 +3415,19 @@ public static partial class AutonomousBotChatCoordinator
         ReplyChoiceToPlayer(responder, player, message).Text;
 
     /// <summary><see cref="ReplyToPlayer"/> with the route it took (C0).</summary>
-    internal static ReplyChoice ReplyChoiceToPlayer(GameBot responder, GamePlayer player, string message, bool named = false, string channel = "group") =>
-        Budgeted(VoicedChoice(responder, message, () => null, player, addressed: true, channel: channel), responder, message, named, channel, player);
+    internal static ReplyChoice ReplyChoiceToPlayer(GameBot responder, GamePlayer player, string message, bool named = false, string channel = "group")
+    {
+        // Conversation memory (DESIGN-040): /group lines and their answers are turns too; "how do i get there" is completed.
+        if (channel == "group" && player?.Group != null && AutonomousBotVoices.Enabled)
+        {
+            string key = AutonomousChatThreads.GroupChannel(player.Group);
+            long now = GameLoop.GameLoopTime;
+            if (ChatConversations.Live.In(player.Name, key, now)?.Turns.LastOrDefault() is not { ByPlayer: true } last || last.Text != message.Trim())
+                ChatConversations.Live.NotePlayer(player.Name, key, message, now);
+            message = ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now));
+        }
+        return Budgeted(VoicedChoice(responder, message, () => null, player, addressed: true, channel: channel), responder, message, named, channel, player);
+    }
 
     /// <summary>
     /// The reply budget (Beta 1.1.2) on a chosen reply: a reply under the minimum fit, or a stock brush-off, becomes a short
@@ -3382,6 +3444,10 @@ public static partial class AutonomousBotChatCoordinator
         if (AutonomousChatReplyBudget.CreditFor(message) != null && MomentOf(bot, player, message, channel ?? "tell", addressed) is var credit &&
             AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, credit.CanHeal, credit.CanRez))
             choice = new ReplyChoice(null, "none credit");
+        // Conversation memory (DESIGN-040): a bot never asks what the conversation already holds ("what level?" after "lfg 30 cleric").
+        if (player != null && bot != null && ConversationChannel(channel ?? (addressed ? "tell" : "faction"), player, bot) is var key &&
+            ChatConversations.AsksWhatItHolds(choice.Text, ChatConversations.Live.For(player.Name, bot.DatabaseID, key, GameLoop.GameLoopTime)))
+            choice = new ReplyChoice(null, "none known (" + choice.Route + ")");
         // 1.2: a reply that says something untrue about the bot ("im a cleric" from a thane), or a group or trade ad said to a
         // line about neither, doesn't fit, whatever chose it.
         if (SaysUntrue(bot, choice.Text))
