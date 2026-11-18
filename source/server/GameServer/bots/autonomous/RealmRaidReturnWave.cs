@@ -466,6 +466,15 @@ public static class RealmRaidReturnWave
         return help;
     }
 
+    /// <summary>
+    /// A stuck wave with no help left ends while the raid musters (pure): its raiders take the raid's own view and go to the
+    /// muster (the stranded regroup moves one that can't walk). Otherwise nothing changes and the stall clock decides.
+    /// Owner's PC, build b1b6846, 2026-11-18 (Krondon): a wave stuck at step 14 of 34 from 11:28 ("no help left; the stall
+    /// clock decides") grew to 19 raiders by 11:57 while the muster for Krevo Ricik stood at 6 of 44; the route's kills
+    /// elsewhere kept the stall clock from ever deciding.
+    /// </summary>
+    public static bool ReleasesStuckWave(Help help, bool mustering) => help == Help.None && mustering;
+
     /// <summary>The main body can come back to meet a wave (pure): it is not fighting an encounter's attempt, it is not
     /// mustering (<paramref name="mustering"/>: its idle raiders are the muster; owner's PC, build 5378dbe, Avalon: the muster
     /// for Dra'argus stood at 37 of 44 for ten minutes while 8-15 of it were away as helpers), and a party's worth of it

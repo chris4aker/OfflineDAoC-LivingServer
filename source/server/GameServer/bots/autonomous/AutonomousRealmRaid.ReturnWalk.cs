@@ -386,6 +386,17 @@ namespace DOL.GS
 
             if (!RealmRaidReturnWave.Stuck(walk.LastMove, now)) return;
             RealmRaidReturnWave.Help help = RealmRaidReturnWave.ChooseHelp(raid.ReturnWaitingNow, bodyCanCome && !bodyComing, walk.Helps);
+            if (RealmRaidReturnWave.ReleasesStuckWave(help, mustering))
+            {
+                Log.Warn($"REALM_RAID_RETURN_WAVE event={id} step=released wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
+                         $"living={members.Length} atStep={atStep} inside={inside.Length} kills={walk.Kills} helps={walk.Helps} " +
+                         $"minutes={minutes} middle={(int)middle.X},{(int)middle.Y},{(int)middle.Z} target=\"{route.TargetName}\" " +
+                         $"reason=\"no headway for {RealmRaidReturnWave.StuckMilliseconds / 60_000} minutes and no help left while the " +
+                         $"raid musters; the wave ends and its raiders go to the muster\"");
+                walk.Catching.Clear();
+                EndWalk(raid);
+                return;
+            }
             if (help == RealmRaidReturnWave.Help.None)
             {
                 if (!walk.StuckLogged)

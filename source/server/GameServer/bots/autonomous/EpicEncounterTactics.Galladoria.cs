@@ -504,6 +504,9 @@ namespace DOL.GS
         /// out and back for ever. Melee fight another living primal (one they can reach: the Air primal flies) and leave
         /// the Fire primal to casters and archers, who step out of the patches (its hazard rule). When it is the last one
         /// melee fight it and take the fire, and the healers keep them up.
+        /// A primal outside its own tether is never the melee's: it takes no damage out there (owner's PC, build b1b6846,
+        /// 2026-11-18: 1,735 retargets sent melee to the Earth primal standing 1,044 from his spawn, outside his 890 tether;
+        /// each was then stopped by AutonomousTetherReset, and he killed 177 of them). The melee fight the Fire primal then.
         /// </summary>
         private static Advice? FirePrimalTrail(RuleContext c)
         {
@@ -511,11 +514,15 @@ namespace DOL.GS
             GameNPC target = c.Target;
             IReadOnlyList<GameNPC> live = c.Live ?? [];
             if (c.AtRange) return null;
-            GameNPC other = live.Where(n => Present(n) && n != target && n.CurrentRegionID == target.CurrentRegionID &&
-                                            n.GetType().Name is "WaterPrimal" or "EarthPrimal" && target.IsWithinRadius(n, AddSearchRadius))
-                .OrderBy(n => raider.GetDistanceTo(n)).FirstOrDefault();
+            GameNPC[] others = live.Where(n => Present(n) && n != target && n.CurrentRegionID == target.CurrentRegionID &&
+                                               n.GetType().Name is "WaterPrimal" or "EarthPrimal" && target.IsWithinRadius(n, AddSearchRadius))
+                .ToArray();
+            GameNPC other = others.Where(n => !AutonomousTetherReset.IsOutOfTether(n)).OrderBy(n => raider.GetDistanceTo(n)).FirstOrDefault();
             if (other != null)
                 return new(BotAction.Retarget, other, null, $"fire trail: melee take \"{other.Name}\", casters and archers the Fire primal");
+            if (others.Length > 0)
+                return new(BotAction.None, target, null,
+                    $"fire trail: \"{others[0].Name}\" is out of its tether, melee fight the Fire primal in the fire");
             // The last primal: melee fight it in the fire (no step-out loop).
             return new(BotAction.None, target, null, "fire trail: the last primal, melee fight it in the fire");
         }
