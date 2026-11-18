@@ -576784,6 +576784,23 @@
    "intent": "classtalk",
    "mood": "",
    "weight": 1.0,
+   "text": "shadowblades hate a good stealth hunter",
+   "id": "19adc261516e"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
    "text": "shadowblades are scary in the frontier",
    "id": "b3bb6ebf91d6"
   },
@@ -577107,6 +577124,23 @@
    "intent": "classtalk",
    "mood": "",
    "weight": 1.0,
+   "text": "a spiritmaster pet can tank a whole camp",
+   "id": "7b8c9d135b45"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
    "text": "spiritmasters live and die by their pet",
    "id": "f3e6ce07cfc4"
   },
@@ -577194,6 +577228,23 @@
    "weight": 1.0,
    "text": "spiritmaster pets are the best part",
    "id": "d6cc32092ad7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
+   "text": "bonedancer is all about the army",
+   "id": "35ad1e9ecf8d"
   },
   {
    "kind": "reply",
@@ -577362,6 +577413,23 @@
    "intent": "classtalk",
    "mood": "",
    "weight": 1.0,
+   "text": "a champion with valor makes everything easier",
+   "id": "8095937838ff"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
    "text": "champions debuff and hit, very handy",
    "id": "b038f03fa742"
   },
@@ -577449,6 +577517,23 @@
    "weight": 1.0,
    "text": "champion is fun if you like a bit of everything",
    "id": "6293133b7804"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
+   "text": "a blademaster with a healer is unstoppable",
+   "id": "d4c16d27b1e3"
   },
   {
    "kind": "reply",
@@ -578333,6 +578418,23 @@
    "weight": 1.0,
    "text": "animists are great at camps",
    "id": "fd24a96b4b30"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
+   "text": "valewalkers hit hard with that scythe",
+   "id": "ad90dd09e1f3"
   },
   {
    "kind": "reply",
