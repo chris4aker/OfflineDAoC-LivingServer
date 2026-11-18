@@ -151,3 +151,25 @@ openers, never /say) and need `@needs at:<place>`. Tests: `tools/bot-voices/test
   A `@realm *` line must not name another realm's class as "ours" (a Midgard bot can't be a wizard).
 
 Every line is new writing; don't copy text from games, forums or other projects.
+
+## Storyline arcs (storylines*.lines)
+
+An arc is four episodes, scenes `story_<arc>_1` to `story_<arc>_4`, with side endings `story_<arc>_4a` (a player sided
+with A) and `_4b` (with B); every scene of an arc has `@topic story_<arc>` (`AutonomousBotStorylines`). Arc names are
+lowercase letters only (`story_pricewar_3`, never `story_price_war_3`).
+- **A and B** are the same two bots in every episode; lines name them `{name_a}` and `{name_b}`. Only episode 1's
+  `@role A` and `@role B` decide who is cast, so put class or type needs the arc relies on there (and repeat them on the
+  later episodes for readers).
+- **Side characters keep their letter.** The bot that first plays a role letter C to H in an arc plays that letter again
+  in every later episode while it is online and free (saved in the story row). So a recurring character (the referee,
+  the judge, the officiant) must have the same letter in every episode where it appears: if the judge is C in episode 2,
+  it is C in 3 and 4. A letter that is a different person in each episode still works (a passer-by), but it will be the
+  same bot each time, so don't give it a line that contradicts an earlier episode. A side character who is busy is
+  played by someone else that episode.
+- `{keep}` and `{frontier}` are fixed for the whole arc the first time an episode plays (a keep the realm held then), so
+  "see you at {keep}" in episode 3 and "ok. {keep}. we're here" in episode 4 name the same keep. Don't say the realm took
+  that keep; it may still hold it ("we held {keep}").
+- `{player}` exists only in `_4a` and `_4b` (the player who took the side, and only while they are online; otherwise the
+  plain `_4` plays). Don't put the player at the scene ("{player} came to watch"): they read it in faction.
+- Episodes are 3 to 10 hours apart: no "last week", "days ago" or "yesterday" about the arc's own events.
+- `@exit X` logs that bot off with the dunce's rage-quit and parting tell: for a rage quit only.

@@ -316,8 +316,10 @@ public static partial class AutonomousRvrEventLayer
                 CreatedTick = now, ExpiresTick = now + RealmEventPolicy.RecruitmentMilliseconds(Random.Shared.NextDouble())
             };
             SupersedeAutomaticSieges(Events[target.Id], now);
+            // News topics by stage (chat audit 2026-11-18: "outer door at ailinne is down" was said while the army mustered):
+            // siege_muster and siege_warning before the battle, siege_attack and siege_defend once it has begun.
             RealmEventNotices.Queue(target.Id, attacker, $"Warbands are marching on {Place(target.Name)}. Join the assault as you arrive!",
-                "siege_attack", RealmEventNotices.KeepSlots(target.Name, target.OwningRealm));
+                "siege_muster", RealmEventNotices.KeepSlots(target.Name, target.OwningRealm));
             RealmEventRecords.Begin(target.Id, target.Name, target.IsRelicKeep ? "Relic keep" : "Keep", GlobalConstants.RealmToName(attacker), "Forced continuous siege; defender: " + GlobalConstants.RealmToName(target.OwningRealm));
             // Staged assault: the attackers gather at their physical siege camp and the battle opens
             // when enough are there (or at the one-hour deadline with a viable force). Arriving one
@@ -662,7 +664,7 @@ public static partial class AutonomousRvrEventLayer
                 RealmEventNotices.Queue(active.TargetId, force.Realm, StagedAssault
                     ? $"Warbands are gathering to assault {Place(selected.Name)}. Join them at the siege camp!"
                     : $"Warbands are marching on {Place(selected.Name)}. Reinforcements join the battle on arrival.",
-                    "siege_attack", RealmEventNotices.KeepSlots(selected.Name, selected.OwningRealm));
+                    StagedAssault ? "siege_muster" : "siege_attack", RealmEventNotices.KeepSlots(selected.Name, selected.OwningRealm));
                 (selected.IsRelicKeep ? SelectedRelics : SelectedKeeps).Add(selected.Id);
                 return ToPlan(intent, selected, true,
                     $"Opening a time-limited {(selected.IsRelicKeep ? "relic-keep" : "keep")} assault; same-realm warbands may rally and defenders may answer.");
@@ -968,7 +970,7 @@ public static partial class AutonomousRvrEventLayer
         if (active.DefenseMarching) return;
         active.DefenseMarching = true;
         RealmEventNotices.Queue(active.TargetId, active.DefenderRealm, $"The defense rally marches to relieve {Place(active.Target.Name)}!",
-            "siege_defend", RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
+            SiegeNewsTopic(false, active.BattleStarted), RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
         if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_MARCH target={active.TargetId} mustered={DefenseMusterAttendance(active, nowTick)} reason=\"{reason}\"");
     }
@@ -987,7 +989,7 @@ public static partial class AutonomousRvrEventLayer
         active.ExpiresTick = Math.Max(active.ExpiresTick, nowTick + (active.RelicKeep ? RelicMarchMilliseconds
             : RealmEventPolicy.RecruitmentMilliseconds(0)));
         RealmEventNotices.Queue(active.TargetId, active.AttackerRealm, $"The army marches on {Place(active.Target.Name)}! Form up at the siege camp.",
-            "siege_attack", RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
+            "siege_muster", RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
         CallDefendersAtMarch(active, nowTick);
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
         if (log.IsInfoEnabled)
@@ -1019,7 +1021,7 @@ public static partial class AutonomousRvrEventLayer
         active.DefenseCalledTick = nowTick;
         RealmEventNotices.Queue(active.TargetId, active.DefenderRealm,
             $"Scouts report {GlobalConstants.RealmToName(active.AttackerRealm)}'s army marching on {Place(active.Target.Name)}! Gather to defend it.",
-            "siege_defend", RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
+            "siege_warning", RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
         var log = DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer));
         if (log.IsInfoEnabled) log.Info($"RVR_DEFENSE_CALLED target={active.TargetId} defenders={GlobalConstants.RealmToName(active.DefenderRealm)} " +
             $"marched={active.MarchedAttackers} cap={DefenderCapFor(active)} reason=\"scouts saw the army march\"");
@@ -1081,6 +1083,15 @@ public static partial class AutonomousRvrEventLayer
     /// "relic keep Dun Dagda" (bot goal lists), and the announcements added "the keep" again: "Our army has laid siege to
     /// the keep keep Caer Sursbrooke!" (owner report 2026-10-16).
     /// </summary>
+
+    /// <summary>
+    /// The chat news topic of a siege notice by its stage: before the battle the attackers muster ("siege_muster") and the
+    /// defenders are warned ("siege_warning"); once it has begun, "siege_attack" and "siege_defend" (chat audit 2026-11-18:
+    /// door, ram and lord-room lines were said during the muster). Pure.
+    /// </summary>
+    public static string SiegeNewsTopic(bool attackers, bool battleStarted) =>
+        attackers ? battleStarted ? "siege_attack" : "siege_muster" : battleStarted ? "siege_defend" : "siege_warning";
+
     /// <summary>
     /// The news a siege's end is to each realm (the talking update): the keep taken ("keep_won", "keep_lost", "keep_other"),
     /// or held ("siege_held" for the defenders, "siege_failed" for the attackers, nothing for the third realm).
@@ -1627,9 +1638,9 @@ public static partial class AutonomousRvrEventLayer
             if (!RealmEventBanter.ReminderDue(active.BattleStarted, active.PreparationNoticeSent, active.ExpiresTick - nowTick)) continue;
             active.PreparationNoticeSent = true;
             RealmEventNotices.Queue(active.TargetId, active.AttackerRealm, RealmEventBanter.SiegeReminder(Place(active.Target.Name), false),
-                "siege_attack", RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
+                SiegeNewsTopic(true, active.BattleStarted), RealmEventNotices.KeepSlots(active.Target.Name, active.DefenderRealm));
             RealmEventNotices.Queue(active.TargetId, active.DefenderRealm, RealmEventBanter.SiegeReminder(Place(active.Target.Name), true),
-                "siege_defend", RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
+                SiegeNewsTopic(false, active.BattleStarted), RealmEventNotices.KeepSlots(active.Target.Name, active.AttackerRealm));
             if (active.ThirdRealm.Count > 0) RealmEventNotices.Queue(active.TargetId, OtherRealm(active),
                 $"The armies at {Place(active.Target.Name)} have about twenty minutes left to muster. Keep watch for an opening, scouts.");
         }

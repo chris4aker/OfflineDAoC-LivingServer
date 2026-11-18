@@ -212,7 +212,7 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousChatNews.SiegeFlags(eRealm.Midgard, [mustering], null)["attacking"]["keep"], Is.EqualTo("Caer Benowyc"));
             var hit = mustering with { BattleStarted = true };
             var flags = AutonomousChatNews.SiegeFlags(eRealm.Albion, [hit], (_, _, _) => "Pennine Mountains");
-            Assert.That(flags["defending"]["enemy"], Is.EqualTo("Midgard"));
+            Assert.That(flags["defending"]["enemy"], Is.EqualTo("mids"), "the people form (TEXT-018)");
             Assert.That(flags["defending"]["frontier"], Is.EqualTo("Pennine Mountains"));
             Assert.That(AutonomousChatNews.SiegeFlags(eRealm.Hibernia, [hit], null), Is.Empty);
         }
@@ -787,7 +787,7 @@ namespace DOL.GS.Tests
         public void InviteLinesAreDormantBecauseABotCannotInviteAPlayer()
         {
             var invites = Corpus.Lines.Where(l => l.Kind == "lfg" && l.Topic == "invite").ToArray();
-            Assert.That(invites, Is.Not.Empty);
+            // The dormant lines were deleted in the chat audit of 2026-11-18; any that come back must still need "recruiting".
             Assert.That(invites.Select(l => l.Needs), Has.All.Contains("recruiting"));
         }
 

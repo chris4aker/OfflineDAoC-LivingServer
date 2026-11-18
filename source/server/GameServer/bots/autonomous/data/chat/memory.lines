@@ -10,31 +10,20 @@ look who it is, hey {player}
 {player}, been a while, how goes it?
 oh hey {player}, out hunting again?
 hail {player}
-{player}! we should group again sometime
 evening {player}, the realm missed you
-hey {player}, still remember that run at {place}
 {player}, my favorite {player_class}, hi
 @who Socialite
 {player}!! hi hi, what are you up to tonight?
-@who Leveler
-@kind greet
-@mood neutral
 @who *
-hi {player}
-oh, {player}. hey
-evening {player}
-hey there {player}
+@needs player_grouped
+hey {player}, still remember that run at {place}
+{player}! we should group again sometime
 @kind greet
 @mood cool
 @who *
 {player}.
 oh. you.
 hm, {player}
-@kind greet
-@mood rival
-@who *
-watch yourself out there, {player_class}
-we remember you, {player_class}
 
 @kind thanks
 @topic rez
@@ -43,11 +32,6 @@ ty again for the rez at {place}, {player}
 {player} saved me at {place}, still owe you one
 never forgot that rez at {place}, ty {player}
 still grateful for the rez back at {place}
-@topic heal
-@who *
-ty for the heals earlier {player}
-those heals at {place} kept me standing, ty
-{player} you healed me through some ugly pulls, ty
 @topic group
 @who *
 good group at {place} the other day, ty {player}
@@ -55,10 +39,6 @@ had fun at {place} with you {player}, again sometime?
 ty for the group {player}, best xp i have had all week
 {player} carried that group at {place}, honestly
 thanks for the invite back at {place}
-@topic trade
-@who *
-ty for buying my {item} {player}, hope it serves you well
-that thing you sold me is still on my back, ty {player}
 
 @kind grudge
 @who *
@@ -69,18 +49,17 @@ pass, find someone else
 no thanks
 maybe another time. much later
 i will group with almost anyone. almost
-@mood rival
-you got lucky at {place}, {player_class}
-next time at {place} goes differently
 
 @kind gossip
 @mood friendly
 @who *
-anyone grouped with {player}? great {player_class}, highly recommend
-shout out to {player} for saving our run at {place}
 if you need a {player_class}, {player} is good people
-{player} pulled us out of a mess at {place}, ty again
+@needs player_grouped
+anyone grouped with {player}? great {player_class}, highly recommend
+shout out to {player}, good to group with
+had a good group with {player} at {place}
 grouped with {player} at {place}, solid player
+@needs
 # only from a bot that player really rezzed (in-game check 2026-10-18: said by a bot the player had never rezzed,
 # with "tonight" on a day they hadn't met)
 @who *
@@ -93,13 +72,6 @@ ty again {player} for that rez at {place}
 @needs player_guildless
 we should get {player} into a guild, that one knows what they are doing
 @needs
-@mood cool
-@who *
-{player} is fine i guess, just not my kind of group
-heard {player} is a bit rough in chat, but plays ok
-@mood rival
-watch out for that {player_class} near {place}, hits hard
-an enemy {player_class} has been hunting near {place}, careful
 
 # Ordinary replies that use the name when the bot knows you. Topic "player" keeps them apart from
 # the general replies, so a bot that remembers you picks one of these (in-game check 2026-10-17:
@@ -120,7 +92,7 @@ oh hi {player}
 @needs knows_player
 @who *
 for you {player}, sure, where are you?
-i would group with you again {player}, what level are you now?
+i would group with you again {player}, pst when you are near
 {player}, if you need one more i am around
 sure {player}, send an invite when you are ready
 @kind reply
@@ -174,7 +146,9 @@ careful out there {player}
 @intent dungeon
 @needs knows_player
 @who *
+@needs knows_player,!can_rez
 {player}, i'd go if we had a healer
+@needs knows_player
 sounds fun {player}, how deep are you going?
 @kind reply
 @topic player
@@ -191,13 +165,3 @@ not selling anything right now {player}, sorry
 yeah {player}?
 {player}?
 hm? what's up {player}
-
-# A friendly bot inviting you. Dormant in the talking update: a bot cannot invite a player, so nothing sets "recruiting" and
-# these are never said (they were picked by solo bots: "we have room at {camp}" from a bot with no group).
-@kind lfg
-@topic invite
-@needs knows_player,recruiting
-@who *
-{player}, we have room at {camp}, want in?
-hey {player}, want to join us? sending an invite
-{player} you looking? we could use a {player_class}

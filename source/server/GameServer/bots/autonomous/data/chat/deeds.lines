@@ -10,31 +10,26 @@
 @topic named_solo
 @who *
 just watched {player} solo {target} in {place}. alone. i was standing right there
-{player} just soloed {target}. no group. no buffbot. nothing
+{player} just soloed {target}. no group. nothing
 saw it with my own eyes: {player} vs {target}, and {target} lost
 the {player_class} {player} just walked up to {target} and killed it. solo. i was hiding behind a tree
 i was about to ask for a group for {target} and then {player} just... did it. alone
 {target} is dead. {player} did it. solo. i need to sit down
 not making this up, {player} soloed {target} in {place} a few minutes ago
 rip {target}, killed by one {player_class}. {player}, who are you
-wtf, {player} just soloed {target}. i thought that thing needed a full group
 whoever {player} is, they just soloed {target} in {place}. respect
 {player} vs {target} in {place}. i had a front row seat. it wasnt even close
 i tried to help {player} with {target} but they didnt need it. at all
-im still shaking. {player} soloed {target} right in front of me
 {player} pulled {target} alone and i started typing "rip". then {target} died instead
 nobody believes me but {player} soloed {target}. i was RIGHT THERE
-{player} made {target} look like a newbie mob. solo. in {place}
 i got the screenie. {player}, {target}, solo, {place}. framing it
-{target} has wiped my group three times. {player} just soloed it while i watched
 stood next to {player} the whole fight with {target} and never cast a thing. they didnt need me
 they dont call {player} {nickname} for nothing. just watched them solo {target}
 @who Daredevil
 i thought i was brave. then i saw {player} solo {target} in {place}
 {player} soloed {target}. officially the bravest {player_class} in the realm
 @who NoLifer
-been playing since launch and ive never seen anyone solo {target}. until {player} just now
-{player} soloed {target} with what looked like half their mana left. sick
+{player} soloed {target} with what looked like half their health left. sick
 @who Socialite
 everyone!! {player} just soloed {target}!! i saw it!!
 @who *
@@ -46,38 +41,47 @@ everyone!! {player} just soloed {target}!! i saw it!!
 [just saw|i watched|i just watched] a {player_class} solo {target}. [it was {player}|name is {player}|{player}, of course]
 [ok|so|uh], {player} [walks up to|pulls|charges] {target} [alone|solo|with no group] and [wins|kills it|walks away]. [what|how|wtf]
 {player} {nickname} [just soloed|just killed] {target}[. alone| in {place}|]. [of course|naturally|who else]
+@who *
+@needs hard_kill
+wtf, {player} just soloed {target}. i thought that thing needed a full group
+im still shaking. {player} soloed {target} right in front of me
+{player} made {target} look like a newbie mob. solo. in {place}
+{target} has wiped my group three times. {player} just soloed it while i watched
+been playing since launch and ive never seen anyone solo {target}. until {player} just now
 
 # ---- named_group: {target} is a named monster the player's group killed; the witness was there or nearby --------
 @kind deed
 @topic named_group
 @who *
-our group just dropped {target} in {place}, and {player} carried us
-{target} down! {player} held the whole thing together
-{player}'s group just killed {target}. i was nearby and heard it go down
-we got {target}! honestly {player} did the heavy lifting
-{player} called every pull on {target}. clean kill
-{target} is down in {place}. shout out to {player}, best {player_class} ive grouped with
-just watched {player}'s group take {target}. {player} was everywhere
-{player} kept us alive on {target}. without them we wipe
-{target} dead, nobody died, thank {player}
-was waiting my turn at {target} and {player}'s group just smoked it. ugh. gz tho
 {target} never had a chance. {player} and crew in {place}
-{player} pulled {target} perfectly and we all just followed
-dont know who else was in that group but {player} was the reason {target} died
 big kill in {place}: {target}. mvp {player}
 {target} wiped two groups today. then {player} showed up
 {player} {nickname} led the kill on {target}. obviously
+[gz|grats|big gz] to {player} and the group on {target}[!| in {place}|, i saw it]
+{target} [is down|went down|is dead][ in {place}|]. [credit to|all thanks to|big ups to] {player}
+[need a|anyone want a] {player_class}? {player} [just carried|basically carried] a group through {target}
+@needs in_player_group
+our group just dropped {target} in {place}, and {player} carried us
+{target} down! {player} held the whole thing together
+we got {target}! honestly {player} did the heavy lifting
+{player} called every pull on {target}. clean kill
+{target} is down in {place}. shout out to {player}, best {player_class} ive grouped with
+{player} kept us alive on {target}. without them we wipe
+{target} dead, thank {player}
+{player} pulled {target} perfectly and we all just followed
+[we|our group] [just killed|just dropped|finally got] {target}[!|, gz all!] {player} [carried|was the mvp|did it all]
+{player} [kept the group alive|called every pull|never panicked] on {target}. [respect|gg|what a {player_class}]
 @who Socialite
 group hug for {player}! we got {target} and nobody even yelled
 @who Leveler
 {target} down, and {player} pulled so fast we barely sat. best xp of the week
 @who *
-[gz|grats|big gz] to {player} and the group on {target}[!| in {place}|, i saw it]
-[we|our group] [just killed|just dropped|finally got] {target}[!|, gz all!] {player} [carried|was the mvp|did it all]
-{player} [kept the group alive|called every pull|never panicked] on {target}. [respect|gg|what a {player_class}]
+@needs !in_player_group
+{player}'s group just killed {target}. i was nearby and heard it go down
+just watched {player}'s group take {target}. {player} was everywhere
+was waiting my turn at {target} and {player}'s group just smoked it. ugh. gz tho
+dont know who else was in that group but {player} was the reason {target} died
 [saw|watched] {player}'s group [take|drop|kill] {target}[ in {place}| from across the field|]. [clean|smooth|textbook]
-{target} [is down|went down|is dead][ in {place}|]. [credit to|all thanks to|big ups to] {player}
-[need a|anyone want a] {player_class}? {player} [just carried|basically carried] a group through {target}
 
 # ---- rvr_streak: {count} enemy players killed in the last ten minutes, {enemy} the enemy realm's people ----------
 @kind deed
@@ -113,7 +117,7 @@ i went out to fight {enemy} and {player} had already killed them all. {count} of
 [stay out of|avoid|dont go near] {place}, {enemy}. {player} [is there|lives there now|is waiting]
 [follow|stick with|ride with] {player} if u want [rps|kills|blood]. [{count} {enemy} already|{count} down and counting]
 {count} {enemy} [dead to|down to|farmed by] {player}[ in ten minutes| in {place}|]. [gogo|keep going|more pls]
-[the|those] {enemy} [cant handle|have no answer for|keep feeding] {player}. [{count} kills|{count} so far|{count} and counting]
+[the|those] {enemy} [cant handle|have no answer for|keep dying to] {player}. [{count} kills|{count} so far|{count} and counting]
 
 # ---- ganked: {count} enemies were around, {enemy}; the player got rolled by a zerg --------------------------------
 @kind deed
@@ -122,19 +126,19 @@ i went out to fight {enemy} and {player} had already killed them all. {count} of
 {player} just got rolled by {count} {enemy} in {place}. never stood a chance
 saw {player} vs {count} {enemy}. guess who won. not {player}
 {count} {enemy} to kill one {player}. thats a compliment, {player}
-poor {player}. {count} {enemy} zerged them in {place}
+poor {player}. {count} {enemy} jumped them in {place}
 {player} tried to take on {count} {enemy}. points for courage
 the {enemy} needed {count} people to kill {player}. pathetic
-{player} got stomped by a {count} man {enemy} zerg. i ran. sorry {player}
+{player} got stomped by {count} {enemy}. i ran. sorry {player}
 {player} lasted about four seconds vs {count} {enemy}
 {player}, next time maybe dont charge {count} {enemy} alone
 {count} {enemy} camping {place}, they just got {player}. avoid
 {player} went down swinging vs {count} {enemy}
-an {enemy} zerg of {count} just ran over {player}. revenge anyone?
+{count} {enemy} just ran over {player}. revenge anyone?
 {player} died to {count} {enemy}. the {enemy} are celebrating like they did something
 {player} looked like they had it. then the rest of the {enemy} came over the hill. all {count} of them
-thoughts and prayers for {player}. {count} {enemy}. no chance
-{player} {nickname} got zerged by {count} {enemy}. even legends die
+a moment of silence for {player}. {count} {enemy}. no chance
+{player} {nickname} got jumped by {count} {enemy}. even legends die
 my screen was all {enemy} and one {player}. then just {enemy}
 @who Daredevil
 {player} charged {count} {enemy} head on. stupid. glorious. but stupid
@@ -142,7 +146,7 @@ my screen was all {enemy} and one {player}. then just {enemy}
 aww {player} got swarmed by {count} {enemy} in {place}. someone send hugs
 @who *
 [rip|rest in pieces|ouch] {player}[, {count} {enemy} on one| vs {count} {enemy}|]. [brave|bold|never had a chance]
-{player} [got rolled|got zerged|got flattened] by {count} {enemy}[ in {place}|]. [rip|unlucky|we will remember]
+{player} [got rolled|got jumped|got flattened] by {count} {enemy}[ in {place}|]. [rip|unlucky|we will remember]
 [took|it took] {count} {enemy} to [drop|kill|stop] {player}. [thats respect|{player} should be flattered|cowards]
 [lol|heh|yikes] {player} [charged|ran into|found] {count} {enemy}[ in {place}|]. [it went badly|guess how that went|i looked away]
 [anyone near|who is near|anyone around] {place}? {count} {enemy} [just got|just rolled|just farmed] {player}
@@ -188,46 +192,56 @@ ok i love {player} but they just died to {target} and i cant stop giggling
 [everyone|attention realm|psa], {player} [lost a fight to|was slain by|got beaten by] {target}. [i repeat, {target}|no joke|i saw it all]
 [{target} 1, {player} 0|{target} one, {player} zero]. [flawless|fatality|game over]
 [someone|somebody|anyone] [tell|remind] {player} that {target} [is supposed to be easy|is for newbies|is the easy one]
-[i cant breathe|im crying|im dead], {player} [just died to|lost to] {target}
+[i cant breathe|im crying|i fell off my chair], {player} [just died to|lost to] {target}
 [rip|gg] {player}, [slain|taken out|ended] by {target}. [legend|tragic|the bards will sing of this]
 {player} [vs|versus] {target}: [{target} wins|{target} by a mile|not even close]
 [shame on|pray for|lol at] {player}, [killed|beaten|humbled] by {target}[ in {place}|]
 {player} [died to|got killed by|lost to] {target}. [{target}|that {target}|a {target}] is now [famous|a legend|unstoppable]
 
-# ---- fell: died falling or drowning (no target) ---------------------------------------------------------------------
+# ---- fell: died falling (no target) ------------------------------------------------------------------------------
 @kind deed
 @topic fell
 @who *
 {player} just fell off a cliff in {place}. no monster needed
 {player} died to gravity. gravity remains undefeated
-did {player} just... drown? in {place}? lol
-{player} forgot to breathe. rip
 watched {player} jump off a ledge in {place}. they didnt land it
-{player} drowned. there was a surface right there, {player}. RIGHT THERE
 rip {player}, killed by the floor
 {player} tried to take a shortcut in {place}. it was a very short shortcut
 gravity 1, {player} 0
 {player} just went splat in {place}
-{player} cant swim, confirmed
 {player} did a swan dive in {place}. zero out of ten on the landing
-{player} found the bottom of the lake in {place}. hope it was worth it
 i saw {player} walk off a cliff while looking at their map
 the fall didnt kill {player}. the ground did
 {player} {nickname}, defeated by a small hill
 {player} just proved a {player_class} cant fly
-the blue bar is your breath, {player}. watch it
-{player} dove into the water in {place} and never came back up
 @who Explorer
 i know every ledge in {place} and {player} found the one that kills you. impressive really
 @who Daredevil
 {player} jumped off the big rock in {place}. i respect it. i wont copy it
 @who *
-[lol|rofl|haha] {player} [fell off a cliff|drowned|took the fast way down] in {place}
+[lol|rofl|haha] {player} [fell off a cliff|took the fast way down|went splat] in {place}
 {player} [vs|versus] [gravity|the ground|the floor]: [{player} lost|not close|a clean loss]
-[rip|gg] {player}, [killed by|undone by|ended by] [gravity|the ground|a ledge|the water]
-[someone teach|somebody show] {player} how to [swim|land|look down|not fall off things]
+[rip|gg] {player}, [killed by|undone by|ended by] [gravity|the ground|a ledge]
+[someone teach|somebody show] {player} how to [land|look down|not fall off things]
 {player} [jumped|stepped|walked] off a [ledge|cliff|rock] in {place}[ and splat| and that was it|. bye {player}]
 [no monster|no enemy|nothing] killed {player}. [just gravity|just the ground|they did it themselves]
+
+# ---- drowned: died in the water, out of breath (no target) ----------------------------------------------------------
+@kind deed
+@topic drowned
+@who *
+did {player} just... drown? in {place}? lol
+{player} forgot to breathe. rip
+{player} drowned. there was a surface right there, {player}. RIGHT THERE
+{player} cant swim, confirmed
+{player} found the bottom of the lake in {place}. hope it was worth it
+the blue bar is your breath, {player}. watch it
+{player} dove into the water in {place} and never came back up
+@who *
+[lol|rofl|haha] {player} drowned in {place}
+[rip|gg] {player}, [undone by|ended by|claimed by] the water
+[someone teach|somebody show] {player} how to swim
+{player} [vs|versus] [the lake|the water|a river]: [{player} lost|not close|a clean loss]
 
 # ---- rep_named: second-hand, from a bot who did NOT see it: {target} is the strongest named they soloed -----------
 @kind deed
@@ -296,31 +310,31 @@ i make armor for people like {player}. {count} kills means a lot of repairs
 @kind deed
 @topic rep_silly
 @who *
-isnt {player} the one who keeps dying to newbie mobs? {count} times i heard
+isnt {player} the one with all the silly deaths? {count} i heard
 {player}? the one with {count} silly deaths? lol
 heard {player} has died {count} times to things that shouldnt kill anyone
 {count} embarrassing deaths. {player}, are you ok
 my guildie keeps a list of {player}'s deaths. {count} so far
-{player} is the reason the newbie mobs feel tough. {count} wins for them
-careful near {player}, even the bunnies are dangerous around them
-i heard {player} died to trash mobs {count} times. legend
-word is {player} has fed the newbie mobs {count} times
-{player} {nickname}... and {count} deaths to trash. a complicated legacy
-{player} has more trash deaths than i have gold
+{count} silly deaths for {player}. the healers keep count
+careful near {player}, even the rats are dangerous around them
+i heard {player} has {count} silly deaths. legend
+word is {player} has died {count} silly deaths
+{player} {nickname}... and {count} silly deaths. a complicated legacy
+{player} has more silly deaths than i have gold
 {count} silly deaths? {player} is a comedy act
 {player} is famous for the wrong reasons. {count} of them
 {player} is the realm's favorite clown. {count} dumb deaths
-the newbie mobs have a fan club for {player}. {count} kills on {player}
-i heard {player} drowned in a puddle once. and {count} more like that
+the newbie zones have a fan club for {player}. {count} silly deaths
+i heard {player} died to nothing at all once. and {count} more like that
 dont let {player} pull. {count} silly deaths, i heard
-{player}? {count} deaths to trash. the healers have stories
+{player}? {count} silly deaths. the healers have stories
 @who Socialite
 i adore {player}. also {count} silly deaths, which i adore even more
 @who Leveler
-{count} deaths to trash? {player} must have lost a whole level of xp to bunnies
+{count} silly deaths? {player} must have lost a whole level of xp that way
 @who *
-[isnt|wasnt] {player} the one who [keeps dying|died {count} times] to [newbie mobs|trash|bunnies]?
-[heard|word is|someone said] {player} has [died|been killed] {count} times to [trash|newbie mobs|things with no teeth]
+[isnt|wasnt] {player} the one with all the silly deaths?
+[heard|word is|someone said] {player} has [died|been killed] {count} times in silly ways
 {count} [silly|dumb|embarrassing] deaths? [{player}, are you ok|{player} is a legend|thats {player}, alright]
 [the healers|everyone in the realm|the newbie mobs] [know|love|have stories about] {player}. {count} [silly deaths|dumb deaths|times]
 
@@ -363,9 +377,7 @@ seen a lot of names come and go. {player} {nickname} is a keeper
 @kind deed_reply
 @topic named_solo
 @who *
-no way. {target}? solo?
 {player} is a machine
-{target} solo... ok i need to rethink my spec
 lies. ALL LIES. (gz tho)
 and i cant even solo yellows
 {player} teach me ur ways
@@ -379,10 +391,13 @@ the realm is safe while {player} lives
 i need to see this with my own eyes
 @who *
 [gz|grats|big gz] {player}[, thats insane|, beast|!!]
-[no way|nope|lies], no one solos {target}[. no one|. right?|]
 [pics|screenie|proof] or it didnt happen[, {player}|]
 [/bow|/salute|/cheer] {player}
 [and here i am|meanwhile im|and i am still] [dying to trash|scared of yellows|getting killed by blues]
+@needs hard_kill
+no way. {target}? solo?
+{target} solo... ok i need to rethink my spec
+[no way|nope|lies], no one solos {target}[. no one|. right?|]
 
 @kind deed_reply
 @topic named_group
@@ -471,23 +486,29 @@ rofl i bet {player} was afk
 @kind deed_reply
 @topic fell
 @who *
-lol {player} cant swim
 i do that too, every time
-breath bar, {player}. watch the breath bar
 the ground was asking for it
 {player} vs physics, round one
 {player} took the express route down
 i bet {player} was looking at the map
 lol classic
-someone get {player} some water breathing
-the water in {place} is deep, it gets everyone
 ok {player}, now try landing
 did {player} at least look cool on the way down
 @who *
-[gravity|the ground|the water] [wins again|is undefeated|claims another]
+[gravity|the ground] [wins again|is undefeated|claims another]
 [lol|haha|heh] [{player} cant land|{player} cant read a cliff|{player} vs the floor again]
-[watch|mind] your [step|feet|breath] [next time|out there][, {player}|]
+[watch|mind] your [step|feet] [next time|out there][, {player}|]
 [i|we all] [did that|have done that] [once|too|last week]. [ok twice|still hurts|no shame]
+
+@kind deed_reply
+@topic drowned
+@who *
+lol {player} cant swim
+breath bar, {player}. watch the breath bar
+someone teach {player} where the surface is
+the water in {place} is deep, it gets everyone
+[the water|the lake] [wins again|claims another|is undefeated]
+[watch|mind] your breath [next time|out there][, {player}|]
 
 @kind deed_reply
 @topic rep_named
@@ -530,8 +551,8 @@ the enemy probably has a wanted poster for {player}
 @kind deed_reply
 @topic rep_silly
 @who *
-{player} the bunny feeder
-i heard about the drowning one
+{player}, friend to every rat in the realm
+i heard about the last one
 {count}?? thats a hobby at this point
 its true, its a whole thing
 we all have bad days. {player} has {count}
@@ -544,7 +565,7 @@ a legend for all the wrong reasons
 @who *
 [lol|rofl|heh] {count}[?|??|. thats a lot of corpse runs]
 [be nice|go easy|leave {player} alone], [everyone dies|we all die|it happens][ to trash sometimes|]
-[someone|somebody] has to [feed|entertain|keep busy] the [newbie mobs|trash mobs|bunnies]
+[someone|somebody] has to [entertain|keep busy] the [newbie mobs|trash mobs|rats]
 
 @kind deed_reply
 @topic nickname

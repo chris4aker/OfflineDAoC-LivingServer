@@ -251,7 +251,7 @@ public static class AutonomousBotDebates
     /// </summary>
     public static VC.Scene ChooseScene(IReadOnlyList<VC.Scene> scenes, eRealm realm, ISet<string> heard,
         IReadOnlyCollection<int> onlineLevels, Random random, out bool resetRound, string timeFlag = null,
-        IReadOnlySet<string> newsFlags = null, bool liveOnly = false)
+        IReadOnlySet<string> newsFlags = null, bool liveOnly = false, bool? dunceDue = null)
     {
         resetRound = false;
         // A scene about bedtime plays at night only (0.36-se.4: scenes can need a time of day). A live scene ("INC {keep}")
@@ -278,10 +278,22 @@ public static class AutonomousBotDebates
             resetRound = true;
             fresh = fitting;
         }
-        // While a live scene's news is true it comes first: that news lasts minutes, the ordinary talk can wait.
+        // While a live scene's news is true it comes first: that news lasts minutes, the ordinary talk can wait (and a live
+        // scene always wins over the dunce).
         VC.Scene[] live = fresh.Where(IsLive).ToArray();
         if (live.Length > 0)
-            fresh = live;
+            return live[random.Next(live.Length)];
+        // The dunce (owner 09:14, B2-051): one draw in eight once the realm's dunce rest is over, else never; drawn evenly
+        // with the rest it came about once in 16 hours of play. Null keeps the even draw (tests, /lstest topics).
+        if (dunceDue != null)
+        {
+            VC.Scene[] dunces = fresh.Where(IsDunce).ToArray();
+            if (dunceDue.Value && dunces.Length > 0 && random.NextDouble() < DunceShare)
+                return dunces[random.Next(dunces.Length)];
+            VC.Scene[] others = fresh.Where(scene => !IsDunce(scene)).ToArray();
+            if (others.Length > 0)
+                fresh = others;
+        }
         return fresh[random.Next(fresh.Length)];
     }
 
@@ -327,6 +339,19 @@ public static class AutonomousBotDebates
         "hibernia" => "hibs",
         var other => other,
     };
+
+    /// <summary>The share of scene draws that is a dunce scene once the realm's <see cref="DunceRest"/> is over.</summary>
+    public const double DunceShare = 1.0 / 8;
+
+    public static readonly TimeSpan DunceRest = TimeSpan.FromHours(3);
+
+    private static readonly ConcurrentDictionary<eRealm, DateTime> LastDunceUtc = new();
+
+    /// <summary>A dunce rage-quit scene (dunce.lines, topic "dunce"). Pure.</summary>
+    public static bool IsDunce(VC.Scene scene) => string.Equals(scene?.Topic, "dunce", StringComparison.Ordinal);
+
+    /// <summary>Whether a realm's dunce rest is over. Pure.</summary>
+    public static bool DunceIsDue(DateTime? lastUtc, DateTime nowUtc) => lastUtc == null || nowUtc - lastUtc.Value >= DunceRest;
 
     #endregion
 
@@ -698,7 +723,7 @@ public static class AutonomousBotDebates
         {
             scene = story.Scene;
             cast = Cast(scene, online.Where(bot => bot.DatabaseID != story.BotA && bot.DatabaseID != story.BotB).Select(CandidateOf).ToArray(),
-                Random.Shared, new Dictionary<string, long> { ["A"] = story.BotA, ["B"] = story.BotB });
+                Random.Shared, story.Fixed ?? new Dictionary<string, long> { ["A"] = story.BotA, ["B"] = story.BotB });
             if (cast == null)
                 story = null;   // not enough others to fill the scene: an ordinary debate instead, the episode waits
         }
@@ -726,7 +751,10 @@ public static class AutonomousBotDebates
             }
             lock (heard)
                 scene = ChooseScene(pool, realm, heard, online.Select(bot => (int)bot.Level).ToArray(), Random.Shared, out reset,
-                    forcedTopic == null ? VC.TimeFlag(DateTime.Now.Hour) : null, newsFlags, liveOnly && forcedTopic == null);
+                    forcedTopic == null ? VC.TimeFlag(DateTime.Now.Hour) : null, newsFlags, liveOnly && forcedTopic == null,
+                    forcedTopic == null ? (bool?)DunceIsDue(LastDunceUtc.TryGetValue(realm, out DateTime lastDunce) ? (DateTime?)lastDunce : null, DateTime.UtcNow) : null);
+            if (IsDunce(scene))
+                LastDunceUtc[realm] = DateTime.UtcNow;
             cast = scene == null ? null : Cast(scene, online.Select(CandidateOf).ToArray(), Random.Shared);
         }
         Dictionary<string, string> shared = null;
@@ -1221,7 +1249,8 @@ public static class AutonomousBotDebates
                 if (Log.IsInfoEnabled)
                     Log.Info($"BOT_DEBATE_END realm={GlobalConstants.RealmToName(realm)} scene={running.Scene.Id} reason=\"{reason}\"");
                 if (running.StoryKey != null)
-                    AutonomousBotStorylines.OnEpisodeEnded(realm, running.StoryKey, running.Scene.Id, reason == "finished", DateTime.UtcNow);
+                    AutonomousBotStorylines.OnEpisodeEnded(realm, running.StoryKey, running.Scene.Id, reason == "finished", DateTime.UtcNow,
+                        running.Cast);
                 if (running.TaleTopic != null)
                     AutonomousTales.OnTaleEnded(realm, running.Scene, reason == "finished", reason, running.Said.Count,
                         running.Said.Count(said => said.Role == AutonomousTales.TellerRole));

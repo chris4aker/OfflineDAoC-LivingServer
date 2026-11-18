@@ -107,6 +107,10 @@ FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'trav
          # Holiday chatter (AutonomousHolidays): the days around a holiday, and the day itself
          'holiday', 'holiday_today', 'holiday_halloween', 'holiday_thanksgiving', 'holiday_christmas', 'holiday_newyear',
          'holiday_valentines', 'holiday_stpatricks', 'holiday_aprilfools', 'holiday_easter', 'holiday_midsummer',
+         'holiday_before', 'holiday_after',   # the window's days before the holiday's own day, and after it
+         # Events (chat audit 2026-11-18): a named kill yellow or harder (deeds), a keep taken back (news), the player
+         # grouped with this bot (memory greetings)
+         'hard_kill', 'retaken', 'player_grouped',
          # Crafting 2.0 (WP0 registers them; WP4-WP8 set them): what is true of a crafter gamebot right now
          'has_craft_stock',    # it holds crafted stock to sell ({stock}, {price})
          'at_station',         # it stands at a forge, lathe or alchemy table

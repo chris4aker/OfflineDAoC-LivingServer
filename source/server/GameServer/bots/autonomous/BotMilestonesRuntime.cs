@@ -724,8 +724,31 @@ public static class BotMilestoneLife
         RaidKillContext context = _raidKill;
         if (context == null || bot == null || item == null || context.Won.ContainsKey(bot) || Array.IndexOf(context.Members, bot) < 0)
             return;
+        // The server's own item rules (none in a bare test world: then every item counts, as before).
+        DOL.GS.ServerRules.IServerRules rules = RulesOrNull();
+        if (!CountsAsTrophy(item, rules == null ? null : template => rules.CheckAbilityToUseItem(bot, template)))
+            return;
         context.Won[bot] = item.Name;
     }
+
+    private static DOL.GS.ServerRules.IServerRules RulesOrNull()
+    {
+        try
+        {
+            return GameServer.Instance?.Configuration == null ? null : GameServer.ServerRules;
+        }
+        catch (NullReferenceException)
+        {
+            return null;   // a server with no rules set up (a bare test world)
+        }
+    }
+
+    /// <summary>
+    /// Whether a received item can be a raider's trophy: one its class can use (PC log 5378dbe, 01:58:50: an Infiltrator
+    /// cheered "worth the wait" over a generated cloth vest it would never wear). Pure for a given check.
+    /// </summary>
+    public static bool CountsAsTrophy(DbInventoryItem item, Func<DbItemTemplate, bool> canUse) =>
+        item?.Template != null && !string.IsNullOrEmpty(item.Name) && (canUse == null || canUse(item.Template));
 
     // ---- /lstest milestone and life cycle --------------------------------------------------------------------------------------
 

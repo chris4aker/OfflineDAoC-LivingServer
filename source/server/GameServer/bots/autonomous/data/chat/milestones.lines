@@ -14,7 +14,7 @@
 @who *
 @levels 45-49
 {level} now, [over halfway|past the halfway mark] to 50
-[halfway|more than halfway] to 50. [the grind is real|slow going but getting there]
+[halfway|more than halfway] to 50. [what a grind|slow going but getting there]
 [over|past] halfway to 50 [finally|at last]. {level} and climbing
 {level}, [the back half of the 40s|the long end of the 40s]. 50 is starting to look real
 [halfway|half way] there. [50 here i come|cant wait for 50]
@@ -48,7 +48,7 @@ halfway to 50, [then back to the forge|then i can craft in peace]
 @who Socialite
 {bubbles} bubbles to 50!! [be there for the ding|who wants to see the ding]
 @who NoLifer
-{bubbles} bubbles to 50, [not logging till i ding|staying up for this]
+{bubbles} bubbles to 50, [want to ding before i log|so close i can taste it]
 
 # ---- the ding to 50: nearly there (90% of the way or more, any level) -----------------------------------------------
 @topic ding50_close
@@ -86,11 +86,11 @@ halfway to rr5 [thanks to you all|thanks to the groups]. [best realm|good fights
 [about|around] {count}k rps to rr5
 [almost|nearly] rr5, [about|around] {count}k to go
 {count}k [rps|realm points] [left|to go] to rr5
-[almost|nearly] rr5. [a few more fights|a couple more good fights]
+[almost|nearly] rr5. [a few more good nights|a few more keep fights]
 @who Daredevil
 {count}k to rr5. [need a big fight|need a keep take]
 @who NoLifer
-[almost|nearly] rr5, {count}k left. [not logging till i get it|staying out till i get it]
+[almost|nearly] rr5, {count}k left. [more frontier for me|back out there]
 
 # ---- realm rank 5: the moment ----------------------------------------------------------------------------------------
 @topic rr5_reached
@@ -110,14 +110,14 @@ rr5! [now who wants to roam|who is coming out to roam]
 @topic trophy_try
 @who *
 @levels 50-50
-no drop off {boss} for me [again|this time]. [next time|maybe next raid]
+no drop for me off {boss}. [next time|maybe next raid]
 {count} [big kills|boss kills] and [still nothing|not one drop] for me. [one day|someday]
-[grats to the lucky ones|gz to those who got loot]. nothing off {boss} for me [again|]
+[grats to the lucky ones|gz to those who got loot]. nothing off {boss} for me
 {boss} [down|dead] and [no drop for me|nothing for me]. [next one|next raid] maybe
 @who Socialite
 nothing off {boss} for me but [what a raid|great raid all]
 @who Leveler
-no loot off {boss} again. [oh well|maybe next time]
+no loot for me off {boss}. [oh well|maybe next time]
 
 @topic trophy_long
 @who *
@@ -128,7 +128,7 @@ no loot off {boss} again. [oh well|maybe next time]
 @who NoLifer
 {count} [raid kills|boss kills] and still no drop. [not stopping now|ill be there for the next one]
 @who Daredevil
-{count} big kills, zero drops. [i want my dragon loot|someday i get my drop]
+{count} big kills, zero drops. someday i get my drop
 
 # ---- a dragon trophy: the moment ({item} it really received from {boss}'s loot) -------------------------------------
 # trophy_reached is said on any win, a first raid kill too, so it claims no wait. trophy_reached_wait is said only when
@@ -151,7 +151,7 @@ got a drop off {boss}: {item}
 @levels 50-50
 [finally|at last] got a drop off {boss}! {item}
 {item} off {boss}!! [finally|at last]
-[woot|yes], {item} [from|off] {boss}. [worth the wait|about time]
+[woot|yes], {item} [from|off] {boss}. about time
 [finally|at last] some loot off {boss}: {item}
 @who Socialite
 [finally|at last]!! {item} off {boss}. [thanks everyone|ty all who came]
@@ -174,10 +174,10 @@ gz rr5, now come roam with us
 
 @answers milestone_trophy
 @who *
-[nice drop|sweet drop], [gz|grats]
+[gz|grats] on the drop
 [gz|grats] on the loot
 [nice|sweet], [gz|grats] on the {item}
-[gz|grats], {boss} drops the good stuff
+[gz|grats], {boss} came through for you
 [lucky|nice], [gz|grats]
 @who Socialite
 [gz!!|grats!!] [so happy for you|well deserved]

@@ -86,7 +86,7 @@ namespace DOL.GS.Tests
         public void ReputationTalkNeedsSomethingToTalkAbout()
         {
             Assert.That(Deeds.RepTopics(new OfflinePlayerReputationRecord()), Is.Empty);
-            var row = new OfflinePlayerReputationRecord { NamedSolo = 1, BestNamed = "Grimwold", RvrKills = 12, SillyDeaths = 3 };
+            var row = new OfflinePlayerReputationRecord { NamedSolo = 1, BestNamed = "Grimwold", RvrKills = 50, SillyDeaths = 3 };   // rep_rvr from 50 kills (chat audit 2026-11-18)
             Assert.That(Deeds.RepTopics(row).Select(t => t.Topic), Is.EquivalentTo(new[] { "rep_named", "rep_rvr", "rep_silly" }));
         }
 

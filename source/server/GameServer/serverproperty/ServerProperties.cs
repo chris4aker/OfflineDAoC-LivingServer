@@ -2931,6 +2931,10 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_holidays", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes.", true)]
 		public static bool BOT_LIVING_HOLIDAYS;
 
+		/// <summary>Which Thanksgiving holiday chatter marks (AutonomousHolidays; owner 2026-11-18: a non-US option).</summary>
+		[ServerProperty("bots", "bot_living_holidays_thanksgiving", "Server life: which Thanksgiving the holiday chatter marks: us (the fourth Thursday of November, the default), canada (the second Monday of October) or off.", "us")]
+		public static string BOT_LIVING_HOLIDAYS_THANKSGIVING;
+
 		/// <summary>Now and then a raider charges the final boss early (AutonomousRaidLeeroy).</summary>
 		[ServerProperty("bots", "bot_living_leeroy", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in.", true)]
 		public static bool BOT_LIVING_LEEROY;

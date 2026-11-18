@@ -7,20 +7,33 @@
 @answers news_siege_defend
 @who *
 how many are there?
-again? they love that keep
+who saw them first?
 who is leading the defense?
 anyone got a ram count?
 cant, mid pull, sorry
 @needs in_frontier
-omw, two minutes out
-on my way, hold the inner door
+two minutes out if i can get away
+hold the inner door
 @needs in_capital
-porting out now
+anyone porting out?
 @needs newbie
 too low to help, sorry. gl
 @needs
 @who Leveler
 wish i could, i have a group going
+
+# ---- siege_warning (an army is marching on our keep; nothing is at the walls yet) ----
+@kind reply
+@answers news_siege_warning
+@who *
+how many are they?
+who is calling the defense?
+busy right now, sorry
+good to know, ty
+@needs in_frontier
+heading over if i can get away
+@needs newbie
+too low for that, gl all
 
 # ---- siege_attack ----
 @kind reply
@@ -32,14 +45,29 @@ rams or just zerg?
 gl, take it fast before they wake up
 go get it
 @needs in_frontier
-coming, save me some rp
+save me some rp
+@needs !in_frontier,!in_capital
+too far out, have fun
+@needs
+@who Daredevil
+rp time
+@who Socialite
+go go go, i want to see that keep in our colors
+
+# ---- siege_muster (our army is forming up) ----
+@kind reply
+@answers news_siege_muster
+@who *
+how many are going?
+who is leading this one?
+gl, take it
+@needs in_frontier
+coming if i can get away
 @needs !in_frontier,!in_capital
 too far out, gl all
 @needs
 @who Daredevil
 rp! rp!
-@who Socialite
-go go go, i want to see that keep in our colors
 
 # ---- siege_held ----
 @kind reply
@@ -50,9 +78,9 @@ nice save
 ha, they will be back
 who came for that one?
 gj all, rest up
-good, they wasted their whole raid
+good, they went home with nothing
 @who NoLifer
-they always break on the inner door
+they never learn
 @who Socialite
 yay, way to go all
 @who *
@@ -65,9 +93,9 @@ lol they gave up
 ha, go home
 good defense all
 that was close
-nice work on the doors
+ty all who showed
 they'll try again later
-doors held up
+keep is still ours
 
 # ---- siege_failed ----
 @kind reply
@@ -75,7 +103,7 @@ doors held up
 @who *
 next time
 regroup and try again?
-figures, they had the numbers
+figures, oh well
 who led that one?
 not our turn i guess
 rough, how long did it go?
@@ -87,11 +115,11 @@ told you, xp is safer
 @needs
 oh well
 we'll get it next time
-too many of them
+next try then
 should've brought more
 eh, worth a try
 back to the keep i guess
-they had too many
+not our night
 close one
 bah, out of time
 they held up good
@@ -113,7 +141,7 @@ about time we took that one
 @who *
 @needs
 gj gj
-ours again
+ours now
 nice, who was on it?
 sweet, more keeps
 took long enough lol
@@ -132,8 +160,8 @@ they will want that back
 @kind reply
 @answers news_keep_lost
 @who *
-again??
-ugh, that one again
+hold on, what??
+ugh, that one
 were there any defenders at all?
 lol of course
 we will take it back
@@ -149,19 +177,19 @@ oh well, not my keep
 @needs
 seriously?
 where was everyone
-ugh, again
-figures, again
+ugh, really
+figures, of course
 bah
 who was home?
 well that sucks
 they just walked in huh
-that keep never stays ours
-no defenders again i bet
+that keep is hard to hold
+were we even defending?
 lol rip keep
 wonderful
 and nobody called it?
 back to square one
-great, there goes the rp bonus
+great, another one gone
 next time someone shout please
 they waited till we logged lol
 every night
@@ -203,11 +231,11 @@ who was guarding it??
 that hurts
 relic raid when?
 we need it back fast
-ugh, my spells already feel weaker
+ugh, i can feel it already
 @who NoLifer
 told everyone to watch the relic keep
 @who Leveler
-there goes my damage
+there goes our bonus
 @who *
 @needs
 oh no
@@ -219,7 +247,7 @@ unreal
 who let that happen
 relic gone, wonderful
 we need a relic raid asap
-my dmg lol
+the bonus lol
 
 # ---- relic_won ----
 @kind reply
@@ -255,7 +283,7 @@ yes! ty to the carriers
 home sweet home
 took long enough
 gj, keep it there this time
-nice, damage back up
+nice, bonus is back
 best news all week
 @who Leveler
 good, kills go faster now
@@ -398,24 +426,6 @@ who died first lol
 rez and go again?
 happens to everyone
 bring more heals next time
-
-# ---- enemy_seen ----
-@kind reply
-@answers news_enemy_seen
-@who *
-where are they heading?
-what classes did they have?
-stealthers with them?
-zerg or a real group?
-ty for the call
-thx, avoiding that area
-@needs in_frontier
-heading over, where exactly?
-@needs !in_rvr
-glad im nowhere near there
-@needs
-@who Daredevil
-sounds like fun
 
 # ---- any news ----
 @kind reply
