@@ -748262,7 +748262,7 @@
      "text": "{name_a} has a verse for everything",
      "variants": [
       "{name_a} has a verse for everything",
-      "lmao instant verse"
+      "rofl instant verse"
      ],
      "optional": false
     },
@@ -751430,9 +751430,9 @@
     },
     {
      "role": "F",
-     "text": "lmao the wall",
+     "text": "rofl the wall",
      "variants": [
-      "lmao the wall",
+      "rofl the wall",
       "{name_a} against the tiny spider. the spider won"
      ],
      "optional": false
