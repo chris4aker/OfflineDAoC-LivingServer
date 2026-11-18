@@ -85,7 +85,27 @@ public static class AutonomousTales
         ["aros-the-spiritmaster"] = "dungeon-midgard-dodens", ["iarnvidiur"] = "dungeon-midgard-iarnvidiur", ["queen-kula"] = "epic",
         ["avartack-the-champion"] = "dungeon-hibernia-marfach", ["chieftain-caimheul"] = "dungeon-hibernia-marfach",
         ["balor"] = "dungeon-hibernia-tursuil",
+        // The open-world raids (tales_more.lines, 2026-11-18). The five Wretches of Winter share one tale: its stem names one
+        // of them, and LoreIdsForRaid matches the others by their shared schedule choice (RealmRaidOpenWorld.ChoiceOf).
+        ["green-knight"] = "openworld-albion-greenknight", ["coliath"] = "openworld-albion-coliath",
+        ["spirit-of-lord-emthoro"] = "openworld-albion-emthoro",
+        ["glacier-giant"] = "openworld-midgard-glaciergiant", ["mortufoghus"] = "openworld-midgard-mortufoghus",
+        ["raumarik-revenant"] = "openworld-midgard-revenant", ["wretch-of-winter"] = "openworld-midgard-wreth-jotun",
+        ["evern"] = "openworld-hibernia-evern", ["juggernaut"] = "openworld-hibernia-juggernaut",
+        ["curengkur"] = "openworld-hibernia-curengkur", ["marfoirwort"] = "openworld-hibernia-marfoirwort",
+        ["mollunero"] = "openworld-hibernia-mollunero",
     };
+
+    /// <summary>
+    /// Tales of a boss with no raid of its own (tales_more.lines): told on their own, the rumour after them always lore. Myrddraxis:
+    /// Fomor has no raid (its navmesh has no path to his chamber). Behemoth: the Darkness Falls raid's tale stays Legion's.
+    /// </summary>
+    public static readonly IReadOnlySet<string> RaidlessTales = new HashSet<string>(StringComparer.Ordinal) { "myrddraxis", "behemoth" };
+
+    /// <summary>Whether a tale's raid is this raid: the same id, or one of the same open-world schedule choice (the Wretches).</summary>
+    public static bool SameRaid(string taleRaid, string raidId) =>
+        taleRaid != null && raidId != null && (taleRaid == raidId ||
+            RealmRaidOpenWorld.Is(taleRaid) && RealmRaidOpenWorld.Is(raidId) && RealmRaidOpenWorld.ChoiceOf(taleRaid) == RealmRaidOpenWorld.ChoiceOf(raidId));
 
     /// <summary>
     /// Legends: tales of no boss, no raid and no fireside (owner, 2026-11-15: Trials of Atlantis as a rumour only). The lore id
@@ -138,7 +158,7 @@ public static class AutonomousTales
 
     /// <summary>The tales that are a raid's own, for one realm: every boss whose raid it is (Marfach has three).</summary>
     public static string[] LoreIdsForRaid(string raidId, eRealm realm) =>
-        raidId == null ? [] : RaidStems.Keys.Where(lore => RaidIdFor(lore, realm) == raidId).OrderBy(lore => lore, StringComparer.Ordinal).ToArray();
+        raidId == null ? [] : RaidStems.Keys.Where(lore => SameRaid(RaidIdFor(lore, realm), raidId)).OrderBy(lore => lore, StringComparer.Ordinal).ToArray();
 
     /// <summary>Whether the realm's corpus has a tale of this raid's boss.</summary>
     public static bool HasTaleForRaid(string raidId, eRealm realm)
@@ -1070,6 +1090,16 @@ public static class AutonomousTales
     public static bool FiresideDue(bool sitting, long quietSince, long lastFireside, long now) =>
         sitting && quietSince > 0 && now - quietSince >= FiresideQuietMs && now - lastFireside >= FiresideGapMs;
 
+    /// <summary>The lore ids a fireside tale may be about in a place (pure): its bosses, and the place itself, for a place with
+    /// no boss file (tales_more.lines: fireside_keltoi-fogou and the rest).</summary>
+    public static HashSet<string> FiresideLoreIds(LoreBible bible, string placeId)
+    {
+        var ids = (bible?.BossesAt(placeId) ?? []).Select(boss => boss.Id).ToHashSet(StringComparer.Ordinal);
+        if (placeId != null && bible?.LocationById(placeId) != null)
+            ids.Add(placeId);
+        return ids;
+    }
+
     private static void PulseFiresides(long now)
     {
         foreach (var pair in Firesides)
@@ -1099,7 +1129,7 @@ public static class AutonomousTales
                 LoreBible.Location here = LoreEntryRules.LocationAt(bible, player.CurrentRegionID, player.CurrentZone.ID);
                 if (here == null)
                     continue;
-                var local = bible.BossesAt(here.Id).Select(boss => boss.Id).ToHashSet(StringComparer.Ordinal);
+                var local = FiresideLoreIds(bible, here.Id);
                 string day = DateTime.Now.ToString("yyyy-MM-dd");
                 VC.Scene scene = AutonomousBotVoices.Corpus.Scenes
                     .Where(s => IsFireside(s) && VC.RealmFits(s.Realm, realm) && local.Contains(LoreIdOf(s.Topic)) &&

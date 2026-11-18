@@ -871,6 +871,17 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 
 ## 1.2 (in development)
 
+- **Bot chat audit fixes (tests only): more tales** (owner 2026-11-18 09:14: "Yes to all the new tales"; LORE-028).
+  `data/chat/tales_more.lines` adds 14 storyteller tales, each with its fireside version: the open-world bosses (the
+  Green Knight, Coliath, Lord Emthoro; the Glacier Giant, Mortufoghus, the Raumarik Revenant, the Wretch of Winter;
+  Evern, Juggernaut, Curengkur, Marfoirwort, Mollunero), Myrddraxis and Behemoth. Every one of the 17 open-world raids
+  now begins with its boss's tale; the five Wretch raids share one (`AutonomousTales.SameRaid`). Myrddraxis (Fomor has
+  no raid) and Behemoth (Darkness Falls stays Legion's) are told on their own, their rumour always lore
+  (`RaidlessTales`). 16 more fireside tales for the thin places: Tepok's Mine, Keltoi Fogou, Ilron, Scurceol Hyrde and
+  Lady Darra (Albion); Jarl Ormarr, Aros, Hresvelgr, the Cursed Tomb, Nisse's Lair and Vendo (Midgard); King Vian, Koalinth,
+  Eraliwyr, the Ancient Black Oak and the Black Lady (Hibernia). A place with no boss file (Keltoi Fogou, the Cursed
+  Tomb, Nisse's Lair, Vendo, Koalinth) has a fireside of its own (`AutonomousTales.FiresideLoreIds`). The mechanics
+  told are the server's fights. Corpus check and `UT_Tales` only: none heard in game yet.
 - **Fixes from sweep 5 (build `5378dbe`, the owner's PC log of 2026-11-17/18; tests only until seen on the PC):**
   - **No Lifer buffbots were saved as gamebots.** When a buffbot logged out with its main, its in-memory record was
     written to the roster as a new row, and that row logged in as an ordinary level-50 healer gamebot with an era
