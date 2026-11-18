@@ -8,11 +8,19 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## Galladoria's Earthmenders: a tactic that reads their heals (1.2, 2026-11-18; tests only)
+## Galladoria's Earthmenders: mutual heal off by default, and a tactic that reads their heals (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 11:59-12:47, `DIAG-b1b6-sweep6d` D-1): the raid dealt the four
-Earthmenders 1.44M damage in 48 minutes and none went below 99%. Owner: "Tactic first, then decide". The boss is
-unchanged (health, heal, cast time, recast, the uninterruptible flag, the class puzzle and every `EPIC_*` setting).
+Earthmenders 1.44M damage in 48 minutes and none went below 99%. Owner: "Tactic first, then decide", then, with the
+numbers below, **"Mutual heal off"**.
+- **`epic_earthmender_mutual_heal` is now off by default** (`ServerProperties`, the release world's settings, where it is
+  listed with the switches kept off, and the epic encounter catalog). The menders heal only the Earth primal, as they did
+  from run 15 until 1.2 wave 2. A world that ran an earlier build moves to off once, only where its row still holds the
+  untouched old default (`LivingServerSettingsUpgrade` 1.2.0.2); a value someone set is kept. The class puzzle, the
+  menders, their heal spell and every other epic setting are unchanged. The launcher has no switch for it: it is a server
+  setting. **Simulated with b1b6846's raid (tests only): all four die in about 10 minutes** (class rule, whole raid:
+  Guardian 3.9, Natural 6.1, Magical 8.4, Shadowy 10.3 minutes; b1b6846's own split of attackers: 16.3 minutes). Turned
+  back on, Galladoria is unwinnable for the bots (below).
 - **How they heal (from the code).** Every 500 ms a mender that is not casting asks for a heal on every hurt NPC of its
   radius list that its rule allows (the Earth primal, or another mender; never itself), in the list's order. Its casting
   component starts the first and keeps only the last as the queued spell, so each mender heals the first and the last

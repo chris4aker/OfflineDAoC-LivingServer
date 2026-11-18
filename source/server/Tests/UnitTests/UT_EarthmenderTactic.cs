@@ -415,9 +415,11 @@ namespace DOL.UnitTests
                 r.On = r.Heals ? -1 : EpicEncounterTactics.EarthmenderJob(r.Class, r.Id, views, _kill, true) is Kind k ? (int)k : Fight.Primal;
         }
 
-        private (int Killed, double?[] At) Run(int[] order, Action<Fight> plan, double scale = 1, bool druidsFight = false, int minutes = 120)
+        private (int Killed, double?[] At) Run(int[] order, Action<Fight> plan, double scale = 1, bool druidsFight = false, int minutes = 120,
+            bool mutualHeal = true)
         {
-            EpicEncounterMechanics.AllowEarthmenderMutualHeal = true;
+            EpicEncounterMechanics.AllowEarthmenderClassPuzzle = true;
+            EpicEncounterMechanics.AllowEarthmenderMutualHeal = mutualHeal;
             _kill = null;
             var f = new Fight(order, 7, scale, druidsFight, B1b6Roster);
             while (f.Now < minutes * 60_000L && !f.AllDead)
@@ -464,6 +466,84 @@ namespace DOL.UnitTests
                 // Honest result: with b1b6846's damage the other three hold (no win). The next test measures the gap.
                 Assert.That(neu.Killed, Is.LessThan(4), "if this fails the raid can win: update the docs and the report");
             }
+        }
+
+        /// <summary>What the raid does with mutual heal off (the default since the owner's 2026-11-18 decision): the heal-watching
+        /// rule has no opinion, and the catalog's class rule sends each raider to a mender its class hurts.</summary>
+        private void RaidWithMutualHealOff(Fight f)
+        {
+            int[] alive = Enumerable.Range(0, 4).Where(f.Alive).ToArray();
+            var views = f.Views();
+            int n = 0;
+            foreach (Fight.R r in f.Raid)
+            {
+                int party = n++ / 8;
+                // The tactic stays gated: off with mutual heal off.
+                Assert.That(EpicEncounterMechanics.AllowEarthmenderMutualHeal, Is.False);
+                if (r.Heals) { r.On = -1; continue; }
+                if (r.Universal) r.On = alive.Length > 0 ? alive[EpicEncounterTactics.AssignedIndex(party, alive.Length)] : Fight.Primal;
+                else r.On = r.Group is Kind g && f.Alive((int)g) ? (int)g : Fight.Primal;
+                if (r.On != Fight.Primal)
+                    Assert.That(EpicEncounterRestores.EarthmenderAccepts((Kind)r.On, r.Class), Is.True, $"{(eCharacterClass)r.Class} on {(Kind)r.On}");
+            }
+        }
+
+        [Test]
+        public void WithMutualHealOffTheRaidKillsAllFour()
+        {
+            // Owner 2026-11-18, "Mutual heal off": the menders heal only the primal, so nothing heals a mender.
+            foreach (int[] order in new[] { PrimalLast, PrimalFirst })
+            {
+                var split = Run(order, OldSplit, minutes: 120, mutualHeal: false);
+                var raid = Run(order, RaidWithMutualHealOff, minutes: 120, mutualHeal: false);
+                var druids = Run(order, RaidWithMutualHealOff, druidsFight: true, minutes: 120, mutualHeal: false);
+                TestContext.WriteLine($"mutual heal off, order {string.Join(",", order)}: b1b6846's ledger split: {split.Killed} of 4 " +
+                                      $"({Show(split.At)}); class rule, whole raid: {raid.Killed} of 4 ({Show(raid.At)}); " +
+                                      $"with the druids fighting: {druids.Killed} of 4 ({Show(druids.At)})");
+                Assert.That(raid.Killed, Is.EqualTo(4), "all four die");
+                Assert.That(raid.At.Max(), Is.LessThan(20.0));
+                Assert.That(split.Killed, Is.EqualTo(4), "even b1b6846's own split kills all four");
+            }
+        }
+
+        [Test]
+        public void WithMutualHealOffEachClassStillTakesAMenderItHurts()
+        {
+            EpicEncounterMechanics.AllowEarthmenderClassPuzzle = true;
+            EpicEncounterMechanics.AllowEarthmenderMutualHeal = false;
+            var primal = Npc<TestPrimal>(39727, 62620, 11684);
+            primal.Fighting = true;
+            GameNPC[] menders = [Npc<TestGuardian>(40020, 62401, 11676), Npc<TestMagical>(39459, 62412, 11688),
+                Npc<TestNatural>(39552, 62929, 11690), Npc<TestShadowy>(39965, 62921, 11662)];
+            var live = new List<GameNPC> { primal }.Concat(menders).ToList();
+            var raider = Npc<Raider>(39800, 62500, 11684);
+            // The catalog's row, put on the test doubles (as UT_EpicEncounterTactics3 does).
+            var names = new Dictionary<string, string>
+            {
+                ["GuardianEarthmender"] = nameof(TestGuardian), ["MagicalEarthmender"] = nameof(TestMagical),
+                ["NaturalEarthmender"] = nameof(TestNatural), ["ShadowyEarthmender"] = nameof(TestShadowy),
+            };
+            var row = EpicEncounterTactics.Catalog.Single(t => t.Boss == "EarthPrimal");
+            EpicEncounterTactics.Register(row with
+            {
+                Boss = nameof(TestPrimal), RequiredAdds = row.RequiredAdds.Select(a => names[a]).ToArray(),
+                ClassRules = row.ClassRules.Select(r => r with { Add = names[r.Add] }).ToArray()
+            });
+            try
+            {
+            foreach (var (c, _) in B1b6Roster)
+                for (int party = 0; party < 4; party++)
+                foreach (GameNPC aim in live)
+                {
+                    var advice = EpicEncounterTactics.Decide(raider, aim, live, party, true, 20_000, (int)c);
+                    Assert.That(advice.Reason ?? "", Does.Not.Contain("earthmenders:"), "the heal-watching rule is off");
+                    GameNPC on = advice.Action == EpicEncounterTactics.BotAction.Retarget ? advice.Target : aim;
+                    Assert.That(on, Is.Not.SameAs(primal), $"{c}: every class of the roster hurts a mender");
+                    Assert.That(EpicEncounterRestores.EarthmenderAccepts((Kind)Array.IndexOf(menders, on), (int)c), Is.True,
+                        $"{c} aiming at {aim.GetType().Name}, party {party}: sent to {on.GetType().Name}");
+                }
+            }
+            finally { EpicEncounterTactics.Unregister(nameof(TestPrimal)); }
         }
 
         [Test, Explicit("Measurement: a few minutes of simulation. Its numbers are in docs/encounters/EPIC-ENCOUNTERS.md.")]
