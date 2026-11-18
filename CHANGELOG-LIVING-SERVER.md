@@ -8,6 +8,28 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until
+you switch it on", which has not been true since the owner's decision of 2026-11-16 (every Living Server feature on by
+default). No default changed here; only the words.
+- `INSTALL.cmd` (`tools/fork-build/install-server-build.ps1`) now ends with "Living Server features are ON by default. Their
+  switches are in the launcher's Living Server tab (change them with the server stopped); diagnostics and test switches stay
+  off."
+- The package README (`tools/fork-build/README.txt`): "OFF UNTIL YOU SWITCH THEM ON" is now "ON BY DEFAULT"; XP by level and
+  the classic rule and epic encounter options are listed apart as the player's choice; the sample `FORK_BUILD` line shows
+  the features on; "SWITCHING FEATURES ON" is "CHANGING THE SWITCHES" and says how a world from an earlier build moves.
+- The launcher's Living Server tab no longer says "Everything here starts off".
+- Docs that still said the features start or ship off: README.md ("the manual install leaves them off"),
+  docs/LIVING-SERVER.md, docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/CRAFTING.md (trading with gamebots), and the
+  summary comment of `AutonomousLivingServer`.
+- Test: `source/tools/tests/test_living_server_on_text.py`.
+
+The maximized launcher whose STOP SERVER / ENTER REALM clicks did nothing (same session) is most likely another window over
+the buttons, not the launcher (no launcher cause was found; see docs/KNOWN-ISSUES.md). `LauncherWindowSizeTests` (tests only) lays the launcher
+out at its normal size and maximized at 1080p, 1440p and 4K and checks with Windows' hit test that each header button is
+the top-most control at its centre.
+
 ## Hired companions (1.2, owner 2026-11-17; tests only until seen on the owner's PC)
 
 Ported from shadowofze's Offline DAoC True 1.65 (v0.7, `f68cc75`; github.com/zomboden/OfflineDAoC-True165), GPL-3.0, via

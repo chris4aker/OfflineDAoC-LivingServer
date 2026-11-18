@@ -731,7 +731,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     {
         Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
         Margin = new Padding(20, 6, 18, 0),
-        Text = "Bots that feel like 2003 players. Everything here starts off; with it all off the game plays exactly like the normal " +
+        // Living Server 1.2 (owner 2026-11-16): every feature here is on by default (before 1.2 they all started off).
+        Text = "Bots that feel like 2003 players. Everything here is on by default; with ALL OFF the game plays exactly like the normal " +
                "release. Your /spawn companions never change. Saved settings are used on the next server startup.",
     };
 

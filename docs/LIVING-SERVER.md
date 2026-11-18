@@ -4,8 +4,9 @@ Part of the Living Server fork. The goal (Chris, 2026-10-16): make the autonomou
 like players on a 2003 server, through continuity and consequence more than through more chat.
 
 **Status:** released in 0.36-se.1. Automated tests pass (see "Tests" below). **Partly checked in
-game** (2026-10-17, see "In-game check" below). Every part starts **off**. With everything off, the
-only changes left are the always-on ones listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
+game** (2026-10-17, see "In-game check" below). Every part started **off** until 1.2; since 1.2 every part is **on** by
+default (see "Switches" below). With everything off (**ALL OFF** in the launcher's Living Server tab), the only changes
+left are the always-on ones listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 The server life parts change only autonomous gamebots; your `/spawn` companions and real players
 are not affected by them. (One always-on fix does reach companions: a dead bot's corpse now stays
@@ -629,8 +630,9 @@ them:
 - `offline_bot_bonds` (2026-10-27)
 
 Writes are batched off the game loop every 5 seconds, under the same database lock as bot status
-saves. The release builder deletes every `bot_living_*` setting and `bot_schedule_mode`, so
-releases ship with everything off.
+saves. Since 1.2 the release builder (`build_release_037.py`) writes every `bot_living_*` setting and `bot_schedule_mode`
+at its release value from `source/tools/release-server-settings.json`, so releases ship with every part on and the
+real-clock schedule (the 0.36 builder deleted them, and releases shipped with everything off).
 
 ## Checking it in game: /lstest (GMs)
 

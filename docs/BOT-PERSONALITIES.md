@@ -5,7 +5,7 @@ go looking for trouble, and each one writes in its own style. These are the "Liv
 features, alongside [BOT-GUILDS.md](BOT-GUILDS.md).
 
 They affect only **autonomous gamebots**. Companion bots (`/spawn`, `/raid`) and real players keep
-today's behavior. Every part shipped **off** until Beta 1.1, which turns bot voices on (personalities stay off). With all of it off, bots behave as in stock 0.36, apart
+today's behavior. Every part shipped **off** until Beta 1.1, which turned bot voices on; since 1.2 every part, personalities included, is on by default (owner 2026-11-16). With all of it off, bots behave as in stock 0.36, apart
 from the always-on changes listed in [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 ## 1. Switches

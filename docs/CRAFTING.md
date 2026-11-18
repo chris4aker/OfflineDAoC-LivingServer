@@ -184,8 +184,8 @@ pieces in their bag:
 
 ## Trading with gamebots
 
-> **Status: automated tests only.** Off by default: `bot_crafters` and `bot_crafter_commerce` must both be on (the guild
-> parts also need `bot_crafting_social`). Nothing here has been seen in game yet.
+> **Status: automated tests only.** On by default since 1.2 (owner 2026-11-16): it needs `bot_crafters` and
+> `bot_crafter_commerce` both on (the guild parts also need `bot_crafting_social`). Nothing here has been seen in game yet.
 
 Any autonomous gamebot of your realm trades with you in the game's own trade window, the way a player does. A `/bot`
 companion never trades (give it gear with `/bot`), and only you start a trade.

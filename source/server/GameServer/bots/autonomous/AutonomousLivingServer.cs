@@ -16,7 +16,7 @@ namespace DOL.GS;
 /// <summary>
 /// The Living Server (docs/LIVING-SERVER.md): autonomous gamebots remember you, congratulate dings,
 /// celebrate server firsts, ask for and give rezzes, raise frontier alarms and keep nemeses. Every
-/// part has its own server setting (category "bots"), all off by default, and only autonomous
+/// part has its own server setting (category "bots"), all on by default since 1.2, and only autonomous
 /// gamebots speak; companion bots and real players are never changed. Lines come from the voices
 /// corpus (living_server.lines and memory.lines) and are only said where a real player can hear.
 /// </summary>
