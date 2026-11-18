@@ -86,6 +86,19 @@ namespace DOL.GS
             return (Side(false), Side(true));
         }
 
+        /// <summary>What raiders dealt the monsters named <paramref name="names"/> in the region since the last flush, without
+        /// flushing (the no-progress watch, RealmRaidNoProgress).</summary>
+        public static long DealtTo(ushort region, System.Collections.Generic.ICollection<string> names)
+        {
+            if (names == null || names.Count == 0) return 0;
+            long dealt = 0;
+            lock (Rows)
+                foreach (var pair in Rows)
+                    if (pair.Key.Region == region && !pair.Key.ToRaid && names.Contains(pair.Key.Name))
+                        dealt += pair.Value.Damage;
+            return dealt;
+        }
+
         /// <summary>One EPIC_FIGHT_LEDGER line for the region when anything was hit since the last one.</summary>
         public static void Report(ushort region, string target, int seconds)
         {

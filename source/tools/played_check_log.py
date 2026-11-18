@@ -75,6 +75,40 @@ RAW_FRONT_RETRIES = 10
 # 2026-11-18: 11.5%, a backstop. The exact checks (a), (b) and (c) decide one hop and no echo; the share sits about halfway
 # between one hop (about 9.9-10.1% on 5378dbe without the in-contact starts) and two hops (about 12.7%; 13.4% on 453e01a).
 RELAY_SHARE_BAR = 11.5
+# Sweep 6d (build b1b6846): a required-adds phase with no add death this long while the raid dealt the adds more than
+# their combined health (D-1, the Galladoria Earthmenders); raider deaths to an epic this soon after its raid ended, in
+# its region (P-1, P-2); a raid's end outcome lines are matched to its REALM_RAID_ENDED within this many seconds.
+NO_PROGRESS_MINUTES = 20
+NO_PROGRESS_GAP_SECONDS = 10 * 60
+AFTER_END_SECONDS = 10 * 60
+END_OUTCOME_SECONDS = 15
+REQUIRED_ADD_RE = re.compile(r'required-add \d+/\d+ of "([^"]+)"')
+CATALOG = Path(__file__).resolve().parents[2] / "docs" / "encounters" / "epic-encounters.json"
+_catalog = None
+
+
+def catalog() -> tuple[dict, set]:
+    """From the epic encounter catalog (empty when it is missing): each encounter add's maximum health by name, and the
+    encounters' boss names."""
+    global _catalog
+    if _catalog is None:
+        health, bosses = {}, set()
+        try:
+            data = json.loads(CATALOG.read_text(encoding="utf-8"))
+            for encounter in data.get("encounters", []):
+                if encounter.get("boss"):
+                    bosses.add(encounter["boss"])
+                for add in encounter.get("adds") or []:
+                    if add.get("name") and isinstance(add.get("maxHealth"), (int, float)):
+                        health.setdefault(add["name"], int(add["maxHealth"]))
+        except (OSError, ValueError):
+            pass
+        _catalog = (health, bosses)
+    return _catalog
+
+
+def add_health() -> dict:
+    return catalog()[0]
 RETIRED_ACT_RE = re.compile(r'\bbot="?([^"\s]+)"? id=(\d+)')
 
 LEVELS = {"TRC", "DBG", "INF", "WRN", "ERR", "FTL"}
@@ -101,7 +135,7 @@ EVENT_REGIONS = {
     "darkness-albion": 249, "darkness-midgard": 249, "darkness-hibernia": 249,
 }
 OUTCOMES = {"Boss defeated": "won", "Defeated": "lost", "Timed out": "timed out (stall)", "Superseded": "superseded",
-            "Stopped by player": "stopped by player", "Failed rally": "failed rally"}
+            "Stopped by player": "stopped by player", "Failed rally": "failed rally", "Sweep cap": "sweep cap"}
 SKILL_SHARES = (30.0, 50.0, 20.0)   # casual / average / veteran (BOTS-AS-PEOPLE-1.2, WP1 played check)
 MISTAKES_MIN_IN_GROUP = 100         # chance decisions in the player's group before the quarter rate is judged
 MISTAKES_MAX_RATIO = 0.5            # rate_in / rate_out above this contradicts "about a quarter" (WP2 played check)
@@ -280,6 +314,12 @@ class Section:
         self.regroups_to = Counter()      # (region, "x,y,z") -> STRANDED_REGROUP lines to it
         self.retries_at = Counter()       # (region, "x,y,z") -> ROUTE_RETRY lines from it
         self.wave_steps = {}              # (event, wave) -> [step, since, line, flagged]
+        self.required_adds = defaultdict(set)   # boss -> its required adds' names (EPIC_TACTIC_BOT "required-add i/n of")
+        self.add_phases = {}              # (region, boss) -> [start, last, dealt, flagged] of a required-adds phase
+        self.epic_names = set()           # epics a raid held (RESPAWN_HELD) and bosses of required adds; with the catalog's
+        self.ends = []                    # raid ends: {"t", "event", "members", "positions", "regions"}
+        self.recent_outcomes = defaultdict(deque)   # event -> (t, members) of AUTONOMOUS_GROUP_OUTCOME lines not yet matched
+        self.after_end_deaths = []        # (t, killer, line, end) raider deaths in an ended raid's region soon after
 
     @property
     def commit7(self):
@@ -426,7 +466,7 @@ def simple(*tags):
         HANDLERS[tag] = fn
 
 
-simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE", "REALM_RAID_EPIC_RESPAWN_HELD",
+simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE",
        "REALM_EXPEDITION_MUSTER_GUARDED", "REALM_EXPEDITION_MUSTER_UNSAFE", "REALM_EXPEDITION_MUSTER_MOVED",
        "EPIC_SWEEP_ADD", "EPIC_SWEEP_RAID_START", "EPIC_SWEEP_RAID_DONE", "EPIC_SWEEP_RAID_NOT_STARTED",
        "EPIC_SWEEP_HELD", "RVR_SPOT", "RVR_ROAM_CHECK", "RVR_ROAM_HUNT", "RVR_ROAM_MOVE_ON", "RVR_LANE_FALLBACK",
@@ -528,6 +568,14 @@ def _raid_ended(sec, t, message, level, near):
         run.wipes = max(run.wipes, int(num(f.get("wipes"))))
     sec.open_raids.pop(event, None)
     outcome = f.get("outcome", "")
+    end = {"t": t, "event": event, "members": {}, "regions": set()}
+    if sec.region_events.get(event) is not None:
+        end["regions"].add(str(sec.region_events[event]))
+    waiting = sec.recent_outcomes.pop(event, ())
+    for seen, members in waiting:
+        if abs((t - seen).total_seconds()) <= END_OUTCOME_SECONDS:
+            end["members"].update(members)
+    sec.ends.append(end)
     sec.ev["REALM_RAID_ENDED"].add(t, message)
     if outcome == "Boss defeated":
         sec.ev["raid.won"].add(t, message)
@@ -732,6 +780,10 @@ def _tactic_bot(sec, t, message, level, near):
     boss, to = f.get("target"), f.get("to")
     if boss and to and to != boss and f.get("action") in ("Retarget", "Reposition"):
         add_seen(sec, boss, to)
+    owner = REQUIRED_ADD_RE.search(message)
+    if owner and to:
+        sec.required_adds[owner.group(1)].add(to)
+        sec.epic_names.add(owner.group(1))
 
 
 @handles("REALM_EXPEDITION_ATTEMPT_ENDED")
@@ -775,6 +827,121 @@ def _fight_ledger(sec, t, message, level, near):
                 engage(sec, region, name, t)
                 if name in adds:
                     add_seen(sec, target, name)
+    no_progress_minute(sec, t, region, f.get("raid_dealt") or "")
+
+
+def no_progress_minute(sec, t, region, dealt_field):
+    """Sweep 6d (D-1): one ledger minute of each required-adds phase the raid hit; a phase with no add death for
+    NO_PROGRESS_MINUTES while the raid dealt its adds more than their combined health (from the encounter catalog) is a
+    finding. A gap of NO_PROGRESS_GAP_SECONDS with no damage on them, or an add's death, starts the phase again."""
+    dealt = {}
+    for entry in dealt_field.split(","):
+        name, sep, rest = entry.rpartition(":")
+        if sep and name.strip():
+            dealt[name.strip()] = num(rest.split("/", 1)[0])
+    if not dealt:
+        return
+    health = add_health()
+    for boss, adds in sec.required_adds.items():
+        on_adds = sum(v for n, v in dealt.items() if n in adds)
+        if on_adds <= 0:
+            continue
+        key = (region, boss)
+        phase = sec.add_phases.get(key)
+        if phase is None or (t - phase[1]).total_seconds() > NO_PROGRESS_GAP_SECONDS:
+            phase = sec.add_phases[key] = [t, t, 0.0, False]
+        phase[1] = t
+        phase[2] += on_adds
+        if phase[3] or any(a not in health for a in adds):
+            continue
+        combined = sum(health[a] for a in adds)
+        minutes = (t - phase[0]).total_seconds() / 60
+        if minutes >= NO_PROGRESS_MINUTES and phase[2] > combined:
+            phase[3] = True
+            sec.ev["adds.no_progress"].add(
+                t, f"EPIC_FIGHT_LEDGER region={region}: {phase[2]:,.0f} dealt on {combined:,} combined health "
+                   f"(encounter catalog) in {minutes:.0f} min with no death of the {len(adds)} required adds of {boss} "
+                   f"({', '.join(sorted(adds))})")
+            sec.lists["no_progress_phases"].append((boss, region, combined, phase))
+
+
+@handles("REALM_RAID_EPIC_RESPAWN_HELD")
+def _respawn_held(sec, t, message, level, near):
+    sec.ev["REALM_RAID_EPIC_RESPAWN_HELD"].add(t, message)
+    npc = kv(message).get("npc")
+    if npc:
+        sec.epic_names.add(npc)
+
+
+@handles("AUTONOMOUS_GROUP_OUTCOME")
+def _group_outcome(sec, t, message, level, near):
+    """A raid party's outcome when its raid ends ("camp":"realm-event-<event>"): who was in the raid and where each stood."""
+    if '"camp":"realm-event-' not in message:
+        return
+    try:
+        data = json.loads(message.split(" ", 1)[1])
+    except (IndexError, ValueError):
+        return
+    event = (data.get("camp") or "")[len("realm-event-"):]
+    members = {}
+    for m in data.get("members") or []:
+        if m.get("name"):
+            members[m["name"]] = (bool(m.get("alive")), str(m.get("region")),
+                                  f"{m.get('x')},{m.get('y')},{m.get('z')}")
+    for end in reversed(sec.ends):
+        if end["event"] == event and 0 <= (t - end["t"]).total_seconds() <= END_OUTCOME_SECONDS:
+            end["members"].update(members)
+            return
+    queue = sec.recent_outcomes[event]
+    queue.append((t, members))
+    while queue and (t - queue[0][0]).total_seconds() > END_OUTCOME_SECONDS:
+        queue.popleft()
+
+
+@handles("REALM_RAID_END_WALKOUT")
+def _end_walkout(sec, t, message, level, near):
+    """Sweep 6d builds on: the regions a dungeon raid's end holds (its dungeon and its way in)."""
+    f = kv(message)
+    for end in reversed(sec.ends):
+        if end["event"] == f.get("event") and abs((t - end["t"]).total_seconds()) <= END_OUTCOME_SECONDS:
+            end["regions"].update(r for r in (f.get("regions") or "").split(",") if r)
+            break
+
+
+def end_regions(end) -> set:
+    """The ended raid's region(s): known from its definition or its walk-out line, else where most of its raiders stood."""
+    if end["regions"]:
+        return end["regions"]
+    where = Counter(region for alive, region, _ in end["members"].values() if alive)
+    return {where.most_common(1)[0][0]} if where else set()
+
+
+@handles("AUTONOMOUS_BOT_DEATH")
+def _bot_death(sec, t, message, level, near):
+    """Sweep 6d (P-1, P-2): a raider of an ended raid killed by a monster in that raid's region within AFTER_END_SECONDS;
+    whether the killer is an epic is judged at the end (the names are learned over the whole log)."""
+    if not sec.ends or "killerKind=monster" not in message:
+        return
+    f = kv(message)
+    for end in reversed(sec.ends):
+        since = (t - end["t"]).total_seconds()
+        if since > AFTER_END_SECONDS:
+            break
+        if since < 0 or f.get("region") not in end_regions(end):
+            continue
+        if end["members"] and f.get("bot") not in end["members"]:
+            continue
+        sec.after_end_deaths.append((t, f.get("killer"), message, end))
+        return
+
+
+@handles("REALM_EXPEDITION_NO_PROGRESS")
+def _no_progress(sec, t, message, level, near):
+    """The server's own line for the same finding (sweep 6d builds on)."""
+    f = kv(message)
+    sec.ev["adds.no_progress"].add(t, message)
+    sec.lists["no_progress"].append(f"{f.get('boss')} in region {f.get('region')} (REALM_EXPEDITION_NO_PROGRESS, "
+                                    f"{f.get('minutes')} min, dealt {f.get('dealt')} on {f.get('health')} health)")
 
 
 @handles("REALM_EXPEDITION_TACTIC")
@@ -836,6 +1003,9 @@ def _target_defeated(sec, t, message, level, near):
     sec.bosses[f.get("region")].pop(f.get("target"), None)
     disengage(sec, f.get("region"), f.get("target"))
     close_retry(sec, f.get("target"))
+    for boss, adds in sec.required_adds.items():
+        if f.get("target") in adds:
+            sec.add_phases.pop((f.get("region"), boss), None)
 
 
 @handles("REALM_EXPEDITION_STRANDED_REGROUP")
@@ -1396,7 +1566,7 @@ def raids(j: Judge, sec: Section, c):
     recovered = [v for v in sec.waves.values() if v[0] == "recovered"]
     stuck_detail = (f"{c('return.stuck')} step=stuck line(s), {len(sec.waves)} wave(s) stuck at least once: "
                     f"{len(recovered)} made headway again, {len(stuck)} never did"
-                    + (f", {sum(1 for v in sec.waves.values() if v[0] == 'released')} released to the muster (sweep 6c)"
+                    + (f", {sum(1 for v in sec.waves.values() if v[0] == 'released')} released to the raid (sweep 6c, 6d)"
                        if c("return.released") else ""))
     if stuck:
         bad = Evidence()
@@ -1449,6 +1619,7 @@ def raids(j: Judge, sec: Section, c):
           note="a boss rests from its last TARGET_STATUS inCombat=False unless engaged: from a FINAL_ENGAGE, EARLY_PULL "
                "Commit, TARGET_CALLED, fight-ledger damage or required-adds switch until its wipe, defeat or heal")
     sweep6c_rows(j, sec, c)
+    sweep6d_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
@@ -1498,8 +1669,67 @@ def sweep6c_rows(j: Judge, sec: Section, c):
           CONTRADICTED if still.count else (SEEN if c("return.went_in") else NOT_SEEN),
           still if still.count else (j.ev("return.went_in") if c("return.went_in") else None),
           f"{still.count} wave(s) held one step: {'; '.join(held) or 'none'}; "
-          f"{c('return.released')} stuck wave(s) released to the muster",
+          f"{c('return.released')} stuck wave(s) released to the raid (its muster or its fight)",
           note="joins, catch-ups and step=ahead (raiders leaving the wave) are not the wave's own headway")
+
+
+def sweep6d_rows(j: Judge, sec: Section, c):
+    """Sweep 6d (build b1b6846): a required-adds phase that never progressed, raiders killed by an epic after their raid
+    ended, and raiders who ended a raid at a regroup point they could not walk from."""
+    stalled = j.ev("adds.no_progress")
+    # A phase's sums run on after its finding until an add dies or the damage stops: told through its last minute.
+    told = [f"{boss} in region {region} from {stamp(p[0])[6:]} to {stamp(p[1])[6:]}: {p[2]:,.0f} dealt on {combined:,} "
+            f"health in {(p[1] - p[0]).total_seconds() / 60:.0f} min with no add death"
+            for boss, region, combined, p in sec.lists["no_progress_phases"]]
+    sec.lists["no_progress"][:0] = told
+    j.add("raids", "adds_progress",
+          f"A required-adds phase makes progress: no {NO_PROGRESS_MINUTES}+ minutes without an add death while the raid "
+          f"dealt the adds more than their combined health (EPIC_FIGHT_LEDGER, REALM_EXPEDITION_NO_PROGRESS, sweep 6d)",
+          CONTRADICTED if stalled.count else (SEEN if sec.add_phases else NOT_SEEN), stalled if stalled.count else None,
+          f"{len(sec.add_phases)} required-adds phase(s) seen; no progress: {'; '.join(sec.lists['no_progress']) or 'none'}",
+          note="the adds' health comes from docs/encounters/epic-encounters.json; an add the catalog lacks is not judged")
+    epics = sec.epic_names | catalog()[1]
+    deaths = [d for d in sec.after_end_deaths if d[1] in epics]
+    if deaths:
+        bad = Evidence()
+        bad.add(deaths[0][0], deaths[0][2], len(deaths))
+        by = Counter(f"{d[3]['event']} ({d[1]})" for d in deaths)
+        j.add("raids", "deaths_after_end",
+              f"No raider is killed by an epic within {AFTER_END_SECONDS // 60} minutes after its raid ended, in the "
+              f"raid's region (AUTONOMOUS_BOT_DEATH, sweep 6d)", CONTRADICTED, bad,
+              f"{len(deaths)} death(s), {len({d[2].split('bot=', 1)[1].split(' ', 1)[0] for d in deaths})} raider(s): "
+              + "; ".join(f"{k} x{n}" for k, n in by.most_common()))
+    else:
+        j.add("raids", "deaths_after_end",
+              f"No raider is killed by an epic within {AFTER_END_SECONDS // 60} minutes after its raid ended, in the "
+              f"raid's region (AUTONOMOUS_BOT_DEATH, sweep 6d)", SEEN if sec.ends else NOT_SEEN,
+              j.ev("REALM_RAID_ENDED") if sec.ends else None,
+              f"{len(sec.ends)} raid end(s); {len(sec.after_end_deaths)} raider death(s) to monsters there in that time, "
+              f"none to an epic")
+    stranded = []
+    for end in sec.ends:
+        at = Counter()
+        for name, (alive, region, pos) in end["members"].items():
+            if alive and sec.regroups_to[(region, pos)] and sec.retries_at[(region, pos)]:
+                at[(region, pos)] += 1
+        for (region, pos), n in at.items():
+            stranded.append((end, region, pos, n))
+    if stranded:
+        bad = Evidence()
+        first = stranded[0]
+        bad.add(first[0]["t"], f"REALM_RAID_ENDED event={first[0]['event']}: {first[3]} raider(s) at {first[1]}:{first[2]}, "
+                               f"a STRANDED_REGROUP point with ROUTE_RETRY from it", sum(x[3] for x in stranded))
+        j.add("raids", "stranded_at_end",
+              "No raider ends a raid at a stranded regroup point it could not walk from (AUTONOMOUS_GROUP_OUTCOME, "
+              "STRANDED_REGROUP to=, ROUTE_RETRY, sweep 6d)", CONTRADICTED, bad,
+              "; ".join(f"{e['event']} at {stamp(e['t'])[6:]}: {n} at {r}:{p} ({sec.regroups_to[(r, p)]} regroups to it, "
+                        f"{sec.retries_at[(r, p)]} retries from it)" for e, r, p, n in stranded))
+    else:
+        j.add("raids", "stranded_at_end",
+              "No raider ends a raid at a stranded regroup point it could not walk from (AUTONOMOUS_GROUP_OUTCOME, "
+              "STRANDED_REGROUP to=, ROUTE_RETRY, sweep 6d)",
+              SEEN if any(e["members"] for e in sec.ends) else NOT_SEEN, j.ev("REALM_RAID_ENDED") if sec.ends else None,
+              f"{sum(len(e['members']) for e in sec.ends)} raider position(s) at {len(sec.ends)} raid end(s); none at such a point")
 
 
 def rvr(j: Judge, sec: Section, c):

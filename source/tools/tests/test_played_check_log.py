@@ -169,7 +169,8 @@ class Raids(unittest.TestCase):
             log.add(at(i + 1), f'REALM_RAID_ENDED event=raid-{i} outcome="{outcome}" minutes=3 named=0 wipes=0')
         sec = only(log.run()[1])
         self.assertEqual([r["result"] for r in sec["raids"]],
-                         ["won", "lost", "timed out (stall)", "superseded", "stopped by player", "failed rally"])
+                         ["won", "lost", "timed out (stall)", "superseded", "stopped by player", "failed rally",
+                          "sweep cap"])
         result = check(sec, "result")
         self.assertEqual(result["status"], pcl.CONTRADICTED)
         self.assertIn("Timed out", result["line"])
@@ -1143,7 +1144,7 @@ class Sweep6c(unittest.TestCase):
         self.wave(log, 30, "joined", 1)
         sec = only(log.run()[1])
         self.assertNotEqual(check(sec, "wave_moves")["status"], pcl.CONTRADICTED)
-        self.assertIn("1 stuck wave(s) released to the muster", check(sec, "wave_moves")["detail"])
+        self.assertIn("1 stuck wave(s) released to the raid", check(sec, "wave_moves")["detail"])
         self.assertNotEqual(check(sec, "return_stuck")["status"], pcl.CONTRADICTED, "released, not left stuck")
 
 
@@ -1161,6 +1162,110 @@ class TextOutput(unittest.TestCase):
         self.assertIn("Seen in log on build 5555555 (06:05:00)", text)
         self.assertIn("epic-hibernia: no REALM_RAID_STARTED", text)
         self.assertNotIn(" works", text)
+
+
+class Sweep6d(unittest.TestCase):
+    """Rows from DIAG-b1b6-sweep6d: a required-adds phase with no add death while the raid out-dealt the adds' health,
+    raiders killed by an epic after their raid ended, and raiders who ended a raid at a regroup point they could not walk
+    from (synthetic lines shaped like build b1b6846's)."""
+
+    ADDS = ("Guardian Earthmender", "Magical Earthmender", "Natural Earthmender", "Shadowy Earthmender")
+
+    def earthmenders(self, log, minutes, per_add=4000, defeated_at=None):
+        for i, add in enumerate(self.ADDS):
+            log.add(at(1, i), f'EPIC_TACTIC_BOT bot=B{i} region=191 target="Corrupt Primal of Earth" action=Retarget '
+                              f'to="{add}" reason="required-add {i + 1}/4 of "Corrupt Primal of Earth"" '
+                              'encounter=galladoria/earth', "INF", "DOL.GS.EpicEncounterTactics")
+        for minute in range(2, 2 + minutes):
+            if defeated_at == minute:
+                log.add(at(minute, 30), 'REALM_EXPEDITION_TARGET_DEFEATED region=191 target="Natural Earthmender" '
+                                        'level=73 minutes=1.0')
+            dealt = ",".join(f"{add}:{per_add}/100/20" for add in self.ADDS)
+            log.add(at(minute), f'EPIC_FIGHT_LEDGER region=191 target="Magical Earthmender" seconds=60 '
+                                f'raid_dealt="{dealt},Corrupt Primal of Earth:1026/63/8" '
+                                'raid_took="Corrupt Primal of Earth:17561/23/1"', "INF", "DOL.GS.EpicFightLedger")
+        return check(only(log.run()[1]), "adds_progress")
+
+    def test_adds_that_take_more_than_their_health_and_never_die_contradict(self):
+        # 4 x 4,000 a minute for 21 minutes = 336,000 on 240,000 health (catalog: 60,000 each), no death.
+        row = self.earthmenders(Log().start(at(0)), 22)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("Corrupt Primal of Earth in region 191", row["detail"])
+        self.assertIn("240,000", row["line"])
+
+    def test_an_add_death_or_too_little_damage_is_progress(self):
+        self.assertEqual(self.earthmenders(Log().start(at(0)), 22, defeated_at=12)["status"], pcl.SEEN)
+        self.assertEqual(self.earthmenders(Log().start(at(0)), 30, per_add=1500)["status"], pcl.SEEN,
+                         "180,000 in 30 minutes is less than their health")
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "adds_progress")["status"], pcl.NOT_SEEN)
+
+    def test_the_servers_no_progress_line_contradicts(self):
+        log = Log().start(at(0))
+        log.add(at(25), 'REALM_EXPEDITION_NO_PROGRESS region=191 boss="Corrupt Primal of Earth" target="Magical Earthmender" '
+                        'adds=4 health=240000 dealt=310000 minutes=20 reason="information only"', "WRN")
+        row = check(only(log.run()[1]), "adds_progress")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("REALM_EXPEDITION_NO_PROGRESS", row["detail"])
+
+    @staticmethod
+    def ended(log, minute, members, event="epic-hibernia", reason="Sweep cap: the play-test sweep's 360-minute limit."):
+        listed = ",".join(f'{{"name":"{n}","id":{i},"role":"Attacker","alive":true,"region":{r},"x":{x},"y":{y},"z":{z},'
+                          f'"activity":"Fighting Natural Earthmender"}}' for i, (n, r, x, y, z) in enumerate(members))
+        log.add(at(minute), 'AUTONOMOUS_GROUP_OUTCOME {"group":"hibernia-1","objective":"GroupPve","phase":"Traveling",'
+                            f'"reason":"x","camp":"realm-event-{event}","target":"Magical Earthmender","zone":"Galladoria",'
+                            f'"members":[{listed}]}}', "INF", "DOL.GS.AutonomousBotGroupCoordinator")
+        log.add(at(minute), f'REALM_RAID_ENDED event={event} outcome="Sweep cap" minutes=360 named=41 wipes=0 '
+                            f'reason="{reason}"')
+
+    @staticmethod
+    def death(log, minute, bot, killer="Corrupt Primal of Earth", region=191):
+        log.add(at(minute), f'AUTONOMOUS_BOT_DEATH bot="{bot}" id=1 level=50 class="Eldritch" realm=Hibernia group=8 '
+                            f'killer="{killer}" killerKind=monster killerLevel=83 con=PURPLE attackers=2 '
+                            f'activity="Fighting Natural Earthmender" goal="Grind" region={region} zone="Galladoria" '
+                            'at=39973,62407,11682', "INF", "DOL.GS.AutonomousDeathDiagnostics")
+
+    def test_a_raider_killed_by_an_epic_soon_after_its_raid_ended_contradicts(self):
+        log = Log().start(at(0))
+        log.add(at(1), 'REALM_RAID_EPIC_RESPAWN_HELD npc="Lurfos the Herald" region=61 respawn_s=3600 reason="held"')
+        self.ended(log, 5, [("Fionnait", 191, 1, 2, 3), ("Aine", 191, 4, 5, 6)])
+        self.death(log, 9, "Fionnait")
+        self.death(log, 10, "Stranger")                       # not one of the raid's raiders
+        self.death(log, 11, "Aine", killer="cave drifter")    # trash, not an epic
+        self.death(log, 20, "Aine")                           # after ten minutes
+        row = check(only(log.run()[1]), "deaths_after_end")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 death(s), 1 raider(s): epic-hibernia (Corrupt Primal of Earth) x1", row["detail"])
+        self.assertIn('bot="Fionnait"', row["line"])
+
+    def test_deaths_after_an_end_to_trash_only_are_seen(self):
+        log = Log().start(at(0))
+        self.ended(log, 5, [("Aine", 191, 4, 5, 6)])
+        self.death(log, 9, "Aine", killer="cave drifter")
+        self.assertEqual(check(only(log.run()[1]), "deaths_after_end")["status"], pcl.SEEN)
+
+    def test_raiders_ending_at_a_stranded_point_they_could_not_walk_from_contradict(self):
+        log = Log().start(at(0))
+        for i in range(3):
+            log.add(at(2, i), f"REALM_EXPEDITION_STRANDED_REGROUP bot=B{i} id={i} region=191 from=1,2,3 to=38492,62016,12372",
+                    "WRN")
+            log.add(at(3, i), f"REALM_EXPEDITION_ROUTE_RETRY bot=B{i} id={i} region=191 position=38492,62016,12372 "
+                              "reason=No navigable dungeon corridor to the next route stage", "WRN")
+        self.ended(log, 5, [("Fionnait", 191, 38492, 62016, 12372), ("Aine", 191, 38492, 62016, 12372),
+                            ("Brann", 191, 39659, 62412, 11686)])
+        row = check(only(log.run()[1]), "stranded_at_end")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("2 at 191:38492,62016,12372", row["detail"])
+
+    def test_raiders_ending_on_the_floor_are_seen(self):
+        log = Log().start(at(0))
+        log.add(at(2), "REALM_EXPEDITION_STRANDED_REGROUP bot=B id=1 region=191 from=1,2,3 to=39659,62412,11686", "WRN")
+        self.ended(log, 5, [("Brann", 191, 39659, 62412, 11686)])
+        self.assertEqual(check(only(log.run()[1]), "stranded_at_end")["status"], pcl.SEEN, "no route retry from it")
+
+    def test_a_sweep_cap_is_its_own_result(self):
+        log = Log().start(at(0))
+        self.ended(log, 5, [("Aine", 191, 4, 5, 6)])
+        self.assertEqual(only(log.run()[1])["raids"][0]["result"], "sweep cap")
 
 
 if __name__ == "__main__":

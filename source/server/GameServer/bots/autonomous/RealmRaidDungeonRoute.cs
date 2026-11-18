@@ -2382,6 +2382,22 @@ namespace DOL.GS
         // Run 21 (2026-10-17): 70+ raiders fought Spindler Broodmother for over 30 minutes and nothing showed how she
         // fared. Once a minute: the current target's health, whether it is in combat, and the raiders around it.
         private long _nextTargetStatusLog;
+        private readonly RealmRaidNoProgress _noProgress = new();
+
+        /// <summary>Feeds the minute's damage on the live required adds of the target's boss to the no-progress watch, and logs
+        /// REALM_EXPEDITION_NO_PROGRESS once a phase when it is due. Information only (sweep 6d).</summary>
+        private void WatchNoProgress(GameNPC target, long now)
+        {
+            IReadOnlyList<GameNPC> live = _live ?? [];
+            GameNPC owner = EpicEncounterTactics.LiveRequiredAdds(target, live).Length > 0 ? target
+                : EpicEncounterTactics.RequiredAddOwner(target, live);
+            GameNPC[] adds = owner == null ? [] : EpicEncounterTactics.LiveRequiredAdds(owner, live);
+            var names = adds.Select(a => a.Name).Where(n => !string.IsNullOrEmpty(n)).ToHashSet(StringComparer.Ordinal);
+            long health = adds.Sum(a => (long)a.MaxHealth);
+            if (!_noProgress.Observe(owner?.Name, adds.Length, health, EpicFightLedger.DealtTo(_region, names), now)) return;
+            log.Warn(RealmRaidNoProgress.Line(_region, owner.Name, target.Name, adds.Length, health, _noProgress.Dealt,
+                (now - _noProgress.Since) / 60_000));
+        }
 
         /// <summary>How many raiders could not act (mesmerized, stunned) over the samples of one report (diagnostics;
         /// pure). Play test duo29, 2026-11-10: in the second minute at Spindler Broodmother 25 of about 110 living raiders
@@ -2442,6 +2458,9 @@ namespace DOL.GS
                          $"itsTarget=\"{its?.Name}\" itsTargetKind=\"{itsKind}\"{room} " +
                          $"mezzedAvg={_control.MezzedAverage} mezzedPeak={_control.MezzedPeak} stunnedPeak={_control.StunnedPeak} samples={_control.Samples}");
                 _control = default;
+                // A required-adds phase with no add death for 20 minutes while the raid dealt them more than their health
+                // (sweep 6d, information only).
+                WatchNoProgress(target, now);
                 // Where the raid's damage went in that minute, and what hurt it (diagnostics).
                 EpicFightLedger.Report(_region, target.Name, 60);
             }

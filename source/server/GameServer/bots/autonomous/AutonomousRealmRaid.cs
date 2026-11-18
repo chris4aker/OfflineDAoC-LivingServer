@@ -249,6 +249,63 @@ namespace DOL.GS
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, byte> HeldRespawns = new();
 
+        /// <summary>
+        /// How long a dungeon's epic respawns stay held after its raid ended, at most (sweep 6d, P-2). Owner's PC, build b1b6846,
+        /// 2026-11-18 (Krondon): the raid won at 13:01:08; Lurfos the Herald and Drihten Elreden, held while it ran, came back on
+        /// the next recheck and killed 28 different raiders 34 times from 13:01:47 to 13:04:38 as they walked out. The hold
+        /// now lasts until no raider of the ended raid is left in its dungeon, or this long, whichever is first; then the
+        /// epics respawn as always, with their full fights. Respawn timers are not changed otherwise.
+        /// </summary>
+        public const long EndedHoldMilliseconds = 10 * 60_000;
+
+        /// <summary>The dungeons of raids that ended, still held: raid id -> when it ended, the held regions and its raiders.
+        /// Under <see cref="Sync"/>.</summary>
+        private static readonly Dictionary<string, (long Ended, ushort[] Regions, GameBot[] Raiders)> EndedHolds = new();
+
+        /// <summary>An ended raid's dungeon keeps its epic respawns held (pure): fewer than <see cref="EndedHoldMilliseconds"/>
+        /// since it ended, and some of its raiders still alive in the dungeon.</summary>
+        public static bool KeepsEndedHold(long endedAt, long now, int raidersInRegion) =>
+            now - endedAt < EndedHoldMilliseconds && raidersInRegion > 0;
+
+        /// <summary>The regions an ended raid's hold still covers at <paramref name="now"/> (tests: the hold-region refresh's
+        /// view of one ended raid).</summary>
+        public static ushort[] EndedHoldRegions(ushort raidRegion, ushort? entranceTarget, long endedAt, long now, int raidersInRegion) =>
+            KeepsEndedHold(endedAt, now, raidersInRegion) ? EpicHoldRegionsOf(raidRegion, entranceTarget) : [];
+
+        /// <summary>
+        /// After a raid ends, a raider still in its dungeon drops an encounter target that is not attacking it (pure), so its
+        /// own goal walks it out instead of feeding the boss; one the encounter is hitting keeps defending itself (sweep 6d,
+        /// P-1). Owner's PC, build b1b6846, 2026-11-18 (Galladoria): after the sweep cap ended the raid at 12:47:28, 58
+        /// raiders kept fighting the passive Earthmenders inside the Earth primal's reach and he killed 59 of them by 12:59
+        /// (9 in the raid's own last 48 minutes); their goals were already their own.
+        /// </summary>
+        public static bool DropsEncounterTargetAtEnd(bool inRaidRegion, bool targetIsEncounter, bool targetAttacksRaider) =>
+            inRaidRegion && targetIsEncounter && !targetAttacksRaider;
+
+        /// <summary>An encounter's monster (the raid's tactics fight it): an epic, a boss with a tactic, or a required add.</summary>
+        public static bool IsEncounterNpc(GameNPC npc) =>
+            npc != null && (npc is IGameEpicNpc || EpicEncounterTactics.For(npc) != null || EpicEncounterTactics.IsRequiredAddClass(npc));
+
+        /// <summary>Applies <see cref="DropsEncounterTargetAtEnd"/> to the raiders of a dungeon raid that ends; returns how many
+        /// dropped their target.</summary>
+        public static int DropEncounterTargets(IEnumerable<GameBot> raiders, ushort[] regions)
+        {
+            int dropped = 0;
+            foreach (GameBot bot in raiders ?? [])
+            {
+                if (bot is not { IsAlive: true } || bot.TargetObject is not GameNPC target) continue;
+                if (!DropsEncounterTargetAtEnd(Array.IndexOf(regions, bot.CurrentRegionID) >= 0, IsEncounterNpc(target),
+                        target.IsAlive && target.TargetObject == bot))
+                    continue;
+                if (bot.IsCasting && bot.castingComponent?.SpellHandler?.Spell?.IsHarmful == true) bot.StopCurrentSpellcast();
+                bot.StopAttack();
+                bot.TargetObject = null;
+                if (bot.ControlledBrain?.Body?.TargetObject == target) bot.ControlledBrain.Disengage();
+                dropped++;
+            }
+            return dropped;
+        }
+
         /// <summary>The regions whose epic respawns a started dungeon raid holds (pure): its own dungeon and the one its way
         /// in leads through (Hall of the Corrupt for Albion's Summoner's Hall raid, where Aidon stands).</summary>
         public static ushort[] EpicHoldRegionsOf(ushort raidRegion, ushort? entranceTarget) =>
@@ -700,9 +757,20 @@ namespace DOL.GS
                              .Select(p => p.Key).ToArray())
                     RecentDestinations.Remove(key);
                 _raidDestinations = RecentDestinations.Keys.ToArray();
-                // The dungeons whose epic respawns wait while a raid is in them (RealmRaidRouteGate.HoldEpicRespawn).
+                // The dungeons whose epic respawns wait while a raid is in them (RealmRaidRouteGate.HoldEpicRespawn), and for a
+                // while after one ended there, while its raiders walk out (sweep 6d, P-2).
+                foreach (var (key, hold) in EndedHolds.ToArray())
+                    if (!KeepsEndedHold(hold.Ended, now, hold.Raiders.Count(b => b.IsAlive && hold.Regions.Contains(b.CurrentRegionID))))
+                    {
+                        EndedHolds.Remove(key);
+                        Log.Info($"REALM_RAID_EPIC_HOLD_RELEASED event={key} regions={string.Join(",", hold.Regions)} " +
+                                 $"minutes={(now - hold.Ended) / 60_000} reason=\"" +
+                                 (now - hold.Ended >= EndedHoldMilliseconds ? $"{EndedHoldMilliseconds / 60_000} minutes since the raid ended"
+                                                                            : "no raider of the ended raid is left in its dungeon") + "\"");
+                    }
                 _epicHoldRegions = Raids.Values.Where(r => r.Started && r.DungeonRoute != null)
                     .SelectMany(r => EpicHoldRegionsOf(r.Definition.Region, r.DungeonRoute.Entrance?.TargetRegion))
+                    .Concat(EndedHolds.Values.SelectMany(h => h.Regions))
                     .Distinct().ToArray();
             }
         }
@@ -2480,6 +2548,19 @@ namespace DOL.GS
                 if (CompletedLoot.Count >= 32) CompletedLoot.Remove(CompletedLoot.MinBy(p => p.Value.Expires).Key);
                 CompletedLoot[final] = new(recipients, raid.LootLedger, now + 60_000);
             }
+            // A dungeon raid's raiders walk out (sweep 6d): they leave encounters that are not hitting them (P-1), and its epics
+            // stay down while they do, up to EndedHoldMilliseconds (P-2).
+            if (raid.DungeonRoute != null)
+            {
+                ushort[] holdRegions = EpicHoldRegionsOf(raid.Definition.Region, raid.DungeonRoute.Entrance?.TargetRegion);
+                int dropped = DropEncounterTargets(recipients, holdRegions);
+                int inside = recipients.Count(b => b.IsAlive && Array.IndexOf(holdRegions, b.CurrentRegionID) >= 0);
+                if (raid.Started && inside > 0)
+                    EndedHolds[raid.Definition.Id] = (now, holdRegions, recipients);
+                Log.Info($"REALM_RAID_END_WALKOUT event={raid.Definition.Id} inside={inside} droppedTargets={dropped} " +
+                         $"epicHold={(raid.Started && inside > 0 ? $"{EndedHoldMilliseconds / 60_000} min at most" : "none")} " +
+                         $"regions={string.Join(",", holdRegions)}");
+            }
             foreach (Group group in raid.Parties.Keys) { Membership.Remove(group); DefenseGroups.TryRemove(group, out _); Released[group] = reason; }
             raid.Parties.Clear();
             raid.Support = [];
@@ -2561,14 +2642,24 @@ namespace DOL.GS
         public static string SupersededReason(string forcedId) => $"{SupersededPrefix} by the forced {forcedId} expedition.";
         private const string SupersededPrefix = "Superseded";
 
-        /// <summary>The outcome of a raid ended by the player or superseded by a forced expedition (pure), or null when
-        /// <paramref name="reason"/> is another ending.</summary>
+        /// <summary>
+        /// The reason the play-test sweep gives a raid it ends at its time cap (EpicPlaytestSweep.PulseLane). Owner's PC,
+        /// build b1b6846, 2026-11-18 (sweep 6d, L-1): Galladoria ended at 12:47:28 as outcome="Stopped by player" with the
+        /// launcher's reason, on the same second as EPIC_SWEEP_CAP minutes=360 cap=360; nobody pressed Stop. A sweep cap is
+        /// now its own outcome, "Sweep cap"; like a stop it sets no cooldown and is no win or loss for the raid's record.
+        /// </summary>
+        public static string SweepCapReason(long capMinutes) => $"{SweepCapPrefix}: the play-test sweep's {capMinutes}-minute limit.";
+        public const string SweepCapPrefix = "Sweep cap";
+
+        /// <summary>The outcome of a raid ended by the player, superseded by a forced expedition or ended at the play-test
+        /// sweep's cap (pure), or null when <paramref name="reason"/> is another ending.</summary>
         public static string StopOutcome(string reason) =>
             reason.StartsWith(StoppedByPlayer, StringComparison.Ordinal) ? "Stopped by player" :
-            reason.StartsWith(SupersededPrefix, StringComparison.Ordinal) ? "Superseded" : null;
+            reason.StartsWith(SupersededPrefix, StringComparison.Ordinal) ? "Superseded" :
+            reason.StartsWith(SweepCapPrefix, StringComparison.Ordinal) ? SweepCapPrefix : null;
 
         /// <summary>A raid that ends for <paramref name="reason"/> waits out a cooldown before the realm calls it again (pure):
-        /// every ending but a player stop or a supersede.</summary>
+        /// every ending but a player stop, a supersede or a sweep cap.</summary>
         public static bool SetsCooldown(string reason) => StopOutcome(reason) == null;
 
         /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
@@ -2614,8 +2705,9 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>Launcher "Stop event": ends an active dragon or epic dungeon expedition now.</summary>
-        public static bool Stop(string id, out string reason)
+        /// <summary>Launcher "Stop event": ends an active dragon or epic dungeon expedition now. <paramref name="why"/> is the
+        /// ending's reason when it is not the player's stop (the play-test sweep's cap, <see cref="SweepCapReason"/>).</summary>
+        public static bool Stop(string id, out string reason, string why = null)
         {
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
@@ -2625,7 +2717,7 @@ namespace DOL.GS
                     reason = waiting ? "The raid was waiting for its tale and will not be called." : "This expedition is not running.";
                     return waiting;
                 }
-                End(raid, GameLoop.GameLoopTime, StoppedByPlayer + " from the launcher.");
+                End(raid, GameLoop.GameLoopTime, why ?? StoppedByPlayer + " from the launcher.");
                 reason = $"{raid.Definition.Name} stopped. The bots return to their own goals; no cooldown was set.";
                 return true;
             }

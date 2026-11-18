@@ -8,6 +8,41 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 6d: a wave stuck in a fight, the sweep cap's label, the walk out after a raid (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18 12:00-13:31, `DIAG-b1b6-sweep6d`). Nothing below is seen in game yet.
+Bosses, epic settings, respawn timers and the Earthmenders (their heal and class puzzle, owner decision D-1, pending) are
+unchanged.
+- **A stuck return wave is released during a fight too** (G-5). #355 released a wave stuck with no help left only while
+  the raid mustered. Galladoria's wave 10 ran out of help at 11:37:40 while the route fought the Earth primal (an
+  `EARLY_PULL` Commit, not a muster), so it stayed: 45 of 117 raiders stood at its mid-air middle `38492,62016,12372` until
+  the raid ended at 12:47:28. Such a wave now ends whatever the route is doing (`REALM_RAID_RETURN_WAVE step=released`,
+  now with `mustering=`), and its raiders take the raid's own view: its muster, or its fight.
+- **A sweep cap is "Sweep cap", not "Stopped by player"** (L-1). The play-test sweep ended Galladoria at its 6-hour cap at
+  12:47:28 through the launcher's stop, so the outcome read "Stopped by player" although nobody pressed Stop. The sweep now
+  ends a raid at its cap with the reason "Sweep cap: the play-test sweep's 360-minute limit." and the outcome "Sweep cap":
+  as before no cooldown and no win or loss for the raid's record. The launcher's outcome filter lists it, the realm hears
+  the expedition "is called off" (no "we gave up" line), and `played_check_log.py` reads it as "sweep cap". The launcher's
+  Stop and the sweep's own stop and skip stay "Stopped by player".
+- **Raiders walk out of a dungeon raid that ended** (P-1). After the sweep cap, 58 raiders stayed on the passive
+  Earthmenders in the Earth primal's reach and he killed 59 of them by 12:59 (9 in the raid's own last 48 minutes). When a
+  dungeon raid ends, each raider still in its dungeon drops a target that is an encounter monster (an epic, a boss with a
+  tactic, or a required add) and is not hitting it, so its own goal walks it out; one the encounter is hitting keeps
+  defending itself (`REALM_RAID_END_WALKOUT ... droppedTargets=`).
+- **A raid's held epics wait while its raiders walk out** (P-2). Krondon won at 13:01:08; Lurfos the Herald and Drihten
+  Elreden, held while the raid ran, came back on the next minute's recheck and killed 28 different raiders 34 times from
+  13:01:47 to 13:04:38. The dungeon's epic respawn hold now lasts after the end until no raider of the ended raid is left in
+  the dungeon, or 10 minutes, whichever is first (`REALM_RAID_EPIC_HOLD_RELEASED`). Then the epics respawn as always, with
+  their full fights; respawn timers are not changed otherwise.
+- **A required-adds phase with no progress is logged** (D-1 diagnostics, information only). The four Earthmenders took
+  1.44M (6 times their combined 240,000 health) in 48 minutes and none died; nothing said so until the cap. When no
+  required add has died for 20 minutes while the raid dealt them more than their combined health, the route logs
+  `REALM_EXPEDITION_NO_PROGRESS region= boss= target= adds= health= dealt= minutes=` once for the phase. No behaviour changes.
+- **Checker:** a sweep-cap outcome, and three rows: `adds_progress` (a required-adds phase with no add death for 20+ minutes
+  while `raid_dealt` on the adds exceeds their health from the encounter catalog, or the new line), `deaths_after_end`
+  (raider deaths to an epic within 10 minutes after their raid ended, in its region) and `stranded_at_end` (raiders' end
+  positions at a `STRANDED_REGROUP` point with `ROUTE_RETRY` from it). All three are Contradicted on `b1b6846`.
+
 ## Raid fixes from sweep 6c: Galladoria's primals, a Krondon return wave, the raid-end stall (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 10:27-12:00, `DIAG-b1b6-sweep6c`). Nothing below is seen in game yet.

@@ -386,26 +386,18 @@ namespace DOL.GS
 
             if (!RealmRaidReturnWave.Stuck(walk.LastMove, now)) return;
             RealmRaidReturnWave.Help help = RealmRaidReturnWave.ChooseHelp(raid.ReturnWaitingNow, bodyCanCome && !bodyComing, walk.Helps);
-            if (RealmRaidReturnWave.ReleasesStuckWave(help, mustering))
+            // Sweep 6d (G-5): in a fight too, not only while the raid musters.
+            if (RealmRaidReturnWave.ReleasesStuckWave(help))
             {
                 Log.Warn($"REALM_RAID_RETURN_WAVE event={id} step=released wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
                          $"living={members.Length} atStep={atStep} inside={inside.Length} kills={walk.Kills} helps={walk.Helps} " +
                          $"minutes={minutes} middle={(int)middle.X},{(int)middle.Y},{(int)middle.Z} target=\"{route.TargetName}\" " +
-                         $"reason=\"no headway for {RealmRaidReturnWave.StuckMilliseconds / 60_000} minutes and no help left while the " +
-                         $"raid musters; the wave ends and its raiders go to the muster\"");
+                         $"mustering={mustering} " +
+                         $"reason=\"no headway for {RealmRaidReturnWave.StuckMilliseconds / 60_000} minutes and no help left" +
+                         (mustering ? " while the raid musters; the wave ends and its raiders go to the muster\""
+                                    : "; the wave ends and its raiders rejoin the raid's fight\""));
                 walk.Catching.Clear();
                 EndWalk(raid);
-                return;
-            }
-            if (help == RealmRaidReturnWave.Help.None)
-            {
-                if (!walk.StuckLogged)
-                    Log.Warn($"REALM_RAID_RETURN_WAVE event={id} step=stuck wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
-                             $"living={members.Length} atStep={atStep} inside={inside.Length} kills={walk.Kills} helps={walk.Helps} " +
-                             $"middle={(int)middle.X},{(int)middle.Y},{(int)middle.Z} " +
-                             $"reason=\"no headway for {RealmRaidReturnWave.StuckMilliseconds / 60_000} minutes and no help left; the stall clock decides\"");
-                walk.StuckLogged = true;
-                walk.LastMove = now;
                 return;
             }
             Log.Warn($"REALM_RAID_RETURN_WAVE event={id} step=stuck wave={walk.Number} at={walk.Step + 1}/{walk.Steps.Length} " +
