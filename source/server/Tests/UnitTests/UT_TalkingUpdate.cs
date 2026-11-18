@@ -408,6 +408,30 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousBotCombatCalls.GroupEvent(state, View(false, 0), 80_000, Never), Is.Null, "most fights end quietly");
         }
 
+        /// <summary>Owner's PC, build b1b6846, 2026-11-18: hired Pannax said "nice xp, next :P" after a grey kill that gave nobody
+        /// experience. The end of a fight remembers whether the group's experience grew, and a line about xp needs it.</summary>
+        [Test]
+        public void NiceXpIsSaidOnlyAfterAKillThatGaveExperience()
+        {
+            var state = new AutonomousBotCombatCalls.GroupState();
+            AutonomousBotCombatCalls.GroupEvent(state, new(true, 1, 2, 2, false, Experience: 5_000), 1_000, Never);
+            AutonomousBotCombatCalls.GroupEvent(state, new(false, 0, 2, 2, false, Experience: 5_000), 9_000, Always);
+            Assert.That(state.LastFightGaveExperience, Is.False, "a grey kill: nobody's experience grew");
+            AutonomousBotCombatCalls.GroupEvent(state, new(true, 1, 2, 2, false, Experience: 5_000), 20_000, Never);
+            AutonomousBotCombatCalls.GroupEvent(state, new(false, 0, 2, 2, false, Experience: 5_400), 29_000, Always);
+            Assert.That(state.LastFightGaveExperience, Is.True);
+
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice xp, next", gaveExperience: false), Is.False);
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice xp, next", gaveExperience: true), Is.True);
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("gj", gaveExperience: false), Is.True, "plain praise fits any kill");
+            Assert.That(AutonomousBotCombatCalls.KillLineFits("nice", gaveExperience: false), Is.True);
+            var killLines = Corpus.Lines.Where(l => l.Kind == "combat" && l.Topic == "kill").Select(l => l.Text).ToList();
+            Assert.That(killLines, Does.Contain("nice xp, next"), "the shipped corpus line this guards");
+            Assert.That(killLines.Where(t => !AutonomousBotCombatCalls.KillLineFits(t, false)), Is.EquivalentTo(new[] { "nice xp, next" }));
+            Assert.That(killLines.Count(t => AutonomousBotCombatCalls.KillLineFits(t, false)), Is.GreaterThanOrEqualTo(6),
+                "a kill with no experience still has lines to say");
+        }
+
         [Test]
         public void OomIsCalledInAFightOnly()
         {
