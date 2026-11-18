@@ -145,6 +145,13 @@ namespace DOL.GS.CraftingEconomy
             if (customer.Standing == CrafterCustomers.Standing.Refused)
                 return new Reply("not dealing with you, sorry", Act.Refuse, null, "craft_refuse", slots);
 
+            // An agreed stock sale called off ("cancel", "forget it"): the piece it set aside goes back on the shelf.
+            if (open is { Kind: DealKind.Stock } && CancelRegex.IsMatch(t))
+            {
+                slots["item"] = open.ItemText;
+                return new Reply($"ok, forget the {slots["item"]} then", Act.Declined, null, "craft_stock_cancelled", slots);
+            }
+
             // An order already on the board: its status, or cancelling it.
             if (orders.Count > 0 && CancelRegex.IsMatch(t))
             {

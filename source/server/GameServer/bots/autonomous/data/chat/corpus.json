@@ -340960,6 +340960,158 @@
   },
   {
    "kind": "craft_reply",
+   "topic": "craft_break_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "on my break now, in {zone}. come find me for the {item} and say yes",
+   "id": "61f36c986b3d"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_break_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "break time, im in {zone}. still got your {item}, come say yes",
+   "id": "53343fd81cd6"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_break_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "in {zone} on a break now. if you still want the {item} find me and say yes",
+   "id": "0fdeffd397a0"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_break_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok im on break in {zone}. come grab the {item}, just say yes when youre near",
+   "id": "728dc9182d3d"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_break_ready",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{zone} for a bit, on my break. kept the {item} for you, say yes when you find me",
+   "id": "d8db4339d840"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "ok, forget the {item} then",
+   "id": "e413a22db7e7"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "np, the {item} goes back in my bag",
+   "id": "6aba42da320c"
+  },
+  {
+   "kind": "craft_reply",
+   "topic": "craft_stock_cancelled",
+   "who": [
+    "Crafter"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "text": "k, ill keep the {item} then",
+   "id": "0828306e9b18"
+  },
+  {
+   "kind": "craft_reply",
    "topic": "craft_ready_tell",
    "who": [
     "Crafter"

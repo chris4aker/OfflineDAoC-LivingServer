@@ -181,8 +181,10 @@ pieces in their bag:
   the crafter tells you where it is; stand near it during its break and say "ready".
 - **Stock.** A piece it already holds you may buy at once, even while it hunts, if you stand next to it and it is not
   fighting: see "Trading with gamebots" below. Say "deal" from afar and it tells you to catch it at its next break: the
-  agreement stands until half an hour after that break (say "yes" next to it then), but the piece is not set aside, so it
-  may be sold before you arrive.
+  piece is set aside for you until half an hour after that break (nobody else can buy it, and it is not posted on the
+  Exchange or worn). When the break begins it tells you once, if you are in the game, where it is; stand next to it and
+  say "yes". "cancel" or "forget it" lets the piece go. Holds live in memory: after a server restart the piece is back in
+  its stock and you ask again.
 - **Finding crafters.** Ask in `/trade` ("wtb studded helm lvl 20"): the realm's best crafter in the game that can make it
   answers by tell. The Camelot Herald (launcher) lists the top five crafters of each order. A GM's `/lscraft craft` lists
   every crafter gamebot in the game with its order, skill, level and zone; `/lscraft crafter <name>` shows one.

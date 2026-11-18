@@ -22,12 +22,21 @@ Seen on the owner's PC on build `b1b6846` (2026-11-18 07:35, Testrunner and Leof
   quoted as a commission.
 - **"deal" on a stock piece an hour before the crafter's break** got "catch me at my next break and ill trade it to u",
   but the quote lapsed after 15 minutes and nothing was logged. The agreed sale now stands until half an hour after the
-  break the crafter named, and is logged (`ECON_PLAYER_ORDER outcome="stock_agreed"`, with `until=`). The piece is still
-  not set aside: if the crafter sells it first, there is nothing to trade at the break.
+  break the crafter named, and (owner 2026-11-18: "Yes fix those issues") the piece is **set aside** for the player until
+  then: the crafter does not sell it to anyone else (by tell, in a trade window or to a vendor), list it on the Realm
+  Exchange or wear it. The hold ends when the deal lapses, when the player calls it off ("cancel", "forget it", "no") or
+  asks for something else, or when the sale completes. Log lines: `ECON_PLAYER_ORDER outcome="stock_held"` (with `until=`)
+  and `outcome="stock_released"` (with `why=` expired, cancelled, declined, replaced, sold or gone). The hold is kept in
+  memory with the deal and the piece never leaves the crafter's bag: a crafter logout keeps the hold until it lapses, and
+  a server restart drops the deal and the hold together, leaving the piece in the crafter's stock. No item can be lost.
+- **When its break begins** the crafter holding a player's piece tells that player once, if they are in the game, where
+  it is and to come and say yes (corpus topic `craft_break_ready`, five lines in `craft_commerce.lines`).
 - **`/lscraft craft` printed only "Crafter roster: registered."** It now lists each realm's crafter gamebots: how many,
   how many are in the game, and those by name with their order, skill, level, zone and whether they are on a break or a
   task (12 a realm, best skill first). The command's help line says so.
-- Tests: `UT_CrafterRepliesFit` (each case above, with every corpus summary line filled from the reply's slots).
+- Tests: `UT_CrafterRepliesFit` (each case above, with every corpus summary and break line filled from the reply's slots) and
+  `UT_CrafterCommerce` (a held piece is kept from another buyer, the trade-window goods and the Exchange; released when it lapses
+  or is called off; the break tell comes once, only to a player in the game, only with an open deal).
 
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 

@@ -63,6 +63,10 @@ namespace DOL.GS.CraftingEconomy
         public static Func<GameBot, GamePlayer, bool> IsNear = DefaultIsNear;
         public static Func<GameBot, GamePlayer, bool> IsGuildmate = AutonomousBotGuilds.IsGuildmate;
         public static Func<GamePlayer, string> CustomerIdOf = player => CrafterCustomers.CustomerIdOf(player?.InternalID);
+        public static Func<long, GameBot> FindBot = DefaultFindBot;
+
+        private static GameBot DefaultFindBot(long botId) =>
+            AutonomousBotRegistry.TryGet(botId, out GameBot bot) && bot != null && bot.ObjectState == GameObject.eObjectState.Active ? bot : null;
 
         private static readonly ConcurrentDictionary<(long Bot, string Customer), CrafterTalk.Deal> Deals = new();
         private static readonly ConcurrentDictionary<(long Bot, string Customer), CrafterTalk.Deal> AwaitingDeposit = new();
@@ -105,6 +109,8 @@ namespace DOL.GS.CraftingEconomy
                 TryReceiveMoney(bot, player, copper) || BotTrades.TryReceiveMoney(bot, player, copper);
             // An item dropped on a bot: a trade window with it in the player's side (sell, swap, a repair or spellcraft job).
             BotCommerceSeams.TryReceiveItem = BotTrades.TryReceiveItem;
+            // A stock piece set aside for a player: never worn, listed, sold to another or sold to a vendor.
+            EconomySeams.Register(HoldPolicy.Instance);
         }
 
         private sealed class CustomerStore : IEconomyStore
@@ -114,8 +120,10 @@ namespace DOL.GS.CraftingEconomy
             public void Load() => CrafterCustomers.Load();
             public void Pulse(long now)
             {
-                if (Enabled)
-                    PayOwedOnline();
+                if (!Enabled)
+                    return;
+                PayOwedOnline();
+                PulseHolds();
             }
 
             public void Flush(bool wait) => CrafterCustomers.Flush(wait);
@@ -128,7 +136,9 @@ namespace DOL.GS.CraftingEconomy
             ReadyTold.Clear();
             HandingOver.Clear();
             LastTradePost.Clear();
+            Holds.Clear();
             FindPlayer = DefaultFindPlayer;
+            FindBot = DefaultFindBot;
             TakeCoin = (player, copper) => copper <= 0 || player.RemoveMoney(copper);
             GiveCoin = (player, copper) => player.AddMoney(copper);
             SendTell = (bot, player, text) => AutonomousLivingServer.Tell(bot, player, text);
@@ -278,15 +288,16 @@ namespace DOL.GS.CraftingEconomy
             {
                 case CrafterTalk.Act.Quote:
                     Deals[key] = reply.Deal;
-                    // A stock sale agreed for the crafter's next break: kept in memory until then (CrafterTalk) and logged. The
-                    // piece is not set aside; if it is gone by then the crafter has nothing to open a trade with.
-                    if (reply.Topic == "craft_stock_meet" && reply.Deal?.Piece != null && Log.IsInfoEnabled)
-                        Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, ("outcome", "stock_agreed"), ("realm", bot.Realm), ("player", player.Name),
-                            ("crafter", bot.Name), ("crafterId", bot.DatabaseID), ("item", reply.Deal.Piece.Name), ("quality", reply.Deal.Piece.Quality),
-                            ("copper", reply.Deal.Ask), ("pay", "trade"), ("until", reply.Deal.UntilUtc.ToString("O", CultureInfo.InvariantCulture))));
+                    // A stock sale agreed for the crafter's next break: the piece is set aside for the player until the deal
+                    // lapses (CrafterTalk: half an hour after the break it named). Any other quote calls off an earlier hold.
+                    if (reply.Topic == "craft_stock_meet" && reply.Deal?.Piece != null)
+                        HoldStock(bot, player.Name, customer.Id, reply.Deal);
+                    else
+                        ReleaseHoldsOf(bot.DatabaseID, customer.Id, "replaced");
                     break;
                 case CrafterTalk.Act.Haggle:
                     Deals[key] = reply.Deal;
+                    ReleaseHoldsOf(bot.DatabaseID, customer.Id, "replaced");
                     if (Log.IsInfoEnabled)
                         Log.Info(EconomyLog.Line(EconomyLog.EconHaggle, ("crafter", bot.Name), ("crafterId", bot.DatabaseID), ("realm", bot.Realm),
                             ("player", player.Name), ("item", open?.ItemText ?? string.Empty), ("asked", open?.Ask ?? 0), ("now", reply.Deal?.Ask ?? 0),
@@ -295,11 +306,13 @@ namespace DOL.GS.CraftingEconomy
                     break;
                 case CrafterTalk.Act.PlaceOrder:
                     Deals.TryRemove(key, out _);
+                    ReleaseHoldsOf(bot.DatabaseID, customer.Id, "replaced");
                     if (Place(bot, player, customer, reply.Deal, upFront: false) == null)
                         return reply with { Text = "cant take that on right now, try me later", Act = CrafterTalk.Act.Cannot, Topic = "craft_full" };
                     break;
                 case CrafterTalk.Act.AwaitDeposit:
                     Deals.TryRemove(key, out _);
+                    ReleaseHoldsOf(bot.DatabaseID, customer.Id, "replaced");
                     AwaitingDeposit[key] = reply.Deal with { UntilUtc = now + CrafterTalk.DealLifetime };
                     break;
                 case CrafterTalk.Act.OpenTrade:
@@ -318,6 +331,7 @@ namespace DOL.GS.CraftingEconomy
                 case CrafterTalk.Act.Declined:
                 case CrafterTalk.Act.Refuse:
                     Deals.TryRemove(key, out _);
+                    ReleaseHoldsOf(bot.DatabaseID, customer.Id, reply.Topic == "craft_stock_cancelled" ? "cancelled" : "declined");
                     AwaitingDeposit.TryRemove(key, out _);
                     break;
             }
@@ -692,10 +706,12 @@ namespace DOL.GS.CraftingEconomy
                 return null;
             DbInventoryItem piece = crafter.Inventory.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
                 .FirstOrDefault(item => item != null && item.ObjectId == deal.Piece.ObjectId);
-            if (piece == null || AutonomousBotCraftOrders.IsHeldForOrder(piece))
+            if (piece == null || AutonomousBotCraftOrders.IsHeldForOrder(piece) ||
+                Holds.TryGetValue(piece.ObjectId, out StockHold held) && held.CustomerId != CustomerIdOf(player))
                 return null;
             return BotTradeWindow.Open(player, crafter, [piece], deal.Ask, "stock:" + piece.ObjectId, window =>
             {
+                ReleaseHold(piece.ObjectId, "sold");
                 CrafterCustomers.NoteDeal(crafter.DatabaseID, CustomerIdOf(player), player.Name, deal.Ask, UtcNow());
                 BotCrafterRoster.Instance.NoteEarned(crafter.DatabaseID, deal.Ask);
                 if (Log.IsInfoEnabled)
@@ -703,6 +719,122 @@ namespace DOL.GS.CraftingEconomy
                         ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID), ("item", piece.Name), ("quality", piece.Quality),
                         ("copper", deal.Ask), ("pay", "trade"), ("paid", true)));
             });
+        }
+
+        #endregion
+
+        #region Stock held for a player
+
+        /// <summary>
+        /// A stock piece set aside for one player by an agreed sale ("deal" while the crafter hunts), until the deal lapses.
+        /// Held in memory with the deal itself: the piece never leaves the crafter's bag, so a crafter logout or a server restart
+        /// loses nothing. A logout keeps the hold until it lapses; a restart drops the deal and the hold together, and the piece
+        /// is the crafter's own stock again (no item is ever moved, so none can be lost).
+        /// </summary>
+        public sealed record StockHold(long BotId, string ObjectId, string CustomerId, string PlayerName, string ItemName, long Copper,
+            DateTime UntilUtc, bool Told);
+
+        private static readonly ConcurrentDictionary<string, StockHold> Holds = new(StringComparer.Ordinal);
+
+        /// <summary>The holds now (tests and /lscraft).</summary>
+        public static IReadOnlyCollection<StockHold> HoldsNow => Holds.Values.ToArray();
+
+        /// <summary>Whether this piece of this crafter is set aside for a player. Thread-safe (brain turns).</summary>
+        public static bool IsHeld(long botId, string objectId) =>
+            !string.IsNullOrEmpty(objectId) && Holds.TryGetValue(objectId, out StockHold hold) && hold.BotId == botId;
+
+        private sealed class HoldPolicy : IBotItemPolicy
+        {
+            public static readonly HoldPolicy Instance = new();
+            public string Name => "stock held for a player (WP8)";
+            public bool IsReserved(GameBot bot, DbInventoryItem item) => bot != null && item != null && IsHeld(bot.DatabaseID, item.ObjectId);
+        }
+
+        public static StockHold HoldStock(GameBot crafter, string playerName, string customerId, CrafterTalk.Deal deal)
+        {
+            if (crafter == null || deal?.Piece == null || string.IsNullOrEmpty(customerId))
+                return null;
+            ReleaseHoldsOf(crafter.DatabaseID, customerId, "replaced", except: deal.Piece.ObjectId);
+            Holds.TryGetValue(deal.Piece.ObjectId, out StockHold before);
+            var hold = new StockHold(crafter.DatabaseID, deal.Piece.ObjectId, customerId, playerName ?? string.Empty, deal.Piece.Name ?? string.Empty,
+                deal.Ask, deal.UntilUtc, before?.CustomerId == customerId && before.Told);
+            Holds[deal.Piece.ObjectId] = hold;
+            if (Log.IsInfoEnabled)
+                Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, ("outcome", "stock_held"), ("realm", crafter.Realm), ("player", hold.PlayerName),
+                    ("crafter", crafter.Name), ("crafterId", crafter.DatabaseID), ("item", hold.ItemName), ("quality", deal.Piece.Quality),
+                    ("copper", hold.Copper), ("pay", "trade"), ("until", hold.UntilUtc.ToString("O", CultureInfo.InvariantCulture))));
+            return hold;
+        }
+
+        /// <summary>Lets a held piece go (why: expired, cancelled, declined, replaced, sold, gone). True when it was held.</summary>
+        public static bool ReleaseHold(string objectId, string why)
+        {
+            if (string.IsNullOrEmpty(objectId) || !Holds.TryRemove(objectId, out StockHold hold))
+                return false;
+            if (Log.IsInfoEnabled)
+                Log.Info(EconomyLog.Line(EconomyLog.EconPlayerOrder, ("outcome", "stock_released"), ("why", why ?? string.Empty),
+                    ("player", hold.PlayerName), ("crafterId", hold.BotId), ("item", hold.ItemName), ("copper", hold.Copper)));
+            return true;
+        }
+
+        public static int ReleaseHoldsOf(long botId, string customerId, string why, string except = null)
+        {
+            int released = 0;
+            foreach (StockHold hold in Holds.Values.Where(h => h.BotId == botId && h.CustomerId == customerId && h.ObjectId != except).ToArray())
+                if (ReleaseHold(hold.ObjectId, why))
+                    released++;
+            return released;
+        }
+
+        /// <summary>
+        /// Game loop, once a second: lets lapsed holds go (and their deals), and tells a player once per deal, when they are in
+        /// the game, that the crafter holding their piece is on its break now and where. Returns the tells sent.
+        /// </summary>
+        public static int PulseHolds()
+        {
+            if (Holds.IsEmpty)
+                return 0;
+            DateTime now = UtcNow();
+            int told = 0;
+            foreach (StockHold hold in Holds.Values.ToArray())
+            {
+                if (hold.UntilUtc <= now)
+                {
+                    ReleaseHold(hold.ObjectId, "expired");
+                    Deals.TryRemove((hold.BotId, hold.CustomerId), out _);
+                    continue;
+                }
+                if (hold.Told)
+                    continue;
+                GameBot crafter = FindBot(hold.BotId);
+                if (crafter == null || !AtBreak(crafter))
+                    continue;
+                if (!crafter.Inventory?.GetItemRange(eInventorySlot.FirstBackpack, eInventorySlot.LastBackpack)
+                        .Any(item => item != null && item.ObjectId == hold.ObjectId) ?? true)
+                {
+                    ReleaseHold(hold.ObjectId, "gone");
+                    continue;
+                }
+                GamePlayer player = FindPlayer(CrafterCustomers.CharacterIdOf(hold.CustomerId));
+                if (player == null || player.Realm != crafter.Realm)
+                    continue;
+                if (!Holds.TryUpdate(hold.ObjectId, hold with { Told = true }, hold))
+                    continue;
+                Say(crafter, player, BreakTell(hold.ItemName, AutonomousLivingServer.PlaceOf(crafter), player.Name), 500);
+                told++;
+            }
+            return told;
+        }
+
+        /// <summary>The crafter's word that its break has begun (corpus topic craft_break_ready, else these fixed words). Pure.</summary>
+        public static CrafterTalk.Reply BreakTell(string item, string zone, string customer)
+        {
+            var slots = new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["item"] = (item ?? string.Empty).ToLowerInvariant(), ["zone"] = string.IsNullOrWhiteSpace(zone) ? "town" : zone, ["customer"] = customer ?? string.Empty,
+            };
+            return new CrafterTalk.Reply($"on my break now, in {slots["zone"]}. come find me for the {slots["item"]} and say yes", CrafterTalk.Act.Status,
+                null, "craft_break_ready", slots);
         }
 
         #endregion
