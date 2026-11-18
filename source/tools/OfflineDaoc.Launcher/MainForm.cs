@@ -1915,10 +1915,10 @@ internal sealed partial class MainForm : Form
                 string assignedUtc = hasLiveStatus ? live!.ObjectiveAssignedUtc : reader.GetString(18);
                 string objectivePhase = hasLiveStatus ? live!.ObjectivePhase : reader.GetString(19);
                 string objectiveExpiresUtc = hasLiveStatus ? live!.ObjectiveExpiresUtc : reader.GetString(20);
+                // A buffbot copy the server retired is kept, not deleted (owner 2026-11-18): it shows as such; Delete is unchanged.
+                bool retiredCopy = BotDeletionText.IsRetiredCopy(deletionQueued, reader.GetString(5), reader.GetString(8));
                 string activity = deletionQueued
-                    ? running || serverProcessPresent
-                        ? "Deletion requested — waiting for safe server removal"
-                        : "Deletion pending — Delete is available while the server is stopped"
+                    ? BotDeletionText.Activity(reader.GetString(5), reader.GetString(8), running || serverProcessPresent)
                     : FormatBotActivity(rawActivity, currentGoal, targetName, destination, progress, isOnline);
                 GroupMetadata? group = isOnline ? ParseGroupMetadata(itinerary) : null;
                 bots.Add(new BotRow(botId, reader.GetString(1), RealmName(reader.GetInt32(2)), reader.GetString(3), GenderName(reader.GetInt32(4)), reader.GetString(5), level, zoneName, activity, isOnline, true, deletionQueued,
@@ -1926,6 +1926,7 @@ internal sealed partial class MainForm : Form
                     objectiveKind, assignmentId, assignedUtc, objectivePhase)
                 {
                     ObjectiveExpiresUtc = objectiveExpiresUtc,
+                    IsRetiredCopy = retiredCopy,
                     HasGroupTaskClock = group?.HasTaskClock == true,
                     TaskTimerPaused = group?.TaskTimerPaused == true,
                     TaskRemainingMilliseconds = group?.TaskRemainingMilliseconds ?? 0,
@@ -3398,7 +3399,8 @@ internal sealed partial class MainForm : Form
         public string NameWithMeetUpTimer => IsOnline && GroupPhase == "Meeting up" &&
             TaskTimerDisplay.Remaining(MeetUpDeadlineUtc, DateTime.UtcNow) is long remaining
                 ? $"{Name} ({TaskTimerDisplay.Format(remaining)})" : Name;
-        public string State => DeletionQueued ? "Deleting…" : IsOnline ? "Online" : "Offline";
+        public bool IsRetiredCopy { get; init; }
+        public string State => BotDeletionText.State(DeletionQueued, IsRetiredCopy, IsOnline);
         public string RvrFormation => GroupId.Length > 0 ? $"Warband {GroupId}" : "Solo roamer";
     }
 

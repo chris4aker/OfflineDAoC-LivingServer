@@ -2805,6 +2805,12 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", LIVING_SERVER_SETTINGS_VERSION_KEY, "Living Server: the build whose new defaults were last applied to this world's saved settings (set by the server; leave it alone).", "")]
 		public static string LIVING_SERVER_SETTINGS_VERSION;
 
+		public const string LIVING_SERVER_WORLD_REPAIRS_KEY = "living_server_world_repairs";
+
+		/// <summary>The one-time world repairs that already ran on this world, comma-separated (BuffBotCopyRetirement: "buffbot-copies").</summary>
+		[ServerProperty("bots", LIVING_SERVER_WORLD_REPAIRS_KEY, "Living Server: the one-time repairs of saved world data that already ran on this world (set by the server; leave it alone).", "")]
+		public static string LIVING_SERVER_WORLD_REPAIRS;
+
 		// ---- Server life (docs/LIVING-SERVER.md). Every part is on by default since Living Server 1.2 (owner 2026-11-16: "all our
 		// living server features should be in by default if someone downloads our installer"); worlds that ran an earlier build
 		// move once where the row still holds the untouched old default (LivingServerSettingsUpgrade). ----

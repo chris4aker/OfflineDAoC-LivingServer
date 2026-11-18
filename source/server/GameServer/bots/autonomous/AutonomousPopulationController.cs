@@ -67,6 +67,7 @@ public static class AutonomousPopulationController
             using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
+        RetireBuffBotCopies();
         RefreshControlPlane(force: true);
         RetireCustomClassBots(_cachedRoster);
         LogEraBuildCensus(_cachedRoster);
@@ -446,6 +447,62 @@ public static class AutonomousPopulationController
         {
             Log.Error("Custom-class gamebots could not be marked (they are still never logged in)", exception);
         }
+    }
+
+    /// <summary>
+    /// Owner decision 2026-11-18: the No Lifer buffbots an earlier build saved into the roster (before #334) are retired, kept
+    /// and never logged in, never deleted. Once per world (living_server_world_repairs), before the first roster read; see
+    /// <see cref="BuffBotCopyRetirement"/> for how a copy is told from a gamebot. If anything fails, nothing is recorded and
+    /// the next start tries again.
+    /// </summary>
+    private static void RetireBuffBotCopies()
+    {
+        try
+        {
+            if (BuffBotCopyRetirement.AlreadyRan(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS))
+                return;
+            HiredCompanions165.EnsureLoaded();
+            OfflineWorldBotRecord[] rows = DOLDB<OfflineWorldBotRecord>.SelectAllObjects().ToArray();
+            BuffBotCopyRetirement.Result result = BuffBotCopyRetirement.Find(rows, HiredCompanions165.IsHired,
+                BuffBotCopyRetirement.PercentFor(ServerProperties.Properties.BOT_NOLIFER_BUFFBOT_PERCENT));
+            var changed = new List<OfflineWorldBotRecord>();
+            foreach (BuffBotCopyRetirement.Copy copy in result.Copies)
+                if (BuffBotCopyRetirement.Retire(copy))
+                    changed.Add(copy.Record);
+            if (changed.Count > 0)
+            {
+                bool saved;
+                using (AiProfile.Lock(AutonomousBotStatusPersistence.DatabaseWriteLock, AiSystem.LockDatabaseWrite))
+                    saved = GameServer.Database.SaveObject(changed.Cast<DataObject>());
+                if (!saved)
+                {
+                    Log.Error($"{BuffBotCopyRetirement.SummaryLogTag} the retired copies could not be saved; tried again next start");
+                    return;
+                }
+            }
+            foreach (BuffBotCopyRetirement.Copy copy in result.Copies.Where(copy => changed.Contains(copy.Record)))
+                Log.Info(BuffBotCopyRetirement.RetiredLine(copy));
+            foreach (OfflineWorldBotRecord record in result.Suspected)
+                Log.Warn(BuffBotCopyRetirement.SuspectedLine(record));
+            Log.Info(BuffBotCopyRetirement.SummaryLine(result, changed.Count));
+            MarkWorldRepairDone();
+        }
+        catch (Exception exception)
+        {
+            Log.Error($"{BuffBotCopyRetirement.SummaryLogTag} the buffbot copies could not be checked; tried again next start", exception);
+        }
+    }
+
+    private static void MarkWorldRepairDone()
+    {
+        string done = BuffBotCopyRetirement.WithRepair(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS);
+        DbServerProperty row = DOLDB<DbServerProperty>.SelectObject(DB.Column("Key").IsEqualTo(ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS_KEY));
+        if (row != null)
+        {
+            row.Value = done;
+            GameServer.Database.SaveObject(row);
+        }
+        ServerProperties.Properties.LIVING_SERVER_WORLD_REPAIRS = done;
     }
 
     /// <summary>

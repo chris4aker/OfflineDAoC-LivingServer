@@ -499,12 +499,23 @@ class Rvr(unittest.TestCase):
         self.assertIn("relayed regroups ended by contact within 1 s: 1", row["detail"])
         self.assertIn("32 regroup starts", row["detail"], "an end line is not a start")
 
-    def test_d_relay_started_regroups_over_ten_percent(self):
+    def test_d_relay_started_regroups_over_the_bar(self):
+        # Owner decision 2026-11-18: the bar is 11.5% (between one hop, about 10%, and two hops, about 12.7%).
+        self.assertEqual(pcl.RELAY_SHARE_BAR, 11.5)
         log = self.stance_log(own_regroups=3)
         row = self.regroup(log)
         self.assertEqual(row["status"], pcl.CONTRADICTED)
-        self.assertIn("1 started by a relay (20.0%, at most 10%)", row["detail"])
+        self.assertIn("1 started by a relay (20.0%, at most 11.5%)", row["detail"])
         self.assertIn('reason="relayed retreat"', row["line"])
+        self.assertIn("relay-started regroups 11.5% of starts or less", row["row"])
+        # 1 of 8 (12.5%) is over the bar
+        self.assertEqual(self.regroup(self.stance_log(own_regroups=6))["status"], pcl.CONTRADICTED)
+
+    def test_d_a_share_between_ten_and_eleven_and_a_half_percent_passes(self):
+        # 1 of 9 (11.1%): failed the old 10% bar, under the owner's 11.5%
+        row = self.regroup(self.stance_log(own_regroups=7))
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("1 started by a relay (11.1%, at most 11.5%)", row["detail"])
 
     def test_field_rows(self):
         log = Log().start(at(0))
@@ -640,6 +651,24 @@ class EraBuilds(unittest.TestCase):
         row = check(only(log.run()[1]), "census")
         self.assertEqual(row["status"], pcl.CONTRADICTED, "a retired one acts")
         self.assertIn('bot="Bind71" id=71', row["line"])
+
+    def test_buffbot_copies_retired_and_not_played(self):
+        # Owner decision 2026-11-18: the copies an earlier build saved (5876 "Eilriorrin" on 5378dbe) are retired once
+        copy = ('BOT_BUFFBOT_COPY_RETIRED bot="Eilriorrin" id=5876 class=Druid level=50 realm=Hibernia main="Ashfury" '
+                'mainId=5147: a buffbot an earlier build saved as a gamebot; kept with its items, never logged in')
+        log = Log().start(at(0))
+        self.assertEqual(check(only(log.run()[1]), "buffbot_copies")["status"], pcl.NOT_SEEN)
+        log.add(at(0, 17), copy)
+        log.add(at(0, 17), 'BOT_BUFFBOT_COPIES retired=1 found=1 suspected=0 mains=212')
+        # the buffbot itself, with its own id, is not the copy
+        log.add(at(1), 'BUFFBOT_LOGOUT buffbot="Eilriorrin" id=1800005147 main="Ashfury" reason="main logged out"')
+        row = check(only(log.run()[1]), "buffbot_copies")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("retired=1 found=1 suspected=0 mains=212; 1 retired, 0 suspected", row["detail"])
+        log.add(at(2), 'ERA_BUILD_ASSIGNED bot="Eilriorrin" id=5876 class=Druid level=50 build=druid-regrow-nurt draw=nearest')
+        row = check(only(log.run()[1]), "buffbot_copies")
+        self.assertEqual(row["status"], pcl.CONTRADICTED, "a retired copy plays")
+        self.assertIn('id=5876', row["line"])
 
     def test_trained_is_not_applicable_without_era_draws(self):
         # 5378dbe: 13 ERA_BUILD_ASSIGNED, all draw=nearest at level 50; TRAINED is only for draw=era
