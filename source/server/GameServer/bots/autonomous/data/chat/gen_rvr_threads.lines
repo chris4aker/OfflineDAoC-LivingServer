@@ -87,7 +87,7 @@ C: catapults are for the defenders, hit the crowd at the ram | from inside the c
 B: ok fair, from inside its a different story
 D: i built a trebuchet once. took me all evening to get it to the keep | dragged a trebuchet across {frontier} once, never again
 C: lol where did it end up | did it at least hit something
-D: an {enemy} stealther killed me next to it and it sat there all night | died to a stealther five steps from the keep, left it in the grass
+D: {enemy} stealthed up and killed me next to it and it sat there all night | died to a stealther five steps from the keep, left it in the grass
 ~ 30
 A: where do siege weapons even come from, a vendor? | who makes these things, is it a trade?
 ?B: crafted, its a separate trade skill | siegecraft, its its own trade
@@ -103,7 +103,7 @@ C: they can, which is why you guard the thing | oh they break, ask anyone who le
 ?D: i lost a ram to two guys with axes once. two | had a ram smashed by a pair of tanks while we watched the gate
 D: ok i am making another ram tonight, who is carrying | building a ram later, need a volunteer mule
 B: not me, i carried the last two | someone else, my back still hurts from last week
-A: i will. if i die the ram is a gift to {enemy} | fine, i will haul it. pray for me
+A: i will. if i die the ram is a gift to the {enemy} | fine, i will haul it. pray for me
 D: lol | deal, ram is yours
 
 @topic guild_keep_claim
@@ -123,7 +123,7 @@ D: honestly i like seeing guild names on keeps, makes it feel real | a keep with
 B: until the guild logs off and the keep falls with nobody home | it feels real until that guild logs off for the weekend
 E: our guild had one for a week. most stressful week of my life | we claimed one once and argued about it for days
 ?A: why only a week, what went wrong | only a week? what went wrong
-E: lost it at 3am to a ram group, nobody was on | night raid, everyone asleep, it was gone by breakfast
+E: lost it in the middle of the night to a ram group, nobody was on | night raid, everyone asleep, it was gone by morning
 C: so whats the point if you just lose it | why claim it at all then
 A: pride mostly | because its ours, for a while anyway
 D: pride counts for a lot out there
@@ -135,7 +135,7 @@ C: can anyone in the realm help defend it or just the guild | if i see it under 
 B: everyone helps. a keep is a keep | anyone can defend it, nobody checks your guild tag at the door
 C: cool, if you ever get one i will wander over
 D: bring friends | bring a healer, they always need one
-A: and if it falls, it was {enemy}'s fault, not ours :P | if we lose it, blame the night shift
+A: and if it falls, blame the {enemy}, not us :P | if we lose it, blame the night shift
 
 @topic relic_4am
 @levels 40-50
@@ -144,7 +144,7 @@ A: and if it falls, it was {enemy}'s fault, not ours :P | if we lose it, blame t
 @role B type=NoLifer
 @role C type=Daredevil
 @role D type=Leveler,Crafter
-A: {q} anyone else up? this is exactly when {enemy} likes to move on the relics | {q} why does {enemy} always go for the relics at this hour
+A: {q} anyone else up? this is exactly when {enemy} like to move on the relics | {q} why do {enemy} always go for the relics at this hour
 B: of course this is when they come | they always come when we are all asleep
 C: i am up, cant sleep, whats the topic | here, insomnia club reporting in
 A: if they came right now, how many of us could even show up | honestly, how many bodies could we raise right now
@@ -258,7 +258,7 @@ A: ok heading to {frontier}, wish me realm points | heading out, if i come back 
 B: watch the roads, stealthers love new faces | stick to groups on the way out
 C: and take a speed class with you if you can find one
 ?A: lol i will grab the first one i see
-~ 20
+~ 90
 A: update, died on the road | made it most of the way... dead. stealther. of course
 B: welcome to the frontier | classic
 C: shake it off and run back | release and go again
@@ -331,7 +331,7 @@ D: will do :) | deal, we will come rescue you
 @role B type=Daredevil
 @role C type=NoLifer
 @role D type=Leveler
-A: ok who was hitting the tank | why was half the group on their tank
+A: {q} last fight, who was hitting the tank | why was half our group on their tank last night
 B: me, sorry, he was hitting our healer | guilty, he was right in front of me
 C: thats exactly why you hit their healer, so he goes down after | the tank doesnt die, ever. their healer does
 A: rule is simple: /assist the MA, no exceptions | /assist on me, nothing else, that was the deal
@@ -352,10 +352,10 @@ C: lol | peel duty, the job nobody wants
 ?D: whats peel | what does peel mean
 C: get the enemy off our healer | pull the attackers off our casters
 ~ 20
-A: ok regroup at {keep}, round two | everyone back to {keep}, we try again
-B: assist this time, i promise | promise, nothing but the MA target
+A: ok, next time we do it that way | next fight, new rules
+B: assist next time, i promise | promise, nothing but the MA target
 ?C: i will believe it when i see it | sure you will
-D: macro made! | got my assist key set up, lets go
+D: macro made! | got my assist key set up
 
 @topic stealther_travelers
 @levels 35-50
@@ -374,13 +374,13 @@ D: as a stealther, i promise we are not all bad | speaking for stealthers, we do
 A: name one thing | ok what else do you do
 D: scouting. i tell you where the zerg is | spotting groups before they hit our keeps
 C: true, a stealther called the last raid an hour early | that was useful last week, i admit
-A: fine. scout them, not me | ok but go scout {enemy}, not my corpse
+A: fine. scout them, not me | ok but go scout the {enemy}, not my corpse
 ~ 25
 B: there is no counter to a stealther except not being alone | best defense is three friends
 ?C: or run in a big group like a sensible person | or wait for the zerg and ride along
 A: ok so who wants to walk me to {keep} | escort needed to {keep}, will pay in gratitude
 C: i can, leaving in a few | on my way out anyway, wait at the gate
-D: i can watch the road ahead | i will go ahead and look for my {enemy} cousins
+D: i can watch the road ahead | i will go ahead and look for their stealthers, it takes one to find one
 B: a stealther escort for a stealther victim, poetry | lol, hire one to catch one
 A: whatever works | i am not proud, i will take it
 
@@ -420,7 +420,7 @@ A: ok i am going back out, with a group this time | lesson learned, groups only
 @role D type=Daredevil
 @role E class=Armsman,Paladin,Warrior,Thane,Hero,Champion type=Leveler
 @role A class=Cleric,Friar,Healer,Shaman,Druid,Bard,Warden,Mentalist
-A: is it just me or does every {enemy} group go straight for the healers | died four fights in a row as the first target
+A: is it just me or do the {enemy} always go straight for the healers | died four fights in a row as the first target
 B: thats every group, healers die first or the fight lasts forever | of course, kill the healer first, thats rvr
 C: welcome to playing a healer | thats healer life, sadly
 A: i dont mind dying, i mind dying first every time | i would just like to cast one spell before i die
@@ -449,7 +449,7 @@ D: i give that plan one fight | we will see how long that lasts
 @role B type=NoLifer
 @role C type=Leveler
 @role D class=Minstrel,Skald,Bard type=Socialite,Explorer
-A: {q} why did everyone run in a different direction | that retreat was a disaster, who called it
+A: {q} why did everyone run in a different direction last fight | that retreat last night was a disaster, who called it
 B: nobody called it, everyone just ran | it wasnt a retreat, it was a scatter
 C: and we lost our speed when the speed class died first | our speed singer was the first one they killed
 A: so what, we guard the speed like a healer? | protect the speed class like a healer then
@@ -467,8 +467,8 @@ B: the leader calls it and we follow the speed | whoever leads, and everyone sti
 ?D: and stay close, the song only reaches so far | if you wander off you lose the song
 C: right, nobody wanders | no wandering, no heroics
 ~ 20
-A: regroup, same group, new rules | ok heading back out, same group
-D: speed is up, stick close | songs up, dont fall behind
+A: next time, same group, new rules | ok, new rules for next time
+D: speed stays up, stick close | songs up, dont fall behind next time
 B: and if i yell run, run | when i say run, you run
 C: running is a skill too | lol we have had practice at that
 
@@ -479,7 +479,7 @@ C: running is a skill too | lol we have had practice at that
 @role C type=Daredevil
 @role D type=Explorer
 @role E type=Socialite,Leveler
-A: {q} anyone else think a bridge is the best place to fight | {q} if the {enemy} zerg ever has to cross a bridge, shouldnt we be holding it
+A: {q} anyone else think a bridge is the best place to fight | {q} if {enemy} ever bring a zerg across a bridge, shouldnt we be holding it
 B: bridges are the best spot in {frontier}. they have to come to us | love a bridge, nowhere for them to spread out
 C: tanks hold the middle, casters hang back on our side? | casters at the end, tanks on the middle?
 B: dont put tanks in the middle, they get surrounded | tanks on our end, let them walk into the casters
@@ -530,7 +530,7 @@ A: modem in a siege is brave | lol, respect
 B: new computer next month, then i will be unstoppable | saving up for a new video card
 C: then they will add more people and you will lag again | then they will bring twice as many
 D: no computer survives the zerg | the zerg always wins against hardware
-A: the real enemy is the lag | {enemy} doesnt beat us, the lag does
+A: the real enemy is the lag | {enemy} dont beat us, the lag does
 
 @topic population_imbalance
 @levels 35-50
@@ -559,7 +559,7 @@ E: silver lining, at least our fights run smooth | at least we dont lag in every
 ~ 25
 B: so we pick the right fights and avoid the zerg | we play smart and pick fights
 C: and take keeps when they are asleep | hit them at odd hours, use their own trick
-D: lol 4am raids it is | someone set an alarm
+D: lol middle of the night raids it is | someone set an alarm
 A: not me, i need my sleep | i will be asleep
 E: maybe a sensible hour first | tomorrow at prime time then, like sensible people
 
@@ -569,14 +569,14 @@ E: maybe a sensible hour first | tomorrow at prime time then, like sensible peop
 @role B type=Socialite
 @role C type=Daredevil
 @role D type=Explorer,NoLifer
-A: {q} ever watch an {enemy} zerg spend twenty minutes looking for a door | once watched an {enemy} group walk into a keep wall for five minutes
+A: {q} ever watch forty {enemy} spend twenty minutes looking for a door | once watched a group of {enemy} walk into a keep wall for five minutes
 B: lol they do that, its a tradition | they always get lost near the keeps
 C: to be fair we did the same last week | we arent much better, i saw our zerg get lost in fog
 A: we were exploring | that was a scouting trip
 ~ 25
 D: you know they say the same about us on their side | they probably tell the same jokes about {realm}
 B: sure, but ours are funnier | they wish they had our jokes
-C: had a good duel with one of theirs today, he waved first | i fought an {enemy} today who saluted before we fought, class act
+C: had a good duel with one of theirs today, he waved first | i fought one of the {enemy} today who saluted before we fought, class act
 ?D: did you win | and then?
 C: he won. it was still classy | no. but it was polite
 ~ 30

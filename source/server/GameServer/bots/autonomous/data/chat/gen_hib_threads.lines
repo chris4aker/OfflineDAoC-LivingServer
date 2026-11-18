@@ -144,7 +144,7 @@ E: gl with it, show us some big numbers | gl, post your first big hit
 @role D type=Leveler
 @role E type=Daredevil
 @role F type=Socialite
-A: we just wiped in spraggon den and i think the enchanter did it | well that was a wipe. spraggon den, whole room, everyone at the bind
+A: we wiped in spraggon den earlier and i think the enchanter did it | that was a wipe earlier. spraggon den, whole room, everyone at the bind
 B: i did not pull that room, the pet did | in my defense the pet ran in on its own
 C: the pet ran in because you sent it | last i checked the pet does what it is told
 B: i sent it at one pit spraggon. the rest came along for the party | i sent it at one spraggon cutter, i did not expect friends
@@ -163,12 +163,12 @@ E: and it tanks better than half the heroes i know | that pet holds aggro better
 ?C: do not let the heroes hear that | lol, let the heroes believe what they want
 F: neat, i might roll one | sounds fun, maybe my next alt
 ~ 20
-D: ok, everyone back from the bind, ready to go again? | so are we going back in
+D: so, would you all go back in with that enchanter? | so are you going back in
 B: yes, and this time i wait for the call | yes. i wait for the mez to settle, promise
 C: i will say it in group when it is safe to burn | i will call it, then you burn them down
 E: or we pull the bigger room and see what happens | i say we try the back room this time
 D: no | absolutely not
-A: lol omw back, buff me at the entrance | heading back in, save me a spot
+A: lol, maybe tomorrow | next time, with a bigger group
 
 @topic hib_front_line
 @levels 30-50
@@ -628,7 +628,7 @@ C: your guild's name on the walls, some pride, and a reason to log in for defens
 E: and you are the ones everyone yells at when it falls | and the guild gets the blame when it falls
 ~ 30
 B: our guild held a keep for a week once, good week | we had one once, for a week
-C: until midgard took it at 3am | and lost it while you slept
+C: until midgard took it in the middle of the night | and lost it while you slept
 B: let us not relive that | we do not talk about that
 ?D: still sounds like decoration to me | i still say claiming is mostly decoration
 ~ 25
@@ -779,6 +779,7 @@ A: well, i will pst you both, thanks | sending tells now, thanks you two
 
 @topic hib_late_night
 @levels 20-50
+@needs !day
 @scene hib_gen_late_night
 @role B type=Socialite
 @role C type=Daredevil
@@ -808,6 +809,7 @@ D: the friends are the real reason people stay | that is why this game sticks
 E: ok, it is late even for me, night all | logging, see you all tomorrow
 B: night! | sleep well
 A: thanks for the stories | good stories tonight, night everyone
+@needs
 
 @topic hib_realm_pride
 @levels 20-29

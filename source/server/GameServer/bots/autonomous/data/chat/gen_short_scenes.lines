@@ -106,12 +106,12 @@ A: np | ty, still open to offers | ok, holding it for a bit
 @scene sh_mez_break_blame
 @role B type=*
 @role C type=Daredevil
-A: who broke mez, the whole camp just woke up | mez broke and we wiped, who did it | someone broke the mez again
+A: who broke mez in my group last night, the whole camp woke up | mez broke and we wiped earlier, who did it | someone broke the mez on us again tonight
 C: i tagged the wrong one... oh | uh, does one swing count | i might have hit the sleeping one
 B: the swing. the swing broke it | anything breaks mez, every time, every single time | you hit the mezzed one
 C: sorry, sorry | ok that one is on me | i will only hit the assist target, promise
 ?D: happens to everyone once | at least you admit it, most never do | everyone breaks one mez in their life
-A: run back and rebuff, we go again | lol fine, everyone run back | ok, regroup at the camp
+A: lol fine, forgiven | ok, lesson learned | forgiven, this once
 
 @topic spec_question
 @levels 5-30
@@ -158,7 +158,7 @@ B: call it in faction before the door is at half, not after | shout early and st
 @levels 30-50
 @scene sh_stealther_on_road
 @role B type=*
-A: {q} why do stealthers always camp the roads to the keeps | stealthers love the frontier roads, watch yourselves | {enemy} stealthers camp the keep roads every night
+A: {q} why do stealthers always camp the roads to the keeps | stealthers love the frontier roads, watch yourselves | the {enemy} send stealthers to camp the keep roads every night
 B: what class usually | which kind gets you | do you ever see who it is
 A: no idea, i am dead before i see anything | couldnt tell you, two hits and gone | something with daggers, that narrows it down lol
 ?C: they always pick the lone healer | and this is why nobody rides out alone | they love those roads
@@ -167,6 +167,7 @@ A: ty, i will wait at the door next time | ok, next time i wait for a group | th
 
 @topic afk_jokes
 @levels 5-50
+@needs evening
 @scene sh_afk_dinner_joke
 @role B type=Socialite
 A: brb, dinner | afk, food | brb, getting called down to eat
@@ -175,6 +176,7 @@ B: dont die | take your time, the monsters will wait | bring some back for us
 A: relax, im in {capital} | im in town, nothing can reach me | i parked somewhere safe
 C: thats what the last guy said | sure, until someone trains a guard on you | ok, we will see
 ?B: i will guard your body | i will keep an eye on you
+@needs
 
 @topic back_from_afk
 @levels 5-50
@@ -456,7 +458,7 @@ A: one more skill point and i am done | ok back to the bar | lol back to clickin
 @scene sh_loot_rules
 @role B type=*
 @role C type=*
-A: we rolling on drops or free for all | loot rules? | who gets drops in this group
+A: {q} roll on drops or free for all, what do your groups do | loot rules, what does everyone use | who gets the drops in your groups
 B: roll for what you can use | roll, but only if its an upgrade | rolls, and no rolling on stuff to sell
 C: the healer gets first pick, keep the healer happy | whoever needs it, healer first
 ?A: i like that | ok sounds good | fair enough
@@ -503,12 +505,12 @@ B: respect | lol | fair enough
 @scene sh_wipe_laugh
 @role B type=Daredevil
 @role C type=*
-A: wiped at {camp}, anyone near for a rez | full group wipe at {camp}, lol | we all died at {camp}, it was glorious
+A: we wiped at {camp} earlier, lol | full group wipe at {camp} tonight, it was glorious | we all died at {camp}, it was beautiful
 B: how | what happened | who pulled
 A: two adds and a patrol | the puller grabbed the whole room | someone pulled the wrong one
 ?C: was it the caster | it was the tank, it is always the tank | let me guess, nobody had aggro
-B: on my way | i know a healer close by, hold on | lol, coming
-A: ty | we will be here, lying down | great, we are not going anywhere
+B: and who got everyone up | did anyone survive | lol, how long was the run back
+A: the healer released first and rezzed us all | nobody, we all ran back | someone passing by rezzed us
 
 @topic dragon_raid
 @levels 45-50
@@ -633,6 +635,7 @@ B: the trainers are spread around the city, walk the halls | follow the main hal
 C: everyone gets lost in jordheim the first time | the layout is a maze, give it a week | i still get lost and i have been here for ages
 ?A: i have been walking for ages | found the bank but no trainer | i am going in circles
 B: keep at it, its there | look for your class in the name | try the other side of the hall
+~ 45
 A: found it! | ty | ok found him finally
 
 @topic leveling_zones
@@ -676,11 +679,11 @@ A: meet in jordheim | gathering in jordheim soon | pst me
 @scene sh_mid_cursed_tomb_rez
 @role B class=Healer,Shaman
 @role C type=*
-A: anyone near the cursed tomb for a rez? | died in the cursed tomb, need a rez | lf rez in the cursed tomb, draugr got me
-B: omw, where | coming, which room | im at the entrance, how deep are you
-A: just past the entrance | by the draugr warriors | not far, first hall
-?C: careful with the vengeful ghouls | ghouls add from behind, watch it | dont pull anything on the way in
-B: rez sent | there you go | got you, accept
+A: to the healer who walked into the cursed tomb to rez me earlier, ty | died in the cursed tomb tonight and a stranger came in for the rez | draugr got me in the cursed tomb, whoever rezzed me, thank you
+B: that was me, you were right by the draugr warriors | me. first hall, right where everyone dies | yw, you were not hard to find
+A: the draugr warriors hit harder than they look | i only went one room past the entrance | i thought the first hall was safe
+?C: watch the vengeful ghouls too | ghouls add from behind in there | nothing in that tomb is safe
+B: bind closer next time | it happens, the tomb is mean | next time bring a friend
 A: ty healer | owe you | thanks a lot
 
 @topic stealther_warning
@@ -913,7 +916,7 @@ A: i will try both | ok, thanks | fair, ill see
 @scene sh_alb_lost_relic
 @role B type=NoLifer
 @role C type=*
-A: {q} why is it always a night raid when a relic goes | {q} has albion ever lost a relic while people were awake | {q} do relics only ever move at 4am
+A: {q} why is it always a night raid when a relic goes | {q} has albion ever lost a relic while people were awake | {q} do relics only ever move in the middle of the night
 B: because nobody is on to stop it | its the only hour they can get past us | guards alone dont stop forty people
 C: and then we take it back on the weekend with half the realm | then prime time comes and we go get it | we always walk it home again, it just takes a few tries
 ?A: so we lose them asleep and win them back awake | sneaky mids | sounds about right
@@ -940,11 +943,11 @@ A: will do | ok | noted, thanks
 @scene sh_hib_muire_rez
 @role B class=Druid,Bard
 @role C type=*
-A: died in muire tomb, need a rez | muire tomb, a mummy hag got me, rez anyone | rez in muire pls, near the entrance
-B: omw | coming, how deep | i can, give me a minute
-A: right inside | near the tomb creepers | not far in
+A: thank you to whoever rezzed me in muire tomb | a mummy hag got me in muire earlier, thanks for the rez, whoever you were | got rezzed in muire by a stranger, thank you
+B: that was me, no problem | me. you were lying right inside | yw, saw you near the entrance
+A: the tomb creepers got the jump on me | i was not even far in | one hag and i was down
 ?C: muire tomb eats newbies | everyone dies there once | the death worms got me there too
-B: found you, accept | rez up | there you go
+B: stay away from the hags for a few levels | the hags hit hard, wait a bit | it gets easier, keep at it
 A: ty! | thanks, owe you one | saved me a long run
 
 @topic stable_master
@@ -957,6 +960,7 @@ B: look for the horses, the stable master sells tickets | find the stable master
 C: tir na nog is a maze the first time | i still get lost in tir na nog | everyone wanders tir na nog for a week
 ?A: found the bank at least | i keep ending up at the same tree | i keep walking past the same merchant
 B: keep going, you will find it | follow the road out, then look around | ask in faction again if you get stuck
+~ 45
 A: found it, ty | ok | thanks
 
 @topic mez_break
@@ -964,12 +968,12 @@ A: found it, ty | ok | thanks
 @scene sh_hib_bard_mez_break
 @role B class=Bard,Mentalist
 @role C class=Enchanter
-A: who broke the mez | mez broke, the camp is awake | who woke up the adds
+A: who broke the mez in my group earlier | the mez broke on us again tonight | who woke up the adds on our last pull
 C: my area spell, sorry | that was me, the area spell hit the mezzed ones | oops, my spell hit everything
 B: no area damage near the mezzed ones, please | please target only the one we are killing | i just mezzed those, give me a break
 C: sorry, sticking to single target | ok, will be careful | my bad, wont happen again
 ?D: enchanters and their area spells | classic | happens every night
-A: run back, regroup | ok, back to camp | rebuffing
+A: next time, single target | ok, noted | fine, all forgiven
 
 @topic animist
 @levels 15-50

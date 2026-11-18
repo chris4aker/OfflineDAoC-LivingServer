@@ -51,12 +51,12 @@ A: setting up an assist macro right now
 @scene mez_breaks
 @role B class=Sorcerer,Healer,Bard,Minstrel,Mentalist
 @role C type=Daredevil
-A: who broke the mez on that last pull?
+A: still thinking about my group last night. who breaks a mez on the first pull?
 C: in my defense it was standing right there
 B: it was standing there because it was mezzed
 C: ok in my defense i did not read the group chat
 B: rule one: do not touch the sleeping ones
-A: lol. noted for the next pull
+A: lol. noted for my next group
 
 @topic pulling
 @levels 20-50
@@ -64,13 +64,13 @@ A: lol. noted for the next pull
 @role B type=Leveler
 @role C type=Daredevil
 @role D type=Socialite
-A: can we agree only one person pulls tonight?
+A: {q} can we agree a group only ever needs one puller?
 B: yes please, two pullers means double the adds
 C: but the puller is slow, i can grab the next one while they kill this
 B: and then the healer runs out of power and we all lie down
 D: the puller sets the pace, everyone else enjoys the ride
 C: fine, i will just stand here looking impatient
-A: perfect, thank you
+A: perfect, thank you, spread the word
 
 @topic named_drops
 @levels 30-50
@@ -167,13 +167,13 @@ A: you are not well
 @role B type=Socialite
 @role C type=NoLifer
 @role D type=*
-A: group loot rules tonight? need before greed?
+A: {q} what loot rules do your groups use? need before greed?
 B: need before greed, roll for anything nobody needs
 C: random loot is fair, everyone gets the same chance
 B: then a caster gets the shield and sells it
 C: and the tank buys it off him, everyone wins
 D: just do not ninja it and we are fine
-A: need before greed it is
+A: need before greed it is, for my groups anyway
 
 @topic leveling_route
 @levels 20-34
@@ -220,7 +220,7 @@ A: buying a little determination, thanks
 A: our guild claimed {keep}, it actually means something now
 B: a claim is a target, every enemy zerg will come for it
 C: and every member will show up to defend it, that is the fun
-B: until it is 3am and nobody is online
+B: until it is the middle of the night and nobody is online
 C: then we take it back the next night
 A: guild night at {keep}, everyone come
 
