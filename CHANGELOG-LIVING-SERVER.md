@@ -256,7 +256,8 @@ Seen on the owner's PC on build `b1b6846` (2026-11-18 10:27-12:00, `DIAG-b1b6-sw
 - **Investigated, not changed: the RvR relay share** rose from about 10% to about 14% after 10:00 (12.6% over the log, bar
   11.5%). The hop checks (a), (b) and (c) are 0 with `from=` on every relayed start; each relaying retreat reached more
   groups as the warbands' fights grew denser (0.49 to 1.10 groups a retreat), while a delivered relay started a regroup no
-  more often. A legitimate rise of one hop, not an over-fire (`docs/PLAYED-CHECK-1.2.md`, the regroup row). The bar stays 11.5%.
+  more often. A legitimate rise of one hop, not an over-fire (`docs/PLAYED-CHECK-1.2.md`, the regroup row). The owner then raised the
+  checker's bar to 15% (2026-11-18 18:19): one hop in dense warbands passes; the exact checks still catch a second hop or an echo.
 - **Checker** (`played_check_log.py`): three new raid rows. "A leashed boss goes home" is Contradicted by 3 or more
   `AUTONOMOUS_TETHER_LEASH` lines in a row for one boss at about the same `fromSpawn`; "No regroup point at a monster's raw
   position raiders can't walk from" by a `TARGET_SWITCH approach=raw` front with 10 or more stranded regroups to it and 10
