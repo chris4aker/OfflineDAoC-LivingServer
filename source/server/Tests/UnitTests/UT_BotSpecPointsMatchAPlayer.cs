@@ -92,6 +92,7 @@ namespace DOL.UnitTests
                 "AutonomousBotStatusPersistence", "BotInventory", "HiredCompanions165");
             GameServer.LoadTestDouble((Server)RuntimeHelpers.GetUninitializedObject(typeof(Server)));
             ClearHires();
+            GameBot.SpecRefundLog.ResetForTests();
         }
 
         [TearDown]
@@ -327,6 +328,29 @@ namespace DOL.UnitTests
             finally { SavedBot.Lines = null; }
             Assert.That(Leftover(again), Is.EqualTo(Leftover(bot)));
             Assert.That(PlayerSpecPointOracle.Lines(again), Is.EquivalentTo(PlayerSpecPointOracle.Lines(bot)));
+        }
+
+        [Test]
+        public void TheFirstLoadLogsThirtyRefundsAndOneSummaryLine()
+        {
+            const string specs = "Slash|40;Shields|42;Parry|20;Thrust|1";
+            int saved = 0;
+            for (int i = 0; i < 40; i++)
+            {
+                OfflineWorldBotRecord record = Record(eCharacterClass.Armsman, 50, 9_873_000 + i);
+                record.SerializedSpecs = specs;
+                record.SerializedAbilities = "trained-level|50|realm-points|0";
+                record.UnspentSpecPoints = saved;
+                record.LastSavedUtc = DateTime.UtcNow.ToString("O");
+                SavedBot.Lines = specs.Split(';').Select(entry => entry.Split('|')[0]).ToArray();
+                try { Track(new SavedBot(record)); }
+                finally { SavedBot.Lines = null; }
+            }
+            Assert.That(_logs.Lines.Count(l => l.StartsWith("AUTONOMOUS_SPEC_REFUND ")), Is.EqualTo(GameBot.SpecRefundLog.PerBotLines));
+            string summary = GameBot.SpecRefundLog.Summary();
+            int each = Left(PlayerSpecPointOracle.ClassOf(eCharacterClass.Armsman), 50, (Specs.Slash, 40), (Specs.Shields, 42), (Specs.Parry, 20));
+            Assert.That(summary, Is.EqualTo($"AUTONOMOUS_SPEC_REFUND_SUMMARY bots=40 points={40 * each} shown=30 classes=\"Armsman:40/{40 * each}\""));
+            Assert.That(GameBot.SpecRefundLog.Summary(), Is.Null, "once");
         }
 
         [Test]

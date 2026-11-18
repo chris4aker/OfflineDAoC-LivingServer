@@ -4203,8 +4203,74 @@ namespace DOL.GS
             if (trainedAt == Level && BotSpec != null)
                 SpendSpecPoints(Level, Level, addLevelPoints: false);
             MarkAutonomousStateDirty();
-            log.Info($"AUTONOMOUS_SPEC_REFUND bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
-                     $"trainedAt={trainedAt} saved={saved} owed={owed} unspent={m_leftOverSpecPoints}");
+            SpecRefundLog.Record(ClassName, owed - saved,
+                $"{SpecRefundLog.Tag} bot=\"{Name}\" id={DatabaseID} class=\"{ClassName}\" level={Level} " +
+                $"trainedAt={trainedAt} saved={saved} owed={owed} unspent={m_leftOverSpecPoints}");
+        }
+
+        /// <summary>
+        /// AUTONOMOUS_SPEC_REFUND without a flood on a world's first load after the update (thousands of bots): one line
+        /// each for the first <see cref="PerBotLines"/> bots refunded, then <see cref="Summary"/> once the start-up ramp
+        /// has finished, and again for any refunded later: <c>AUTONOMOUS_SPEC_REFUND_SUMMARY bots=812 points=61234
+        /// shown=30 classes="Armsman:90/9810,Warrior:85/..."</c> (bots/points by class).
+        /// </summary>
+        public static class SpecRefundLog
+        {
+            public const string Tag = "AUTONOMOUS_SPEC_REFUND";
+            public const int PerBotLines = 30;
+            private static readonly object Gate = new();
+            private static readonly Dictionary<string, (int Bots, long Points)> ByClass = new(StringComparer.Ordinal);
+            private static int _shown;
+
+            public static void Record(string className, int points, string line)
+            {
+                bool show;
+                lock (Gate)
+                {
+                    ByClass[className ?? "?"] = ByClass.TryGetValue(className ?? "?", out var seen)
+                        ? (seen.Bots + 1, seen.Points + points) : (1, points);
+                    show = _shown < PerBotLines;
+                    if (show)
+                        _shown++;
+                }
+                if (show)
+                    log.Info(line);
+            }
+
+            /// <summary>The summary of the refunds since the last one, or null when there were none. Pure but for the
+            /// counts it resets.</summary>
+            public static string Summary()
+            {
+                lock (Gate)
+                {
+                    if (ByClass.Count == 0)
+                        return null;
+                    int bots = ByClass.Values.Sum(entry => entry.Bots);
+                    long points = ByClass.Values.Sum(entry => entry.Points);
+                    string classes = string.Join(",", ByClass.OrderByDescending(entry => entry.Value.Points)
+                        .ThenBy(entry => entry.Key, StringComparer.Ordinal)
+                        .Select(entry => $"{entry.Key}:{entry.Value.Bots}/{entry.Value.Points}"));
+                    string line = $"{Tag}_SUMMARY bots={bots} points={points} shown={_shown} classes=\"{classes}\"";
+                    ByClass.Clear();
+                    return line;
+                }
+            }
+
+            /// <summary>Logs the summary, if there is one.</summary>
+            public static void Flush()
+            {
+                if (Summary() is { } line)
+                    log.Info(line);
+            }
+
+            public static void ResetForTests()
+            {
+                lock (Gate)
+                {
+                    ByClass.Clear();
+                    _shown = 0;
+                }
+            }
         }
 
         /// <summary>The points a player of <paramref name="trainedAt"/> has left with these lines: earned less their cost

@@ -132,7 +132,12 @@ public static class AutonomousPopulationController
                 missing = desired - online - PendingSpawns.Count;
             _populationSatisfied = missing <= 0;
             if (!_rampFinished && AutonomousPopulationRamp.Finished(_cachedEnabled, _cachedRampMinutes, nowUtc - _startedUtc, missing <= 0))
+            {
                 _rampFinished = true;
+                GameBot.SpecRefundLog.Flush();   // the saved bots' refunds of this start, in one line
+            }
+            else if (_rampFinished)
+                GameBot.SpecRefundLog.Flush();   // bots refunded since (nothing when there were none)
             if (missing <= 0)
                 return;
 

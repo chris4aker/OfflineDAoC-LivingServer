@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using DOL.Database;
 using DOL.GS;
 
 namespace DOL.UnitTests
@@ -42,6 +43,7 @@ namespace DOL.UnitTests
         public static int PointsLeft(ICharacterClass characterClass, int level, bool secondStage = false,
             IEnumerable<KeyValuePair<string, int>> lines = null)
         {
+            EnsureGameObjectReady();
             var player = (OraclePlayer)RuntimeHelpers.GetUninitializedObject(typeof(OraclePlayer));
             player.TestClass = characterClass;
             player.TestLevel = (byte)level;
@@ -49,6 +51,34 @@ namespace DOL.UnitTests
             player.TestSpecs = (lines ?? []).Select(line => new Specialization(line.Key, line.Key, 0) { Level = line.Value }).ToList();
             typeof(GamePlayer).GetField("m_client", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(player, Client.Value);
             return player.VerifySpecPoints();
+        }
+
+        private sealed class EmptyServer : GameServer
+        {
+            private static readonly IObjectDatabase Empty =
+                DispatchProxy.Create<IObjectDatabase, UT_BotSpecPointsMatchAPlayer.ReadOnly>();
+            protected override IObjectDatabase DataBaseImpl => Empty;
+            protected override GS.ServerRules.IServerRules ServerRulesImpl => new GS.ServerRules.NormalServerRules();
+        }
+
+        private static bool _gameObjectReady;
+
+        /// <summary>A GamePlayer can't be made before GameObject's type initializer has run, and that reads the database: a
+        /// fixture with no server of its own (UT_EraBuildData) runs it here, once, against an empty read-only one.</summary>
+        private static void EnsureGameObjectReady()
+        {
+            if (_gameObjectReady)
+                return;
+            GameServer previous = GameServer.Instance;
+            if (previous == null)
+                GameServer.LoadTestDouble((EmptyServer)RuntimeHelpers.GetUninitializedObject(typeof(EmptyServer)));
+            try { RuntimeHelpers.RunClassConstructor(typeof(GameObject).TypeHandle); }
+            finally
+            {
+                if (previous == null)
+                    GameServer.LoadTestDouble(previous);
+            }
+            _gameObjectReady = true;
         }
 
         /// <summary>The points a player of the class has earned at the level (no line trained).</summary>

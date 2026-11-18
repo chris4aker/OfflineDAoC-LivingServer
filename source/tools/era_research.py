@@ -242,8 +242,10 @@ RESEARCH = {
         family="DualWieldAndShield", cite=[(U + "t=23852", "2011", '"50CD 42shield 39pierce"')],
         note="every source has CD 50; the period posts' Piercing 50 / CD 42 has 3 posts (id kept)"),
     ("Blademaster", "Blunt/Celtic Dual"): dict(conf="medium",
-        specs={"Celtic Dual": 50, "Blunt": 39, "Blades": 39, "Parry": 16}, label="Celtic Dual/split weapon", cite=[
-            (U + "t=23852", "2011", '"50CD 39pierce 39blade"')], note="as Piercing/Celtic Dual (id kept)"),
+        specs={"Celtic Dual": 50, "Piercing": 39, "Blades": 39, "Parry": 16}, label="Celtic Dual/split weapon", cite=[
+            (U + "t=23852", "2011", '"50CD 39pierce 39blade"')],
+        note="the cited split is Piercing and Blades; no source has Blunt in it, so the posted Blunt 50 goes (id kept "
+             "for saved plans)"),
     ("Nightshade", "Critical Strike"): dict(conf="medium",
         specs={"Critical Strike": 44, "Piercing": 38, "Stealth": 37, "Envenom": 37, "Celtic Dual": 19},
         rest="Celtic Dual", cite=[(U + "t=45724", "2017", '"44 CS, 37 stealth/env, 38 Pierce, rest CD"')]),

@@ -5994,7 +5994,7 @@
           "specs": {
             "Celtic Dual": 50,
             "Blades": 39,
-            "Blunt": 39,
+            "Piercing": 39,
             "Parry": 16
           },
           "posted": {
@@ -6002,7 +6002,7 @@
             "Celtic Dual": 41,
             "Parry": 40
           },
-          "change": "research template: Celtic Dual 41->50, Blades 1->39, Blunt 50->39, Parry 40->16",
+          "change": "research template: Celtic Dual 41->50, Blades 1->39, Piercing 1->39, Parry 40->16, Blunt 50->1",
           "changeBasis": "the cited template (uthgard.net 2011)",
           "changeSourced": true,
           "pointsLeft": 12,
@@ -6017,7 +6017,7 @@
               "says": "\"50CD 39pierce 39blade\""
             }
           ],
-          "note": "as Piercing/Celtic Dual (id kept)",
+          "note": "the cited split is Piercing and Blades; no source has Blunt in it, so the posted Blunt 50 goes (id kept for saved plans)",
           "specsSourced": true,
           "postedSourced": true,
           "new": false,
