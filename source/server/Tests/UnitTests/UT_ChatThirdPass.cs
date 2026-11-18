@@ -81,7 +81,7 @@ public class UT_ChatThirdPass
         Field.Said[] calls = busy.Where(said => said.Kind == "inc").ToArray();
         Assert.That(calls, Is.Not.Empty);
         Assert.That(calls.All(said => said.Text.Contains("beno")), Is.True, "a call names the keep really under attack");
-        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Text.Contains("rena") && !said.Text.Contains("beno")), Is.True);
+        Assert.That(busy.Where(said => said.Kind == "ask_keep").All(said => said.Text.Contains("ren") && !said.Text.Contains("beno")), Is.True);
         Assert.That(busy.Where(said => said.Family is "keep_who" or "keep_still" or "keep_ours").All(said => said.Answers.All(answer => answer.Contains("mid"))),
             Is.True, "the true owner");
     }
@@ -113,15 +113,17 @@ public class UT_ChatThirdPass
     {
         var random = new Random(3);
         Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortClass("Berserker", random)), Is.All.AnyOf("zerk", "zerker"));
-        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Caer Benowyc", random)), Is.All.AnyOf("benowyc", "beno", "benow"));
-        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Bledmeer Faste", random)), Is.All.AnyOf("bledmeer", "bled", "bledm"));
+        // Chat 1.2 (TEXT-021): one name per keep, never a random cut.
+        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Caer Benowyc", random)), Is.All.EqualTo("beno"));
+        Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortKeep("Bledmeer Faste", random)), Is.All.EqualTo("bled"));
         Assert.That(Enumerable.Range(0, 20).Select(_ => Field.ShortDungeon("Treibh Caillte", random)), Is.All.AnyOf("tc", "treibh"));
     }
 
     [Test]
     public void MostUnpromptedLinesComeFromTheFieldAndCraftedLinesAreRare()
     {
-        Assert.That(Field.Share("faction"), Is.GreaterThanOrEqualTo(0.85));
+        // Chat 1.2 (owner's decision 6, 2026-11-18): one /faction opener in five goes to the written corpus.
+        Assert.That(Field.Share("faction"), Is.GreaterThanOrEqualTo(0.75));
         Assert.That(Field.Share("lfg"), Is.GreaterThanOrEqualTo(0.85));
         Assert.That(AutonomousChatFiller.CraftedShare, Is.LessThanOrEqualTo(0.15));
         VC.Line Line(string topic, string text, string invites = "chat") => new("x", "ambient", topic, [], "*", [], 1, 50, [], "", invites, 1, text);

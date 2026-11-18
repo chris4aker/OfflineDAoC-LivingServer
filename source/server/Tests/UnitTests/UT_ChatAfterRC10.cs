@@ -45,7 +45,8 @@ public class UT_ChatAfterRC10
         }
         bool heard = false;
         for (int i = 0; i < 3000 && !heard; i++)
-            heard = Field.Line("faction", Facts("Pennine Mountains", inTown: false) with { Id = i }, null, random)?.Text?.StartsWith("grinding pennine") == true;
+            // Chat 1.2 (LOG-013): a 50 no longer grinds at all; one still levelling does.
+            heard = Field.Line("faction", Facts("Pennine Mountains", inTown: false) with { Id = i, Level = 30 }, null, random)?.Text?.StartsWith("grinding pennine") == true;
         Assert.That(heard, Is.True, "out in a zone the line is still said");
     }
 

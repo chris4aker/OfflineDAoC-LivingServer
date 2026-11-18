@@ -71,6 +71,7 @@ namespace DOL.GS
                 ($@"^The enemy muster at {K} has broken up", "siege_enemy_broke"),
                 ($@"^The muster for {K} failed to gather", "siege_muster_failed"),
                 ($@"^We held {K}!", "siege_held"),
+                ($@"^{W} held {K}\.", "keep_others_held"),
                 ($@"^Our time to take {K} has run out", "siege_failed"),
                 ($@"^The fighting for {K} has ended", "siege_ended"),
                 // Relics on the road (AutonomousRvrEventLayer)
@@ -116,9 +117,12 @@ namespace DOL.GS
             string raid = ShortRaid(r.Raid ?? slot("raid"), random);
             string hub = ShortHub(r.Hub, random);
             string boss = ShortBoss(r.Boss ?? slot("boss"), random);
-            string enemy = slot("enemy") is { } e ? RealmWord(e, random) : null;
+            // TEXT-018: a realm in one of two shapes, never drawn: its people ("hibs took nged") or a modifier ("hib zerg").
+            string enemySlot = slot("enemy");
+            string enemy = enemySlot is { } e ? RealmWord(e) : null;
             string relic = ShortRelic(r.Relic);
-            string winner = r.Realm != null ? RealmWord(r.Realm, random) : enemy ?? "they";
+            string winner = r.Realm != null ? RealmWord(r.Realm) : enemy ?? "they";
+            string winnerAs = r.Realm != null ? RealmWord(r.Realm, modifier: true) : enemySlot != null ? RealmWord(enemySlot, modifier: true) : "enemy";
             string[] options = r.Kind switch
             {
                 "raid_recruit" =>
@@ -148,10 +152,11 @@ namespace DOL.GS
                     $"{raid} didnt work out, ran outta time", $"calling {raid}, took too long", $"out of time at {raid}, heading home",
                     $"{raid} is a bust tonight, too slow",
                 ],
-                "raid_beaten" => [$"someone beat us to {raid} lol", $"other realm got {raid} first, ugh", $"{raid} already done by someone else, rip"],
+                // TEXT-011: no bare "rip" as an all-purpose reaction.
+                "raid_beaten" => [$"someone beat us to {raid} lol", $"other realm got {raid} first, ugh", $"{raid} already done by someone else, figures"],
                 "raid_defeated" =>
                 [
-                    $"wiped at {raid}, calling it", $"{raid} beat us, gg", $"{raid} wiped us, done for tonight", $"rip {raid} raid, we got smashed",
+                    $"wiped at {raid}, calling it", $"{raid} beat us, gg", $"{raid} wiped us, done for tonight", $"{raid} raid is done, we got smashed",
                 ],
                 "raid_failed" => [$"{raid} called off, not enough showed", $"not enough ppl for {raid}, cancelled", $"no {raid} tonight, nobody came"],
                 "raid_stopped" => [$"{raid} called off", $"never mind {raid}, its off", $"{raid} is off for now"],
@@ -159,7 +164,7 @@ namespace DOL.GS
                 "raid_wipe" =>
                 [
                     $"wiped on {boss}, regroup and go again", $"{boss} wiped us, one more go", $"rez up, going again on {boss}",
-                    $"rip, {boss} got us, trying again", $"{boss} wipe, rebuff and back in",
+                    $"ugh, {boss} got us, trying again", $"{boss} wipe, rebuff and back in",
                 ],
                 "raid_help" => [$"more help coming for {raid}, nice", $"reinforcements on the way to {raid}", $"extra grps joining {raid} now"],
                 "siege_gather" =>
@@ -187,14 +192,14 @@ namespace DOL.GS
                 ],
                 "keep_army_coming" =>
                 [
-                    $"{winner} zerg heading for {keep}, defend", $"big {winner} army moving on {keep}", $"{winner} coming for {keep}, get there",
+                    $"{winnerAs} zerg heading for {keep}, defend", $"big {winnerAs} army moving on {keep}", $"{winner} coming for {keep}, get there",
                     $"scouts saw {winner} marching on {keep}", $"{keep} about to get hit, {winner} on the way",
                 ],
                 "keep_ours_attacking" => [$"we're on {keep}, need help", $"hitting {keep}, come", $"{keep} siege, anyone close?"],
                 "keep_others_fighting" =>
                 [
                     $"fight going at {keep}, anyone?", $"{keep} kicking off, could pick some off", $"theyre fighting at {keep}, 3rd realm it?",
-                    $"{keep} is a mess rn, free rp", $"something going on at {keep}",
+                    $"{keep} is a mess atm, free rp", $"something going on at {keep}",
                 ],
                 "keep_retake" => [$"lost {keep}, retake?", $"{keep} fell, going back for it", $"{keep} gone, who wants it back", $"retake {keep}, meet at the outpost"],
                 "keep_relief" => [$"defense going to {keep}, come", $"relief heading to {keep}", $"grp going to save {keep}", $"going to help {keep}, join"],
@@ -205,6 +210,8 @@ namespace DOL.GS
                 "siege_enemy_broke" => [$"they gave up on {keep} lol", $"{keep} safe, they left", $"no siege at {keep} after all"],
                 "siege_muster_failed" => [$"{keep} called off, not enough", $"not enough for {keep}, maybe later", $"no {keep} tonight"],
                 "siege_held" => [$"held {keep}!", $"{keep} held, gj", $"they couldnt take {keep} lol", $"{keep} still ours"],
+                // LOG-004 (owner's PC 00:06: "hib took nged" for a siege Hibernia defended): another realm's keep held.
+                "keep_others_held" => [$"{winner} held {keep}", $"{keep} held, {winner} kept it", $"{winner} kept {keep}"],
                 "siege_failed" => [$"couldnt take {keep}, calling it", $"{keep} didnt happen, out of time", $"gave up on {keep}"],
                 "siege_ended" => [$"{keep} over? who won", $"{keep} done i think", $"fight at {keep} is over"],
                 "relic_road" => [$"relic out of {keep}!", $"they took the relic from {keep}", $"relic on the road from {keep}", $"relic moving, near {keep}"],
@@ -275,7 +282,7 @@ namespace DOL.GS
                 chat[key] = string.IsNullOrWhiteSpace(value) ? value : key switch
                 {
                     "keep" => AutonomousChatFieldTalk.ShortKeep(value, random),
-                    "enemy" or "winner" or "loser" => RealmWord(value, random) is var word && word != "they" ? word : value,
+                    "enemy" or "winner" or "loser" => RealmWord(value) is var word && word != "they" ? word : value,
                     "raid" => ShortRaid(value, random),
                     "boss" => ShortBoss(value, random),
                     "zone" => AutonomousChatFieldTalk.ShortZone(value, random),
@@ -346,13 +353,12 @@ namespace DOL.GS
             return r.StartsWith("the ", StringComparison.Ordinal) ? r[4..] : r;
         }
 
-        /// <summary>A realm as chat said it ("mids", "hib", "albs").</summary>
-        public static string RealmWord(string realm, Random random) => realm?.Trim().ToLowerInvariant() switch
-        {
-            "albion" => random.Next(3) == 0 ? "alb" : "albs",
-            "midgard" => random.Next(3) == 0 ? "mid" : "mids",
-            "hibernia" => random.Next(3) == 0 ? "hib" : "hibs",
-            _ => "they",
-        };
+        /// <summary>
+        /// A realm as chat said it (chat 1.2, TEXT-018): its people "albs", "mids", "hibs", or with <paramref name="modifier"/> the word
+        /// before a noun "alb", "mid", "hib" ("hib zerg"); "they" for anything else. Never drawn at random (owner's PC: "hib took
+        /// nged", "big hibs army"). Pure.
+        /// </summary>
+        public static string RealmWord(string realm, bool modifier = false) =>
+            AutonomousChatFieldTalk.RealmWord(realm, modifier) is var word && word != "enemy" ? word : "they";
     }
 }

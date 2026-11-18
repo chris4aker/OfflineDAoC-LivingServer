@@ -48,7 +48,37 @@ public static class AutonomousChatFiller
             return false;
         if (IsMusing(line))
             return musing;
-        return crafted || !IsCrafted(line);
+        // Chat 1.2 (owner, 2026-11-18 09:14: "chat and language should be super polished"): a short written line that is true
+        // where the bot stands passes whatever its topic; the written corpus was 0.6% of what a player heard in /faction.
+        return crafted || !IsCrafted(line) || IsSituated(line);
+    }
+
+    // The flags that tie a line to where the bot stands or what just happened to it.
+    private static readonly HashSet<string> SituatedFlags = new(StringComparer.Ordinal)
+    {
+        "at_camp", "just_died", "bag_full", "in_group", "in_dungeon", "in_rvr", "outdoors", "traveling", "in_town", "in_capital", "just_leveled",
+    };
+
+    /// <summary>The most words a situated line may have (as for any plain written opener).</summary>
+    public const int SituatedMaxWords = 9;
+
+    /// <summary>
+    /// A short written opener that is true where the bot stands (chat 1.2, owner's decision 6): an ambient, rvr or camp line that
+    /// needs one of the place or moment flags (at:place, at_camp, just_died, bag_full, in_group, in_dungeon, in_rvr, outdoors,
+    /// traveling, in_town, in_capital, just_leveled), at most nine words, and no joke, tip, life filler, musing, lore or generic
+    /// agreement. The picker only offers a line whose flags hold, so such a line is about the bot's own moment. Pure.
+    /// </summary>
+    public static bool IsSituated(VC.Line line)
+    {
+        if (line == null || line.Kind is not ("ambient" or "rvr" or "camp") || line.Topic == "lore" || line.Invites == "joke")
+            return false;
+        if (line.Needs == null || !line.Needs.Any(need => SituatedFlags.Contains(need) || need.StartsWith("at:", StringComparison.Ordinal)))
+            return false;
+        string text = line.Text ?? string.Empty;
+        if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > SituatedMaxWords || IsGeneric(text) || IsMusing(line) || IsLife(line))
+            return false;
+        string padded = " " + text.ToLowerInvariant() + " ";
+        return !CraftedMarkers.Any(marker => padded.Contains(marker, StringComparison.Ordinal));
     }
 
     private static readonly string[] LifeMarkers =

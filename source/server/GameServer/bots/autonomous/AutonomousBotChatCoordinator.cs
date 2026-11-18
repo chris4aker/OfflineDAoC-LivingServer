@@ -294,6 +294,10 @@ public static partial class AutonomousBotChatCoordinator
                 if (TryField(starter, faction ? "faction" : "say", choice, reason))
                     return true;
                 string opening = BuildAmbientOpening(starter, context, faction, out VC.Picked picked);
+                // Chat 1.2 (owner's decision 6): the corpus gets more of /faction's openers; when it has no line that fits, the
+                // field line is said after all, so the channel's pace (5-7 a minute, decision 5) holds.
+                if (string.IsNullOrWhiteSpace(opening) && AutonomousBotVoices.Enabled)
+                    return TryField(starter, faction ? "faction" : "say", choice, reason, always: true);
                 if (string.IsNullOrWhiteSpace(opening) || !Fresh(choice, opening))
                     return false;
                 // 1.1.3: the opener is line 0 of its exchange; the replies planned below carry the same id.
@@ -345,22 +349,45 @@ public static partial class AutonomousBotChatCoordinator
     {
         AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOf(realm);
         long now = GameLoop.GameLoopTime;
-        // Round 5: every written ambient line counts as a musing: one per realm in 20 minutes at most.
-        if (!memory.WrittenAllowed(now))
-            return _ => false;
         Func<VC.Line, bool> basic = AutonomousChatFiller.AmbientFilter(faction, Random.Shared);
-        return line => basic(line) && !memory.Rested(null, AutonomousChatFiller.IdeaOf(line), now);
+        return WrittenFits(basic, memory, now);
     }
 
-    /// <summary>A written line was said: its idea rests, and a musing starts the realm's 20 minutes.</summary>
+    /// <summary>
+    /// Which written ambient lines a realm may hear now (pure but for the memory): round 5, every written line counts as a
+    /// musing, one per realm in 20 minutes; chat 1.2 (owner's decision 6), a short line true where the bot stands
+    /// (AutonomousChatFiller.IsSituated) only waits the realm's 90 seconds and is heard once an evening. Both keep their idea's rest.
+    /// </summary>
+    public static Func<VC.Line, bool> WrittenFits(Func<VC.Line, bool> basic, AutonomousChatFieldTalk.Memory memory, long now)
+    {
+        bool written = memory.WrittenAllowed(now), situated = memory.SituatedAllowed(now);
+        if (!written && !situated)
+            return _ => false;
+        return line => basic(line) && !memory.Rested(null, AutonomousChatFiller.IdeaOf(line), now) &&
+                       (AutonomousChatFiller.IsSituated(line) ? situated && !memory.Seen(AutonomousChatFiller.Skeleton(line.Text)) : written);
+    }
+
+    /// <summary>A written line was said: its idea rests, and a musing starts the realm's 20 minutes (a situated line its 90 seconds).</summary>
     internal static void NoteWritten(eRealm realm, VC.Line line)
     {
         if (line == null)
             return;
-        AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOf(realm);
-        long now = GameLoop.GameLoopTime;
+        NoteWritten(AutonomousChatFieldTalk.MemoryOf(realm), line, GameLoop.GameLoopTime);
+    }
+
+    /// <summary>The memory side of <see cref="NoteWritten(eRealm, VC.Line)"/>. Pure but for the memory.</summary>
+    public static void NoteWritten(AutonomousChatFieldTalk.Memory memory, VC.Line line, long now)
+    {
+        if (memory == null || line == null)
+            return;
         memory.Use(null, AutonomousChatFiller.IdeaOf(line), now);
-        memory.NoteWritten(now);
+        if (AutonomousChatFiller.IsSituated(line))
+        {
+            memory.Add(AutonomousChatFiller.Skeleton(line.Text));
+            memory.NoteSituated(now);
+        }
+        else
+            memory.NoteWritten(now);
     }
 
     /// <summary>
@@ -368,10 +395,11 @@ public static partial class AutonomousBotChatCoordinator
     /// relics (AutonomousChatFieldTalk), for most unprompted lines. False when the draw goes to the corpus or the facts give
     /// nothing to say.
     /// </summary>
-    private static bool TryField(GameBot starter, string channel, AmbientChoice choice, string reason, List<GamePlayer> listeners = null)
+    private static bool TryField(GameBot starter, string channel, AmbientChoice choice, string reason, List<GamePlayer> listeners = null,
+        bool always = false)
     {
         var random = Random.Shared;
-        if (!AutonomousBotVoices.Enabled || random.NextDouble() >= AutonomousChatFieldTalk.Share(channel))
+        if (!AutonomousBotVoices.Enabled || !always && random.NextDouble() >= AutonomousChatFieldTalk.Share(channel))
             return false;
         // A bot telling a tale says nothing else until it ends.
         if (AutonomousTales.IsTelling(starter.DatabaseID))
@@ -415,6 +443,11 @@ public static partial class AutonomousBotChatCoordinator
                     return false;
                 if (said.Kind == "wts")
                     AutonomousChatBroadcast.StartMacro(starter, text, AutonomousChatBudget.Current, random, said.Item);
+                // Chat 1.2 (owner's decision 12; LOG-028: 0 of 44 /broadcast questions answered): now and then one short true
+                // answer, in /say from a bot in range of the asker, at most one a region in three minutes.
+                if (AutonomousChatFieldTalk.WantsAnswer(said) && random.NextDouble() < BroadcastAnswerShare &&
+                    TakeBroadcastAnswerTurn(starter.CurrentRegionID, GameLoop.GameLoopTime))
+                    ScheduleFieldThread(starter, said, false, exchange, answerOnly: true);
                 break;
             case "faction":
                 if (!BroadcastFaction(starter.Name, starter.Realm, text))
@@ -445,7 +478,37 @@ public static partial class AutonomousBotChatCoordinator
     /// an answer from a regular, a bot near the asker's level, or anyone free; one in five runs on for a few lines, sometimes
     /// with a third bot (AutonomousChatFieldTalk.Thread). Scans a slice of the roster, not all of it.
     /// </summary>
-    private static void ScheduleFieldThread(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction, long exchange)
+    /// <summary>How many /broadcast questions get an answer in /say (owner's decision 12).</summary>
+    public const double BroadcastAnswerShare = 0.3;
+
+    /// <summary>The least gap between two answered /broadcast questions in one region.</summary>
+    public const long BroadcastAnswerGapMs = 3 * 60_000;
+
+    private static readonly Dictionary<ushort, long> LastBroadcastAnswer = new();
+
+    /// <summary>Whether a region may hear another /broadcast answer now, and if so takes the turn.</summary>
+    private static bool TakeBroadcastAnswerTurn(ushort region, long now)
+    {
+        lock (LastBroadcastAnswer)
+        {
+            if (!BroadcastAnswerRoom(LastBroadcastAnswer.TryGetValue(region, out long last) ? last : long.MinValue / 2, now))
+                return false;
+            LastBroadcastAnswer[region] = now;
+            return true;
+        }
+    }
+
+    /// <summary>Whether a /broadcast answer may come at <paramref name="now"/> after the region's last at <paramref name="last"/>. Pure.</summary>
+    public static bool BroadcastAnswerRoom(long last, long now) => now - last >= BroadcastAnswerGapMs || now < last;
+
+    /// <summary>
+    /// A thread's lines as played: all of them, or with <paramref name="answerOnly"/> only the first answer (a /broadcast
+    /// question gets one short answer in /say, never a conversation). Pure.
+    /// </summary>
+    public static List<AutonomousChatFieldTalk.Step> ThreadToPlay(List<AutonomousChatFieldTalk.Step> steps, bool answerOnly) =>
+        steps == null || !answerOnly ? steps : steps.Where(step => step.Who == 1).Take(1).ToList();
+
+    private static void ScheduleFieldThread(GameBot starter, AutonomousChatFieldTalk.Said said, bool faction, long exchange, bool answerOnly = false)
     {
         var random = Random.Shared;
         long now = GameLoop.GameLoopTime;
@@ -484,6 +547,7 @@ public static partial class AutonomousBotChatCoordinator
                 break;
             steps = null;
         }
+        steps = ThreadToPlay(steps, answerOnly);
         if (steps == null)
             return;
         foreach (AutonomousChatFieldTalk.Step step in steps)
@@ -544,7 +608,7 @@ public static partial class AutonomousBotChatCoordinator
                 case "camp_ask" or "camp_ask_zone" or "ask_xp" or "ask_xp_good" or "ask_xp_spot" or "ask_xp_best" or "ask_xp_go" or "ask_xp_spots":
                     return random.NextDouble() < 0.6 ? AutonomousChatLiveAnswers.WhereToHunt(answerer, null, said.Text, random) : null;
                 case "rvr_stealth":
-                    return AutonomousChatLiveAnswers.StealthSighting(answerer, random);
+                    return AutonomousChatLiveAnswers.StealthSighting(answerer, random, asker.Level);
                 case "rvr_enemy":
                     return AutonomousChatLiveAnswers.EnemySighting(answerer, random);
                 case "rvr_keep" or "rvr_out" when said.Place != null:
@@ -706,6 +770,21 @@ public static partial class AutonomousBotChatCoordinator
         if (!AutonomousChatExchange.RoomFor(lane, now))
             return;
         var random = Random.Shared;
+        // Chat 1.2 (LOG-007): a party's first casualty counted as a "wipe" ("grp wiped in barrows" from a party of three with two
+        // alive). A wipe is told only when half the party or more is down, by one who went down, and "whole grp" only when all did.
+        bool wholeGroup = true;
+        if (kind == "wipe")
+        {
+            GameBot[] party = teller.Group?.GetMembersInTheGroup().OfType<GameBot>().ToArray() ?? [teller];
+            GameBot[] down = party.Where(member => !member.IsAlive || member.IsReturningAfterRelease).ToArray();
+            if (!AutonomousChatFieldTalk.IsWipe(party.Length, down.Length))
+                return;
+            wholeGroup = down.Length == party.Length;
+            if (!down.Contains(teller))
+                teller = down[random.Next(down.Length)];
+            if (!teller.IsAutonomousWorldBot)
+                return;
+        }
         // 1.1.3: the realm's regulars tell their deaths; most of the quiet many keep theirs to themselves (AutonomousChatRegulars).
         if (kind is "death" or "wipe" && !AutonomousChatRegulars.TellsOwnStory(IsRegular(teller, now), random))
             return;
@@ -722,7 +801,7 @@ public static partial class AutonomousBotChatCoordinator
         // 1.1.3: a riff ("oof", "rip") the channel heard in the last ten minutes is picked again or left out.
         List<AutonomousChatFieldTalk.Step> steps = AutonomousChatFieldTalk.Story(kind, AutonomousChatFieldTalk.Of(teller, random),
             AutonomousChatFieldTalk.Of(mate, random), third == null ? null : AutonomousChatFieldTalk.Of(third, random), random,
-            AutonomousChatFieldTalk.MemoryOf(teller.Realm), text => AutonomousChatExchange.Shorts.Fresh(lane, text, now), now);
+            AutonomousChatFieldTalk.MemoryOf(teller.Realm), text => AutonomousChatExchange.Shorts.Fresh(lane, text, now), now, wholeGroup);
         // Riffs over the reply budget are left out: the teller tells it alone.
         if (!ReplyAllowed(mate, true, AutonomousChatBudget.ReplyKind.BotThread, "story " + kind, null, out _))
             steps = steps.Where(step => step.Who == 0).ToList();
@@ -739,6 +818,42 @@ public static partial class AutonomousBotChatCoordinator
         var timed = steps.Select(step => step with { AtMs = step.AtMs + 2_000 + random.Next(2_000) }).ToList();
         PlayStory(timed, [teller, mate, third], kind);
     }
+
+    /// <summary>How often a gamebot's real level-up (under 50) is said in /faction with its "gz"s (chat 1.2, LOG-035).</summary>
+    public const double DingTellChance = 0.5;
+
+    /// <summary>The least gap between two told dings in a realm's /faction (LOG-035).</summary>
+    public const long DingGapMs = 90_000;
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<eRealm, long> LastDing = new();
+
+    /// <summary>
+    /// A gamebot just levelled (AutonomousBotVoices.OnBotLevelUp): now and then it says so in /faction ("ding 31") and others say
+    /// "gz" (chat 1.2, LOG-035, owner's PC: about 30 real level-ups in a night, one "ding" heard, because a ding was said only
+    /// when the bot happened to be picked as a speaker in its three minutes). The same path as a field line (the channel's
+    /// ceiling, the near-copy check, the reply budget). A ding to 50 is a story (TellStory) instead. False when nothing was said.
+    /// </summary>
+    public static bool TellDing(GameBot bot)
+    {
+        if (!AutonomousBotVoices.Enabled || !Eligible(bot) || bot.Level < 5 || bot.Level >= 50 || !HasFactionAudience(bot.Realm) ||
+            AutonomousBotDebates.IsRunning(bot.Realm) || AutonomousTales.IsTelling(bot.DatabaseID))
+            return false;
+        var random = Random.Shared;
+        long now = GameLoop.GameLoopTime;
+        if (random.NextDouble() >= DingTellChance || !DingRoom(LastDing.TryGetValue(bot.Realm, out long last) ? last : long.MinValue / 2, now))
+            return false;
+        AutonomousChatFieldTalk.Said said = AutonomousChatFieldTalk.DingLine(AutonomousChatFieldTalk.Of(bot, random), random);
+        if (said == null)
+            return false;
+        var choice = new AmbientChoice(AutonomousChatBudget.Channel.Faction, (long)bot.Realm, (0, 0, 0), 0);
+        if (!SayField(bot, "faction", choice, "it just levelled (a real ding)", said))
+            return false;
+        LastDing[bot.Realm] = now;
+        return true;
+    }
+
+    /// <summary>Whether a ding may be told at <paramref name="now"/> after the realm's last one at <paramref name="last"/>. Pure.</summary>
+    public static bool DingRoom(long last, long now) => now - last >= DingGapMs || now < last;
 
     /// <summary>How long a realm waits after a death story before it hears another (1.1.3, after RC6); wipes and dings to 50 keep their own pace.</summary>
     public const long DeathStoryGapMs = 7 * 60_000;
@@ -1032,6 +1147,9 @@ public static partial class AutonomousBotChatCoordinator
             string wanted = post == AutonomousChatMarket.Post.Wtb ? AutonomousChatMarket.WantedInName(said.Text) : null;
             AutonomousChatMarket.Reply reply = AutonomousChatMarket.ReplyTo(post, said.Text, AutonomousChatFieldTalk.Of(replier, random), solo,
                 wanted != null && Carries(replier, wanted), random, poster.Level);
+            // Chat 1.2 (LOG-034): one poster is asked something at most once an hour.
+            if (reply.Asks != null && !AutonomousChatMarket.Asked.TryAsk(poster.DatabaseID, GameLoop.GameLoopTime))
+                reply = default;
             if (!string.IsNullOrWhiteSpace(reply.Text))
             {
                 lines.Add(new AutonomousChatExchange.Line(1, reply.Text, AutonomousChatArbiter.DelayMs(said.Text, reply.Text, 40, 0, random), "answerer"));
@@ -1110,7 +1228,7 @@ public static partial class AutonomousBotChatCoordinator
 
     /// <summary>
     /// The player's own /trade post now and then gets a bot's public reply, as a bot's post does (RC6 on the owner's PC: the
-    /// player's "wts 99% arcane cloth cap, cheap" drew nothing): "how much?" from a bot that could wear it, "/t me, have one" from a
+    /// player's "wts 99% arcane cloth cap, cheap" drew nothing): "how much?" from a bot that could wear it, "/send me, have one" from a
     /// bot that carries what is wanted. Under the channel's ceiling, after a typing pause.
     /// </summary>
     public static void OnPlayerTradePost(GamePlayer player, string message)
@@ -2127,16 +2245,16 @@ public static partial class AutonomousBotChatCoordinator
             LastExchangeAdvert[seller.Realm] = now;
         }
 
-        string item = exactItemName.Trim();
+        // Chat 1.2 (LOG-020, owner's PC: "pc edgebender choker?" drew "not for my class sorry"): an advert says it is a sale,
+        // never a price check, with the item in lower case as chat typed it.
+        string item = exactItemName.Trim().ToLowerInvariant();
         // With voices on, the seller says a corpus trade line about the listing (0.36-se.4: these lines were
         // written but never used, while every advert was one of two fixed sentences).
         VC.Picked picked = null;
         string opening = AutonomousBotVoices.TryLine(seller, "trade", out picked, flags: ["has_listing"], requireNeed: "has_listing",
                 slots: new Dictionary<string, string>(StringComparer.Ordinal) { ["item"] = item })
             ? picked.Text
-            : Random.Shared.Next(2) == 0
-                ? $"anyone want {item.ToLowerInvariant()}? make me an offer"
-                : $"pc {item.ToLowerInvariant()}?";
+            : ExchangeAdvert(item, Random.Shared);
         using var adTag = AutonomousChatExchange.Tag("exchange_ad", AutonomousChatExchange.NewId(), 0, "seller", seller);
         if (!BroadcastFaction(seller.Name, seller.Realm, opening))
             return false;
@@ -2147,6 +2265,21 @@ public static partial class AutonomousBotChatCoordinator
         else
             ScheduleBotReplies(seller, opening, true, false, picked?.Line);
         return true;
+    }
+
+    /// <summary>
+    /// The written advert for an item on the Realm Exchange when no corpus line fits (chat 1.2, LOG-020): a sale, never "pc x?",
+    /// and the exchange by one name. Pure but for the draw.
+    /// </summary>
+    public static string ExchangeAdvert(string item, Random random)
+    {
+        string name = (item ?? string.Empty).Trim().ToLowerInvariant();
+        return (random ?? Random.Shared).Next(3) switch
+        {
+            0 => $"anyone want {name}? make me an offer",
+            1 => $"selling {name} on the exchange, pst",
+            _ => $"{name} up on the exchange if anyone wants it",
+        };
     }
 
     public static string GenerateFactionReply(string incoming, Random random = null)

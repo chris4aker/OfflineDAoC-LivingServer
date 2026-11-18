@@ -162,8 +162,11 @@ Each realm also has its regulars: about one bot in eighty online (5 to 15), most
 /faction and guild chat for an evening. They talk more often, answer each other, and follow up their own lines ("ty",
 "still lf healer", "nm found one"); most other bots speak there only now and then. A line's idea (a camp, a dungeon at a
 level, a keep) rests for 30 to 60 minutes once said, and its wording family for 3 to 6, so the realm doesn't hear one
-thought reworded. Written lines are at most one per realm in 20 minutes, lore is never recited unasked, and nobody answers a
-remark with "i know right". Gaps between lines are uneven: quick runs, ordinary stretches and the odd lull.
+thought reworded. Written musings and remarks are at most one per realm in 20 minutes; a short written line that is true
+where the bot stands (it needs a place or moment flag such as at_camp, in_dungeon, just_died or at:place, nine words or fewer,
+no joke or tip) waits only 90 seconds and is heard once an evening (1.2, owner 2026-11-18: one /faction opener in five goes to
+the written corpus, and when none fits a field line is said, so the pace holds). Lore is never recited unasked, and nobody
+answers a remark with "i know right". Gaps between lines are uneven: quick runs, ordinary stretches and the odd lull.
 
 Questions come in many shapes (gear, quests, travel, crafting, the frontier, trainers, named monsters, epic steps), and one
 shape ("good xp for...", "any healers on?", "still lf...") is heard at most four times an hour per realm, ten minutes apart
