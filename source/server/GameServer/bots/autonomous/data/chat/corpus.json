@@ -307153,8 +307153,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "none",
-   "text": "ok i'll lead, finding us a camp near here",
-   "id": "5ac55778024d"
+   "text": "ok ill lead, finding us a camp near here",
+   "id": "8a511f504333"
   },
   {
    "kind": "group",
@@ -307221,8 +307221,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "none",
-   "text": "i'll take it, give me a sec to find a spot nearby",
-   "id": "d81c4a34d5e6"
+   "text": "ill take it, give me a sec to find a spot nearby",
+   "id": "46dfa9a23e5e"
   },
   {
    "kind": "group",
@@ -307265,9 +307265,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "none",
-   "text": "well, it's just us now. you want to lead?",
-   "family": "53a4b34464",
-   "id": "c8dbaf08e7dc"
+   "text": "well, its just us now. you want to lead?",
+   "family": "6fc6595b47",
+   "id": "0dbb0b17d4d2"
   },
   {
    "kind": "group",
@@ -307288,9 +307288,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "none",
-   "text": "hm, it's just us now. you want to lead?",
-   "family": "53a4b34464",
-   "id": "c63a2877eb83"
+   "text": "hm, its just us now. you want to lead?",
+   "family": "6fc6595b47",
+   "id": "1ec49001d30a"
   },
   {
    "kind": "group",
@@ -322618,8 +322618,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "someone's in the jail, its {target}",
-   "id": "3abf3fe97b35"
+   "text": "someones in the jail, its {target}",
+   "id": "caee7be43f0b"
   },
   {
    "kind": "combat",
@@ -322675,8 +322675,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{target} got jailed, we'll get ya",
-   "id": "32bbbe4d3dd8"
+   "text": "{target} got jailed, well get ya",
+   "id": "155ddc91072e"
   },
   {
    "kind": "combat",
@@ -324072,8 +324072,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "shoot the bird, it'll come down on ya",
-   "id": "700614297b7c"
+   "text": "shoot the bird, itll come down on ya",
+   "id": "af17b956d38f"
   },
   {
    "kind": "combat",
@@ -324245,9 +324245,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "back off, he's gonna scream",
-   "family": "63e41e1b3b",
-   "id": "fbbb3f38f4e4"
+   "text": "back off, hes gonna scream",
+   "family": "6078d8defb",
+   "id": "116d3096e5ec"
   },
   {
    "kind": "combat",
@@ -324265,9 +324265,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.7071,
-   "text": "step back, he's gonna scream",
-   "family": "63e41e1b3b",
-   "id": "5ce6a9aaa9fe"
+   "text": "step back, hes gonna scream",
+   "family": "6078d8defb",
+   "id": "3bac1d6517f4"
   },
   {
    "kind": "combat",
@@ -324323,8 +324323,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "we're on jail duty, follow me down the tunnel",
-   "id": "ba13db3b1be9"
+   "text": "were on jail duty, follow me down the tunnel",
+   "id": "697a4cfa74a2"
   },
   {
    "kind": "combat",
@@ -324458,8 +324458,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "someone's clearing the jail, keep on him",
-   "id": "71e90cc3b07b"
+   "text": "someones clearing the jail, keep on him",
+   "id": "a6da94cb4f59"
   },
   {
    "kind": "combat",
@@ -324593,8 +324593,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "get in close, he's immune from range",
-   "id": "e2e29cf47c8d"
+   "text": "get in close, hes immune from range",
+   "id": "87a206070af5"
   },
   {
    "kind": "combat",
@@ -324806,8 +324806,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "it's coming for me, kill the ghoul",
-   "id": "f1477cc6a005"
+   "text": "its coming for me, kill the ghoul",
+   "id": "c602eb43d0d5"
   },
   {
    "kind": "combat",
@@ -327680,8 +327680,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "here's your {item}, {price} in the trade window",
-   "id": "838123a0136d"
+   "text": "heres your {item}, {price} in the trade window",
+   "id": "29b9d531ce3d"
   },
   {
    "kind": "craft_reply",
@@ -327979,8 +327979,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "trade",
-   "text": "made a {quality}% {stock} today, {price} if anyone wants it",
-   "id": "7dd5c00442aa"
+   "text": "made a {quality}% {stock}, {price} if anyone wants it",
+   "id": "60f79f713e6e"
   },
   {
    "kind": "trade",
@@ -328176,8 +328176,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{title}. my purse is lighter than my hammer",
-   "id": "50afe64f7f31"
+   "text": "{title}. my purse is a lot lighter for it",
+   "id": "757a15fbff83"
   },
   {
    "kind": "craft",
@@ -372832,8 +372832,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_howareyou",
-   "text": "how is everyone's night going?",
-   "id": "92a2e4d26954"
+   "text": "how is everyones night going?",
+   "id": "ce5cf7e9b9ec"
   },
   {
    "kind": "guild",
@@ -374733,8 +374733,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_howareyou",
-   "text": "how is everyone's real life going? the in game one i can see",
-   "id": "9a31c9e0c1a7"
+   "text": "how is everyones real life going? the in game one i can see",
+   "id": "0f7729b1dcd8"
   },
   {
    "kind": "guild",
@@ -374769,8 +374769,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_howareyou",
-   "text": "how was everyone's day?",
-   "id": "38063aee5dd5"
+   "text": "how was everyones day?",
+   "id": "72e06e07ff4c"
   },
   {
    "kind": "guild",
@@ -382275,9 +382275,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "joke",
-   "text": "our tank's idea of a plan is run in and see",
-   "family": "2a2e72f823",
-   "id": "2152064245c7"
+   "text": "our tanks idea of a plan is run in and see",
+   "family": "5174b1a796",
+   "id": "209c052b5fe1"
   },
   {
    "kind": "guild",
@@ -382294,9 +382294,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "joke",
-   "text": "our tank's idea of a plan is hit it and hope",
-   "family": "2a2e72f823",
-   "id": "c99097dd5fb6"
+   "text": "our tanks idea of a plan is hit it and hope",
+   "family": "5174b1a796",
+   "id": "cf7264c698f2"
   },
   {
    "kind": "guild",
@@ -382313,9 +382313,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "joke",
-   "text": "our tank's idea of a plan is charge first, think later",
-   "family": "2a2e72f823",
-   "id": "7bbddc4ce2aa"
+   "text": "our tanks idea of a plan is charge first, think later",
+   "family": "5174b1a796",
+   "id": "e1871bd9d399"
   },
   {
    "kind": "guild",
@@ -422565,8 +422565,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "joke",
-   "text": "our healer's patience is the strongest buff in the game",
-   "id": "e8cb02235ba3"
+   "text": "our healers patience is the strongest buff in the game",
+   "id": "0c359ec7d9c1"
   },
   {
    "kind": "guild",
@@ -436534,26 +436534,6 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "{level} {class} looking for a group, can be on in a minute",
-   "id": "d37c9721a371"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfg",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "solo"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
    "text": "lfg {camp} or anywhere with xp",
    "id": "f88270b38f46"
   },
@@ -436849,108 +436829,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "lfm at {camp}, {count} spots open",
-   "id": "7c16d67f0553"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "group at {camp} needs a healer, pst",
-   "id": "34fe6b3281ac"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lf tank for {camp}, we have heals and dps",
-   "id": "1b18bfcfae13"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lfm {dungeon}, need {count} more",
-   "id": "36e9fac88f15"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
    "text": "anyone want to join us at {camp}? xp is steady",
    "id": "1c171566e549"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lf puller for {camp}, ours just logged",
-   "id": "98a618b40b6f"
   },
   {
    "kind": "lfg",
@@ -436992,86 +436872,6 @@
    "invites": "lfg",
    "text": "need one more for {camp}, pst",
    "id": "0f8b84cb51f9"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lfm, healer and tank found, need dps",
-   "id": "795de673b5a2"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "group forming for {dungeon}, meet at the entrance",
-   "id": "efd6cf267f7c"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lf mezzer for {dungeon}, adds are killing us",
-   "id": "be4d862450b3"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfm",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    20,
-    50
-   ],
-   "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "lf main assist, our last one was asleep at the keyboard",
-   "id": "c8f6e6188bf1"
   },
   {
    "kind": "lfg",
@@ -442507,1988 +442307,6 @@
    "id": "bc99a7021fe0"
   },
   {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "0d19dafba78a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for the guild",
-   "family": "5daea2bb9b",
-   "id": "61c797e77896"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "549d73d2d990"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for my alt",
-   "family": "5daea2bb9b",
-   "id": "964e637ecbb5"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "91567ad710f5"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making armor for skill ups",
-   "family": "5daea2bb9b",
-   "id": "e3631651f384"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "36f68c32b88b"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for the guild",
-   "family": "5daea2bb9b",
-   "id": "05a5302b9211"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "a5669d24aca1"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for my alt",
-   "family": "5daea2bb9b",
-   "id": "48097dd87050"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "857eed51c5cd"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making weapons for skill ups",
-   "family": "5daea2bb9b",
-   "id": "4a5cfde7b51a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "86421046cdb2"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for the guild",
-   "family": "5daea2bb9b",
-   "id": "1a8a71380815"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "861d1d4611e8"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for my alt",
-   "family": "5daea2bb9b",
-   "id": "ab46b0e12e4c"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "aeb716050992"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "making tailored stuff for skill ups",
-   "family": "5daea2bb9b",
-   "id": "3aa487b57963"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "4f8c40b9f6da"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for the guild",
-   "family": "5daea2bb9b",
-   "id": "53f06afa23fa"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "31b09bbc6d28"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for my alt",
-   "family": "5daea2bb9b",
-   "id": "42e90f32a88e"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "8fdd5ac817d2"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing armor for skill ups",
-   "family": "5daea2bb9b",
-   "id": "99b373281f23"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "961e9597d595"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for the guild",
-   "family": "5daea2bb9b",
-   "id": "ed36246631a0"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "998b7e5c4c84"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for my alt",
-   "family": "5daea2bb9b",
-   "id": "9811fad164c2"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "a0356520a375"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing weapons for skill ups",
-   "family": "5daea2bb9b",
-   "id": "072173507458"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for the guild, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "7c336d9d14d9"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for the guild",
-   "family": "5daea2bb9b",
-   "id": "354c3e6bb7b4"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for my alt, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "dbf54dfe0686"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for my alt",
-   "family": "5daea2bb9b",
-   "id": "0fc7cd62188a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for skill ups, materials cost a fortune",
-   "family": "5daea2bb9b",
-   "id": "e99df78523b8"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1667,
-   "invites": "trade",
-   "text": "finishing tailored stuff for skill ups",
-   "family": "5daea2bb9b",
-   "id": "cb07bb9665ad"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "doing guild orders, materials are killing me",
-   "family": "b8456f0f76",
-   "id": "bde8a752dafd"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "doing guild orders, slow going",
-   "family": "b8456f0f76",
-   "id": "f39fbf4eda6d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "doing guild orders",
-   "family": "b8456f0f76",
-   "id": "42241543405d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "crafting for the guild, materials are killing me",
-   "family": "b8456f0f76",
-   "id": "b9c85d092164"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "crafting for the guild, slow going",
-   "family": "b8456f0f76",
-   "id": "2686d43deb0f"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "invites": "trade",
-   "text": "crafting for the guild",
-   "family": "b8456f0f76",
-   "id": "2a73a3be56f6"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making armor for guildies",
-   "family": "d9f2f5260a",
-   "id": "d73c1541417f"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making armor for my guild",
-   "family": "d9f2f5260a",
-   "id": "9a0619c09554"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making armor for my alts",
-   "family": "d9f2f5260a",
-   "id": "15bfcaa39d46"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making weapons for guildies",
-   "family": "d9f2f5260a",
-   "id": "2a23ce822de6"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making weapons for my guild",
-   "family": "d9f2f5260a",
-   "id": "b919adc6b66a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making weapons for my alts",
-   "family": "d9f2f5260a",
-   "id": "70fd2ffb5af4"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making arrows for guildies",
-   "family": "d9f2f5260a",
-   "id": "b9f535ab685c"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making arrows for my guild",
-   "family": "d9f2f5260a",
-   "id": "d9a07d4e1768"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making arrows for my alts",
-   "family": "d9f2f5260a",
-   "id": "11abb3620a92"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making tailored gear for guildies",
-   "family": "d9f2f5260a",
-   "id": "71f34910c66d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making tailored gear for my guild",
-   "family": "d9f2f5260a",
-   "id": "bdafb99d0458"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, making tailored gear for my alts",
-   "family": "d9f2f5260a",
-   "id": "baa7b0bcc738"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing armor for guildies",
-   "family": "d9f2f5260a",
-   "id": "7d3611bdaf66"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing armor for my guild",
-   "family": "d9f2f5260a",
-   "id": "09b7b584272e"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing armor for my alts",
-   "family": "d9f2f5260a",
-   "id": "a0fede794818"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing weapons for guildies",
-   "family": "d9f2f5260a",
-   "id": "e9b29acebd27"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing weapons for my guild",
-   "family": "d9f2f5260a",
-   "id": "267d4b35965d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing weapons for my alts",
-   "family": "d9f2f5260a",
-   "id": "02218fe94bde"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing arrows for guildies",
-   "family": "d9f2f5260a",
-   "id": "04615d942087"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing arrows for my guild",
-   "family": "d9f2f5260a",
-   "id": "e2fd21b2212d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing arrows for my alts",
-   "family": "d9f2f5260a",
-   "id": "732e8b228c6d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing tailored gear for guildies",
-   "family": "d9f2f5260a",
-   "id": "3147661aa8da"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing tailored gear for my guild",
-   "family": "d9f2f5260a",
-   "id": "346a4d16d55f"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafter here, finishing tailored gear for my alts",
-   "family": "d9f2f5260a",
-   "id": "f2fc75dd8ee6"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making armor for guildies",
-   "family": "d9f2f5260a",
-   "id": "dade7dcc86f8"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making armor for my guild",
-   "family": "d9f2f5260a",
-   "id": "59afeffc7984"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making armor for my alts",
-   "family": "d9f2f5260a",
-   "id": "50717b2dae5d"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making weapons for guildies",
-   "family": "d9f2f5260a",
-   "id": "363b93209080"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making weapons for my guild",
-   "family": "d9f2f5260a",
-   "id": "e4a5c1a3b332"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making weapons for my alts",
-   "family": "d9f2f5260a",
-   "id": "f20a995d5523"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making arrows for guildies",
-   "family": "d9f2f5260a",
-   "id": "5412a2081e23"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making arrows for my guild",
-   "family": "d9f2f5260a",
-   "id": "c3dc12755cd8"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making arrows for my alts",
-   "family": "d9f2f5260a",
-   "id": "05db479f6df9"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making tailored gear for guildies",
-   "family": "d9f2f5260a",
-   "id": "8e2d40f181d1"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making tailored gear for my guild",
-   "family": "d9f2f5260a",
-   "id": "38f097dda388"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, making tailored gear for my alts",
-   "family": "d9f2f5260a",
-   "id": "b51dc7202cb5"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing armor for guildies",
-   "family": "d9f2f5260a",
-   "id": "df05dfd6cd70"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing armor for my guild",
-   "family": "d9f2f5260a",
-   "id": "96cfcfa2711a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing armor for my alts",
-   "family": "d9f2f5260a",
-   "id": "b6e6954460f9"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing weapons for guildies",
-   "family": "d9f2f5260a",
-   "id": "55eff7820a1b"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing weapons for my guild",
-   "family": "d9f2f5260a",
-   "id": "f3ee34213ef0"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing weapons for my alts",
-   "family": "d9f2f5260a",
-   "id": "ba296fe3c6bd"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing arrows for guildies",
-   "family": "d9f2f5260a",
-   "id": "eba5d5c4a522"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing arrows for my guild",
-   "family": "d9f2f5260a",
-   "id": "a9b1f58a44cd"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing arrows for my alts",
-   "family": "d9f2f5260a",
-   "id": "f0e02f57679a"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing tailored gear for guildies",
-   "family": "d9f2f5260a",
-   "id": "807d3529504e"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing tailored gear for my guild",
-   "family": "d9f2f5260a",
-   "id": "afbdf60aba2f"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "trade",
-   "text": "crafting tonight, finishing tailored gear for my alts",
-   "family": "d9f2f5260a",
-   "id": "ca2516af1ac5"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "evening"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "trade",
-   "text": "crafting all evening, guild orders first",
-   "family": "b76505c3b2",
-   "id": "cd9e6fa4d858"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "evening"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "trade",
-   "text": "crafting all evening, skill ups all night",
-   "family": "b76505c3b2",
-   "id": "05545329308c"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "evening"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "trade",
-   "text": "at the forge tonight, guild orders first",
-   "family": "b76505c3b2",
-   "id": "49e0b8cdcc41"
-  },
-  {
-   "kind": "trade",
-   "topic": "selling",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "evening"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 0.5,
-   "invites": "trade",
-   "text": "at the forge tonight, skill ups all night",
-   "family": "b76505c3b2",
-   "id": "05db45b5573c"
-  },
-  {
    "kind": "lfg",
    "topic": "lfg_self",
    "who": [],
@@ -444585,28 +442403,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "lfg {level} {class}, will run to you",
-   "id": "7330cfe6fe1c"
-  },
-  {
-   "kind": "lfg",
-   "topic": "lfg_self",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "solo"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "lfg",
-   "text": "{class} lfg, {level}, been waiting a while",
-   "id": "c7e22e715e19"
+   "text": "lfg {level} {class}, can travel",
+   "id": "e442c1d70fb6"
   },
   {
    "kind": "lfg",
@@ -444745,8 +442543,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "lfg",
-   "text": "{class} {level} lfg, full buffs and potions",
-   "id": "f3327d713a70"
+   "text": "{class} {level} lfg, got potions",
+   "id": "2524fdda84b5"
   },
   {
    "kind": "lfg",
@@ -446407,15 +444205,21 @@
    "topic": "join",
    "who": [],
    "realm": "*",
-   "class": [],
+   "class": [
+    "Cleric",
+    "Friar",
+    "Druid",
+    "Bard",
+    "Healer",
+    "Shaman"
+   ],
    "levels": [
     1,
     50
    ],
    "needs": [
     "in_group",
-    "in_player_group",
-    "is_healer"
+    "in_player_group"
    ],
    "intent": "",
    "mood": "",
@@ -576388,7 +574192,9 @@
     1,
     50
    ],
-   "needs": [],
+   "needs": [
+    "outdoors"
+   ],
    "intent": "greeting",
    "mood": "",
    "weight": 1.0,
@@ -576428,8 +574234,8 @@
    "intent": "greeting",
    "mood": "",
    "weight": 1.0,
-   "text": "o/",
-   "id": "26fab1d3160b"
+   "text": "hey you",
+   "id": "a4aba9f23828"
   },
   {
    "kind": "reply",
@@ -576519,25 +574325,6 @@
    "weight": 1.0,
    "text": "hey!! how is everyone doing tonight",
    "id": "bcf3fa6dbf3d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "greeting",
-   "mood": "",
-   "weight": 1.0,
-   "text": "hi hi, welcome back",
-   "id": "5f1bf3c5fcf8"
   },
   {
    "kind": "reply",
@@ -577937,23 +575724,6 @@
    "intent": "help",
    "mood": "",
    "weight": 1.0,
-   "text": "consider before you pull, saves a lot of deaths",
-   "id": "7671d37b4bd5"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "help",
-   "mood": "",
-   "weight": 1.0,
    "text": "use /stick if you get lost following someone",
    "id": "fb8297705574"
   },
@@ -578005,8 +575775,8 @@
    "intent": "ignoreoutofworld",
    "mood": "",
    "weight": 1.0,
-   "text": "lets keep it about the realm :)",
-   "id": "d4e24b7c9caa"
+   "text": "heh, beats me",
+   "id": "63023b03c48d"
   },
   {
    "kind": "reply",
@@ -578056,8 +575826,8 @@
    "intent": "ignoreoutofworld",
    "mood": "",
    "weight": 1.0,
-   "text": "that is a conversation for another channel",
-   "id": "43f03050b6ec"
+   "text": "eh, dunno about that",
+   "id": "cf8f586cc72e"
   },
   {
    "kind": "reply",
@@ -579339,8 +577109,8 @@
    "answers": [
     "player_mishap"
    ],
-   "text": "lol rip",
-   "id": "1c7eb1a4e095"
+   "text": "lol ouch",
+   "id": "84ff87dde7a6"
   },
   {
    "kind": "reply",
@@ -579359,8 +577129,8 @@
    "answers": [
     "player_mishap"
    ],
-   "text": "rip lol",
-   "id": "25ec5a4de0f1"
+   "text": "ugh lol",
+   "id": "25d9da5d0e9b"
   },
   {
    "kind": "reply",
@@ -579519,8 +577289,8 @@
    "answers": [
     "player_mishap"
    ],
-   "text": "oof, rip",
-   "id": "d044c4d05525"
+   "text": "ow",
+   "id": "03c2d5c8055c"
   },
   {
    "kind": "reply",
@@ -580253,26 +578023,6 @@
    ],
    "text": "yup",
    "id": "d5910d9b6054"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
-   "text": "pretty much",
-   "id": "ee3a7f876723"
   },
   {
    "kind": "reply",
@@ -581162,8 +578912,8 @@
    "answers": [
     "boast"
    ],
-   "text": "pics or it didnt happen",
-   "id": "38a0a6b051b8"
+   "text": "screenshot or it didnt happen",
+   "id": "5bff9e668f88"
   },
   {
    "kind": "reply",
@@ -582260,46 +580010,6 @@
    "answers": [
     "lfg"
    ],
-   "text": "gl, its slow right now",
-   "id": "fd0afa86aeff"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "lfg"
-   ],
-   "text": "a healer will get snapped up quick",
-   "id": "e51d38504b71"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "lfg"
-   ],
    "text": "how close to the next level?",
    "id": "96dc6a271767"
   },
@@ -582374,28 +580084,6 @@
     50
    ],
    "needs": [
-    "in_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "lfg"
-   ],
-   "text": "our group is full, sorry",
-   "id": "ff9cc0047a1b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
     "solo"
    ],
    "intent": "",
@@ -582428,26 +580116,6 @@
    ],
    "text": "gl! someone will grab you soon",
    "id": "25db1efa59be"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "trade"
-   ],
-   "text": "how much?",
-   "id": "e9e232cf9716"
   },
   {
    "kind": "reply",
@@ -582588,26 +580256,6 @@
    ],
    "text": "try the exchange, it sells there",
    "id": "eefe4390531a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "trade"
-   ],
-   "text": "not for my class sorry",
-   "id": "c1372d1e4f96"
   },
   {
    "kind": "reply",
@@ -583048,7 +580696,7 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "ask"
+    "ask_know"
    ],
    "text": "pretty sure yes but dont quote me",
    "id": "8e113c888b90"
@@ -583068,7 +580716,7 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "ask"
+    "ask_know"
    ],
    "text": "i think so?",
    "id": "157f1e200ce3"
@@ -583234,8 +580882,8 @@
    "answers": [
     "ask_where"
    ],
-   "text": "check your map",
-   "id": "b7bf9be9222b"
+   "text": "the guards can point you there",
+   "id": "7d8d523e03a5"
   },
   {
    "kind": "reply",
@@ -583434,8 +581082,8 @@
    "answers": [
     "ask_where"
    ],
-   "text": "its on the map i think",
-   "id": "c8d01f5eb762"
+   "text": "a guard can point you, i think",
+   "id": "c1b7bbe14118"
   },
   {
    "kind": "reply",
@@ -584757,66 +582405,6 @@
    "answers": [
     "ask_anyone"
    ],
-   "text": "here",
-   "id": "a10912a0e0a4"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
-   "text": "im on",
-   "id": "2bf2ab7b33aa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
-   "text": "me, kind of",
-   "id": "d4e88bca1bda"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
    "text": "maybe, what time?",
    "id": "3167857a1728"
   },
@@ -584877,72 +582465,8 @@
    "answers": [
     "ask_anyone"
    ],
-   "text": "im around, whats up?",
-   "id": "0afcccfc2712"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
    "text": "could be, tell me more",
    "id": "acdfa97a2871"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
-   "text": "me me me",
-   "id": "41ab42e061ad"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "NoLifer"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_anyone"
-   ],
-   "text": "always",
-   "id": "c7504575430b"
   },
   {
    "kind": "reply",
@@ -585521,40 +583045,6 @@
    "intent": "travel",
    "mood": "",
    "weight": 1.0,
-   "text": "the stable master saves you half the walk",
-   "id": "7eef59c9f00a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "travel",
-   "mood": "",
-   "weight": 1.0,
-   "text": "follow the road, cant miss it",
-   "id": "5f30538a9d80"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "travel",
-   "mood": "",
-   "weight": 1.0,
    "text": "its a bit of a trek",
    "id": "51a0e1ba083a"
   },
@@ -585589,8 +583079,8 @@
    "intent": "travel",
    "mood": "",
    "weight": 1.0,
-   "text": "check your map, its marked",
-   "id": "d83b78da2ea4"
+   "text": "ask a guard, they point the way",
+   "id": "60693875ba2f"
   },
   {
    "kind": "reply",
@@ -585693,23 +583183,6 @@
    "weight": 1.0,
    "text": "who holds {keep} now?",
    "id": "c6a88e66510d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "rvr",
-   "mood": "",
-   "weight": 1.0,
-   "text": "stealthers everywhere, careful",
-   "id": "b589a76c453d"
   },
   {
    "kind": "reply",
@@ -586397,8 +583870,8 @@
    "answers": [
     "ask_know"
    ],
-   "text": "no idea, check the map",
-   "id": "398e99f9e4ff"
+   "text": "no idea, ask a guard",
+   "id": "f72c61e64818"
   },
   {
    "kind": "reply",
@@ -586521,8 +583994,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "here o/",
-   "id": "96920a78b2a4"
+   "text": "here",
+   "id": "a10912a0e0a4"
   },
   {
    "kind": "reply",
@@ -586561,8 +584034,8 @@
    "answers": [
     "ask_on"
    ],
-   "text": "o/ hi",
-   "id": "edef08c602cd"
+   "text": "hi hi",
+   "id": "ea948409d5df"
   },
   {
    "kind": "reply",
@@ -587006,7 +584479,9 @@
     1,
     49
    ],
-   "needs": [],
+   "needs": [
+    "xp_high"
+   ],
    "intent": "",
    "mood": "",
    "weight": 1.0,
@@ -587026,7 +584501,9 @@
     1,
     49
    ],
-   "needs": [],
+   "needs": [
+    "xp_low"
+   ],
    "intent": "",
    "mood": "",
    "weight": 1.0,
@@ -587068,7 +584545,9 @@
     1,
     49
    ],
-   "needs": [],
+   "needs": [
+    "xp_high"
+   ],
    "intent": "",
    "mood": "",
    "weight": 1.0,
@@ -589835,12 +587314,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3333,
+   "weight": 0.4082,
    "answers": [
     "chat"
    ],
    "text": "i know, it never changes",
-   "family": "b1eb9f919a",
+   "family": "7e6f36a6ec",
    "id": "76b5ac611643"
   },
   {
@@ -589856,12 +587335,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3333,
+   "weight": 0.4082,
    "answers": [
     "chat"
    ],
    "text": "i know, every single night",
-   "family": "b1eb9f919a",
+   "family": "7e6f36a6ec",
    "id": "49fa6527450a"
   },
   {
@@ -589877,12 +587356,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3333,
+   "weight": 0.4082,
    "answers": [
     "chat"
    ],
    "text": "i know",
-   "family": "b1eb9f919a",
+   "family": "7e6f36a6ec",
    "id": "050a3793fdd5"
   },
   {
@@ -589898,75 +587377,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3333,
-   "answers": [
-    "chat"
-   ],
-   "text": "i know right, it never changes",
-   "family": "b1eb9f919a",
-   "id": "0ab3fb76fb63"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3333,
-   "answers": [
-    "chat"
-   ],
-   "text": "i know right, every single night",
-   "family": "b1eb9f919a",
-   "id": "ed9711da6775"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3333,
-   "answers": [
-    "chat"
-   ],
-   "text": "i know right",
-   "family": "b1eb9f919a",
-   "id": "d6d1e45743a9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.3333,
+   "weight": 0.4082,
    "answers": [
     "chat"
    ],
    "text": "tell me about it, it never changes",
-   "family": "b1eb9f919a",
+   "family": "7e6f36a6ec",
    "id": "9396b35fcfac"
   },
   {
@@ -589982,12 +587398,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.3333,
+   "weight": 0.4082,
    "answers": [
     "chat"
    ],
    "text": "tell me about it, every single night",
-   "family": "b1eb9f919a",
+   "family": "7e6f36a6ec",
    "id": "26c3e93dee88"
   },
   {
@@ -590262,6 +587678,27 @@
    "text": "yeah thats about right",
    "family": "dadebdd4cf",
    "id": "b23ef664cbe3"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "answers": [
+    "chat"
+   ],
+   "text": "yeah thats how it goes",
+   "family": "dadebdd4cf",
+   "id": "f786297dc90f"
   },
   {
    "kind": "reply",
@@ -591120,6 +588557,27 @@
    "answers": [
     "chat"
    ],
+   "text": "fair point",
+   "family": "eb36ec1ea0",
+   "id": "d2fbad2bd20a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "answers": [
+    "chat"
+   ],
    "text": "fair observation",
    "family": "eb36ec1ea0",
    "id": "d4b52d28e92e"
@@ -591284,12 +588742,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
    "text": "thats a good one heh",
-   "family": "c828c5bb5e",
+   "family": "b6e46a5ef9",
    "id": "98e0e677d2eb"
   },
   {
@@ -591305,12 +588763,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
    "text": "thats a good one",
-   "family": "c828c5bb5e",
+   "family": "b6e46a5ef9",
    "id": "058c442ace33"
   },
   {
@@ -591326,13 +588784,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
-   "text": "thats so real heh",
-   "family": "c828c5bb5e",
-   "id": "ec2afa876252"
+   "text": "thats a fair one heh",
+   "family": "b6e46a5ef9",
+   "id": "a3027117ab3f"
   },
   {
    "kind": "reply",
@@ -591347,13 +588805,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
-   "text": "thats so real",
-   "family": "c828c5bb5e",
-   "id": "d52f9f066ee6"
+   "text": "thats a fair one",
+   "family": "b6e46a5ef9",
+   "id": "59126a93c80e"
   },
   {
    "kind": "reply",
@@ -591368,54 +588826,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "chat"
-   ],
-   "text": "thats very real heh",
-   "family": "c828c5bb5e",
-   "id": "ac2fce6e9693"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "chat"
-   ],
-   "text": "thats very real",
-   "family": "c828c5bb5e",
-   "id": "ff6c12e25eaf"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
    "text": "that is a good one heh",
-   "family": "c828c5bb5e",
+   "family": "b6e46a5ef9",
    "id": "2fb66adbf089"
   },
   {
@@ -591431,12 +588847,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
    "text": "that is a good one",
-   "family": "c828c5bb5e",
+   "family": "b6e46a5ef9",
    "id": "e46f1aa4cf6d"
   },
   {
@@ -591452,13 +588868,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
-   "text": "that is so real heh",
-   "family": "c828c5bb5e",
-   "id": "f35ee9fc1663"
+   "text": "that is a fair one heh",
+   "family": "b6e46a5ef9",
+   "id": "2a01832abd78"
   },
   {
    "kind": "reply",
@@ -591473,55 +588889,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.3536,
    "answers": [
     "chat"
    ],
-   "text": "that is so real",
-   "family": "c828c5bb5e",
-   "id": "a4469f81a441"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "chat"
-   ],
-   "text": "that is very real heh",
-   "family": "c828c5bb5e",
-   "id": "deb984d6c4ac"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "chat"
-   ],
-   "text": "that is very real",
-   "family": "c828c5bb5e",
-   "id": "fc25259df2a8"
+   "text": "that is a fair one",
+   "family": "b6e46a5ef9",
+   "id": "f7d990ecede8"
   },
   {
    "kind": "reply",
@@ -592446,6 +589820,27 @@
    "text": "pretty much, yep",
    "family": "6ff6fa1bef",
    "id": "e36e79975ac7"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "answers": [
+    "chat"
+   ],
+   "text": "pretty much",
+   "family": "6ff6fa1bef",
+   "id": "ee3a7f876723"
   },
   {
    "kind": "reply",
@@ -593764,7 +591159,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "good to hear, ty",
    "family": "6fe62b3578",
@@ -593785,7 +591180,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "good to hear, thanks",
    "family": "6fe62b3578",
@@ -593806,7 +591201,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "good to hear",
    "family": "6fe62b3578",
@@ -593827,7 +591222,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "good to know, thanks",
    "family": "6fe62b3578",
@@ -593848,7 +591243,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to hear, ty",
    "family": "6fe62b3578",
@@ -593869,7 +591264,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to hear, thanks",
    "family": "6fe62b3578",
@@ -593890,7 +591285,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to hear",
    "family": "6fe62b3578",
@@ -593911,7 +591306,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to know, ty",
    "family": "6fe62b3578",
@@ -593932,7 +591327,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to know, thanks",
    "family": "6fe62b3578",
@@ -593953,7 +591348,7 @@
    "mood": "",
    "weight": 0.2887,
    "answers": [
-    "chat"
+    "news"
    ],
    "text": "nice to know",
    "family": "6fe62b3578",
@@ -594084,6 +591479,29 @@
    "text": "heh, thats great",
    "family": "18bfb20ac2",
    "id": "61fa3fa4ce54"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [
+    "Socialite"
+   ],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "answers": [
+    "chat"
+   ],
+   "text": "aw i love that!",
+   "family": "2b3790bdb3",
+   "id": "db1abbf97ec7"
   },
   {
    "kind": "reply",
@@ -595308,144 +592726,6 @@
    "kind": "reply",
    "topic": "general",
    "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "heh, same at the forge",
-   "family": "ecf4a8ca32",
-   "id": "9e1cd15f0da7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "heh, same with crafting",
-   "family": "ecf4a8ca32",
-   "id": "9f59392b93bd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "heh, crafting is the same",
-   "family": "ecf4a8ca32",
-   "id": "e9e6f374b65a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "ha, same at the forge",
-   "family": "ecf4a8ca32",
-   "id": "08870dd62662"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "ha, same with crafting",
-   "family": "ecf4a8ca32",
-   "id": "9e67e055f59b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "answers": [
-    "chat"
-   ],
-   "text": "ha, crafting is the same",
-   "family": "ecf4a8ca32",
-   "id": "c45600305b77"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
     "Leveler"
    ],
    "realm": "*",
@@ -595731,12 +593011,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "gl, should be easy to find one",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "26e1be79da54"
   },
   {
@@ -595752,54 +593032,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "gl, should be easy",
-   "family": "2f2450919b",
-   "id": "819d48cae5c3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "gl, someone will bite to find one",
-   "family": "2f2450919b",
-   "id": "5131dccd3448"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "gl, someone will bite",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "bf75182e322f"
   },
   {
@@ -595815,33 +593053,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "gl, hope you find one to find one",
-   "family": "2f2450919b",
-   "id": "c1057a4b229f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "gl, hope you find one",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "a2d28d7207a9"
   },
   {
@@ -595857,12 +593074,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "good luck, should be easy to find one",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "f5030e44d404"
   },
   {
@@ -595878,54 +593095,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "good luck, should be easy",
-   "family": "2f2450919b",
-   "id": "c7bfa0f76abe"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "good luck, someone will bite to find one",
-   "family": "2f2450919b",
-   "id": "388a4a8b948b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "good luck, someone will bite",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "92406e62c266"
   },
   {
@@ -595941,33 +593116,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2887,
-   "answers": [
-    "lfg"
-   ],
-   "text": "good luck, hope you find one to find one",
-   "family": "2f2450919b",
-   "id": "d8e344fbf715"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2887,
+   "weight": 0.4082,
    "answers": [
     "lfg"
    ],
    "text": "good luck, hope you find one",
-   "family": "2f2450919b",
+   "family": "76236e175c",
    "id": "d029317f715a"
   },
   {
@@ -596473,6 +593627,27 @@
    "text": "gl, its slow at the moment though",
    "family": "f7b6536dda",
    "id": "deb725ec6568"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "answers": [
+    "lfg"
+   ],
+   "text": "gl, its slow right now",
+   "family": "f7b6536dda",
+   "id": "fd0afa86aeff"
   },
   {
    "kind": "reply",
@@ -597726,12 +594901,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep asking, someone will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "4aad11bd0b5c"
   },
   {
@@ -597747,33 +594922,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep asking, someone will want a {class}",
-   "family": "b357cb8740",
-   "id": "c7bc69dc87f2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep asking, someone will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "4d5d0d2d0440"
   },
   {
@@ -597789,33 +594943,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep asking, someone will need a {class}",
-   "family": "b357cb8740",
-   "id": "ee6c55f473cf"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep asking, a group will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "7909b91b56ab"
   },
   {
@@ -597831,33 +594964,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep asking, a group will want a {class}",
-   "family": "b357cb8740",
-   "id": "e6e0d3ff6cf3"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep asking, a group will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "dfebeaa87e34"
   },
   {
@@ -597873,33 +594985,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep asking, a group will need a {class}",
-   "family": "b357cb8740",
-   "id": "50d7e0fa53aa"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep at it, someone will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "c1d27e204b66"
   },
   {
@@ -597915,33 +595006,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep at it, someone will want a {class}",
-   "family": "b357cb8740",
-   "id": "7d1ba0a1442d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep at it, someone will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "0b09f43c8f15"
   },
   {
@@ -597957,33 +595027,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep at it, someone will need a {class}",
-   "family": "b357cb8740",
-   "id": "70c932464459"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep at it, a group will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "1a99a6283bad"
   },
   {
@@ -597999,33 +595048,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep at it, a group will want a {class}",
-   "family": "b357cb8740",
-   "id": "963605f4bf60"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "keep at it, a group will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "8342a876fd86"
   },
   {
@@ -598041,33 +595069,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "keep at it, a group will need a {class}",
-   "family": "b357cb8740",
-   "id": "2127ff4e8a8d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep asking, someone will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "4823fee33adf"
   },
   {
@@ -598083,33 +595090,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep asking, someone will want a {class}",
-   "family": "b357cb8740",
-   "id": "505ebff4e9d6"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep asking, someone will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "7be79d2e6e81"
   },
   {
@@ -598125,33 +595111,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep asking, someone will need a {class}",
-   "family": "b357cb8740",
-   "id": "125725169816"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep asking, a group will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "1c898992396c"
   },
   {
@@ -598167,33 +595132,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep asking, a group will want a {class}",
-   "family": "b357cb8740",
-   "id": "66b89b6ec619"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep asking, a group will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "18be68064756"
   },
   {
@@ -598209,33 +595153,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep asking, a group will need a {class}",
-   "family": "b357cb8740",
-   "id": "1b8a1f70127e"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep at it, someone will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "bc96fa71b2cf"
   },
   {
@@ -598251,33 +595174,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep at it, someone will want a {class}",
-   "family": "b357cb8740",
-   "id": "84782acecbf2"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep at it, someone will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "54ac06d183ef"
   },
   {
@@ -598293,33 +595195,12 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep at it, someone will need a {class}",
-   "family": "b357cb8740",
-   "id": "8c09c693cb0b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep at it, a group will want you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "3ed510418364"
   },
   {
@@ -598335,55 +595216,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep at it, a group will want a {class}",
-   "family": "b357cb8740",
-   "id": "b69bf8f4aaed"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "answers": [
     "lfg"
    ],
    "text": "just keep at it, a group will need you",
-   "family": "b357cb8740",
+   "family": "1fb0c92379",
    "id": "5d3fcc72b86d"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "answers": [
-    "lfg"
-   ],
-   "text": "just keep at it, a group will need a {class}",
-   "family": "b357cb8740",
-   "id": "aa1a43276cb4"
   },
   {
    "kind": "reply",
@@ -599444,6 +596283,29 @@
    "answers": [
     "lfg"
    ],
+   "text": "our group is full, sorry",
+   "family": "c2aa77b902",
+   "id": "ff9cc0047a1b"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "in_group"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "answers": [
+    "lfg"
+   ],
    "text": "our group is full, gl though",
    "family": "c2aa77b902",
    "id": "d246b2b7327d"
@@ -599795,6 +596657,27 @@
    "text": "how much for it, roughly?",
    "family": "794d7860d7",
    "id": "457501b613dc"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3536,
+   "answers": [
+    "trade"
+   ],
+   "text": "how much?",
+   "family": "794d7860d7",
+   "id": "e9e232cf9716"
   },
   {
    "kind": "reply",
@@ -600380,6 +597263,27 @@
    "answers": [
     "trade"
    ],
+   "text": "not for my class, sorry",
+   "family": "4537107484",
+   "id": "a506db4655ed"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "trade"
+   ],
    "text": "not for my class, gl though",
    "family": "4537107484",
    "id": "4d017fc9d8ac"
@@ -600613,26 +597517,6 @@
    ],
    "text": "huh, yeah",
    "id": "2df578edba98"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
-   "text": "fair point",
-   "id": "d2fbad2bd20a"
   },
   {
    "kind": "reply",
@@ -601111,26 +597995,6 @@
    "answers": [
     "chat"
    ],
-   "text": "yeah thats how it goes",
-   "id": "f786297dc90f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
    "text": "lol yes",
    "id": "cb39236d0802"
   },
@@ -601213,28 +598077,6 @@
    "answers": [
     "chat"
    ],
-   "text": "aw, i love that",
-   "id": "ce3ce8cb8825"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Socialite"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
    "text": "ha, you always notice the good stuff",
    "id": "5ec639f3a03e"
   },
@@ -601281,28 +598123,6 @@
    ],
    "text": "same, its the little things out here",
    "id": "e478543e798f"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "chat"
-   ],
-   "text": "heh, reminds me of the forge, same deal",
-   "id": "dec62ea798e0"
   },
   {
    "kind": "reply",
@@ -601485,8 +598305,8 @@
    "answers": [
     "joke"
    ],
-   "text": "oof",
-   "id": "d256f58642c7"
+   "text": "ow lol",
+   "id": "3610630d7d30"
   },
   {
    "kind": "reply",
@@ -602465,8 +599285,8 @@
    "answers": [
     "complaint"
    ],
-   "text": "oof, sorry",
-   "id": "f11af5d21119"
+   "text": "ouch, sorry",
+   "id": "f0597c3a1c64"
   },
   {
    "kind": "reply",
@@ -603073,30 +599893,8 @@
    "answers": [
     "complaint"
    ],
-   "text": "at least you saw something new on the way",
-   "id": "600b9c53c7c7"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "complaint"
-   ],
-   "text": "sounds like my last batch at the forge",
-   "id": "ed7f7f6d494f"
+   "text": "ugh, long way to go for that",
+   "id": "36b922d973f7"
   },
   {
    "kind": "reply",
@@ -603569,8 +600367,8 @@
    "answers": [
     "player_rl_late"
    ],
-   "text": "you'll feel it tomorrow lol",
-   "id": "27eda2a90f10"
+   "text": "youll feel it tomorrow lol",
+   "id": "8710ceb27067"
   },
   {
    "kind": "reply",
@@ -603609,8 +600407,8 @@
    "answers": [
     "player_rl_school"
    ],
-   "text": "gl on the test",
-   "id": "07c6d9641222"
+   "text": "gl, school first",
+   "id": "0fa9bbe21bec"
   },
   {
    "kind": "reply",
@@ -603629,8 +600427,8 @@
    "answers": [
     "player_rl_school"
    ],
-   "text": "school first, the mobs will still be here",
-   "id": "454a1f738314"
+   "text": "the mobs will still be here after",
+   "id": "e1cb91c01016"
   },
   {
    "kind": "reply",
@@ -603689,8 +600487,8 @@
    "answers": [
     "player_rl_food"
    ],
-   "text": "ooh, enjoy",
-   "id": "f692a8d4f785"
+   "text": "food first, the camp will keep",
+   "id": "c742aeff150f"
   },
   {
    "kind": "reply",
@@ -603729,8 +600527,8 @@
    "answers": [
     "player_rl_food"
    ],
-   "text": "nice, eat up",
-   "id": "8e41989287de"
+   "text": "ha, now i want food too",
+   "id": "4ebbf4a8356d"
   },
   {
    "kind": "reply",
@@ -603749,8 +600547,8 @@
    "answers": [
     "player_rl_food"
    ],
-   "text": "save me a slice lol",
-   "id": "f2ac340ee3c6"
+   "text": "go eat, the mobs will wait",
+   "id": "c17524097e7b"
   },
   {
    "kind": "reply",
@@ -603769,8 +600567,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "ugh, computers",
-   "id": "f609dd214078"
+   "text": "heh, computers",
+   "id": "757621593810"
   },
   {
    "kind": "reply",
@@ -603809,8 +600607,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "nothing worse than lag at a bad moment",
-   "id": "8ac9fb16506e"
+   "text": "as long as it runs the game lol",
+   "id": "185d139457ef"
   },
   {
    "kind": "reply",
@@ -603829,8 +600627,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "been there, reboot and pray",
-   "id": "bbaf54ed0e20"
+   "text": "pc stuff always eats a whole night",
+   "id": "d4c86e69504a"
   },
   {
    "kind": "reply",
@@ -603929,8 +600727,8 @@
    "answers": [
     "player_rl_weather"
    ],
-   "text": "stay dry out there",
-   "id": "a71f0703c008"
+   "text": "crazy weather lately",
+   "id": "93c882437aad"
   },
   {
    "kind": "reply",
@@ -603989,8 +600787,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "ooh, no spoilers lol",
-   "id": "0fd41609bd26"
+   "text": "ha, i missed it",
+   "id": "a0be4b0a7a6d"
   },
   {
    "kind": "reply",
@@ -604009,8 +600807,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "still need to see that one",
-   "id": "52fee05299bb"
+   "text": "never get to watch anything anymore",
+   "id": "d69d51cc4f35"
   },
   {
    "kind": "reply",
@@ -604029,8 +600827,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "heard good things",
-   "id": "864bcf78b5d0"
+   "text": "nice, enjoy it",
+   "id": "221ceaf48f34"
   },
   {
    "kind": "reply",
@@ -604089,8 +600887,8 @@
    "answers": [
     "player_rl_work"
    ],
-   "text": "glad you made it home",
-   "id": "a26ca2b7efbe"
+   "text": "hope it lets up soon",
+   "id": "dfc1578adbf6"
   },
   {
    "kind": "reply",
@@ -605157,8 +601955,8 @@
    "intent": "thanks",
    "mood": "",
    "weight": 1.0,
-   "text": "np, come back if it breaks",
-   "id": "3deba6042125"
+   "text": "np, anytime",
+   "id": "fd301dd3fcd5"
   },
   {
    "kind": "reply",
@@ -605304,7 +602102,7 @@
    "class": [],
    "levels": [
     1,
-    50
+    49
    ],
    "needs": [],
    "intent": "congrats",
@@ -605338,7 +602136,7 @@
    "class": [],
    "levels": [
     1,
-    50
+    49
    ],
    "needs": [],
    "intent": "congrats",
@@ -605372,7 +602170,7 @@
    "class": [],
    "levels": [
     1,
-    50
+    49
    ],
    "needs": [],
    "intent": "congrats",
@@ -605389,7 +602187,7 @@
    "class": [],
    "levels": [
     1,
-    50
+    49
    ],
    "needs": [],
    "intent": "congrats",
@@ -605427,7 +602225,7 @@
    "class": [],
    "levels": [
     1,
-    50
+    49
    ],
    "needs": [],
    "intent": "congrats",
@@ -606704,8 +603502,8 @@
    "intent": "back",
    "mood": "",
    "weight": 1.0,
-   "text": "wb, bags emptied?",
-   "id": "d0ad71cc6292"
+   "text": "wb, ready?",
+   "id": "4d43947ee73b"
   },
   {
    "kind": "reply",
@@ -606738,25 +603536,8 @@
    "intent": "rez",
    "mood": "",
    "weight": 1.0,
-   "text": "shout, someone might be close",
-   "id": "9b19970af271"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "rez",
-   "mood": "",
-   "weight": 1.0,
-   "text": "oof, what got you?",
-   "id": "3b845b8de4ef"
+   "text": "ugh, what got you?",
+   "id": "509426397a50"
   },
   {
    "kind": "reply",
@@ -606774,23 +603555,6 @@
    "weight": 1.0,
    "text": "ouch",
    "id": "64b080ff9e75"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "rez",
-   "mood": "",
-   "weight": 1.0,
-   "text": "rip",
-   "id": "98e40b4d6b37"
   },
   {
    "kind": "reply",
@@ -606825,23 +603589,6 @@
    "weight": 1.0,
    "text": "where are you?",
    "id": "6dbce62d15fb"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "rez",
-   "mood": "",
-   "weight": 1.0,
-   "text": "release and run back maybe, bind isnt far",
-   "id": "4d02c6d401e0"
   },
   {
    "kind": "reply",
@@ -607403,8 +604150,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "omw",
-   "id": "2f4420e3cc75"
+   "text": "ugh, not again",
+   "id": "1b217221857a"
   },
   {
    "kind": "reply",
@@ -607422,8 +604169,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "on my way",
-   "id": "ff99e29db79b"
+   "text": "anyone closer than me?",
+   "id": "4bdd36e48814"
   },
   {
    "kind": "reply",
@@ -607441,8 +604188,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "coming from the mg",
-   "id": "339257a35a4f"
+   "text": "gl, cant get there in time",
+   "id": "57fc474fa18f"
   },
   {
    "kind": "reply",
@@ -607460,8 +604207,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "omw, 30 sec out",
-   "id": "aa9ad85d1ba3"
+   "text": "they never stop",
+   "id": "534ca3df52d5"
   },
   {
    "kind": "reply",
@@ -607479,8 +604226,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "heading there now",
-   "id": "e535e319c051"
+   "text": "hold them as long as you can",
+   "id": "85b16f0057c0"
   },
   {
    "kind": "reply",
@@ -607498,8 +604245,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "coming, hold the door",
-   "id": "7431d423067f"
+   "text": "ugh, wrong end of the map for me",
+   "id": "c421e5c7b987"
   },
   {
    "kind": "reply",
@@ -607517,8 +604264,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "omw, dont chase",
-   "id": "e89ec038f724"
+   "text": "dont chase them too far",
+   "id": "e01395243af7"
   },
   {
    "kind": "reply",
@@ -607536,8 +604283,8 @@
    "intent": "alarm",
    "mood": "",
    "weight": 1.0,
-   "text": "rgr, omw",
-   "id": "9c98b7f94f8b"
+   "text": "call it if they hit the door",
+   "id": "ac053237c523"
   },
   {
    "kind": "reply",
@@ -609041,25 +605788,6 @@
     50
    ],
    "needs": [
-    "in_group"
-   ],
-   "intent": "grouping",
-   "mood": "",
-   "weight": 1.0,
-   "text": "full up here, sorry",
-   "id": "fb494722d04c"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
     "in_group",
     "!in_player_group"
    ],
@@ -609117,8 +605845,8 @@
    "intent": "greeting",
    "mood": "",
    "weight": 1.0,
-   "text": "hey all",
-   "id": "4b8873ae21ab"
+   "text": "oh hey",
+   "id": "d14dcb805ab7"
   },
   {
    "kind": "reply",
@@ -609306,8 +606034,8 @@
    "intent": "greeting",
    "mood": "",
    "weight": 1.0,
-   "text": "evening all",
-   "id": "7b73661cae11"
+   "text": "evening {player}",
+   "id": "580b234ae0d3"
   },
   {
    "kind": "reply",
@@ -681939,26 +678667,6 @@
    "answers": [
     "ask_choice"
    ],
-   "text": "second one, easier to level",
-   "id": "a10c75fc9498"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
    "text": "first one honestly",
    "id": "c9ade725497e"
   },
@@ -682019,108 +678727,8 @@
    "answers": [
     "ask_choice"
    ],
-   "text": "the second, more fun in groups",
-   "id": "5a4ceedf8be1"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "started with the first, wish id done the second",
-   "id": "dd368427b0bf"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "the first if you solo a lot",
-   "id": "85df3a38efa9"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "second if you like groups",
-   "id": "5c1dab4ccdcd"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
    "text": "cant go wrong either way, i did the first",
    "id": "11b34c7f4d70"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_choice"
-   ],
-   "text": "first one, everyone needs those",
-   "id": "135e5ee73f69"
   },
   {
    "kind": "reply",
@@ -682439,8 +679047,8 @@
    "answers": [
     "player_rl_school"
    ],
-   "text": "finals are the worst, gl",
-   "id": "55ae9474e194"
+   "text": "school stuff is the worst, gl",
+   "id": "dd4b6935ee81"
   },
   {
    "kind": "reply",
@@ -682479,8 +679087,8 @@
    "answers": [
     "player_rl_food"
    ],
-   "text": "pizza, always",
-   "id": "f12922389e44"
+   "text": "food first, always",
+   "id": "5eac88339470"
   },
   {
    "kind": "reply",
@@ -682517,30 +679125,10 @@
    "mood": "",
    "weight": 1.0,
    "answers": [
-    "player_rl_food"
+    "player_rl_tech"
    ],
-   "text": "chinese, easy",
-   "id": "013c257fcd0a"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_food"
-   ],
-   "text": "dont let it get cold",
-   "id": "567683c65cac"
+   "text": "computers, never a dull moment",
+   "id": "65a27f2adebd"
   },
   {
    "kind": "reply",
@@ -682559,8 +679147,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "ugh, i know that feeling",
-   "id": "313938e1cad8"
+   "text": "heh, been there with mine",
+   "id": "c64adaa51fe2"
   },
   {
    "kind": "reply",
@@ -682579,8 +679167,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "my connection is the same some nights",
-   "id": "c2e3448ff012"
+   "text": "fingers crossed it behaves",
+   "id": "5e7d435b6923"
   },
   {
    "kind": "reply",
@@ -682599,28 +679187,8 @@
    "answers": [
     "player_rl_tech"
    ],
-   "text": "nice, bet it looks great",
-   "id": "e44cb725f43b"
-  },
-  {
-   "kind": "reply",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "player_rl_tech"
-   ],
-   "text": "lag is the real enemy",
-   "id": "4accf6f584d5"
+   "text": "mine is held together with tape lol",
+   "id": "1e130d18b740"
   },
   {
    "kind": "reply",
@@ -682639,8 +679207,8 @@
    "answers": [
     "player_rl_pet"
    ],
-   "text": "lol cats",
-   "id": "e47ea2c53963"
+   "text": "lol pets",
+   "id": "f621f3903ef8"
   },
   {
    "kind": "reply",
@@ -682719,8 +679287,8 @@
    "answers": [
     "player_rl_weather"
    ],
-   "text": "stay warm",
-   "id": "7f22369de938"
+   "text": "ugh, weather",
+   "id": "2bd57bcb423a"
   },
   {
    "kind": "reply",
@@ -682799,8 +679367,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "havent seen it yet",
-   "id": "1a71e00632b6"
+   "text": "missed it, was in here lol",
+   "id": "80614e16866c"
   },
   {
    "kind": "reply",
@@ -682819,8 +679387,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "no spoilers lol",
-   "id": "5a68a0b00954"
+   "text": "ha, tell me later",
+   "id": "0041a9d2f5b3"
   },
   {
    "kind": "reply",
@@ -682839,8 +679407,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "heard its good",
-   "id": "ff1edc8edbd6"
+   "text": "lucky, i never get to watch",
+   "id": "6397d8769318"
   },
   {
    "kind": "reply",
@@ -682859,8 +679427,8 @@
    "answers": [
     "player_rl_media"
    ],
-   "text": "been meaning to",
-   "id": "e2aa1220bcad"
+   "text": "been in here all night instead",
+   "id": "6a362962e25e"
   },
   {
    "kind": "reply",
@@ -683039,48 +679607,8 @@
    "answers": [
     "ask_yes"
    ],
-   "text": "k, on it",
-   "id": "ff0f69d348ab"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
    "text": "good good",
    "id": "1beff9f4aec2"
-  },
-  {
-   "kind": "closing",
-   "topic": "general",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "answers": [
-    "ask_yes"
-   ],
-   "text": "ok, here we go",
-   "id": "456f35fd4621"
   },
   {
    "kind": "closing",
@@ -683796,25 +680324,6 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "rip",
-   "id": "186ee102e3f8"
-  },
-  {
-   "kind": "combat",
-   "topic": "player_down",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "in_player_group"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
    "text": "that hit hard",
    "id": "a4ee623e56ad"
   },
@@ -683834,8 +680343,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "my bad, should have peeled it",
-   "id": "d486da2efb57"
+   "text": "my bad, should have grabbed it",
+   "id": "fb6c7e19d9d6"
   },
   {
    "kind": "combat",
@@ -685310,27 +681819,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "chat",
-   "text": "hey {player}, i was just thinking about our last group",
-   "id": "8ab757b35b91"
-  },
-  {
-   "kind": "tell",
-   "topic": "hello_friend",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "ask_where",
+   "invites": "ask_personal",
    "text": "{player}! where have you been hiding?",
    "id": "621ca08b4216"
   },
@@ -685350,7 +681839,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_personal",
    "text": "hey {player}, long time, how are things?",
    "id": "0d5aa0c6e9f5"
   },
@@ -685370,7 +681859,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_plans",
+   "invites": "ask_personal",
    "text": "hi {player}, what are you up to tonight?",
    "id": "784df67f538b"
   },
@@ -685390,7 +681879,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_personal",
    "text": "{player}, hey! long day?",
    "id": "117155e3e9a7"
   },
@@ -685411,7 +681900,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_personal",
    "text": "{player} hi, how is the leveling going?",
    "id": "516e1d95e353"
   },
@@ -685432,7 +681921,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_personal",
    "text": "hey {player}, dinged yet?",
    "id": "ccc55a175cc2"
   },
@@ -685518,9 +682007,29 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_personal",
    "text": "there you are {player}, thought you quit on us",
    "id": "397e5409d26e"
+  },
+  {
+   "kind": "tell",
+   "topic": "after_group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "knows_player"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "invites": "chat",
+   "text": "hey {player}, i was just thinking about our last group",
+   "id": "8ab757b35b91"
   },
   {
    "kind": "tell",
@@ -685619,48 +682128,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "ty for sticking around last group, i know it ran long",
-   "id": "009c5ecb38cf"
-  },
-  {
-   "kind": "tell",
-   "topic": "after_group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "that was the best xp i had all week, ty {player}",
-   "id": "77cfe75c4d2e"
-  },
-  {
-   "kind": "tell",
-   "topic": "after_group",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "sorry i had to leave the group early last time",
-   "id": "33b0f773fe50"
+   "text": "that group was good xp, ty {player}",
+   "id": "f9576fa4eec7"
   },
   {
    "kind": "tell",
@@ -685698,9 +682167,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "hey {player}, want to run {place} again sometime?",
-   "id": "091e0fee2497"
+   "invites": "chat",
+   "text": "{player}, that group at {place} was good, should do it again sometime",
+   "id": "547e92b96463"
   },
   {
    "kind": "tell",
@@ -685720,7 +682189,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "chat",
    "text": "still riding the xp from that group at {place}, ty",
    "id": "ce915f09d8ce"
   },
@@ -685930,14 +682399,20 @@
    "topic": "group_offer",
    "who": [],
    "realm": "*",
-   "class": [],
+   "class": [
+    "Cleric",
+    "Friar",
+    "Druid",
+    "Bard",
+    "Healer",
+    "Shaman"
+   ],
    "levels": [
     1,
     50
    ],
    "needs": [
-    "!knows_player",
-    "is_healer"
+    "!knows_player"
    ],
    "intent": "",
    "mood": "",
@@ -686045,29 +682520,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "hey {player}, need a hand with anything?",
-   "id": "a6f55f60ebf0"
-  },
-  {
-   "kind": "tell",
-   "topic": "help_offer",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "ask",
-   "text": "{player}, need help with that quest?",
-   "id": "baf6cebcaa30"
+   "invites": "chat",
+   "text": "hey {player}, shout if you need anything out here",
+   "id": "b79bb40ac193"
   },
   {
    "kind": "tell",
@@ -686105,9 +682560,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "need directions anywhere {player}?",
-   "id": "058e98d16b31"
+   "invites": "chat",
+   "text": "{player}, if you get lost out here just ask",
+   "id": "2a2aaf0ca709"
   },
   {
    "kind": "tell",
@@ -686165,9 +682620,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "hey {player}, saw you fighting, all good?",
-   "id": "d258a3c5733e"
+   "invites": "chat",
+   "text": "hey {player}, careful out here, things wander",
+   "id": "eb2b825bfff5"
   },
   {
    "kind": "tell",
@@ -686500,10 +682955,10 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "df is ours again, want to go?",
+   "invites": "chat",
+   "text": "df is ours again, good time to go",
    "about": true,
-   "id": "a2388ba01f33"
+   "id": "e06641f8821a"
   },
   {
    "kind": "tell",
@@ -686584,9 +683039,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "yo, got a question about your spec, got a sec?",
-   "id": "c85389b6df27"
+   "invites": "ask_personal",
+   "text": "yo {player}, what spec are you running these days?",
+   "id": "54902e94e897"
   },
   {
    "kind": "tell",
@@ -686604,7 +683059,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
+   "invites": "ask_personal",
    "text": "hey, you ok? havent seen you on much",
    "id": "043cf5f9e07e"
   },
@@ -686624,7 +683079,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_where",
+   "invites": "ask_personal",
    "text": "{player}! guild is quiet tonight, where is everyone?",
    "id": "4105c1e5083b"
   },
@@ -686645,7 +683100,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_xp",
+   "invites": "ask_personal",
    "text": "{player}, how close are you to your next level?",
    "id": "50b14c4a9a13"
   },
@@ -686666,7 +683121,7 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask_advice",
+   "invites": "ask_personal",
    "text": "{player}, quick question, what armor are you wearing at your level?",
    "id": "a7091131b9d1"
   },
@@ -686734,28 +683189,6 @@
    "kind": "tell",
    "topic": "guildmate",
    "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [
-    "knows_player"
-   ],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "ask",
-   "text": "need anything made? i have some free time at the forge",
-   "id": "bf8fbb51f59b"
-  },
-  {
-   "kind": "tell",
-   "topic": "guildmate",
-   "who": [
     "Socialite"
    ],
    "realm": "*",
@@ -686793,9 +683226,9 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "invites": "ask",
-   "text": "{player}, want to level together some night this week?",
-   "id": "faff92616889"
+   "invites": "chat",
+   "text": "{player}, we should level together some night",
+   "id": "ef62c0e0180d"
   },
   {
    "kind": "tell",
@@ -686970,24 +683403,6 @@
    "mood": "",
    "weight": 1.0,
    "invites": "trade",
-   "text": "looking for {item}, will pay decent coin",
-   "id": "87a20bf65051"
-  },
-  {
-   "kind": "trade",
-   "topic": "buying",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
    "text": "anyone have spare dye? want my gear to match for once",
    "id": "bbe4b16c7657"
   },
@@ -687048,346 +683463,6 @@
   {
    "kind": "trade",
    "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "joke",
-   "text": "crafting skill up at last, materials cost more than my house",
-   "id": "1753c996f27f"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "anyone have spare metal bars? paying the merchant price",
-   "id": "4d8cdedc0829"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "complaint",
-   "text": "leveling my craft, every failure is a lesson and a lot of coin",
-   "id": "5daa800b1875"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "boast",
-   "text": "got a masterpiece today, almost fell out of my chair",
-   "id": "d22b320c72d0"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "boast",
-   "text": "99 percent quality, close enough to perfect for me",
-   "id": "25b640834030"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "armor for half the guild this week, everyone wants their own dye",
-   "id": "45bc72826cd0"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "complaint",
-   "text": "crafting is relaxing until you count the coin",
-   "id": "4c29b095d5e7"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "need cloth for a few orders, anyone selling?",
-   "id": "f9d550292b0c"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "my craft skill is finally useful, guildies keep asking for stuff",
-   "id": "38a9bf4baf6c"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "ask_advice",
-   "text": "anyone know the next good item to skill up on?",
-   "id": "02fdf3bc87ba"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
-   "text": "the forge is my second home at this point",
-   "id": "0b56b00df864"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "joke",
-   "text": "legendary someday, if my wallet survives",
-   "id": "7c276968a8cd"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "boast",
-   "text": "sold a full suit today, crafting finally paid for itself",
-   "id": "cec0e130f27a"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "spellcrafting tonight, the guild's gear first",
-   "id": "4e7937382bd6"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "if anyone wants a spellcrafted piece, send me your stats and slot",
-   "id": "d4e01f4ff677"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "complaint",
-   "text": "overcharged a gem and it blew up. there goes a week of coin",
-   "id": "955012d8b385"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
-   "who": [
-    "Crafter"
-   ],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    35,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "trade",
-   "text": "masterpiece weapons on request, prices are fair, i promise",
-   "id": "e68477cfee40"
-  },
-  {
-   "kind": "trade",
-   "topic": "crafting",
    "who": [],
    "realm": "*",
    "class": [],
@@ -687400,8 +683475,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "ask_craft",
-   "text": "what is everyone's craft? thinking about picking one up",
-   "id": "93fc843813ad"
+   "text": "what is everyones craft? thinking about picking one up",
+   "id": "c26632dbb320"
   },
   {
    "kind": "trade",
@@ -687474,8 +683549,8 @@
    "answers": [
     "ask_craft"
    ],
-   "text": "armorcraft, someone always needs armor",
-   "id": "3f08e51a4399"
+   "text": "none yet, too busy leveling",
+   "id": "40cd0f41f0a1"
   },
   {
    "kind": "reply",
@@ -687494,8 +683569,8 @@
    "answers": [
     "ask_craft"
    ],
-   "text": "weaponcraft, slow to level but people pay well",
-   "id": "5413912ef743"
+   "text": "havent picked one yet",
+   "id": "7f959c92c407"
   },
   {
    "kind": "reply",
@@ -687514,8 +683589,8 @@
    "answers": [
     "ask_craft"
    ],
-   "text": "tailoring, cloth and leather for half the realm",
-   "id": "fe0fbe6d576c"
+   "text": "not me, i just break things",
+   "id": "cb62ca0c6205"
   },
   {
    "kind": "reply",
@@ -687534,8 +683609,8 @@
    "answers": [
     "ask_craft"
    ],
-   "text": "spellcraft, but only if you have coin to burn",
-   "id": "dc2be8887a28"
+   "text": "none, i buy from crafters",
+   "id": "04cf6f75ea0b"
   },
   {
    "kind": "reply",
@@ -687554,8 +683629,28 @@
    "answers": [
     "ask_craft"
    ],
-   "text": "fletching, archers keep me in business",
-   "id": "c04d2fa28d40"
+   "text": "tried one once, ran out of coin",
+   "id": "6d77e6dfe8a5"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 1.0,
+   "answers": [
+    "ask_craft"
+   ],
+   "text": "no craft yet, maybe at 50",
+   "id": "62444465d6ba"
   }
  ],
  "scenes": [
@@ -688530,7 +684625,7 @@
      "text": "yours moves because youre selling at cost. thats not a business, thats charity",
      "variants": [
       "yours moves because youre selling at cost. thats not a business, thats charity",
-      "you're barely covering the materials {name_b}. that's not selling, that's giving it away"
+      "youre barely covering the materials {name_b}. thats not selling, thats giving it away"
      ],
      "optional": false
     },
@@ -688554,10 +684649,10 @@
     },
     {
      "role": "A",
-     "text": "i'm the {title} here, {name_b}. go practice on some more cloaks",
+     "text": "im the {title} here, {name_b}. go practice on some more cloaks",
      "variants": [
-      "i'm the {title} here, {name_b}. go practice on some more cloaks",
-      "i'm {title}. you're still doing practice pieces"
+      "im the {title} here, {name_b}. go practice on some more cloaks",
+      "im {title}. youre still doing practice pieces"
      ],
      "optional": false
     },
@@ -688705,9 +684800,9 @@
     },
     {
      "role": "B",
-     "text": "i'm making a lot. people keep asking me instead of you",
+     "text": "im making a lot. people keep asking me instead of you",
      "variants": [
-      "i'm making a lot. people keep asking me instead of you",
+      "im making a lot. people keep asking me instead of you",
       "i have orders. lots of them. from your old customers"
      ],
      "optional": false
@@ -688726,7 +684821,7 @@
      "text": "ill make you one {name_b} cant",
      "variants": [
       "ill make you one {name_b} cant",
-      "send me a tell, i'll do it right"
+      "send me a tell, ill do it right"
      ],
      "optional": false
     },
@@ -688735,7 +684830,7 @@
      "text": "ill make it better and sooner",
      "variants": [
       "ill make it better and sooner",
-      "i'll have it done before {name_a} finds a hammer"
+      "ill have it done before {name_a} finds a hammer"
      ],
      "optional": false
     },
@@ -688759,27 +684854,27 @@
     },
     {
      "role": "B",
-     "text": "fine by me. anyone who's worn both, speak up",
+     "text": "fine by me. anyone whos worn both, speak up",
      "variants": [
-      "fine by me. anyone who's worn both, speak up",
-      "deal. people, who's work do you wear"
+      "fine by me. anyone whos worn both, speak up",
+      "deal. people, whose work do you wear"
      ],
      "optional": false
     },
     {
      "role": "F",
-     "text": "i'm wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
+     "text": "im wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
      "variants": [
-      "i'm wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
-      "honestly i can't tell the difference"
+      "im wearing a {name_a} piece and a {name_b} piece. they both look the same to me lol",
+      "honestly i cant tell the difference"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "thats because you're not a crafter",
+     "text": "thats because youre not a crafter",
      "variants": [
-      "thats because you're not a crafter",
+      "thats because youre not a crafter",
       "to the untrained eye, maybe"
      ],
      "optional": false
@@ -688865,9 +684960,9 @@
     },
     {
      "role": "C",
-     "text": "they're still at it lol",
+     "text": "theyre still at it lol",
      "variants": [
-      "they're still at it lol",
+      "theyre still at it lol",
       "day three of the {recipe} war"
      ],
      "optional": false
@@ -688910,9 +685005,9 @@
     },
     {
      "role": "B",
-     "text": "i'll split when {name_a} stops trash talking my work",
+     "text": "ill split when {name_a} stops trash talking my work",
      "variants": [
-      "i'll split when {name_a} stops trash talking my work",
+      "ill split when {name_a} stops trash talking my work",
       "when {name_a} admits my work is fine, sure"
      ],
      "optional": false
@@ -689001,7 +685096,7 @@
      "text": "...yeah. me too. my purse is a joke right now",
      "variants": [
       "...yeah. me too. my purse is a joke right now",
-      "yeah. i noticed. i'm broke"
+      "yeah. i noticed. im broke"
      ],
      "optional": false
     },
@@ -689052,9 +685147,9 @@
     },
     {
      "role": "B",
-     "text": "and you're a real {title}. i was just sore about it",
+     "text": "and youre a real {title}. i was just sore about it",
      "variants": [
-      "and you're a real {title}. i was just sore about it",
+      "and youre a real {title}. i was just sore about it",
       "your work is good {name_a}, i just hated losing customers"
      ],
      "optional": false
@@ -689167,19 +685262,19 @@
     },
     {
      "role": "B",
-     "text": "fine. you win this one. i'm going back to fair prices, i can't afford the war anymore",
+     "text": "fine. you win this one. im going back to fair prices, i cant afford the war anymore",
      "variants": [
-      "fine. you win this one. i'm going back to fair prices, i can't afford the war anymore",
-      "ok, ok. i'm done undercutting. my purse can't take it"
+      "fine. you win this one. im going back to fair prices, i cant afford the war anymore",
+      "ok, ok. im done undercutting. my purse cant take it"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "and you're welcome to ask me for tips. {title} to apprentice",
+     "text": "and youre welcome to ask me for tips. {title} to apprentice",
      "variants": [
-      "and you're welcome to ask me for tips. {title} to apprentice",
-      "i'll even show you how to do the seams right {name_b}"
+      "and youre welcome to ask me for tips. {title} to apprentice",
+      "ill even show you how to do the seams right {name_b}"
      ],
      "optional": false
     },
@@ -689294,7 +685389,7 @@
      "text": "{player} just doesnt know good {recipe}",
      "variants": [
       "{player} just doesnt know good {recipe}",
-      "with respect, {player} doesn't know {recipe}"
+      "with respect, {player} doesnt know {recipe}"
      ],
      "optional": false
     },
@@ -689318,10 +685413,10 @@
     },
     {
      "role": "A",
-     "text": "fine. fine. i'll drop my prices. happy?",
+     "text": "fine. fine. ill drop my prices. happy?",
      "variants": [
-      "fine. fine. i'll drop my prices. happy?",
-      "ok. i'll price fair. you win {name_b}"
+      "fine. fine. ill drop my prices. happy?",
+      "ok. ill price fair. you win {name_b}"
      ],
      "optional": false
     },
@@ -689336,9 +685431,9 @@
     },
     {
      "role": "E",
-     "text": "{name_a} coming down in price, never thought i'd see it",
+     "text": "{name_a} coming down in price, never thought id see it",
      "variants": [
-      "{name_a} coming down in price, never thought i'd see it",
+      "{name_a} coming down in price, never thought id see it",
       "{name_a} lowering prices, the world is ending"
      ],
      "optional": false

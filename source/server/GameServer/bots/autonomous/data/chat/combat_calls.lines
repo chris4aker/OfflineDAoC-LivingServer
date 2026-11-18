@@ -274,10 +274,10 @@ toss on {target}, heals pls
 @who *
 @needs in_player_group
 {target} is in the jail
-someone's in the jail, its {target}
+someones in the jail, its {target}
 {target} got jailed, kill the guards to get out
 jail on {target}, hang tight
-{target} got jailed, we'll get ya
+{target} got jailed, well get ya
 {boss} jailed {target}, keep going
 
 # ---- displaced_self: the bot itself got thrown and landed ---------------------------------------------------------
@@ -424,7 +424,7 @@ griffon inc overhead, shoot it down
 pull it when it flies over, melee get it when it lands
 [ranged|archers] hit it as it passes
 its coming round again, ready to pull
-shoot the bird, it'll come down on ya
+shoot the bird, itll come down on ya
 
 # ---- epic_legion_wounded: each raider Legion kills heals him ---------------------------------------------------------
 @kind combat
@@ -444,7 +444,7 @@ heals on the low ones, dont let him get a kill
 @needs in_player_group
 scream inc, spread off the tank
 get away from his target, aoe mezz
-[back off|step back], he's gonna scream
+[back off|step back], hes gonna scream
 mezz inc, everyone off the mt
 scream! get clear of the tank
 
@@ -453,7 +453,7 @@ scream! get clear of the tank
 @topic epic_jail_team
 @who *
 @needs in_player_group
-we're on jail duty, follow me down the tunnel
+were on jail duty, follow me down the tunnel
 our grp takes the jail guards, lets go
 jail run, kill the 2 guards and come back
 [we got|our group has] the jail, down the tunnel
@@ -465,7 +465,7 @@ jail run, kill the 2 guards and come back
 @needs in_player_group
 {target}'s grp is on the jail guards
 jail team is going, we stay on {boss}
-someone's clearing the jail, keep on him
+someones clearing the jail, keep on him
 if ya get jailed, the guards will be dead soon
 
 # ---- epic_forn_shards: kill Fornfrusenen's shards first --------------------------------------------------------------
@@ -483,7 +483,7 @@ each shard = a quarter of his hp, kill em
 @topic epic_close_in
 @who *
 @needs in_player_group
-get in close, he's immune from range
+get in close, hes immune from range
 casters move in, ranged does nothing
 [stack on him|everyone close], he only takes dmg up close
 too far and ya do 0, get close
@@ -504,7 +504,7 @@ wrong one, swap to {target}
 @who *
 @needs in_player_group
 ghoul on me, kiting it
-it's coming for me, kill the ghoul
+its coming for me, kill the ghoul
 [ghoul|zombie] on me, nuke it before it pops
 backing off the ghoul, it explodes
 

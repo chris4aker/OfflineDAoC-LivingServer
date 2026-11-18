@@ -7,11 +7,13 @@
 hey :)
 hail
 hi there
+@needs outdoors
 hey, good to see someone else out here
+@needs
 @needs evening
 evening
 @needs
-o/
+hey you
 hey hey
 greetings, good hunting
 yo
@@ -20,7 +22,6 @@ hello! nice night for it
 @needs
 @who Socialite
 hey!! how is everyone doing tonight
-hi hi, welcome back
 
 @kind reply
 @intent farewell
@@ -158,7 +159,6 @@ ask away
 i can try to help, what is it?
 check your trainer first, it fixes a lot
 happens to everyone, dont worry
-consider before you pull, saves a lot of deaths
 use /stick if you get lost following someone
 @levels 35-50
 spec for what you enjoy, the rest comes later
@@ -167,10 +167,10 @@ spend your realm points from rvr on realm abilities, they add up
 @kind reply
 @intent ignoreoutofworld
 @who *
-lets keep it about the realm :)
+heh, beats me
 not touching that one, back to the camp
 we have enough wars in game, heh
-that is a conversation for another channel
+eh, dunno about that
 
 @kind reply
 @intent unknown

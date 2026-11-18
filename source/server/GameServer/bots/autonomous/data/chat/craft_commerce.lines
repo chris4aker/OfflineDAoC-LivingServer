@@ -113,7 +113,7 @@ here you go, your {item}. enjoy
 there, {item} is yours. wear it well
 
 @topic craft_handover_trade
-here's your {item}, {price} in the trade window
+heres your {item}, {price} in the trade window
 {item} is in the trade window, {price}
 
 @topic craft_cancelled

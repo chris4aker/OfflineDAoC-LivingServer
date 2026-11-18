@@ -28,7 +28,7 @@ np. back to it
 @who Daredevil
 np, now go pull something big
 @who Crafter
-np, come back if it breaks
+np, anytime
 
 # ---- congrats: someone congratulated the bot ---------------------------------------------
 @kind reply
@@ -42,16 +42,24 @@ took forever
 ty {player}
 thank you!
 heh thanks, about time
+@levels 1-49
 ty, off to the trainer now
+@levels 1-50
 appreciate it
+@levels 1-49
 ty, the grind continues
+@levels 1-50
 ty, that one hurt
+@levels 1-49
 thx, slow and steady
 ty, next one is the hard one
+@levels 1-50
 @who Socialite
 aww ty {player}!!
 @who Leveler
+@levels 1-49
 ty, right on pace
+@levels 1-50
 @who NoLifer
 ty. onward
 @who Daredevil
@@ -163,20 +171,17 @@ wb!! missed you
 @who Leveler
 wb, lets get moving
 @who Crafter
-wb, bags emptied?
+wb, ready?
 
 # ---- rez: "rez pls", "anyone rez?" --------------------------------------------------------
 @kind reply
 @intent rez
 @who *
 ouch, where did you die?
-shout, someone might be close
-oof, what got you?
+ugh, what got you?
 ouch
-rip
 that sucks, sorry
 where are you?
-release and run back maybe, bind isnt far
 been there, gl
 @needs !can_rez
 no rez on me, sorry
@@ -223,14 +228,14 @@ any healers with them?
 im nowhere near the frontier, sorry
 cant, im out in pve
 @needs in_rvr
-omw
-on my way
-coming from the mg
-omw, 30 sec out
-heading there now
-coming, hold the door
-omw, dont chase
-rgr, omw
+ugh, not again
+anyone closer than me?
+gl, cant get there in time
+they never stop
+hold them as long as you can
+ugh, wrong end of the map for me
+dont chase them too far
+call it if they hit the door
 
 # ---- classtalk: class and spec questions and opinions -------------------------------------
 @kind reply
@@ -345,7 +350,6 @@ lots of groups near {dungeon} lately
 inv me if you have room
 {level} {class} here if you need one
 @needs in_group
-full up here, sorry
 @needs in_group,!in_player_group
 ask our leader, might be a spot
 
@@ -354,7 +358,7 @@ ask our leader, might be a spot
 @who *
 hiya
 heya {player}
-hey all
+oh hey
 hi
 hello
 sup
@@ -366,7 +370,7 @@ howdy
 hey, how is the hunting?
 yo {player}
 @needs evening
-evening all
+evening {player}
 
 @kind reply
 @intent trading

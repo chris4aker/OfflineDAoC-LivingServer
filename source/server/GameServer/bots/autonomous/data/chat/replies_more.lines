@@ -5,18 +5,10 @@
 @kind reply
 @answers ask_anyone
 @who *
-here
-im on
-me, kind of
 maybe, what time?
 depends, what level?
 might be up for it later
-im around, whats up?
 could be, tell me more
-@who Socialite
-me me me
-@who NoLifer
-always
 
 @kind reply
 @answers ask_howareyou
@@ -66,11 +58,9 @@ tried both, liked the second
 @intent travel
 @who *
 long run, take a horse
-the stable master saves you half the walk
-follow the road, cant miss it
 its a bit of a trek
 past the bridge and keep going
-check your map, its marked
+ask a guard, they point the way
 get a horse in {capital}
 bring speed if you have it
 
@@ -81,7 +71,6 @@ frontier is busy tonight
 been quiet out there lately
 the zerg moved on i think
 who holds {keep} now?
-stealthers everywhere, careful
 i might head out later
 need more healers out there
 @needs keep_news
@@ -144,7 +133,7 @@ someone was there an hour ago
 havent seen anyone
 i think so? dont quote me
 dunno, ask in a bit
-no idea, check the map
+no idea, ask a guard
 pretty sure, yeah
 heard the same, no idea if its true
 dont think so
@@ -158,9 +147,9 @@ yes, been watching it all night
 @kind reply
 @answers ask_on
 @who *
-here o/
+here
 yep, on
-o/ hi
+hi hi
 just got on
 still here
 around, kinda
@@ -204,12 +193,17 @@ about halfway
 @needs !xp_low
 {bubbles} bubbles
 @needs
+@needs xp_high
 one more pull i hope
+@needs xp_low
 not even close lol
+@needs
 @needs just_leveled
 just dinged, so far
 @needs
+@needs xp_high
 almost, few more kills
+@needs
 @needs xp_mid
 {bubbles} bubbles, ugh
 @needs

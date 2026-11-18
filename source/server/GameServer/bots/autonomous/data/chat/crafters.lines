@@ -11,7 +11,7 @@
 wts {stock}, {quality}% quality, {price}
 [wts|selling] {stock} {quality}%, {price}[, pst|, send a tell|]
 fresh off my bench: {stock}, {quality}%, asking {price}
-made a {quality}% {stock} today, {price} if anyone wants it
+made a {quality}% {stock}, {price} if anyone wants it
 {stock} for sale, {quality}%, {price} obo
 @invites
 anyone need {stock}? {quality}% and only {price}
@@ -25,5 +25,5 @@ anyone need {stock}? {quality}% and only {price}
 {title} at last
 [finally|woo,] {title}[!|]
 just hit {skill}, {title} now
-{title}. my purse is lighter than my hammer
+{title}. my purse is a lot lighter for it
 {title} today, all those failed combines paid off

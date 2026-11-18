@@ -13,15 +13,14 @@ lfg {level} {class}, anything
 {class} {level} lfg, pst
 lfg, {level} {class}, any camp
 {level} {class} lf group, got a few hours
-lfg {level} {class}, will run to you
-{class} lfg, {level}, been waiting a while
+lfg {level} {class}, can travel
 {level} {class} lfg, anyone?
 lf grp, {level} {class}
 lfg {camp}, {level} {class}
 {level} {class}, lfg xp group, can start now
 lfg, {class} {level}, know my class
 {level} {class} lfg, dont care where
-{class} {level} lfg, full buffs and potions
+{class} {level} lfg, got potions
 lfg any xp, {level} {class}, inv pls
 {level} {class} lfg, lets get a group going
 lfg {level} {class}, solo xp is killing me
@@ -143,8 +142,10 @@ hey, lets pull something big
 @needs in_group,in_player_group,evening
 evening all, ty for the inv
 @who *
-@needs in_group,in_player_group,is_healer
+@needs in_group,in_player_group
+@class Cleric,Friar,Druid,Bard,Healer,Shaman
 @invites none
 hi all, healer here, try not to die
+@class
 @needs in_group,in_player_group,is_tank
 hey, tank here, pull to me
