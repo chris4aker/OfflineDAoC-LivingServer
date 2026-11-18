@@ -166,8 +166,10 @@ public static class AutonomousBotCombatCalls
             if (state.WipeCalled || view.Alive <= 0 || view.PlayerDown)
                 return null;
             double roll = random.NextDouble();
-            if (view.Worn)
-                return roll < 0.45 ? "rest" : roll < 0.6 ? "kill" : null;
+            // Chat audit CORPUS-C-024: "clean", "easy" and "smooth" are no end for a fight a groupmate died in; the group rests.
+            bool someoneDied = view.Members - view.Alive > state.DeadAtStart;
+            if (view.Worn || someoneDied)
+                return roll < 0.45 ? "rest" : roll < 0.6 && !someoneDied ? "kill" : null;
             return roll < 0.3 ? "kill" : roll < 0.4 ? "rest" : null;
         }
         return null;
@@ -449,6 +451,25 @@ public static class AutonomousBotCombatCalls
     public static bool KillLineFits(string text, bool gaveExperience) =>
         !string.IsNullOrEmpty(text) && (gaveExperience || !ExperienceWords.IsMatch(text));
 
+    private static readonly System.Text.RegularExpressions.Regex OwnPowerWords = new(
+        @"\b(to med|need power|sitting for power|my power|oom)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// A rest call fits its speaker: one about the speaker's own power ("give me a sec to med", "need power, sitting") only from a
+    /// bot that uses power and is under 40% of it (chat audit CORPUS-C-024: a Warrior said "give me a sec to med", a Wizard at full
+    /// power "need power, sitting", because the rest call follows the group's state). Pure.
+    /// </summary>
+    public static bool RestLineFits(string text, bool usesPower, int manaPercent) =>
+        !string.IsNullOrEmpty(text) && (!OwnPowerWords.IsMatch(text) || usesPower && manaPercent < OomResetPercent);
+
+    private static readonly System.Text.RegularExpressions.Regex OtherEnemyWords = new(
+        @"\b(add|other|the first)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>A root call that names another enemy ("rooted the add", "rooted, kill the other") only when there are two or more
+    /// (chat audit CORPUS-C-023: a root on a single monster called "rooted, kill the other"). Pure.</summary>
+    public static bool RootLineFits(string text, int enemies) =>
+        !string.IsNullOrEmpty(text) && (enemies >= 2 || !OtherEnemyWords.IsMatch(text));
+
     /// <summary>The experience the group's players and bots hold together.</summary>
     private static long GroupExperience(GameLiving[] members)
     {
@@ -460,9 +481,15 @@ public static class AutonomousBotCombatCalls
 
     private static bool Say(GameBot bot, string topic, int enemies, bool gaveExperience = true)
     {
-        if (!AutonomousBotVoices.TryLine(bot, "combat", out VC.Picked picked, topic: topic, relax: true,
-                filter: topic is "pull" or "add" ? line => PullLineFits(line.Text, enemies)
-                    : topic == "kill" ? line => KillLineFits(line.Text, gaveExperience) : null))
+        Func<VC.Line, bool> filter = topic switch
+        {
+            "pull" or "add" => line => PullLineFits(line.Text, enemies),
+            "kill" => line => KillLineFits(line.Text, gaveExperience),
+            "rest" => line => RestLineFits(line.Text, UsesPower(bot), bot.ManaPercent),
+            "root" => line => RootLineFits(line.Text, enemies),
+            _ => null,
+        };
+        if (!AutonomousBotVoices.TryLine(bot, "combat", out VC.Picked picked, topic: topic, relax: true, filter: filter))
             return false;
         AutonomousBotGroupChatter.Send(bot, picked.Text, "none");
         return true;

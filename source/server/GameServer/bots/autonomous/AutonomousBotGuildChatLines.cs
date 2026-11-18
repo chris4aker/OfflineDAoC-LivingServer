@@ -25,12 +25,23 @@ public static class AutonomousBotGuildChatLines
         Abuse,
     }
 
-    public static string Greeting(string player, Random random) => Pick(random,
-        $"hey {player}", $"hi {player}", $"evening {player}", $"{player}!", $"wb {player}", $"yo {player}",
-        $"o/ {player}", $"hiya {player}", "o/", $"heya {player}");
+    /// <summary>
+    /// A hello to a guildmate. "evening" only in the evening (17:00-23:00 on the PC's clock; <paramref name="hour"/> -1 = not
+    /// known, so never), and no "o/" (chat audit CORPUS-C-030, TEXT-010, TEXT-023: "evening {player}" at any hour, two of ten
+    /// strings the banned wave).
+    /// </summary>
+    public static string Greeting(string player, Random random, int hour = -1) => Pick(random, IsEvening(hour)
+        ? new[] { $"hey {player}", $"hi {player}", $"evening {player}", $"{player}!", $"wb {player}", $"yo {player}", $"hail {player}",
+            $"hiya {player}", $"heya {player}" }
+        : new[] { $"hey {player}", $"hi {player}", $"{player}!", $"wb {player}", $"yo {player}", $"hail {player}", $"hiya {player}",
+            $"heya {player}" });
 
-    public static string GreetingToBot(string bot, Random random) => Pick(random,
-        $"hey {bot}", $"wb {bot}", $"hi {bot}", $"{bot}!", $"evening {bot}");
+    public static string GreetingToBot(string bot, Random random, int hour = -1) => Pick(random, IsEvening(hour)
+        ? new[] { $"hey {bot}", $"wb {bot}", $"hi {bot}", $"{bot}!", $"evening {bot}" }
+        : new[] { $"hey {bot}", $"wb {bot}", $"hi {bot}", $"{bot}!" });
+
+    /// <summary>17:00 to 23:00, the corpus's own evening (AutonomousBotVoices: day 6-17, evening 17-23, night 23-6).</summary>
+    public static bool IsEvening(int hour) => hour is >= 17 and < 23;
 
     public static string Congratulate(string name, int level, Random random) => Pick(random,
         $"grats {name}!", "gratz!", $"grats on {level} {name}", "gz", $"nice, {level} already?", $"grats {name}, {level} is a good one",
@@ -50,7 +61,7 @@ public static class AutonomousBotGuildChatLines
     {
         string where = string.IsNullOrWhiteSpace(zone) ? "the usual spot" : zone;
         return rvr
-            ? Pick(random, $"{guildmates} of us heading out to the frontier, join up if you can", "guild warband forming, frontier bound",
+            ? Pick(random, $"{guildmates} of us heading out to the frontier, join up if you can", "guild grp forming for the frontier",
                 $"rolling out with {guildmates} guildies, wish us luck")
             : Pick(random, $"guild group forming in {where}, {guildmates} of us so far", $"{guildmates} guildies grouped up in {where}",
                 $"heading to {where} with the guild crew", $"guild group at {where} if anyone wants to swap in later");
@@ -61,7 +72,7 @@ public static class AutonomousBotGuildChatLines
         $"claimed {keep}", $"{keep} is ours gj");
 
     public static string KeepUnderAttack(string keep, Random random) => Pick(random,
-        $"{keep} is under attack! everyone who can, get there", $"they are hitting our keep at {keep}, need bodies",
+        $"{keep} is under attack! everyone who can, get there", $"theyre hitting {keep}, need bodies",
         $"{keep} needs defenders now", $"defend {keep}! our claim, our problem");
 
     public static string Farewell(string player, Random random) => Pick(random,
@@ -132,7 +143,7 @@ public static class AutonomousBotGuildChatLines
 
     public static string OfferInvite(string player, string guild, Random random) => Pick(random,
         $"{player}, sending you an invite to {guild}", $"sure {player}, invite coming from {guild}",
-        $"{player} we would love to have you, check for an invite", $"inviting you now {player}");
+        $"{player} wed love to have you, check for an invite", $"inviting you now {player}");
 
     /// <summary>To a player asking for a guild below the level bot guilds take members (BOT_GUILD_MIN_LEVEL).</summary>
     public static string TooLowForGuild(string player, string guild, int minLevel, Random random) => Pick(random,
@@ -158,10 +169,10 @@ public static class AutonomousBotGuildChatLines
             ReplyKind.Farewell => Farewell(player, random),
             ReplyKind.Thanks => Pick(random, "np", $"anytime {player}", "no problem", "np, glad to help"),
             ReplyKind.Grouping => Pick(random, $"im {level}, in {where}. could come to you", $"{player} i can group in a bit, finishing a pull",
-                $"if you are near {level} i am in", $"where are you {player}? i am in {where}"),
+                $"if ur near {level} im in", $"where are you {player}? im in {where}"),
             ReplyKind.Question => Pick(random, "not sure, sorry", "good question, someone else might know", $"no idea {player}, try faction",
-                "hmm, i would ask a trainer"),
-            ReplyKind.Banter => Pick(random, "lol", "heh", $"{player} you are a riot", "haha true", "ha"),
+                "hmm, id ask a trainer"),
+            ReplyKind.Banter => Pick(random, "lol", "heh", $"{player} ur a riot", "haha true", "ha"),
             ReplyKind.Abuse => Pick(random, "easy now", "whoa, ok", "lets keep guild chat friendly"),
             _ => string.Empty,
         };
@@ -175,7 +186,8 @@ public static class AutonomousBotGuildChatLines
             return ReplyKind.None;
         if (ContainsWord(text, "ty") || ContainsWord(text, "thx") || ContainsWord(text, "thanks") || text.Contains("thank you"))
             return ReplyKind.Thanks;
-        if (ContainsWord(text, "gn") || ContainsWord(text, "night") || ContainsWord(text, "cya") || ContainsWord(text, "bye") ||
+        // "night" says goodbye only as the first word or in "night all" / "good night" (chat audit CORPUS-C-030: "slow night huh").
+        if (ContainsWord(text, "gn") || SaysNight(text) || ContainsWord(text, "cya") || ContainsWord(text, "bye") ||
             text.Contains("logging off") || text.Contains("heading to bed"))
             return ReplyKind.Farewell;
         return intent switch
@@ -204,6 +216,13 @@ public static class AutonomousBotGuildChatLines
         // Short answers only count right after a recruiting post.
         return recruitOpen && (text is "me" or "me!" or "me please" or "interested" or "i'm interested" or "im interested" or
             "inv" or "inv me" or "invite me" or "i'll join" or "ill join" or "count me in" or "sign me up");
+    }
+
+    private static bool SaysNight(string text)
+    {
+        string[] words = text.Split(new[] { ' ', ',', '.', '!', '?', ':', ';' }, StringSplitOptions.RemoveEmptyEntries);
+        return words.Length > 0 && words[0] is "night" or "nite" or "nn" || text.Contains("night all") || text.Contains("nite all") ||
+               text.Contains("good night") || text.Contains("goodnight") || text.Contains("night everyone");
     }
 
     private static bool ContainsWord(string text, string word)

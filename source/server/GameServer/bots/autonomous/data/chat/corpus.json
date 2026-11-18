@@ -402401,24 +402401,6 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "summer cant come soon enough, so much leveling",
-   "id": "a8614a46cf60"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "chat",
    "text": "dorm internet is slow, the company helps",
    "id": "8afcd0106356"
   },
@@ -404753,10 +404735,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain here, perfect excuse to stay in",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "435b918c11f3"
   },
   {
@@ -404772,10 +404754,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain here, glad to be inside",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "83bccc6bd4b9"
   },
   {
@@ -404791,10 +404773,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain here, good excuse to play",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "d3373ba9db0e"
   },
   {
@@ -404810,10 +404792,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain outside, perfect excuse to stay in",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "093a0775b085"
   },
   {
@@ -404829,10 +404811,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain outside, glad to be inside",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "a4c063f6fda6"
   },
   {
@@ -404848,10 +404830,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "pouring rain outside, good excuse to play",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "e8107900e5b4"
   },
   {
@@ -404867,10 +404849,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming here, perfect excuse to stay in",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "0ef8ac0f78f6"
   },
   {
@@ -404886,10 +404868,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming here, glad to be inside",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "d63d785f0e7f"
   },
   {
@@ -404905,10 +404887,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming here, good excuse to play",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "16daea2e8b76"
   },
   {
@@ -404924,10 +404906,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming outside, perfect excuse to stay in",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "3d8d0392c92d"
   },
   {
@@ -404943,10 +404925,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming outside, glad to be inside",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "00a0a001451a"
   },
   {
@@ -404962,125 +404944,11 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.2357,
+   "weight": 0.2887,
    "invites": "player_rl_weather",
    "text": "storming outside, good excuse to play",
-   "family": "812a12c3cb",
+   "family": "c4a2d13abc",
    "id": "b107e18837a0"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy here, perfect excuse to stay in",
-   "family": "812a12c3cb",
-   "id": "ea8aecec53e1"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy here, glad to be inside",
-   "family": "812a12c3cb",
-   "id": "8e2c073c8932"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy here, good excuse to play",
-   "family": "812a12c3cb",
-   "id": "ff8f73f689f7"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy outside, perfect excuse to stay in",
-   "family": "812a12c3cb",
-   "id": "655c4cfbc7cc"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy outside, glad to be inside",
-   "family": "812a12c3cb",
-   "id": "c8a972dc49ef"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.2357,
-   "invites": "player_rl_weather",
-   "text": "snowing like crazy outside, good excuse to play",
-   "family": "812a12c3cb",
-   "id": "b371644b5a65"
   },
   {
    "kind": "guild",
@@ -405573,24 +405441,6 @@
    "invites": "player_rl_weather",
    "text": "hail on the windows, sounds like siege",
    "id": "6fbcbbc5725c"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "player_rl_weather",
-   "text": "icy roads all week, staying put",
-   "id": "a96aa4f829fd"
   },
   {
    "kind": "guild",
@@ -423463,24 +423313,6 @@
    "invites": "joke",
    "text": "neighbor asked about my lights, i said research",
    "id": "db1dc1f44b6a"
-  },
-  {
-   "kind": "guild",
-   "topic": "social",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 1.0,
-   "invites": "joke",
-   "text": "first warm day in weeks, almost went outside",
-   "id": "566b5bf744a0"
   },
   {
    "kind": "guild",
@@ -576648,6 +576480,23 @@
    "weight": 1.0,
    "text": "skalds are always welcome in rvr",
    "id": "26143de27642"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "mid",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "classtalk",
+   "mood": "",
+   "weight": 1.0,
+   "text": "a berserker in frenzy forgets to stop",
+   "id": "972a205dba6f"
   },
   {
    "kind": "reply",

@@ -77,6 +77,11 @@ public static class AutonomousChatReplyFit
             // A group forming ("lfm vendo need healer") is answered by a bot that fits it ("{level} {class} here, inv?").
             if (intent == "grouping" && FormsAGroup(incoming))
                 return Fits;
+            // Chat audit CORPUS-C-016 (owner, 2026-11-18: "reassess which filters need tweaking"): a remark of banter ("this camp is
+            // dead lol") is answered in kind by a banter line, as a laugh is; a question still needs a reply written for it.
+            if (intent == "banter" && !string.IsNullOrWhiteSpace(incoming) && !incoming.TrimEnd().EndsWith('?') &&
+                !AutonomousChatQuestions.IsQuestion(incoming))
+                return Fits;
             return Weak;
         }
         return Weak;

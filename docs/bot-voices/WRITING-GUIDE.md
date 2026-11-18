@@ -84,6 +84,23 @@ says "today").
 - Replies must make sense as an answer to MANY different openers of their type: a `boast` reply ("nice,
   gz") must fit any boast. A specific question gets specific answers via `ask_<topic>`.
 
+## What the server will actually say (chat audit, 2026-11-18)
+
+Most unprompted lines are field lines built in code (`AutonomousChatFieldTalk`); a written line gets through only when it passes
+the filters, so write inside them:
+- **Unprompted lines** (`AutonomousChatFiller.IsCrafted`): at most 9 words, not tagged `@invites joke`, no tip, life or narration
+  marker ("if you ", "remember to", " work", "coffee", "feels like", "just saying"...).
+- **Guild lines** (`GuildCorpusFits`): at most **8** words and no "..."; short jokes and life words are fine there, but a life line
+  (every `@topic social` line is one) comes at most every 90 minutes, and any written line at most every 20 minutes a guild.
+- **Replies to a player** (`chat-budget.json` `min_fit` 2): a reply set scored Weak is never said to a player (only bot to bot).
+  Weak today: the topic intents (grinding, travel, dungeon, rvr, trading, help, unknown, ignoreoutofworld), general class talk
+  (a class talk line must name the class asked about), and the shapes `ask_choice`, `ask_advice`, `ask_price`. A banter remark
+  (not a question) is answered by the banter set. Social intents (hello, thanks, gz, ding, brb, back, rez, laugh) and the question
+  shapes answer the player.
+- Reply sets must fit **every** line their trigger catches: the real-life sets fit good and bad news alike (a new pc and a crash).
+- One text once per kind in the whole corpus (the builder): a short answer ("yep", "me") lives in one set; tag it with several
+  `@answers` instead of writing it twice.
+
 ## Never
 - Slurs or insults about real groups; anything sexual; politics or real-world news; cruelty. Swearing in 2003 style is fine
   (owner, 2026-11-18: "Swearing is fine"): "hell", "damn", "crap", "shit", even the odd f-word from a frustrated player, the way

@@ -114,8 +114,51 @@ public static class AutonomousChatFiller
     /// written line at most once in 20 minutes. Pure but for the memory read.
     /// </summary>
     public static bool GuildCorpusFits(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now) =>
-        line != null && !IsCrafted(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) && !memory.Seen(Skeleton(line.Text)) &&
-        !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || memory.LifeAllowed(now));
+        line != null && !IsCraftedForGuild(line) && !IsGeneric(line.Text) && memory.WrittenAllowed(now) && !memory.Seen(Skeleton(line.Text)) &&
+        !memory.Rested(null, IdeaOf(line), now) && (!IsLife(line) || GuildLifeAllowed(memory, now));
+
+    /// <summary>
+    /// How often a guild hears a life line (weather, work, school, pets, food, family). Chat audit 1.2 (owner, 2026-11-18 09:14:
+    /// "shorten them, then reassess which filters need tweaking"): once in six hours let one of the 289 social guild lines through a
+    /// whole evening; a guild's written lines come at most every 20 minutes, so 90 minutes is about one written line in five.
+    /// </summary>
+    public const long GuildLifeGapMs = 90 * 60_000;
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<AutonomousChatFieldTalk.Memory, System.Runtime.CompilerServices.StrongBox<long>>
+        GuildLife = new();
+
+    /// <summary>Whether this guild may hear a life line now (none in the last <see cref="GuildLifeGapMs"/>).</summary>
+    public static bool GuildLifeAllowed(AutonomousChatFieldTalk.Memory memory, long now)
+    {
+        if (memory == null || !GuildLife.TryGetValue(memory, out var last))
+            return true;
+        lock (last)
+            return now - last.Value >= GuildLifeGapMs || now < last.Value;
+    }
+
+    // Words that make a line "life filler" for the unprompted channels. In guild chat a life line is paced by GuildLifeGapMs
+    // instead, so these alone do not keep a short guild line out (the audit: 400 of 614 guild lines could never be said).
+    private static readonly string[] GuildLifeWords =
+    [
+        " work", " job", "my boss", " kids", "my wife", "my husband", "girlfriend", "boyfriend", "school", "homework", "coffee", "my cat",
+        "my dog", "weekend", "monday", "the wife", "my mom", "my dad", "soda", "snack", "pizza", " beer", " tea ", "baby", " kid ", "asleep",
+        "finals", "exams",
+    ];
+
+    /// <summary>
+    /// <see cref="IsCrafted"/> for a written guild line: at most 8 words and no "...", no tip, sentimental or narration marker, but a
+    /// short joke and the life words are fine (guildmates joke and talk about their day; the life pace is GuildLifeGapMs). Pure.
+    /// </summary>
+    public static bool IsCraftedForGuild(VC.Line line)
+    {
+        if (line == null)
+            return false;
+        string text = line.Text ?? string.Empty;
+        if (text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 8 || text.Contains("...") || text.Contains('…'))
+            return true;
+        string padded = " " + text.ToLowerInvariant() + " ";
+        return CraftedMarkers.Any(marker => !GuildLifeWords.Contains(marker) && padded.Contains(marker, StringComparison.Ordinal));
+    }
 
     /// <summary>A written guild line was said: its idea rests, the guild's written gap starts, and a life line uses up the evening's one.</summary>
     public static void NoteGuildCorpus(VC.Line line, AutonomousChatFieldTalk.Memory memory, long now)
@@ -126,7 +169,12 @@ public static class AutonomousChatFiller
         memory.Add(Skeleton(line.Text));
         memory.NoteWritten(now);
         if (IsLife(line))
+        {
             memory.NoteLife(now);
+            var last = GuildLife.GetValue(memory, _ => new System.Runtime.CompilerServices.StrongBox<long>(long.MinValue / 2));
+            lock (last)
+                last.Value = now;
+        }
     }
 
     private static readonly (string Concept, string[] Words)[] Concepts =

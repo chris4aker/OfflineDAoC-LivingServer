@@ -279,6 +279,7 @@ public class UT_ChatThreads
         var random = new Random(6);
         var memory = new Field.Memory(512);
         var heard = new List<VC.Line>();
+        var lifeAt = new List<long>();
         // Six hours of a busy guild, a written line tried every 30 s (far more often than the 10% the guild uses).
         for (long now = 0; now < 6 * 60 * 60_000L; now += 30_000)
         {
@@ -287,9 +288,14 @@ public class UT_ChatThreads
                 continue;
             AutonomousChatFiller.NoteGuildCorpus(line, memory, now);
             heard.Add(line);
+            if (AutonomousChatFiller.IsLife(line))
+                lifeAt.Add(now);
         }
         Assert.That(heard, Is.Not.Empty);
-        Assert.That(heard.Count(AutonomousChatFiller.IsLife), Is.LessThanOrEqualTo(1), string.Join(" | ", heard.Where(AutonomousChatFiller.IsLife).Select(l => l.Text)));
+        // 1.2 chat audit (owner, 2026-11-18: "reassess which filters need tweaking"): a life line every 90 minutes at most, not one
+        // in six hours.
+        Assert.That(lifeAt.Zip(lifeAt.Skip(1), (a, b) => b - a), Is.All.GreaterThanOrEqualTo(AutonomousChatFiller.GuildLifeGapMs),
+            string.Join(" | ", heard.Where(AutonomousChatFiller.IsLife).Select(l => l.Text)));
         Assert.That(heard.Select(line => line.Text).Distinct().Count(), Is.EqualTo(heard.Count), "no written guild line twice an evening");
     }
 }

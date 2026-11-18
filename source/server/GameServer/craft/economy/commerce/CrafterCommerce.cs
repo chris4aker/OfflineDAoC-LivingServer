@@ -262,7 +262,7 @@ namespace DOL.GS.CraftingEconomy
                 CrafterTalk.Reply reply = Handle(player, bot, message);
                 if (reply == null)
                     return BotTrades.OnTell(player, bot, message);
-                Say(bot, player, reply, 1_500 + Math.Min(4_000, message.Length * 30));
+                Say(bot, player, reply, TellDelayMs(bot, message, reply.Text, Random.Shared));
                 return true;
             }
             catch (Exception exception)
@@ -415,6 +415,13 @@ namespace DOL.GS.CraftingEconomy
         }
 
         /// <summary>Says a reply by tell: a corpus line of its topic with its slots (bot voices on), else the fixed text.</summary>
+        /// <summary>
+        /// How long a crafter takes to answer a tell: the bot's normal reading and typing time for its answer (chat audit LOG-026: a
+        /// 31-word answer came 2 s after the question; the delay was the question's length only). Pure but for the bot's speed.
+        /// </summary>
+        public static int TellDelayMs(GameBot bot, string message, string reply, Random random) =>
+            AutonomousBotChatCoordinator.ReplyDelayMs(bot, message, reply, 0, random ?? Random.Shared);
+
         private static void Say(GameBot bot, GamePlayer player, CrafterTalk.Reply reply, int delayMs)
         {
             string text = Voiced(bot, reply);

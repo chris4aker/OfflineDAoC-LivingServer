@@ -105,6 +105,26 @@ below has been seen on the owner's PC yet: **tests only**.
 - Tests: `UT_ChatAuditCompanionsSystemText`, `UT_BotPeopleTables`, `UT_CraftEconomyTestCommand`, `UT_EggPolish12`,
   `test_release_server_settings.py`, `test_command_reference.py`; launcher `HeraldPageTests` (Windows CI).
 
+### Replies, groups, guild, trade and crafters (fix/chat-replies-content)
+- Replies that fit and promise nothing: no "omw" to an alarm from a bot that does not come, no "inv sent", no "heal me" from the
+  group's healer, no thanks for advice after "no idea", no "hey all" to one player, no "o/". A bot's question about the player is
+  closed as one (`ask_personal`), a ready check ("pull?") from a new `ask_ready` set, "who is main assist?" from `ask_who`; new
+  sets for a price check, a brush-off closing and a ding at 50 (written; their routes are E1's and E3's).
+- Class talk for every class in its realm (six lines or more each, the twelve missing classes included) and the other realms'
+  view of it.
+- Thin reply sets (farewell, back, away, ding, congrats, rez, abuse, ask_on, how are you, good news, mishap) to 20+ lines any
+  bot can say; the core combat calls (pull, add, kill, rest, low hp, wipe, root, stun, oom, mez, taunt, group heal, rez) to 20+.
+- Combat calls: no "clean"/"easy" after a groupmate died, power and med calls only from a caster under 40% power, "kill the other"
+  only with two enemies; topics with no trigger (mez broken, healer oom) removed.
+- Guild: every one of the 596 written guild lines can now be said: the ~400 that never passed were shortened to 8 words or
+  fewer, keeping their content (owner, 09:14); in guild chat a short joke and the life words pass, a life line every 90 minutes
+  instead of six hours. The login hello comes from the corpus and says "evening" only in the evening; "slow night" is no
+  goodbye; the pre-voices formal fallback is gone with voices on.
+- Crafters: "at my break in now" fixed (says where it is), crafter tells take the normal typing time, prices over a thousand
+  gold in platinum, the price war is craft-neutral, more want-ad and commerce wordings; "crafter here" adverts from bots with no
+  craft removed.
+- `talking_audit.lines` split into the files of its sets (no line changed).
+
 ## Raid fixes from sweep 6e: Aidon's room, an attempt over his reset, epic trash on the way in, musters a wave walks to (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 13:31-15:15, `DIAG-b1b6-sweep6e`). Nothing below is seen in game yet.
