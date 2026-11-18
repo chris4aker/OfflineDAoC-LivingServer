@@ -69,6 +69,18 @@ companion is summoned, and the rows stay.
 - Not yet: True 1.65's traveler's inns and innkeepers (they need a base-game world update), the courier, the Horn of
   Rallying, its 1.65 mode rules. The hire window's DebugMode 'H' protocol is kept byte for byte, but sent only to a
   client that asks for it (`/companionui protocol`); no client does yet, so nobody gets 'H' packets.
+- **Fix: a companion joins its player's fight on a grey monster** (seen on the owner's PC, build `b1b6846`, 2026-11-18
+  07:23-07:33, Isle of Glass; the fix is tests only). Hired Armsman Pannax (level 5) stood idle while his player
+  (Fighter 22) killed three level 1-2 monsters ("headless dead", "urchin quib"), with stance Aggressive too. The bots'
+  shared pull gate (`BotBrain.CanAggroTarget`) refused every monster grey to the bot itself, the player's own target
+  included, and a monster that never hits back is never defended against. Now a bot in a player's group (hired,
+  `/spawn` or a gamebot) takes the monster its player, or the player's pet, is attacking whatever its con; a grey
+  monster the player is not fighting is still no pull of the bot's own, and Defensive still keeps it beside its player.
+  Not a GM effect: no rule here reads the player's privilege level. `UT_PlayerLedPullCoordinator`.
+- **Fix: "nice xp, next" only after a kill that gave experience** (same session: Pannax said "nice xp, next :P" after a
+  grey kill that gave nobody experience). The group's end-of-fight call (`AutonomousBotCombatCalls`) remembers whether
+  the group's experience grew during the fight; a line about xp is said only then, the plain ones ("gj", "nice") after
+  any kill. Tests only. `UT_TalkingUpdate`.
 - **Log lines** for the owner's PC check: `HIRED_COMPANION` (hired), `HIRED_COMPANION_SUMMONED` (why=hired, summon or
   revived; grouped=), `HIRED_COMPANION_DISMISSED`, `HIRED_COMPANION_REVIVED` (body=lying or faded),
   `HIRED_COMPANION_LOGOUT` and `HIRED_COMPANION_LOGIN`, `HIRE_WORD_165` (every /hire word or dialog link), `COMPANION_SKILLS_165`, `COMPANION_STATS_165`,

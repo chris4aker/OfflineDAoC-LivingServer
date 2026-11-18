@@ -178,6 +178,49 @@ namespace DOL.UnitTests
             Assert.That(B(bot).CanAggroTarget(target), Is.EqualTo(allowed));
         }
 
+        /// <summary>
+        /// Owner's PC, build b1b6846, 2026-11-18 (Isle of Glass): hired Armsman Pannax, level 5, in his level-22 player's group,
+        /// stood idle while the player killed level 1-2 monsters (grey to Pannax too): the shared pull gate refused every
+        /// grey monster, the player's own fight included. A companion joins the fight its player is in, whatever the con;
+        /// a grey monster the player is not fighting is still no pull of its own.
+        /// </summary>
+        [TestCase(false)] [TestCase(true)]
+        public void CompanionJoinsItsPlayersFightOnAGreyMonster(bool spawnHelper)
+        {
+            var (player, tank, _, _, target) = Party();
+            tank.Level = 5;
+            target.Level = 1;
+            if (spawnHelper)
+            {
+                Field(typeof(GameBot), tank, "<IsTemporaryGroupHelper>k__BackingField", true);
+                Field(typeof(GameBot), tank, "<Owner>k__BackingField", player);
+            }
+            Assert.That(tank.IsObjectGreyCon(target), Is.True, "level 1 is grey to level 5");
+            Assert.That(B(tank).CanAggroTarget(target), Is.False, "nobody is fighting it: no pull of its own");
+
+            player.TargetObject = target;
+            player.Attacking = true;
+            Assert.That(B(tank).CanAggroTarget(target), Is.True, "the player's own fight");
+            B(tank).RealPull = true;
+            B(tank).AssistPlayerAttack(target);
+            Assert.That(B(tank).HasAggro, Is.True, "the companion joins the player's attack");
+
+            Enemy other = Actor<Enemy>();
+            other.Level = 1;
+            Assert.That(B(tank).CanAggroTarget(other), Is.False, "another grey monster stays out");
+            player.Attacking = false;
+            Assert.That(B(tank).CanAggroTarget(target), Is.False, "only while the player fights it");
+        }
+
+        [Test] public void SoloBotStillSkipsGreyMonsters()
+        {
+            Bot bot = MakeBot(new ClassArmsman());
+            bot.Level = 5;
+            Enemy target = Actor<Enemy>();
+            target.Level = 1;
+            Assert.That(B(bot).CanAggroTarget(target), Is.False);
+        }
+
         [Test] public void HigherTargetStillMustPassNativeHostilityRules()
         {
             Bot bot = MakeBot(new ClassPaladin());

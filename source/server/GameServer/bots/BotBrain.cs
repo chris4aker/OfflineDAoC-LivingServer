@@ -457,11 +457,19 @@ namespace DOL.AI.Brain
             // reverse. The native NPC check rejected purple pulls because the
             // character was grey to the monster. Camp selection owns difficulty;
             // this shared execution gate only excludes non-XP grey monsters.
-            if (Body.IsObjectGreyCon(realTarget))
+            // The one exception is the human leader's own fight: a companion in the player's group joins the monster the
+            // player is attacking whatever its con (owner's PC, build b1b6846, 2026-11-18: hired Armsman Pannax, level 5,
+            // stood idle while his player killed level 1-2 "headless dead" and "urchin quib" in Isle of Glass, grey to him).
+            if (Body.IsObjectGreyCon(realTarget) && !JoinsLeaderFight(target))
                 return false;
 
             return AggroLevel > 0;
         }
+
+        /// <summary>A bot in a human player's group whose leader (or the leader's pet) is fighting this very target.</summary>
+        private bool JoinsLeaderFight(GameLiving target) =>
+            target != null && BotBody?.IsPlayerLedGroup == true &&
+            PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) == target;
 
         /// <summary>
         /// Retaliation is not a new XP pull. A grey creature that actually hit
