@@ -34,10 +34,17 @@ public static class BotCrafterVoice
 
     public static double ChatRate => Math.Clamp(CraftingEconomyProperties.BOT_CRAFTER_CHAT_RATE, 0.0, 3.0);
 
-    /// <summary>A price as players wrote it: "3g", "2g 50s", "75s", "40c".</summary>
+    /// <summary>A price as players wrote it: "3g", "2g 50s", "75s", "40c", and from a thousand gold in platinum, "9p", "1p 500g"
+    /// (chat audit LOG-036: "paying up to 9275g").</summary>
     public static string PriceText(long copper)
     {
         copper = Math.Max(0, copper);
+        long platinum = copper / 10_000_000;
+        if (platinum > 0)
+        {
+            long goldLeft = copper / 10_000 % 1000;
+            return goldLeft >= 100 && platinum < 10 ? $"{platinum}p {goldLeft / 100 * 100}g" : $"{platinum}p";
+        }
         long gold = copper / 10_000, silver = copper / 100 % 100;
         if (gold > 0)
             return silver > 0 && gold < 10 ? $"{gold}g {silver}s" : $"{gold}g";

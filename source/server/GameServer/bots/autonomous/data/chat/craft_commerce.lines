@@ -11,13 +11,13 @@
 @levels 1-50
 
 @topic craft_summary
-{title}, {skill} {recipe}. i can do {item}, up to lvl {level}. {stock}
-im {skill} {recipe}. best i do is {item}, lvl {level} tops. {stock}
+{skill} {recipe}, lvl {level} tops. {stock}
+im {skill} {recipe}. i make {item}, lvl {level} tops. {stock}
 {recipe} {skill}, so {item} up to lvl {level}. {stock}
 
 @topic craft_summary_stock
-{title} here, {skill} {recipe}. i make {item} up to lvl {level}. {stock}
-{skill} {recipe}, i can do {item} up to lvl {level}. {stock}, pst if you want any
+{skill} {recipe}, up to lvl {level}. {stock}
+{recipe} {skill}, lvl {level} max. {stock}, pst
 
 @topic craft_quote
 [can do|i can make] the {item} (lvl {level}) for {price}, ready in {when}, {terms}. [deal?|want it?]
@@ -31,6 +31,8 @@ can do the {item} (lvl {level}), {price} for the lot, ready in {when}, {terms}. 
 @topic craft_stock
 [got|have] a {stock} at {quality}%, {price}. {terms}
 {stock}, {quality}% quality, {price}. {terms}
+{stock} at {quality}%, {price}. {terms}
+have a {quality}% {stock}, {price}. {terms}
 
 @topic craft_stock_meet
 sure, {terms} and ill trade it to you
@@ -38,59 +40,87 @@ sure, {terms} and ill trade it to you
 @topic craft_cant
 cant make that, my {recipe} is {skill}
 [nah|sorry], cant do that one. {recipe} is only {skill}
+cant do it, {recipe} is {skill} for now
+not with {skill} {recipe}, sorry
 
 @topic craft_cant_level
 my {recipe} is only {skill}, lvl {level} is the best i do right now
 not that high yet, {skill} {recipe}. lvl {level} is my limit
+lvl {level} is as high as i go, {skill} {recipe}
+{skill} {recipe}, so lvl {level} max for now
 
 @topic craft_not_mine
 not my trade, i do {recipe}
 [i only do|im] {recipe}, try someone else for that
+{recipe} only, sorry
+wrong crafter, i do {recipe}
 
 @topic craft_ask_what
 sure, what do you need made?
 yep, what are you after?
 whatcha need?
+what do you need?
+sure, what piece?
 
 @topic craft_deal
 deal. ill make the {item} at my next break, ready in {when}. pay when i hand it over
 [ok|cool], deal. {item} in {when}, pay me when i hand it over
+deal, {item} in about {when}. pay on handover
+done. {item} at my next break, {when} or so. pay when you get it
 
 @topic craft_deposit
 deal, {price} up front. drop the coin on me when youre near and ill start at my next break
 ok, {price} first. hand it over when you find me and its on my list
+{price} first, then i start
+deal, {price} up front and its on my list
 
 @topic craft_paid
 got it, the {item} will be ready in {when}
 [ty|thanks], {item} in {when}
+coin got, {item} in {when}
+ty, {item} will be done in {when}
 
 @topic craft_haggle_accept
 ok, {price} for the {item}. deal?
 [fine|alright], {price}. deal?
+ok ok, {price}. deal?
+{price} works. deal?
 
 @topic craft_haggle_counter
 {price}, lowest i go
 [meet me at|how about] {price}?
+best i can do is {price}
+{price}, thats fair
 
 @topic craft_haggle_refuse
 cant go that low, {price}
 [nah|no], materials alone cost more than that. {price}
+no can do, {price}
+too low, {price} is the price
 
 @topic craft_haggle_walk
 done haggling, its {price} or nothing
 {price}, take it or leave it
+{price}, final offer
+{price} or no deal
 
 @topic craft_declined
 np, let me know
 ok, ill be around
+np, maybe next time
+ok, pst if you change your mind
 
 @topic craft_status
 not yet, ill make the {item} at my next break, about {when}
 still on my list, the {item} should be done in {when}
+not done yet, {item} in about {when}
+{item} is next, about {when}
 
 @topic craft_ready
 your {item} is done, ill be in town at my break in {when}
 {item} is ready, catch me at my break in {when}
+{item} done, find me at my break in {when}
+{item} is finished, in town at my break in {when}
 
 @topic craft_break_ready
 on my break now, in {zone}. come find me for the {item} and say yes
@@ -107,19 +137,29 @@ k, ill keep the {item} then
 @topic craft_ready_tell
 your {item} is done, im in {zone} for a bit, come by and say ready
 {item} is ready! in {zone} on a break, come get it and say ready
+{item} is done, im in {zone}, come say ready
+{item} finished, find me in {zone} and say ready
 
 @topic craft_delivered
 here you go, your {item}. enjoy
 there, {item} is yours. wear it well
+all yours, the {item}
+{item} handed over, enjoy
 
 @topic craft_handover_trade
-here's your {item}, {price} in the trade window
+heres your {item}, {price} in the trade window
 {item} is in the trade window, {price}
+{item} in the window, {price}
+trade window up, {item} for {price}
 
 @topic craft_cancelled
 ok, cancelled the {item}
 np, the {item} is off my list
+ok, no {item} then
+cancelled, np
 
 @topic craft_refuse
 not dealing with you, sorry
 no thanks, find another crafter
+not for you, sorry
+pass, ask someone else

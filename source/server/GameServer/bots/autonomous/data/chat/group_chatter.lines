@@ -6,45 +6,29 @@
 @topic group
 @who *
 @needs in_group,!in_capital
-@invites ask
+@invites ask_ready
 pull?
 @invites
 ready when you are
-@invites none
-need a sec, sitting for power
-med break
-@needs in_group,!in_capital
-buffs dropping soon
-@invites
 clean pull, ty
-sorry, my fault
 gj all
 good group tonight
 @invites none
 brb, door
 back
 @invites
-loot is yours, i dont need it
-anyone need this drop?
-@invites ask
-roll for it?
-@invites
-grats on the drop
 @invites none
 one more pull then i need a break
 @needs in_group,at_camp
 @invites
 camp bonus is nice here
 xp is great tonight
+@levels 1-20
 half a bubble per kill, love it
+@levels 1-50
 @needs in_group,!in_capital
+@invites ask_who
 who is main assist?
-@needs in_group,in_dungeon
-@invites none
-stick on me, moving to the next room
-regroup at the entrance
-@needs in_group,!in_capital
-everyone here? pulling in 5
 @invites
 @who Socialite
 @needs in_group,in_player_group
@@ -80,51 +64,28 @@ anyone know what is past this room?
 @needs in_player_group,!in_capital
 @topic pull
 inc
-pulling
-careful, that one is orange
 assisting you
 @topic add
 inc, two of them
 add!
-that one had friends
-watch the pat
-pat coming from the left
 @needs in_player_group,!in_capital,is_tank
 i got the adds
 @needs in_player_group,!in_capital
 @topic low_hp
 hp low, careful on the next one
-@topic rest
-rebuffing, hold the pull
 @topic kill
 nice pull
 @topic wipe
 wipe incoming, run!
 run run run
-@topic mez
-@needs in_player_group,!in_capital,is_support
-mez is on the caster
-@topic mez_broke
-mez broke!
 @needs in_player_group,!in_capital
 @topic root
 root is on, kill the other one
-kite it, kite it
 @topic stun
 stun up, go
 @topic taunt
 @needs in_player_group,!in_capital,is_tank
-taunting, get it off the healer
 i have aggro, keep healing me
-@needs in_player_group,!in_capital
-@topic healer_oom
-@needs in_player_group,!in_capital,!is_healer
-healer is oom, wait
-@needs in_player_group,!in_capital
-@topic pull
-@class Cabalist,Theurgist,Necromancer,Spiritmaster,Bonedancer,Hunter,Druid,Enchanter,Animist
-pet has aggro, all good
-@class
 @topic heal_big
 @needs in_player_group,!in_capital,is_healer
 group heal coming
@@ -138,15 +99,7 @@ group heal coming
 @levels 1-50
 @needs in_group,!in_capital
 @invites none
+need a sec, sitting for power
+med break
 oom, give me a minute
 
-# The talking update audit: a bot offering power is one that can give it
-@kind group
-@topic group
-@who *
-@realm *
-@class Cabalist,Necromancer,Spiritmaster,Bonedancer,Mentalist,Theurgist
-@levels 1-50
-@needs in_group,!in_capital
-@invites ask_anyone
-anyone need power?

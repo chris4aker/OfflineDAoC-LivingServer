@@ -185,8 +185,31 @@ public static class AutonomousBotGuildSocial
             GameBot bot = speakers[i];
             ScheduleGuildLine(bot, guild, 4_000 + i * 2_500 + Random.Shared.Next(4_000), 
                 // live run 2026-10-22: two guildmates both said "hey Claudecheck, good timing" 2 s apart
-                () => FreshLine(guild.GuildID, () => Lines.Greeting(player.Name, Random.Shared), GameLoop.GameLoopTime));
+                () => FreshLine(guild.GuildID, () => LoginGreeting(bot, player.Name, DateTime.Now.Hour), GameLoop.GameLoopTime));
         }
+    }
+
+    /// <summary>
+    /// A guildmate's hello to a member who logged in: with bot voices on, a corpus greeting to that one member (its time
+    /// flags are the PC's clock), else a fixed one that says "evening" only in the evening (chat audit CORPUS-C-030).
+    /// </summary>
+    private static string LoginGreeting(GameBot bot, string player, int hour)
+    {
+        var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player };
+        if (AutonomousBotVoices.Enabled && AutonomousBotVoices.TryGreetingReply(bot, "hi", out VC.Picked picked, slots, relax: true,
+                requireVoices: false) && GreetsOne(picked.Text))
+            return picked.Text;
+        return Lines.Greeting(player, Random.Shared, hour);
+    }
+
+    /// <summary>A greeting that fits one member logging in: not "hey all" or "how is everyone". Pure.</summary>
+    public static bool GreetsOne(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string padded = " " + string.Join(' ', AutonomousChatIntentModel.Words(text)) + " ";
+        return !padded.Contains(" all ", StringComparison.Ordinal) && !padded.Contains(" everyone ", StringComparison.Ordinal) &&
+               !padded.Contains(" everybody ", StringComparison.Ordinal) && !padded.Contains(" yall ", StringComparison.Ordinal);
     }
 
     private static void OnPlayerLevelUp(DOLEvent e, object sender, EventArgs args)
@@ -449,7 +472,7 @@ public static class AutonomousBotGuildSocial
             return Recalled(opener) is { } said ? FieldAnswer(bot, bot.Guild, said) : null;
         foreach (string answers in VC.AnswerChain(invites))
             if (AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked reply, answers: answers,
-                    filter: line => AutonomousChatShortTalk.ReplyFits(opener, line.Text)))
+                    filter: line => AutonomousBotVoices.ShapedFits(answers, opener, line.Text)))
                 return reply.Text;
         return null;
     }
@@ -470,7 +493,7 @@ public static class AutonomousBotGuildSocial
         string own = charter.ToString().ToLowerInvariant();
         string[] topics = Random.Shared.NextDouble() < 0.65 ? [own, "general"] : ["general", own];
         // Beta 1.1.2, round 4: a written guild line only when it is short and plain (no check-ins, life filler, jokes or "...").
-        // Round 7: and a life line ("freezing outside", "aced my test") at most once a guild evening (AutonomousChatFiller.GuildCorpusFits).
+        // Round 7: and a life line ("freezing outside", "aced my test") at most every 90 minutes (AutonomousChatFiller.GuildCorpusFits).
         AutonomousChatFieldTalk.Memory memory = AutonomousChatFieldTalk.MemoryOfGuild(bot.Guild?.GuildID);
         long now = GameLoop.GameLoopTime;
         foreach (string topic in topics)
@@ -666,7 +689,7 @@ public static class AutonomousBotGuildSocial
             foreach (string answers in VC.AnswerChain(voiced.Line.Invites))
             {
                 if (!AutonomousBotVoices.TryLine(other, "reply", out VC.Picked reply, answers: answers, slots: slots,
-                        requireVoices: false, filter: line => AutonomousChatShortTalk.ReplyFits(voiced.Text, line.Text)))
+                        requireVoices: false, filter: line => AutonomousBotVoices.ShapedFits(answers, voiced.Text, line.Text)))
                     continue;
                 ScheduleGuildLine(other, guild, AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared) + 1_500, () => reply.Text, styled: true);
                 break;

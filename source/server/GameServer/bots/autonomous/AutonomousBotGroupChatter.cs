@@ -200,7 +200,7 @@ public static class AutonomousBotGroupChatter
             int size = group.MemberCount;
             bool away = AutonomousChatEngagement.WasAway(mate.DatabaseID, GameLoop.GameLoopTime, mate.IsReturningAfterRelease);
             if (!AutonomousBotVoices.TryLine(mate, "reply", out VC.Picked reply, answers: answers, slots: slots,
-                    filter: line => AutonomousChatShortTalk.ReplyFits(opener.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
+                    filter: line => AutonomousBotVoices.ShapedFits(answers, opener.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, size, away)))
                 continue;
             int delay = AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, Random.Shared);
             AutonomousLivingServer.Later(mate, delay, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () => Send(mate, reply.Text));
@@ -267,6 +267,11 @@ public static class AutonomousBotGroupChatter
             return;
         }
         eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+        // Chat audit CORPUS-C-012: a bare "gz" in /group was thanked ("ty, off to the trainer now") by a groupmate that had not
+        // levelled. Only a bot that just levelled takes congratulations.
+        pool = CongratulatedOnly(intent, pool, AutonomousBotVoices.JustLeveled);
+        if (pool.Length == 0)
+            return;
         // The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A
         // groupmate takes the warning ("got it", "on it").
         if (AutonomousChatReplyBudget.IsAlarm(message, intent))
@@ -322,6 +327,11 @@ public static class AutonomousBotGroupChatter
             AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
                 count == 0 ? $"a line like this ({intent}) draws no answer" : "no reply fits it", player.Name);
     }
+
+    /// <summary>For a congratulation, only the groupmates that just levelled (anyone else would not know what for); any other
+    /// line keeps the whole pool. Pure.</summary>
+    public static T[] CongratulatedOnly<T>(eAutonomousChatIntent intent, T[] pool, Func<T, bool> justLeveled) =>
+        intent == eAutonomousChatIntent.Congrats ? pool.Where(justLeveled).ToArray() : pool;
 
     /// <summary>A bot's line in /group. The talking update: remembered in the group's thread (with what it invites, and the
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>

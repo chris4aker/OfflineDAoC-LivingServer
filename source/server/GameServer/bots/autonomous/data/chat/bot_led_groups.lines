@@ -80,12 +80,12 @@ all yours, we follow you
 [all yours|your group now], lead on
 k new lead, everyone follow
 @topic lead_take
-ok i'll lead, finding us a camp near here
+ok ill lead, finding us a camp near here
 [sure|ok], i got it. looking for a camp around here
-i'll take it, give me a sec to find a spot nearby
+ill take it, give me a sec to find a spot nearby
 @topic lead_last_bot
 just us two left, want to lead?
-[well|hm], it's just us now. you want to lead?
+[well|hm], its just us now. you want to lead?
 everyone bailed, your call
 
 # ---- B3: the raid leader (docs/BOT-LED-GROUPS.md, "Raid leaders") ----

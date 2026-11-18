@@ -380,8 +380,10 @@ namespace DOL.GS
             GameBot named = talkers.FirstOrDefault(bot => AutonomousBotChatCoordinator.ContainsMention(message, bot.Name));
             if (named != null)
             {
-                ScheduleReply(named, guild, AutonomousBotGuildSocial.VoicedPlayerGuildReply(named, player, message) ??
-                    AutonomousBotChatCoordinator.GenerateFactionReply(message), 1_400);
+                string answer = PlayerReplyOrFallback(AutonomousBotVoices.Enabled, AutonomousBotGuildSocial.VoicedPlayerGuildReply(named, player, message),
+                    message);
+                if (answer != null)
+                    ScheduleReply(named, guild, answer, 1_400);
                 return;
             }
             ScheduleReplies(guild, null, message, AutonomousBotChatCoordinator.RollResponseCount(Math.Min(2, talkers.Length)), player: player);
@@ -397,8 +399,8 @@ namespace DOL.GS
             {
                 // Living Server: with bot voices on, corpus answers (AutonomousBotGuildSocial); else the base game's lines.
                 string reply = incoming != null
-                    ? AutonomousBotGuildSocial.VoicedPlayerGuildReply(talkers[index], player, incoming) ??
-                      AutonomousBotChatCoordinator.GenerateFactionReply(incoming)
+                    ? PlayerReplyOrFallback(AutonomousBotVoices.Enabled, AutonomousBotGuildSocial.VoicedPlayerGuildReply(talkers[index], player, incoming),
+                        incoming)
                     : opener != null
                         ? AutonomousBotGuildSocial.VoicedPlayerGuildAnswer(talkers[index], opener, invites)
                         : FreshFallback(guild, talkers[index], GuildReplies, GameLoop.GameLoopTime);
@@ -407,6 +409,14 @@ namespace DOL.GS
                 ScheduleReply(talkers[index], guild, reply, 1_800 + index * 2_000 + Random.Shared.Next(1_200));
             }
         }
+
+        /// <summary>
+        /// A gamebot's /gu answer to a player: the voiced reply, or with bot voices on nothing (chat audit TEXT-022: the pre-voices
+        /// formal lines, "Let us keep faction chat focused on the realm.", came out in /gu when no corpus reply fitted; /faction and
+        /// /say dropped that fallback in 1.1.3). With voices off the base game's line stays. Pure.
+        /// </summary>
+        public static string PlayerReplyOrFallback(bool voicesOn, string voiced, string message) =>
+            voiced ?? (voicesOn ? null : AutonomousBotChatCoordinator.GenerateFactionReply(message));
 
         private static void ScheduleReply(GameBot bot, Guild guild, string reply, int delay)
         {

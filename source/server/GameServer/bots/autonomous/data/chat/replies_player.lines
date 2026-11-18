@@ -1,0 +1,139 @@
+# Replies to a kind of player statement the reply path reads (moved from talking_audit.lines, the 2026-10-26 talking
+# update audit, by the chat audit CORPUS-C-051 on 2026-11-18; no line changed): good news, an offer, a request to wait, a
+# warning, a real-life remark, an order and a welcome back. New writing (see docs/bot-voices).
+
+# ---- a player's good news: gz -----------------------------------------------------------------
+@kind reply
+@who *
+@answers player_goodnews
+gz!! nice
+grats on that
+nice, gz
+gz, about time
+sweet, grats
+nice one
+oh nice, gz
+grats, well earned
+woot gz
+gz gz gz
+well done, gz
+congrats
+@who Socialite
+gz!! so happy for ya
+@who NoLifer
+gz, now the real grind starts
+
+# ---- an offer: buffs, help, an item ------------------------------------------------------------
+@kind reply
+@who *
+@answers player_offer
+oh ty!
+sure, ty
+ty, thats nice of you
+if its spare, sure ty
+im good, but thanks
+nah im ok, ty though
+ty, much appreciated
+sure, why not, ty
+thats kind, ty
+im ok for now, ty
+
+# ---- wait: dont rez me yet, hold the pull, wait up -------------------------------------------
+@kind reply
+@who *
+@answers player_wait
+k, holding up
+ok, holding
+will do
+k, say when
+np, waiting
+ok, ill wait
+k, whenever you are
+sure, waiting
+
+
+# ---- a player's warning ("stealthers near the dock watch out", "adds!!" in /group) ----------
+@kind reply
+@who *
+@answers player_headsup
+thanks for the heads up, watching
+got it
+on it, ty
+ty, watching for them
+k careful all
+noted, ty
+eyes open
+k, ty
+
+# ---- a player's real-life remark (guild, group and tell chat) --------------------------------
+@kind reply
+@who *
+@answers player_rl_late
+get some sleep lol
+same, i should sleep too
+one more pull, right? heh
+ouch, coffee tomorrow then
+@answers player_rl_school
+go study lol
+good luck with it
+school stuff is the worst, gl
+study first, xp later
+@answers player_rl_food
+food first, always
+mmm now im hungry
+@answers player_rl_tech
+computers, never a dull moment
+heh, been there with mine
+fingers crossed it behaves
+mine is held together with tape lol
+@answers player_rl_pet
+lol pets
+mine does the same
+pets have no respect for the grind
+haha, they know when you are busy
+@answers player_rl_weather
+ugh, weather
+ugh, same here
+sounds like a good night to stay in and play
+glad im inside lol
+@answers player_rl_media
+missed it, was in here lol
+ha, tell me later
+lucky, i never get to watch
+been in here all night instead
+@answers player_rl_work
+ugh, gl with it
+work, the real grind
+hope it goes ok
+long day huh
+
+@answers player_rl_body
+ouch, get up and stretch a bit
+been there, take a break
+my back hates this game too
+stand up for a min, it helps
+same, this chair is killing me
+go walk around a bit, the mobs will wait
+
+# ---- an order to a groupmate ("Aldric pull the next one", "ok follow me") --------------------
+@kind reply
+@who *
+@answers player_order
+k np
+kk will try
+alright alright
+k, will try
+ok ok
+roger
+
+# ---- "wb Sigrun": the bot welcomed back ------------------------------------------------------
+@kind reply
+@who *
+@answers player_wb
+ty ty, back now
+thx, good to be back
+heh ty
+ty, missed anything?
+thanks, good to see you too
+glad to be back
+

@@ -9,19 +9,18 @@
 @who *
 @needs solo
 @invites lfg
-lfg {level} {class}, anything
+lfg {level} {class}, anything goes
 {class} {level} lfg, pst
 lfg, {level} {class}, any camp
 {level} {class} lf group, got a few hours
-lfg {level} {class}, will run to you
-{class} lfg, {level}, been waiting a while
+lfg {level} {class}, can travel
 {level} {class} lfg, anyone?
 lf grp, {level} {class}
 lfg {camp}, {level} {class}
 {level} {class}, lfg xp group, can start now
 lfg, {class} {level}, know my class
 {level} {class} lfg, dont care where
-{class} {level} lfg, full buffs and potions
+{class} {level} lfg, got potions
 lfg any xp, {level} {class}, inv pls
 {level} {class} lfg, lets get a group going
 lfg {level} {class}, solo xp is killing me
@@ -42,18 +41,24 @@ lfg {level} {class}, fast pulls preferred
 {level} {class} lfg, orange cons or better
 @who *
 @class Cleric,Friar,Healer,Shaman,Druid,Bard,Warden,Mentalist
+@invites lfg
 {level} {class} lfg, heals and buffs, pst
 @class Armsman,Paladin,Warrior,Hero
+@invites lfg
 {level} {class} lfg, can main tank
 lfg {level} {class}, can hold aggro
 @class Wizard,Theurgist,Sorcerer,Cabalist,Runemaster,Spiritmaster,Eldritch,Enchanter
+@invites lfg
 {level} {class} lfg, nukes ready
 lfg {level} {class}, decent dmg, low hp
 @class Scout,Hunter,Ranger
+@invites lfg
 {level} {class} lfg, can pull
 @class Minstrel,Skald,Bard
+@invites lfg
 lfg {level} {class}, speed and songs
 @class
+@invites lfg
 @needs solo,can_rez
 lfg {level} {class}, can heal and rez
 
@@ -73,7 +78,7 @@ lfm, need {need}, {camp}
 anyone? need {need} at {camp}
 lf {need} for {camp}, rest of the grp is set
 {camp} group, only missing {need}
-need {need} at {camp}, send a tell
+{camp} group needs {need}, send a tell
 lf {need}, {camp}, steady pulls
 looking for {need} at {camp}, pst me
 lfm {camp}, need {need} asap
@@ -125,14 +130,14 @@ hi all, ty for the inv
 ty for the inv
 hey all
 hi group
-ty, on my way
+ty, glad to join
 heya, thx for the invite
 hi all, glad to be here
 ty for the spot
 hello hello
 @invites
 hi all, what are we killing?
-hey, who is main assist?
+hey, who are we assisting?
 ty for the inv, where are you all?
 @who Socialite
 @invites none
@@ -143,8 +148,11 @@ hey, lets pull something big
 @needs in_group,in_player_group,evening
 evening all, ty for the inv
 @who *
-@needs in_group,in_player_group,is_healer
+@needs in_group,in_player_group
+@class Cleric,Friar,Druid,Bard,Healer,Shaman
 @invites none
 hi all, healer here, try not to die
+@class
+@invites
 @needs in_group,in_player_group,is_tank
 hey, tank here, pull to me

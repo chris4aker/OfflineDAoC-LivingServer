@@ -5,25 +5,17 @@
 @kind reply
 @answers ask_anyone
 @who *
-here
-im on
-me, kind of
 maybe, what time?
 depends, what level?
 might be up for it later
-im around, whats up?
 could be, tell me more
-@who Socialite
-me me me
-@who NoLifer
-always
 
 @kind reply
 @answers ask_howareyou
 @intent greeting
 @who *
 not bad, and you?
-good, slow night though
+good, slow going though
 cant complain, xp is coming
 tired but still going
 not much happening, you?
@@ -55,7 +47,7 @@ sure, holler if you get adds
 depends what you like
 the first one
 second one imo
-both are fine honestly
+either is fine honestly
 go with your gut
 whichever is more fun
 the first, no contest
@@ -66,11 +58,9 @@ tried both, liked the second
 @intent travel
 @who *
 long run, take a horse
-the stable master saves you half the walk
-follow the road, cant miss it
 its a bit of a trek
 past the bridge and keep going
-check your map, its marked
+ask a guard, they point the way
 get a horse in {capital}
 bring speed if you have it
 
@@ -81,7 +71,6 @@ frontier is busy tonight
 been quiet out there lately
 the zerg moved on i think
 who holds {keep} now?
-stealthers everywhere, careful
 i might head out later
 need more healers out there
 @needs keep_news
@@ -120,7 +109,9 @@ cya around
 take it easy
 later, take care
 safe travels, see ya
+@needs !day
 gn, good hunting tomorrow
+@needs
 
 @kind reply
 @intent ignoreoutofworld
@@ -144,7 +135,7 @@ someone was there an hour ago
 havent seen anyone
 i think so? dont quote me
 dunno, ask in a bit
-no idea, check the map
+no idea, ask a guard
 pretty sure, yeah
 heard the same, no idea if its true
 dont think so
@@ -158,9 +149,9 @@ yes, been watching it all night
 @kind reply
 @answers ask_on
 @who *
-here o/
+here
 yep, on
-o/ hi
+hi hi
 just got on
 still here
 around, kinda
@@ -204,12 +195,17 @@ about halfway
 @needs !xp_low
 {bubbles} bubbles
 @needs
+@needs xp_high
 one more pull i hope
+@needs xp_low
 not even close lol
+@needs
 @needs just_leveled
 just dinged, so far
 @needs
+@needs xp_high
 almost, few more kills
+@needs
 @needs xp_mid
 {bubbles} bubbles, ugh
 @needs
@@ -337,3 +333,59 @@ running back from the bind lol
 @levels 1-50
 @answers ask_story
 my pet ran off and brought the whole camp back
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; either-or picks and debate joins ----
+# ---- either or: more picks (the pool of 9 ran dry in an evening) -----------------------------
+@kind reply
+@who *
+@answers ask_choice
+id go with the first
+second, no question
+the first, i never regretted it
+first one honestly
+id say the second
+first, but its close
+cant go wrong either way, i did the first
+the second, trust me
+
+
+# ---- a player joins a running debate (AutonomousBotDebates.TryAnswerPlayer) ----------------
+@kind reply
+@who *
+@answers debate_agreed
+see, {player} gets it
+thank you {player}
+ha, told you
+finally, someone with sense
+{player} knows whats up
+exactly my point
+see? its not just me
+ty {player}, glad someone agrees
+@answers debate_disagreed
+fair, but hear me out
+agree to disagree then
+nah {player}, ive seen it happen
+ok but have you actually tried it
+heh, we will see
+you have a point, still think im right
+lol fine, its close
+not buying it, sorry
+@answers debate_backed
+see, {player} is with me
+thank you, {player} sees it
+ha, two against one now
+{player} has it right
+@answers debate_outnumbered
+oh great, now there are two of you
+ok ok, outvoted
+lol ganging up on me now
+fine, but im still not convinced
+@answers debate_opinion
+good point {player}
+huh, didnt think of that
+{player} has a point
+thats one way to look at it
+fair enough, {player}
+interesting take
+ha, could be
+maybe, depends on the group

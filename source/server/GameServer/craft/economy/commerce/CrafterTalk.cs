@@ -394,9 +394,14 @@ namespace DOL.GS.CraftingEconomy
             {
                 if (crafter.AtBreak && customer.Near)
                     return new Reply($"your {slots["item"]} is done, here you go", Act.Status, null, "craft_ready_here", slots);
-                slots["when"] = crafter.AtBreak ? "now" : CrafterQuotes.TimeText((int)Math.Ceiling(crafter.MinutesToBreak));
-                return new Reply(crafter.AtBreak ? $"your {slots["item"]} is done, im in {crafter.Zone}, come get it"
-                    : $"your {slots["item"]} is done, ill be in town at my break in {slots["when"]}", Act.Status, null, "craft_ready", slots);
+                // Chat audit CORPUS-C-037: at its break the crafter says where it is (craft_ready_tell), never "at my break in now".
+                if (crafter.AtBreak)
+                {
+                    slots["zone"] = crafter.Zone;
+                    return new Reply($"your {slots["item"]} is done, im in {crafter.Zone}, come get it", Act.Status, null, "craft_ready_tell", slots);
+                }
+                slots["when"] = CrafterQuotes.TimeText((int)Math.Ceiling(crafter.MinutesToBreak));
+                return new Reply($"your {slots["item"]} is done, ill be in town at my break in {slots["when"]}", Act.Status, null, "craft_ready", slots);
             }
             int minutes = CrafterQuotes.MinutesUntilReady(crafter.MinutesToBreak, crafter.SecondsPerPiece, orders.Count);
             slots["when"] = CrafterQuotes.TimeText(minutes);

@@ -24,7 +24,7 @@ eh, its been that kind of day
 @topic complaint
 because nothing goes right today
 because the game hates me, clearly
-spawn rng, why else
+bad luck, why else
 @topic boast
 because ive been at it for weeks
 because i finally got lucky for once
@@ -165,3 +165,187 @@ dunno who exactly, just heard it
 whoever keeps camping my spot
 @topic boast
 me, who else lol
+
+# ---- more follow-ups by family (chat audit CORPUS-C-042, 2026-11-18: one or two lines a family, so "really?" after any lfg
+# line was always "yep, still looking"). ----
+@kind reply
+@who *
+@answers followup_why
+@topic complaint
+because thats my luck lately
+dunno, it just keeps happening
+@topic boast
+because i put the hours in
+lucky night i guess
+@topic joke
+because someone had to say it
+because it made me laugh
+@topic news
+thats what people were saying
+dunno, just passing it on
+@topic lfg
+cant level this one solo
+groups are faster, simple as that
+@topic rvr
+because someone has to hold the line
+they started it lol
+@topic chat
+just felt like saying it
+dunno, it was on my mind
+@answers followup_really
+@topic complaint
+yep, every time
+really, no joke, its awful
+@topic boast
+yep, saw it with my own eyes
+really, still grinning
+@topic joke
+lol not really
+ok maybe a little
+@topic news
+heard it from a few people
+yep, its all over faction
+@topic lfg
+yep, any group will do
+yep, still need one
+@topic rvr
+yep, saw them myself
+really, it was chaos
+@answers followup_how
+@topic complaint
+no idea, it just went wrong
+same as always, bad luck
+@topic joke
+years of practice lol
+it just comes to me
+@topic news
+someone said so in faction
+heard it around town
+@topic lfg
+asking in faction mostly
+just waiting it out
+@topic rvr
+numbers, mostly
+caught them off guard
+@answers followup_what
+@topic joke
+nvm, bad joke
+just kidding around
+@topic news
+what i heard, anyway
+just some news, nevermind
+@topic complaint
+nothing, just grumbling
+ignore me, bad night
+@topic lfg
+just looking for a group
+lfg, thats all
+@topic boast
+nothing, just a good night
+eh, a little win
+@topic rvr
+just frontier stuff
+the fighting out there
+@answers followup_who
+@topic rvr
+some big group of them
+too many to count
+@topic news
+people in faction
+dunno, word gets around
+@topic complaint
+nobody, just the game
+some random guy
+@topic boast
+me, of course
+all me lol
+
+# ---- moved from talking_audit.lines (the 2026-10-26 talking update audit) by the chat audit, CORPUS-C-051; follow-ups with no family ----
+# ---- which one? (the bot can't name it, so it says so) --------------------------------------
+@kind reply
+@who *
+@answers followup_which
+the name escapes me lol
+the big one, you cant miss it
+not sure what its called
+the first one you come to
+dunno the name, sorry
+the one everyone uses
+couldnt tell you the name, i just go there
+the usual one heh
+whichever is closest honestly
+i always forget the name
+
+# ---- when? -----------------------------------------------------------------------------------
+@kind reply
+@who *
+@answers followup_when
+soon i hope
+whenever people show up
+in a bit
+not sure yet
+later tonight maybe
+once i finish here
+no set time
+when enough people are on
+
+# ---- the one by the inn? / now? / for you too? (a yes, roughly) ------------------------------
+@kind reply
+@who *
+@answers followup_confirm
+yep yep
+yeah that one
+think so
+yea
+pretty sure
+yep, thats it
+i think so anyway
+mhm, that one
+yeah, right there
+sounds right
+
+# ---- how long did that take? / how high? -----------------------------------------------------
+@kind reply
+@who *
+@answers followup_howlong
+too long lol
+a few nights
+longer than i want to admit
+dont ask heh
+a while
+couple of sessions
+way too many hours
+lost count honestly
+
+
+# ---- where did they go? what stats? what happened? how many? (the holdout check) ----
+@kind reply
+@who *
+@answers followup_whereto
+no idea, lost track of them
+looked like they headed north
+didnt see where, sorry
+toward the next keep i think
+they scattered, couldnt tell you
+not sure, i was busy not dying
+@answers followup_detail
+nothing special, but it beats what i had
+decent, not amazing
+cant remember the numbers, it was ok
+meh, vendor trash mostly
+better than mine was, thats all i know
+pretty good for the level honestly
+@answers followup_specific
+eh, nothing exciting
+nothing special honestly
+just the usual stuff
+long story lol
+cant even remember now
+meh, not worth the story
+@answers followup_howmany
+a bunch
+didnt count, enough
+stopped counting after a while
+more than i wanted lol
+a few, maybe more
+too many lol

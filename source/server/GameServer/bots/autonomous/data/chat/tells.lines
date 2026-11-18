@@ -13,8 +13,7 @@ oh hey {player}, saw you log in
 heya {player}
 yo {player}
 hi {player}! good timing, its been quiet
-hey {player}, i was just thinking about our last group
-@invites ask
+@invites ask_personal
 {player}! where have you been hiding?
 hey {player}, long time, how are things?
 hi {player}, what are you up to tonight?
@@ -32,7 +31,7 @@ hey {player}, didnt know you were around here
 @who Socialite
 {player}!! hiii, missed you
 @who NoLifer
-@invites ask
+@invites ask_personal
 there you are {player}, thought you quit on us
 
 # ---- after_group: grouped with the player before ----
@@ -41,16 +40,14 @@ there you are {player}, thought you quit on us
 @who *
 @needs knows_player
 @invites chat
+hey {player}, i was just thinking about our last group
 ty for the group the other night
 hey, ty again for the group at {place}
 {player}, that group at {place} was fun, ty
 hey {player}, good group last time, ty
-ty for sticking around last group, i know it ran long
-that was the best xp i had all week, ty {player}
-sorry i had to leave the group early last time
+that group was good xp, ty {player}
 {player}, we made a good team at {place}
-@invites ask
-hey {player}, want to run {place} again sometime?
+{player}, that group at {place} was good, should do it again sometime
 @who Leveler
 still riding the xp from that group at {place}, ty
 
@@ -71,8 +68,12 @@ hey, im {level}, you?
 lfg? i could use a partner out here
 @needs !knows_player,outdoors
 hi, im {level} {class}, want to duo in {zone}?
-@needs !knows_player,is_healer
+@needs !knows_player
+@class Cleric,Friar,Druid,Bard,Healer,Shaman
+@invites ask
 duo? i can heal, you hit things
+@class
+@invites ask
 @needs !knows_player,is_tank
 want a tank? im {level} {class}, you pull i hold
 @needs !knows_player,is_caster
@@ -87,15 +88,17 @@ hey {player}, same zone again, want to group?
 @topic help_offer
 @who *
 @needs knows_player
+@invites chat
+hey {player}, shout if you need anything out here
 @invites ask
-hey {player}, need a hand with anything?
-{player}, need help with that quest?
 hey {player}, how is it going? need anything?
-need directions anywhere {player}?
+@invites chat
+{player}, if you get lost out here just ask
+@invites ask
 any questions about your class? happy to help
 {player}, you doing ok? lots of things wander through here
-hey {player}, saw you fighting, all good?
 @invites chat
+hey {player}, careful out here, things wander
 if you get stuck, send me a tell
 hey, remember to train when you ding
 @needs knows_player,outdoors
@@ -136,8 +139,8 @@ hey, {keep} is under attack if you feel like a fight
 you hear about {keep}? keeps are flipping all over
 @about place
 @needs df_changed_recent,df_ours,knows_player
-@invites ask
-df is ours again, want to go?
+@invites chat
+df is ours again, good time to go
 @needs df_changed_recent,!df_ours,knows_player
 @invites chat
 heads up, we lost df
@@ -148,10 +151,12 @@ heads up, we lost df
 @topic guildmate
 @who *
 @needs knows_player
-@invites ask
+@invites ask_anyone
 hey, anyone in the guild grouping tonight?
+@invites ask
 {player}, are we doing anything this weekend?
-yo, got a question about your spec, got a sec?
+@invites ask_personal
+yo {player}, what spec are you running these days?
 hey, you ok? havent seen you on much
 {player}! guild is quiet tonight, where is everyone?
 @needs knows_player,player_leveling
@@ -162,16 +167,14 @@ hey, you ok? havent seen you on much
 heya guildie
 {player}, we should get the guild out to rvr soon
 was just telling the others about you lol, all good things
-@who Crafter
-@invites ask
-need anything made? i have some free time at the forge
+@needs knows_player
 @who Socialite
 @invites chat
 we miss you in /gu, say hi sometime
 @who Leveler
-@invites ask
+@invites chat
 @needs knows_player,player_leveling
-{player}, want to level together some night this week?
+{player}, we should level together some night
 @needs knows_player
 @who NoLifer
 @invites chat

@@ -76,3 +76,9 @@ wtb {item}, pst
 [lf|wtb] {item}, paying up to {budget}
 anyone selling {item}? [pst|send me a tell]
 [need|looking for] {item}, [pst|send me a tell] if you have one
+# Chat audit LOG-036 (2026-11-18): one wording twenty times in an evening; more ways to say the same true want.
+[wtb|buying] {item}, up to {budget}
+anyone have {item} for sale? [have|got] {budget}
+[still looking for|still need] {item}, pst
+{item} wanted, [paying|will pay] up to {budget}
+[lf|wtb] {item}[, pst offers|, pst]
