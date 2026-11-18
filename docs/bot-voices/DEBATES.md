@@ -604,14 +604,14 @@ Levels 5–50 · 32 lines · about 4 min · roles: A, B (Socialite), C (NoLifer)
 - **B:** "guys come on, theyre new" / "aw stop it, everyone was new once. even if not this new"
 - **A:** "dont defend me, i dont need YOUR help, you're just as bad" / "butt out. you were laughing first, i saw it"
 - **B:** "wow ok. never mind then. roast away" / "ok, i tried. i withdraw my kindness"
-- **F:** "l2p" / "learn to ride, noob"
+- **F:** "learn to play" / "learn to ride, noob"
 - **A:** "SAY THAT TO MY FACE. COME TO THE STABLES RIGHT NOW" / "MEET ME AT THE STABLES. RIGHT NOW. ALL OF YOU"
 - **G:** "on what, your slow horse? we'll be waiting a week" / "we'll wait. your horse won't get there till friday"
 - **A:** "ASKJDHASKJDH I HATE THIS REALM I HATE THIS GAME I HATE YOUR STUPID FACES" / "$#@! $#@! $#@! YOU ALL. EVERY SINGLE ONE. AND YOUR HORSES"
 - **H:** "/em gets popcorn" / "someone get this on video"
 - **A:** "IM CANCELING MY ACCOUNT. ENJOY YOUR SLOW $#@! HORSES. I HOPE THEY ALL THROW YOU INTO A LAKE" / "DONE. GONE. UNINSTALLING. ALL OF YOU CAN RIDE YOUR SLOW HORSES OFF A CLIFF"
-- **C:** "o/" / "bye"
-- **D:** "o/" / "/wave"
+- **C:** "bye" / "cya"
+- **D:** "/wave" / "later"
 - *(quiet for 6 seconds)*
 - **E:** "did they actually log" / "they're gone. they actually left"
 - **F:** "rip horse whisperer" / "rest in peace, horse guy"
@@ -627,13 +627,13 @@ Levels 10–50 · 29 lines · about 3 min · roles: A, B (Daredevil), C (NoLifer
 - **C:** "the frontier. is the pvp." / "turn off pvp... in the frontier... the pvp zone"
 - **D:** "there's a button for it but you have to be level 51 to see it" / "it's under options, right below "make me invincible""
 - **A:** "oh ha ha. so funny. i just died three times and you're doing standup" / "wow, i'm getting farmed and my own realm is laughing. great realm"
-- **E:** "you walked to an enemy keep alone. we're allowed to laugh" / "you fed them three times in ten minutes. the laugh is earned"
-- **A:** "i didnt FEED anyone. i was exploring. not that you would know, you never leave the capital" / "it wasnt feeding. at least i go out there, you all hide in town"
+- **E:** "you walked to an enemy keep alone. we're allowed to laugh" / "you gave them three kills in ten minutes. the laugh is earned"
+- **A:** "i didnt GIVE them anything. i was exploring. not that you would know, you never leave the capital" / "it wasnt free rps. at least i go out there, you all hide in town"
 - **F:** "i've got more kills tonight than you have deaths. barely" / "big words from someone who just gave the enemy a free dinner"
 - **A:** "shut up. nobody cares about your stupid kills" / "wow congrats on your little kill count. want a medal?"
 - **B:** "i'd take a medal over a corpse run" / "yes actually. i'd like a medal. you can bring it on your next corpse run"
 - **A:** "you're all trash. our realm loses because of trash like you" / "this is why we lose every keep. a realm full of garbage players"
-- **G:** "we lose keeps because people walk into them alone and feed" / "we lose because of guys who think pvp has an off switch"
+- **G:** "we lose keeps because people walk into them alone and die" / "we lose because of guys who think pvp has an off switch"
 - **C:** "you lost three fights in ten minutes and you're giving US a lecture" / "the guy with three deaths is coaching the realm now"
 - **A:** "STFU. I KNOW EXACTLY WHO ALL OF YOU ARE AND I'M WRITING YOUR NAMES DOWN" / "keep laughing. i'm making a list. every name in this chat"
 - **H:** "oh no, a list" / "is the list in crayon"
@@ -647,7 +647,7 @@ Levels 10–50 · 29 lines · about 3 min · roles: A, B (Daredevil), C (NoLifer
 - **F:** "says the guy who handed them three kills tonight" / "you've done more for the enemy tonight than their whole army"
 - **A:** "THIS GAME IS TRASH. THIS REALM IS TRASH. IM DONE. $#@! ALL OF YOU" / "UNINSTALLING. ENJOY BEING FARMED, YOU $#@!ING CLOWNS"
 - **G:** "say hi to the enemy on your way out, they'll miss you" / "the other realms just lost their favorite pinata"
-- **H:** "o/" / "o7"
+- **H:** "cya" / "bye now"
 - *(quiet for 6 seconds)*
 - **B:** "did anyone get a screenshot of the caps" / "please tell me someone screenshotted the caps"
 - **C:** "next week: how do i turn off mobs" / "back in an hour asking how to turn off dragons"
@@ -663,7 +663,7 @@ Levels 10–50 · 27 lines · about 3 min · roles: A, B (Crafter), C (NoLifer),
 - **A:** "really? ok how do i send it" / "wait for real? how many do i get"
 - **F:** "DO NOT" / "DONT YOU DARE"
 - **G:** "lol they were really going to send it" / "and that's how you lose 40 gold in one evening"
-- **A:** "so you were LYING to me. wow. what kind of scum lies to a guildmate" / "you were scamming me?? in my own realm?? you people are disgusting"
+- **A:** "so you were LYING to me. wow. what kind of scum lies to their own realm" / "you were scamming me?? in my own realm?? you people are disgusting"
 - **E:** "i was doing you a favor. lesson one: dont send gold to strangers" / "consider it a free lesson. most people pay 40 gold for it"
 - **A:** "shut up. you're a scammer and a loser and i'm reporting you" / "reported. enjoy your ban, you scamming creep"
 - **C:** "you cant buy realm points. you kill enemies for them. thats the whole game" / "no merchant. frontier kills, battlegrounds, keeps. thats it. thats the answer"
@@ -680,7 +680,7 @@ Levels 10–50 · 27 lines · about 3 min · roles: A, B (Crafter), C (NoLifer),
 - **F:** "rofl caps lock" / "they found the caps lock. it's over now"
 - **A:** "ENJOY YOUR FAKE POINTS YOU $#@! NERDS. IM GONE. DELETING MY CHARACTER" / "DONE. CANCELLING. KEEP YOUR FAKE POINTS AND YOUR STUPID DOGS"
 - **E:** "still selling realm points, if anyone has 40 gold" / "offer still stands. 40 gold, all my realm points"
-- **B:** "o/" / "bye bye"
+- **B:** "bye" / "bye bye"
 - *(quiet for 6 seconds)*
 - **H:** "shame, i was going to buy pots with that 40 gold" / "i still would have taken the 40 gold"
 - **D:** "give my regards to the dog" / "the dog is fine by the way. the dog says hi"
@@ -705,13 +705,13 @@ Levels 10–50 · 25 lines · about 3 min · roles: A, B (NoLifer), C (Socialite
 - **A:** "i'm rolling on their side tonight and i'm telling them EVERYTHING. every guild, every name" / "fine. i'll go to their side and tell them where you all bind. enjoy"
 - **G:** "please do, they could use a laugh" / "tell them hi. tell them we're sending you as a gift"
 - **H:** "someone report them to the king" / "call the guards, we have a traitor in the chat"
-- **A:** "report me?? REPORT ME?? you're the ones being toxic, i'M reporting YOU. ALL of you" / "oh i'll report YOU. harassment. every single one. my cousin is a GM"
+- **A:** "report me?? REPORT ME?? you're the ones being jerks, i'M reporting YOU. ALL of you" / "oh i'll report YOU. harassment. every single one. my cousin is a GM"
 - **C:** "not the cousin again" / "everyone has a GM cousin. its a whole family of GMs"
 - **A:** "I HOPE THEIR ARMY FARMS ALL OF YOU EVERY NIGHT. I HOPE THEY TAKE EVERY KEEP AND EVERY RELIC" / "I HOPE THEY BURN EVERY KEEP YOU HAVE AND CAMP YOUR BINDSTONE FOREVER"
 - **F:** "lol the enemy doesnt want you either" / "the other realm already saw this chat. they're not taking you"
 - **A:** "THIS REALM IS FULL OF $#@! LOSERS. IM GONE. GOODBYE FOREVER" / "YOU'RE ALL PATHETIC. DELETING THIS CHARACTER. $#@! THIS REALM"
-- **E:** "wait, which side are you even going to" / "do you know which side is winning? asking for the enemy"
-- **B:** "o/" / "/wave"
+- **E:** "wait, which side are you even going to" / "do you know which side is winning? the enemy wants to know"
+- **B:** "later" / "/wave"
 - *(quiet for 6 seconds)*
 - **C:** "they'll be back here tomorrow, same name with an extra letter" / "tomorrow: a new character, same name plus an x"
 - **D:** "the enemy is welcome to them. our gift" / "gift to the enemy. they can keep them"
@@ -741,8 +741,8 @@ Levels 15–50 · 25 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 - **A:** "I HOPE THE DRAGON WIPES YOUR RAID EVERY NIGHT FOR A YEAR" / "I HOPE IT EATS YOUR WHOLE RAID AND YOUR CORPSES ROT IN THE LAIR"
 - **E:** "the dragon wipes us for free. no gold needed" / "it already does, you're late"
 - **A:** "AAAARGH. YOU'RE ALL $#@! IDIOTS. KEEP YOUR STUPID DRAGON. IM DONE WITH THIS $#@! GAME" / "IM DONE WITH THIS GAME AND THIS $#@! REALM. BYE. HOPE YOU ALL GET EATEN"
-- **F:** "o/" / "/wave"
-- **G:** "o/" / "bye"
+- **F:** "bye" / "/wave"
+- **G:** "cya" / "bye"
 - *(quiet for 6 seconds)*
 - **B:** "either they logged or they're walking to the lair, both are great" / "did they log or go to the lair? both are wins"
 - **C:** "i kind of wanted to see them try" / "i was going to follow for the screenshot"
@@ -752,31 +752,31 @@ Levels 15–50 · 25 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 
 Levels 5–50 · 24 lines · about 3 min · roles: A, B (Socialite), C (NoLifer), D (Daredevil), E, F, G, H
 
-- **A:** "{q} why do our own guards kill me when i attack them? theyre on my side" / "{q} the guards keep killing me when i hit them, that has to be a bug"
+- **A:** "{q} why do the guards at the enemy keep attack me? i just want to look around" / "{q} the guards at the enemy border keep killed me again, is that a bug"
 - **B:** "aww" / "oh no. oh sweetie"
-- **C:** "why are you attacking the guards" / "stop. hitting. the guards"
-- **D:** "they're on your side until you stab them. then they're on their side" / "the guards have a very simple rule, and you found it"
-- **A:** "i was testing my new sword, ok? relax" / "it was an accident. i was trying out a combo. jeez"
+- **C:** "why are you walking into their keep" / "stop. visiting. their guards"
+- **D:** "those are their guards. they kill anyone from our realm who walks in" / "the guards there have a very simple rule, and you found it"
+- **A:** "i just wanted to see inside, ok? relax" / "it was an accident. i was looking for a merchant. jeez"
 - **E:** "how many times" / "how many deaths so far"
 - **A:** "six. so what. it should not do that" / "like six. it's a bug and someone should fix it"
-- **F:** "six times. you hit the guard six times" / "you tried it SIX times"
-- **G:** "the definition of insanity is attacking the same guard six times" / "after the third death most people get the hint"
+- **F:** "six times. you walked in six times" / "you tried it SIX times"
+- **G:** "the definition of insanity is walking into the same keep six times" / "after the third death most people get the hint"
 - **A:** "shut up. everyone here thinks they're so smart" / "oh wow, the geniuses of the realm have arrived. please, teach me"
-- **C:** "we're not smart. we just dont hit guards" / "the bar is on the floor and you're digging under it"
+- **C:** "we're not smart. we just dont walk into their keep" / "we're not smart. we just stay out of enemy keeps"
 - **A:** "you're all so smug. none of you have a life, you just camp this channel waiting for someone to mess up" / "you're like vultures. you wait in faction all day to laugh at people. pathetic"
 - **H:** "you made it very easy" / "you're the most fun we've had all week"
 - **A:** "i hope YOU get killed by the guards. i hope the guards kill all of you" / "i'll get the guards to kill you. watch. i'll pull them onto you"
-- **E:** "you cant even get them to stop killing YOU" / "the guards have killed you six times. they're on our team"
+- **E:** "you cant even get them to stop killing YOU" / "the guards have killed you six times. they're winning"
 - **A:** "STFU STFU STFU. I'M SO SICK OF THIS REALM" / "GTFO OF MY CHAT. ALL OF YOU. I'M SO DONE"
 - **D:** "its faction chat. its everyone's chat" / "your chat? lol"
-- **A:** "I'M GOING TO ATTACK THE GUARDS UNTIL THE GAME BREAKS. WATCH ME" / "FINE. I'LL HIT THEM ALL NIGHT. I'LL BREAK THEM. YOU'LL SEE"
+- **A:** "I'M GOING BACK IN THERE UNTIL THE GAME BREAKS. WATCH ME" / "FINE. I'LL WALK IN ALL NIGHT. I'LL BREAK THEIR GUARDS. YOU'LL SEE"
 - **B:** "please dont, the guards have families" / "the guards are tired. let them rest"
-- **A:** "ASDFGHJKL I HATE THIS GAME. $#@! THE GUARDS. $#@! ALL OF YOU" / "$#@! THIS. $#@! YOU. $#@! THE GUARDS. UNINSTALLING"
+- **A:** "ASDFGHJKL I HATE THIS GAME. $#@! THEIR GUARDS. $#@! ALL OF YOU" / "$#@! THIS. $#@! YOU. $#@! THEIR GUARDS. UNINSTALLING"
 - **C:** "/em salutes the guards" / "the guards win again"
 - *(quiet for 6 seconds)*
-- **F:** "seven. bet they hit one more on their way out" / "final count: seven guards, zero wins"
+- **F:** "seven. bet they walk in once more on their way out" / "final count: seven deaths, zero wins"
 - **G:** "the guards should get a medal" / "someone send the guards a thank you note"
-- **H:** "i asked my guard. he says good riddance" / "the guards are celebrating"
+- **H:** "their guards are celebrating" / "somewhere an enemy guard is getting a medal"
 
 ### dunce pause game
 
@@ -801,8 +801,8 @@ Levels 5–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Socialite)
 - **A:** "OMFG I'M SO SICK OF YOU NERDS. GO OUTSIDE. EAT SOMETHING. GET A LIFE" / "YOU ARE ALL CREEPS WHO LIVE IN THIS GAME. I HAVE A LIFE. I HAVE DINNER"
 - **D:** "enjoy your dinner, its probably cold now" / "your dinner is cold AND you're dead. two for one"
 - **A:** "$#@! THIS GAME. $#@! YOUR DINNERS. I'M NEVER PLAYING THIS AGAIN" / "THAT'S IT. $#@! ALL OF YOU. I'M GOING TO EAT. FOREVER"
-- **B:** "o/" / "bon appetit"
-- **C:** "o/" / "enjoy your meal"
+- **B:** "bye" / "bon appetit"
+- **C:** "cya" / "enjoy your meal"
 - *(quiet for 6 seconds)*
 - **F:** "the mob is still standing there. waiting" / "their corpse is cold too"
 - **G:** "tell your mom the realm says hi" / "someone tell their mom, she'll want to know"
@@ -810,10 +810,10 @@ Levels 5–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Socialite)
 
 ### dunce pet warrior
 
-Levels 5–50 · 25 lines · about 3 min · roles: A (Armsman/Paladin/Mercenary/Reaver/Scout/Infiltrator/Minstrel/Cleric/Friar/Wizard/Warrior/Thane/Skald/Berserker/Savage/Shadowblade/Healer/Shaman/Runemaster/Hero/Champion/Blademaster/Warden/Bard/Ranger/Nightshade/Eldritch/Mentalist/Valewalker), B (NoLifer), C (Socialite), D (Daredevil), E, F, G, H
+Levels 5–50 · 25 lines · about 3 min · roles: A (Armsman/Paladin/Mercenary/Reaver/Infiltrator/Warrior/Thane/Skald/Berserker/Savage/Shadowblade/Hero/Champion/Blademaster/Nightshade), B (NoLifer), C (Socialite), D (Daredevil), E, F, G, H
 
 - **A:** "{q} how do i get my pet? everyone has one and i cant find the button" / "{q} where do i get my pet? i looked through every menu"
-- **B:** "you're a {class}" / "what class are you again?"
+- **B:** "you picked a class with no pet" / "what class are you again?"
 - **C:** "aww. the pet is in another class" / "oh honey. your pet is in another character"
 - **D:** "your pet is your sword. name it something nice" / "your pet is the healer. be nice to them"
 - **A:** "what? the guy next to me has a pet. why does HE get one and not me" / "so every class gets a pet but me? thats so unfair"
@@ -832,8 +832,8 @@ Levels 5–50 · 25 lines · about 3 min · roles: A (Armsman/Paladin/Mercenary/
 - **D:** "the pet would rather die" / "our pets have taste"
 - **A:** "ARGH YOU ARE ALL $#@! LOSERS. I HATE THIS STUPID GAME AND YOUR STUPID PETS" / "$#@! YOUR PETS. $#@! YOUR CLASSES. I'M DELETING THIS CHARACTER"
 - **E:** "dont delete it, your sword will be sad" / "think of the sword. the sword loves you"
-- **F:** "o/" / "/pet attack"
-- **G:** "o/" / "bye bye"
+- **F:** "bye" / "/pet attack"
+- **G:** "later" / "bye bye"
 - *(quiet for 6 seconds)*
 - **H:** "they left without their pet. again" / "no pet came to say goodbye"
 - **B:** "next: how do i get wings" / "coming soon: how do i fly"
@@ -854,8 +854,8 @@ Levels 5–50 · 25 lines · about 3 min · roles: A, B (Daredevil), C (NoLifer)
 - **A:** "wow genius. really helpful. you should be a teacher" / "oh thank you so much. what would i do without you. probably the same thing"
 - **G:** "you're welcome" / "always happy to help"
 - **A:** "you're all useless. i've been here half an hour while you make jokes" / "half an hour in the water and this realm is doing comedy"
-- **H:** "open your map. land is the color that isnt blue" / "look at the map. find land. swim at it"
-- **A:** "what map. nobody told me about any map" / "i dont have a map?? where is the map??"
+- **H:** "the paper map from the box. land is the part that isnt blue" / "look at the map from the box. find land. swim at it"
+- **A:** "what map. i threw the box away" / "i dont have the box?? where is the map??"
 - **B:** "..." / "they dont know about the map"
 - **C:** "how did you get this far without a map" / "how did you find ANYTHING"
 - **A:** "SHUT UP. I'M SICK OF YOU ACTING LIKE YOU'RE SMARTER THAN ME" / "STFU. YOU'RE NOT BETTER THAN ME BECAUSE YOU KNOW WHERE THE MAP IS"
@@ -882,7 +882,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 - **E:** "it moves because a PERSON is carrying it. mez the person" / "mez the guy holding it. the guy. not the rock"
 - **A:** "oh ok, mister genius. like you've ever even seen a relic" / "wow, look at the expert. have you even been on a relic raid"
 - **B:** "eleven relic raids. i carried one home" / "i've carried two of them home. you've asked if rocks have feelings"
-- **A:** "wow congrats, you no-life nerd. go touch a real rock" / "nobody cares about your relic raids, you spend your life in this game"
+- **A:** "wow congrats, you no-life nerd. go look at a real rock" / "nobody cares about your relic raids, you spend your life in this game"
 - **F:** "says the person trying to mez a rock" / "the rock is doing better than you right now"
 - **A:** "shut up. at least i'm trying to help, unlike you losers who just make fun of people" / "at least i'm thinking, which is more than any of you clowns do"
 - **G:** "thinking. about mezzing rocks" / "you're thinking very hard about rocks"
@@ -893,8 +893,8 @@ Levels 10–50 · 24 lines · about 3 min · roles: A, B (NoLifer), C (Daredevil
 - **A:** "I HOPE THE ENEMY TAKES ALL OUR RELICS AND YOU NEVER GET THEM BACK" / "I HOPE YOU LOSE EVERY RELIC FOREVER AND I'LL LAUGH AT ALL OF YOU"
 - **D:** "wow. ok. that got dark" / "yikes, wishing our relics away now"
 - **A:** "$#@! THIS. $#@! THE RELICS. $#@! YOU ALL. I'M GONE" / "$#@! YOUR RELIC RAIDS. IM UNINSTALLING. ENJOY YOUR ROCKS"
-- **E:** "o/" / "bye bye"
-- **F:** "o/" / "/wave"
+- **E:** "bye" / "bye bye"
+- **F:** "cya" / "/wave"
 - *(quiet for 6 seconds)*
 - **G:** "next relic raid, we put a mez on the pillar in their honor" / "we leave one rock unmezzed for them"
 - **H:** "im saving that log" / "that one goes in the guild hall of fame"
@@ -3313,7 +3313,7 @@ Levels 30–50 · 7 lines · about 1 min · roles: B (Leveler), C (Explorer/Soci
 Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), C, D, E (Socialite), F, G, H (NoLifer)
 
 - **A:** "omg. i camped that named for a FULL HOUR and {name_b} just ran in and took it" / "an hour. sixty minutes. the named pops and {name_b} tags it out of nowhere"
-- **C:** "lol rip" / "oof"
+- **C:** "lol rip" / "ouch"
 - **D:** "classic" / "welcome to camp life"
 - **B:** "lol what? it was up, i hit it. thats how named mobs work {name_a}" / "{name_a} it was just standing there. first hit wins. thats the rule"
 - **A:** "i was sitting RIGHT THERE {name_b}. you ran past me. you SAW me" / "{name_b} you literally ran past my campfire to get to it"
@@ -3322,7 +3322,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 - **E:** "{name_b} did you at least say sorry" / "did {name_b} even type a sorry"
 - **B:** "sorry the named liked me better" / "sorry {name_a}. sorry you're slow"
 - **F:** "ohhh" / "OHHHH"
-- **G:** "{name_b} just went for it" / "{name_b} woke up and chose chaos"
+- **G:** "{name_b} just went for it" / "{name_b} is in a mood today"
 - **A:** "what did it even drop. tell me it dropped junk" / "please tell me it dropped nothing at least"
 - **B:** "oh it dropped the good one. looks great on me" / "the rare. first kill. feels amazing actually"
 - **A:** "you are kidding me" / "are you serious right now"
@@ -3343,7 +3343,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), C, D, E, F (Leveler), G, H
 
 - **A:** "public service announcement: {name_b} is a kill stealer. watch your camps" / "heads up realm. {name_b} steals named kills. guard your camps"
-- **B:** "lol {name_a} is STILL crying about last week" / "omg {name_a} are you still on about that? its been days"
+- **B:** "lol {name_a} is STILL crying about the named" / "omg {name_a} are you still on about that? let it go"
 - **A:** "yes. i am. because you never said sorry. you said i was SLOW" / "still. yes. because you took it and laughed about it"
 - **C:** "wait is this the named thing again" / "oh its the named camp drama. part two"
 - **B:** "i got the named, i got the drop, i got over it. you should too" / "its a monster {name_a}. it respawns. go camp it again"
@@ -3351,7 +3351,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 - **B:** "maybe it just doesnt like you" / "maybe the mob can smell desperation"
 - **D:** "ohhh thats cold {name_b}" / "cold, {name_b}. ice cold"
 - **A:** "stfu {name_b}. you're a bottom feeder who cant camp anything yourself" / "stfu. you never earned a single drop in your life, you just steal them"
-- **B:** "earned? i earned it with a pulse and a sword. you earned a nap" / "i earned it by hitting it. you were busy sitting"
+- **B:** "earned? i earned it with a pulse and a fast hand. you earned a nap" / "i earned it by hitting it. you were busy sitting"
 - **E:** "honestly i heard {name_b} did this to someone else too" / "i heard {name_b} pulled the same thing at another camp yesterday"
 - **B:** "who said that. name names" / "thats a lie and whoever started it can say it to my face"
 - **F:** "me. you stole my pull last week and laughed, {name_b}" / "it was me. you took my mob mid pull, {name_b}. remember?"
@@ -3369,32 +3369,32 @@ Levels 10–50 · 24 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 
 ### story killsteal 3
 
-Levels 10–50 · 23 lines · about 3 min · roles: A (Leveler), B (Daredevil), C, D, E, F (Daredevil), G (Socialite), H
+Levels 10–50 · 23 lines · about 3 min · roles: A (Leveler), B (Daredevil), H, D, E, F (Daredevil), G (Socialite), C
 
 - **A:** "{name_b}. you and me. a duel at the gates of {capital}. loser says sorry in faction" / "ok {name_b}, i'm done talking. duel me outside {capital}. loser apologizes in faction"
 - **B:** "a duel? {name_a} you couldnt beat a training dummy" / "lol a duel. sure {name_a}. bring a healer, you'll need one"
-- **C:** "OH" / "WHAT"
+- **H:** "OH" / "WHAT"
 - **D:** "its happening" / "its finally happening"
 - **B:** "and when i win you stop crying about the named. forever" / "when i win you never mention the named again. deal?"
 - **A:** "deal. and when I win, you type it: "i stole {name_a}'s named and i'm sorry"" / "deal. and when i win you type "sorry {name_a}, i'm a kill stealer". word for word"
 - **E:** "my guild backs {name_a}. you dont touch someones camp" / "our whole guild is with {name_a}. camp thieves get no mercy"
 - **F:** "lol my guild backs {name_b}. there is no such thing as a camp" / "we're with {name_b}. first hit wins, always has"
 - **E:** "of course your guild says that. you're all thieves too" / "figures. thieves stick together"
-- **F:** "say that again and see who rezzes your guild at the next keep fight" / "keep talking and our healers forget your names in the {frontier}"
+- **F:** "say that again and see who rezzes your guild at the next keep fight" / "keep talking and our healers forget your names in {frontier}"
 - **G:** "guys guys. its one named mob. we have a war with {enemy}" / "uh, remember {enemy}? the actual enemy? anyone?"
 - **A:** "{enemy} can wait. this is about honor" / "{enemy} didnt steal my named. {name_b} did"
-- **B:** "honor lol. {name_a} has been whining for a week straight" / "a week of crying over one mob and they call it honor"
-- **H:** "i'll ref the duel. no buffs, no pots, no running" / "i volunteer to ref. no potions, no running away, no crying"
+- **B:** "honor lol. {name_a} has not stopped whining since" / "all that crying over one mob and they call it honor"
+- **C:** "i'll ref the duel. no buffs, no pots, no running" / "i volunteer to ref. no potions, no running away, no crying"
 - **B:** "no running? {name_a} runs every time a mob turns around" / "no running? thats all {name_a} knows how to do"
 - **A:** "WATCH YOUR MOUTH {name_b}. I'LL PUT YOU ON YOUR BACK IN FRONT OF THE WHOLE REALM" / "KEEP TALKING. YOU'LL BE EATING DIRT AT THE GATES IN FRONT OF EVERYONE"
 - **B:** "big words from a camper. you'll be dead before your first swing" / "i'll be done before you finish medding"
-- **C:** "should we sell tickets" / "i'm charging admission at the gate"
+- **H:** "should we sell tickets" / "i'm charging admission at the gate"
 - **A:** "and after i win, i'm camping every named you ever look at" / "when this is over i'm sitting on every camp you love. forever"
 - **B:** "you cant camp anything, you just sit there and lose it" / "try it. i'll be there first. like always"
 - **D:** "the realm is officially split. team {name_a} or team {name_b}" / "its war now. pick a side people"
 - **G:** "so when is this duel even happening" / "someone tell me when, i'm not missing it"
 - *(quiet for 6 seconds)*
-- **H:** "whoever loses, i'm keeping the log" / "this is going in the realm history books"
+- **C:** "whoever loses, i'm keeping the log" / "this is going in the realm history books"
 
 ### story killsteal 4
 
@@ -3421,20 +3421,20 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Leveler), B (Daredevil), 
 - **A:** "...ok, ok. i guess we both got robbed" / "ok fine. we both lost the named this time"
 - **B:** "heh. ok {name_a}. truce? we camp it together next time and roll for it" / "fine. truce {name_a}. next spawn we group up and roll like people"
 - **F:** "aww. they made up over a shared enemy" / "nothing brings people together like getting robbed"
-- **G:** "the real kill steal was the friends we made along the way" / "best ending. everyone lost"
-- **H:** "i want a rematch. with the mobs this time" / "season two when"
+- **G:** "nobody got the named. except the one who wasnt fighting" / "best ending. everyone lost"
+- **H:** "i want a rematch. with the mobs this time" / "part two when"
 
 ### story killsteal 4a
 
 Levels 10–50 · 20 lines · about 2 min · roles: A (Leveler), B (Daredevil), C, D, E, F, G, H (Socialite)
 
-- **A:** "{name_b}. the gates. today. and {player} came to watch" / "its time {name_b}. {player} is in my corner, so you're done"
+- **A:** "{name_b}. the gates. today. and {player} is on my side" / "its time {name_b}. {player} is in my corner, so you're done"
 - **B:** "oh you brought {player}? cute. still going to lose {name_a}" / "{player} cant swing your sword for you {name_a}"
 - **C:** "ref ready. no pots. fight!" / "ok, on my count. go!"
 - **D:** "{name_a} is all over {name_b}!" / "wow {name_a} came to play"
 - **E:** "{name_b} is low. very low" / "{name_b} is going to fall"
 - **F:** "AND {name_b} IS DOWN" / "{name_b} DROPS. ITS OVER"
-- **A:** "HA. HAAA. {player} SAW THAT. EVERYONE SAW THAT" / "WHOS SLOW NOW {name_b}?? ask {player}, they saw it all"
+- **A:** "HA. HAAA. EVERYONE SAW THAT" / "WHOS SLOW NOW {name_b}?? ask {player}, they heard it all"
 - **B:** "lag. that was pure lag" / "i lagged. everyone knows i lagged"
 - **G:** "no lag. you lost" / "it was not lag, you just lost"
 - **C:** "rules are rules {name_b}. say the words" / "{name_b}, the deal. type it"
@@ -3446,7 +3446,7 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Leveler), B (Daredevil), 
 - **A:** "{player} is a true friend of the camp. remember that name" / "the camps of this realm owe {player} one"
 - **D:** "honor restored. the camps are safe" / "the named mobs of the realm can rest easy"
 - **B:** "whatever. i'm going to find a named nobody is camping" / "i'll be at a camp with no {name_a} in it"
-- **F:** "gz {name_a}, a week of crying paid off" / "a whole week of drama and {name_a} got the win"
+- **F:** "gz {name_a}, all that crying paid off" / "all that drama and {name_a} got the win"
 - **G:** "and that, kids, is why you ask before pulling" / "the end. finally. ask before you pull, people"
 
 ### story killsteal 4b
@@ -3454,7 +3454,7 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Leveler), B (Daredevil), 
 Levels 10–50 · 20 lines · about 2 min · roles: A (Leveler), B (Daredevil), C, D, E (Daredevil), F, G, H
 
 - **A:** "{name_b}. gates. time to end this" / "{name_b}, the duel, now. i'm done waiting"
-- **B:** "ready {name_a}. and {player} is here to watch you fall" / "come on then. {player} has front row seats"
+- **B:** "ready {name_a}. and {player} is listening, try not to cry" / "come on then. {player} is listening"
 - **C:** "ref ready. no pots, no running. go!" / "fighters ready? fight!"
 - **D:** "{name_b} jumps right on {name_a}" / "ouch, {name_b} comes in swinging"
 - **E:** "is {name_a} trying to run already lol" / "{name_a} is backing up. already"
@@ -3465,7 +3465,7 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Leveler), B (Daredevil), 
 - **C:** "by the deal: {name_a} never mentions the named again" / "deal was the deal. {name_a}, the named is closed forever"
 - **A:** "...fine. FINE. the named is closed" / "ugh. fine. i'll stop. happy?"
 - **B:** "so happy. and {player}, ty. you had my back when the whole realm called me a thief" / "big thank you to {player}, who said first hit wins from the start"
-- **A:** "and {player}... i saw you cheering. traitor" / "oh i saw you there {player}. cheering for a thief. noted"
+- **A:** "and {player}... i saw what you typed. traitor" / "oh i saw what you typed {player}. cheering for a thief. noted"
 - **G:** "{player} called it" / "{player} knew who was going to win"
 - **B:** "ignore {name_a}, {player}. sore losers say stuff" / "{name_a} lost a camp and a duel, let them vent {player}"
 - **A:** "this isnt over. i'm going to go camp something far away from everyone" / "i'm going to camp alone. forever. in peace"
@@ -3507,7 +3507,7 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Socialite), B (NoLifer), 
 
 - **B:** "update for the realm: {name_a} skipped the roll and handed the raid drop to a buddy" / "so {name_a} gave last night's best drop to their best friend. no roll. just gave it"
 - **A:** "it was a GIFT, {name_b}. it was their birthday" / "they needed it more. and it was their birthday, so relax"
-- **B:** "their birthday?? i've been at every raid for months and got NOTHING" / "birthday loot. thats the new system? after last week's whole talk?"
+- **B:** "their birthday?? i've been at every raid for months and got NOTHING" / "birthday loot. thats the new system? after our whole talk?"
 - **C:** "oh its still going. the loot thing" / "part two of the loot drama. nice"
 - **A:** "you're making this a big deal in front of the whole realm. again" / "{name_b} you're airing the guild's laundry in faction. again"
 - **B:** "because in guild chat you mute me! you muted me {name_a}!" / "you MUTED me in guild chat. so here i am"
@@ -3545,11 +3545,11 @@ Levels 10–50 · 22 lines · about 3 min · roles: A (Socialite), B (NoLifer), 
 - **B:** "you cleared it with three people and a pet lol" / "sure, with four people. i heard the wipes from here"
 - **A:** "you are the most bitter, petty, spreadsheet hugging nerd in this realm {name_b}" / "your guild is a tax office with swords, {name_b}"
 - **B:** "and yours is a party where the host steals the presents {name_a}" / "better than a guild where the leader hands out loot like candy"
-- **F:** "OOF" / "ohhh, the candy line"
+- **F:** "OUCH" / "ohhh, the candy line"
 - **A:** "STOP POACHING MY MEMBERS. I SEE YOUR TELLS. EVERY ONE" / "STOP SENDING TELLS TO MY PEOPLE {name_b}. I KNOW. THEY SHOW ME"
 - **B:** "I DONT HAVE TO POACH. THEY COME TO ME. BEGGING" / "THEY ASK ME. THEY ASK TO LEAVE. THATS ON YOU {name_a}"
 - **G:** "anyone want a third guild? no drama, no rules, just bad decisions" / "starting a guild for people sick of both guilds. lol"
-- **H:** "{enemy} is going to walk into {keep} while you two argue" / "both of you are going to lose {keep} fighting about this"
+- **H:** "{enemy} are going to walk into {keep} while you two argue" / "both of you are going to lose {keep} fighting about this"
 - **A:** "our guild will be at {keep}. ask {name_b} if theirs can find it" / "we'll be at {keep}. {name_b} will be filling in a form about it"
 - **B:** "we'll be there first. and we'll split the loot fairly. imagine" / "see you at {keep}, {name_a}. try not to give the keep away for someone's birthday"
 - **C:** "guild war in faction, best night in weeks" / "this realm is the best realm"
@@ -3567,7 +3567,7 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Socialite), B (NoLifer), 
 - **D:** "thats it? the great guild war is six people?" / "six people. thats the whole war"
 - **A:** "some of mine were busy" / "half my guild had dinner plans"
 - **B:** "mine had to work. real life stuff" / "mine logged early. its a weeknight"
-- **E:** "uh. {enemy} is here. a lot of {enemy}" / "incoming. big {enemy} group. like thirty"
+- **E:** "uh. {enemy} are here. a lot of {enemy}" / "incoming. big group of {enemy}. like thirty"
 - **F:** "and they're all dead" / "everyone's dead. both guilds. instantly"
 - **G:** "rofl twelve seconds" / "wiped in twelve seconds flat"
 - **A:** "{name_b} your people ran!" / "{name_b}, your guild ran first"
@@ -3591,9 +3591,9 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (Socialite), B (NoLifer), 
 
 - **A:** "news for the realm: {name_b}'s guild is down to one member. guess who" / "{name_b}'s guild disbanded. the points list ate itself"
 - **B:** "it did not "eat itself". people just got busy" / "its on a break. a short break"
-- **C:** "i heard they fought over how many points a rez is worth" / "i heard they argued for three days about points for being late"
+- **C:** "i heard they fought over how many points a rez is worth" / "i heard they argued all night about points for being late"
 - **A:** "and all nine came home. and {player} was right there cheering them back" / "every one of them came back. {player} was the first to say they would"
-- **B:** "yeah, i saw {player} in faction. thanks a lot {player}" / "{player} spent the whole week cheering for {name_a}. i noticed"
+- **B:** "yeah, i saw {player} in faction. thanks a lot {player}" / "{player} spent the whole time cheering for {name_a}. i noticed"
 - **D:** "lol {name_b} blaming {player} now" / "{player} just backed the winning guild"
 - **A:** "dont blame {player} for knowing a good guild when they see one" / "{player} picked the fun guild. smart"
 - **E:** "so {name_b}, what now?" / "{name_b} whats the plan now"
@@ -3613,10 +3613,10 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (Socialite), B (NoLifer), 
 
 Levels 10–50 · 20 lines · about 2 min · roles: A (Socialite), B (NoLifer), C, D, E, F, G, H
 
-- **B:** "big night for my guild. we took {keep}. with points. with FAIR points" / "my guild holds {keep} tonight. organized raid, fair loot, no birthdays"
-- **A:** "lol you got lucky. {enemy} had nobody there" / "{enemy} was asleep. that wasnt a fight"
-- **C:** "no, {enemy} had a full group there. {name_b}'s guild was clean" / "they had a whole group defending. i saw it"
-- **B:** "and {player} backed us all week, telling everyone where the real guild was" / "ty to {player}, who has backed fair loot from day one"
+- **B:** "big night for my guild. we held {keep}. with points. with FAIR points" / "my guild held {keep} tonight. organized raid, fair loot, no birthdays"
+- **A:** "lol you got lucky. {enemy} barely showed" / "{enemy} were asleep. that wasnt a fight"
+- **C:** "no, {enemy} sent a full group. {name_b}'s guild was clean" / "they had a whole group attacking. i saw it"
+- **B:** "and {player} backed us the whole way, telling everyone where the real guild was" / "ty to {player}, who has backed fair loot from day one"
 - **A:** "oh {player}. of course. the traitor of the realm" / "{player}. i should have known"
 - **D:** "lol {name_a} is mad at {player} now" / "{player} is getting blamed for the whole thing"
 - **E:** "{name_a}, how many people are in your guild now" / "{name_a} whats your roster at"
@@ -3636,12 +3636,12 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Socialite), B (NoLifer), 
 
 ### story romance 1
 
-Levels 10–50 · 22 lines · about 3 min · roles: A (Crafter), B (Explorer), C, D (Socialite), E, F, G, H
+Levels 10–50 · 22 lines · about 3 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C, D (Socialite), E, F, G, H
 
 - **A:** "just want to say {name_b} saved me from a train today without being asked. what a hero" / "shoutout to {name_b} who healed me out of a nasty pull today. you're the best"
 - **B:** "aw {name_a}, anytime. you were very brave. and very almost dead" / "lol {name_a} you were one hit from dead. i couldnt let that happen"
 - **C:** "ooooh" / "ooh la la"
-- **D:** "{name_a} and {name_b}? i see it" / "wait. {name_a} x {name_b}. i ship it"
+- **D:** "{name_a} and {name_b}? i see it" / "wait. {name_a} and {name_b}. i knew it"
 - **A:** "what? no lol. its just a thank you" / "omg stop, i was being nice"
 - **B:** "yeah its just a thank you. a normal thank you" / "totally normal. we just group a lot. a lot a lot"
 - **E:** ""we just group a lot" lol" / ""a lot a lot""
@@ -3654,7 +3654,7 @@ Levels 10–50 · 22 lines · about 3 min · roles: A (Crafter), B (Explorer), C
 - **C:** "SAME TIME TOMORROW" / "did everyone see that. a date"
 - **A:** "its not a date! its a hunt!" / "its a HUNT. with swords"
 - **H:** "hunting together. under the stars. romantic" / "a romantic evening of killing things"
-- **D:** "proposing the ship name {name_a}{name_b}. all in favor" / "i'm naming the ship. {name_b}{name_a}. all in favor?"
+- **D:** "calling it now, {name_a} and {name_b}. all in favor" / "realm vote: {name_b} and {name_a} are a thing. all in favor?"
 - **E:** "aye" / "aye!"
 - **F:** "aye" / "motion carried"
 - **B:** "lol this realm" / "you all need hobbies"
@@ -3663,23 +3663,23 @@ Levels 10–50 · 22 lines · about 3 min · roles: A (Crafter), B (Explorer), C
 
 ### story romance 2
 
-Levels 10–50 · 23 lines · about 3 min · roles: A (Crafter), B (Explorer), C (Daredevil), D, E, F, G, H
+Levels 10–50 · 23 lines · about 3 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C (Daredevil), D, E, F, G, H
 
-- **D:** "spotted: {name_a} and {name_b}, duo hunting. fourth night in a row" / "update: {name_a} and {name_b} were seen hunting together. again. third time this week"
+- **D:** "spotted: {name_a} and {name_b}, duo hunting. again" / "update: {name_a} and {name_b} were seen hunting together. again. third time today"
 - **A:** "we're a good team, ok" / "its efficient! two is the perfect group size"
-- **B:** "very efficient. {name_a} pulls, i heal. like a machine" / "perfect team. {name_a} tanks, i keep them alive"
+- **B:** "very efficient. {name_a} pulls, i heal. like a machine" / "perfect team. {name_a} fights, i keep them alive"
 - **C:** "just get married already" / "so when's the wedding"
 - **B:** "...actually" / "um. about that"
 - **A:** "ok fine. {name_b} asked last night, on the hill by the river. i said yes" / "{name_b} asked me. i said yes. the wedding is in {capital}!"
 - **E:** "WHAT" / "NO WAY"
-- **F:** "OMG A REALM WEDDING" / "THE SHIP SAILED"
+- **F:** "OMG A REALM WEDDING" / "I KNEW IT"
 - **G:** "i call officiant" / "i'll be the officiant, i have a robe"
 - **H:** "i'll bring the cake. well, bread. the merchant only sells bread" / "i'm doing food. its going to be bread and ale"
 - **D:** "flower duty. i'll throw whatever the alchemist has" / "i want to throw flowers. do we have flowers. i'll throw herbs"
 - **B:** "lol the realm took over our wedding" / "{name_a}, we have a planning committee now apparently"
 - **A:** "its fine {name_b}, i love it. the whole realm is invited" / "the more the merrier. everyone come to {capital}"
 - **C:** "objection. {name_b} was MY duo partner first" / "i object. you leave me with no duo partner. i'm against it"
-- **B:** "we duoed ONCE. you died and blamed me" / "one hunt. you pulled a train and blamed me all week"
+- **B:** "we duoed ONCE. you died and blamed me" / "one hunt. you pulled a train and blamed me for hours"
 - **C:** "still. i had dibs" / "i'm just saying i was there first"
 - **A:** "back off. {name_b} is taken" / "hands off {name_b}. booked"
 - **E:** "oooh {name_a} getting protective" / "{name_a} said BACK OFF lol"
@@ -3687,17 +3687,17 @@ Levels 10–50 · 23 lines · about 3 min · roles: A (Crafter), B (Explorer), C
 - **F:** "its bread. its already stale" / "the cake is bread, the cake was always stale"
 - **G:** "dress code?" / "is there a dress code? do i have to wear something nice"
 - **B:** "wear whatever isnt grey loot" / "anything that isnt grey please"
-- **H:** "this is the most wholesome thing in faction in years" / "love in the time of keep raids"
+- **H:** "this is the nicest thing in faction in years" / "love in the time of keep raids"
 
 ### story romance 3
 
-Levels 10–50 · 24 lines · about 3 min · roles: A (Crafter), B (Explorer), C, D, E, F, G, H (Crafter)
+Levels 10–50 · 24 lines · about 3 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C, D, E, F, G, H (Crafter)
 
-- **A:** "has anyone seen {name_b}. we were supposed to pick the spot in {capital} today" / "{name_b} hasnt answered a tell in two days. anyone seen them"
-- **D:** "i saw {name_b} out in the {frontier} alone. way out" / "{name_b} was seen running deep into the {frontier} solo yesterday"
+- **A:** "has anyone seen {name_b}. we were supposed to pick the spot in {capital} today" / "{name_b} hasnt answered a tell in hours. anyone seen them"
+- **D:** "i saw {name_b} out in {frontier} alone. way out" / "{name_b} was seen running deep into {frontier} solo earlier"
 - **B:** "i'm here. i just needed some air" / "here. i was exploring. thinking"
 - **A:** "thinking about WHAT {name_b}" / "thinking? about what exactly?"
-- **B:** "its all so fast {name_a}. two weeks ago we were just grouping. now there's a committee and bread" / "the whole realm is planning our lives. its a lot {name_a}"
+- **B:** "its all so fast {name_a}. not long ago we were just grouping. now there's a committee and bread" / "the whole realm is planning our lives. its a lot {name_a}"
 - **A:** "so you have cold feet. in FACTION. you're doing this in FACTION" / "are you getting cold feet in front of the whole realm right now"
 - **E:** "oh no" / "uh oh"
 - **F:** "not like this" / "no no no no"
@@ -3721,7 +3721,7 @@ Levels 10–50 · 24 lines · about 3 min · roles: A (Crafter), B (Explorer), C
 
 ### story romance 4
 
-Levels 10–50 · 21 lines · about 2 min · roles: A (Crafter), B (Explorer), C, D, E, F, G (Socialite), H
+Levels 10–50 · 21 lines · about 2 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C, D, E, F, G (Socialite), H
 
 - **G:** "ok everyone, quiet please. welcome to the wedding of {name_a} and {name_b}" / "we are gathered here in {capital}, by the bindstone, because nobody could agree on a spot"
 - **A:** "{name_b} isnt here yet" / "uh. has anyone seen {name_b}"
@@ -3747,31 +3747,31 @@ Levels 10–50 · 21 lines · about 2 min · roles: A (Crafter), B (Explorer), C
 
 ### story romance 4a
 
-Levels 10–50 · 19 lines · about 2 min · roles: A (Crafter), B (Explorer), C, D (Socialite), E, F, G, H
+Levels 10–50 · 19 lines · about 2 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C, G (Socialite), E, F, D, H
 
 - **A:** "everyone, the wedding is ON. {name_b} said yes. again. officially" / "its happening! {name_b} came back and said yes. come to {capital}!"
 - **B:** "i read what {player} said in faction. they were right. i was being a coward" / "{player} said what everyone was thinking. i was running away. not anymore"
 - **C:** "aww {player} saved the wedding" / "{player} the matchmaker"
 - **A:** "{player} stood up for me when i was a mess. ty {player}" / "ty {player}. you were on my side when i needed it"
-- **D:** "officiant reporting for duty. robe pressed" / "i'm here, robe on, words memorized. mostly"
+- **G:** "officiant reporting for duty. robe pressed" / "i'm here, robe on, words memorized. mostly"
 - **E:** "bread is ready. sixty loaves now" / "i brought more bread. its a bread wedding"
-- **D:** "{name_a}, will you keep {name_b} alive in every fight and every corpse run" / "{name_a}, do you promise to never pull without warning {name_b}"
+- **G:** "{name_a}, will you keep {name_b} alive in every fight and every corpse run" / "{name_a}, do you promise to never pull without warning {name_b}"
 - **A:** "always. i will" / "i promise. mostly"
-- **D:** "{name_b}, do you promise to never run off to the frontier alone again" / "{name_b}, do you swear to stop wandering off without a tell"
+- **G:** "{name_b}, do you promise to never run off to the frontier alone again" / "{name_b}, do you swear to stop wandering off without a tell"
 - **B:** "i promise. i'll even take {name_a} with me" / "i swear. no more solo trips"
-- **D:** "then you're married! hug the partner!" / "married! by the power of this very nice robe"
+- **G:** "then you're married! hug the partner!" / "married! by the power of this very nice robe"
 - **F:** "WOOOOO" / "/cheer"
-- **G:** "{player} gets the first piece of bread" / "someone give {player} the first loaf, they earned it"
+- **D:** "{player} gets the first piece of bread" / "someone give {player} the first loaf, they earned it"
 - **H:** "for the record, i still object. but congratulations" / "i object. quietly. congrats though"
 - **A:** "objection overruled. by the whole realm" / "denied. its done. we're married"
 - **B:** "{name_a}, ready for our first duo as married people?" / "come on {name_a}, the frontier awaits. together this time"
 - **A:** "always. and {player}, if you ever see us out there, wave!" / "lets go. {player}, ty again. the realm needs more people like you"
 - **C:** "happiest faction has ever been" / "best day in faction ever"
-- **E:** "i'm not crying, i have dust in my eyes" / "ok who is chopping onions in {capital}"
+- **E:** "i'm not crying, i have dust in my eyes" / "ok who is cutting up my screen, i cant see"
 
 ### story romance 4b
 
-Levels 10–50 · 18 lines · about 2 min · roles: A (Crafter), B (Explorer), C, D, E, F, G, H (Crafter)
+Levels 10–50 · 18 lines · about 2 min · roles: A (Crafter), B (Cleric/Friar/Healer/Shaman/Druid/Bard/Warden, Explorer), C, D, E, F, G, H (Crafter)
 
 - **B:** "ok realm. announcement. no wedding. not yet. {name_a} and i are taking it slow" / "the wedding is postponed. we're staying duo partners. thats it. thats the news"
 - **A:** "...yes. we talked. {name_b} wants to wait, and thats ok" / "we talked it over. no big wedding. for now"
@@ -3797,8 +3797,8 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (Crafter), B (Explorer), C
 Levels 10–50 · 21 lines · about 3 min · roles: A (NoLifer), B (Explorer), C, D, E, F, G, H (Socialite)
 
 - **A:** "psa: grouped with {name_b} last night. rare drop. {name_b} looted it and ran" / "so we kill the named, the rare drops, and {name_b} grabs it before anyone can roll. classy"
-- **B:** "lol what. {name_a} the loot was set to free for all. i just clicked" / "{name_a} it was on free loot. i looted. thats it"
-- **A:** "free loot is for TRASH, {name_b}. everyone knows rares get rolled" / "everyone knows the rare gets rolled. even on free loot"
+- **B:** "lol what. {name_a} autosplit was off. i just picked it up" / "{name_a} autosplit was off. i looted. thats it"
+- **A:** "autosplit off is for TRASH, {name_b}. everyone knows rares get rolled" / "everyone knows the rare gets rolled. autosplit or not"
 - **C:** "oh a ninja" / "ninja loot accusation in faction, here we go"
 - **B:** "i'm not a ninja. i'm just fast at clicking" / "i'm not a ninja. i just have a quick mouse"
 - **D:** "{name_b} what was the rare" / "what dropped"
@@ -3821,11 +3821,11 @@ Levels 10–50 · 21 lines · about 3 min · roles: A (NoLifer), B (Explorer), C
 
 ### story ninjaloot 2
 
-Levels 10–50 · 21 lines · about 3 min · roles: A (NoLifer), B (Explorer), C, D, E, F, G, H
+Levels 10–50 · 21 lines · about 3 min · roles: A (NoLifer), B (Explorer), H, D, E, F, G, C
 
 - **A:** "ok. evidence time. the log says "{name_b} picks up a ring" four seconds after the kill" / "heres the log: the kill at the top, "{name_b} picks up a ring" right after. nobody rolled"
 - **B:** "four seconds is a normal click {name_a}. you're proving i'm fast" / "thats not evidence. thats a timestamp. i'm just fast"
-- **C:** "the log doesnt lie {name_b}" / "four seconds is ninja speed"
+- **H:** "the log doesnt lie {name_b}" / "four seconds is ninja speed"
 - **B:** "logs can be edited. anyone can type a fake log" / "anyone can fake a log in a text file, {name_a}"
 - **A:** "i didnt FAKE anything. i dont even know how" / "fake?? you think i forged a log for a ring??"
 - **D:** "i was in that group. there was no roll. {name_b} took it" / "i was in the group. nobody rolled, the ring was just gone"
@@ -3839,10 +3839,10 @@ Levels 10–50 · 21 lines · about 3 min · roles: A (NoLifer), B (Explorer), C
 - **A:** "there is no loophole. you're a liar and a ninja and a ring thief" / "thats not a loophole thats a lie, you lying little ninja"
 - **B:** "and you're a crybaby who cant read their own promises" / "stop crying {name_a}, you'll rust your armor"
 - **G:** "this needs a trial" / "someone take this to court. a realm court"
-- **H:** "i'll be the judge. i have a big hat" / "i volunteer to judge. i'm very fair. ask anyone"
+- **C:** "i'll be the judge. i have a big hat" / "i volunteer to judge. i'm very fair. ask anyone"
 - **A:** "fine. a trial. in faction. and when you lose you pay me what the ring is worth" / "trial. right here. guilty pays the ring's worth in gold"
 - **B:** "fine. and when i win you apologize in caps" / "deal. i win, you say sorry. in caps lock. for the whole realm"
-- **C:** "a real trial!" / "trial of the year"
+- **H:** "a real trial!" / "trial of the year"
 - *(quiet for 6 seconds)*
 - **E:** "i'm bringing snacks to the trial" / "cant wait for the closing arguments"
 
@@ -3897,7 +3897,7 @@ Levels 10–50 · 21 lines · about 2 min · roles: A (NoLifer), B (Explorer), C
 - **A:** "...fine. temporary truce" / "for this. only this"
 - **G:** "uh oh, the court is being threatened" / "the defendants are uniting. the court is in danger"
 - **C:** "court is adjourned. forever. bye" / "the court is closing early. very early"
-- **H:** "the judge just logged off with the ring" / "the judge ran. with the ring"
+- **H:** "the judge ran off with the ring" / "the judge ran. with the ring"
 - **A:** "...so {name_b}. next named we roll. like people" / "next time we roll for it, {name_b}. ok?"
 - **B:** "deal. and we never ask that judge for anything again" / "deal. no more courts"
 - **D:** "and the ring lived happily ever after. with someone else" / "moral: never trust a judge with a big hat"
@@ -3947,7 +3947,7 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (NoLifer), B (Explorer), C
 - **A:** "SORRY {name_b}. I'M SORRY. HAPPY??" / "FINE. I'M SORRY {name_b}. THERE. THE RING IS YOURS"
 - **B:** "very happy. the ring says thanks too" / "the ring and i accept your apology"
 - **G:** "rofl" / "best apology in faction history"
-- **A:** "next time i group with you i'm setting loot to "leader only"" / "never grouping with you again {name_b}. never"
+- **A:** "next time i group with you autosplit stays ON" / "never grouping with you again {name_b}. never"
 - **B:** "you'll be back. you need my fast hands" / "sure. see you next named {name_a}"
 - **H:** "and {name_a} learned to never say "the next one" again" / "moral: watch what you promise in a group"
 - **D:** "the ring stays. the ninja walks. faction rests" / "case closed. ninja free. ring shiny"

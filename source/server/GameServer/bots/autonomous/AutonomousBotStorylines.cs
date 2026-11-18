@@ -31,6 +31,13 @@ public sealed class OfflineBotStorylineRecord : DataObject, ILivingServerRow
     [DataElement(AllowDbNull = false, Varchar = 64)] public string SidePlayer { get; set; } = string.Empty;
     [DataElement(AllowDbNull = false)] public bool SideTold { get; set; }
     [DataElement(AllowDbNull = false)] public string DoneUtc { get; set; } = string.Empty;
+    // The arc's keep and its zone, fixed the first time an episode plays (chat audit 2026-11-18: the guild split's
+    // showdown keep changed between episodes 3 and 4).
+    [DataElement(AllowDbNull = false, Varchar = 64)] public string Keep { get; set; } = string.Empty;
+    [DataElement(AllowDbNull = false, Varchar = 64)] public string KeepZone { get; set; } = string.Empty;
+    // The arc's side characters ("C=123;H=456"): the bot that first played a role letter C-H plays it again in later
+    // episodes while it is free (chat audit 2026-11-18, owner 09:14: the duel's referee was another bot every episode).
+    [DataElement(AllowDbNull = false, Varchar = 255)] public string SideCast { get; set; } = string.Empty;
 }
 
 /// <summary>
@@ -144,6 +151,35 @@ public static class AutonomousBotStorylines
     public static VC.Scene SceneFor(Episode episode, string side) =>
         side == "A" && episode.SideA != null ? episode.SideA : side == "B" && episode.SideB != null ? episode.SideB : episode.Neutral;
 
+    /// <summary>
+    /// The side whose ending plays: the side taken, but only while the player who took it is in the game (chat audit
+    /// 2026-11-18: "{player} came to watch" was said of a player who had logged off). Empty plays the plain ending. Pure.
+    /// </summary>
+    public static string SideToPlay(string side, string sidePlayer, Func<string, bool> online) =>
+        !string.IsNullOrEmpty(side) && !string.IsNullOrEmpty(sidePlayer) && online != null && online(sidePlayer) ? side : string.Empty;
+
+    /// <summary>
+    /// The arc's own {keep} and {frontier}: the saved ones, or (the first time) the episode's drawn ones, which are then
+    /// saved so every later episode names the same keep. Returns true when it chose them now. Pure.
+    /// </summary>
+    public static bool FixArcPlace(OfflineBotStorylineRecord row, IReadOnlyDictionary<string, string> drawn, IDictionary<string, string> slots)
+    {
+        bool chose = false;
+        if (string.IsNullOrEmpty(row.Keep) && drawn != null && drawn.TryGetValue("keep", out string keep) && !string.IsNullOrEmpty(keep))
+        {
+            row.Keep = keep;
+            row.KeepZone = drawn.TryGetValue("frontier", out string zone) ? zone ?? string.Empty : string.Empty;
+            chose = true;
+        }
+        if (!string.IsNullOrEmpty(row.Keep))
+        {
+            slots["keep"] = row.Keep;
+            if (!string.IsNullOrEmpty(row.KeepZone))
+                slots["frontier"] = row.KeepZone;
+        }
+        return chose;
+    }
+
     private static readonly Regex Against = new(
         @"\b(wrong|lying|liar|lies|guilty|did it|ninja|thief|cheat|cheater|jerk|clown|sucks|is bad|is the problem|fault|blame|shame on|boo)\b",
         RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -191,7 +227,64 @@ public static class AutonomousBotStorylines
 
     #region Choosing the next episode (AutonomousBotDebates.TryStart)
 
-    public sealed record Next(string StoryKey, VC.Scene Scene, long BotA, long BotB, Dictionary<string, string> Slots);
+    public sealed record Next(string StoryKey, VC.Scene Scene, long BotA, long BotB, Dictionary<string, string> Slots)
+    {
+        /// <summary>The roles already cast: A and B, and the arc's side characters who are free and fit their role now.</summary>
+        public Dictionary<string, long> Fixed { get; init; }
+    }
+
+    /// <summary>The side-character roles of an arc: every letter but the protagonists'.</summary>
+    public static bool IsSideRole(string role) => role is { Length: 1 } && role[0] >= 'C' && role[0] <= 'H';
+
+    /// <summary>A saved side cast ("C=123;H=456") as role to bot id. Pure.</summary>
+    public static Dictionary<string, long> ParseSideCast(string saved)
+    {
+        var cast = new Dictionary<string, long>(StringComparer.Ordinal);
+        foreach (string part in (saved ?? string.Empty).Split(';', StringSplitOptions.RemoveEmptyEntries))
+        {
+            string[] pair = part.Split('=');
+            if (pair.Length == 2 && IsSideRole(pair[0]) && long.TryParse(pair[1], out long id) && id > 0)
+                cast[pair[0]] = id;
+        }
+        return cast;
+    }
+
+    /// <summary>
+    /// The side cast after an episode: roles already saved keep their bot; a role that played for the first time is
+    /// saved with the bot that played it. Protagonists are never side characters. Pure.
+    /// </summary>
+    public static string MergeSideCast(string saved, IReadOnlyDictionary<string, long> played, long botA, long botB)
+    {
+        Dictionary<string, long> cast = ParseSideCast(saved);
+        foreach (var (role, id) in played ?? new Dictionary<string, long>())
+            if (IsSideRole(role) && id > 0 && id != botA && id != botB && !cast.ContainsKey(role) && !cast.ContainsValue(id))
+                cast[role] = id;
+        string text = string.Join(";", cast.OrderBy(pair => pair.Key, StringComparer.Ordinal).Select(pair => $"{pair.Key}={pair.Value}"));
+        return text.Length <= 255 ? text : saved ?? string.Empty;
+    }
+
+    /// <summary>
+    /// The roles an episode starts with: A and B, and each saved side character whose role speaks in this scene, who is
+    /// free (<paramref name="free"/>) and who fits the role. A side character who is busy or offline is played by someone
+    /// else this time and keeps the role for later episodes. Pure.
+    /// </summary>
+    public static Dictionary<string, long> FixedRoles(VC.Scene scene, long botA, long botB, string sideCast,
+        IReadOnlyDictionary<long, AutonomousBotDebates.Candidate> free)
+    {
+        var roles = new Dictionary<string, long>(StringComparer.Ordinal) { ["A"] = botA, ["B"] = botB };
+        if (scene == null)
+            return roles;
+        foreach (var (role, id) in ParseSideCast(sideCast))
+        {
+            if (id == botA || id == botB || !scene.SpeakingRoles.Contains(role) || free == null ||
+                !free.TryGetValue(id, out AutonomousBotDebates.Candidate candidate))
+                continue;
+            scene.Roles.TryGetValue(role, out VC.RoleSpec spec);
+            if (AutonomousBotDebates.Fits(spec, candidate))
+                roles[role] = id;
+        }
+        return roles;
+    }
 
     public static string KeyOf(eRealm realm, string arc) => $"{(int)realm}:{arc}";
 
@@ -246,6 +339,14 @@ public static class AutonomousBotStorylines
                 if (NextNewArcUtc.TryGetValue(realm, out DateTime newAt) && nowUtc < newAt)
                     continue;
                 (long a, long b) = CastPair(episodes[1].Neutral, online, random, craftArc ? CraftPair : null);
+                // The guild split is between a bot guild's leader and one of its officers when such a pair is free (owner
+                // 09:14); with none online it is cast as before, so the arc still plays.
+                if (arc == "guildsplit")
+                {
+                    (long leader, long officer) = CastPair(episodes[1].Neutral, online, random, GuildPair);
+                    if (leader > 0)
+                        (a, b) = (leader, officer);
+                }
                 if (a == 0)
                     continue;
                 row = Stories.Change(key, () => new OfflineBotStorylineRecord { StoryKey = key, Realm = (int)realm, Arc = arc }, r =>
@@ -257,6 +358,9 @@ public static class AutonomousBotStorylines
                     r.SidePlayer = string.Empty;
                     r.SideTold = false;
                     r.DoneUtc = string.Empty;
+                    r.Keep = string.Empty;
+                    r.KeepZone = string.Empty;
+                    r.SideCast = string.Empty;
                     r.NextAtUtc = nowUtc.ToString("O");
                 });
                 NextNewArcUtc[realm] = nowUtc + NewArcGap;
@@ -267,14 +371,26 @@ public static class AutonomousBotStorylines
                 Stories.Change(key, () => row, r => r.DoneUtc = nowUtc.ToString("O"));
                 continue;
             }
-            VC.Scene scene = SceneFor(episodes[row.Episode], row.Side);
+            string side = SideToPlay(row.Side, row.SidePlayer, name => ClientService.Instance.GetPlayerByExactName(name) != null);
+            VC.Scene scene = SceneFor(episodes[row.Episode], side);
             var slots = new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 ["name_a"] = byId[row.BotA].Name,
                 ["name_b"] = byId[row.BotB].Name,
             };
-            if (!string.IsNullOrEmpty(row.SidePlayer))
+            if (side.Length > 0)
                 slots["player"] = row.SidePlayer;
+            OfflineBotStorylineRecord saved = row;
+            var place = new Dictionary<string, string>(StringComparer.Ordinal);
+            var copy = (OfflineBotStorylineRecord)row.CopyForSave();
+            if (FixArcPlace(copy, AutonomousBotVoices.SharedSlots(realm, byId[row.BotA].Level, random), place))
+                Stories.Change(key, () => saved, r =>
+                {
+                    r.Keep = copy.Keep;
+                    r.KeepZone = copy.KeepZone;
+                });
+            foreach (var pair in place)
+                slots[pair.Key] = pair.Value;
             if (craftArc)
             {
                 // The pair's real craft and the first one's real title, read now (a title may have risen since the last episode).
@@ -291,10 +407,27 @@ public static class AutonomousBotStorylines
                         ("realm", realm), ("a", byId[row.BotA].Name), ("b", byId[row.BotB].Name), ("craft", facts.Primary),
                         ("title", facts.Title), ("side", row.Side ?? string.Empty)));
             }
-            return new Next(key, scene, row.BotA, row.BotB, slots);
+            var free = online.Where(bot => bot.DatabaseID != row.BotA && bot.DatabaseID != row.BotB)
+                .GroupBy(bot => (long)bot.DatabaseID).ToDictionary(g => g.Key, g => CandidateOf(g.First()));
+            return new Next(key, scene, row.BotA, row.BotB, slots) { Fixed = FixedRoles(scene, row.BotA, row.BotB, row.SideCast, free) };
         }
         return null;
     }
+
+    private static AutonomousBotDebates.Candidate CandidateOf(GameBot bot) =>
+        new(bot.DatabaseID, AutonomousBotPersonality.For(bot).Type, bot.CharacterClass?.Name ?? bot.ClassName ?? string.Empty, bot.Level);
+
+    /// <summary>
+    /// The guild split's pair (owner 09:14, B2-050): A leads a bot guild and B is an officer of that same guild. Pure for
+    /// the memberships given (null when a bot has none).
+    /// </summary>
+    public static bool GuildPairFits(AutonomousBotRealmGuilds.Membership a, AutonomousBotRealmGuilds.Membership b) =>
+        a != null && b != null && !string.IsNullOrEmpty(a.GuildId) && string.Equals(a.GuildId, b.GuildId, StringComparison.Ordinal) &&
+        a.RankLevel == 0 && b.RankLevel is >= 1 and <= 2;
+
+    private static bool GuildPair(GameBot a, GameBot b) =>
+        GuildPairFits(AutonomousBotRealmGuilds.TryGetMembership(a.DatabaseID, out var first) ? first : null,
+            AutonomousBotRealmGuilds.TryGetMembership(b.DatabaseID, out var second) ? second : null);
 
     /// <summary>Crafting 2.0 WP8: a price-war pair, two real crafter gamebots of the same gear order.</summary>
     private static bool CraftPair(GameBot a, GameBot b) =>
@@ -386,7 +519,8 @@ public static class AutonomousBotStorylines
     }
 
     /// <summary>An episode ended (AutonomousBotDebates.End): played to its end, it moves the arc on; cut short, it is tried again later.</summary>
-    public static void OnEpisodeEnded(eRealm realm, string storyKey, string sceneId, bool finished, DateTime nowUtc)
+    public static void OnEpisodeEnded(eRealm realm, string storyKey, string sceneId, bool finished, DateTime nowUtc,
+        IReadOnlyDictionary<string, long> cast = null)
     {
         if (string.IsNullOrEmpty(storyKey) || !Stories.TryGet(storyKey, out OfflineBotStorylineRecord existing))
             return;
@@ -395,6 +529,8 @@ public static class AutonomousBotStorylines
         var arcs = Arcs(AutonomousBotVoices.Corpus?.Scenes);
         Stories.Change(storyKey, () => existing, row =>
         {
+            if (cast != null)
+                row.SideCast = MergeSideCast(row.SideCast, cast, row.BotA, row.BotB);
             if (!finished)
             {
                 row.NextAtUtc = (nowUtc + TimeSpan.FromMinutes(30)).ToString("O");

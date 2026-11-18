@@ -293,7 +293,8 @@ namespace DOL.GS.Tests
             var random = new Random(2);
             var slots = Slots(("player", "Chrisplays"), ("player_class", "cleric"), ("place", "Tomb of Mithra"));
             var byId = Corpus.Lines.ToDictionary(line => line.Id);
-            foreach (string mood in new[] { "friendly", "neutral", "cool" })
+            // "neutral" is a row with nothing in it, which is never greeted: its lines were cut (chat audit 2026-11-18).
+            foreach (string mood in new[] { "friendly", "cool" })
                 for (int i = 0; i < 20; i++)
                 {
                     Assert.That(Corpus.TryPick("greet", Speaker(BotPersonalityType.Socialite, "knows_player", "player_nearby"), slots, null,

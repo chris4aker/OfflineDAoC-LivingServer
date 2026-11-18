@@ -88,7 +88,7 @@ public static class AutonomousPlayerDeeds
 
     #region Pure rules (unit tested)
 
-    public enum Kind { None, NamedSolo, NamedGroup, RvrStreak, Ganked, SillyDeath, Fell }
+    public enum Kind { None, NamedSolo, NamedGroup, RvrStreak, Ganked, SillyDeath, Fell, Drowned }
 
     public static string TopicOf(Kind kind) => kind switch
     {
@@ -98,6 +98,7 @@ public static class AutonomousPlayerDeeds
         Kind.Ganked => "ganked",
         Kind.SillyDeath => "silly_death",
         Kind.Fell => "fell",
+        Kind.Drowned => "drowned",
         _ => null,
     };
 
@@ -110,12 +111,45 @@ public static class AutonomousPlayerDeeds
     public static Kind NamedKill(int conToPlayer, bool solo) =>
         conToPlayer < -1 ? Kind.None : solo ? Kind.NamedSolo : Kind.NamedGroup;
 
-    /// <summary>A player's death: a fall (no killer), a silly death (green or grey monster), a gank (3+ enemies around). Pure.</summary>
-    public static Kind Death(bool noKiller, bool killerIsMonster, int killerConToPlayer, bool killerIsEnemy, int enemiesAround) =>
-        noKiller ? Kind.Fell
+    /// <summary>
+    /// A player's death: a fall (no killer), a drowning (no killer, in the water; chat audit 2026-11-18: a drowned player
+    /// was told "fell off a cliff"), a silly death (green or grey monster), a gank (3+ enemies around). Pure.
+    /// </summary>
+    public static Kind Death(bool noKiller, bool killerIsMonster, int killerConToPlayer, bool killerIsEnemy, int enemiesAround,
+        bool underwater = false) =>
+        noKiller ? underwater ? Kind.Drowned : Kind.Fell
         : killerIsMonster && killerConToPlayer <= -2 ? Kind.SillyDeath
         : killerIsEnemy && enemiesAround >= GankCount ? Kind.Ganked
         : Kind.None;
+
+    /// <summary>
+    /// Whether a named kill was solo: no living groupmate near, and the player (with its pets) dealt at least
+    /// <see cref="SoloDamageShare"/> of the damage (chat audit 2026-11-18: bots helping on the same named were not counted).
+    /// No damage record counts as solo. Pure.
+    /// </summary>
+    public static bool Solo(bool groupmateNear, double playerDamage, double totalDamage) =>
+        !groupmateNear && (totalDamage <= 0 || playerDamage / totalDamage >= SoloDamageShare);
+
+    public const double SoloDamageShare = 0.9;
+
+    /// <summary>A named kill is hard (the awe lines: "i thought that thing needed a full group") when it conned yellow or more. Pure.</summary>
+    public static bool HardKill(int conToPlayer) => conToPlayer >= 0;
+
+    /// <summary>
+    /// Whether a line about this topic may name the player's nickname: a named-kill nickname for named kills, an RvR one for
+    /// RvR, a heroic one for a gank or a silly death (the joke is the fall from glory), any for a fall, a drowning or the
+    /// nickname itself (chat audit 2026-11-18: "heard the name came from soloing" of "the Clumsy"). Pure.
+    /// </summary>
+    public static bool NicknameFits(string topic, string nicknameKind) => topic switch
+    {
+        "named_solo" or "named_group" or "rep_named" => nicknameKind == "named",
+        "rvr_streak" or "rep_rvr" => nicknameKind == "rvr",
+        "ganked" or "silly_death" or "rep_silly" => nicknameKind is "named" or "rvr",
+        _ => true,
+    };
+
+    /// <summary>Enemy kills before a player's RvR record is talked about second-hand (the lines are written for hundreds).</summary>
+    public const int RepRvrKills = 50;
 
     private static readonly string[] NamedNicknames = ["the Slayer", "Bossbane", "the Hunter", "the Headhunter", "Namedbane"];
     private static readonly string[] RvrNicknames = ["the Butcher", "Redhand", "the Reaper", "Gatecrasher", "the Wolf"];
@@ -190,9 +224,21 @@ public static class AutonomousPlayerDeeds
 
     private static void OnNamedKilled(GamePlayer player, GameNPC npc)
     {
-        bool solo = player.Group == null || !player.Group.GetMembersInTheGroup()
+        bool mateNear = player.Group != null && player.Group.GetMembersInTheGroup()
             .Any(member => member != player && member.IsAlive && member.IsWithinRadius(player, 4_000));
-        Kind kind = NamedKill(player.GetConLevel(npc), solo);
+        double mine = 0, total = 0;
+        lock (npc.XpGainersLock)
+        {
+            foreach ((GameLiving gainer, double damage) in npc.XPGainers)
+            {
+                total += damage;
+                if (gainer == player || PlayerOf(gainer) == player)
+                    mine += damage;
+            }
+        }
+        bool solo = Solo(mateNear, mine, total);
+        int con = player.GetConLevel(npc);
+        Kind kind = NamedKill(con, solo);
         if (kind == Kind.None)
             return;
         Record(player, row =>
@@ -206,7 +252,7 @@ public static class AutonomousPlayerDeeds
                 row.BestNamed = npc.Name;
                 row.BestNamedLevel = npc.Level;
             }
-        }, kind, npc, npc.Name, null);
+        }, kind, npc, npc.Name, null, flags: HardKill(con) ? ["hard_kill"] : null);
     }
 
     private static void OnEnemyKilled(GamePlayer player, GameLiving enemy)
@@ -236,7 +282,7 @@ public static class AutonomousPlayerDeeds
         bool enemy = killer != null && killer.Realm != eRealm.None && killer.Realm != player.Realm;
         int enemies = enemy ? player.GetPlayersInRadius(2_000).Count(other => other.Realm == killer.Realm && other.IsAlive) +
                               player.GetNPCsInRadius(2_000).OfType<GameBot>().Count(bot => bot.Realm == killer.Realm && bot.IsAlive) : 0;
-        Kind kind = Death(noKiller, monster, monster ? player.GetConLevel(killer) : 0, enemy, enemies);
+        Kind kind = Death(noKiller, monster, monster ? player.GetConLevel(killer) : 0, enemy, enemies, player.IsUnderwater || player.IsDiving);
         if (kind == Kind.None)
         {
             // Why a death was no deed, for in-game checks (2026-10-27: a death to three enemy bots left no trace).
@@ -257,7 +303,7 @@ public static class AutonomousPlayerDeeds
     #region Telling
 
     private static void Record(GamePlayer player, Action<OfflinePlayerReputationRecord> change, Kind kind, GameObject where,
-        string target, string count, string enemy = null)
+        string target, string count, string enemy = null, string[] flags = null)
     {
         GameBot witness = WitnessOf(player, where);
         // Only what a bot saw counts: an unseen deed (an enemy kill too) never becomes reputation.
@@ -286,12 +332,12 @@ public static class AutonomousPlayerDeeds
             LastTold[player.Name + "|solo"] = now;
         Log.Info($"PLAYER_DEED player=\"{player.Name}\" kind={TopicOf(kind)} target=\"{target}\" witness=\"{witness.Name}\"");
 
-        var slots = SlotsOf(player, row);
+        var slots = SlotsOf(player, row, TopicOf(kind));
         slots["place"] = PlaceOfDeed(where, player);
         if (target != null) slots["target"] = target;
         if (count != null) slots["count"] = count;
         if (enemy != null) slots["enemy"] = enemy;
-        Tell(witness, player, TopicOf(kind), slots, 120_000 + Random.Shared.Next(480_000), TellTries);
+        Tell(witness, player, TopicOf(kind), slots, 120_000 + Random.Shared.Next(480_000), TellTries, flags);
 
         (string Nickname, string Kind)? earned = Earned(player.Name, row.NamedSolo, row.RvrKills, row.SillyDeaths, row.NicknameKind);
         if (earned is { } nickname)
@@ -322,7 +368,7 @@ public static class AutonomousPlayerDeeds
             return false;
         }
         Reputations.TryGet(KeyOf(player.Realm, player.Name), out OfflinePlayerReputationRecord row);
-        var slots = SlotsOf(player, row);
+        var slots = SlotsOf(player, row, TopicOf(kind));
         // Where it could have happened: here, unless here is a capital (or, for a fight with the enemy, not the frontier).
         Zone zone = player.CurrentZone;
         string place = TestPlace(kind, zone?.Description,
@@ -358,7 +404,7 @@ public static class AutonomousPlayerDeeds
     /// place, but for one in <see cref="NoPlaceShare"/>. <paramref name="roll"/> is a draw in [0, 1). Pure.
     /// </summary>
     public static bool NamesPlace(string topic, bool hasPlace, double roll) =>
-        hasPlace && topic is "named_solo" or "named_group" or "rvr_streak" or "ganked" or "silly_death" or "fell" && roll >= NoPlaceShare;
+        hasPlace && topic is "named_solo" or "named_group" or "rvr_streak" or "ganked" or "silly_death" or "fell" or "drowned" && roll >= NoPlaceShare;
 
     /// <summary>A deed's slots as chat wrote them: the zone short ("black mtns", no "the"), the rest as they are. Pure but for the draw.</summary>
     public static Dictionary<string, string> ChatSlots(IReadOnlyDictionary<string, string> slots, Random random = null)
@@ -428,7 +474,7 @@ public static class AutonomousPlayerDeeds
         return zones;
     }
 
-    private static Dictionary<string, string> SlotsOf(GamePlayer player, OfflinePlayerReputationRecord row)
+    private static Dictionary<string, string> SlotsOf(GamePlayer player, OfflinePlayerReputationRecord row, string topic = null)
     {
         var slots = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -436,7 +482,7 @@ public static class AutonomousPlayerDeeds
             ["player_class"] = player.CharacterClass?.Name?.ToLowerInvariant(),
             ["place"] = AutonomousLivingServer.PlaceOf(player),
         };
-        if (!string.IsNullOrEmpty(row?.Nickname))
+        if (!string.IsNullOrEmpty(row?.Nickname) && NicknameFits(topic, row.NicknameKind))
             slots["nickname"] = row.Nickname;
         return slots;
     }
@@ -469,7 +515,8 @@ public static class AutonomousPlayerDeeds
     /// The witness tells /faction after a delay (retried while it is busy or a debate runs), and one to three bots react.
     /// A witness that left the game is replaced by another gamebot near the player, if one is there.
     /// </summary>
-    private static void Tell(GameBot witness, GamePlayer player, string topic, Dictionary<string, string> slots, int delayMs, int tries)
+    private static void Tell(GameBot witness, GamePlayer player, string topic, Dictionary<string, string> slots, int delayMs, int tries,
+        string[] flags = null)
     {
         eRealm realm = player.Realm;
         // On the player's timer, so a witness that leaves the game doesn't take the deed with it.
@@ -488,7 +535,7 @@ public static class AutonomousPlayerDeeds
             if (!AutonomousLivingServer.CanTalk(witness) || scene)
             {
                 if (tries > 1)
-                    Tell(witness, player, topic, slots, RetryDelayMs(scene), tries - 1);
+                    Tell(witness, player, topic, slots, RetryDelayMs(scene), tries - 1, flags);
                 return;
             }
             // 1.1.3, after RC5: a witness names where it happened, as chat wrote the zone ("not lying, i just saw Manawatch kill a
@@ -496,18 +543,19 @@ public static class AutonomousPlayerDeeds
             Dictionary<string, string> said = ChatSlots(slots);
             string line = null;
             if (!(NamesPlace(topic, said.ContainsKey("place"), Random.Shared.NextDouble()) &&
-                  AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said, filter: l => l.Text.Contains("{place}", StringComparison.Ordinal))) &&
-                !AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said))
+                  AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said, flags, filter: l => l.Text.Contains("{place}", StringComparison.Ordinal))) &&
+                !AutonomousBotVoices.TryEventLine(witness, "deed", out line, topic, said, flags))
                 return;
             // About the real player's deed (1.1.3: not held by the ceiling).
             using var playerTag = AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "witness", witness);
             AutonomousBotChatCoordinator.BroadcastFaction(witness.Name, realm, line);
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), witness, line, "chat");
-            React(realm, witness, player, topic, slots);
+            React(realm, witness, player, topic, slots, flags);
         });
     }
 
-    private static void React(eRealm realm, GameBot teller, GamePlayer player, string topic, Dictionary<string, string> slots)
+    private static void React(eRealm realm, GameBot teller, GamePlayer player, string topic, Dictionary<string, string> slots,
+        string[] flags = null)
     {
         GameBot[] reactors = AutonomousBotRegistry.Snapshot()
             .Where(bot => bot != teller && bot.Realm == realm && AutonomousLivingServer.CanTalk(bot) && !AutonomousBeggars.Is(bot) &&
@@ -524,7 +572,7 @@ public static class AutonomousPlayerDeeds
             AutonomousLivingServer.Later(speaker, due, () => AutonomousLivingServer.CanTalk(speaker), () =>
             {
                 using var playerTag = AutonomousChatExchange.Tag("player", deedExchange, reactionIndex, "reactor", speaker);
-                if (AutonomousBotVoices.TryEventLine(speaker, "deed_reply", out string line, topic, slots))
+                if (AutonomousBotVoices.TryEventLine(speaker, "deed_reply", out string line, topic, slots, flags))
                     AutonomousBotChatCoordinator.BroadcastFaction(speaker.Name, realm, line);
             });
         }
@@ -545,7 +593,7 @@ public static class AutonomousPlayerDeeds
             return topics;
         if (row.NamedSolo > 0 && !string.IsNullOrEmpty(row.BestNamed))
             topics.Add(("rep_named", row.BestNamed, null));
-        if (row.RvrKills >= 10)
+        if (row.RvrKills >= RepRvrKills)
             topics.Add(("rep_rvr", null, row.RvrKills.ToString()));
         if (row.SillyDeaths >= 3)
             topics.Add(("rep_silly", null, row.SillyDeaths.ToString()));
@@ -580,7 +628,7 @@ public static class AutonomousPlayerDeeds
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
                 if (speaker == null)
                     break;
-                var slots = SlotsOf(player, row);
+                var slots = SlotsOf(player, row, topic);
                 if (target != null) slots["target"] = target;
                 if (count != null) slots["count"] = count;
                 if (AutonomousBotVoices.TryEventLine(speaker, "deed", out string line, topic, slots))

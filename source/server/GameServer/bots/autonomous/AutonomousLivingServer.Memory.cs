@@ -64,7 +64,7 @@ public static partial class AutonomousLivingServer
     {
         if (!MemoryOn || !IsSpeaker(bot) || player == null || player.Realm != bot.Realm)
             return;
-        string place = PlaceOf(bot);
+        string place = RememberedPlace(PlaceOf(bot), AutonomousBotVoices.IsCapitalRegion(bot.CurrentRegionID));
         string now = DateTime.UtcNow.ToString("O");
         Memories.Change((bot.DatabaseID, player.Name), () => new OfflineBotMemoryRecord
         {
@@ -88,6 +88,33 @@ public static partial class AutonomousLivingServer
             }
         });
     }
+
+    /// <summary>
+    /// The place a memory keeps: where the bot is, but never a capital (chat audit 2026-11-18, PC 2026-11-08: "City of
+    /// Camelot treat you well after i left?" recalled the town where the group formed). Null keeps the old place. Pure.
+    /// </summary>
+    public static string RememberedPlace(string here, bool inCapital) => inCapital || string.IsNullOrEmpty(here) ? null : here;
+
+    /// <summary>
+    /// The memory flags a line may need: knows_player always, player_grouped when the bot really grouped with the player
+    /// (a bot the player only rezzed has no "good group at {place}"). Pure.
+    /// </summary>
+    public static string[] MemoryFlags(OfflineBotMemoryRecord row, params string[] more)
+    {
+        var flags = new List<string> { "knows_player" };
+        if (row?.Grouped > 0)
+            flags.Add("player_grouped");
+        flags.AddRange(more);
+        return flags.ToArray();
+    }
+
+    /// <summary>
+    /// Whether a bot would say yes to grouping (AutonomousBotChatCoordinator.JoinReply's refusals: outside the level band
+    /// asked for, grouped with someone else, on a duty, too far apart in level). The memory "sure, send an invite" lines
+    /// follow only a yes (DESIGN-007). Pure.
+    /// </summary>
+    public static bool WouldJoin(string bandRefusal, bool groupedElsewhere, bool onDuty, string levelGapRefusal) =>
+        bandRefusal == null && !groupedElsewhere && !onDuty && levelGapRefusal == null;
 
     /// <summary>A player insulted bots in chat; those who heard remember it.</summary>
     public static void RecordAbuse(IEnumerable<GameBot> heard, GamePlayer player)
@@ -200,7 +227,7 @@ public static partial class AutonomousLivingServer
     /// A reply to a player's chat by a bot that knows them: by name, or a cool brush-off after abuse.
     /// False when the bot doesn't know the player or no line fits (the caller keeps its old reply).
     /// </summary>
-    public static bool TryKnownReply(GameBot bot, GamePlayer player, string intent, out string text)
+    public static bool TryKnownReply(GameBot bot, GamePlayer player, string intent, out string text, string incoming = null)
     {
         text = null;
         if (!TryRecall(bot, player, out OfflineBotMemoryRecord row))
@@ -208,9 +235,17 @@ public static partial class AutonomousLivingServer
         Dictionary<string, string> slots = MemorySlots(row, player);
         string mood = MoodOf(row);
         if (mood == "cool")
-            return AutonomousBotVoices.TryEventLine(bot, "grudge", out text, slots: slots, flags: ["knows_player"], mood: "cool");
+            return AutonomousBotVoices.TryEventLine(bot, "grudge", out text, slots: slots, flags: MemoryFlags(row), mood: "cool");
+        // DESIGN-007: "lfg 30 cleric" drew "what level are you now?", and "sure, send an invite" skipped JoinReply's reasons.
+        if (intent == AutonomousBotVoices.IntentName(eAutonomousChatIntent.Grouping) &&
+            !WouldJoin(AutonomousBotChatCoordinator.BandReply(bot.Level, incoming, Random.Shared),
+                bot.PlayerGroupLeader != null && bot.PlayerGroupLeader != player,
+                BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None,
+                AutonomousBotChatCoordinator.LevelGapReply(bot.Level, player.Level, Random.Shared)))
+            return false;
         // Only the lines written for a known player (topic "player"): the general replies don't use the name.
-        return AutonomousBotVoices.TryEventLine(bot, "reply", out text, "player", slots, ["knows_player"], intent: intent);
+        return AutonomousBotVoices.TryEventLine(bot, "reply", out text, "player", slots, MemoryFlags(row), intent: intent,
+            filter: line => AutonomousChatShortTalk.ReplyFits(incoming, line.Text));
     }
 
     /// <summary>Once a second on the game loop: grouping notes, greetings, gossip (each on its own timer).</summary>
@@ -240,13 +275,23 @@ public static partial class AutonomousLivingServer
             if (!IsSpeaker(bot) || bot.Realm != player.Realm)
                 continue;
             var key = (bot.DatabaseID, player.Name);
+            bool note;
             lock (LastGroupedNote)
             {
-                if (LastGroupedNote.TryGetValue(key, out long last) && now - last < GroupedNoteIntervalMs)
-                    continue;
-                LastGroupedNote[key] = now;
+                note = !LastGroupedNote.TryGetValue(key, out long last) || now - last >= GroupedNoteIntervalMs;
+                if (note)
+                    LastGroupedNote[key] = now;
             }
-            Remember(bot, player, "group");
+            if (note)
+            {
+                Remember(bot, player, "group");
+                continue;
+            }
+            // While grouped the remembered place follows the group (chat audit 2026-11-18: it stayed the town where the
+            // group formed), written only when the zone changes and never to a capital.
+            string place = RememberedPlace(PlaceOf(bot), AutonomousBotVoices.IsCapitalRegion(bot.CurrentRegionID));
+            if (place != null && Memories.TryGet(key, out OfflineBotMemoryRecord row) && row.LastPlace != place)
+                Memories.Change(key, () => row, r => r.LastPlace = place);
         }
     }
 
@@ -286,9 +331,9 @@ public static partial class AutonomousLivingServer
                 }
                 string line = null;
                 if (thanks)
-                    AutonomousBotVoices.TryEventLine(bot, "thanks", out line, row.LastTopic, slots, ["knows_player", "player_nearby"]);
+                    AutonomousBotVoices.TryEventLine(bot, "thanks", out line, row.LastTopic, slots, MemoryFlags(row, "player_nearby"));
                 if (line == null)
-                    AutonomousBotVoices.TryEventLine(bot, "greet", out line, slots: slots, flags: ["knows_player", "player_nearby"], mood: mood);
+                    AutonomousBotVoices.TryEventLine(bot, "greet", out line, slots: slots, flags: MemoryFlags(row, "player_nearby"), mood: mood);
                 if (line != null)
                     Speak(bot, Channel.Say, line);
             });
@@ -345,7 +390,7 @@ public static partial class AutonomousLivingServer
                 bot.CurrentRegion == subject.CurrentRegion && bot.IsWithinRadius(subject, WorldMgr.SAY_DISTANCE * 2))
                 continue;
             // Lines about a rez need a rez this bot remembers (in-game check 2026-10-18).
-            var flags = new List<string> { "knows_player" };
+            var flags = new List<string>(MemoryFlags(row));
             if (AutonomousBotGuildSocial.CountsAsGuildless(subject.Guild)) flags.Add("player_guildless");
             if (row.Rezzed > 0) flags.Add("player_rezzed_me");
             if (AutonomousBotVoices.TryEventLine(bot, "gossip", out string line, slots: MemorySlots(row, subject),

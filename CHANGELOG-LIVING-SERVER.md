@@ -458,6 +458,43 @@ Reading and replies (the chat audit's E1 items; unit tests only, none seen on th
   far", "how much for it" are completed from the last place or item; a bot never asks the level, class, place or item you
   already gave. Gamebots in /faction, /say, /group and tells; hired companions too (their /say lines, with the chat audit E7 entry).
 
+## Bot chat audit fixes (1.2, 2026-11-18; tests only)
+
+### Events: storylines, dunce, deeds, news, rumours, holidays, spammers, roleplayers, beggars, bonds, milestones, memory
+
+From the chat audit of 2026-11-18 (corpus-b2 findings and the PC logs of build `5378dbe`). **Tests only: nothing here has been
+seen on the owner's PC.**
+- **Siege news follows the siege's stage.** The muster and march notices are new news topics, `siege_muster` (attackers)
+  and `siege_warning` (defenders); `siege_attack` and `siege_defend` are said only once the battle has begun. No siege line
+  claims a door, ram, oil, lord room or head count any more (the PC log had "outer door at ailinne is down" while the army
+  was still mustering). Held and failed sieges no longer claim wipes or broken rams (they also end by running out of time).
+- **"Wide open" keep rumours** are never told about a portal keep, a keep under siege, one taken in the last 30 minutes,
+  or one with its owners within 3,000 units (all three of the night came minutes after a capture). Rumours name keeps and
+  zones as chat did ("hlid"), like the news.
+- **Deeds:** a drowning is its own deed (`drowned`), not "fell off a cliff"; a solo named kill needs 90% of the damage to be
+  the player's (bots helping no longer count as solo); the awe lines need a yellow or harder named; a nickname is named only
+  where it fits ("heard the name came from soloing" is never said of "the Clumsy"); RvR reputation talk starts at 50 kills;
+  a bystander no longer says "our group just dropped"; silly-death counts say "silly deaths".
+- **Storylines:** an arc keeps one keep for all its episodes, its side characters (roles C-H: the duel's referee, the
+  trial's judge, the officiant) are the same bots in every episode, the guild split is cast from a bot guild's leader and
+  officer when they are online, the romance's healer is a healing class, the side endings play only while the player who
+  took the side is online, and time words fit episodes 3-10 hours apart.
+- **The dunce** is one scene draw in eight, at most once in three hours per realm (it came about once in 16 hours).
+- **Holidays:** "soon" and "plans" lines are said only before the day (`holiday_before`), trick-or-treaters only on the
+  evening itself, New Year's day is January 1; "any holiday plans?" gets holiday answers; Valentine's, St Patrick's, April
+  Fools, Easter and Midsummer have eight or more lines each. New setting `bots / bot_living_holidays_thanksgiving`: `us`
+  (default), `canada` (second Monday of October) or `off`.
+- **Roleplayers** name the enemy as a people ("the Hibernians", never "the Hibernia"), sword and shield lines are for armed
+  classes, and a mock that quotes a word ("forsooth? FORSOOTH?") follows only a line that said it.
+- **Memory:** the remembered place follows the group and is never a capital; group lines need a real group
+  (`player_grouped`); a remembered player is not asked their level after saying it, nor promised an invite the bot would
+  refuse.
+- **Trophies:** a dragon trophy must be an item the bot's class can use; the cheers no longer say "worth the wait".
+- Many smaller line fixes: grammar with the realm word, WoW loot words, phrases from after 2003, a beggar line of dashes,
+  "you asked ME" to a player who asked someone else, out-of-era mechanics (keep map, boiling oil, water breathing), and dead
+  lines no code asks for (enemy sightings, neutral and rival greetings, heal and trade thanks).
+- Tests: `UT_ChatAuditEvents`; `UT_HolidaysAndLeeroy` updated for the before/after flags and January 1.
+
 ## Installer and launcher text: Living Server features are on by default (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 ~05:57): `INSTALL.cmd` ended with "Every new feature is OFF until

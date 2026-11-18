@@ -285,18 +285,19 @@ lines (`beggars.lines`, kind `beggar`, 19 topics), spiced the way the dunces are
 `bot_living_deeds` (on by default; `AutonomousPlayerDeeds`). When you do something a gamebot of your realm sees (a
 groupmate first, else any bot within 3,000 units), it tells /faction 2-10 minutes later and one to three bots react:
 
-- **Named kills:** a named monster (capitalised name, no realm) you kill alone (`named_solo`) or with your group
-  (`named_group`) at blue or harder. (Solo needed yellow until 2026-10-27.)
+- **Named kills:** a named monster (capitalised name, no realm) you kill alone (`named_solo`: no groupmate near and 90%
+  of the damage yours or your pet's) or with your group (`named_group`) at blue or harder. (Solo needed yellow until
+  2026-10-27.) Lines of awe ("i thought that thing needed a full group") need yellow or harder (`hard_kill`).
 - **Kill streaks:** three or more enemies killed within ten minutes (`rvr_streak`).
 - **Your deaths:** zerged by three or more enemies (`ganked`; four until 2026-10-27), killed by a green or grey monster (`silly_death`), or a
-  fall or drowning (`fell`).
+  fall (`fell`) or drowning (`drowned`).
 
 Only what a bot saw counts: an unseen deed, an ordinary enemy kill included, is not told and does not count toward
 reputation. Each kind is told at most every 15 minutes per player; a solo named kill once per monster in 15 minutes and
 at most one every 5 minutes. Deeds add up in
 `offline_player_reputation` (an optional progress table, emptied in release builds). Every 50-100 minutes a bot who was
-not there brings up an online player's reputation ("isnt Kaelith the one who soloed Grimwold?", `rep_named`, `rep_rvr`,
-`rep_silly`). Three solo named kills, 25 enemy kills or four silly deaths earn a nickname ("Kaelith the Slayer",
+not there brings up an online player's reputation ("isnt Kaelith the one who soloed Grimwold?", `rep_named`, `rep_rvr` from 50
+enemy kills, `rep_silly`). Three solo named kills, 25 enemy kills or four silly deaths earn a nickname ("Kaelith the Slayer",
 "Kaelith Facefloor"), announced in /faction; a heroic nickname replaces a silly one and is then for good.
 `deeds.lines`: about 1,800 lines.
 
@@ -333,7 +334,11 @@ Take a side by naming one of the two in /faction during an episode or up to ten 
 right"). An episode (or any debate) pauses while nobody of the realm is in the game, as when a player releases or changes
 zone, and ends only after two minutes of that.
 The one you backed thanks you by tell, the other tells you off, and the last episode plays that side's ending (`_4a` or
-`_4b`; plain `_4` when nobody took a side), naming you. Storyline scenes never play as ordinary debates.
+`_4b`; plain `_4` when nobody took a side, or when you are offline then), naming you. An arc's keep and its zone are fixed
+the first time an episode plays, so every episode names the same keep. A side character (roles C to H) is the same bot
+in every episode it can play (the referee of the duel, the judge of the trial). The guild split is cast from a bot guild's
+leader and one of its officers when such a pair is free. Storyline scenes never play as ordinary debates. A dunce scene
+is one ordinary scene draw in eight, at most once in three hours per realm (WRITING-GUIDE.md, "Storyline arcs").
 
 ### 14. Gold spammers and roleplayers
 
@@ -347,7 +352,8 @@ The one you backed thanks you by tell, the other tells you off, and the last epi
 - **Roleplayers** (`AutonomousRoleplayers`): about 4% of the Socialite and Explorer personalities (about 1.6% of all
   bots) roleplay. Everything they say, in every channel, comes out in thee and thou ("art thou well? aye, forsooth").
   The first comes 6-18 minutes into a play session, then every 20-45 minutes one posts an in-character line in /faction; other bots mock them ("/rp off plz") and they answer in
-  character.
+  character. They name the enemy as a people ("the Hibernians"), and a mock or answer that quotes a word ("forsooth?
+  FORSOOTH?") is said only after a line that had it.
 
 `spammers.lines` and `roleplayers.lines`: about 3,000 lines.
 
@@ -359,8 +365,9 @@ The one you backed thanks you by tell, the other tells you off, and the last epi
   while a player of that realm within ten levels under to five over it is online. One to four minutes later, if it is
   still alive, a bot says so vaguely ("heard Grimwold is up again in Black Mountains South").
 - **A thin keep:** an enemy frontier keep with four or more guards meant to be up (in the world or respawning; a captured
-  keep's guards above its new level don't count), under 30% of them alive ("scout says Caer Benowyc is
-  wide open"). Checked every five minutes.
+  keep's guards above its new level don't count), under 30% of them alive ("free rps at beno. guards are down"). Never a
+  portal keep, a keep under siege, one that changed hands in the last 30 minutes, or one with a living player or gamebot of
+  its owner within 3,000 units. Checked every five minutes. Keeps and zones are named as chat wrote them ("hlid").
 
 A realm hears at most one rumour every 20 minutes, a monster at most every six hours, a keep at most every two.
 `rumours.lines`: about 370 lines.

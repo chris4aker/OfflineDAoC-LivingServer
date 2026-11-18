@@ -145,6 +145,62 @@ public static class AutonomousRoleplayers
 
     #endregion
 
+    /// <summary>
+    /// The enemy as a roleplayer names them: the people of another realm ("the Hibernians stirring", never "the Hibernia";
+    /// chat audit 2026-11-18). Pure.
+    /// </summary>
+    public static string EnemyPeople(eRealm realm, Random random)
+    {
+        eRealm[] others = new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia }.Where(r => r != realm).ToArray();
+        return others[random.Next(others.Length)] switch
+        {
+            eRealm.Albion => "Britons",
+            eRealm.Midgard => "Norsemen",
+            _ => "Hibernians",
+        };
+    }
+
+    private static Dictionary<string, string> RpSlots(GameBot rp, string targetName = null)
+    {
+        var slots = new Dictionary<string, string> { ["enemy"] = EnemyPeople(rp.Realm, Random.Shared) };
+        if (targetName != null)
+            slots["target"] = targetName;
+        return slots;
+    }
+
+    // A mock or answer that quotes a word ("forsooth? FORSOOTH?", "a nerd, sayest thou?") fits only when the line it answers
+    // has that word (chat audit 2026-11-18: quoted words that were never said). Mocks quote the roleplayer, answers the mock.
+    private static readonly (Regex Quotes, Regex Needs)[] MockQuotes =
+    [
+        (new(@"forsooth|verily|huzzah", RegexOptions.IgnoreCase), new(@"forsooth|verily|huzzah", RegexOptions.IgnoreCase)),
+        (new(@"good morrow", RegexOptions.IgnoreCase), new(@"good morrow", RegexOptions.IgnoreCase)),
+        (new(@"thee and thou|thy and thine", RegexOptions.IgnoreCase), new(@"\b(thee|thou|thy|thine)\b", RegexOptions.IgnoreCase)),
+        (new(@"just bow|\[bow\|curtsy\|kneel\]", RegexOptions.IgnoreCase), new(@"\*[^*]*\b(bow|bows|kneel|kneels)\b", RegexOptions.IgnoreCase)),
+        (new(@"asterisks|emotes", RegexOptions.IgnoreCase), new(@"\*")),
+        (new(@"which way is east|wheres the beast|what quest", RegexOptions.IgnoreCase), new(@"\b(east|beast|quest)\b", RegexOptions.IgnoreCase)),
+    ];
+
+    private static readonly (Regex Quotes, Regex Needs)[] AnswerQuotes =
+    [
+        (new(@"""rp off""", RegexOptions.IgnoreCase), new(@"rp off", RegexOptions.IgnoreCase)),
+        (new(@"a nerd, sayest", RegexOptions.IgnoreCase), new(@"\bnerd", RegexOptions.IgnoreCase)),
+        (new(@"""its a game", RegexOptions.IgnoreCase), new(@"\bgame\b", RegexOptions.IgnoreCase)),
+    ];
+
+    /// <summary>
+    /// Whether a mock (or, with <paramref name="answer"/>, a roleplayer's answer) may follow <paramref name="previous"/>:
+    /// every word its template quotes was said there. Pure.
+    /// </summary>
+    public static bool QuoteFits(string template, string previous, bool answer = false)
+    {
+        if (string.IsNullOrEmpty(template))
+            return false;
+        foreach (var (quotes, needs) in answer ? AnswerQuotes : MockQuotes)
+            if (quotes.IsMatch(template) && (string.IsNullOrEmpty(previous) || !needs.IsMatch(previous)))
+                return false;
+        return true;
+    }
+
     /// <summary>A roleplayer's line in its speech; anyone else's unchanged. Called where bot lines go out.</summary>
     public static string Voice(GameBot bot, string text) => Is(bot) ? Speak(text, Random.Shared) : text;
 
@@ -153,8 +209,9 @@ public static class AutonomousRoleplayers
     {
         if (!On || string.IsNullOrEmpty(speakerName) || !AutonomousBotRegistry.TryGetOnline(speakerName, realm, out GameBot bot) || !Is(bot))
             return text;
-        MaybeMocked(bot, realm);
-        return Speak(text, Random.Shared);
+        string spoken = Speak(text, Random.Shared);
+        MaybeMocked(bot, realm, spoken);
+        return spoken;
     }
 
     private static readonly ConcurrentDictionary<eRealm, long> NextAmbientAt = new();
@@ -198,7 +255,7 @@ public static class AutonomousRoleplayers
                 .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
             string line = null;
             bool said = false;
-            if (rp != null && AutonomousBotVoices.TryEventLine(rp, "roleplay", out line, "ambient"))
+            if (rp != null && AutonomousBotVoices.TryEventLine(rp, "roleplay", out line, "ambient", RpSlots(rp)))
             {
                 // Already in character: sent as written (not through the speech pass).
                 using var tag = AutonomousChatExchange.Tag("roleplayer", exchange, 0, "roleplayer", rp);
@@ -229,18 +286,18 @@ public static class AutonomousRoleplayers
             AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), rp, line, "chat");
             Log.Info($"ROLEPLAY_AMBIENT realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\"" + (waiting ? $" waited_s={(now - due.Since) / 1_000}" : ""));
             if (Random.Shared.NextDouble() < 0.6)
-                Mock(rp, realm, now, exchange);
+                Mock(rp, realm, now, line, exchange);
         }
     }
 
-    private static void MaybeMocked(GameBot rp, eRealm realm)
+    private static void MaybeMocked(GameBot rp, eRealm realm, string said)
     {
         if (Random.Shared.NextDouble() < 0.08)
-            Mock(rp, realm, GameLoop.GameLoopTime);
+            Mock(rp, realm, GameLoop.GameLoopTime, said);
     }
 
     /// <summary>Another bot mocks the roleplayer, and the roleplayer answers in character.</summary>
-    private static void Mock(GameBot rp, eRealm realm, long now, long exchange = 0)
+    private static void Mock(GameBot rp, eRealm realm, long now, string said, long exchange = 0)
     {
         // The mock goes on with the roleplayer's line (lines 1 and 2 of its exchange), or starts its own.
         int first = exchange != 0 ? 1 : 0;
@@ -257,7 +314,8 @@ public static class AutonomousRoleplayers
         int delay = 5_000 + Random.Shared.Next(8_000);
         AutonomousLivingServer.Later(mocker, delay, () => AutonomousLivingServer.CanTalk(mocker), () =>
         {
-            if (!AutonomousBotVoices.TryEventLine(mocker, "roleplay", out string mock, "mock", new Dictionary<string, string> { ["target"] = rp.Name }))
+            if (!AutonomousBotVoices.TryEventLine(mocker, "roleplay", out string mock, "mock", new Dictionary<string, string> { ["target"] = rp.Name },
+                    filter: candidate => QuoteFits(candidate.Text, said)))
                 return;
             bool mocked;
             using (AutonomousChatExchange.Tag("roleplayer", exchange, first, "mocker", mocker))
@@ -267,7 +325,8 @@ public static class AutonomousRoleplayers
             Log.Info($"ROLEPLAY_MOCK realm={GlobalConstants.RealmToName(realm)} bot=\"{rp.Name}\" mocker=\"{mocker.Name}\"");
             AutonomousLivingServer.Later(rp, 6_000 + Random.Shared.Next(8_000), () => AutonomousLivingServer.CanTalk(rp), () =>
             {
-                if (!AutonomousBotVoices.TryEventLine(rp, "roleplay", out string answer, "answer", new Dictionary<string, string> { ["target"] = mocker.Name }))
+                if (!AutonomousBotVoices.TryEventLine(rp, "roleplay", out string answer, "answer", RpSlots(rp, mocker.Name),
+                        filter: candidate => QuoteFits(candidate.Text, mock, answer: true)))
                     return;
                 using var tag = AutonomousChatExchange.Tag("roleplayer", exchange, first + 1, "roleplayer", rp);
                 AutonomousBotChatCoordinator.BroadcastFactionAsWritten(rp.Name, realm, answer);

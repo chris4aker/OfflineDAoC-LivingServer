@@ -49,13 +49,15 @@ namespace DOL.GS.Tests
         [Test]
         public void TheCalendarSetsTheWindowAndTheDay()
         {
-            Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 10, 28)), Is.EquivalentTo(new[] { "holiday", "holiday_halloween" }));
+            Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 10, 28)), Is.EquivalentTo(new[] { "holiday", "holiday_halloween", "holiday_before" }));
             Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 10, 31, 21, 0, 0)),
                 Is.EquivalentTo(new[] { "holiday", "holiday_halloween", "holiday_today" }));
             Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 11, 2)), Is.Empty);
             Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 12, 25)), Does.Contain("holiday_christmas").And.Contain("holiday_today"));
-            Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 12, 31)), Does.Contain("holiday_newyear").And.Contain("holiday_today"));
-            Assert.That(AutonomousHolidays.Flags(new DateTime(2027, 1, 2)), Does.Contain("holiday_newyear").And.Not.Contain("holiday_today"));
+            // New Year's day is January 1 (chat audit 2026-11-18: "first ding of the year" on December 31).
+            Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 12, 31)), Does.Contain("holiday_newyear").And.Contain("holiday_before").And.Not.Contain("holiday_today"));
+            Assert.That(AutonomousHolidays.Flags(new DateTime(2027, 1, 1)), Does.Contain("holiday_newyear").And.Contain("holiday_today"));
+            Assert.That(AutonomousHolidays.Flags(new DateTime(2027, 1, 2)), Does.Contain("holiday_newyear").And.Contain("holiday_after").And.Not.Contain("holiday_today"));
             Assert.That(AutonomousHolidays.Flags(new DateTime(2027, 1, 3)), Is.Empty);
             Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 11, 26)), Does.Contain("holiday_thanksgiving").And.Contain("holiday_today"));
             Assert.That(AutonomousHolidays.Flags(new DateTime(2026, 4, 3)), Does.Contain("holiday_easter"), "Good Friday");

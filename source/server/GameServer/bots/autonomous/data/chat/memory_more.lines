@@ -1,4 +1,5 @@
-# The talking update: greetings that recall where the bot last saw the player ({place}) or the last group.
+# The talking update: greetings that recall where the bot last saw the player ({place}: where they last grouped, never a
+# capital; else where it was rezzed) or the last group ("player_grouped": the bot really grouped with the player).
 # Kind greet, knows_player. They recall only what the bot remembers; no invented events. New writing (see docs/bot-voices).
 
 @kind greet
@@ -11,7 +12,6 @@ hey {player}, still hunting {place}?
 oh hey {player}, last time i saw you was {place}
 {player}! did you ever finish up at {place}?
 hey {player}, been back to {place} since?
-{player}, good group at {place}, hi again
 look, its {player}. {place} was fun
 hi {player}! xp still good at {place}?
 {player}, how many levels since {place}?
@@ -20,25 +20,22 @@ hi {player}! xp still good at {place}?
 hey {player}, was it {place} last time? feels like ages
 {player}! the {player_class} from {place}, hi
 hey {player}, did you stay at {place} long?
-{player}! we should do that group again
 oh hi {player}, ding since last time?
-hey {player}, our old group was a good one, hi
-hey hey {player}, {place} treat you well after i left?
+hey hey {player}, how was {place} after that?
 {player}, still owe you for {place}, hi
-hi {player}, i still think about that group from {place}
 {player}! not at {place} today?
 hey {player}, glad you made it out of {place}
+@needs knows_player,player_grouped
+{player}, good group at {place}, hi again
+{player}! we should do that group again
+hey {player}, our old group was a good one, hi
+hi {player}, i still think about that group from {place}
+@needs knows_player
 @who Socialite
 {player}!! i was telling everyone about {place}
 @who Leveler
-hey {player}, i went back to {place} without you, not the same xp
+@needs knows_player,player_grouped
+hey {player}, {place} is not the same xp without a group
+@needs knows_player
 @who Explorer
 {player}, find anything good past {place}?
-@mood neutral
-@who *
-{player}. {place} go alright?
-hi {player}, still around {place}?
-hey {player}, same group as {place}, right?
-@mood rival
-you again, {player_class}. {place} is not forgotten
-{player_class} from {place}... i remember that face

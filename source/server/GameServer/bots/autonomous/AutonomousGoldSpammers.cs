@@ -82,7 +82,7 @@ public static class AutonomousGoldSpammers
         return char.ToUpperInvariant(text[0]) + text[1..];
     }
 
-    private static readonly string[] SiteWords = ["g0ldg0blin", "fastg0ld", "pl4tking", "c0inbarrel", "g0ldm4rket", "mmog0ld4u",
+    private static readonly string[] SiteWords = ["g0ldg0blin", "g0ldk0b0ld", "pl4tking", "c0inbarrel", "c0pperwyrm", "pl4tdr4ke",
         "cheapg0ldz", "g0ldgryph0n", "platwagon", "g0ldbucket", "realmc0in", "fastplatz"];
     private static readonly string[] SiteEnds = ["c 0 m", "c0m", "n 3 t", "n3t", "0rg"];
 
