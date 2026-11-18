@@ -765,6 +765,42 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
     of his 132 s loop; the 20-minute hold lapse still applies. Each clear window logs `REALM_EXPEDITION_COURT_WINDOW`
     with his spot, next point and closest approaches, so the next PC log can confirm it.
   - Bots no longer cast mez or stun on a monster with CC immunity (the Crypt Lord: 4 Minstrel casts).
+- **A boss dragged off his floor no longer loses his adds' stands, and a fight in progress is never set aside for
+  want of one** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria). Aroon, dragged 3,700 from his spawn and
+  370 higher, left "none of 463 floor spots ... on his floor" for the six Scaiths still alive in his room, and
+  `REALM_EXPEDITION_TACTIC_ASIDE` (23:38:08) sent the route to an olcasar muster while he and the Scaiths killed 68 more
+  raiders. The ranged stands for a boss's required adds are now looked for on his spawn's floor (his room), still clear
+  of where he stands; and a boss whose fight is on with the raid is kept (`REALM_EXPEDITION_TACTIC_KEPT`, at most once a
+  minute) and its stands are tried again, never set aside. Scurceol Hyrde's orbs, searched from his own spot at home,
+  find the same stands as before.
+
+- **Wipes are counted per encounter, not per monster** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
+  One continuous 19-minute fight in Xaga's room (408 deaths) was scored as four wipes on three names: Beatha (00:15:21),
+  Tine (00:19:13, ten seconds after Beatha died), then Xaga twice, so the two-attempt rule ran per monster. A wipe at a
+  required add is now the wipe of the boss that owns it (`WipeEncounter`), in attempts and in raid-wide deaths outside
+  one, and the "already counted" guard follows that encounter until it and all its adds are out of combat
+  (`CountedFightGoesOn`), not one monster. The defeat and the wipe line name the boss (Xaga); the line adds
+  `killer="Beatha"` (outside an attempt) or `fought="..."` when they differ. Stricter: two tries per linked encounter.
+
+- **A boss with required adds is pulled as an attempt** (tests only; owner's PC, build 5378dbe, 2026-11-17, Galladoria).
+  Neither Aroon the Urlamhai nor Xaga's room had a `FINAL_ENGAGE` or an `EARLY_PULL`: a Scaith in combat during Aroon's
+  muster (0 of 86) and Beatha in combat during Xaga's (2 of 86) sent the route straight to the add with no attempt open,
+  so the 70% pull, the early-pull Hold or Commit, the regroup after a wipe and the return-wave hold never applied, and
+  all five wipes were "raid-wide deaths outside an attempt". The route now fights a mustered boss's required adds only
+  inside a committed attempt on it (`FightsRequiredAddsNow`); before that the boss stays the target, and the boss or any
+  of its adds in combat is an early pull answered by the muster (raiders at an add in the fight count as at the fight).
+  Once the boss's fight is off (a wipe), the route goes back to the boss so its muster scores the attempt and regroups.
+  Scurceol Hyrde's orbs, Soul Reckoner's souls, Xaga's fairies and Aroon's Scaiths all go through this. Stricter, never
+  easier: proven on the PC only once an Aroon or Xaga pull shows `FINAL_ENGAGE` or `EARLY_PULL` before the first
+  `REALM_EXPEDITION_TACTIC ... required-adds`.
+
+- **A boss moved home is no longer scored as killed** (tests only; owner's PC, build 5378dbe, 2026-11-17, Caer Sidi). Two
+  full wipes at the Crypt Lord (93 raiders dead each, he never fell below 96%) ended `REALM_EXPEDITION_ATTEMPT_ENDED
+  how="killed; it came back since" wipe=False`, so the raid had four attempts instead of two. The attempt took any new
+  `SpawnTick` as a respawn, but every AddToWorld sets it and `ABrain.Stop` moves an idle NPC home a minute after the
+  last raider near it fell. A kill now needs the route to have seen the encounter dead (health 0 or respawning) after
+  the pull, and a new life after that (`KilledSinceAttempt`); Chthonic Knight Ukobat's real respawns (`ccba364`) still
+  end their attempts as wins. Raids now end at the true second wipe, never later.
 
 - **Every Living Server feature is on by default** (owner 2026-11-16: "They should be on by default - all our living
   server features should be in by default if someone downloads our installer"; this replaces the rule that bot-side
