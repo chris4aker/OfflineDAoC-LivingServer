@@ -751,6 +751,9 @@ namespace DOL.GS
             GameNPC fightOwner = (IsHazard(target) ? HazardOwner(target, live) : RequiredAddOwner(target, live)) ?? target;
             if (BrokenOff(fightOwner, now) is Vector3 rally)
                 return new(BotAction.StandOff, target, rally, $"break-off from \"{fightOwner.Name}\" to the muster");
+            // The Crypt Lord's court is fought at the raid's muster: a court monster drifting towards his patrol is not
+            // followed (owner, 2026-11-18).
+            if (CourtLeashAdvice(target, now) is Advice leash) return leash;
             // Epic wave 2 (EpicEncounterTactics.Signals.cs): announced mechanics (out of a glare, a stun, a breath), the safe
             // spots and the close-range bosses, before any other rule sends the raider anywhere.
             if (DecideWaveTwo(raider, target, live, partyIndex, canShootFlyers, now, classId) is Advice waveTwo) return waveTwo;
@@ -1561,7 +1564,8 @@ namespace DOL.GS
             // A blast about to land near the bot comes first, whatever it fights (Xanxicar's stomp kills anything within 2,500).
             if (ThinkBlast(bot)) return true;
             if (bot?.IsAutonomousWorldBot != true || bot.IsPlayerLedGroup ||
-                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target))
+                For(target) == null && !IsTacticPart(target) && !HasWaveTwoRule(bot, target, GameLoop.GameLoopTime) && !HasDungeonRule(target) &&
+                !IsCryptLordCourt(target))
                 return false;
             IReadOnlyList<GameNPC> live = Nearby(target);
             WatchHome(target, live, GameLoop.GameLoopTime);

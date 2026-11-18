@@ -3473,16 +3473,28 @@ namespace DOL.GS
             {
                 AutonomousStuckWatchdog.Unregister(this);
                 AutonomousBotRegistry.Unregister(this);
-                if (PersistentRecord != null && !IsEpicSpecialForce)
-                {
-                    PersistentRecord.IsOnline = false;
-                    PersistentRecord.Activity = "Offline";
-                    PersistentRecord.LastUpdateUtc = DateTime.UtcNow.ToString("O");
-                    PersistentRecord.Dirty = true;
-                    GameServer.Database.SaveObject(PersistentRecord);
-                }
+                SaveOfflineAtRemoval();
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// At a gamebot's removal from the world: its roster row is marked offline and saved; true when it was. An in-memory
+        /// bot (an Epic Special Force or a No Lifer's buffbot, IsInMemoryOnly) has no roster row and saves nothing. Owner's PC,
+        /// build b1b6846, 2026-11-18: seven "Error saving data object (0 rows affected) in table offline_world_bots", each
+        /// in the second of a BUFFBOT_LOGOUT, because this save skipped only the Special Forces (#334 fixed
+        /// SaveAutonomousState only).
+        /// </summary>
+        public bool SaveOfflineAtRemoval()
+        {
+            if (PersistentRecord == null || IsInMemoryOnly)
+                return false;
+            PersistentRecord.IsOnline = false;
+            PersistentRecord.Activity = "Offline";
+            PersistentRecord.LastUpdateUtc = DateTime.UtcNow.ToString("O");
+            PersistentRecord.Dirty = true;
+            GameServer.Database.SaveObject(PersistentRecord);
             return true;
         }
 

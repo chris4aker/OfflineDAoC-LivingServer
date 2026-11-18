@@ -1531,6 +1531,14 @@ namespace DOL.GS
             // The tactic holds the pull (EpicEncounterTactics.PullWait): the raid waits at the muster; waiting is no stall.
             if (HeldByTactic(_target, _live, now) is string pullWait)
             {
+                // A re-clear pick held by its tactic: another of its boss's monsters free now is taken instead (b1b6846).
+                if (now >= _nextReclearCheck && (_nextReclearCheck = now + ReclearRepickMilliseconds) > 0 &&
+                    FreeReclearInstead(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front, ReclearFree(now),
+                        _region == AutonomousDarknessFallsPolicy.RegionId) is { } free)
+                {
+                    SwitchByTactic(free, $"clear-first: \"{_target.Name}\" waits ({pullWait}); \"{free.Name}\" may be pulled now", participants, now);
+                    return true;
+                }
                 Destination = _musterPoint; Hold = true; _targetProgressTick = now;
                 Status = $"Waiting to pull {_target.Name}: {pullWait} ({mustered}/{needed})";
                 if (now >= _nextMusterLog)
@@ -1549,7 +1557,7 @@ namespace DOL.GS
             if ((_region == AutonomousDarknessFallsPolicy.RegionId || EpicEncounterTactics.ClearsAgainBeforePull(_target)) &&
                 !_target.InCombat && now >= _nextReclearCheck &&
                 (_nextReclearCheck = now + 10_000) > 0 &&
-                ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front) is { } back)
+                ReclearBeforePull(_target, _live, n => _routeRetry.GetValueOrDefault(n) <= now, Front, ReclearFree(now)) is { } back)
             {
                 SwitchByTactic(back, $"clear-first of \"{_target.Name}\" is up again: cleared before the pull", participants, now);
                 return true;
@@ -1597,11 +1605,40 @@ namespace DOL.GS
 
         /// <summary>The living monster that would join <paramref name="target"/>'s fight (EpicEncounterTactics.ClearFirstOwner)
         /// the route clears before the pull, nearest the front first; null: none (pure but for the rules). Asked for a boss out
-        /// of combat whose rule clears again before the pull (EpicEncounterTactics.ClearsAgainBeforePull) and in Darkness Falls.</summary>
-        public static GameNPC ReclearBeforePull(GameNPC target, IReadOnlyList<GameNPC> live, Func<GameNPC, bool> mayTake, Vector3 front) =>
+        /// of combat whose rule clears again before the pull (EpicEncounterTactics.ClearsAgainBeforePull) and in Darkness Falls.
+        /// <paramref name="freeNow"/> (null: every one): one that may be pulled now (no tactic holds it,
+        /// EpicEncounterTactics.PullWait) comes before any that must wait. Owner's PC, build b1b6846, 2026-11-18 (Caer Sidi):
+        /// the re-clear took the reckoned soul on the Crypt Lord's P1-P0 leg, the nearest, whose window never opened in 20
+        /// minutes, while other court monsters were free.</summary>
+        public static GameNPC ReclearBeforePull(GameNPC target, IReadOnlyList<GameNPC> live, Func<GameNPC, bool> mayTake, Vector3 front,
+            Func<GameNPC, bool> freeNow = null) =>
             target == null || target.InCombat ? null
                 : (live ?? []).Where(n => n != target && (mayTake?.Invoke(n) ?? true) && EpicEncounterTactics.ClearFirstOwner(n, live) == target)
-                    .OrderBy(n => WalkEstimate(front, new(n.X, n.Y, n.Z))).FirstOrDefault();
+                    .OrderBy(n => freeNow == null || freeNow(n) ? 0 : 1)
+                    .ThenBy(n => WalkEstimate(front, new(n.X, n.Y, n.Z))).FirstOrDefault();
+
+        /// <summary>A re-clear candidate no tactic holds now (EpicEncounterTactics.PullWait, the court check alone: the walk
+        /// needs a muster for it).</summary>
+        private Func<GameNPC, bool> ReclearFree(long now) => n => EpicEncounterTactics.PullWait(n, _live, now, null) == null;
+
+        /// <summary>How often a re-clear pick that a tactic holds looks for another of the same boss's monsters free now.</summary>
+        public const long ReclearRepickMilliseconds = 10_000;
+
+        /// <summary>
+        /// While the route holds on <paramref name="held"/>, a monster it clears again before its boss's pull (ReclearBeforePull)
+        /// whose pull a tactic holds: another of that boss's monsters whose pull is free now, or null (keep holding; pure but
+        /// for the rules). Only for a boss out of combat whose rule clears again before the pull (or in Darkness Falls,
+        /// <paramref name="reclearsEverywhere"/>). The hold's own 20-minute lapse (PullWaitLimitMilliseconds) is unchanged.
+        /// </summary>
+        public static GameNPC FreeReclearInstead(GameNPC held, IReadOnlyList<GameNPC> live, Func<GameNPC, bool> mayTake, Vector3 front,
+            Func<GameNPC, bool> freeNow, bool reclearsEverywhere)
+        {
+            if (held == null || freeNow == null || EpicEncounterTactics.ClearFirstOwner(held, live) is not { } owner ||
+                owner.InCombat || !(reclearsEverywhere || EpicEncounterTactics.ClearsAgainBeforePull(owner)))
+                return null;
+            GameNPC pick = ReclearBeforePull(owner, live, n => n != held && (mayTake?.Invoke(n) ?? true), front, freeNow);
+            return pick != null && freeNow(pick) ? pick : null;
+        }
 
         /// <summary>A front further than this from an encounter out of combat is not where the encounter is: pulls that walk
         /// there never reach it (about the aggro range of the big epics, and well past any approach the resolver snaps to).</summary>
@@ -2618,6 +2655,73 @@ namespace DOL.GS
             Hold = false; Status = "Clearing " + attacking.Name;
         }
 
+        /// <summary>
+        /// The route answers a monster fighting the raid while its own target is out of combat (AdvanceCore). Owner's PC,
+        /// build b1b6846, 2026-11-18 (Caer Sidi, fight A): the Crypt Lord left combat 71 s after an early-pull Commit (inside
+        /// the 120 s grace) while his court still fought; the route switched to a forerunner, the next muster reset the open
+        /// attempt without judging it, and 88 raiders' deaths were never scored. An attempt open on the target is judged
+        /// first (EndAttempt), so its deaths count; true when that defeated the raid (the route then goes no further).
+        /// </summary>
+        private bool SwitchToHostile(GameNPC attacker, Vector3 approach, bool resolved, long now)
+        {
+            if (JudgesAttemptBeforeSwitch(AttemptOn(_target), attacker != _target))
+            {
+                NoteFallen();
+                _musterSince = now;
+                bool wiped = EndAttempt(now, _pulls.Contact ? "left combat" : "never entered combat");
+                // The fight goes on with the court: one fight is one wipe (CountedFightGoesOn).
+                if (wiped) _routeWipeKiller = WipeEncounter(_target, _live);
+                if (wiped && Defeated) return true;
+            }
+            log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
+                     $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
+                     $"reason=\"it is fighting the raid\"");
+            _target = attacker; TargetName = attacker.Name; TargetLevel = attacker.Level;
+            Front = Destination = approach;
+            _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacker.Health;
+            _targetClosest = float.MaxValue; _targetApproachTick = now;
+            Hold = false; Status = "Clearing " + attacker.Name;
+            return false;
+        }
+
+        private GameNPC _courtHoldLord;
+        private long _nextCourtLeashLog;
+        public const long CourtLeashLogMilliseconds = 30_000;
+
+        /// <summary>
+        /// The Crypt Lord's court is fought at the raid's muster (owner, 2026-11-18: "I err towards holding at the gather point";
+        /// EpicEncounterTactics.CourtLeash): while the route's target is one of his court and he is out of combat, its muster is
+        /// the court fight's hold point; otherwise there is none. While the leash holds the raid back from a court monster that
+        /// drifts towards his patrol, a REALM_EXPEDITION_COURT_LEASH line says so (at most every 30 s).
+        /// </summary>
+        private void ObserveCourtHold(GameNPC[] live, GameLiving[] participants, long now)
+        {
+            GameNPC lord = _target != null && _musterTarget == _target && EpicEncounterTactics.IsCryptLordCourt(_target)
+                ? EpicEncounterTactics.ClearFirstOwner(_target, live) : null;
+            if (lord == null || !lord.IsAlive || lord.InCombat) lord = null;
+            if (_courtHoldLord != null && _courtHoldLord != lord) EpicEncounterTactics.SetCourtHold(_courtHoldLord, null);
+            _courtHoldLord = lord;
+            if (lord == null) return;
+            EpicEncounterTactics.SetCourtHold(lord, _musterPoint);
+            if (now < _nextCourtLeashLog) return;
+            GameNPC[] held = live.Where(n => EpicEncounterTactics.CourtLeash(n, now) != null).ToArray();
+            if (held.Length == 0) return;
+            _nextCourtLeashLog = now + CourtLeashLogMilliseconds;
+            GameNPC first = held.OrderBy(n => Vector3.DistanceSquared(new Vector3(n.X, n.Y, n.Z), _musterPoint)).First();
+            Vector3 at = new(first.X, first.Y, first.Z);
+            int nearMuster = participants.Count(p => p.IsAlive && p.CurrentRegionID == _region &&
+                p.IsWithinRadius(new Point3D((int)_musterPoint.X, (int)_musterPoint.Y, (int)_musterPoint.Z), EpicEncounterTactics.CourtHoldLeash));
+            log.Info($"REALM_EXPEDITION_COURT_LEASH region={_region} target=\"{_target.Name}\" held={held.Length} court=\"{first.Name}\" " +
+                     $"at={(int)at.X},{(int)at.Y},{(int)at.Z} muster={(int)_musterPoint.X},{(int)_musterPoint.Y},{(int)_musterPoint.Z} " +
+                     $"fromMuster={(int)Vector3.Distance(at, _musterPoint)} fromPatrol={(int)EpicEncounterTactics.DistanceToPatrol(at)} " +
+                     $"lord={lord.X},{lord.Y},{lord.Z} atMuster={nearMuster} " +
+                     $"reason=\"the court fight drifts towards the Crypt Lord's patrol: the raid holds at the muster and it comes to them\"");
+        }
+
+        /// <summary>Whether the route judges the attempt open on its target before it switches to another monster fighting the
+        /// raid (pure): always, when one is open (b1b6846, Caer Sidi fight A); with none open there is nothing to judge.</summary>
+        public static bool JudgesAttemptBeforeSwitch(bool attemptOnTarget, bool switchesAway) => attemptOnTarget && switchesAway;
+
         private void SwitchByTactic(GameNPC to, string reason, GameLiving[] participants, long now, Vector3? stand = null)
         {
             Vector3 approach;
@@ -2816,6 +2920,7 @@ namespace DOL.GS
                 TurnOn(boss, participants, now, "a boss is fighting the raid while it clears a lesser named");
                 return;
             }
+            ObserveCourtHold(live, participants, now);
             if (_target?.IsAlive == true && _target.ObjectState == GameObject.eObjectState.Active)
             {
                 // A boss that blasts the room (Xanxicar): its withdraw spots on the floor towards the way in.
@@ -2864,14 +2969,8 @@ namespace DOL.GS
                         log.Info($"REALM_EXPEDITION_TACTIC region={_region} encounter=\"{hostile.Name}\" fights=\"{attacker.Name}\" " +
                                  $"reason=\"{hostileTactic}\" tactic={EpicEncounterTactics.For(hostile)?.Encounter}");
                     bool resolved = TryEncounterApproach(attacker, participants, out Vector3 approach);
-                    log.Warn($"REALM_EXPEDITION_TARGET_SWITCH region={_region} from=\"{_target.Name}\" to=\"{attacker.Name}\" level={attacker.Level} " +
-                             $"front={(int)approach.X},{(int)approach.Y},{(int)approach.Z} approach={(resolved ? "resolved" : "raw")} " +
-                             $"reason=\"it is fighting the raid\"");
-                    _target = attacker; TargetName = attacker.Name; TargetLevel = attacker.Level;
-                    Front = Destination = approach;
-                    _targetProgressTick = _targetStartTick = now; _targetLowestHealth = _targetLastHealth = attacker.Health;
-                    _targetClosest = float.MaxValue; _targetApproachTick = now;
-                    Hold = false; Status = "Clearing " + attacker.Name; return;
+                    SwitchToHostile(attacker, approach, resolved, now);
+                    return;
                 }
                 if (IsMusteredEncounter(_target) && MusterForFinal(participants, now))
                 {
@@ -2907,6 +3006,14 @@ namespace DOL.GS
                     _targetProgressTick = now;
                     if (Defeated) return;
                     stalled = false;
+                }
+                // The Crypt Lord's court drifting towards his patrol: the raid holds at the muster and it comes to them
+                // (EpicEncounterTactics.CourtLeash), rather than being called on to it again.
+                if (!stalled && EpicEncounterTactics.CourtLeash(_target, now) is Vector3 courtHold)
+                {
+                    Destination = courtHold; Hold = true; _targetProgressTick = now;
+                    Status = $"Holding at the muster while {_target.Name} comes to the raid";
+                    return;
                 }
                 if (!stalled)
                 {

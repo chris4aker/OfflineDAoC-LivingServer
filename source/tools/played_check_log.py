@@ -1115,15 +1115,22 @@ def _ai_profile(sec, t, message, level, near):
 # ---- Judging -----------------------------------------------------------------------------------------------------
 
 def merged_stalls(sec: Section):
-    """One per minute: SERVER_STALL and AI_PROFILE lines within 75 s count once (the longer); GC-only minutes dropped."""
+    """One per minute: SERVER_STALL and AI_PROFILE lines within 75 s count once (the longer); GC-only minutes dropped.
+
+    An entry pairs one SERVER_STALL with one AI_PROFILE and then takes no third line. Owner's PC, build b1b6846
+    (2026-11-18): each minute's SERVER_STALL (mm:03) and AI_PROFILE (mm:04) were paired, the entry took the AI line's
+    time, and the next minute's SERVER_STALL 59 s later was merged into it too: 14 stalls were reported as 10, and 13 in
+    an hour as 9."""
     events = sorted(sec.stalls, key=lambda s: s[0])
-    out = []
+    out, paired = [], []
     for s in events:
-        if out and out[-1][3] != s[3] and abs((s[0] - out[-1][0]).total_seconds()) <= PAIR_SECONDS:
+        if out and not paired[-1] and out[-1][3] != s[3] and abs((s[0] - out[-1][0]).total_seconds()) <= PAIR_SECONDS:
             if s[1] > out[-1][1]:
                 out[-1] = s
+            paired[-1] = True
             continue
         out.append(s)
+        paired.append(False)
     return [s for s in out if s[1] >= STALL_MS]
 
 

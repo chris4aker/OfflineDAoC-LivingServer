@@ -200,7 +200,9 @@ namespace DOL.GS;
                 BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type))
             {
                 double gain = SavageBotWeaponPolicy.UpgradeGain(bot, item, equipSlot);
-                if (gain > 0)
+                bool gearValuation = UsesGearValuation(bot);
+                if (SavageWeaponUpgrade(gain, gearValuation, BotGearSet.IsScoredSlot(equipSlot),
+                        gearValuation && BotGearSet.IsScoredSlot(equipSlot) ? GearImprovement(bot, item, equipSlot) : 0))
                     return new PurchaseCandidate(item,
                         1_000 + (int)Math.Clamp(Math.Ceiling(gain * 100), 1, int.MaxValue - 1_000),
                         equipSlot, true, isPlayerListing);
@@ -277,6 +279,17 @@ namespace DOL.GS;
             item == null || !BotGearSet.IsScoredSlot(slot) ? 0
                 : BotGearSet.Delta(BotGearSet.For(bot), BotGearSet.Worn(bot), slot, item);
 
+        /// <summary>
+        /// A Savage's melee weapon is an upgrade (pure): its weapon policy gains (SavageBotWeaponPolicy.UpgradeGain > 0) and,
+        /// with the template-aware set score on and a scored slot, wearing it does not lower that score (the no-undress
+        /// guard's own rule, BotGearGuard). The one rule of the loot, merchant and Realm Exchange paths. Owner's PC, build
+        /// b1b6846, 2026-11-18: the Savage "Fre" bought a "Lifetaker Greatsword" for 39,863 copper that its weapon policy
+        /// rated higher than its "Sturdy Greatsword" while the set score fell 11 points (14,934 to 14,923); the Exchange's
+        /// buy side asked the weapon policy only, and the guard refused to put it on (ECON_UNDRESS_GUARD event="blocked").
+        /// </summary>
+        public static bool SavageWeaponUpgrade(double weaponGain, bool gearValuation, bool scoredSlot, long setGain) =>
+            weaponGain > 0 && (!gearValuation || !scoredSlot || setGain >= 0);
+
         public static bool IsPlayerListing(string ownerId) =>
             !string.IsNullOrWhiteSpace(ownerId) && !TryParseOwnerId(ownerId, out _);
 
@@ -302,8 +315,9 @@ namespace DOL.GS;
             bool gearValuation = UsesGearValuation(bot);
             if (bot.CharacterClass?.ID == (int)eCharacterClass.Savage &&
                 BotWeaponStats.IsMeleeWeapon((eObjectType)item.Object_Type))
-                return SavageBotWeaponPolicy.IsUpgrade(bot, item, equipSlot) &&
-                       (!gearValuation || !BotGearSet.IsScoredSlot(equipSlot) || GearImprovement(bot, item, equipSlot) >= 0);
+                return SavageWeaponUpgrade(SavageBotWeaponPolicy.UpgradeGain(bot, item, equipSlot), gearValuation,
+                    BotGearSet.IsScoredSlot(equipSlot),
+                    gearValuation && BotGearSet.IsScoredSlot(equipSlot) ? GearImprovement(bot, item, equipSlot) : 0);
             // Crafting 2.0 WP6 (bot_crafters on): the template-aware set score decides. A piece must raise it (an empty
             // slot) or raise it by more than the usual margin (a worn slot), so the no-undress guard never has to refuse.
             if (gearValuation && BotGearSet.IsScoredSlot(equipSlot))

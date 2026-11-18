@@ -776,6 +776,88 @@ namespace DOL.GS
             return null;
         }
 
+        // ---- his court is fought at the raid's muster (owner, 2026-11-18: "I err towards holding at the gather point") ----
+
+        /// <summary>A court fight may move this far from the raid's muster before the raid stops following it (and while the
+        /// court monster is near his patrol, <see cref="CourtHoldPatrolReach"/>).</summary>
+        public const int CourtHoldLeash = 600;
+        /// <summary>A court monster this close to his patrol loop is where its fight can pull him in: his court link
+        /// (<see cref="CryptLordCourtLink"/>) plus the walk margin (<see cref="CourtWalkMargin"/>).</summary>
+        public const int CourtHoldPatrolReach = CryptLordCourtLink + CourtWalkMargin;
+        /// <summary>The raid holds back from one court monster at most this long; then it is fought where it stands (a caster
+        /// that never comes to the muster does not keep the raid standing under its spells).</summary>
+        public const long CourtHoldLimitMilliseconds = 60_000;
+
+        private static readonly Dictionary<ushort, (GameNPC Lord, Vector3 Hold)> CourtHolds = new();
+        private static readonly Dictionary<GameNPC, long> CourtHeldSince = new();
+
+        /// <summary>The raid route's muster while it fights the court of <paramref name="lord"/> (null: no court fight; the
+        /// leash is off).</summary>
+        public static void SetCourtHold(GameNPC lord, Vector3? hold)
+        {
+            if (lord == null) return;
+            lock (CourtHolds)
+            {
+                if (hold is Vector3 at) CourtHolds[lord.CurrentRegionID] = (lord, at);
+                else if (CourtHolds.TryGetValue(lord.CurrentRegionID, out var had) && had.Lord == lord) CourtHolds.Remove(lord.CurrentRegionID);
+                if (hold == null) CourtHeldSince.Clear();
+            }
+        }
+
+        /// <summary>The court-fight muster set for <paramref name="regionId"/>, with its lord.</summary>
+        public static (GameNPC Lord, Vector3 Hold)? CourtHoldIn(ushort regionId)
+        {
+            lock (CourtHolds) return CourtHolds.TryGetValue(regionId, out var h) ? h : null;
+        }
+
+        /// <summary>How near <paramref name="p"/> is to his patrol loop (its legs, the closing one included; pure).</summary>
+        public static float DistanceToPatrol(Vector3 p) => DistanceToWalk(p, [.. CryptLordPatrol, CryptLordPatrol[0]]);
+
+        /// <summary>The raid does not follow a court monster (pure): it fights more than <see cref="CourtHoldLeash"/> from the
+        /// muster <paramref name="hold"/>, within <see cref="CourtHoldPatrolReach"/> of his patrol, and the raid has held back
+        /// from it for less than <see cref="CourtHoldLimitMilliseconds"/> (<paramref name="heldMilliseconds"/>).</summary>
+        public static bool CourtLeashHolds(Vector3 court, Vector3 hold, float fromPatrol, long heldMilliseconds) =>
+            Vector3.Distance(court, hold) > CourtHoldLeash && fromPatrol < CourtHoldPatrolReach && heldMilliseconds < CourtHoldLimitMilliseconds;
+
+        /// <summary>
+        /// Where the raid holds instead of following <paramref name="court"/>, or null (fight it as usual): a court monster in
+        /// combat while the Crypt Lord is out of it and the route fights his court from a muster (<see cref="SetCourtHold"/>),
+        /// drifting more than <see cref="CourtHoldLeash"/> from that muster towards his patrol. Owner's PC, build b1b6846,
+        /// 2026-11-18 (Caer Sidi, fight B): a clean court pull (07:34:46, courtClosest=1468 walkClosest=1014) came as a pack;
+        /// the raid followed it west and south to 27772,41512 and 28832,42973, within 800 of his legs, and he joined at
+        /// 07:36:35, 109 s later. The raid now stands at the muster and the court monster, which chases the raiders it
+        /// fights, comes to it. Remembers when the hold on each monster began (<see cref="CourtHoldLimitMilliseconds"/>).
+        /// </summary>
+        public static Vector3? CourtLeash(GameNPC court, long now)
+        {
+            if (!IsCryptLordCourt(court) || !Present(court) || !court.InCombat || CourtHoldIn(court.CurrentRegionID) is not { } set)
+                return null;
+            var (lord, hold) = set;
+            if (!Present(lord) || lord.InCombat) return null;
+            Vector3 at = At(court);
+            float fromPatrol = DistanceToPatrol(at);
+            lock (CourtHolds)
+            {
+                bool drifting = Vector3.Distance(at, hold) > CourtHoldLeash && fromPatrol < CourtHoldPatrolReach;
+                if (!drifting) { CourtHeldSince.Remove(court); return null; }
+                if (!CourtHeldSince.TryGetValue(court, out long since))
+                {
+                    if (CourtHeldSince.Count > 256) CourtHeldSince.Clear();
+                    CourtHeldSince[court] = since = now;
+                }
+                return CourtLeashHolds(at, hold, fromPatrol, now - since) ? hold : null;
+            }
+        }
+
+        /// <summary>A raider's advice on a court monster the leash holds (<see cref="CourtLeash"/>): stand at the muster, not
+        /// after it; it comes to the raid. Null: no opinion.</summary>
+        public static Advice? CourtLeashAdvice(GameNPC target, long now) =>
+            CourtLeash(target, now) is Vector3 hold
+                ? new Advice(BotAction.StandOff, target, hold,
+                    $"court-leash: \"{target.Name}\" is {(int)Vector3.Distance(At(target), hold)} from the muster and " +
+                    $"{(int)DistanceToPatrol(At(target))} from his patrol: held at the muster, not followed")
+                : null;
+
         /// <summary>The court monsters fighting beside him the casters take, within this of him.</summary>
         public const int CryptLordCourtFightRadius = 2_500;
 
