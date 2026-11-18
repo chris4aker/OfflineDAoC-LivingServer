@@ -81,6 +81,24 @@ RELAY_SHARE_BAR = 11.5
 NO_PROGRESS_MINUTES = 20
 NO_PROGRESS_GAP_SECONDS = 10 * 60
 AFTER_END_SECONDS = 10 * 60
+# Sweep 6e (build b1b6846). A raid dungeon's region, and the dungeon its way in leads through (AutonomousRealmRaid's
+# RaidDungeons and RealmRaidNeutralEvents; a REALM_EXPEDITION_ROUTE_GATE line's region= adds the one a raid used).
+RAID_DUNGEON_REGIONS = {
+    "dungeon-albion-krondon": "61", "dungeon-albion-avalon": "50", "dungeon-albion-crystal": "62",
+    "dungeon-albion-corrupt": "277", "dungeon-midgard-trollheim": "150", "dungeon-midgard-iarnvidiur": "161",
+    "dungeon-midgard-dodens": "246", "dungeon-hibernia-tursuil": "190", "dungeon-hibernia-marfach": "276",
+}
+WAY_IN_REGIONS = {"dungeon-albion-crystal": "50", "summoners-albion": "277", "summoners-midgard": "246",
+                  "summoners-hibernia": "276"}
+# An open attempt whose boss is back at RESET_HEALTH or more after RESET_LOW or less has reset (S-2); raider deaths to it
+# more than RESET_GRACE_SECONDS later while the attempt stays open are fed in piecemeal; RESET_DEATHS or more is a finding.
+RESET_LOW, RESET_HEALTH, RESET_GRACE_SECONDS, RESET_DEATHS = 70, 95, 60, 10
+# A return wave with headway (a kill, a step, step=moving/passable/ahead) this recently is walking (T-1): the server's
+# RealmRaidReturnWave.StuckMilliseconds.
+WAVE_HEADWAY_SECONDS = 4 * 60
+# A wave stuck this little before its raid won is not "never made headway" (the stuck-wave row; Crystal Cave's wave 2,
+# stuck 51 s before Xanxicar died).
+STUCK_BEFORE_WIN_SECONDS = 5 * 60
 END_OUTCOME_SECONDS = 15
 REQUIRED_ADD_RE = re.compile(r'required-add \d+/\d+ of "([^"]+)"')
 CATALOG = Path(__file__).resolve().parents[2] / "docs" / "encounters" / "epic-encounters.json"
@@ -105,6 +123,26 @@ def catalog() -> tuple[dict, set]:
             pass
         _catalog = (health, bosses)
     return _catalog
+
+
+_homes = None
+
+
+def boss_limits() -> dict:
+    """From the epic encounter catalog: each boss's name -> (fight-at-home radius, template tether), 0 when unknown."""
+    global _homes
+    if _homes is None:
+        _homes = {}
+        try:
+            data = json.loads(CATALOG.read_text(encoding="utf-8"))
+            for encounter in data.get("encounters", []):
+                if encounter.get("boss"):
+                    home = (encounter.get("aiTactics") or {}).get("fightAtHomeRadius") or 0
+                    tether = encounter.get("templateTetherRange") or 0
+                    _homes.setdefault(encounter["boss"], (int(num(home)), int(num(tether))))
+        except (OSError, ValueError):
+            pass
+    return _homes
 
 
 def add_health() -> dict:
@@ -320,6 +358,17 @@ class Section:
         self.ends = []                    # raid ends: {"t", "event", "members", "positions", "regions"}
         self.recent_outcomes = defaultdict(deque)   # event -> (t, members) of AUTONOMOUS_GROUP_OUTCOME lines not yet matched
         self.after_end_deaths = []        # (t, killer, line, end) raider deaths in an ended raid's region soon after
+        # Sweep 6e (build b1b6846)
+        self.tethers = {}                 # boss -> tether (AUTONOMOUS_TETHER_RESET / _LEASH tether=)
+        self.attempts = {}                # (region, boss) -> open attempt: {"t", "lowest", "reset", "deaths", "event"}
+        self.reset_attempts = []          # attempts that reset while open: (attempt, reset line)
+        self.tether_heals = []            # (t, line) TARGET_HEALED to 95%+ past the boss's home or tether while fighting
+        self.avoided = defaultdict(set)   # region -> epic monsters parties walked past (AUTONOMOUS_DUNGEON_EPIC_AVOIDED)
+        self.way_in_deaths = []           # (t, killer, region, line, event) deaths in a running raid's way-in region
+        self.event_way_in = {}            # event -> its gate region (REALM_EXPEDITION_ROUTE_GATE region=)
+        self.gate_bosses = set()          # monsters a raid fought as route gates (REALM_EXPEDITION_ROUTE_GATE bosses=)
+        self.wave_headway = {}            # (event, wave) -> [last headway t, kills, ended]
+        self.stall_waves = []             # (t, line, event, wave, seconds since its headway) MUSTER_STALLED beside a wave
 
     @property
     def commit7(self):
@@ -569,8 +618,11 @@ def _raid_ended(sec, t, message, level, near):
     sec.open_raids.pop(event, None)
     outcome = f.get("outcome", "")
     end = {"t": t, "event": event, "members": {}, "regions": set()}
-    if sec.region_events.get(event) is not None:
-        end["regions"].add(str(sec.region_events[event]))
+    # The raid's dungeon and the one its way in leads through (sweep 6e: Summoner's Hall's Hall of the Corrupt, Crystal
+    # Cave's Avalon City; sweep 6d judged the raid's Definition.Region only).
+    end["regions"].update(raid_regions(sec, event))
+    for key in [k for k in sec.attempts if str(k[0]) in end["regions"]]:
+        close_attempt(sec, *key)
     waiting = sec.recent_outcomes.pop(event, ())
     for seen, members in waiting:
         if abs((t - seen).total_seconds()) <= END_OUTCOME_SECONDS:
@@ -610,6 +662,8 @@ def _return_wave(sec, t, message, level, near):
     step = f.get("step")
     key = (f.get("event", "?"), f.get("wave"))
     wave_step(sec, t, message, key, step, f.get("at") or "")
+    if f.get("wave"):
+        wave_headway(sec, t, f, step, key)
     if step == "released":
         sec.ev["return.released"].add(t, message)
         if sec.waves.get(key, ("",))[0] == "stuck":
@@ -659,6 +713,8 @@ def _tether_leash(sec, t, message, level, near):
     b1b6846: the Earth primal, 13 leashes at fromSpawn=1044 while his script held his speed at 0)."""
     f = kv(message)
     key, distance = (f.get("region"), f.get("boss")), num(f.get("fromSpawn"), -1)
+    if f.get("boss") and f.get("tether"):
+        sec.tethers[f["boss"]] = f["tether"]
     sec.ev["tether.leash"].add(t, message)
     run = sec.leash_runs.get(key)
     if run is None or abs(run[0] - distance) > FROZEN_LEASH_UNITS:
@@ -688,10 +744,133 @@ def _route_retry(sec, t, message, level, near):
 
 @handles("REALM_EXPEDITION_ENCOUNTER_RESET")
 def _encounter_reset(sec, t, message, level, near):
+    f = kv(message)
+    close_attempt(sec, f.get("region"), f.get("target"))
     if "no attempt is used" in message:
         sec.ev["raid.reset_no_attempt"].add(t, message)
     else:
         sec.ev["raid.reset_other"].add(t, message)
+
+
+# ---- Sweep 6e (build b1b6846): Aidon's tether heals, an attempt open across a reset, epic trash on the way in,
+# musters set aside while a wave walked to them -----------------------------------------------------------------------
+
+def raid_regions(sec, event) -> set:
+    """A raid's own dungeon and the one its way in leads through, as region strings."""
+    regions = set()
+    if sec.region_events.get(event) is not None:
+        regions.add(str(sec.region_events[event]))
+    for table in (RAID_DUNGEON_REGIONS, WAY_IN_REGIONS, sec.event_way_in):
+        if table.get(event):
+            regions.add(str(table[event]))
+    return regions
+
+
+def way_in_of(sec, event):
+    return sec.event_way_in.get(event) or WAY_IN_REGIONS.get(event)
+
+
+def event_in_region(sec, region):
+    """The running raid whose own dungeon is `region`."""
+    for event in sec.open_raids:
+        own = sec.region_events.get(event)
+        if str(own if own is not None else RAID_DUNGEON_REGIONS.get(event)) == str(region):
+            return event
+    return None
+
+
+def open_attempt(sec, t, region, boss):
+    if region is not None and boss:
+        sec.attempts[(region, boss)] = {"t": t, "lowest": 100.0, "reset": None, "deaths": [], "boss": boss,
+                                        "region": region}
+
+
+def close_attempt(sec, region, boss):
+    attempt = sec.attempts.pop((region, boss), None)
+    if attempt and attempt["reset"] is not None:
+        sec.reset_attempts.append(attempt)
+
+
+def attempt_health(sec, t, region, boss, health, message):
+    attempt = sec.attempts.get((region, boss))
+    if attempt is None:
+        return
+    if attempt["reset"] is None and attempt["lowest"] <= RESET_LOW and health >= RESET_HEALTH:
+        attempt["reset"] = (t, message)
+    attempt["lowest"] = min(attempt["lowest"], health)
+
+
+def tether_heal(sec, t, f, message):
+    """S-1: a boss healed to 95%+ while fighting the raid, past its fight-at-home radius (or its tether)."""
+    boss = f.get("target")
+    home, tether = boss_limits().get(boss, (0, 0))
+    tether = int(num(sec.tethers.get(boss), 0)) or tether
+    limit = home or tether
+    healed_from, healed_to, distance = num(f.get("from"), 100), num(f.get("to")), num(f.get("fromSpawn"), -1)
+    if (limit and f.get("inCombat") == "True" and healed_to >= RESET_HEALTH and healed_to - healed_from >= 5
+            and distance > limit):
+        sec.tether_heals.append((t, f"REALM_EXPEDITION_TARGET_HEALED region={f.get('region')} target=\"{boss}\" "
+                                    f"from={f.get('from')} to={f.get('to')} fromSpawn={f.get('fromSpawn')} "
+                                    f"[past {'its home ' + str(home) if home else 'its tether'}"
+                                    f"{', tether ' + str(tether) if home and tether else ''}]"))
+
+
+@handles("AUTONOMOUS_TETHER_RESET")
+def _tether_reset(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("boss") and f.get("tether"):
+        sec.tethers[f["boss"]] = f["tether"]
+
+
+@handles("REALM_EXPEDITION_SKIRMISH_LOST")
+def _skirmish_lost(sec, t, message, level, near):
+    f = kv(message)
+    close_attempt(sec, f.get("region"), f.get("target"))
+
+
+@handles("AUTONOMOUS_DUNGEON_EPIC_AVOIDED")
+def _epic_avoided(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("region") is not None and f.get("target"):
+        sec.avoided[str(f["region"])].add(f["target"])
+
+
+@handles("REALM_EXPEDITION_MUSTER_STALLED")
+def _muster_stalled(sec, t, message, level, near):
+    """T-1: a muster set aside as "gained nobody" while a return wave of the raid with headway in the last
+    WAVE_HEADWAY_SECONDS was walking in (the wave walks to the route's destination: the muster)."""
+    f = kv(message)
+    sec.ev["muster.stalled"].add(t, message)
+    event = event_in_region(sec, f.get("region"))
+    if event is None:
+        return
+    moving = [(key, (t - h[0]).total_seconds()) for key, h in sec.wave_headway.items()
+              if key[0] == event and not h[2] and (t - h[0]).total_seconds() <= WAVE_HEADWAY_SECONDS]
+    if moving:
+        key, ago = min(moving, key=lambda m: m[1])
+        sec.stall_waves.append((t, message, event, key[1], ago))
+
+
+simple("REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE")
+
+
+def wave_headway(sec, t, f, step, key):
+    if step == "formed":
+        sec.wave_headway[key] = [t, 0, False]
+        return
+    held = sec.wave_headway.get(key)
+    if held is None:
+        if step in ("fighting", "moving", "passable", "ahead", "joined"):
+            held = sec.wave_headway[key] = [t, 0, False]
+        else:
+            return
+    if step in ("ended", "lost", "met", "released"):
+        held[2] = True
+        return
+    kills = int(num(f.get("kills"), held[1]))
+    if step in ("moving", "passable", "ahead", "cleared") or kills > held[1]:
+        held[0] = t
+    held[1] = max(held[1], kills)
 
 
 def engage(sec, region, boss, t):
@@ -734,6 +913,7 @@ def _final_engage(sec, t, message, level, near):
     engage(sec, f.get("region"), f.get("target"), t)
     if f.get("region") is not None and f.get("target"):
         sec.engage_lines[f["region"]][f["target"]] = t
+    open_attempt(sec, t, f.get("region"), f.get("target"))
     boss = f.get("target")
     if boss:
         close_retry(sec, boss)
@@ -796,6 +976,7 @@ def _attempt_ended(sec, t, message, level, near):
     else:
         sec.ev["attempt.ended"].add(t, message)
     close_retry(sec, f.get("target"))
+    close_attempt(sec, f.get("region"), f.get("target"))
 
 
 @handles("REALM_EXPEDITION_EARLY_PULL")
@@ -805,6 +986,8 @@ def _early_pull(sec, t, message, level, near):
         sec.engage_lines[f["region"]][f["target"]] = t
     if f.get("decision") == "Commit":
         engage(sec, f.get("region"), f.get("target"), t)
+        if (f.get("region"), f.get("target")) not in sec.attempts:
+            open_attempt(sec, t, f.get("region"), f.get("target"))
 
 
 @handles("REALM_EXPEDITION_TARGET_CALLED")
@@ -920,9 +1103,23 @@ def end_regions(end) -> set:
 def _bot_death(sec, t, message, level, near):
     """Sweep 6d (P-1, P-2): a raider of an ended raid killed by a monster in that raid's region within AFTER_END_SECONDS;
     whether the killer is an epic is judged at the end (the names are learned over the whole log)."""
-    if not sec.ends or "killerKind=monster" not in message:
+    if "killerKind=monster" not in message:
         return
     f = kv(message)
+    region, killer = f.get("region"), f.get("killer") or ""
+    # S-2: a death to the boss (or its adds) of an attempt open after its reset.
+    for attempt in sec.attempts.values():
+        if (attempt["reset"] is not None and str(attempt["region"]) == str(region) and
+                (t - attempt["reset"][0]).total_seconds() > RESET_GRACE_SECONDS and
+                (killer == attempt["boss"] or attempt["boss"] in killer or killer in sec.boss_adds.get(attempt["boss"], ()))):
+            attempt["deaths"].append((t, message))
+    # W-1: a death in a running raid's way-in region (judged at the end against the epics walked past there).
+    for event in sec.open_raids:
+        if region is not None and way_in_of(sec, event) == str(region):
+            sec.way_in_deaths.append((t, killer, str(region), message, event))
+            break
+    if not sec.ends:
+        return
     for end in reversed(sec.ends):
         since = (t - end["t"]).total_seconds()
         if since > AFTER_END_SECONDS:
@@ -971,11 +1168,17 @@ def _expedition_wipe(sec, t, message, level, near):
             pull_without_engage(sec, t, region, owner, message)
     disengage(sec, region, target)
     close_retry(sec, target)
+    close_attempt(sec, region, target)
+    # A wipe scored on the boss of an add closes the boss's attempt too.
+    for key in [k for k in sec.attempts if k[0] == region]:
+        close_attempt(sec, *key)
 
 
 @handles("REALM_EXPEDITION_TARGET_HEALED")
 def _target_healed(sec, t, message, level, near):
     f = kv(message)
+    attempt_health(sec, t, f.get("region"), f.get("target"), num(f.get("to")), message)
+    tether_heal(sec, t, f, message)
     disengage(sec, f.get("region"), f.get("target"))
 
 
@@ -984,6 +1187,11 @@ def _route_gate(sec, t, message, level, near):
     f = kv(message)
     if f.get("event") and f.get("into"):
         sec.region_events[f["event"]] = int(num(f["into"]))
+    if f.get("event") and f.get("region") is not None:
+        sec.event_way_in[f["event"]] = str(f["region"])
+    for boss in (f.get("bosses") or "").split(","):
+        if "@" in boss:
+            sec.gate_bosses.add(boss.split("@", 1)[0])
     if "a living boss covers the walk" in message:
         sec.ev["route.boss_objective"].add(t, message)
 
@@ -995,6 +1203,7 @@ def _target_status(sec, t, message, level, near):
     if region is None or target is None or at is None:
         return
     sec.bosses[region][target] = (f.get("inCombat") == "True", num(f.get("health"), 100.0), at, t, f.get("level"))
+    attempt_health(sec, t, region, target, num(f.get("health"), 100.0), message)
 
 
 @handles("REALM_EXPEDITION_TARGET_DEFEATED")
@@ -1002,6 +1211,7 @@ def _target_defeated(sec, t, message, level, near):
     f = kv(message)
     sec.bosses[f.get("region")].pop(f.get("target"), None)
     disengage(sec, f.get("region"), f.get("target"))
+    sec.attempts.pop((f.get("region"), f.get("target")), None)
     close_retry(sec, f.get("target"))
     for boss, adds in sec.required_adds.items():
         if f.get("target") in adds:
@@ -1562,10 +1772,20 @@ def raids(j: Judge, sec: Section, c):
           SEEN if went_in.count else NOT_SEEN, went_in if went_in.count else None,
           f"{c('return.wave')} gather/form/join lines, {went_in.count} of a wave going in (moving, ahead, cleared, met); "
           f"stuck waves are the next row")
-    stuck = [v for v in sec.waves.values() if v[0] == "stuck"]
+    # A wave stuck shortly before its raid won is not "never made headway" (sweep 6e: Crystal Cave's wave 2, stuck 51 s
+    # before Xanxicar died).
+    wins = defaultdict(list)
+    for r in sec.raids:
+        if r.outcome == "Boss defeated" and r.ended:
+            wins[r.event].append(r.ended)
+    won_after = {key for key, v in sec.waves.items() if v[0] == "stuck" and any(
+        0 <= (end - v[1]).total_seconds() <= STUCK_BEFORE_WIN_SECONDS for end in wins.get(key[0], ()))}
+    stuck = [v for key, v in sec.waves.items() if v[0] == "stuck" and key not in won_after]
     recovered = [v for v in sec.waves.values() if v[0] == "recovered"]
     stuck_detail = (f"{c('return.stuck')} step=stuck line(s), {len(sec.waves)} wave(s) stuck at least once: "
                     f"{len(recovered)} made headway again, {len(stuck)} never did"
+                    + (f", {len(won_after)} stuck less than {STUCK_BEFORE_WIN_SECONDS // 60} minutes before its raid won "
+                       f"(not counted)" if won_after else "")
                     + (f", {sum(1 for v in sec.waves.values() if v[0] == 'released')} released to the raid (sweep 6c, 6d)"
                        if c("return.released") else ""))
     if stuck:
@@ -1620,6 +1840,7 @@ def raids(j: Judge, sec: Section, c):
                "Commit, TARGET_CALLED, fight-ledger damage or required-adds switch until its wipe, defeat or heal")
     sweep6c_rows(j, sec, c)
     sweep6d_rows(j, sec, c)
+    sweep6e_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
@@ -1688,7 +1909,7 @@ def sweep6d_rows(j: Judge, sec: Section, c):
           CONTRADICTED if stalled.count else (SEEN if sec.add_phases else NOT_SEEN), stalled if stalled.count else None,
           f"{len(sec.add_phases)} required-adds phase(s) seen; no progress: {'; '.join(sec.lists['no_progress']) or 'none'}",
           note="the adds' health comes from docs/encounters/epic-encounters.json; an add the catalog lacks is not judged")
-    epics = sec.epic_names | catalog()[1]
+    epics = epic_killers(sec)
     deaths = [d for d in sec.after_end_deaths if d[1] in epics]
     if deaths:
         bad = Evidence()
@@ -1696,13 +1917,13 @@ def sweep6d_rows(j: Judge, sec: Section, c):
         by = Counter(f"{d[3]['event']} ({d[1]})" for d in deaths)
         j.add("raids", "deaths_after_end",
               f"No raider is killed by an epic within {AFTER_END_SECONDS // 60} minutes after its raid ended, in the "
-              f"raid's region (AUTONOMOUS_BOT_DEATH, sweep 6d)", CONTRADICTED, bad,
+              f"raid's region or its way in (AUTONOMOUS_BOT_DEATH, sweep 6d, 6e)", CONTRADICTED, bad,
               f"{len(deaths)} death(s), {len({d[2].split('bot=', 1)[1].split(' ', 1)[0] for d in deaths})} raider(s): "
               + "; ".join(f"{k} x{n}" for k, n in by.most_common()))
     else:
         j.add("raids", "deaths_after_end",
               f"No raider is killed by an epic within {AFTER_END_SECONDS // 60} minutes after its raid ended, in the "
-              f"raid's region (AUTONOMOUS_BOT_DEATH, sweep 6d)", SEEN if sec.ends else NOT_SEEN,
+              f"raid's region or its way in (AUTONOMOUS_BOT_DEATH, sweep 6d, 6e)", SEEN if sec.ends else NOT_SEEN,
               j.ev("REALM_RAID_ENDED") if sec.ends else None,
               f"{len(sec.ends)} raid end(s); {len(sec.after_end_deaths)} raider death(s) to monsters there in that time, "
               f"none to an epic")
@@ -1730,6 +1951,103 @@ def sweep6d_rows(j: Judge, sec: Section, c):
               "STRANDED_REGROUP to=, ROUTE_RETRY, sweep 6d)",
               SEEN if any(e["members"] for e in sec.ends) else NOT_SEEN, j.ev("REALM_RAID_ENDED") if sec.ends else None,
               f"{sum(len(e['members']) for e in sec.ends)} raider position(s) at {len(sec.ends)} raid end(s); none at such a point")
+
+
+def epic_killers(sec: Section) -> set:
+    """Epic monsters by name: the catalog's bosses, those a raid held or fought adds of, those adds (Aidon's illusions),
+    and the epics parties walked past (AUTONOMOUS_DUNGEON_EPIC_AVOIDED: Avalon City's xanxicarian sentries)."""
+    names = set(sec.epic_names) | catalog()[1]
+    for adds in sec.required_adds.values():
+        names |= adds
+    for adds in sec.boss_adds.values():
+        names |= adds
+    for avoided in sec.avoided.values():
+        names |= avoided
+    return names
+
+
+def sweep6e_rows(j: Judge, sec: Section, c):
+    """Sweep 6e (build b1b6846): a raid boss healed to full out of its home or tether while it fought the raid (S-1),
+    deaths after a full reset inside an attempt left open (S-2), raider deaths to the epic trash on a raid's way in
+    (W-1), and a muster set aside while a return wave walked to it (T-1)."""
+    engages = c("pull.at_needed") + c("pull.below_needed")
+    heals = sec.tether_heals
+    if heals:
+        bad = Evidence()
+        bad.add(heals[0][0], heals[0][1], len(heals))
+        by = Counter(kv(line).get("target") for _, line in heals)
+        j.add("raids", "tether_heal",
+              "No raid boss heals to full past its home or tether while the raid fights it (REALM_EXPEDITION_TARGET_HEALED "
+              "fromSpawn=, sweep 6e)", CONTRADICTED, bad,
+              f"{len(heals)} heal(s) to {RESET_HEALTH}%+ past the boss's fight-at-home radius (catalog) or tether: "
+              + "; ".join(f"{b} x{n}" for b, n in by.most_common()),
+              note="the boss's script heals it out there by design (Aidon's anti-kite rule); the finding is where the raid stood")
+    else:
+        j.add("raids", "tether_heal",
+              "No raid boss heals to full past its home or tether while the raid fights it (REALM_EXPEDITION_TARGET_HEALED "
+              "fromSpawn=, sweep 6e)", SEEN if engages else NOT_SEEN, j.ev("pull.at_needed") if engages else None,
+              "no heal to full past a home or tether while fighting")
+    resets = list(sec.reset_attempts) + [a for a in sec.attempts.values() if a["reset"] is not None]
+    fed = [a for a in resets if len(a["deaths"]) >= RESET_DEATHS]
+    if fed:
+        first = min(fed, key=lambda a: a["reset"][0])
+        bad = Evidence()
+        bad.add(first["reset"][0], first["reset"][1], sum(len(a["deaths"]) for a in fed))
+        j.add("raids", "reset_closes",
+              f"An attempt ends when its boss resets to full: fewer than {RESET_DEATHS} deaths to it after a reset inside "
+              f"an open attempt (FINAL_ENGAGE to WIPE / ATTEMPT_ENDED, TARGET_STATUS / TARGET_HEALED health, sweep 6e)",
+              CONTRADICTED, bad,
+              "; ".join(f"{a['boss']} in region {a['region']}: back at {RESET_HEALTH}%+ at {stamp(a['reset'][0])[6:]} after "
+                        f"{RESET_LOW}% or less, {len(a['deaths'])} death(s) to it from {RESET_GRACE_SECONDS} s later while "
+                        f"the attempt stayed open" for a in fed))
+    else:
+        j.add("raids", "reset_closes",
+              f"An attempt ends when its boss resets to full: fewer than {RESET_DEATHS} deaths to it after a reset inside "
+              f"an open attempt (FINAL_ENGAGE to WIPE / ATTEMPT_ENDED, TARGET_STATUS / TARGET_HEALED health, sweep 6e)",
+              SEEN if engages else NOT_SEEN, j.ev("pull.at_needed") if engages else None,
+              f"{len(resets)} reset(s) inside an open attempt, none followed by {RESET_DEATHS}+ deaths to the boss")
+    # Epic trash only: a boss (the catalog's, or a route gate's) and its adds are the raid's own fight there.
+    fought = catalog()[1] | set(add_health()) | sec.gate_bosses
+    for boss in list(fought):
+        fought |= sec.required_adds.get(boss, set()) | sec.boss_adds.get(boss, set())
+    way_in = [d for d in sec.way_in_deaths if d[1] in sec.avoided.get(d[2], ()) and d[1] not in fought]
+    if way_in:
+        bad = Evidence()
+        bad.add(way_in[0][0], way_in[0][3], len(way_in))
+        by = Counter(f"{d[4]} in region {d[2]} ({d[1]})" for d in way_in)
+        j.add("raids", "way_in_epics",
+              "No raider is killed on a raid's way in by epic monsters the parties walk past (AUTONOMOUS_BOT_DEATH, "
+              "AUTONOMOUS_DUNGEON_EPIC_AVOIDED, sweep 6e)", CONTRADICTED, bad,
+              f"{len(way_in)} death(s) while the raid ran: " + "; ".join(f"{k} x{n}" for k, n in by.most_common()),
+              note="deaths in the way-in region while the raid runs, to a monster logged as an avoided epic there; "
+                   "whether each was a raider is the log review's call")
+    else:
+        j.add("raids", "way_in_epics",
+              "No raider is killed on a raid's way in by epic monsters the parties walk past (AUTONOMOUS_BOT_DEATH, "
+              "AUTONOMOUS_DUNGEON_EPIC_AVOIDED, sweep 6e)",
+              SEEN if sec.way_in_deaths or c("route.boss_objective") else NOT_SEEN,
+              j.ev("route.boss_objective") if c("route.boss_objective") else None,
+              f"{len(sec.way_in_deaths)} death(s) in a running raid's way-in region, none to an epic walked past there")
+    stalls = sec.stall_waves
+    if stalls:
+        bad = Evidence()
+        bad.add(stalls[0][0], f"{stalls[0][1].rstrip()} [wave {stalls[0][3]} made headway {stalls[0][4]:.0f} s before]",
+                len(stalls))
+        j.add("raids", "muster_wave",
+              f"No muster is set aside while a return wave with headway in the last {WAVE_HEADWAY_SECONDS // 60} minutes "
+              f"walks to it (REALM_EXPEDITION_MUSTER_STALLED, REALM_RAID_RETURN_WAVE, sweep 6e)", CONTRADICTED, bad,
+              "; ".join(f"{e} at {stamp(t)[6:]}: \"{kv(line).get('target')}\" set aside, wave {w} headway {ago:.0f} s before"
+                        for t, line, e, w, ago in stalls)
+              + f"; {c('REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE')} MUSTER_WAITS_FOR_WAVE line(s)",
+              note="a wave walks to the route's destination, the muster; headway is a kill, a new step or step=moving")
+    else:
+        waits = c("REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE")
+        j.add("raids", "muster_wave",
+              f"No muster is set aside while a return wave with headway in the last {WAVE_HEADWAY_SECONDS // 60} minutes "
+              f"walks to it (REALM_EXPEDITION_MUSTER_STALLED, REALM_RAID_RETURN_WAVE, sweep 6e)",
+              SEEN if waits or c("muster.stalled") else NOT_SEEN,
+              j.ev("REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE") if waits else (j.ev("muster.stalled") if c("muster.stalled") else None),
+              f"{c('muster.stalled')} muster(s) set aside, none beside a moving wave; {waits} MUSTER_WAITS_FOR_WAVE line(s)")
 
 
 def rvr(j: Judge, sec: Section, c):

@@ -74,6 +74,72 @@ public static class RealmRaidRouteGate
         return false;
     }
 
+    /// <summary>
+    /// A living hostile epic monster (a boss, or epic trash such as Avalon City's xanxicarian sentries) whose aggro covers the
+    /// walk (<see cref="Blocks"/>), at its spawn or where it stands. A boss gates the walk; epic trash gates it only when
+    /// the mesh has no way round it (RealmRaidDungeonRoute.TryCreateGate).
+    /// <para>
+    /// Owner's PC, build b1b6846, 2026-11-18 (Crystal Cave, Albion; W-1): the raid's way in through Avalon City passes the
+    /// xanxicarian sentries (levels 70-77, aggro 200). Only a GameEpicBoss was a gate, so the sentries were walked past
+    /// (AUTONOMOUS_DUNGEON_EPIC_AVOIDED action=pass, 190 times): 37 raiders died to them during the raid and 57 after it. Now
+    /// the raid clears the ones on its walk as a gate, and the epic respawn hold keeps them down for the walk out. Epic
+    /// monsters off the walk are left alone; the sentries themselves are unchanged.
+    /// </para>
+    /// </summary>
+    public static bool BlocksWalk(GameNPC npc, IReadOnlyList<Vector3> walk)
+    {
+        if (npc is not IGameEpicNpc || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active || npc.Realm != eRealm.None ||
+            (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
+            npc.Brain is not DOL.AI.Brain.StandardMobBrain { AggroRange: > 0 } brain)
+            return false;
+        return Blocks(walk, new(npc.SpawnPoint.X, npc.SpawnPoint.Y, npc.SpawnPoint.Z), brain.AggroRange) ||
+               Blocks(walk, new(npc.X, npc.Y, npc.Z), brain.AggroRange);
+    }
+
+    /// <summary>
+    /// The part of <paramref name="walk"/> from <paramref name="back"/> units before its point nearest <paramref name="at"/>
+    /// to its end (pure): the corridor a party's detour search starts from, as when it meets the monster on its way.
+    /// </summary>
+    public static Vector3[] CorridorBefore(IReadOnlyList<Vector3> walk, Vector3 at, float back)
+    {
+        if (walk == null || walk.Count == 0) return [];
+        // The nearest point on the walk (by segment) and the walked distance to it.
+        int bestSegment = 0;
+        float bestT = 0, best = float.MaxValue;
+        for (int i = 0; i + 1 < walk.Count; i++)
+        {
+            Vector3 a = walk[i], b = walk[i + 1], ab = b - a;
+            float length = ab.LengthSquared();
+            float t = length < 0.01f ? 0 : Math.Clamp(Vector3.Dot(at - a, ab) / length, 0, 1);
+            float d = Vector3.DistanceSquared(a + ab * t, at);
+            if (d < best) { best = d; bestSegment = i; bestT = t; }
+        }
+        if (walk.Count == 1) return [walk[0]];
+        // Walk back from the nearest point by <back>.
+        Vector3 point = Vector3.Lerp(walk[bestSegment], walk[bestSegment + 1], bestT);
+        float left = back;
+        int segment = bestSegment;
+        Vector3 start = point;
+        while (true)
+        {
+            Vector3 a = walk[segment];
+            float length = Vector3.Distance(a, start);
+            if (length >= left)
+            {
+                start = length < 0.01f ? a : start + (a - start) / length * left;
+                break;
+            }
+            left -= length;
+            start = a;
+            if (segment == 0) break;
+            segment--;
+        }
+        var corridor = new List<Vector3> { start };
+        for (int i = segment + 1; i < walk.Count; i++)
+            if (Vector3.DistanceSquared(walk[i], corridor[^1]) > 0.01f) corridor.Add(walk[i]);
+        return corridor.ToArray();
+    }
+
     /// <summary>A gate is looked for only while the raid has not mostly gone past it into its own dungeon (pure): a boss
     /// found alive behind a raid that is already through is left to the raid's return waves.</summary>
     public static bool RaidStillBeforeIt(int livingInRaidDungeon, int livingRaid) => livingInRaidDungeon * 2 < livingRaid;
