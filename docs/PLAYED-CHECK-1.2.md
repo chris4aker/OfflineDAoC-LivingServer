@@ -1,4 +1,4 @@
-# The 1.2 gate: what has to be seen before Beta 1.2 ships
+# The 1.2 gate: what has to be seen before 1.2 ships
 
 Owner, 2026-11-12: 1.2 is held until it works properly. This page is the list that decides it. A row counts only when
 it has been seen on the owner's PC (test copy, `C:\Games\OfflineDAoC\playable-v0.37b-fresh`) on the release candidate

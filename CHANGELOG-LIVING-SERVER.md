@@ -1,7 +1,7 @@
 # Living Server changelog
 
-What this fork adds to shadowofze's Offline DAoC. The base game's own changes are in
-[CHANGELOG.md](CHANGELOG.md). The newest version is first.
+What Living Server adds to Offline DAoC. The base game's own changes (up to 0.37, the releases made by Offline DAoC's
+creator, shadowofze) are in [CHANGELOG.md](CHANGELOG.md). The newest version is first.
 
 Up to 0.37-se.2 the fork was called the **Social Expansion**, and "Living Server" was the name of one
 of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedules, breaks, body
@@ -1640,7 +1640,10 @@ here has been seen in game.
   want-to-buy text, stock mid-task, a scripted session end to end, the guild placement, guild orders and banks), plus
   `UT_CommerceRehearsal`'s new metrics. Ported: nothing. Tests only.
 
-## 1.2.1 (in development)
+## Movement, style choice, flanking and the True 1.65 boss and camp fixes (planned as 1.2.1, in 1.2; tests only)
+
+This work was first planned as 1.2.1. It is on integration/1.2 and ships in 1.2 (owner 2026-11-08: "Pull all the
+1.2.1 into 1.2"), so its heading was folded into 1.2 on 2026-11-19.
 
 Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
 gamebots only. They pass automated tests; nobody has played them in game yet.
@@ -1658,11 +1661,11 @@ gamebots only. They pass automated tests; nobody has played them in game yet.
   tries for at most 4 seconds, and again when the monster turns more than 45 degrees or moves more than 100 units (at most
   every 3 seconds). It only walks to a spot the navigation mesh says it can reach on its own floor; otherwise it stays put.
   Never for tanks, companions, bots in a player-led group, raid parties, raid dungeons or epic encounters (their own
-  tactics place the raiders). Hand port from shadowofze's OfflineDAoC-True165 (`BotBrain.Flank.cs`, d2187a498), GPL-3.0,
+  tactics place the raiders). Hand port from the True 1.65 project (zomboden/OfflineDAoC-True165: `BotBrain.Flank.cs`, d2187a498, by shadowofze), GPL-3.0,
   without its 1.65-mode switch and its companion "Positioning" option.
 
-**Boss fixes and raid play from True 1.65.** Ported from shadowofze's OfflineDAoC-True165 (v0.7, `f68cc75`; GPL-3.0),
-each commit credited to him. They pass automated tests; nobody has played them in game yet.
+**Boss fixes and raid play from True 1.65.** Ported from the True 1.65 project (zomboden/OfflineDAoC-True165, v0.7, `f68cc75`; GPL-3.0),
+each commit credited to its author. They pass automated tests; nobody has played them in game yet.
 
 - Boss scripts: Suttung's berserker stance can't be lost for good; Legion's blast lock-out can't stick; Govannon summons a
   Shade of Aelfgar every time his adds reach the centre, his reset restores his strength, size and model, and the
@@ -1715,7 +1718,18 @@ stall 1.2's pull code doesn't have), level-1 blue-only targeting, the full-backp
 brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and its keep-guard restore (not needed in
 1.2's world).
 
-## 1.2 (in development)
+## 1.2 — [RELEASE DATE]
+
+- **The 1.2 release docs, and how the project names itself (owner 2026-11-19; text only).** The release notes,
+  docs/KNOWN-ISSUES.md and README.md's Living Server part now describe all of Living Server as it is in 1.2, call the
+  release "1.2" (not "Beta 1.2"), say epic raids are still being tuned and mark everything not seen on the owner's PC
+  "tests only". Following the owner ("we own Offline DAoC now and our living server, true 1.65 is just a different
+  version now we borrow some code or ideas from"), Setup's pages and its download step no longer present Offline DAoC as
+  "by shadowofze" or his "official update(r)", the launcher's and the server's Hired companions text reads "some code from
+  the True 1.65 project", docs/PLAY.md's downloads point at `chris4aker/OfflineDAoC-base-files`, and the True 1.65
+  address is `zomboden/OfflineDAoC-True165` (BotBrain.Flank.cs and UT_BotFlank.cs headers too). shadowofze stays credited
+  as Offline DAoC's creator and as the author of every ported file (THIRD_PARTY.md and the code headers are unchanged).
+  The launcher label is **How much bots talk** in every current doc. No behaviour changed; the server suite passes.
 
 - **Ten more storylines (owner 2026-11-18 09:14: "10 new arcs added to 1.2"; tests only until heard on the owner's PC).**
   `storylines_more.lines` adds ten four-episode arcs, each with its three endings (the player sided with A, with B, or

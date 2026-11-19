@@ -1,4 +1,4 @@
-// Hand port from shadowofze/OfflineDAoC-True165 d2187a498 (BotBrain.Flank.cs, by shadowofze, GPL-3.0), first added
+// Hand port from zomboden/OfflineDAoC-True165 d2187a498 (BotBrain.Flank.cs, by shadowofze, GPL-3.0), first added
 // there in 7ac71824. Ported for Living Server 1.2.1 ("positional styles, step 2"): only the gamebot rule. Dropped: the
 // True 1.65 Mode gate (Classic165Mode) and the companion "Positioning" option (CompanionOptions165); companions never
 // flank here. Added: raids, epic encounters, player-led groups and tanks are left alone, the style filter is ours

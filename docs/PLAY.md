@@ -39,9 +39,9 @@ is lost. You can also add the new client to a 0.37 or 0.37b game later (see belo
 
 1. Make a folder with a short path for the downloader, for example `C:\Games\OfflineDAoC`.
 2. From your edition's release page, download the one downloader zip into that folder:
-   - [v0.37](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37): `Download-OfflineDAoC-v0.37.zip`
-   - [v0.37b](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37b): `Download-OfflineDAoC-v0.37b.zip`
-   - [v0.37c](https://github.com/shadowofze/OfflineDAoC/releases/tag/v0.37c): `Download-OfflineDAoC-v0.37c.zip`
+   - [v0.37](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37): `Download-OfflineDAoC-v0.37.zip`
+   - [v0.37b](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37b): `Download-OfflineDAoC-v0.37b.zip`
+   - [v0.37c](https://github.com/chris4aker/OfflineDAoC-base-files/releases/tag/v0.37c): `Download-OfflineDAoC-v0.37c.zip`
 3. Right-click the zip and choose **Extract All…**, then open the extracted folder.
 4. Double-click the `GET-OFFLINE-DAOC-v0.37….cmd` file. If Windows asks whether to run it, choose **Run** (or
    **More info → Run anyway**). It asks one question:
@@ -150,6 +150,7 @@ progress (account, characters, items, money, houses and bots) over, following
 
 ## Older versions
 
-Every earlier release (v0.3 to v0.35b) is still on the
-[Releases page](https://github.com/shadowofze/OfflineDAoC/releases). Their helpers are in the
-repository's [older-versions](../older-versions/) folder.
+Earlier releases (v0.3 to v0.35b) were published in the original Offline DAoC repository, which is no longer online.
+Their notes are in [docs/history](history/), and their download helpers, which no longer download anything, are in the
+repository's [older-versions](../older-versions/) folder. The 0.36 and 0.37 downloads are kept in
+[OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases).

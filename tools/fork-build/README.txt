@@ -19,7 +19,7 @@ ALWAYS ON (the bots' own game, nothing to switch):
     keep and hall gates whose portcullis never rose in the new client and the new client's quest
     marker script (the NPC of your current quest step was coloured as if the quest were in
     progress elsewhere) (see INSTALL)
-  - on 0.37c, 14 more new-client scripts from shadowofze's final code: abilities (Sprint,
+  - on 0.37c, 14 more new-client scripts from the base game's final code: abilities (Sprint,
     Stealth ...) drag onto the quickbar; a Stealth row in the Abilities window, /stealth and
     /hide; SELL in the merchant window (APPRAISE stays hidden: it needs the 1.2
     MMOEngine.dll); one PLAY click enters the world once; names hide behind walls; fog per
@@ -73,9 +73,9 @@ that was changed by something else is left alone and named in the output. ROLLBA
 PREPARE-FOR-UPDATE.cmd put the originals back.
 
 The loading screen is Living Server's own and is the exception. The installer puts the Living
-Server loading screen over shadowofze's or over an earlier Living Server one (1.1); any other
+Server loading screen over the base game's or over an earlier Living Server one (1.1); any other
 loading screen is left alone. ROLLBACK.cmd puts back the earlier Living Server loading screen
-when that is what it replaced, but never shadowofze's: after a first install the Living Server
+when that is what it replaced, but never the base game's: after a first install the Living Server
 one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like

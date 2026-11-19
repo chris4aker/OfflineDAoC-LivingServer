@@ -1,4 +1,4 @@
-# When shadowofze publishes a new Offline DAoC release
+# Taking in an earlier Offline DAoC base release (history)
 
 Living Server is a server build (`GameServer.dll`) plus the launcher, installed over a released Offline DAoC game.
 Each new upstream release changes that game's own server, so a Living Server build must carry the new release's
@@ -7,11 +7,13 @@ checklist for that day, written for 0.38.
 
 ## State as of 2026-10-31
 
-- **shadowofze has stopped.** His README (commit `f630845`, 2026-10-31) says the project is on hold and will not
-  receive any more updates; the 0.37 / 0.37b / 0.37c downloads stay; he has moved to a separate "True 1.65" version
-  that uses only the new client, with no release promised. The checklist below still applies, read with "his final
-  `main`" wherever it says the `v0.38` tag; the "0.37 → official 0.38 update → Living Server" test path no longer
-  exists.
+- **No new base release is expected.** Offline DAoC with Living Server is maintained in this repository now. The
+  original base README (commit `f630845`, 2026-10-31) put the base project on hold with no more updates; the 0.37 /
+  0.37b / 0.37c downloads stay (Living Server keeps copies in `chris4aker/OfflineDAoC-base-files`). The True 1.65
+  project ([zomboden/OfflineDAoC-True165](https://github.com/zomboden/OfflineDAoC-True165)) is a different version that
+  Living Server borrows some code and ideas from, not a base release. The checklist below is kept as history, read with
+  "the final base `main`" wherever it says the `v0.38` tag; the "0.37 → official 0.38 update → Living Server" test path
+  no longer exists.
 - **Released upstream:** 0.37 / 0.37b / 0.37c (tag `v0.37`, `ab4df02`). There is no `v0.38` tag; his changelog
   says "0.38 (not released yet)" and describes it as one download with the new client only, the original client
   unsupported and the Sluaghbinder discontinued (the class code is still there, it is no longer offered; a script
