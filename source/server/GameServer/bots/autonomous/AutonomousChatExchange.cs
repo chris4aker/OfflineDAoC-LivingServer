@@ -86,6 +86,14 @@ public static class AutonomousChatExchange
     /// </summary>
     public const long DueWaitMs = 180_000, DueRetryMs = 3_000;
 
+    /// <summary>
+    /// The longest a chosen chat line is held before it is sent or given up (chat 1.2 follow-up: a promise waits this long for
+    /// its line, ChatPromiseRules.SayWithinSeconds): a due feature's <see cref="DueWaitMs"/>. An exchange's line is given up
+    /// sooner (<see cref="Rules.MaxLateMs"/> with its spacing and busy waits, about 42 s) and a scene's resume after
+    /// <see cref="ResumeAfterSceneMs"/>; a wait behind a running scene can be longer, which the send-time check covers.
+    /// </summary>
+    public const long LongestHoldMs = DueWaitMs;
+
     public enum DueStep { Said, Retry, GiveUp }
 
     /// <summary>

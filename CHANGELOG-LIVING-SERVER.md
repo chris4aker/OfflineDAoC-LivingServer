@@ -31,8 +31,14 @@ What the chat audit's engineers left for each other in code (F1). Nothing below 
   - Scenes: no debate, tale or one-off scene beat says "omw", "on my way" or "ill be there" (confirmed, and now a test).
     Five storyline beats speak of a later meeting in their own arc ("i'll be there first. like always", "count me in");
     they are the arc's plot, not a walk owed now, and are left to the corpus owners.
-  - A promise is made when its line is chosen; one whose line is never sent ends quietly within 150 seconds,
-    `CHAT_PROMISE broken ... why=unsaid`, which the played check counts as no failure (`unsaid=` in its detail).
+  - A promise is made when its line is chosen; one whose line is never sent ends quietly,
+    `CHAT_PROMISE broken ... why=unsaid`, which the played check counts as no failure (`unsaid=` in its detail). It waits
+    for its line the longest a chat line can be held before it is sent or given up (a due feature's 180 s) and 30 s more:
+    210 s, derived from that hold, so it never runs out first. Its deadline counts from the moment the line is said.
+  - A line still held longer than that (behind a running scene) is checked again when it is sent (/say, /faction, /send,
+    /guild, /lfg, /trade): the gate is asked again with what it was asked the first time, and if the bot won't go now, the
+    moment's no-promise line ("how many?", "not me, maybe later", "cant, sry, too far", "maybe", "where are you?") goes
+    instead. /group lines are not re-checked: a groupmate's "omw" there is true (it follows the player).
 - **A bot under 50 tells its ding** (LOG-035): `AutonomousBotVoices.OnBotLevelUp` now calls `TellDing` below 50 (a ding to
   50 stays a story).
 - **The memory reply reads the player's line** (DESIGN-007): both `TryKnownReply` call sites pass it, so "lfg 30 cleric"

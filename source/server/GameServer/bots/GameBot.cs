@@ -311,6 +311,7 @@ namespace DOL.GS
         public override bool Say(string str)
         {
             str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou (never a hired companion)
+            str = ChatPromises.BeforeSend(Name, Realm, str);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
             bool said = base.Say(str);
             if (said)
                 ChatPromises.NoteSaid(this, str);   // chat 1.2 follow-up: a promise's line said, heard by a player or not

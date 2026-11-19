@@ -74,7 +74,7 @@ public sealed class ChatPromise
     public ChatPromiseTarget Target { get; init; }
     public string Asker { get; init; }
     public long Made { get; init; }
-    public long Deadline { get; init; }
+    public long Deadline { get; internal set; }
     public int EtaSeconds { get; init; }
     /// <summary>The lease the bot held when it promised: a later, different one took it (broken "taken").</summary>
     public eDutyLeaseKind LeaseAtMake { get; init; }
@@ -89,6 +89,14 @@ public sealed class ChatPromise
     /// channel full, the exchange ended) leaves no promise behind (broken "unsaid", which is no failure).
     /// </summary>
     public long SayBy { get; internal set; }
+
+    /// <summary>When it ended (game time), once it has.</summary>
+    public long EndedAt { get; internal set; }
+
+    /// <summary>What the gate was asked (the place named, the line answered, who asked), to ask it again (BeforeSend).</summary>
+    public string PlaceAsked { get; init; }
+    public string SaidTo { get; init; }
+    public GameLiving AskerLiving { get; init; }
 
     /// <summary>Made, and its line not yet seen said.</summary>
     public bool Unsaid => SayBy > 0;
@@ -149,11 +157,30 @@ public static class ChatPromiseRules
         sameRegion ? (int)Math.Ceiling(Math.Max(0, distance) / RunUnitsPerSecond)
         : porterReach ? PorterSeconds + (int)Math.Ceiling(Math.Max(0, distance) / RunUnitsPerSecond) : int.MaxValue;
 
+    /// <summary>Added to the longest chat hold for <see cref="SayWithinSeconds"/>.</summary>
+    public const int SayMarginSeconds = 30;
+
     /// <summary>
-    /// How long a promise waits for its line to be said (chat 1.2 follow-up): under the shortest deadline, and longer than a
-    /// reply's typing delay and an exchange's waits for room, so a line said late is still the promise's line.
+    /// How long a promise waits for its line to be said (chat 1.2 follow-up): the longest a chosen line can be held before it
+    /// is sent (<see cref="AutonomousChatExchange.LongestHoldMs"/>) and a margin, so it can never run out before an exchange
+    /// gives the line up. A line said later still (a scene held it) is checked again when sent
+    /// (<see cref="ChatPromiseBook.BeforeSend"/>). While a promise waits for its line, its deadline does not run: it counts
+    /// from the moment the line is said.
     /// </summary>
-    public const int SayWithinSeconds = 150;
+    public const int SayWithinSeconds = (int)(AutonomousChatExchange.LongestHoldMs / 1000) + SayMarginSeconds;
+
+    /// <summary>
+    /// What a bot says instead of its promise line when the promise is gone by the time the line is sent and the gate won't
+    /// send it again (chat 1.2 follow-up): a line of the same moment that promises nothing. Pure.
+    /// </summary>
+    public static string NoPromiseLine(ChatPromiseReason reason) => reason switch
+    {
+        ChatPromiseReason.Alarm => "how many?",
+        ChatPromiseReason.RealmPoints => "not me, maybe later",
+        ChatPromiseReason.Rez => "cant, sry, too far",
+        ChatPromiseReason.RaidTime => "maybe",
+        _ => "where are you?",
+    };
 
     /// <summary>
     /// Whether a line said by a bot with an unsaid promise is that promise's line: it says it is coming
@@ -437,7 +464,7 @@ public sealed class ChatPromiseBook
     /// </summary>
     public ChatPromise Make(object bot, string name, long botId, eRealm realm, ChatPromiseReason reason, ChatPromiseMode mode,
         ChatPromiseTarget target, string asker, int etaSeconds, long now, eDutyLeaseKind lease = eDutyLeaseKind.None,
-        string leaseOwner = null)
+        string leaseOwner = null, string placeAsked = null, string saidTo = null, GameLiving askerLiving = null)
     {
         if (Of(bot) is { } existing && existing.Active(now))
         {
@@ -451,6 +478,7 @@ public sealed class ChatPromiseBook
             Id = System.Threading.Interlocked.Increment(ref _nextId), Bot = name, BotId = botId, Realm = realm, Reason = reason,
             Mode = mode, Target = target, Asker = asker, Made = now, Deadline = now + deadline * 1000L, EtaSeconds = etaSeconds,
             LeaseAtMake = lease, LeaseOwnerAtMake = leaseOwner, SayBy = now + ChatPromiseRules.SayWithinSeconds * 1000L,
+            PlaceAsked = placeAsked, SaidTo = saidTo, AskerLiving = askerLiving,
         };
         _byBot[bot] = promise;
         _log?.Invoke($"CHAT_PROMISE made bot=\"{name}\" id={botId} promise={promise.Id} realm={GlobalConstants.RealmToName(realm)} " +
@@ -511,27 +539,54 @@ public sealed class ChatPromiseBook
     /// A bot said a line (every bot chat line passes here, BotChatTranscript and GameBot.Say): when it has a promise whose line
     /// is not yet said and this line says it is coming, the promise now stands. True when this confirmed one.
     /// </summary>
-    public bool NoteSaid(object bot, string text) =>
-        Of(bot) is { } promise && Confirm(promise, text);
+    public bool NoteSaid(object bot, string text, long now = 0) =>
+        Of(bot) is { } promise && Confirm(promise, text, now);
 
     /// <summary>The same for a line known only by its speaker's name and realm (the /faction and channel sends).</summary>
-    public bool NoteSaid(string name, eRealm realm, string text)
+    public bool NoteSaid(string name, eRealm realm, string text, long now = 0)
     {
         if (string.IsNullOrEmpty(name))
             return false;
         bool any = false;
         foreach (ChatPromise promise in _byBot.Values)
             if (promise.Realm == realm && string.Equals(promise.Bot, name, StringComparison.Ordinal))
-                any |= Confirm(promise, text);
+                any |= Confirm(promise, text, now);
         return any;
     }
 
-    private static bool Confirm(ChatPromise promise, string text)
+    /// <summary>The line is out: the promise stands, and its deadline counts from now (<paramref name="now"/> 0: unchanged).</summary>
+    private static bool Confirm(ChatPromise promise, string text, long now)
     {
         if (!promise.Open || !promise.Unsaid || !ChatPromiseRules.SaysComingAsTyped(text))
             return false;
         promise.SayBy = 0;
+        if (now > promise.Made)
+            promise.Deadline = Math.Max(promise.Deadline, now + (promise.Deadline - promise.Made));
         return true;
+    }
+
+    /// <summary>How long a promise ended unsaid is remembered for <see cref="BeforeSend"/>.</summary>
+    public const long UnsaidMemoryMs = 5 * 60_000;
+
+    private readonly ConcurrentDictionary<(string Name, eRealm Realm), (object Bot, ChatPromise Promise)> _unsaid = new();
+
+    /// <summary>
+    /// The line a bot is about to send (chat 1.2 follow-up, the belt-and-braces check): a line that says it is coming, from a
+    /// bot whose promise for it already ended unsaid (the line was held past <see cref="ChatPromiseRules.SayWithinSeconds"/>),
+    /// is gated again: <paramref name="again"/> makes the promise again (the line is sent), else the reason's no-promise line
+    /// (<see cref="ChatPromiseRules.NoPromiseLine"/>) is sent instead. Any other line, or one from a bot with a promise that
+    /// still stands, goes as it is. The record is used once.
+    /// </summary>
+    public string BeforeSend(string name, eRealm realm, string text, long now, Func<object, ChatPromise, bool> again)
+    {
+        if (string.IsNullOrEmpty(name) || _unsaid.IsEmpty || !ChatPromiseRules.SaysComingAsTyped(text) ||
+            !_unsaid.TryRemove((name, realm), out (object Bot, ChatPromise Promise) gone))
+            return text;
+        if (now - gone.Promise.EndedAt > UnsaidMemoryMs || now < gone.Promise.EndedAt)
+            return text;
+        if (Of(gone.Bot) is { } current && current.Active(now))
+            return text;
+        return again != null && again(gone.Bot, gone.Promise) ? text : ChatPromiseRules.NoPromiseLine(gone.Promise.Reason);
     }
 
     /// <summary>
@@ -550,6 +605,9 @@ public sealed class ChatPromiseBook
     {
         End(bot, promise);
         promise.Ended = "unsaid";
+        promise.EndedAt = now;
+        if (!string.IsNullOrEmpty(promise.Bot))
+            _unsaid[(promise.Bot, promise.Realm)] = (bot, promise);
         _log?.Invoke($"CHAT_PROMISE broken bot=\"{promise.Bot}\" id={promise.BotId} promise={promise.Id} reason={promise.Reason} " +
                      $"mode={promise.Mode} target=\"{promise.Target.Name}\" why=unsaid after={(now - promise.Made) / 1000}s " +
                      $"deadline={(promise.Deadline - promise.Made) / 1000}s");
@@ -656,7 +714,7 @@ public static class ChatPromises
             }
             BotDutyLease lease = BotDutyLeases.Current(bot);
             promise = Book.Make(bot, bot.Name, bot.DatabaseID, bot.Realm, reason, mode, target, AskerName(asker, said), eta, now,
-                lease?.Kind ?? eDutyLeaseKind.None, lease?.Owner);
+                lease?.Kind ?? eDutyLeaseKind.None, lease?.Owner, place, said, asker);
             return promise != null;
         }
         catch (Exception exception)
@@ -723,7 +781,7 @@ public static class ChatPromises
         try
         {
             if (bot != null && Book.Count > 0)
-                Book.NoteSaid(bot, text);
+                Book.NoteSaid(bot, text, Now());
         }
         catch (Exception)
         {
@@ -737,11 +795,29 @@ public static class ChatPromises
         try
         {
             if (Book.Count > 0)
-                Book.NoteSaid(name, realm, text);
+                Book.NoteSaid(name, realm, text, Now());
         }
         catch (Exception)
         {
             // never in the way of chat
+        }
+    }
+
+    /// <summary>
+    /// Every bot chat send calls this with the line it is about to send (GameBot.Say, /faction, /send, /group, /guild, /lfg and
+    /// /trade): a promise line whose promise ended unsaid is gated again (<see cref="ChatPromiseBook.BeforeSend"/>), so it never
+    /// goes out with no duty behind it. Returns the line to send.
+    /// </summary>
+    public static string BeforeSend(string name, eRealm realm, string text)
+    {
+        try
+        {
+            return Book.BeforeSend(name, realm, text, Now(), (bot, gone) => bot is GameBot gamebot &&
+                TryPromiseCome(gamebot, gone.PlaceAsked, gone.Reason, gone.SaidTo, gone.AskerLiving));
+        }
+        catch (Exception)
+        {
+            return text;
         }
     }
 

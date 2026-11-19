@@ -396,6 +396,7 @@ public static partial class AutonomousLivingServer
         if (string.IsNullOrWhiteSpace(text) || !IsSpeaker(bot) || player?.Client == null)
             return;
         text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
+        text = ChatPromises.BeforeSend(bot.Name, bot.Realm, text);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
         ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
         BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
         // The talking update: the player's next tell to this bot continues this exchange.

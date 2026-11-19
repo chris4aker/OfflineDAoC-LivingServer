@@ -1147,7 +1147,7 @@ public static partial class AutonomousBotChatCoordinator
     /// <summary>A bot's line in its realm's /lfg or /trade channel, formatted as the server's /lfg and /trade commands do.</summary>
     private static void SendRealmChannel(GameBot bot, string channel, string text)
     {
-        string safe = VC.ForNow((text ?? string.Empty).Trim());
+        string safe = ChatPromises.BeforeSend(bot.Name, bot.Realm, VC.ForNow((text ?? string.Empty).Trim()));
         if (safe.Length == 0)
             return;
         safe = ChannelCap(safe);
@@ -2460,6 +2460,8 @@ public static partial class AutonomousBotChatCoordinator
         LastHeld = null;
         // 1.1.3, after RC6: whatever wrote it, a line says "today", not "tonight", by day on the PC's clock ("busy tonight" at 10:44 AM).
         message = VC.ForNow(message);
+        // Chat 1.2 follow-up: an "omw" whose promise ended unsaid while it was held is gated again (ChatPromises.BeforeSend).
+        message = ChatPromises.BeforeSend(speakerName, realm, message);
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         bool scene = AutonomousChatExchange.IsScene(source);
         // A tagged event or a line to the player goes; a running scene owns the channel; every other line fits under the

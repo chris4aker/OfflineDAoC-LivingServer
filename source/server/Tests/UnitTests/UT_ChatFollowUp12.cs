@@ -57,9 +57,88 @@ namespace DOL.UnitTests
                 "not kept before its line is out");
             Assert.That(book.Check(bot, ChatPromiseRules.SayWithinSeconds * 1000L, On()), Is.EqualTo("broken"));
             Assert.That(lines[^1], Does.StartWith("CHAT_PROMISE broken bot=\"Bot1\" id=7 promise=1 reason=Alarm mode=RvrObjective " +
-                                                  "target=\"Caer Benowyc\" why=unsaid after=150s"));
+                                                  "target=\"Caer Benowyc\" why=unsaid after=210s"));
             Assert.That(book.Of(bot), Is.Null);
-            Assert.That(ChatPromiseRules.SayWithinSeconds, Is.LessThan(ChatPromiseRules.MinDeadlineSeconds), "never judged a timeout first");
+        }
+
+        [Test]
+        public void TheUnsaidTimeoutIsTheLongestChatHoldAndAMarginSoItNeverRunsOutFirst()
+        {
+            long within = ChatPromiseRules.SayWithinSeconds * 1000L;
+            Assert.That(ChatPromiseRules.SayWithinSeconds,
+                Is.EqualTo(AutonomousChatExchange.LongestHoldMs / 1000 + ChatPromiseRules.SayMarginSeconds), "derived, not a number of its own");
+            Assert.That(ChatPromiseRules.SayMarginSeconds, Is.GreaterThanOrEqualTo(30));
+            long margin = ChatPromiseRules.SayMarginSeconds * 1000L;
+            // Every hold a chosen line can wait out before it is sent or given up.
+            foreach (var rules in new[] { AutonomousChatExchange.Rules.Faction, AutonomousChatExchange.Rules.Say })
+            {
+                long lineLate = rules.MaxLateMs + rules.MaxSpacingWaits * 2L * rules.SpacingMs + rules.MaxBusyWaits * (long)rules.BusyRetryMs;
+                Assert.That(within, Is.GreaterThanOrEqualTo(lineLate + margin), "an exchange's line given up as too late");
+                Assert.That(within, Is.GreaterThanOrEqualTo(rules.ReactionWithinMs + margin), "a reaction's moment");
+            }
+            Assert.That(within, Is.GreaterThanOrEqualTo(AutonomousChatExchange.DueWaitMs + margin), "a due feature's wait");
+            Assert.That(within, Is.GreaterThanOrEqualTo(AutonomousChatExchange.ResumeAfterSceneMs + margin), "a scene's resume");
+            Assert.That(within, Is.GreaterThanOrEqualTo(AutonomousChatExchange.RunningForMs + margin));
+
+            // Past the shortest deadline and still waiting for its line: neither a timeout nor ended, and once said its deadline
+            // runs from then.
+            var book = new ChatPromiseBook(_ => { });
+            object bot = new();
+            // A bot already near: the shortest deadline, 3 minutes.
+            ChatPromise promise = book.Make(bot, "Bot1", 7, eRealm.Albion, R.Alarm, ChatPromiseMode.RvrObjective, Keep(), "Asker", 0, 0);
+            long deadline = promise.Deadline;
+            Assert.That(deadline, Is.EqualTo(ChatPromiseRules.MinDeadlineSeconds * 1000L));
+            Assert.That(promise.SayBy, Is.GreaterThan(deadline + 5_000), "its line may come after the shortest deadline");
+            Assert.That(book.Check(bot, deadline + 1_000, On()), Is.Null, "no timeout while its line waits");
+            Assert.That(book.NoteSaid(bot, "omw", now: deadline + 5_000), Is.True);
+            Assert.That(promise.Deadline, Is.EqualTo(deadline + 5_000 + deadline), "the whole deadline from the moment it was said");
+            Assert.That(book.Check(bot, deadline + 6_000, On()), Is.Null, "on its way");
+        }
+
+        [Test]
+        public void ALineSentAfterItsPromiseEndedUnsaidIsGatedAgain()
+        {
+            var book = new ChatPromiseBook(_ => { });
+            object bot = new();
+            ChatPromise promise = Make(book, bot);
+            long ended = ChatPromiseRules.SayWithinSeconds * 1000L;
+            Assert.That(book.Check(bot, ended, On()), Is.EqualTo("broken"));
+            Assert.That(book.BeforeSend("Bot1", eRealm.Albion, "how many are there?", ended + 1, (_, _) => true), Is.EqualTo("how many are there?"),
+                "a line that promises nothing goes as it is");
+            ChatPromise asked = null;
+            Assert.That(book.BeforeSend("Bot1", eRealm.Albion, "omw!!", ended + 2_000, (b, gone) =>
+            {
+                asked = gone;
+                return false;
+            }), Is.EqualTo("how many?"), "the gate won't send it again: the no-promise line instead");
+            Assert.That(asked, Is.SameAs(promise), "asked again with what was asked the first time");
+            Assert.That(book.BeforeSend("Bot1", eRealm.Albion, "omw", ended + 3_000, (_, _) => false), Is.EqualTo("omw"), "used once");
+
+            object other = new();
+            ChatPromise second = book.Make(other, "Bot2", 8, eRealm.Albion, R.RealmPoints, ChatPromiseMode.RvrObjective, Keep(), "Asker", 60, 0);
+            book.Check(other, ended, On());
+            Assert.That(second.Ended, Is.EqualTo("unsaid"));
+            Assert.That(book.BeforeSend("Bot2", eRealm.Albion, "on my way", ended + 1, (b, gone) => ReferenceEquals(b, other)),
+                Is.EqualTo("on my way"), "the gate sends it again: the line goes, promised");
+            object third = new();
+            book.Make(third, "Bot3", 9, eRealm.Albion, R.Rez, ChatPromiseMode.Native, Keep(), "Asker", 60, 0);
+            book.Check(third, ended, On());
+            Assert.That(book.BeforeSend("Bot3", eRealm.Albion, "omw", ended + ChatPromiseBook.UnsaidMemoryMs + 1, (_, _) => false), Is.EqualTo("omw"),
+                "long after, nothing is remembered");
+            Assert.That(ChatPromiseRules.NoPromiseLine(R.Rez), Is.EqualTo("cant, sry, too far"));
+            Assert.That(ChatPromiseRules.NoPromiseLine(R.RealmPoints), Is.EqualTo("not me, maybe later"));
+            foreach (R reason in Enum.GetValues<R>())
+                Assert.That(ChatPromiseRules.SaysComing(ChatPromiseRules.NoPromiseLine(reason)), Is.False, reason.ToString());
+        }
+
+        [Test]
+        public void EveryBotChatSendChecksThePromiseAgain()
+        {
+            Assert.That(Source("source", "server", "GameServer", "bots", "GameBot.cs"), Does.Contain("str = ChatPromises.BeforeSend(Name, Realm, str);"));
+            Assert.That(Bots("AutonomousBotChatCoordinator.cs"), Does.Contain("message = ChatPromises.BeforeSend(speakerName, realm, message);"), "/faction");
+            Assert.That(Bots("AutonomousBotChatCoordinator.cs"), Does.Contain("string safe = ChatPromises.BeforeSend(bot.Name, bot.Realm,"), "/lfg, /trade");
+            Assert.That(Bots("AutonomousLivingServer.cs"), Does.Contain("text = ChatPromises.BeforeSend(bot.Name, bot.Realm, text);"), "/send");
+            Assert.That(Bots("AutonomousBotGuildSocial.cs"), Does.Contain("ChatPromises.BeforeSend(speaker, (eRealm)guild.Realm,"), "/guild");
         }
 
         [Test]
