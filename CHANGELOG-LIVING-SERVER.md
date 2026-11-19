@@ -8,6 +8,67 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Raid fixes from sweep 7c: Suttung's empty pulls, Steinvor's pillar, cure pile-ups, Curengkur's staging, hub posts, raid-end stall (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `9a173f4` (2026-11-19 01:30 to 05:07, `DIAG-9a17-sweep7c`). Nothing below is seen in game
+yet: **tests only** (`UT_RaidSweep7c`, `test_played_check_log.py`; `UT_CurengkurEntryProbe` read zone187.nav). No boss is
+weakened: Suttung, Steinvor, Curengkur and their scripts' fights are as they were.
+- **A stranded raider is no longer teleported into the raid's own resting target (T-1).** Both of Elder Icelord Suttung's
+  attempts began with nobody at the muster: at 04:03:29 Pwnage9 (and 63 others in that minute) was moved from a navmesh
+  island to 32787,53968, Suttung's muster, 764 from him while he rested (aggro 600 + the 300 margin); he died at 04:03:42
+  and the pull was committed at 04:03:44. The same shape began attempt 1 at 03:44:21. The stranded-regroup guard left the
+  raid's own target out of its dangers. Now, while the target rests and is a mustered encounter, it is a danger for that
+  teleport (`RealmRaidDungeonRoute.RestingTargetDangers`: aggro + 300, never more than its muster's stand-off, so a muster a
+  short tether puts closer still takes raiders); refused raiders stay put and `REGROUP_REFUSED` names him. The muster itself
+  is also moved out of its own target's aggro + 300 (`InTargetClearance`): Suttung's, set when he joined the Guthlac regroup
+  (03:44:11), stood 785 from his spawn with a 1,400 stand-off; most likely the walk's "the raid is already close" choice
+  put it where the main body stood (inference: the log has no `MUSTER_GUARDED` line for him). Such a muster is now moved
+  back along the walk or to a clear point around him, as for another boss's aggro.
+- **Steinvor's Pillar of Ice leaves when it should (P-1).** It was removed only by his own timer, and only while he lived:
+  his last pillar (02:25:54) outlived him (02:26:00) and 73 raiders stepped out of it for 80 minutes (2,779+
+  `EPIC_TACTIC_BOT ... StandOff "Pillar of Ice"` lines, filling the shared 1-a-second tactic log). The pillar now has its
+  own removal timer, 8 s after it is raised, the same moment he removed it; its one Pillar of Frost (3.5 s in) and his
+  fight are unchanged. Catalog regenerated; the Steinvor and Skuf hand notes re-stamped after reading the script.
+- **Healers no longer pile onto one mesmerized raider (H-1).** At 02:21:52 twelve Midgard Healers cast Cleanse Mind on
+  Captainfluffy in the same second; 263 of the night's 1,121 `RAID_CURE_MEZZ` lines (23%) were a second or later curer
+  on the same raider in the same second. A curer now claims the raider it cures for the cast time plus 500 ms
+  (`RaidCureClaims`); the others leave him out and cure someone else or heal. A cast that does not start gives him back.
+  The single cure poison of sweep 7b claims its raider the same way (two dotted raiders and twelve curers split six and
+  six); the group cure is the curer's own party's and is not claimed.
+- **Curengkur's raid tries the next staging posts (C-1).** It has never started on the PC. At 04:32:18 his first post
+  (381686,172803,4074) walked to him but the hub's route found "no corridor inside zone 187 to the staging post". On
+  zone187.nav (`UT_CurengkurEntryProbe`, read only) that post has no corridor from any of 16 points of the zone 185/187
+  seam, while posts 1, 3, 4, 6 and 7 have one from some. Now a dragon's or open-world boss's start tries posts 1-7 when
+  the route stops inside the staging zone; the first the route reaches becomes the raid's first post
+  (`REALM_RAID_STAGING_REROUTED`), and a rejected post is taken by no other slot. Which seam point the live route uses is
+  not known from here, so whether Curengkur now starts is owed to the PC.
+- **A hub's muster posts are walked to from its floor, and a failed hub post says why.** dragon-hibernia failed "No muster
+  post could be placed at the hub" at Innis Carthaig on both of its tries (22:26:23, 04:07:42), and no start of it is
+  logged since #224 added the walk from the hub's centre to each post. That walk started at the centre itself, a service
+  NPC's spot; when that spot has no floor right under it (within 2 across) every post fails. Now it starts on the
+  centre's floor, or the nearest walkable floor within 160 (`RealmRaidMuster.HubFloor`). zone204.nav is not in this
+  repository, so that this was the refusing check is an inference: a failed hub post now logs
+  `REALM_RAID_HUB_POST_REJECTED ... rejectedBy=<check>` with every check's count, the hub floor used and the NPCs that
+  refused posts.
+- **The formation pass after two raids end together no longer stalls the server.** Tuscaran (04:07:08) and Evern
+  (04:07:31) released about 150 raiders; the next formation pass held the coordinator lock 2,817 ms and the server
+  stalled 3,040 ms at 04:07:46. Its time budget was checked only between leaders, and one party's rendezvous proves a
+  zone itinerary for each member. Past twice the budget (300 ms) a party's rendezvous checks now stop and the party forms
+  on a later pass (`AUTONOMOUS_GROUP_FORMATION_DEFERRED`); its members stay free and the zone steps already proven are
+  remembered. Timing only.
+- **Checker** (`played_check_log.py`):
+  - T-2: a `TARGET_STATUS inCombat=False` after a boss's last fight-ledger line ends the engagement that line kept (one
+    ledger line after Suttung's wipe kept him "engaged" until 04:07). The raid's own pull (FINAL_ENGAGE, EARLY_PULL
+    Commit, TARGET_CALLED) still ends only at its wipe, defeat, heal or the lapse. On `9a173f4` the
+    `teleport_resting_boss` row is now Contradicted: 64 teleports at 04:03 within 900 of the resting Suttung.
+  - W-1: a return wave at `step=fighting` whose `kills=` rose is moving (its step is `step_at=`). Krondon's wave 1 at
+    step 23 (01:54:50-02:11:27, kills 20 to 44) is no longer counted as held; epic-midgard wave 5 still is.
+  - A new row, `empty_pull_teleport`: an `EARLY_PULL` Commit within 120 s of a stranded teleport into the region while the
+    region's last `FINAL_MUSTER` showed 0. Contradicted on `9a173f4`: Suttung at 03:44:21 and 04:03:44, and an icebound
+    skeleton at 01:54:29 and Issorden at 01:55:10 (33 teleports to the skeleton's muster at 01:53).
+  - The regroup relay share (17.4% against the 15% bar) is unchanged: the exact checks (a), (b) and (c) are all 0 on
+    `9a173f4` (2,885 relayed starts named their sender).
+
 ## Chat from sweep 7c: /faction held to the owner's 5-7 a minute with scenes, /broadcast answers heard (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `9a173f4` (2026-11-18 22:13-22:25, `DIAG-9a17-sweep7c`, the player online 2 min 51 s).

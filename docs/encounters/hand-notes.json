@@ -3301,7 +3301,7 @@
   "tuscaran-glacier/skuf": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "1cdc6e4e909d849e8f375cface245c3da49aa49683181429de911c23889561d7"
    },
    "aiTactics": {
     "after": "Steinvor",
@@ -3317,7 +3317,7 @@
   "tuscaran-glacier/steinvor": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "1cdc6e4e909d849e8f375cface245c3da49aa49683181429de911c23889561d7"
    },
    "aiTactics": {
     "hazards": [
@@ -3327,7 +3327,7 @@
     "summary": "With Skuf (pulling one brings the other) he dies first: his Pillar of Frost (750 cold, 350 around the spot of a raider he names, 3.5 s later) is a ground hazard everyone steps out of; Skuf's party holds Skuf meanwhile. (EpicEncounterTactics.Tuscaran, Living Server 1.2; tests only)",
     "since": "1.2"
    },
-   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed."
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed. Sweep 7c (P-1, tests only): a Pillar of Ice (EffectMob) now leaves the world on its own timer 8 s after it is raised, whether Steinvor lives or not; before, only his EffectTimer removed it and only while he was alive, so a pillar raised just before his death stood for good (owner's PC, build 9a173f4, 2026-11-19: 73 raiders stepped out of it until 03:48). While he lives it is removed at the same moment as before, and its one Pillar of Frost (3.5 s in) is unchanged; he is not changed."
   },
   "tuscaran-glacier/suttung": {
    "verified": true,

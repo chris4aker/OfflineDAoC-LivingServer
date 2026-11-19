@@ -2074,6 +2074,26 @@ namespace DOL.GS
                 ? $"{d.Name}@{(int)d.At.X},{(int)d.At.Y},{(int)d.At.Z}/distance={(int)Vector3.Distance(point, d.At)}/edge={(int)(d.Radius - FloorSnapTolerance)}"
                 : "none";
 
+        /// <summary>
+        /// The raid's own target as a danger for the stranded-regroup teleport only (pure): while it rests
+        /// (<paramref name="resting"/>) and it is a mustered encounter, its aggro plus <see cref="UntargetedBossMargin"/>
+        /// (<see cref="TargetClearance"/>: never past its muster's stand-off, so a muster a short tether puts closer still takes
+        /// raiders), at its spawn and where it stands. Empty in its fight, for trash, or without aggro. Owner's PC, build 9a173f4,
+        /// 2026-11-19, Tuscaran Glacier (T-1): at 04:03:29 Pwnage9 was moved from a navmesh island to 32787,53968, the muster of
+        /// the resting Elder Icelord Suttung, 764 from him (aggro 600, margin 300); he died at 04:03:42 and Suttung's second
+        /// attempt began at 04:03:44 with nobody mustered (RestingDangers leaves the raid's own target out). The muster itself is
+        /// moved out of that clearance too (<see cref="InTargetClearance"/>). Suttung is unchanged.
+        /// </summary>
+        public static List<BossDanger> RestingTargetDangers(string name, Vector3 spawn, Vector3 at, int aggro, bool resting,
+            bool musteredEncounter, float musterStandOff)
+        {
+            float radius = TargetClearance(musterStandOff, aggro);
+            if (!resting || !musteredEncounter || radius <= 0) return [];
+            var dangers = new List<BossDanger> { new(name, spawn, radius) };
+            if (Vector3.DistanceSquared(at, spawn) > 64 * 64) dangers.Add(new(name, at, radius));
+            return dangers;
+        }
+
         /// <summary>The point a stranded raider is moved to now (<see cref="StrandedRegroupPoint"/>); false: none is clear.</summary>
         public bool TryStrandedRegroupPoint(out Vector3 point)
         {
@@ -2091,6 +2111,14 @@ namespace DOL.GS
                 return false;
             }
             IReadOnlyList<BossDanger> dangers = RestingDangers();
+            if (_target != null)
+            {
+                // The raid's own target too while it rests (T-1, sweep 7c): a teleport into its aggro pulls it with nobody there.
+                List<BossDanger> own = RestingTargetDangers(_target.Name, new(_target.SpawnPoint.X, _target.SpawnPoint.Y, _target.SpawnPoint.Z),
+                    new(_target.X, _target.Y, _target.Z), AggroOf(_target), !_target.InCombat, IsMusteredEncounter(_target),
+                    _musterTarget == _target ? _musterStandOff : FinalMusterStandOff);
+                if (own.Count > 0) dangers = [.. dangers, .. own];
+            }
             Vector3? muster = _target != null && _musterTarget == _target ? _musterPoint : null;
             Vector3? found = StrandedRegroupPoint(Hold, Front, Destination, muster, dangers);
             point = found ?? default;
@@ -2185,11 +2213,16 @@ namespace DOL.GS
         {
             bool inDanger = InBossDanger(chosen, dangers);
             string pastReach = string.Join(",", RealmRaidTetherReach.OutOfReachOf(chosen, reaches).Select(r => r.Name).Distinct());
-            if (!inDanger && pastReach.Length == 0) return new(chosen, chosen, null, null, false);
+            // The encounter's own aggro (sweep 7c, T-1): only once the raid's main body is known (the walk's own choice); the
+            // muster without a navmesh stays at the front, as before.
+            bool inTargetAggro = raid.HasValue && InTargetClearance(chosen, encounter, standOff, targetAggro);
+            if (!inDanger && pastReach.Length == 0 && !inTargetAggro) return new(chosen, chosen, null, null, false);
             string by = string.Join("; ", new[]
             {
                 inDanger ? "in the aggro range of " + string.Join(",", dangers.Where(d => InBossDanger(chosen, [d])).Select(d => d.Name).Distinct()) : null,
                 pastReach.Length > 0 ? "past the reach (tether less 300) of " + pastReach : null,
+                inTargetAggro ? $"{(int)Vector3.Distance(chosen, encounter)} from the encounter, inside its aggro + {(int)UntargetedBossMargin} " +
+                                $"(clearance {(int)TargetClearance(standOff, targetAggro)})" : null,
             }.Where(x => x != null));
             if (SafeMusterAlong(walk, encounter, standOff, dangers, null, floor, reaches) is Vector3 along)
                 return new(along, chosen, by, "moved back along the walk to the raid", false);
@@ -2256,6 +2289,28 @@ namespace DOL.GS
                      !InBossDanger(p, dangers) && !RealmRaidTetherReach.OutOfReach(p, reaches) &&
                      paths++ < RingPathChecks && AutonomousZonePointApproach.TryResolve(nav, zone, p, front, 160, out _) &&
                      (raid is not Vector3 from || AutonomousZonePointApproach.TryResolve(nav, zone, from, p, 160, out _)));
+        }
+
+        /// <summary>
+        /// How far from the encounter mustered for its muster must stand (pure): its aggro plus <see cref="UntargetedBossMargin"/>,
+        /// but never more than the stand-off (a short tether or a fight-at-home radius puts a muster closer on purpose;
+        /// RealmRaidTetherReach.MusterStandOff). 0 when the encounter has no aggro.
+        /// </summary>
+        public static float TargetClearance(float standOff, int targetAggro) =>
+            targetAggro > 0 ? Math.Min(standOff, targetAggro + UntargetedBossMargin) : 0;
+
+        /// <summary>
+        /// A muster point lies inside the encounter's own clearance (<see cref="TargetClearance"/>) by more than
+        /// <see cref="FloorSnapTolerance"/> (pure). Owner's PC, build 9a173f4, 2026-11-19, Tuscaran Glacier (T-1): the muster
+        /// for the resting Elder Icelord Suttung (aggro 600, stand-off 1,400) was placed where the raid's main body stood after
+        /// the Guthlac fight, 32787,53968, 785 from his spawn and 764 from him (the walk's "the raid is already close" choice),
+        /// inside his aggro + 300. A stranded raider teleported to it at 04:03:29 pulled him at 04:03:44 with nobody mustered.
+        /// Now such a muster is moved back along the walk or to a clear point around him, as for another boss's aggro.
+        /// </summary>
+        public static bool InTargetClearance(Vector3 point, Vector3 encounter, float standOff, int targetAggro)
+        {
+            float clearance = TargetClearance(standOff, targetAggro);
+            return clearance > FloorSnapTolerance && Vector3.Distance(point, encounter) < clearance - FloorSnapTolerance;
         }
 
         /// <summary>At most this many ring candidates are walked (the ones nearest the walk's own muster).</summary>

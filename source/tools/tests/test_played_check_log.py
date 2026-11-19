@@ -1589,5 +1589,112 @@ class Sweep7b(unittest.TestCase):
         self.assertEqual(self.row(log)["status"], pcl.NOT_SEEN)
 
 
+class Sweep7c(unittest.TestCase):
+    """Build 9a173f4, sweep 7c: T-2 (a ledger line kept a resting boss engaged), W-1 (a wave fighting its way with rising
+    kills counted as frozen) and the pull with nobody mustered right after a stranded teleport (T-1)."""
+
+    STATUS = ('REALM_EXPEDITION_TARGET_STATUS region=160 target="Elder Icelord Suttung" level=81 health={h}% '
+              'inCombat={c} raidersWithin1000=0 targeting=0 at=32074,54243,11883 spawnDistance=21')
+    TELEPORT = ("REALM_EXPEDITION_STRANDED_REGROUP bot=Pwnage9 id=4356 region=160 from=32023,40780,15064 "
+                "to=32787,53968,11895")
+    LEDGER = ('EPIC_FIGHT_LEDGER region=160 target="Elder Icelord Suttung" seconds=60 '
+              'raid_dealt="Elder Icelord Suttung:57/1/1" raid_took=""')
+
+    @staticmethod
+    def raid_log():
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_STARTED event=epic-midgard present=82 required=80 support=96 minutes=21 forced=True")
+        return log
+
+    def test_t2_a_status_at_rest_after_the_last_ledger_line_ends_the_engagement(self):
+        log = self.raid_log()
+        log.add(at(10), self.STATUS.format(h=7, c="True"))
+        log.add(at(12), 'REALM_EXPEDITION_WIPE region=160 target="Elder Icelord Suttung" level=81 failures=1 of=2 '
+                        'engaged=111 fallen=108 lowest=7 how="reset to full"', "WRN")
+        log.add(at(12, 30), self.LEDGER)                       # 03:57:19 on the PC: 57 damage after the wipe
+        log.add(at(13), self.STATUS.format(h=100, c="False"))  # resting
+        log.add(at(19), self.STATUS.format(h=100, c="False"))  # 04:03:24
+        log.add(at(19, 5), self.TELEPORT, "WRN")               # 04:03:29, 764 from him
+        row = check(only(log.run()[1]), "teleport_resting_boss")
+        self.assertEqual(row["status"], pcl.CONTRADICTED, "9a173f4's checker kept him engaged until 04:07")
+        self.assertIn("764 from resting Elder Icelord Suttung", row["line"])
+
+    def test_t2_a_ledger_line_after_the_status_still_engages(self):
+        log = self.raid_log()
+        log.add(at(13), self.STATUS.format(h=100, c="False"))
+        log.add(at(13, 30), self.LEDGER)
+        log.add(at(13, 40), self.TELEPORT, "WRN")
+        self.assertEqual(check(only(log.run()[1]), "teleport_resting_boss")["status"], pcl.SEEN)
+
+    def test_t2_the_raids_own_pull_is_not_ended_by_a_status_at_rest(self):
+        log = self.raid_log()
+        log.add(at(13), 'REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Elder Icelord Suttung" mustered=70 needed=56 '
+                        'living=112')
+        log.add(at(13, 20), self.STATUS.format(h=100, c="False"))  # the raid is walking in
+        log.add(at(13, 30), self.TELEPORT, "WRN")
+        self.assertEqual(check(only(log.run()[1]), "teleport_resting_boss")["status"], pcl.SEEN)
+
+    @staticmethod
+    def fighting(log, minute, kills, step=23):
+        log.add(at(minute), f'REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=fighting wave=1 '
+                            f'target="thrawn ogre sceotan" level=61 at=34180,54143,15103 respawned=True living=4 atStep=3 '
+                            f'called=4 kills={kills} step_at={step}/37', "INF")
+
+    def test_w1_a_wave_fighting_with_rising_kills_moves(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=formed wave=1 members=5 steps=37", "INF")
+        log.add(at(2), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=moving wave=1 at=23/37 living=5 "
+                       "together=3 kills=20 minutes=14", "INF")
+        for minute, kills in zip(range(3, 20), range(21, 45)):  # 01:54:50-02:11:27 on the PC, kills 20 to 44
+            self.fighting(log, minute, kills)
+        log.add(at(20), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=moving wave=1 at=23/37 living=4 "
+                        "together=3 kills=44 minutes=31", "INF")
+        self.assertEqual(check(only(log.run()[1]), "wave_moves")["status"], pcl.SEEN)
+
+    def test_w1_a_wave_fighting_without_a_kill_still_holds_its_step(self):
+        log = Log().start(at(0))
+        log.add(at(1), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=formed wave=1 members=5 steps=37", "INF")
+        log.add(at(2), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=moving wave=1 at=23/37 living=5 "
+                       "together=3 kills=20 minutes=14", "INF")
+        for minute in range(3, 20):
+            self.fighting(log, minute, 20)
+        log.add(at(20), "REALM_RAID_RETURN_WAVE event=dungeon-albion-krondon step=moving wave=1 at=23/37 living=4 "
+                        "together=3 kills=20 minutes=31", "INF")
+        row = check(only(log.run()[1]), "wave_moves")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("dungeon-albion-krondon wave 1 at step 23", row["detail"])
+
+    MUSTER = ('REALM_EXPEDITION_FINAL_MUSTER region=160 target="Elder Icelord Suttung" mustered={m} needed=79 living=112 '
+              'at=32787,53968,11895 minutes=6.2')
+    PULL = ('REALM_EXPEDITION_EARLY_PULL region=160 target="Elder Icelord Suttung" near=63 inside=110 pinned=0 raid=111 '
+            'needed=77 resets=True tether=4500 musterFromSpawn=785 decision={d} health=98 muster=32787,53968,11895')
+
+    def test_a_pull_with_nobody_mustered_right_after_a_stranded_teleport(self):
+        log = self.raid_log()
+        log.add(at(19), self.MUSTER.format(m=0))
+        log.add(at(19, 25), self.TELEPORT, "WRN")
+        log.add(at(19, 40), self.PULL.format(d="Commit"), "WRN")  # 04:03:04, 04:03:29, 04:03:44 on the PC
+        row = check(only(log.run()[1]), "empty_pull_teleport")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("1 with 0 mustered", row["detail"])
+        self.assertIn("Elder Icelord Suttung in region 160 at 06:19:40 (muster 0 at 06:19:00, stranded teleport 15 s before)",
+                      row["detail"])
+
+    def test_no_empty_pull_without_the_teleport_or_with_raiders_mustered(self):
+        cases = {
+            "raiders mustered": [(19, 0, self.MUSTER.format(m=40)), (19, 25, self.TELEPORT), (19, 40, self.PULL.format(d="Commit"))],
+            "no teleport just before": [(10, 0, self.TELEPORT), (19, 0, self.MUSTER.format(m=0)), (19, 40, self.PULL.format(d="Commit"))],
+            "held, not committed": [(19, 0, self.MUSTER.format(m=0)), (19, 25, self.TELEPORT), (19, 40, self.PULL.format(d="Hold"))],
+            "an old muster count": [(10, 0, self.MUSTER.format(m=0)), (19, 25, self.TELEPORT), (19, 40, self.PULL.format(d="Commit"))],
+        }
+        for name, lines in cases.items():
+            with self.subTest(case=name):
+                log = self.raid_log()
+                for minute, second, line in lines:
+                    log.add(at(minute, second), line, "WRN")
+                self.assertNotEqual(check(only(log.run()[1]), "empty_pull_teleport")["status"], pcl.CONTRADICTED)
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "empty_pull_teleport")["status"], pcl.NOT_SEEN)
+
+
 if __name__ == "__main__":
     unittest.main()

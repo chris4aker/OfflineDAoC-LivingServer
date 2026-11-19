@@ -5465,8 +5465,11 @@ namespace DOL.AI.Brain
                     bot?.CharacterClass != null && BotPartyRoles.IsHealingClass((eCharacterClass)bot.CharacterClass.ID),
                     BotPartyRoles.IsTank(bot)));
             }
-            int pick = RaidCureMezz.Choose(mezzed, Body.ObjectID);
+            // Sweep 7c (H-1): a raider another curer is curing is left out, and the one taken is claimed for the cast.
+            long curer = Body.ObjectID;
+            int pick = RaidCureMezz.Choose(mezzed, curer, id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Mezz, id, curer, now));
             if (pick < 0) return null;
+            if (!RaidCureClaims.TryClaim(RaidCureClaims.Kind.Mezz, mezzed[pick].Id, curer, now, BotBody.CureMezz.CastTime)) return null;
             if (now >= _nextRaidCureLog && log.IsInfoEnabled)
             {
                 _nextRaidCureLog = now + 15_000;
@@ -5901,6 +5904,8 @@ namespace DOL.AI.Brain
             // The raid's mesmerized, across its parties, before ordinary healing (RaidCureMezz).
             if (RaidCureMezz.ComesBeforeHealing(numEmergency) && RaidMezzedToCure() is GameLiving raidMezzed)
             {
+                if (raidCureFirst && raidCure == BotBody.CurePoison && raidCureTarget != null)
+                    RaidCureClaims.Release(RaidCureClaims.Kind.Poison, raidCureTarget.ObjectID, Body.ObjectID);
                 spellToCast = BotBody.CureMezz;
                 spellTarget = raidMezzed;
             }
@@ -5945,6 +5950,11 @@ namespace DOL.AI.Brain
                 {
                     BotGroupSupport.CancelHeal(BotBody);
                     BotBody.TargetObject = oldTarget;
+                    // A raid cure that did not start gives its raider back to the other curers (RaidCureClaims).
+                    if (spellToCast == BotBody.CureMezz)
+                        RaidCureClaims.Release(RaidCureClaims.Kind.Mezz, spellTarget.ObjectID, Body.ObjectID);
+                    else if (spellToCast == BotBody.CurePoison)
+                        RaidCureClaims.Release(RaidCureClaims.Kind.Poison, spellTarget.ObjectID, Body.ObjectID);
                 }
                 else
                 {
@@ -6002,8 +6012,14 @@ namespace DOL.AI.Brain
                 // Own party: within the group cure's reach when the class has one (it cures only those), else any.
                 dotted.Add(new(member.ObjectID, canGroup ? groupReach : own, member.HealthPercent));
             }
-            var (which, pick) = RaidCurePoison.Decide(true, true, canGroup, canSingle, dotted, partyInDanger, false, Body.ObjectID);
+            long curer = Body.ObjectID;
+            var (which, pick) = RaidCurePoison.Decide(true, true, canGroup, canSingle, dotted, partyInDanger, false, curer,
+                id => RaidCureClaims.IsClaimed(RaidCureClaims.Kind.Poison, id, curer, now));
             if (which == RaidCurePoison.Cure.None || pick < 0) return false;
+            // Sweep 7c (H-1): a single cure claims its raider for the cast, so the raid's other curers take someone else.
+            if (which == RaidCurePoison.Cure.Single &&
+                !RaidCureClaims.TryClaim(RaidCureClaims.Kind.Poison, dotted[pick].Id, curer, now, BotBody.CurePoison.CastTime))
+                return false;
             cure = which == RaidCurePoison.Cure.Group ? BotBody.CurePoisonGroup : BotBody.CurePoison;
             // The group cure takes the caster's party around it; aimed at itself it needs no walk.
             target = which == RaidCurePoison.Cure.Group ? Body : living[pick];

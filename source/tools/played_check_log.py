@@ -352,6 +352,9 @@ class Section:
         self.stop_play = Evidence()
         self.pending_critical = None
         self.engaged = defaultdict(dict)  # region -> boss -> (first, last) line showing it in the raid's fight
+        self.engaged_by = defaultdict(dict)  # region -> boss -> what showed it last: "ledger" or "raid" (sweep 7c, T-2)
+        self.last_muster = {}             # region -> (time, mustered) of its last REALM_EXPEDITION_FINAL_MUSTER
+        self.last_stranded = {}           # region -> (time, line) of its last REALM_EXPEDITION_STRANDED_REGROUP
         self.engage_lines = defaultdict(dict)  # region -> boss -> time of its last FINAL_ENGAGE or EARLY_PULL
         self.add_owner = defaultdict(dict)     # region -> required add -> its boss (from REALM_EXPEDITION_TACTIC)
         self.no_engage = {}                    # (region, boss) -> first line of a pull that logged no engage
@@ -370,7 +373,7 @@ class Section:
         self.raw_fronts = {}              # (region, "x,y,z") -> (t, line) of a TARGET_SWITCH with approach=raw
         self.regroups_to = Counter()      # (region, "x,y,z") -> STRANDED_REGROUP lines to it
         self.retries_at = Counter()       # (region, "x,y,z") -> ROUTE_RETRY lines from it
-        self.wave_steps = {}              # (event, wave) -> [step, since, line, flagged]
+        self.wave_steps = {}              # (event, wave) -> [step, since, line, flagged, kills]
         self.required_adds = defaultdict(set)   # boss -> its required adds' names (EPIC_TACTIC_BOT "required-add i/n of")
         self.add_phases = {}              # (region, boss) -> [start, last, dealt, flagged] of a required-adds phase
         self.epic_names = set()           # epics a raid held (RESPAWN_HELD) and bosses of required adds; with the catalog's
@@ -696,7 +699,9 @@ def _return_wave(sec, t, message, level, near):
     key = (f.get("event", "?"), f.get("wave"))
     if f.get("wave"):
         rebase_silence(sec, t, f, step, key, message)
-    wave_step(sec, t, message, key, step, f.get("at") or "")
+    # A fighting line's at= is where it fights; its step is step_at= (W-1, sweep 7c).
+    wave_step(sec, t, message, key, step, (f.get("step_at") if step == "fighting" else None) or f.get("at") or "",
+              num(f.get("kills"), -1))
     if f.get("wave"):
         wave_headway(sec, t, f, step, key)
     if step == "released":
@@ -742,9 +747,12 @@ def close_rebase(sec, key, t, why):
 WAVE_STEP_RE = re.compile(r"(\d+)/\d+$")
 
 
-def wave_step(sec, t, message, key, step, at):
+def wave_step(sec, t, message, key, step, at, kills=-1):
     """A wave whose at= step stays the same for WAVE_STEP_STILL_SECONDS did not move (sweep 6c): its joins, "ahead" lines
-    (raiders leaving it) and catch-ups are not the wave's own headway. A wave's end, or a new wave of that number, closes it."""
+    (raiders leaving it) and catch-ups are not the wave's own headway. A wave's end, or a new wave of that number, closes it.
+    W-1 (sweep 7c, build 9a173f4): a wave at step=fighting whose kills= rose since its last line is fighting its way (the
+    Krondon wave at step 23, 01:54:50-02:11:27, killed respawned trash, kills 20 to 44): that is headway, and its clock
+    starts again."""
     if step == "formed" or step in ("ended", "lost", "cleared", "met", "released"):
         sec.wave_steps.pop(key, None)
         return
@@ -754,8 +762,12 @@ def wave_step(sec, t, message, key, step, at):
     n = int(m.group(1))
     held = sec.wave_steps.get(key)
     if held is None or held[0] != n:
-        sec.wave_steps[key] = [n, t, message, False]
+        sec.wave_steps[key] = [n, t, message, False, kills]
         return
+    if step == "fighting" and kills > held[4] >= 0:
+        held[1], held[2], held[4] = t, message, kills
+        return
+    held[4] = max(held[4], kills)
     if not held[3] and (t - held[1]).total_seconds() >= WAVE_STEP_STILL_SECONDS:
         held[3] = True
         minutes = (t - held[1]).total_seconds() / 60
@@ -910,6 +922,38 @@ def _muster_stalled(sec, t, message, level, near):
 simple("REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE")
 
 
+# Sweep 7c (build 9a173f4, T-1): an early pull this soon after a stranded teleport into the region, while the region's last
+# muster count was 0 and no older than EMPTY_MUSTER_SECONDS, is a pull by the teleported raiders with nobody mustered.
+EMPTY_PULL_TELEPORT_SECONDS = 120
+EMPTY_MUSTER_SECONDS = 5 * 60
+
+
+@handles("REALM_EXPEDITION_FINAL_MUSTER")
+def _final_muster(sec, t, message, level, near):
+    f = kv(message)
+    if f.get("region") is not None and f.get("mustered") is not None:
+        sec.last_muster[f["region"]] = (t, num(f.get("mustered")))
+    sec.ev["muster.count"].add(t, message)
+
+
+def empty_pull(sec, t, region, boss, message):
+    """T-1 (sweep 7c): both of Suttung's attempts began this way (03:44:21 and 04:03:44): FINAL_MUSTER mustered=0, a
+    STRANDED_REGROUP into the region 21 s and 15 s before, then EARLY_PULL decision=Commit."""
+    if region is None:
+        return
+    sec.ev["pull.early_commit"].add(t, message)
+    muster, stranded = sec.last_muster.get(region), sec.last_stranded.get(region)
+    if not muster or not stranded or muster[1] > 0 or (t - muster[0]).total_seconds() > EMPTY_MUSTER_SECONDS:
+        return
+    ago = (t - stranded[0]).total_seconds()
+    if 0 <= ago <= EMPTY_PULL_TELEPORT_SECONDS:
+        sec.lists["empty_pulls"].append(f"{boss} in region {region} at {stamp(t)[6:]} (muster 0 at {stamp(muster[0])[6:]}, "
+                                        f"stranded teleport {ago:.0f} s before)")
+        sec.ev["pull.empty_after_teleport"].add(
+            t, f"{message.rstrip()} [muster 0 at {stamp(muster[0])[6:]}; stranded teleport {ago:.0f} s before: "
+               f"{stranded[1].strip()[:120]}]")
+
+
 def wave_headway(sec, t, f, step, key):
     if step == "formed":
         sec.wave_headway[key] = [t, 0, False]
@@ -929,10 +973,24 @@ def wave_headway(sec, t, f, step, key):
     held[1] = max(held[1], kills)
 
 
-def engage(sec, region, boss, t):
+def engage(sec, region, boss, t, by="raid"):
     if region is not None and boss:
         start, _ = sec.engaged[region].get(boss, (t, t))
         sec.engaged[region][boss] = (start, t)
+        sec.engaged_by[region][boss] = by
+
+
+def rest_after_ledger(sec, region, boss, in_combat, t):
+    """T-2 (sweep 7c, build 9a173f4): a TARGET_STATUS inCombat=False after the boss's last fight-ledger line ends the
+    engagement that line began or kept: one ledger line after Suttung's wipe (03:57:19, 57 damage) kept him "engaged"
+    until 04:07, so the 04:03:29 teleport to his muster, with him resting (04:03:24), was not counted. A FINAL_ENGAGE,
+    EARLY_PULL Commit or TARGET_CALLED is the raid's own pull walking in and is still ended only by its wipe, defeat, heal
+    or the lapse."""
+    if in_combat or region is None or not boss:
+        return
+    fight = sec.engaged.get(region, {}).get(boss)
+    if fight and sec.engaged_by.get(region, {}).get(boss) == "ledger" and t > fight[1]:
+        sec.engaged[region].pop(boss, None)
 
 
 def disengage(sec, region, boss):
@@ -1041,6 +1099,7 @@ def _early_pull(sec, t, message, level, near):
     if f.get("region") is not None and f.get("target"):
         sec.engage_lines[f["region"]][f["target"]] = t
     if f.get("decision") == "Commit":
+        empty_pull(sec, t, f.get("region"), f.get("target"), message)
         engage(sec, f.get("region"), f.get("target"), t)
         if (f.get("region"), f.get("target")) not in sec.attempts:
             open_attempt(sec, t, f.get("region"), f.get("target"))
@@ -1063,7 +1122,7 @@ def _fight_ledger(sec, t, message, level, near):
         for entry in (f.get(field) or "").split(","):
             name = entry.rsplit(":", 1)[0].strip()
             if name and ":" in entry:
-                engage(sec, region, name, t)
+                engage(sec, region, name, t, by="ledger")
                 if name in adds:
                     add_seen(sec, target, name)
     no_progress_minute(sec, t, region, f.get("raid_dealt") or "")
@@ -1281,6 +1340,7 @@ def _target_status(sec, t, message, level, near):
     if region is None or target is None or at is None:
         return
     sec.bosses[region][target] = (f.get("inCombat") == "True", num(f.get("health"), 100.0), at, t, f.get("level"))
+    rest_after_ledger(sec, region, target, f.get("inCombat") == "True", t)
     attempt_health(sec, t, region, target, num(f.get("health"), 100.0), message)
 
 
@@ -1323,6 +1383,8 @@ def _stranded(sec, t, message, level, near):
     region, to = f.get("region"), point(f.get("to"))
     sec.ev["stranded.all"].add(t, message)
     sec.regroups_to[(region, f.get("to"))] += 1
+    if region is not None:
+        sec.last_stranded[region] = (t, message)
     if to is None:
         return
     for target, (in_combat, health, at, seen, lvl) in sec.bosses.get(region, {}).items():
@@ -1942,6 +2004,7 @@ def raids(j: Judge, sec: Section, c):
     sweep6e_rows(j, sec, c)
     sweep6f_rows(j, sec, c)
     sweep7b_rows(j, sec, c)
+    sweep7c_rows(j, sec, c)
     rekill_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
@@ -2201,6 +2264,21 @@ def sweep7b_rows(j: Judge, sec: Section, c):
         j.add("raids", "raid_cure_dot", text, CONTRADICTED, bad, detail, note=note)
     else:
         j.add("raids", "raid_cure_dot", text, SEEN, j.ev("RAID_CURE_POISON"), detail, note=note)
+
+
+def sweep7c_rows(j: Judge, sec: Section, c):
+    """Sweep 7c (build 9a173f4, T-1): a boss pulled with nobody at the muster right after a stranded teleport."""
+    empty = j.ev("pull.empty_after_teleport")
+    text = (f"No mustered encounter is pulled with 0 at the muster right after a stranded teleport (EARLY_PULL Commit within "
+            f"{EMPTY_PULL_TELEPORT_SECONDS} s of a STRANDED_REGROUP into the region, its last FINAL_MUSTER mustered=0; sweep 7c)")
+    detail = (f"{c('pull.early_commit')} early pull(s) committed, {empty.count} with 0 mustered right after a stranded "
+              f"teleport: {'; '.join(sec.lists['empty_pulls']) or 'none'}; {c('stranded.all')} stranded regroups")
+    note = "the teleported party walked into the boss: the muster's guard against the raid's own resting target (T-1)"
+    if empty.count:
+        j.add("raids", "empty_pull_teleport", text, CONTRADICTED, empty, detail, note=note)
+    else:
+        j.add("raids", "empty_pull_teleport", text, SEEN if c("pull.early_commit") and c("stranded.all") else NOT_SEEN,
+              j.ev("pull.early_commit") if c("pull.early_commit") else None, detail, note=note)
 
 
 def rekill_rows(j: Judge, sec: Section, c):
