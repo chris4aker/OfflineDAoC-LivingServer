@@ -2,7 +2,8 @@
 # others react ("rumour_reply"). The code only says it when it is true. Vague, the way rumours are, but enough to act
 # on. named_up: {target} is a rare named monster that just spawned, {place} its zone. keep_thin: {keep} is an ENEMY
 # keep whose guards are mostly dead, {place} its zone, {enemy} its owners. Bots can't promise to come ("omw"), so the
-# replies react instead. Real swear words are not in the corpus (build_corpus.py BANNED). New writing.
+# replies react instead. Swearing in 2003 style is allowed (owner, 2026-11-18; tools/bot-voices/banned.txt); slurs
+# are not. New writing.
 
 # ---- named_up: a rare named monster just spawned --------------------------------------------------------------------
 @kind rumour
@@ -12,7 +13,7 @@ heard {target} is up again in {place}
 someone in my guild saw {target} wandering {place}
 {target} is up in {place}, or so my guildie says
 anyone want {target}? its up in {place} supposedly
-word is {target} is back in {place}
+{target} is back in {place}, or so i heard
 friend of a friend saw {target} in {place}
 {target} up in {place}. go before someone else gets it
 i keep hearing {target} is roaming {place} right now
@@ -50,7 +51,7 @@ ooh juicy news: {target} is wandering {place}! dont tell everyone. ok tell every
 @kind rumour
 @topic keep_thin
 @who *
-scout says {keep} is wide open
+our scout says nobody is home at {keep}
 {keep} guards are mostly dead. free keep anyone?
 heard {keep} in {place} is barely guarded
 the {enemy} left {keep} with almost no guards. just saying
@@ -58,7 +59,7 @@ the {enemy} left {keep} with almost no guards. just saying
 my guildie rode past {keep}, said the guards are gone
 {keep} looks empty. the {enemy} must be busy somewhere else
 anyone up for {keep}? word is its wide open
-free rps at {keep}. guards are down
+{keep} guards are down, free rps
 {keep} is naked right now. heard it from a scout
 the {enemy} forgot about {keep}. guards mostly dead
 {keep} in {place}, half the guards dead. go go go
@@ -78,7 +79,7 @@ wanna take {keep}? guards are mostly dead
 @who NoLifer
 seen {keep} this empty maybe twice. the {enemy} are slacking. go
 @who Explorer
-rode past {keep} in {place} on my way through. guards were lying all over the place
+rode past {keep} in {place} earlier. guards were lying all over the place
 @who *
 [scout says|word is|heard] {keep} [is wide open|is barely guarded|has almost no guards][. go go|. who is in?|]
 [the|those] {enemy} [left|forgot|abandoned] {keep}[ in {place}|]. [guards are down|almost no guards|free keep]

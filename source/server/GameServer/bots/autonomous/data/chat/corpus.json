@@ -246350,7 +246350,7 @@
    "mood": "",
    "weight": 0.2887,
    "text": "alms! alms!",
-   "family": "697bdb91b6",
+   "family": "be755ebe51",
    "id": "8c22d0c7e844"
   },
   {
@@ -246368,7 +246368,7 @@
    "mood": "",
    "weight": 0.2887,
    "text": "alms, anyone",
-   "family": "697bdb91b6",
+   "family": "be755ebe51",
    "id": "3de7045d8dfc"
   },
   {
@@ -246385,9 +246385,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
-   "text": "alms for the poor! alms!",
-   "family": "697bdb91b6",
-   "id": "b42c98893456"
+   "text": "alms for the hungry! alms!",
+   "family": "be755ebe51",
+   "id": "aeae198ea152"
   },
   {
    "kind": "beggar",
@@ -246403,9 +246403,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
-   "text": "alms for the poor, anyone",
-   "family": "697bdb91b6",
-   "id": "b0e27ce90ff0"
+   "text": "alms for the hungry, anyone",
+   "family": "be755ebe51",
+   "id": "0696ae4dd5d7"
   },
   {
    "kind": "beggar",
@@ -246421,9 +246421,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
-   "text": "coin for the needy! alms!",
-   "family": "697bdb91b6",
-   "id": "354e33506cd3"
+   "text": "alms for the hungry, please",
+   "family": "be755ebe51",
+   "id": "13dd955a71d2"
   },
   {
    "kind": "beggar",
@@ -246439,9 +246439,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
-   "text": "coin for the needy, anyone",
-   "family": "697bdb91b6",
-   "id": "002f18e90da0"
+   "text": "alms for the hungry",
+   "family": "be755ebe51",
+   "id": "04d2dedf6186"
   },
   {
    "kind": "beggar",
@@ -246457,9 +246457,63 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
-   "text": "coin for the needy, please",
-   "family": "697bdb91b6",
-   "id": "8bea531e861b"
+   "text": "spare a coin! alms!",
+   "family": "be755ebe51",
+   "id": "a6eeadcb941b"
+  },
+  {
+   "kind": "beggar",
+   "topic": "beg_idle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "text": "spare a coin, anyone",
+   "family": "be755ebe51",
+   "id": "7a765c11dd2f"
+  },
+  {
+   "kind": "beggar",
+   "topic": "beg_idle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "text": "spare a coin, please",
+   "family": "be755ebe51",
+   "id": "ba9510e26884"
+  },
+  {
+   "kind": "beggar",
+   "topic": "beg_idle",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "text": "spare a coin",
+   "family": "be755ebe51",
+   "id": "95ed1177305c"
   },
   {
    "kind": "beggar",
@@ -256840,7 +256894,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "no time, {target}. xp waits",
-   "family": "735c3501ce",
+   "family": "24f7649550",
    "id": "2f8b3c6b261e"
   },
   {
@@ -256860,7 +256914,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "no time, {target}. camp waits",
-   "family": "735c3501ce",
+   "family": "24f7649550",
    "id": "12b2bdff6c3e"
   },
   {
@@ -256879,9 +256933,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.4082,
-   "text": "no time, {target}. on my way out",
-   "family": "735c3501ce",
-   "id": "b42172b530ca"
+   "text": "no time, {target}. just leaving",
+   "family": "24f7649550",
+   "id": "de433ab911c8"
   },
   {
    "kind": "beggar",
@@ -256900,7 +256954,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "cant stop, {target}. xp waits",
-   "family": "735c3501ce",
+   "family": "24f7649550",
    "id": "e8a5324ae801"
   },
   {
@@ -256920,7 +256974,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "cant stop, {target}. camp waits",
-   "family": "735c3501ce",
+   "family": "24f7649550",
    "id": "38029d9df2b0"
   },
   {
@@ -256939,9 +256993,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.4082,
-   "text": "cant stop, {target}. on my way out",
-   "family": "735c3501ce",
-   "id": "96281f9d824c"
+   "text": "cant stop, {target}. just leaving",
+   "family": "24f7649550",
+   "id": "6b1b513bdd41"
   },
   {
    "kind": "beggar",
@@ -287472,7 +287526,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is corner, {player}. mine. nobody begs here but me",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "57fd78b7134f"
   },
   {
@@ -287490,7 +287544,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is corner, {player}. mine. i have papers",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "ec8958613ec7"
   },
   {
@@ -287508,7 +287562,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is corner, {player}. mine. ask anyone",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "a212d8fed87a"
   },
   {
@@ -287526,7 +287580,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is MY corner, {player}. mine. nobody begs here but me",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "22ee8b360702"
   },
   {
@@ -287544,7 +287598,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is MY corner, {player}. mine. i have papers",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "fed857e14d2d"
   },
   {
@@ -287562,7 +287616,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "this is MY corner, {player}. mine. ask anyone",
-   "family": "b38be0f6a7",
+   "family": "db2e2ea5f6",
    "id": "0cb77d8ac2d8"
   },
   {
@@ -339720,8 +339774,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "the {enemy} keep running into {player} and keep dying. {count} now",
-   "id": "7f16925131ee"
+   "text": "the {enemy} just keep running into {player} and dying. {count} now",
+   "id": "6035e211e532"
   },
   {
    "kind": "deed",
@@ -341551,7 +341605,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} cant handle {player}. {count} kills",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "f4b19b56e059"
   },
   {
@@ -341569,7 +341623,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} cant handle {player}. {count} so far",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "2596ea2eb802"
   },
   {
@@ -341587,7 +341641,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} cant handle {player}. {count} and counting",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "b5513afe5e1d"
   },
   {
@@ -341605,7 +341659,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} have no answer for {player}. {count} kills",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "3d843b0b67bb"
   },
   {
@@ -341623,7 +341677,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} have no answer for {player}. {count} so far",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "6b54132659b5"
   },
   {
@@ -341641,7 +341695,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "the {enemy} have no answer for {player}. {count} and counting",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "827362a25e6f"
   },
   {
@@ -341658,9 +341712,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "the {enemy} keep dying to {player}. {count} kills",
-   "family": "0b38bbd16e",
-   "id": "927a02e95a47"
+   "text": "the {enemy} just keep dying to {player}. {count} kills",
+   "family": "8f7c11de3f",
+   "id": "6ee14f4fccc3"
   },
   {
    "kind": "deed",
@@ -341676,9 +341730,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "the {enemy} keep dying to {player}. {count} so far",
-   "family": "0b38bbd16e",
-   "id": "bc9eb2cb9764"
+   "text": "the {enemy} just keep dying to {player}. {count} so far",
+   "family": "8f7c11de3f",
+   "id": "4dd252b86a33"
   },
   {
    "kind": "deed",
@@ -341694,9 +341748,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "the {enemy} keep dying to {player}. {count} and counting",
-   "family": "0b38bbd16e",
-   "id": "795a26bc1bbc"
+   "text": "the {enemy} just keep dying to {player}. {count} and counting",
+   "family": "8f7c11de3f",
+   "id": "6b037782bb69"
   },
   {
    "kind": "deed",
@@ -341713,7 +341767,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} cant handle {player}. {count} kills",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "e06252acc7d9"
   },
   {
@@ -341731,7 +341785,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} cant handle {player}. {count} so far",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "f8bbf57a24a2"
   },
   {
@@ -341749,7 +341803,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} cant handle {player}. {count} and counting",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "d9b4c3441359"
   },
   {
@@ -341767,7 +341821,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} have no answer for {player}. {count} kills",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "93540f4a054e"
   },
   {
@@ -341785,7 +341839,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} have no answer for {player}. {count} so far",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "ab301f9bc699"
   },
   {
@@ -341803,7 +341857,7 @@
    "mood": "",
    "weight": 0.2357,
    "text": "those {enemy} have no answer for {player}. {count} and counting",
-   "family": "0b38bbd16e",
+   "family": "8f7c11de3f",
    "id": "d443d42e9d44"
   },
   {
@@ -341820,9 +341874,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "those {enemy} keep dying to {player}. {count} kills",
-   "family": "0b38bbd16e",
-   "id": "45c985d5e016"
+   "text": "those {enemy} just keep dying to {player}. {count} kills",
+   "family": "8f7c11de3f",
+   "id": "8525a2b84866"
   },
   {
    "kind": "deed",
@@ -341838,9 +341892,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "those {enemy} keep dying to {player}. {count} so far",
-   "family": "0b38bbd16e",
-   "id": "a1d36cd108f5"
+   "text": "those {enemy} just keep dying to {player}. {count} so far",
+   "family": "8f7c11de3f",
+   "id": "b3b92f40397f"
   },
   {
    "kind": "deed",
@@ -341856,9 +341910,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
-   "text": "those {enemy} keep dying to {player}. {count} and counting",
-   "family": "0b38bbd16e",
-   "id": "9f63e795d79c"
+   "text": "those {enemy} just keep dying to {player}. {count} and counting",
+   "family": "8f7c11de3f",
+   "id": "286481d61d50"
   },
   {
    "kind": "deed",
@@ -350063,8 +350117,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "isnt {player} the one who soloed {target}?",
-   "id": "87d98d008844"
+   "text": "wait, isnt {player} the one who soloed {target} that time?",
+   "id": "2efd6c33bdfc"
   },
   {
    "kind": "deed",
@@ -350131,8 +350185,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "they say {player} soloed {target}. pics or it didnt happen",
-   "id": "ac1dac84c191"
+   "text": "they say {player} soloed {target}. screenshot or it didnt happen",
+   "id": "eb1fa00e3e0d"
   },
   {
    "kind": "deed",
@@ -350392,6 +350446,24 @@
    "weight": 1.0,
    "text": "{player} soloed {target}, they say. ive been around a long time and nobody does that",
    "id": "e5f84479498d"
+  },
+  {
+   "kind": "deed",
+   "topic": "rep_named",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "text": "isnt {player} the one who soloed {target}?",
+   "family": "b0991231e7",
+   "id": "87d98d008844"
   },
   {
    "kind": "deed",
@@ -353359,8 +353431,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{count} embarrassing deaths. {player}, are you ok",
-   "id": "9ef60ae60bd8"
+   "text": "{count} embarrassing deaths now. {player}, you ok over there",
+   "id": "0593ca207dc8"
   },
   {
    "kind": "deed",
@@ -353904,6 +353976,24 @@
    "intent": "",
    "mood": "",
    "weight": 0.3333,
+   "text": "{count} embarrassing deaths? {player}, are you ok",
+   "family": "5cf36c36c8",
+   "id": "227cb6d896f6"
+  },
+  {
+   "kind": "deed",
+   "topic": "rep_silly",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
    "text": "{count} embarrassing deaths? {player} is a legend",
    "family": "5cf36c36c8",
    "id": "237d60b8fb50"
@@ -354426,8 +354516,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "from now on its {player} {nickname}",
-   "id": "b4a94c0dc35a"
+   "text": "ok so from now on its {player} {nickname}, no arguing",
+   "id": "48aaa5e7b22c"
   },
   {
    "kind": "deed",
@@ -354789,6 +354879,24 @@
    "weight": 1.0,
    "text": "seen a lot of names come and go. {player} {nickname} is a keeper",
    "id": "eafb71474904"
+  },
+  {
+   "kind": "deed",
+   "topic": "nickname",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "text": "from now on its {player} {nickname}!",
+   "family": "456607f05b",
+   "id": "44054b96f009"
   },
   {
    "kind": "deed",
@@ -356124,44 +356232,8 @@
    "intent": "",
    "mood": "",
    "weight": 0.4082,
-   "text": "pics or it didnt happen, {player}",
-   "family": "c25d407c2d",
-   "id": "89ea8b7e2150"
-  },
-  {
-   "kind": "deed_reply",
-   "topic": "named_solo",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
-   "text": "pics or it didnt happen",
-   "family": "c25d407c2d",
-   "id": "3d74ddc34279"
-  },
-  {
-   "kind": "deed_reply",
-   "topic": "named_solo",
-   "who": [],
-   "realm": "*",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.4082,
    "text": "screenie or it didnt happen, {player}",
-   "family": "c25d407c2d",
+   "family": "e7fa543645",
    "id": "e38df2159b3c"
   },
   {
@@ -356179,7 +356251,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "screenie or it didnt happen",
-   "family": "c25d407c2d",
+   "family": "e7fa543645",
    "id": "12e91c250bc1"
   },
   {
@@ -356197,7 +356269,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "proof or it didnt happen, {player}",
-   "family": "c25d407c2d",
+   "family": "e7fa543645",
    "id": "8447ba483acf"
   },
   {
@@ -356215,8 +356287,44 @@
    "mood": "",
    "weight": 0.4082,
    "text": "proof or it didnt happen",
-   "family": "c25d407c2d",
+   "family": "e7fa543645",
    "id": "f7c0ff9e320b"
+  },
+  {
+   "kind": "deed_reply",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "text": "screenshot it or it didnt happen, {player}",
+   "family": "e7fa543645",
+   "id": "95f1865479ee"
+  },
+  {
+   "kind": "deed_reply",
+   "topic": "named_solo",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.4082,
+   "text": "screenshot it or it didnt happen",
+   "family": "e7fa543645",
+   "id": "8a76e9024cf4"
   },
   {
    "kind": "deed_reply",
@@ -356683,8 +356791,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{player} always carries lol",
-   "id": "f1a7c8137317"
+   "text": "{player} carries every time lol",
+   "id": "96e5f9de2852"
   },
   {
    "kind": "deed_reply",
@@ -357432,6 +357540,24 @@
    "text": "grats, anything good drop?",
    "family": "cfc7072ee7",
    "id": "0a240c5c0acf"
+  },
+  {
+   "kind": "deed_reply",
+   "topic": "named_group",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "text": "{player} always carries lol",
+   "family": "2472e6dd9a",
+   "id": "f1a7c8137317"
   },
   {
    "kind": "deed_reply",
@@ -364833,8 +364959,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "it suits them",
-   "id": "313d63b3df5b"
+   "text": "that name suits them",
+   "id": "343cb4789d56"
   },
   {
    "kind": "deed_reply",
@@ -365183,7 +365309,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "hail {player} {nickname}!",
-   "family": "0564600684",
+   "family": "cbd223faa7",
    "id": "40218d1b076d"
   },
   {
@@ -365201,7 +365327,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "hail {player} {nickname}. deserved",
-   "family": "0564600684",
+   "family": "cbd223faa7",
    "id": "d167e7f97765"
   },
   {
@@ -365218,9 +365344,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.4082,
-   "text": "all hail {player} {nickname}!",
-   "family": "0564600684",
-   "id": "87d2e90f22bf"
+   "text": "grats {player} {nickname}!",
+   "family": "cbd223faa7",
+   "id": "6c2b4c3dde6f"
   },
   {
    "kind": "deed_reply",
@@ -365236,9 +365362,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.4082,
-   "text": "all hail {player} {nickname}. deserved",
-   "family": "0564600684",
-   "id": "20535688d3ef"
+   "text": "grats {player} {nickname}. deserved",
+   "family": "cbd223faa7",
+   "id": "a7c3439ac59c"
   },
   {
    "kind": "deed_reply",
@@ -365255,7 +365381,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "gz {player} {nickname}!",
-   "family": "0564600684",
+   "family": "cbd223faa7",
    "id": "0375b24025e0"
   },
   {
@@ -365273,7 +365399,7 @@
    "mood": "",
    "weight": 0.4082,
    "text": "gz {player} {nickname}. deserved",
-   "family": "0564600684",
+   "family": "cbd223faa7",
    "id": "d25451ca96dc"
   },
   {
@@ -365293,6 +365419,24 @@
    "text": "it suits them perfectly",
    "family": "57ad1914c2",
    "id": "8454041cca1d"
+  },
+  {
+   "kind": "deed_reply",
+   "topic": "nickname",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.25,
+   "text": "it suits them",
+   "family": "57ad1914c2",
+   "id": "313d63b3df5b"
   },
   {
    "kind": "deed_reply",
@@ -370348,7 +370492,7 @@
   },
   {
    "kind": "thanks",
-   "topic": "heal",
+   "topic": "group",
    "who": [],
    "realm": "*",
    "class": [],
@@ -370360,8 +370504,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{player} you kept me alive at {place}, owe you one",
-   "id": "a3b43a2e2d73"
+   "text": "{player}, you kept me alive that whole group at {place}, owe you one",
+   "id": "1280ade0e26e"
   },
   {
    "kind": "thanks",
@@ -370517,7 +370661,9 @@
     1,
     50
    ],
-   "needs": [],
+   "needs": [
+    "player_grouped"
+   ],
    "intent": "",
    "mood": "friendly",
    "weight": 0.7071,
@@ -370535,7 +370681,9 @@
     1,
     50
    ],
-   "needs": [],
+   "needs": [
+    "player_grouped"
+   ],
    "intent": "",
    "mood": "friendly",
    "weight": 0.7071,
@@ -413898,9 +414046,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "chat",
-   "text": "halloween party this weekend, going as a necromancer. very original i know",
-   "family": "886617a90f",
-   "id": "c51293a4a563"
+   "text": "halloween party this weekend, my costume is a necromancer. very original i know",
+   "family": "3a4dd888f3",
+   "id": "c050d24baf63"
   },
   {
    "kind": "ambient",
@@ -413920,9 +414068,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "chat",
-   "text": "halloween party this weekend, going as a skeleton. very original i know",
-   "family": "886617a90f",
-   "id": "a425b951da20"
+   "text": "halloween party this weekend, my costume is a skeleton. very original i know",
+   "family": "3a4dd888f3",
+   "id": "fd371828ffb5"
   },
   {
    "kind": "ambient",
@@ -413942,9 +414090,9 @@
    "mood": "",
    "weight": 0.5774,
    "invites": "chat",
-   "text": "halloween party this weekend, going as a zombie. very original i know",
-   "family": "886617a90f",
-   "id": "54a45e53ced4"
+   "text": "halloween party this weekend, my costume is a zombie. very original i know",
+   "family": "3a4dd888f3",
+   "id": "9032b1eb783c"
   },
   {
    "kind": "ambient",
@@ -415045,9 +415193,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "my mom says no computer during dinner. i said what about after",
-   "family": "882d68e3e4",
-   "id": "c381a16598d5"
+   "text": "my mom says no computer at the table on thursday. i said what about after",
+   "family": "dffebdb82d",
+   "id": "a9a853b1b94b"
   },
   {
    "kind": "ambient",
@@ -415067,9 +415215,9 @@
    "mood": "",
    "weight": 0.7071,
    "invites": "chat",
-   "text": "my grandma says no computer during dinner. i said what about after",
-   "family": "882d68e3e4",
-   "id": "33b5d21cac21"
+   "text": "my grandma says no computer at the table on thursday. i said what about after",
+   "family": "dffebdb82d",
+   "id": "b8d1ce364e96"
   },
   {
    "kind": "ambient",
@@ -417215,7 +417363,7 @@
    "weight": 0.4082,
    "invites": "chat",
    "text": "my valentine is my healer. true love",
-   "family": "95f6623b2e",
+   "family": "2d5847b6f0",
    "id": "b211224b6b0f"
   },
   {
@@ -417236,7 +417384,7 @@
    "weight": 0.4082,
    "invites": "chat",
    "text": "my valentine is my healer. they never let me die",
-   "family": "95f6623b2e",
+   "family": "2d5847b6f0",
    "id": "fa4a4e661faa"
   },
   {
@@ -417256,9 +417404,9 @@
    "mood": "",
    "weight": 0.4082,
    "invites": "chat",
-   "text": "my valentine is my minstrel. true love",
-   "family": "95f6623b2e",
-   "id": "07fa2384e13a"
+   "text": "my valentine is my rezzer. true love",
+   "family": "2d5847b6f0",
+   "id": "461f8a74a6b2"
   },
   {
    "kind": "ambient",
@@ -417277,9 +417425,9 @@
    "mood": "",
    "weight": 0.4082,
    "invites": "chat",
-   "text": "my valentine is my minstrel. they never let me die",
-   "family": "95f6623b2e",
-   "id": "7d5eac3ad474"
+   "text": "my valentine is my rezzer. they never let me die",
+   "family": "2d5847b6f0",
+   "id": "04f4bded5590"
   },
   {
    "kind": "ambient",
@@ -417299,7 +417447,7 @@
    "weight": 0.4082,
    "invites": "chat",
    "text": "my valentine is my tank. true love",
-   "family": "95f6623b2e",
+   "family": "2d5847b6f0",
    "id": "63644681eaf1"
   },
   {
@@ -417320,7 +417468,7 @@
    "weight": 0.4082,
    "invites": "chat",
    "text": "my valentine is my tank. they never let me die",
-   "family": "95f6623b2e",
+   "family": "2d5847b6f0",
    "id": "c519eeee76c0"
   },
   {
@@ -418882,9 +419030,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "family dinner on sunday, getting my levels in tonight",
-   "family": "9eec968a58",
-   "id": "e436d28ef015"
+   "text": "family thing on sunday, getting my levels in tonight",
+   "family": "53a50c4c04",
+   "id": "dfd4cfc51e8c"
   },
   {
    "kind": "ambient",
@@ -418904,9 +419052,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "family dinner this weekend, getting my levels in tonight",
-   "family": "9eec968a58",
-   "id": "ecf4dcb58ddb"
+   "text": "family thing this weekend, getting my levels in tonight",
+   "family": "53a50c4c04",
+   "id": "69165742310b"
   },
   {
    "kind": "ambient",
@@ -418926,9 +419074,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "easter dinner on sunday, getting my levels in tonight",
-   "family": "9eec968a58",
-   "id": "8510202b80b0"
+   "text": "easter at grandmas on sunday, getting my levels in tonight",
+   "family": "53a50c4c04",
+   "id": "ddda2ebf1a36"
   },
   {
    "kind": "ambient",
@@ -418948,9 +419096,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "easter dinner this weekend, getting my levels in tonight",
-   "family": "9eec968a58",
-   "id": "0a57dd34466a"
+   "text": "easter at grandmas this weekend, getting my levels in tonight",
+   "family": "53a50c4c04",
+   "id": "043dbc324d81"
   },
   {
    "kind": "ambient",
@@ -419397,9 +419545,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "ham for dinner, then back to leveling",
-   "family": "a48b6bc32e",
-   "id": "5228607e79b1"
+   "text": "ham and way too much pie, then back to leveling",
+   "family": "a3b15bbd49",
+   "id": "244df3d5f129"
   },
   {
    "kind": "ambient",
@@ -419418,9 +419566,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "ham for dinner, then back to my camp",
-   "family": "a48b6bc32e",
-   "id": "cd7c747736eb"
+   "text": "ham and way too much pie, then back to my camp",
+   "family": "a3b15bbd49",
+   "id": "33acd7476ab1"
   },
   {
    "kind": "ambient",
@@ -419439,9 +419587,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "lamb for dinner, then back to leveling",
-   "family": "a48b6bc32e",
-   "id": "17a85dc9129f"
+   "text": "lamb and way too much pie, then back to leveling",
+   "family": "a3b15bbd49",
+   "id": "33dab29bc20d"
   },
   {
    "kind": "ambient",
@@ -419460,9 +419608,9 @@
    "mood": "",
    "weight": 0.5,
    "invites": "chat",
-   "text": "lamb for dinner, then back to my camp",
-   "family": "a48b6bc32e",
-   "id": "15c28596f4d4"
+   "text": "lamb and way too much pie, then back to my camp",
+   "family": "a3b15bbd49",
+   "id": "248f4be5417a"
   },
   {
    "kind": "ambient",
@@ -420408,8 +420556,8 @@
    "answers": [
     "ask_holiday"
    ],
-   "text": "ask me after dinner",
-   "id": "f5986764e17a"
+   "text": "ask me after i eat",
+   "id": "7ff1a751a625"
   },
   {
    "kind": "lfg",
@@ -531177,8 +531325,8 @@
    "intent": "greeting",
    "mood": "",
    "weight": 1.0,
-   "text": "hey {player}, good to see you again",
-   "id": "840a72eefb7d"
+   "text": "hey {player}, nice to see you around again",
+   "id": "0e64c652f252"
   },
   {
    "kind": "reply",
@@ -535991,7 +536139,7 @@
    "mood": "",
    "weight": 0.5,
    "text": "{count} raid kills and still no drop. not stopping now",
-   "family": "72df10d61b",
+   "family": "4ea5fca23a",
    "id": "c9458cb49fb1"
   },
   {
@@ -536010,9 +536158,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "{count} raid kills and still no drop. ill be there for the next one",
-   "family": "72df10d61b",
-   "id": "6cef2f90dcef"
+   "text": "{count} raid kills and still no drop. ill be back for the next one",
+   "family": "4ea5fca23a",
+   "id": "7a220011caf5"
   },
   {
    "kind": "milestone",
@@ -536031,7 +536179,7 @@
    "mood": "",
    "weight": 0.5,
    "text": "{count} boss kills and still no drop. not stopping now",
-   "family": "72df10d61b",
+   "family": "4ea5fca23a",
    "id": "515c0b9f0454"
   },
   {
@@ -536050,9 +536198,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "{count} boss kills and still no drop. ill be there for the next one",
-   "family": "72df10d61b",
-   "id": "5b93c7bdea5b"
+   "text": "{count} boss kills and still no drop. ill be back for the next one",
+   "family": "4ea5fca23a",
+   "id": "dcdfd0215eee"
   },
   {
    "kind": "milestone",
@@ -536104,9 +536252,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "woot, {item} from {boss}",
-   "family": "37766d86f4",
-   "id": "0058c8362f07"
+   "text": "woot, got {item} from {boss}",
+   "family": "1609e4bfc1",
+   "id": "02a0bebc0a83"
   },
   {
    "kind": "milestone",
@@ -536122,9 +536270,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "woot, {item} off {boss}",
-   "family": "37766d86f4",
-   "id": "a8b672fc583a"
+   "text": "woot, got {item} off {boss}",
+   "family": "1609e4bfc1",
+   "id": "486f95e34e1a"
   },
   {
    "kind": "milestone",
@@ -536140,9 +536288,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "yes, {item} from {boss}",
-   "family": "37766d86f4",
-   "id": "dcadc8d02a6d"
+   "text": "yes, got {item} from {boss}",
+   "family": "1609e4bfc1",
+   "id": "41fcbc3144ca"
   },
   {
    "kind": "milestone",
@@ -536158,9 +536306,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.5,
-   "text": "yes, {item} off {boss}",
-   "family": "37766d86f4",
-   "id": "6e5fb51f767b"
+   "text": "yes, got {item} off {boss}",
+   "family": "1609e4bfc1",
+   "id": "9d9cffd5f251"
   },
   {
    "kind": "milestone",
@@ -537046,13 +537194,13 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
+   "weight": 0.5,
    "answers": [
     "milestone_trophy"
    ],
-   "text": "gz on the drop",
-   "family": "b352957d99",
-   "id": "7de603fb14cf"
+   "text": "gz on that drop",
+   "family": "83997045bf",
+   "id": "e816245d9ce9"
   },
   {
    "kind": "reply",
@@ -537067,13 +537215,55 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.7071,
+   "weight": 0.5,
    "answers": [
     "milestone_trophy"
    ],
-   "text": "grats on the drop",
-   "family": "b352957d99",
-   "id": "883ecb673adb"
+   "text": "gz on finally getting it",
+   "family": "83997045bf",
+   "id": "855736655696"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats on that drop",
+   "family": "83997045bf",
+   "id": "8003e530553a"
+  },
+  {
+   "kind": "reply",
+   "topic": "general",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "answers": [
+    "milestone_trophy"
+   ],
+   "text": "grats on finally getting it",
+   "family": "83997045bf",
+   "id": "09bf8b71500e"
   },
   {
    "kind": "reply",
@@ -541440,8 +541630,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_siege_muster",
-   "text": "army forming for {keep}, anyone want in?",
-   "id": "f8db5af92e07"
+   "text": "army is forming up for {keep}, who wants in?",
+   "id": "6c70bd616338"
   },
   {
    "kind": "news",
@@ -541502,6 +541692,27 @@
    "invites": "news_siege_muster",
    "text": "who is coming to {keep}? they are forming up now",
    "id": "b0a01dad93d1"
+  },
+  {
+   "kind": "news",
+   "topic": "siege_muster",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "invites": "news_siege_muster",
+   "text": "army forming for {keep}, anyone want in?",
+   "family": "999e231b38",
+   "id": "f8db5af92e07"
   },
   {
    "kind": "news",
@@ -542568,7 +542779,7 @@
    "weight": 0.3333,
    "invites": "news_siege_attack",
    "text": "hitting {keep}, need more",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "9e6280758876"
   },
   {
@@ -542589,7 +542800,7 @@
    "weight": 0.3333,
    "invites": "news_siege_attack",
    "text": "hitting {keep}, come help",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "ee9a05726745"
   },
   {
@@ -542609,9 +542820,9 @@
    "mood": "",
    "weight": 0.3333,
    "invites": "news_siege_attack",
-   "text": "hitting {keep}, healers please",
-   "family": "a6f3adbe13",
-   "id": "5964889de5a7"
+   "text": "hitting {keep}, need heals",
+   "family": "b3aaa09801",
+   "id": "1d265b7be172"
   },
   {
    "kind": "news",
@@ -542631,7 +542842,7 @@
    "weight": 0.3333,
    "invites": "news_siege_attack",
    "text": "fighting at {keep}, need more",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "86ac5c5cf7b2"
   },
   {
@@ -542652,7 +542863,7 @@
    "weight": 0.3333,
    "invites": "news_siege_attack",
    "text": "fighting at {keep}, come help",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "d2c6744f7571"
   },
   {
@@ -542672,8 +542883,29 @@
    "mood": "",
    "weight": 0.3333,
    "invites": "news_siege_attack",
+   "text": "fighting at {keep}, need heals",
+   "family": "b3aaa09801",
+   "id": "bb34d223127a"
+  },
+  {
+   "kind": "news",
+   "topic": "siege_attack",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "invites": "news_siege_attack",
    "text": "sieging {keep}, need more",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "badbb834e851"
   },
   {
@@ -542694,7 +542926,7 @@
    "weight": 0.3333,
    "invites": "news_siege_attack",
    "text": "sieging {keep}, come help",
-   "family": "a6f3adbe13",
+   "family": "b3aaa09801",
    "id": "a22d55b1ed73"
   },
   {
@@ -542714,9 +542946,9 @@
    "mood": "",
    "weight": 0.3333,
    "invites": "news_siege_attack",
-   "text": "sieging {keep}, healers please",
-   "family": "a6f3adbe13",
-   "id": "bcd1dd48ab03"
+   "text": "sieging {keep}, need heals",
+   "family": "b3aaa09801",
+   "id": "a50c81ce6b3b"
   },
   {
    "kind": "news",
@@ -542755,8 +542987,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_siege_attack",
-   "text": "our army is on {keep}, anyone want in?",
-   "id": "e10ff0ad4855"
+   "text": "our army is parked on {keep}, who is coming?",
+   "id": "2842dbc780ac"
   },
   {
    "kind": "news",
@@ -542817,6 +543049,27 @@
    "invites": "news_siege_attack",
    "text": "{keep} is under our siege, come help",
    "id": "85207b7f6fa3"
+  },
+  {
+   "kind": "news",
+   "topic": "siege_attack",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "invites": "news_siege_attack",
+   "text": "our army is on {keep}, anyone want in?",
+   "family": "5eae1c86a9",
+   "id": "e10ff0ad4855"
   },
   {
    "kind": "news",
@@ -543773,8 +544026,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_siege_held",
-   "text": "good news, {keep} held",
-   "id": "d32fc4c344d7"
+   "text": "{keep} held, good news for once",
+   "id": "28ba244783cf"
   },
   {
    "kind": "news",
@@ -543943,6 +544196,27 @@
    "text": "good news, {keep} held, gj whoever was there",
    "family": "5de234cb28",
    "id": "ff7fbb1dbb34"
+  },
+  {
+   "kind": "news",
+   "topic": "siege_held",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "news_siege_held",
+   "text": "good news, {keep} held",
+   "family": "5de234cb28",
+   "id": "d32fc4c344d7"
   },
   {
    "kind": "news",
@@ -545165,8 +545439,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_keep_won",
-   "text": "heard we have {keep} now",
-   "id": "fa0f5d2e1338"
+   "text": "so {keep} is ours now, nice",
+   "id": "527429367f1e"
   },
   {
    "kind": "news",
@@ -545435,6 +545709,27 @@
    "mood": "",
    "weight": 0.5,
    "invites": "news_keep_won",
+   "text": "heard we have {keep} now",
+   "family": "b30648861e",
+   "id": "fa0f5d2e1338"
+  },
+  {
+   "kind": "news",
+   "topic": "keep_won",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.5,
+   "invites": "news_keep_won",
    "text": "word is we took {keep} now",
    "family": "b30648861e",
    "id": "9ddd54bae22c"
@@ -545621,8 +545916,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_keep_lost",
-   "text": "heard {winner} took {keep}",
-   "id": "7d1ca8e25690"
+   "text": "heard {keep} went to {winner}",
+   "id": "ff31e98d6a35"
   },
   {
    "kind": "news",
@@ -545641,8 +545936,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_keep_lost",
-   "text": "we lost {keep} to {winner}",
-   "id": "26eccd049bbd"
+   "text": "{keep} fell to {winner}, figures",
+   "id": "5c1c331ff907"
   },
   {
    "kind": "news",
@@ -545804,6 +546099,27 @@
    ],
    "intent": "",
    "mood": "",
+   "weight": 0.4082,
+   "invites": "news_keep_lost",
+   "text": "we lost {keep} to {winner}",
+   "family": "29cdd698e1",
+   "id": "26eccd049bbd"
+  },
+  {
+   "kind": "news",
+   "topic": "keep_lost",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
    "weight": 0.2887,
    "invites": "news_keep_lost",
    "text": "heard {winner} took {keep}, ugh",
@@ -545830,6 +546146,27 @@
    "text": "heard {winner} took {keep}. anyone forming?",
    "family": "80cccc3a56",
    "id": "79aeb3c67287"
+  },
+  {
+   "kind": "news",
+   "topic": "keep_lost",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "news_keep_lost",
+   "text": "heard {winner} took {keep}",
+   "family": "80cccc3a56",
+   "id": "7d1ca8e25690"
   },
   {
    "kind": "news",
@@ -546160,8 +546497,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "news_keep_other",
-   "text": "{winner} took {keep} from {loser}",
-   "id": "a167875e1591"
+   "text": "{keep} went from {loser} to {winner}",
+   "id": "5acc85353efb"
   },
   {
    "kind": "news",
@@ -546304,6 +546641,27 @@
    "text": "{winner} took {keep} from {loser}. good",
    "family": "a1f6be3f22",
    "id": "d7d04bb478d2"
+  },
+  {
+   "kind": "news",
+   "topic": "keep_other",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "!witness"
+   ],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "invites": "news_keep_other",
+   "text": "{winner} took {keep} from {loser}",
+   "family": "a1f6be3f22",
+   "id": "a167875e1591"
   },
   {
    "kind": "news",
@@ -553101,8 +553459,8 @@
    "answers": [
     "news_relic_back"
    ],
-   "text": "took long enough",
-   "id": "bd9f67d73795"
+   "text": "about time, took long enough",
+   "id": "0f176a525881"
   },
   {
    "kind": "reply",
@@ -554325,8 +554683,8 @@
    "answers": [
     "news_raid_won"
    ],
-   "text": "grats all, big kill",
-   "id": "53e7e21b3d1f"
+   "text": "grats all, that was a big kill",
+   "id": "250f195c0479"
   },
   {
    "kind": "reply",
@@ -554433,8 +554791,8 @@
    "answers": [
     "news_raid_won"
    ],
-   "text": "gz!! what dropped",
-   "id": "9cc01640a3d0"
+   "text": "gz!! so what dropped",
+   "id": "9a370c2b7a43"
   },
   {
    "kind": "reply",
@@ -602597,8 +602955,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "fellow warriors, remember: a true hero eateth a hearty breakfast before battle",
-   "id": "6a4c1e749dc3"
+   "text": "fellow warriors, remember: a true hero eateth a hearty meal before battle",
+   "id": "c05698ff658c"
   },
   {
    "kind": "roleplay",
@@ -616952,8 +617310,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "speak english",
-   "id": "a3300bdf1d2f"
+   "text": "say it in english",
+   "id": "3ed9ecc9cf00"
   },
   {
    "kind": "roleplay",
@@ -616969,8 +617327,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{target} is at it again",
-   "id": "b1b756390ad6"
+   "text": "and {target} is off again",
+   "id": "128f7cb51872"
   },
   {
    "kind": "roleplay",
@@ -616986,8 +617344,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "thou art a nerd",
-   "id": "acdefb0d821f"
+   "text": "what a nerd lol",
+   "id": "5a216f772164"
   },
   {
    "kind": "roleplay",
@@ -617003,8 +617361,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "lol thee and thou",
-   "id": "544d8e22745c"
+   "text": "thee, thou, thy. every time",
+   "id": "e7e5f0e57c2e"
   },
   {
    "kind": "roleplay",
@@ -617054,8 +617412,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "did {target} just bow in faction chat",
-   "id": "97ee09dad129"
+   "text": "{target} just bowed in faction chat. ok",
+   "id": "383cc0d01bd3"
   },
   {
    "kind": "roleplay",
@@ -617192,6 +617550,24 @@
    "weight": 1.0,
    "text": "{target} uses more emotes than spells",
    "id": "05b36249c052"
+  },
+  {
+   "kind": "roleplay",
+   "topic": "mock",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "text": "lol thee and thou",
+   "family": "d219640d37",
+   "id": "544d8e22745c"
   },
   {
    "kind": "roleplay",
@@ -617585,6 +617961,24 @@
    "intent": "",
    "mood": "",
    "weight": 0.2887,
+   "text": "speak english.",
+   "family": "b906601055",
+   "id": "f2e9e46def75"
+  },
+  {
+   "kind": "roleplay",
+   "topic": "mock",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
    "text": "speak english. plz",
    "family": "b906601055",
    "id": "90efe18800a6"
@@ -617948,6 +618342,24 @@
    "text": "thou art a nerd. lol",
    "family": "d85c39f8b8",
    "id": "eede638db635"
+  },
+  {
+   "kind": "roleplay",
+   "topic": "mock",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1667,
+   "text": "thou art a nerd",
+   "family": "d85c39f8b8",
+   "id": "acdefb0d821f"
   },
   {
    "kind": "roleplay",
@@ -619586,6 +619998,24 @@
    "text": "did {target} just bow in faction? lol",
    "family": "d11d73ce04",
    "id": "2413e3203b08"
+  },
+  {
+   "kind": "roleplay",
+   "topic": "mock",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1667,
+   "text": "did {target} just bow in faction chat?",
+   "family": "d11d73ce04",
+   "id": "b471d0ed161d"
   },
   {
    "kind": "roleplay",
@@ -621766,9 +622196,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, do you talk like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "ed58a591a522"
+   "text": "{target}, do you talk like that at the table?",
+   "family": "963d7b705b",
+   "id": "cee339e7b6e6"
   },
   {
    "kind": "roleplay",
@@ -621786,9 +622216,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, do you talk like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "5d5577f47499"
+   "text": "{target}, do you talk like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "71ea5a390094"
   },
   {
    "kind": "roleplay",
@@ -621807,7 +622237,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you talk like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "aef53181a934"
   },
   {
@@ -621827,7 +622257,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you talk like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "a01347372b46"
   },
   {
@@ -621847,7 +622277,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you talk like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "07f8bb2e17e0"
   },
   {
@@ -621867,7 +622297,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you talk like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "5c0d9ca16cb7"
   },
   {
@@ -621886,9 +622316,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, do you speak like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "4daca5e0b158"
+   "text": "{target}, do you speak like that at the table?",
+   "family": "963d7b705b",
+   "id": "e9f643485c7c"
   },
   {
    "kind": "roleplay",
@@ -621906,9 +622336,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, do you speak like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "5394ca65c0fc"
+   "text": "{target}, do you speak like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "079eef909eee"
   },
   {
    "kind": "roleplay",
@@ -621927,7 +622357,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you speak like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "ec45e2a8d6bd"
   },
   {
@@ -621947,7 +622377,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you speak like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "6e088d215f18"
   },
   {
@@ -621967,7 +622397,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you speak like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "9dc987c03fc2"
   },
   {
@@ -621987,7 +622417,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, do you speak like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "18166c9d7af3"
   },
   {
@@ -622006,9 +622436,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, does thou talk like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "7583335b2293"
+   "text": "{target}, does thou talk like that at the table?",
+   "family": "963d7b705b",
+   "id": "326cba11841f"
   },
   {
    "kind": "roleplay",
@@ -622026,9 +622456,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, does thou talk like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "79c77e5f81f1"
+   "text": "{target}, does thou talk like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "3aa1f5f10b61"
   },
   {
    "kind": "roleplay",
@@ -622047,7 +622477,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou talk like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "c82f45b5eaa8"
   },
   {
@@ -622067,7 +622497,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou talk like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "cc7c31f1b4bc"
   },
   {
@@ -622087,7 +622517,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou talk like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "c3ee2686c308"
   },
   {
@@ -622107,7 +622537,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou talk like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "a7c2dae46c28"
   },
   {
@@ -622126,9 +622556,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, does thou speak like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "90c08467774b"
+   "text": "{target}, does thou speak like that at the table?",
+   "family": "963d7b705b",
+   "id": "95fda1fdc6f9"
   },
   {
    "kind": "roleplay",
@@ -622146,9 +622576,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "{target}, does thou speak like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "049ea9dd7ec3"
+   "text": "{target}, does thou speak like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "1bfdb891c910"
   },
   {
    "kind": "roleplay",
@@ -622167,7 +622597,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou speak like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "d7921d6d246d"
   },
   {
@@ -622187,7 +622617,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou speak like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "f93a84f2d0d4"
   },
   {
@@ -622207,7 +622637,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou speak like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "a5a2b7ac4390"
   },
   {
@@ -622227,7 +622657,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "{target}, does thou speak like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "3e6e6b64e2fa"
   },
   {
@@ -622246,9 +622676,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, do you talk like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "2262050d9edb"
+   "text": "lol {target}, do you talk like that at the table?",
+   "family": "963d7b705b",
+   "id": "08ebebcd1fac"
   },
   {
    "kind": "roleplay",
@@ -622266,9 +622696,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, do you talk like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "5716fb1dbd09"
+   "text": "lol {target}, do you talk like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "9a58b8e89282"
   },
   {
    "kind": "roleplay",
@@ -622287,7 +622717,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you talk like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "fe8f017b8060"
   },
   {
@@ -622307,7 +622737,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you talk like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "2a1705dbb918"
   },
   {
@@ -622327,7 +622757,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you talk like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "373bb46c2f2a"
   },
   {
@@ -622347,7 +622777,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you talk like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "85526909e0c7"
   },
   {
@@ -622366,9 +622796,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, do you speak like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "57bc43d331e1"
+   "text": "lol {target}, do you speak like that at the table?",
+   "family": "963d7b705b",
+   "id": "79c7f5ea8d13"
   },
   {
    "kind": "roleplay",
@@ -622386,9 +622816,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, do you speak like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "40978a32170f"
+   "text": "lol {target}, do you speak like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "8686d1cf879b"
   },
   {
    "kind": "roleplay",
@@ -622407,7 +622837,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you speak like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "de20d6d2a31f"
   },
   {
@@ -622427,7 +622857,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you speak like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "78e1f37e68e3"
   },
   {
@@ -622447,7 +622877,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you speak like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "fcbab7a0455e"
   },
   {
@@ -622467,7 +622897,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, do you speak like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "b1a976e27579"
   },
   {
@@ -622486,9 +622916,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, does thou talk like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "76d8aeb1de6c"
+   "text": "lol {target}, does thou talk like that at the table?",
+   "family": "963d7b705b",
+   "id": "8a8b2e2a7a7f"
   },
   {
    "kind": "roleplay",
@@ -622506,9 +622936,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, does thou talk like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "8a4e5bdabb7f"
+   "text": "lol {target}, does thou talk like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "8b583ebb845b"
   },
   {
    "kind": "roleplay",
@@ -622527,7 +622957,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou talk like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "7c3d641d1eac"
   },
   {
@@ -622547,7 +622977,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou talk like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "cc492db3a495"
   },
   {
@@ -622567,7 +622997,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou talk like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "7b9867ce3825"
   },
   {
@@ -622587,7 +623017,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou talk like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "2274a62bcd7a"
   },
   {
@@ -622606,9 +623036,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, does thou speak like that at dinner?",
-   "family": "ba1e3a7315",
-   "id": "c8d64c5d6ba4"
+   "text": "lol {target}, does thou speak like that at the table?",
+   "family": "963d7b705b",
+   "id": "f0553e7d8547"
   },
   {
    "kind": "roleplay",
@@ -622626,9 +623056,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.1443,
-   "text": "lol {target}, does thou speak like that at dinner? lol",
-   "family": "ba1e3a7315",
-   "id": "ebfbc988e23a"
+   "text": "lol {target}, does thou speak like that at the table? lol",
+   "family": "963d7b705b",
+   "id": "7d21d916a16d"
   },
   {
    "kind": "roleplay",
@@ -622647,7 +623077,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou speak like that to your mom?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "320a84913fa3"
   },
   {
@@ -622667,7 +623097,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou speak like that to your mom? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "13e3016bcb3e"
   },
   {
@@ -622687,7 +623117,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou speak like that at school?",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "bbb420c90b59"
   },
   {
@@ -622707,7 +623137,7 @@
    "mood": "",
    "weight": 0.1443,
    "text": "lol {target}, does thou speak like that at school? lol",
-   "family": "ba1e3a7315",
+   "family": "963d7b705b",
    "id": "479547ab8e33"
   },
   {
@@ -631128,8 +631558,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "word is {target} is back in {place}",
-   "id": "8e312bad1217"
+   "text": "{target} is back in {place}, or so i heard",
+   "id": "c97b18519dda"
   },
   {
    "kind": "rumour",
@@ -631801,6 +632231,24 @@
    "text": "word is {target} is back in {place}, go go",
    "family": "65727d17dc",
    "id": "ea8cbf10a93d"
+  },
+  {
+   "kind": "rumour",
+   "topic": "named_up",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "text": "word is {target} is back in {place}",
+   "family": "65727d17dc",
+   "id": "8e312bad1217"
   },
   {
    "kind": "rumour",
@@ -633436,8 +633884,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "scout says {keep} is wide open",
-   "id": "0fe0af81ac52"
+   "text": "our scout says nobody is home at {keep}",
+   "id": "8737796fbe30"
   },
   {
    "kind": "rumour",
@@ -633572,8 +634020,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "free rps at {keep}. guards are down",
-   "id": "418f6afa8d04"
+   "text": "{keep} guards are down, free rps",
+   "id": "cfa297cbc0b1"
   },
   {
    "kind": "rumour",
@@ -633867,8 +634315,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "rode past {keep} in {place} on my way through. guards were lying all over the place",
-   "id": "7ee2e1a208b2"
+   "text": "rode past {keep} in {place} earlier. guards were lying all over the place",
+   "id": "b8a42983c12b"
   },
   {
    "kind": "rumour",
@@ -633905,6 +634353,24 @@
    "text": "scout says {keep} is wide open. who is in?",
    "family": "58500b5676",
    "id": "223139b56ed4"
+  },
+  {
+   "kind": "rumour",
+   "topic": "keep_thin",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "text": "scout says {keep} is wide open",
+   "family": "58500b5676",
+   "id": "0fe0af81ac52"
   },
   {
    "kind": "rumour",
@@ -636065,6 +636531,24 @@
    "text": "free rps at {keep} in {place}. hurry",
    "family": "ba00b84102",
    "id": "78e5a09aa5f2"
+  },
+  {
+   "kind": "rumour",
+   "topic": "keep_thin",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "text": "free rps at {keep}. guards are down",
+   "family": "ba00b84102",
+   "id": "418f6afa8d04"
   },
   {
    "kind": "rumour",
@@ -652561,8 +653045,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "/ignore {target}",
-   "id": "3995cd5cbb1b"
+   "text": "/ignore {target}. there.",
+   "id": "48d9125b0876"
   },
   {
    "kind": "spam_react",
@@ -652578,8 +653062,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "omg not again",
-   "id": "5a3e3da51482"
+   "text": "omg, this guy again",
+   "id": "c52274262edd"
   },
   {
    "kind": "spam_react",
@@ -652595,8 +653079,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "who buys gold lol",
-   "id": "b039042ca17b"
+   "text": "who actually buys from these guys",
+   "id": "55b080593bd6"
   },
   {
    "kind": "spam_react",
@@ -652612,8 +653096,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "{target} is a bot",
-   "id": "5334bd2942aa"
+   "text": "{target} has to be a bot",
+   "id": "c61cc60d0c97"
   },
   {
    "kind": "spam_react",
@@ -653124,6 +653608,24 @@
    "intent": "",
    "mood": "",
    "weight": 0.3333,
+   "text": "/ignore {target}",
+   "family": "74589edf5b",
+   "id": "3995cd5cbb1b"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "react",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
    "text": "ignoring {target}, bye",
    "family": "74589edf5b",
    "id": "ad9165d228f7"
@@ -653232,8 +653734,26 @@
    "intent": "",
    "mood": "",
    "weight": 0.3333,
+   "text": "omg, not this again!",
+   "family": "f3af770fe0",
+   "id": "6162ef98dc06"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "react",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
    "text": "omg, another one!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "203a494ab774"
   },
   {
@@ -653251,7 +653771,7 @@
    "mood": "",
    "weight": 0.3333,
    "text": "omg, the spam is back!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "a7bb4ab8f75a"
   },
   {
@@ -653268,9 +653788,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.3333,
-   "text": "ugh, not again!",
-   "family": "956d7bd492",
-   "id": "98dab90f78b4"
+   "text": "ugh, not this again!",
+   "family": "f3af770fe0",
+   "id": "6a998f1d273c"
   },
   {
    "kind": "spam_react",
@@ -653287,7 +653807,7 @@
    "mood": "",
    "weight": 0.3333,
    "text": "ugh, another one!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "6dce01a9ba51"
   },
   {
@@ -653305,7 +653825,7 @@
    "mood": "",
    "weight": 0.3333,
    "text": "ugh, the spam is back!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "ef499e473e11"
   },
   {
@@ -653322,9 +653842,9 @@
    "intent": "",
    "mood": "",
    "weight": 0.3333,
-   "text": "oh no, not again!",
-   "family": "956d7bd492",
-   "id": "db979f24cf84"
+   "text": "oh no, not this again!",
+   "family": "f3af770fe0",
+   "id": "2d840316c2ca"
   },
   {
    "kind": "spam_react",
@@ -653341,7 +653861,7 @@
    "mood": "",
    "weight": 0.3333,
    "text": "oh no, another one!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "43e5066667e5"
   },
   {
@@ -653359,7 +653879,7 @@
    "mood": "",
    "weight": 0.3333,
    "text": "oh no, the spam is back!",
-   "family": "956d7bd492",
+   "family": "f3af770fe0",
    "id": "611171f6e899"
   },
   {
@@ -653379,6 +653899,24 @@
    "text": "who buys gold?",
    "family": "3de4dfda0c",
    "id": "2d557eea694f"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "react",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2887,
+   "text": "who buys gold? lol",
+   "family": "3de4dfda0c",
+   "id": "d7f17aabd4d8"
   },
   {
    "kind": "spam_react",
@@ -653559,6 +654097,24 @@
    "text": "does anyone actually pay for gold? seriously",
    "family": "3de4dfda0c",
    "id": "e0c29f926c8e"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "react",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "text": "{target} is a bot.",
+   "family": "1ae2196839",
+   "id": "b18acfafb746"
   },
   {
    "kind": "spam_react",
@@ -660201,8 +660757,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "lol {target} got banned",
-   "id": "62b828d33aae"
+   "text": "lol {target} got banned already",
+   "id": "e74508414be8"
   },
   {
    "kind": "spam_react",
@@ -660235,8 +660791,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "gm to the rescue",
-   "id": "fb3f20295477"
+   "text": "a gm showed up, finally",
+   "id": "c43ae32398a2"
   },
   {
    "kind": "spam_react",
@@ -660269,8 +660825,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "bye {target}, wont miss you",
-   "id": "221dd95b9129"
+   "text": "bye {target}, nobody liked you",
+   "id": "6f1c3aa094ec"
   },
   {
    "kind": "spam_react",
@@ -660286,8 +660842,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "ahh, quiet again",
-   "id": "31409ffc0820"
+   "text": "ahh, faction is quiet again",
+   "id": "d714dfb0ee13"
   },
   {
    "kind": "spam_react",
@@ -660371,8 +660927,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "banned. the system works",
-   "id": "7aed34276bac"
+   "text": "banned already. the system works for once",
+   "id": "923897326838"
   },
   {
    "kind": "spam_react",
@@ -660441,6 +660997,24 @@
    "weight": 1.0,
    "text": "quiet. too quiet. the next one is typing",
    "id": "86a7c1231501"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "banned",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
+   "text": "lol {target} got banned.",
+   "family": "854803a368",
+   "id": "ead589896226"
   },
   {
    "kind": "spam_react",
@@ -660837,6 +661411,24 @@
    "text": "dont come back.",
    "family": "5463b6dedd",
    "id": "cbd2321f4ebb"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "banned",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "text": "gm to the rescue!",
+   "family": "7f59b97717",
+   "id": "b340bf87a371"
   },
   {
    "kind": "spam_react",
@@ -661806,6 +662398,24 @@
    "intent": "",
    "mood": "",
    "weight": 0.2357,
+   "text": "bye {target}, wont miss you.",
+   "family": "db7b60d463",
+   "id": "27db60cf8b9f"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "banned",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.2357,
    "text": "bye {target}, wont miss you. lol",
    "family": "db7b60d463",
    "id": "321021ce426f"
@@ -662097,6 +662707,24 @@
    "text": "so long {target}. lol",
    "family": "db7b60d463",
    "id": "5ebe1d5277b9"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "banned",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1925,
+   "text": "ahh, quiet again",
+   "family": "f9a379e03f",
+   "id": "31409ffc0820"
   },
   {
    "kind": "spam_react",
@@ -662565,6 +663193,24 @@
    "text": "phew, silence finally",
    "family": "f9a379e03f",
    "id": "b04d5fa489f5"
+  },
+  {
+   "kind": "spam_react",
+   "topic": "banned",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.3333,
+   "text": "banned. the system works.",
+   "family": "5c87e865f5",
+   "id": "0c8207730223"
   },
   {
    "kind": "spam_react",
@@ -664672,8 +665318,8 @@
    "intent": "",
    "mood": "",
    "weight": 1.0,
-   "text": "same spammer, new name, by dinner. ive watched this for years",
-   "id": "1b560b20415f"
+   "text": "same spammer, new name, by tomorrow. ive watched this for years",
+   "id": "827a58b9725e"
   },
   {
    "kind": "spam_react",
@@ -681478,7 +682124,7 @@
      "text": "{q} how do i level up my horse? mine is still really slow",
      "variants": [
       "{q} how do i level up my horse? mine is still really slow",
-      "{q} serious question, where do i train my horse? it never gets faster"
+      "serious question, where do i train my horse? it never gets faster"
      ],
      "optional": false
     },
@@ -681827,7 +682473,7 @@
      "text": "{q} how do i turn off pvp?? the enemy keeps killing me in the frontier",
      "variants": [
       "{q} how do i turn off pvp?? the enemy keeps killing me in the frontier",
-      "{q} where is the option to turn off pvp, three enemies just killed me again"
+      "{q} three enemies just killed me again, where is the option to turn off pvp?"
      ],
      "optional": false
     },
@@ -681890,7 +682536,7 @@
      "text": "i've got more kills tonight than you have deaths. barely",
      "variants": [
       "i've got more kills tonight than you have deaths. barely",
-      "big words from someone who just gave the enemy a free dinner"
+      "big words from someone who just gave the enemy a free meal"
      ],
      "optional": false
     },
@@ -682151,7 +682797,7 @@
      "text": "{q} which merchant sells realm points? i have like 40 gold saved",
      "variants": [
       "{q} which merchant sells realm points? i have like 40 gold saved",
-      "{q} where can i buy realm points, i have gold now"
+      "{q} i have gold now, where can i buy realm points?"
      ],
      "optional": false
     },
@@ -682457,7 +683103,7 @@
      "text": "{q} how do i switch realms? the other side is winning and i want to be on that team",
      "variants": [
       "{q} how do i switch realms? the other side is winning and i want to be on that team",
-      "{q} is there a way to move my guy to the winning realm"
+      "{q} is there a way to move my guy to the winning realm?"
      ],
      "optional": false
     },
@@ -683035,7 +683681,7 @@
      "text": "{q} why do the guards at the enemy keep attack me? i just want to look around",
      "variants": [
       "{q} why do the guards at the enemy keep attack me? i just want to look around",
-      "{q} the guards at the enemy border keep killed me again, is that a bug"
+      "{q} the guards at the enemy border keep killed me again, is that a bug?"
      ],
      "optional": false
     },
@@ -683530,7 +684176,9 @@
      "optional": false
     }
    ],
-   "needs": [],
+   "needs": [
+    "evening"
+   ],
    "exit": "A"
   },
   {
@@ -684461,7 +685109,7 @@
      "text": "oh, this one. hush everyone",
      "variants": [
       "oh, this one. hush everyone",
-      "quiet in faction for a bit, {name_b} is telling the orb"
+      "{name_b} is telling the orb story, everyone hush"
      ],
      "optional": false
     },
@@ -684693,9 +685341,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} my uncle says theres a whole city at the bottom of the sea lol",
+     "text": "{q} my uncle says theres a whole city at the bottom of the sea, is that true? lol",
      "variants": [
-      "{q} my uncle says theres a whole city at the bottom of the sea lol"
+      "{q} my uncle says theres a whole city at the bottom of the sea, is that true? lol"
      ],
      "optional": false
     },
@@ -684945,7 +685593,7 @@
      "text": "honest take, rejuv clerics get invites in seconds. smite clerics wait",
      "variants": [
       "honest take, rejuv clerics get invites in seconds. smite clerics wait",
-      "real talk, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two"
+      "no lie, a rejuv cleric shouting lfg gets eight tells. a smite cleric gets two"
      ],
      "optional": false
     },
@@ -685317,7 +685965,7 @@
      "text": "armsmen, settle something for me. polearm, two hander or crossbow?",
      "variants": [
       "armsmen, settle something for me. polearm, two hander or crossbow?",
-      "{q} rolling an armsman alt, which weapon line actually matters",
+      "{q} rolling an armsman alt, which weapon line actually matters?",
       "polearm or two handed, and is crossbow worth any points at all"
      ],
      "optional": false
@@ -685559,7 +686207,7 @@
      "text": "paladins, how many chants do you actually keep going at once",
      "variants": [
       "paladins, how many chants do you actually keep going at once",
-      "{q} how do paladins juggle chants without going crazy",
+      "{q} how do paladins juggle chants without going crazy?",
       "is chant twisting on a paladin worth learning or just a show off thing"
      ],
      "optional": false
@@ -686238,7 +686886,7 @@
      "text": "who is going infil hunting in the frontier tonight, any takers",
      "variants": [
       "who is going infil hunting in the frontier tonight, any takers",
-      "{q} any infiltrators up for a stealth hunt in Forest Sauvage tonight"
+      "{q} any infiltrators up for a stealth hunt in Forest Sauvage tonight?"
      ],
      "optional": false
     },
@@ -686484,7 +687132,7 @@
      "text": "is it just me or does every group invite open with \"u have speed?\"",
      "variants": [
       "is it just me or does every group invite open with \"u have speed?\"",
-      "{q} anyone else play a minstrel and feel like a horse with a lute"
+      "{q} anyone else play a minstrel and feel like a horse with a lute?"
      ],
      "optional": false
     },
@@ -686718,7 +687366,7 @@
      "text": "wizards, earth, cold or fire, which line are you running?",
      "variants": [
       "wizards, earth, cold or fire, which line are you running?",
-      "{q} rolling a wizard alt, which line do i dump points into",
+      "{q} rolling a wizard alt, which line do i dump points into?",
       "earth cold or fire, and dont tell me it doesnt matter"
      ],
      "optional": false
@@ -686971,7 +687619,7 @@
      "text": "theurg question, do your pets ever stop running off and pulling the whole room",
      "variants": [
       "theurg question, do your pets ever stop running off and pulling the whole room",
-      "{q} how do theurgists keep their pets from wandering into extra mobs"
+      "{q} how do theurgists keep their pets from wandering into extra mobs?"
      ],
      "optional": false
     },
@@ -687007,9 +687655,9 @@
     },
     {
      "role": "D",
-     "text": "real talk, theurgs level faster solo than anyone i know",
+     "text": "honestly, theurgs level faster solo than anyone i know",
      "variants": [
-      "real talk, theurgs level faster solo than anyone i know",
+      "honestly, theurgs level faster solo than anyone i know",
       "theurgists solo better than any class i have tried"
      ],
      "optional": false
@@ -687464,7 +688112,7 @@
      "text": "cabalists, why does everyone call you the slow class",
      "variants": [
       "cabalists, why does everyone call you the slow class",
-      "{q} is cabalist as slow as people say"
+      "{q} is cabalist as slow as people say?"
      ],
      "optional": false
     },
@@ -687697,7 +688345,7 @@
      "text": "grouped with a necro tonight and i still dont understand what happened",
      "variants": [
       "grouped with a necro tonight and i still dont understand what happened",
-      "{q} can someone explain necromancers to me, our healer got so confused"
+      "{q} our healer got so confused, can someone explain necromancers to me?"
      ],
      "optional": false
     },
@@ -687958,7 +688606,7 @@
      "text": "first character ever, just left Cotswold. where should i go next",
      "variants": [
       "first character ever, just left Cotswold. where should i go next",
-      "{q} brand new, finished the Cotswold quests, what comes after",
+      "{q} brand new, finished the Cotswold quests, what comes after?",
       "hi all, first night playing, where do people level after Cotswold"
      ],
      "optional": false
@@ -688203,7 +688851,7 @@
      "text": "outleveled Cornwall tonight. where do people go in the 30s these days",
      "variants": [
       "outleveled Cornwall tonight. where do people go in the 30s these days",
-      "{q} done with the moor wolves in Cornwall, whats next for the low 30s",
+      "{q} done with the moor wolves in Cornwall, whats next for the low 30s?",
       "outleveled cornwall, where to now"
      ],
      "optional": false
@@ -688440,7 +689088,7 @@
      "text": "honest opinion, is the shrouded isles leveling better than the classic zones",
      "variants": [
       "honest opinion, is the shrouded isles leveling better than the classic zones",
-      "{q} avalon or the old zones for leveling, which do you prefer"
+      "{q} avalon or the old zones for leveling, which do you prefer?"
      ],
      "optional": false
     },
@@ -688918,10 +689566,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why does it feel like every night one of our keeps gets hit and nobody is home",
+     "text": "{q} why does it feel like every night one of our keeps gets hit and nobody is home?",
      "variants": [
-      "{q} why does it feel like every night one of our keeps gets hit and nobody is home",
-      "{q} anyone else notice our keeps fall while the whole realm is leveling"
+      "{q} why does it feel like every night one of our keeps gets hit and nobody is home?",
+      "{q} anyone else notice our keeps fall while the whole realm is leveling?"
      ],
      "optional": false
     },
@@ -689150,10 +689798,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why do relic raids always happen at five am, who is awake for that",
+     "text": "{q} why do relic raids always happen at five am, who is awake for that?",
      "variants": [
-      "{q} why do relic raids always happen at five am, who is awake for that",
-      "{q} the mids love a dawn relic raid, have you noticed"
+      "{q} why do relic raids always happen at five am, who is awake for that?",
+      "{q} the mids love a dawn relic raid, have you noticed?"
      ],
      "optional": false
     },
@@ -689409,7 +690057,7 @@
      "text": "Golestandt raid sunday, how many are we so far",
      "variants": [
       "Golestandt raid sunday, how many are we so far",
-      "{q} head count for the dragon on sunday, who is in"
+      "{q} head count for the dragon on sunday, who is in?"
      ],
      "optional": false
     },
@@ -689676,10 +690324,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how do you even tell if DF is open for us",
+     "text": "{q} how do you even tell if DF is open for us?",
      "variants": [
-      "{q} how do you even tell if DF is open for us",
-      "{q} anyone know how albion keeps Darkness Falls open"
+      "{q} how do you even tell if DF is open for us?",
+      "{q} anyone know how albion keeps Darkness Falls open?"
      ],
      "optional": false
     },
@@ -690428,7 +691076,7 @@
      "text": "still on at this hour. anyone else awake",
      "variants": [
       "still on at this hour. anyone else awake",
-      "{q} who else is up this late"
+      "{q} who else is up this late?"
      ],
      "optional": false
     },
@@ -690689,7 +691337,7 @@
      "text": "why do the mids always roll in with twice our numbers",
      "variants": [
       "why do the mids always roll in with twice our numbers",
-      "{q} where do the mids keep finding all these people"
+      "{q} where do the mids keep finding all these people?"
      ],
      "optional": false
     },
@@ -690925,7 +691573,7 @@
      "text": "{q} rolling a healer alt. druid, bard or warden?",
      "variants": [
       "{q} rolling a healer alt. druid, bard or warden?",
-      "{q} need a hib healer alt, which one would you pick",
+      "{q} need a hib healer alt, which one would you pick?",
       "ok healers of hibernia, convince me"
      ],
      "optional": false
@@ -693162,10 +693810,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} is it just me or do animists win every keep defense now",
+     "text": "{q} is it just me or do animists win every keep defense now?",
      "variants": [
-      "{q} is it just me or do animists win every keep defense now",
-      "{q} are animists the best keep defenders we have"
+      "{q} is it just me or do animists win every keep defense now?",
+      "{q} are animists the best keep defenders we have?"
      ],
      "optional": false
     },
@@ -693535,9 +694183,9 @@
     },
     {
      "role": "B",
-     "text": "i will hold you to that",
+     "text": "noted. ill bring it up later",
      "variants": [
-      "i will hold you to that",
+      "noted. ill bring it up later",
       "i will remember you said that"
      ],
      "optional": false
@@ -694957,10 +695605,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} anyone else notice midgard always hits the relic keeps around 4am",
+     "text": "{q} anyone else notice midgard always hits the relic keeps around 4am?",
      "variants": [
-      "{q} anyone else notice midgard always hits the relic keeps around 4am",
-      "{q} why are the night raids on our relics always the mids"
+      "{q} anyone else notice midgard always hits the relic keeps around 4am?",
+      "{q} why are the night raids on our relics always the mids?"
      ],
      "optional": false
     },
@@ -695225,7 +695873,7 @@
      "text": "best thing in the game is a three way fight in emain, nobody can tell me otherwise",
      "variants": [
       "best thing in the game is a three way fight in emain, nobody can tell me otherwise",
-      "{q} anyone else live for the three realm fights in emain"
+      "{q} anyone else live for the three realm fights in emain?"
      ],
      "optional": false
     },
@@ -695470,10 +696118,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} our guild wants to claim a keep, good idea or not",
+     "text": "{q} our guild wants to claim a keep, good idea or not?",
      "variants": [
-      "{q} our guild wants to claim a keep, good idea or not",
-      "{q} would it be dumb to put our guild banner on a keep"
+      "{q} our guild wants to claim a keep, good idea or not?",
+      "{q} would it be dumb to put our guild banner on a keep?"
      ],
      "optional": false
     },
@@ -696614,9 +697262,9 @@
     },
     {
      "role": "E",
-     "text": "which craft is the worst to level",
+     "text": "what craft is the biggest pain to level",
      "variants": [
-      "which craft is the worst to level",
+      "what craft is the biggest pain to level",
       "whats the most annoying craft to grind"
      ],
      "optional": false
@@ -697667,8 +698315,8 @@
      "text": "anyone actually leveled a cave shaman? subterranean all the way",
      "variants": [
       "anyone actually leveled a cave shaman? subterranean all the way",
-      "{q} is full subterranean shaman a real thing or a joke",
-      "{q} any cave shamans out there, how is it going"
+      "{q} is full subterranean shaman a real thing or a joke?",
+      "{q} any cave shamans out there, how is it going?"
      ],
      "optional": false
     },
@@ -697905,7 +698553,7 @@
      "text": "why does every group ask the skald to sit on speed the whole time",
      "variants": [
       "why does every group ask the skald to sit on speed the whole time",
-      "{q} skald here, am i allowed to do damage or am i just a horse",
+      "{q} skald here, am i allowed to do damage or am i just a horse?",
       "does anyone let their skald actually fight"
      ],
      "optional": false
@@ -698150,7 +698798,7 @@
      "text": "thane question. how much stormcalling is too much",
      "variants": [
       "thane question. how much stormcalling is too much",
-      "{q} thanes, do you max stormcalling or your weapon",
+      "{q} thanes, do you max stormcalling or your weapon?",
       "thinking of rolling a thane, lightning or hammer?"
      ],
      "optional": false
@@ -698271,9 +698919,9 @@
     },
     {
      "role": "C",
-     "text": "i like that one actually",
+     "text": "ha, that one is good actually",
      "variants": [
-      "i like that one actually"
+      "ha, that one is good actually"
      ],
      "optional": true
     },
@@ -698371,7 +699019,7 @@
      "variants": [
       "shout out to warriors, the most underrated class in midgard",
       "can we talk about how nobody appreciates warriors",
-      "{q} why does everyone roll zerker when warriors are right there"
+      "{q} why does everyone roll zerker when warriors are right there?"
      ],
      "optional": false
     },
@@ -698592,7 +699240,7 @@
      "variants": [
       "zerkers vs savages, who wins a duel in the end",
       "serious one, savage or berserker for rvr",
-      "{q} if you could only bring one, zerker or savage"
+      "{q} if you could only bring one, zerker or savage?"
      ],
      "optional": false
     },
@@ -698783,7 +699431,7 @@
      "text": "we agree to keep arguing then",
      "variants": [
       "we agree to keep arguing then",
-      "see you at the next round"
+      "until the next round then"
      ],
      "optional": false
     },
@@ -699069,7 +699717,7 @@
      "text": "got shot to death by an albion scout from somewhere i couldnt even see",
      "variants": [
       "got shot to death by an albion scout from somewhere i couldnt even see",
-      "{q} is it just me or are enemy archers hitting from across the zone",
+      "{q} is it just me or are enemy archers hitting from across the zone?",
       "three arrows and im dead, never saw the guy"
      ],
      "optional": false
@@ -699303,7 +699951,7 @@
      "text": "shadowblades, left axe or a big two hander",
      "variants": [
       "shadowblades, left axe or a big two hander",
-      "{q} sb question, two hander or left axe",
+      "{q} sb question, two hander or left axe?",
       "planning a shadowblade alt, two handed or dual axes"
      ],
      "optional": false
@@ -699545,7 +700193,7 @@
      "text": "rolling a caster, runemaster, spiritmaster or bonedancer?",
      "variants": [
       "rolling a caster, runemaster, spiritmaster or bonedancer?",
-      "{q} which of the three midgard casters should i roll",
+      "{q} which of the three midgard casters should i roll?",
       "rm, sm or bd for a first caster"
      ],
      "optional": false
@@ -699793,7 +700441,7 @@
      "text": "is it just me or does every keep fight lag out lately",
      "variants": [
       "is it just me or does every keep fight lag out lately",
-      "{q} anyone else freeze at keep fights lately",
+      "{q} anyone else freeze at keep fights lately?",
       "the last siege was a slideshow for me"
      ],
      "optional": false
@@ -700021,7 +700669,7 @@
      "text": "first character ever, where do i go after the vale of mularn",
      "variants": [
       "first character ever, where do i go after the vale of mularn",
-      "{q} new to the game, what comes after mularn",
+      "{q} new to the game, what comes after mularn?",
       "still single digits, kind of lost, where next"
      ],
      "optional": false
@@ -700257,7 +700905,7 @@
      "text": "late 30s here, aegir or stay home for the 40s",
      "variants": [
       "late 30s here, aegir or stay home for the 40s",
-      "{q} is aegir worth it for the 40s or stick to the classic zones",
+      "{q} is aegir worth it for the 40s or stick to the classic zones?",
       "trying aegir for the first time, good idea?"
      ],
      "optional": false
@@ -700915,11 +701563,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why does it always take us forever to answer a keep call",
+     "text": "{q} why does it always take us forever to answer a keep call?",
      "variants": [
-      "{q} why does it always take us forever to answer a keep call",
-      "{q} when a keep starts flashing, do you actually drop what you are doing",
-      "{q} who actually answers keep calls"
+      "{q} why does it always take us forever to answer a keep call?",
+      "{q} when a keep starts flashing, do you actually drop what you are doing?",
+      "{q} who actually answers keep calls?"
      ],
      "optional": false
     },
@@ -701178,7 +701826,7 @@
      "text": "who is watching mjollner faste tonight",
      "variants": [
       "who is watching mjollner faste tonight",
-      "{q} anyone guarding our relics or are we trusting the guards",
+      "{q} anyone guarding our relics or are we trusting the guards?",
       "quick check, is anyone at grallarhorn faste right now"
      ],
      "optional": false
@@ -701609,9 +702257,9 @@
     },
     {
      "role": "A",
-     "text": "ok, see you all there",
+     "text": "ok, meet you all there",
      "variants": [
-      "ok, see you all there",
+      "ok, meet you all there",
       "see you at the bind"
      ],
      "optional": false
@@ -701653,7 +702301,7 @@
      "text": "has anyone been deep in iarnvidiurs lair",
      "variants": [
       "has anyone been deep in iarnvidiurs lair",
-      "{q} iarnvidiurs lair, worth it or a waste of a night",
+      "{q} iarnvidiurs lair, worth it or a waste of a night?",
       "thinking of trying the lair in aegir, anyone done it"
      ],
      "optional": false
@@ -701871,7 +702519,7 @@
      "text": "do we even have df right now?",
      "variants": [
       "do we even have df right now?",
-      "{q} who has darkness falls tonight",
+      "{q} who has darkness falls tonight?",
       "is df open for us or did we lose it"
      ],
      "optional": false
@@ -702203,9 +702851,9 @@
     },
     {
      "role": "E",
-     "text": "and horns. dont forget the horns",
+     "text": "and horns. so many horns",
      "variants": [
-      "and horns. dont forget the horns"
+      "and horns. so many horns"
      ],
      "optional": true
     },
@@ -702512,7 +703160,7 @@
      "text": "armorcraft or weaponcraft, which one makes more money in jordheim",
      "variants": [
       "armorcraft or weaponcraft, which one makes more money in jordheim",
-      "{q} crafters, which craft pays best",
+      "{q} crafters, which craft pays best?",
       "thinking about crafting, which line actually makes money"
      ],
      "optional": false
@@ -702951,7 +703599,7 @@
      "text": "{q} who wants to take a keep tonight? we have been sitting at home all week",
      "variants": [
       "{q} who wants to take a keep tonight? we have been sitting at home all week",
-      "ok real talk, when did we last take a keep that wasnt ours already"
+      "ok seriously, when did we last take a keep that wasnt ours already"
      ],
      "optional": false
     },
@@ -703222,7 +703870,7 @@
      "text": "{q} next time they ram a door, where does everyone actually stand?",
      "variants": [
       "{q} next time they ram a door, where does everyone actually stand?",
-      "{q} how do we hold a door when they bring rams"
+      "{q} how do we hold a door when they bring rams?"
      ],
      "optional": false
     },
@@ -703472,9 +704120,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why does nobody ever build a catapult",
+     "text": "{q} why does nobody ever build a catapult?",
      "variants": [
-      "{q} why does nobody ever build a catapult",
+      "{q} why does nobody ever build a catapult?",
       "serious question, has anyone actually used a catapult in a raid"
      ],
      "optional": false
@@ -703525,9 +704173,9 @@
     },
     {
      "role": "D",
-     "text": "{enemy} stealthed up and killed me next to it and it sat there all night",
+     "text": "a {enemy_mod} stealther killed me next to it and it sat there all night",
      "variants": [
-      "{enemy} stealthed up and killed me next to it and it sat there all night",
+      "a {enemy_mod} stealther killed me next to it and it sat there all night",
       "died to a stealther five steps from the keep, left it in the grass"
      ],
      "optional": false
@@ -703598,7 +704246,7 @@
      "text": "honestly the best siege weapon is twenty people with swords",
      "variants": [
       "honestly the best siege weapon is twenty people with swords",
-      "real talk, the zerg is the siege weapon"
+      "face it, the zerg is the siege weapon"
      ],
      "optional": false
     },
@@ -703718,7 +704366,7 @@
      "text": "{q} would your guild claim a keep if it could? i want our banner on a wall",
      "variants": [
       "{q} would your guild claim a keep if it could? i want our banner on a wall",
-      "{q} anyone else want to see their guild banner over a keep"
+      "{q} anyone else want to see their guild banner over a keep?"
      ],
      "optional": false
     },
@@ -703946,7 +704594,7 @@
      "text": "{q} anyone else up? this is exactly when {enemy} like to move on the relics",
      "variants": [
       "{q} anyone else up? this is exactly when {enemy} like to move on the relics",
-      "{q} why do {enemy} always go for the relics at this hour"
+      "{q} why do {enemy} always go for the relics at this hour?"
      ],
      "optional": false
     },
@@ -704205,10 +704853,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} does the relic bonus actually matter or is it in our heads",
+     "text": "{q} does the relic bonus actually matter or is it in our heads?",
      "variants": [
-      "{q} does the relic bonus actually matter or is it in our heads",
-      "{q} does anyone actually feel the relic bonus in a fight"
+      "{q} does the relic bonus actually matter or is it in our heads?",
+      "{q} does anyone actually feel the relic bonus in a fight?"
      ],
      "optional": false
     },
@@ -704468,7 +705116,7 @@
      "text": "nothing worse than losing darkness falls while you are still down there",
      "variants": [
       "nothing worse than losing darkness falls while you are still down there",
-      "{q} anyone else been deep in df when the keeps flipped"
+      "{q} anyone else been deep in df when the keeps flipped?"
      ],
      "optional": false
     },
@@ -704634,9 +705282,9 @@
     },
     {
      "role": "D",
-     "text": "i give it a month",
+     "text": "a month, tops",
      "variants": [
-      "i give it a month",
+      "a month, tops",
       "you will be in an 8man by christmas"
      ],
      "optional": true
@@ -704670,9 +705318,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how long did it take you to get your first realm rank",
+     "text": "{q} how long did it take you to get your first realm rank?",
      "variants": [
-      "{q} how long did it take you to get your first realm rank",
+      "{q} how long did it take you to get your first realm rank?",
       "how long is the grind to rr2 for a normal person"
      ],
      "optional": false
@@ -704930,9 +705578,9 @@
     },
     {
      "role": "C",
-     "text": "depends on your class, what are you",
+     "text": "what are you playing? depends on that",
      "variants": [
-      "depends on your class, what are you",
+      "what are you playing? depends on that",
       "what class? that changes everything"
      ],
      "optional": false
@@ -705371,9 +706019,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} last fight, who was hitting the tank",
+     "text": "{q} last fight, who was hitting the tank?",
      "variants": [
-      "{q} last fight, who was hitting the tank",
+      "{q} last fight, who was hitting the tank?",
       "why was half our group on their tank last night"
      ],
      "optional": false
@@ -705823,9 +706471,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how do you fight an archer who wont come closer",
+     "text": "{q} how do you fight an archer who wont come closer?",
      "variants": [
-      "{q} how do you fight an archer who wont come closer",
+      "{q} how do you fight an archer who wont come closer?",
       "archer pinned me on a hill for ten minutes, how do you even fight that"
      ],
      "optional": false
@@ -706054,9 +706702,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "is it just me or do the {enemy} always go straight for the healers",
+     "text": "is it just me or do {enemy_mod} groups always go straight for the healers",
      "variants": [
-      "is it just me or do the {enemy} always go straight for the healers",
+      "is it just me or do {enemy_mod} groups always go straight for the healers",
       "died four fights in a row as the first target"
      ],
      "optional": false
@@ -706279,9 +706927,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why did everyone run in a different direction last fight",
+     "text": "{q} why did everyone run in a different direction last fight?",
      "variants": [
-      "{q} why did everyone run in a different direction last fight",
+      "{q} why did everyone run in a different direction last fight?",
       "that retreat last night was a disaster, who called it"
      ],
      "optional": false
@@ -706500,10 +707148,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} anyone else think a bridge is the best place to fight",
+     "text": "{q} anyone else think a bridge is the best place to fight?",
      "variants": [
-      "{q} anyone else think a bridge is the best place to fight",
-      "{q} if {enemy} ever bring a zerg across a bridge, shouldnt we be holding it"
+      "{q} anyone else think a bridge is the best place to fight?",
+      "{q} if a {enemy_mod} zerg ever comes across a bridge, shouldnt we be holding it?"
      ],
      "optional": false
     },
@@ -706947,9 +707595,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} the biggest realm always wins, why even fight",
+     "text": "{q} the biggest realm always wins, why even fight?",
      "variants": [
-      "{q} the biggest realm always wins, why even fight",
+      "{q} the biggest realm always wins, why even fight?",
       "does anyone else think the biggest realm just holds everything"
      ],
      "optional": false
@@ -707172,10 +707820,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} ever watch forty {enemy} spend twenty minutes looking for a door",
+     "text": "{q} ever watch a {enemy_mod} zerg of forty spend twenty minutes looking for a door?",
      "variants": [
-      "{q} ever watch forty {enemy} spend twenty minutes looking for a door",
-      "once watched a group of {enemy} walk into a keep wall for five minutes"
+      "{q} ever watch a {enemy_mod} zerg of forty spend twenty minutes looking for a door?",
+      "once watched a {enemy_mod} group walk into a keep wall for five minutes"
      ],
      "optional": false
     },
@@ -707556,7 +708204,7 @@
      "text": "ok fine, pst me",
      "variants": [
       "ok fine, pst me",
-      "ok, send me a tell"
+      "ok, /tell me later then"
      ],
      "optional": false
     },
@@ -707611,9 +708259,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} first time in thidranki, what do i do",
+     "text": "{q} first time in thidranki, what do i do?",
      "variants": [
-      "{q} first time in thidranki, what do i do",
+      "{q} first time in thidranki, what do i do?",
       "new to the battlegrounds, is thidranki worth it"
      ],
      "optional": false
@@ -707745,9 +708393,9 @@
     },
     {
      "role": "A",
-     "text": ":D",
+     "text": "woot",
      "variants": [
-      ":D",
+      "woot",
       "first blood!"
      ],
      "optional": false
@@ -708541,9 +709189,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} first night in the frontier, how do i even start",
+     "text": "{q} first night in the frontier, how do i even start?",
      "variants": [
-      "{q} first night in the frontier, how do i even start",
+      "{q} first night in the frontier, how do i even start?",
       "just went to the frontier for the first time, where do i go"
      ],
      "optional": false
@@ -708774,7 +709422,7 @@
      "text": "anyone at {camp}?",
      "variants": [
       "anyone at {camp}?",
-      "{q} is {camp} taken right now",
+      "{q} is {camp} taken right now?",
       "camp check {camp}, anybody there"
      ],
      "optional": false
@@ -708953,7 +709601,7 @@
      "variants": [
       "where do i find my trainer?",
       "how do i train, cant find the guy",
-      "{q} where are the trainers"
+      "{q} where are the trainers?"
      ],
      "optional": false
     },
@@ -709713,11 +710361,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} ever been the only one at a keep when the rams show up",
+     "text": "{q} ever been the only one at a keep when the rams show up?",
      "variants": [
-      "{q} ever been the only one at a keep when the rams show up",
-      "{q} worst keep defense you ever stood through, go",
-      "{q} who here has held a door with nobody else home"
+      "{q} ever been the only one at a keep when the rams show up?",
+      "worst keep defense you ever stood through, go",
+      "{q} who here has held a door with nobody else home?"
      ],
      "optional": false
     },
@@ -709733,9 +710381,9 @@
     },
     {
      "role": "A",
-     "text": "how many did they bring",
+     "text": "how many are there",
      "variants": [
-      "how many did they bring",
+      "how many are there",
       "how big was it",
       "zerg or one group"
      ],
@@ -709811,9 +710459,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why do stealthers always camp the roads to the keeps",
+     "text": "{q} why do stealthers always camp the roads to the keeps?",
      "variants": [
-      "{q} why do stealthers always camp the roads to the keeps",
+      "{q} why do stealthers always camp the roads to the keeps?",
       "stealthers love the frontier roads, watch yourselves",
       "the {enemy} send stealthers to camp the keep roads every night"
      ],
@@ -710832,9 +711480,9 @@
     },
     {
      "role": "B",
-     "text": "got it, see you at the camp",
+     "text": "ok, ill find it",
      "variants": [
-      "got it, see you at the camp",
+      "ok, ill find it",
       "ok, meet us there",
       "got your tell, come on over"
      ],
@@ -711072,7 +711720,7 @@
      "text": "will send you a tell",
      "variants": [
       "will send you a tell",
-      "maybe, i will pst you",
+      "maybe, let me think on it",
       "ok, sounds decent"
      ],
      "optional": true
@@ -711448,7 +712096,7 @@
      "text": "is df open for us?",
      "variants": [
       "is df open for us?",
-      "do we have df right now",
+      "is df ours at the moment?",
       "can we get into darkness falls"
      ],
      "optional": false
@@ -711847,9 +712495,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} roll on drops or free for all, what do your groups do",
+     "text": "{q} roll on drops or free for all, what do your groups do?",
      "variants": [
-      "{q} roll on drops or free for all, what do your groups do",
+      "{q} roll on drops or free for all, what do your groups do?",
       "loot rules, what does everyone use",
       "who gets the drops in your groups"
      ],
@@ -712478,7 +713126,7 @@
      "variants": [
       "anyone in spindelhalla? looking for a spot",
       "spindel check, which camps are open",
-      "{q} is spindelhalla packed tonight"
+      "{q} is spindelhalla packed tonight?"
      ],
      "optional": false
     },
@@ -712732,7 +713380,7 @@
      "variants": [
       "hunter question, spear or bow for leveling?",
       "new hunter, where do my points go",
-      "{q} hunters, which line first"
+      "{q} hunters, which line first?"
      ],
      "optional": false
     },
@@ -712793,9 +713441,9 @@
     },
     {
      "role": "C",
-     "text": "ok, that i can live with",
+     "text": "fair enough, ill take that",
      "variants": [
-      "ok, that i can live with",
+      "fair enough, ill take that",
       "agreed, for once"
      ],
      "optional": false
@@ -712912,11 +713560,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why is it always bledmeer that gets hit first",
+     "text": "{q} why is it always bledmeer that gets hit first?",
      "variants": [
-      "{q} why is it always bledmeer that gets hit first",
-      "{q} is it just me or do the albs only know the way to bledmeer",
-      "{q} has anyone counted how often bledmeer gets rammed in a week"
+      "{q} why is it always bledmeer that gets hit first?",
+      "{q} is it just me or do the albs only know the way to bledmeer?",
+      "{q} has anyone counted how often bledmeer gets rammed in a week?"
      ],
      "optional": false
     },
@@ -713185,7 +713833,7 @@
      "text": "who dinged, i saw grats flying",
      "variants": [
       "who dinged, i saw grats flying",
-      "{q} someone dinged, who",
+      "{q} someone dinged, who?",
       "was that a ding?"
      ],
      "optional": false
@@ -713268,9 +713916,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "gjalpinulva raid tonight, pst me",
+     "text": "anyone up for gjalpinulva tonight?",
      "variants": [
-      "gjalpinulva raid tonight, pst me",
+      "anyone up for gjalpinulva tonight?",
       "dragon raid on gjalpinulva later, need healers, pst",
       "gjalpinulva later, send a tell if you want to come"
      ],
@@ -713298,9 +713946,9 @@
     },
     {
      "role": "C",
-     "text": "last time half the raid died to the breath",
+     "text": "half of us ate the breath last time",
      "variants": [
-      "last time half the raid died to the breath",
+      "half of us ate the breath last time",
       "bring resist buffs",
       "stand where the leader says, please"
      ],
@@ -713397,7 +714045,7 @@
      "variants": [
       "bind closer next time",
       "it happens, the tomb is mean",
-      "next time bring a friend"
+      "next time take someone with you"
      ],
      "optional": false
     },
@@ -713613,7 +714261,7 @@
      "variants": [
       "savage or berserker for an alt?",
       "thinking zerker, or should i go savage",
-      "{q} savage or zerk"
+      "{q} savage or zerk?"
      ],
      "optional": false
     },
@@ -713707,10 +714355,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how long have our relics stayed home, anyone counting",
+     "text": "{q} how long have our relics stayed home, anyone counting?",
      "variants": [
-      "{q} how long have our relics stayed home, anyone counting",
-      "{q} do our relics ever leave home",
+      "{q} how long have our relics stayed home, anyone counting?",
+      "{q} do our relics ever leave home?",
       "anyone know when we last lost a relic"
      ],
      "optional": false
@@ -713878,7 +714526,7 @@
      "variants": [
       "just made a char, im in cotswold, what now",
       "new to albion, what do i do in cotswold",
-      "{q} new here, where should i go first"
+      "{q} new here, where should i go first?"
      ],
      "optional": false
     },
@@ -713970,7 +714618,7 @@
      "variants": [
       "tell sent",
       "pst sent",
-      "me, sending you a tell"
+      "me! pick me, tell sent"
      ],
      "optional": false
     },
@@ -714210,11 +714858,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why do the mids always go for caer benowyc first",
+     "text": "{q} why do the mids always go for caer benowyc first?",
      "variants": [
-      "{q} why do the mids always go for caer benowyc first",
-      "{q} does midgard know we have other keeps than benowyc",
-      "{q} do the mids ever try any keep but benowyc"
+      "{q} why do the mids always go for caer benowyc first?",
+      "{q} does midgard know we have other keeps than benowyc?",
+      "{q} do the mids ever try any keep but benowyc?"
      ],
      "optional": false
     },
@@ -714423,9 +715071,9 @@
     },
     {
      "role": "A",
-     "text": "so i just stand there?",
+     "text": "so i stand around and wait?",
      "variants": [
-      "so i just stand there?",
+      "so i stand around and wait?",
       "can i still cast",
       "what happens if the pet dies"
      ],
@@ -714822,7 +715470,7 @@
      "variants": [
       "reaver question, flexible or soulrending",
       "new reaver, which line first",
-      "{q} what do reavers spec"
+      "{q} what do reavers spec?"
      ],
      "optional": false
     },
@@ -714992,11 +715640,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why is it always a night raid when a relic goes",
+     "text": "{q} why is it always a night raid when a relic goes?",
      "variants": [
-      "{q} why is it always a night raid when a relic goes",
-      "{q} has albion ever lost a relic while people were awake",
-      "{q} do relics only ever move in the middle of the night"
+      "{q} why is it always a night raid when a relic goes?",
+      "{q} has albion ever lost a relic while people were awake?",
+      "{q} do relics only ever move in the middle of the night?"
      ],
      "optional": false
     },
@@ -715080,7 +715728,7 @@
      "variants": [
       "anyone in spraggon den?",
       "spraggon den check",
-      "{q} is spraggon den full tonight"
+      "{q} is spraggon den full tonight?"
      ],
      "optional": false
     },
@@ -715338,7 +715986,7 @@
      "text": "who broke the mez in my group earlier",
      "variants": [
       "who broke the mez in my group earlier",
-      "the mez broke on us again tonight",
+      "mez got broken on us again, same as always",
       "who woke up the adds on our last pull"
      ],
      "optional": false
@@ -715505,11 +716153,11 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why do the albs always walk straight to dun crauchon",
+     "text": "{q} why do the albs always walk straight to dun crauchon?",
      "variants": [
-      "{q} why do the albs always walk straight to dun crauchon",
-      "{q} is crauchon the only keep the albs can find",
-      "{q} does any keep in emain get rammed as often as crauchon"
+      "{q} why do the albs always walk straight to dun crauchon?",
+      "{q} is crauchon the only keep the albs can find?",
+      "{q} does any keep in emain get rammed as often as crauchon?"
      ],
      "optional": false
     },
@@ -715604,8 +716252,8 @@
      "text": "eldritch question, light, mana or void",
      "variants": [
       "eldritch question, light, mana or void",
-      "new eldritch, where do my points go",
-      "{q} eldritches, which line"
+      "new eldritch here, which line gets my points",
+      "{q} eldritches, which line?"
      ],
      "optional": false
     },
@@ -715660,7 +716308,7 @@
      "variants": [
       "ok",
       "helpful as always",
-      "i will try one and see"
+      "ill try it out and see"
      ],
      "optional": false
     }
@@ -715694,7 +716342,7 @@
      "variants": [
       "just started, im in mag mell, what now",
       "new hib, what do i do in mag mell",
-      "{q} new here, where do i hunt"
+      "{q} new here, where do i hunt?"
      ],
      "optional": false
     },
@@ -715777,7 +716425,7 @@
      "text": "ranger or nightshade, which is better",
      "variants": [
       "ranger or nightshade, which is better",
-      "{q} ranger or nightshade for rvr",
+      "{q} ranger or nightshade for rvr?",
       "thinking ranger, or nightshade?"
      ],
      "optional": false
@@ -715811,9 +716459,9 @@
     },
     {
      "role": "C",
-     "text": "they never see me coming",
+     "text": "nobody sees a nightshade coming",
      "variants": [
-      "they never see me coming",
+      "nobody sees a nightshade coming",
       "i am already behind you"
      ],
      "optional": false
@@ -715833,7 +716481,7 @@
      "text": "ranger to level, nightshade if you like ambushes",
      "variants": [
       "ranger to level, nightshade if you like ambushes",
-      "depends on the playstyle, both are fine"
+      "depends how you like to play, both are fine"
      ],
      "optional": false
     },
@@ -715966,7 +716614,7 @@
      "variants": [
       "anyone leveling in hy brasil?",
       "is domnann worth it",
-      "{q} any good spots in hy brasil"
+      "{q} any good spots in hy brasil?"
      ],
      "optional": false
     },
@@ -715982,9 +716630,9 @@
     },
     {
      "role": "C",
-     "text": "empty means no group though",
+     "text": "empty zone, empty group list though",
      "variants": [
-      "empty means no group though",
+      "empty zone, empty group list though",
       "the classic zones have the groups",
       "i stay where the people are"
      ],
@@ -716050,7 +716698,7 @@
      "variants": [
       "valewalker question, scythe or arboreal path",
       "new valewalker, what do i spec",
-      "{q} valewalkers, which line first"
+      "{q} valewalkers, which line first?"
      ],
      "optional": false
     },
@@ -716212,10 +716860,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how often do our relics actually leave home",
+     "text": "{q} how often do our relics actually leave home?",
      "variants": [
-      "{q} how often do our relics actually leave home",
-      "{q} anyone know when we last lost a relic",
+      "{q} how often do our relics actually leave home?",
+      "{q} how long since we lost a relic?",
       "relics, do we ever lose them?"
      ],
      "optional": false
@@ -716301,7 +716949,7 @@
      "text": "champion or hero for my alt",
      "variants": [
       "champion or hero for my alt",
-      "{q} hero or champion",
+      "{q} hero or champion?",
       "thinking about champion, or hero?"
      ],
      "optional": false
@@ -716411,7 +717059,7 @@
      "text": "{q} is there a rule about camps? someone just started pulling our spawn at {camp}",
      "variants": [
       "{q} is there a rule about camps? someone just started pulling our spawn at {camp}",
-      "so someone just walked into {camp} and started pulling our spawn"
+      "so some guy rode into {camp} and is pulling our spawn"
      ],
      "optional": false
     },
@@ -716861,7 +717509,7 @@
      "text": "on the boat again. this ride is so long",
      "variants": [
       "on the boat again. this ride is so long",
-      "{q} anyone else on the boat right now"
+      "{q} anyone else on the boat right now?"
      ],
      "optional": false
     },
@@ -717326,7 +717974,7 @@
      "text": "do you all group with strangers or wait for guildmates",
      "variants": [
       "do you all group with strangers or wait for guildmates",
-      "{q} pick up groups or guild groups, which do you prefer"
+      "{q} pick up groups or guild groups, which do you prefer?"
      ],
      "optional": false
     },
@@ -717887,9 +718535,9 @@
     },
     {
      "role": "F",
-     "text": "spoken like a true crafter",
+     "text": "thats crafter talk right there",
      "variants": [
-      "spoken like a true crafter",
+      "thats crafter talk right there",
       "the crafter's curse, you keep the best ones"
      ],
      "optional": false
@@ -719075,7 +719723,7 @@
      "text": "starting a guild, need a name that isnt terrible",
      "variants": [
       "starting a guild, need a name that isnt terrible",
-      "{q} help me name my new guild"
+      "{q} can someone help me name my new guild?"
      ],
      "optional": false
     },
@@ -719128,9 +719776,9 @@
     },
     {
      "role": "E",
-     "text": "how many members so far",
+     "text": "how many have joined so far",
      "variants": [
-      "how many members so far",
+      "how many have joined so far",
       "whos in it so far"
      ],
      "optional": false
@@ -719200,9 +719848,9 @@
     },
     {
      "role": "A",
-     "text": "oh i like that one",
+     "text": "oh i like that, yeah",
      "variants": [
-      "oh i like that one",
+      "oh i like that, yeah",
       "ok thats actually good"
      ],
      "optional": false
@@ -719737,7 +720385,7 @@
      "text": "new player here, i died and lost xp? what do i do",
      "variants": [
       "new player here, i died and lost xp? what do i do",
-      "{q} brand new, how do i get stuff back after dying"
+      "{q} brand new, how do i get stuff back after dying?"
      ],
      "optional": false
     },
@@ -720216,7 +720864,7 @@
      "text": "our alliance switched to loot points for raids and people are mad",
      "variants": [
       "our alliance switched to loot points for raids and people are mad",
-      "{q} anyone else hate raid point systems"
+      "{q} anyone else hate raid point systems?"
      ],
      "optional": false
     },
@@ -720769,9 +721417,9 @@
     },
     {
      "role": "F",
-     "text": "unpopular opinion, the death penalty is what makes the game exciting",
+     "text": "maybe its just me, but the death penalty is what makes the game exciting",
      "variants": [
-      "unpopular opinion, the death penalty is what makes the game exciting",
+      "maybe its just me, but the death penalty is what makes the game exciting",
       "without the penalty nobody would be careful"
      ],
      "optional": false
@@ -720887,7 +721535,7 @@
      "text": "whats the best moment you have had leveling so far",
      "variants": [
       "whats the best moment you have had leveling so far",
-      "{q} favorite leveling memory, go"
+      "favorite leveling memory, go"
      ],
      "optional": false
     },
@@ -721324,7 +721972,7 @@
      "text": "late night question. what was your very first character",
      "variants": [
       "late night question. what was your very first character",
-      "{q} first character you ever made, go"
+      "first character you ever made, go"
      ],
      "optional": false
     },
@@ -721772,7 +722420,7 @@
      "text": "i am completely lost. trees everywhere",
      "variants": [
       "i am completely lost. trees everywhere",
-      "{q} anyone good with directions, im lost"
+      "{q} anyone good with directions? im lost"
      ],
      "optional": false
     },
@@ -738804,7 +739452,7 @@
      "text": "you cant camp anything, you just sit there and lose it",
      "variants": [
       "you cant camp anything, you just sit there and lose it",
-      "try it. i'll be there first. like always"
+      "try it. i'll get there first. like always"
      ],
      "optional": false
     },
@@ -739678,7 +740326,7 @@
      "text": "oh no, guild drama in faction. my favorite",
      "variants": [
       "oh no, guild drama in faction. my favorite",
-      "grabbing a snack, guild fight in faction"
+      "guild fight in faction, getting popcorn"
      ],
      "optional": false
     },
@@ -740472,7 +741120,7 @@
      "text": "some of mine were busy",
      "variants": [
       "some of mine were busy",
-      "half my guild had dinner plans"
+      "half my guild had other plans"
      ],
      "optional": false
     },
@@ -744013,9 +744661,9 @@
     },
     {
      "role": "C",
-     "text": "{name_b} is NOT GUILTY. a deal is a deal",
+     "text": "{name_b} is NOT GUILTY. they kept to the deal",
      "variants": [
-      "{name_b} is NOT GUILTY. a deal is a deal",
+      "{name_b} is NOT GUILTY. they kept to the deal",
       "NOT GUILTY. \"the next one\" means the next one"
      ],
      "optional": false
@@ -771928,9 +772576,9 @@
     },
     {
      "role": "F",
-     "text": "wait what did i miss",
+     "text": "wait, what happened",
      "variants": [
-      "wait what did i miss"
+      "wait, what happened"
      ],
      "optional": false
     },
@@ -772667,9 +773315,9 @@
     },
     {
      "role": "B",
-     "text": "real talk, healers never have trouble finding groups",
+     "text": "lets be honest, healers never have trouble finding groups",
      "variants": [
-      "real talk, healers never have trouble finding groups"
+      "lets be honest, healers never have trouble finding groups"
      ],
      "optional": false
     },
@@ -774174,9 +774822,9 @@
     },
     {
      "role": "D",
-     "text": "real talk, pets carry solo play. no caster solos like a theurgist",
+     "text": "honestly, pets carry solo play. no caster solos like a theurgist",
      "variants": [
-      "real talk, pets carry solo play. no caster solos like a theurgist"
+      "honestly, pets carry solo play. no caster solos like a theurgist"
      ],
      "optional": false
     },

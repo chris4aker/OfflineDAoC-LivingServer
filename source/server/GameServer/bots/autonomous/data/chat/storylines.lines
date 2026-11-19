@@ -6,7 +6,8 @@
 # plays. Plain _4 is the ending nobody chose. {keep} and {frontier} are fixed once per arc. Each
 # arc starts fun and turns spicy fast, with callbacks to the earlier episodes. Afterwards the protagonist the player
 # backed sends a "side_thanks" tell, the one they went against a "side_scorn" tell ({target} is the rival's name).
-# Real swear words are not in the corpus: they swear the way 2003 chat did, wtf, stfu, gtfo, omfg, $#@!. New writing.
+# Swearing in 2003 style is allowed (owner, 2026-11-18; tools/bot-voices/banned.txt); slurs are not. They swear the
+# way 2003 chat did: wtf, stfu, gtfo, omfg, $#@!. New writing.
 
 @kind debate
 @realm *
@@ -116,7 +117,7 @@ A: WATCH YOUR MOUTH {name_b}. I'LL PUT YOU ON YOUR BACK IN FRONT OF THE WHOLE RE
 B: big words from a camper. you'll be dead before your first swing | i'll be done before you finish medding
 H: should we sell tickets | i'm charging admission at the gate
 A: and after i win, i'm camping every named you ever look at | when this is over i'm sitting on every camp you love. forever
-B: you cant camp anything, you just sit there and lose it | try it. i'll be there first. like always
+B: you cant camp anything, you just sit there and lose it | try it. i'll get there first. like always
 D: the realm is officially split. team {name_a} or team {name_b} | its war now. pick a side people
 G: so when is this duel even happening | someone tell me when, i'm not missing it
 ~ 6
@@ -237,7 +238,7 @@ F: first hit wins. the realm has spoken | lesson for everyone: dont sit down nex
 B: ok since {name_a} wont listen in guild chat: we need loot rules. real ones | posting this in faction so the whole realm sees: {name_a}, our guild needs a loot system
 A: lol {name_b} why is this in faction. we have guild chat for this | {name_b}... we have a guild channel. you know that right
 B: because in guild chat you just type "lol" and go afk | you ignore me in guild chat. here you cant
-C: oh no, guild drama in faction. my favorite | grabbing a snack, guild fight in faction
+C: oh no, guild drama in faction. my favorite | guild fight in faction, getting popcorn
 A: our loot system is fine. everyone rolls. its fun | free rolls for everyone. its worked for months
 B: its not fine. last raid someone who showed up for five minutes won the best drop | your "fun" gave the best drop to someone who logged in for the last pull
 A: thats what rolls are, {name_b}. luck | thats luck {name_b}. sometimes the dice like people
@@ -342,7 +343,7 @@ A: ok. {keep}. we're here. where is {name_b}'s guild | here at {keep}. guild is 
 B: we're here too {name_a}. all of us | my guild is at {keep}. full force
 C: lol i see three of {name_a}'s and three of {name_b}'s | i count six people. total. both guilds
 D: thats it? the great guild war is six people? | six people. thats the whole war
-A: some of mine were busy | half my guild had dinner plans
+A: some of mine were busy | half my guild had other plans
 B: mine had to work. real life stuff | mine logged early. its a weeknight
 E: uh. {enemy} are here. a lot of {enemy} | incoming. big group of {enemy}. like thirty
 F: and they're all dead | everyone's dead. both guilds. instantly
@@ -812,7 +813,7 @@ D: case closed | court adjourned
 @role G type=*
 @role H type=*
 C: the verdict on the ring. ready? | the jury has voted. the court is ready
-C: {name_b} is NOT GUILTY. a deal is a deal | NOT GUILTY. "the next one" means the next one
+C: {name_b} is NOT GUILTY. they kept to the deal | NOT GUILTY. "the next one" means the next one
 B: HA. told you {name_a} | YES. the realm has sense after all
 A: this is a joke. a total joke | unbelievable. a ring thief walks free
 D: {player} brought up the "next one" deal and it changed everything | {player} stood up for {name_b} and the jury flipped

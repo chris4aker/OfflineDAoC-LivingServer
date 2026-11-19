@@ -2,7 +2,8 @@
 # /faction with gold ads, the realm reacts, a GM bans it, and a new one turns up later with a new name. {site} is a fake
 # website the server makes up ("g 0 l d g 0 b l i n . c 0 m"); every ad names it. {target} is the spammer's name in the
 # realm's reactions; the tells call the player "friend". No real website, company or payment service is
-# named, and no real price is compared. Real swear words are not in the corpus: the realm swears the way 2003 chat did.
+# named, and no real price is compared. The realm swears in 2003 style, which is allowed (owner,
+# 2026-11-18; tools/bot-voices/banned.txt); slurs are not.
 # New writing.
 
 # ---- ad: the spammer's /faction ads ---------------------------------------------------------------
@@ -105,10 +106,10 @@ yes i see ur message!!! answer is {site}!!!
 @topic react
 @who *
 reported
-/ignore {target}
-omg not again
-who buys gold lol
-{target} is a bot
+/ignore {target}. there.
+omg, this guy again
+who actually buys from these guys
+{target} has to be a bot
 here we go again
 another one. great
 {target} is clearly a real person with a real name
@@ -120,7 +121,7 @@ ok who keeps feeding them, someone is buying
 my chat window is just {target} now
 [reported|reported it|appealed it][, again|][.|. lol|. ugh]
 [/ignore|ignoring|ignored] {target}[, bye|, done|]
-[omg|ugh|oh no], [not again|another one|the spam is back][!|]
+[omg|ugh|oh no], [not this again|another one|the spam is back][!|]
 [who buys gold|who even buys gold|does anyone buy gold|does anyone actually pay for gold][?|? lol|? seriously]
 {target} [is a bot|is so a bot|is obviously a bot][.|. lol|, look at that name]
 [lol|rofl|heh] [look at that name|what a name|nice name], {target}
@@ -160,17 +161,17 @@ found {target}. just standing there. not moving. typing
 @kind spam_react
 @topic banned
 @who *
-lol {target} got banned
+lol {target} got banned already
 and stay out
-gm to the rescue
+a gm showed up, finally
 ten gold says they're back in an hour with a new name
-bye {target}, wont miss you
-ahh, quiet again
+bye {target}, nobody liked you
+ahh, faction is quiet again
 finally. my chat is mine again
 gm power. about time
 rest in pieces {target}
 {target} has left the realm. forever. until tomorrow
-banned. the system works
+banned already. the system works for once
 someone actually woke the gm up. heroes
 {target} got sent to the farm upstairs
 the realm thanks you, mysterious gm
@@ -189,7 +190,7 @@ quiet. too quiet. the next one is typing
 somewhere a gold farm just lost its best typist
 [pour one out|a moment of silence|a minute of silence] for {target}. [ok thats enough|done|there]
 @who NoLifer
-same spammer, new name, by dinner. ive watched this for years
+same spammer, new name, by tomorrow. ive watched this for years
 [ill|i will] [start a tally|count them|keep score]. [thats|this is] [four|five|six] this week
 @who Crafter
 good. maybe now my sale listings stop looking expensive

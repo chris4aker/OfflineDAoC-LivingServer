@@ -2,7 +2,7 @@
 # speech (thee, thou, aye, nay, forsooth, verily, huzzah, emotes in asterisks), take the lore seriously, and the realm
 # mocks them for it. "ambient" is a roleplayer's own line, "mock" another bot's jab right after ({target} is the
 # roleplayer), "answer" the roleplayer's reply, still in character ({target} is the mocker). Funny because it is earnest.
-# Real swear words are not in the corpus: the mockers swear the way 2003 chat did. {enemy} is filled with the people of
+# The mockers swear in 2003 style, which is allowed (owner, 2026-11-18); slurs are not. {enemy} is filled with the people of
 # another realm ("Britons", "Norsemen", "Hibernians"), so it reads as a plural. A mock or answer that quotes a word
 # ("forsooth? FORSOOTH?") is said only when the line it answers has that word (AutonomousRoleplayers.QuoteFits).
 # Lines about a sword, blade or shield are for the classes that carry one. New writing.
@@ -38,7 +38,7 @@ the sun riseth over {capital}, and mine heart riseth with it
 i have taken a vow of silence. *breaks it immediately* the vow was too hard
 o {capital}, jewel of the realm, i shall defend thy gates until mine last breath. or until supper
 the {enemy} raided our keep whilst i slept. never again shall i sleep. *yawns*
-fellow warriors, remember: a true hero eateth a hearty breakfast before battle
+fellow warriors, remember: a true hero eateth a hearty meal before battle
 *hums an old marching song* "o the frontier is cold and the {enemy} are near..."
 tis a fine day to defend the realm. tis always a fine day to defend the realm
 mine family crest is a boar upon a field of green. mine family is not famous. yet
@@ -94,13 +94,13 @@ the trees of this land have long memories. i try to be polite to them
 @topic mock
 @who *
 /rp off plz
-speak english
-{target} is at it again
-thou art a nerd
-lol thee and thou
+say it in english
+and {target} is off again
+what a nerd lol
+thee, thou, thy. every time
 {target} who talks like that
 someone tell {target} the ren faire closed in august
-did {target} just bow in faction chat
+{target} just bowed in faction chat. ok
 {target} its a game man
 forsooth? FORSOOTH?
 my eyes glazed over at "good morrow"
@@ -124,7 +124,7 @@ the asterisks are back. hide
 {target} doth thou also say forsooth to the merchant
 i love {target}. i also want {target} to stop
 {target} marry me but in normal english
-[{target}|lol {target}], [do you|does thou] [talk like that|speak like that] [at dinner|to your mom|at school][?|? lol]
+[{target}|lol {target}], [do you|does thou] [talk like that|speak like that] [at the table|to your mom|at school][?|? lol]
 @who NoLifer
 every server has one {target}. ours never sleeps
 ive heard that exact speech from {target} three times this week

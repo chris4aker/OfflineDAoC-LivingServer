@@ -203,6 +203,24 @@ below has been seen on the owner's PC yet: **tests only**.
   craft removed.
 - `talking_audit.lines` split into the files of its sets (no line changed).
 
+### Follow-up: event and scene lines clear the builder's checks (fix/chat-followup-events-scenes)
+- Every 1.2 chat audit warning in the event files (storylines, dunce, deeds, news, rumours, holidays, spammers, roleplayers,
+  beggars, milestones, memory) and the scene files (debates, gen_*, threads_long) is fixed, so those files now fail the build
+  on a new hit (`chat_rules.STRICT_OWNERS` adds E4 and E8). Lines were reworded, none removed, and the scene count is the same
+  (565).
+- `{q}` ("quick question,") now goes only before a question: 113 openers got their question mark or lost the `{q}`.
+- Time of day: "dinner" and "breakfast" lines say "a meal", "the table" or "after i eat"; the dunce's "pause the game, dinner
+  is ready" scene plays only in the evening.
+- No promise words where nothing acts ("on my way out", "ill be there for the next one", "i'll be there first"); "the
+  {enemy} keep dying" reads as people, and four RvR thread beats name `{enemy_mod}` ("a hib stealther").
+- Near-copies: a single line and a family with the same words got new wordings; the scene beats that shared 80% of their
+  words with another scene's beat were rewritten; "real talk", "unpopular opinion", "playstyle" and "pics or it didnt
+  happen" became 2003 wordings. The words the checks flagged that a 2003 player would use (autosplit, greaves, golem, pub,
+  crauchon...) are in `vocabulary.txt`.
+- `extras.lines`: "you kept me alive at {place}" was a thanks line for a "heal" topic the server never asks for; it is now a
+  thanks for the group. "want to group again" needs `player_grouped`.
+- File headers no longer say real swear words are not in the corpus (owner, 2026-11-18: swearing is fine, slurs are not).
+
 ## Raid fixes from sweep 6e: Aidon's room, an attempt over his reset, epic trash on the way in, musters a wave walks to (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 13:31-15:15, `DIAG-b1b6-sweep6e`). Nothing below is seen in game yet.

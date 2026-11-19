@@ -3,8 +3,9 @@
 # realm smells blood, and it turns into a flame war: insults, threats, a cousin who is a GM, ALL CAPS, keyboard smashes,
 # and a rage quit. "@exit A" logs that bot off for 2-6 hours once the scene has played to its end
 # (AutonomousBotSchedule.RageQuit). A player who spoke during the scene gets a parting tell ("ragequit_tell"), and the dunce
-# comes back sheepish ("ragequit_back"). Real swear words are not in the corpus (build_corpus.py BANNED): they swear the way
-# 2003 chat did, wtf, stfu, gtfo, omfg, $#@!. Nobody uses slurs. The roasts call the dunce "they". New writing.
+# comes back sheepish ("ragequit_back"). Swearing in 2003 style is allowed (owner,
+# 2026-11-18; tools/bot-voices/banned.txt): wtf, stfu, gtfo, omfg, $#@!, damn, crap. Nobody uses slurs. The roasts
+# call the dunce "they". New writing.
 
 @kind debate
 @realm *
@@ -21,7 +22,7 @@
 @role F type=*
 @role G type=*
 @role H type=*
-A: {q} how do i level up my horse? mine is still really slow | {q} serious question, where do i train my horse? it never gets faster
+A: {q} how do i level up my horse? mine is still really slow | serious question, where do i train my horse? it never gets faster
 B: hahahaha | ROFL
 C: your. horse. | ...your horse
 D: you have to feed it a dragon scale every level | have you tried killing blues ON the horse
@@ -67,14 +68,14 @@ H: the cousin is going to be so disappointed | somewhere a GM cousin is very con
 @role F type=*
 @role G type=*
 @role H type=*
-A: {q} how do i turn off pvp?? the enemy keeps killing me in the frontier | {q} where is the option to turn off pvp, three enemies just killed me again
+A: {q} how do i turn off pvp?? the enemy keeps killing me in the frontier | {q} three enemies just killed me again, where is the option to turn off pvp?
 B: lol | omfg
 C: the frontier. is the pvp. | turn off pvp... in the frontier... the pvp zone
 D: there's a button for it but you have to be level 51 to see it | it's under options, right below "make me invincible"
 A: oh ha ha. so funny. i just died three times and you're doing standup | wow, i'm getting farmed and my own realm is laughing. great realm
 E: you walked to an enemy keep alone. we're allowed to laugh | you gave them three kills in ten minutes. the laugh is earned
 A: i didnt GIVE them anything. i was exploring. not that you would know, you never leave the capital | it wasnt free rps. at least i go out there, you all hide in town
-F: i've got more kills tonight than you have deaths. barely | big words from someone who just gave the enemy a free dinner
+F: i've got more kills tonight than you have deaths. barely | big words from someone who just gave the enemy a free meal
 A: shut up. nobody cares about your stupid kills | wow congrats on your little kill count. want a medal?
 B: i'd take a medal over a corpse run | yes actually. i'd like a medal. you can bring it on your next corpse run
 A: you're all trash. our realm loses because of trash like you | this is why we lose every keep. a realm full of garbage players
@@ -110,7 +111,7 @@ E: i almost feel bad. almost | the enemy realm is having a moment of silence rig
 @role F type=*
 @role G type=*
 @role H type=*
-A: {q} which merchant sells realm points? i have like 40 gold saved | {q} where can i buy realm points, i have gold now
+A: {q} which merchant sells realm points? i have like 40 gold saved | {q} i have gold now, where can i buy realm points?
 B: the merchant is called the frontier | aisle three, next to the courage potions
 E: i'll sell you mine. send me the 40 gold and stand very still in the frontier | 40 gold and i'll send you all my realm points. trust me
 A: really? ok how do i send it | wait for real? how many do i get
@@ -151,7 +152,7 @@ G: they'll be back. they always come back | give it two hours
 @role F type=*
 @role G type=*
 @role H type=*
-A: {q} how do i switch realms? the other side is winning and i want to be on that team | {q} is there a way to move my guy to the winning realm
+A: {q} how do i switch realms? the other side is winning and i want to be on that team | {q} is there a way to move my guy to the winning realm?
 B: lol, a traitor in faction | wow. said it right out loud and everything
 C: aw, fair weather fan | someone's shopping for a new realm
 D: ask the enemy, they'll give you a very warm welcome. with swords | sure, walk over and ask them nicely. they love visitors
@@ -229,7 +230,7 @@ D: next raid we name a pull after them | next raid, the first death is in their 
 @role F type=*
 @role G type=*
 @role H type=*
-A: {q} why do the guards at the enemy keep attack me? i just want to look around | {q} the guards at the enemy border keep killed me again, is that a bug
+A: {q} why do the guards at the enemy keep attack me? i just want to look around | {q} the guards at the enemy border keep killed me again, is that a bug?
 B: aww | oh no. oh sweetie
 C: why are you walking into their keep | stop. visiting. their guards
 D: those are their guards. they kill anyone from our realm who walks in | the guards there have a very simple rule, and you found it
@@ -257,6 +258,7 @@ H: their guards are celebrating | somewhere an enemy guard is getting a medal
 
 @topic dunce
 @levels 5-50
+@needs evening
 @scene dunce_pause_game
 @exit A
 @role A type=* levels=5-30
@@ -293,6 +295,7 @@ F: the mob is still standing there. waiting | their corpse is cold too
 G: tell your mom the realm says hi | someone tell their mom, she'll want to know
 H: i'm going to go eat too. but i'll kill the mob first | brb dinner. i know how to stop fighting first
 
+@needs
 @topic dunce
 @levels 5-50
 @scene dunce_pet_warrior
