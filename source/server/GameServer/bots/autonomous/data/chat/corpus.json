@@ -30552,10 +30552,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids get bigger heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "353d8973c2fc"
   },
   {
@@ -30573,52 +30573,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids get bigger heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "26c6ee72ef7f"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids get bigger heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "df80fd678024"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids get bigger heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "95b0c30f91a6"
   },
   {
@@ -30636,10 +30594,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids get real heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "8018356e5efe"
   },
   {
@@ -30657,52 +30615,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids get real heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "056ce9ee0bf7"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids get real heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "a33d7ca13da5"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids get real heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "c195724b6caf"
   },
   {
@@ -30720,10 +30636,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids have bigger heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "0a8823ad05f6"
   },
   {
@@ -30741,52 +30657,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids have bigger heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "52eaf609013c"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids have bigger heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "ad5f361fb030"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids have bigger heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "a8bde0e9179d"
   },
   {
@@ -30804,10 +30678,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids have real heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "e175896e2089"
   },
   {
@@ -30825,52 +30699,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids have real heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "eab00ec06ce3"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "druids have real heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "62c3b037d08f"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "druids have real heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "b878f87bf0d7"
   },
   {
@@ -30888,10 +30720,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens get bigger heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "245801ac09d6"
   },
   {
@@ -30909,52 +30741,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens get bigger heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "35bf0dd295e2"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens get bigger heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "ba96a0df4736"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens get bigger heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "af3857fb61e5"
   },
   {
@@ -30972,10 +30762,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens get real heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "1800cf82aa19"
   },
   {
@@ -30993,52 +30783,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens get real heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "06f525775db9"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens get real heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "4b2f8b3f3eee"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens get real heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "50f91a89cdf1"
   },
   {
@@ -31056,10 +30804,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens have bigger heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "5fedb271e619"
   },
   {
@@ -31077,52 +30825,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens have bigger heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "8ba829ee06f9"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens have bigger heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "89d29a352cee"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens have bigger heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "ee8d449abe20"
   },
   {
@@ -31140,10 +30846,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens have real heals, bards get songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "e7025e08efa2"
   },
   {
@@ -31161,52 +30867,10 @@
    "needs": [],
    "intent": "",
    "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens have real heals, bards have songs",
-   "family": "ef7a59cbb0",
-   "id": "0276840368ff"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
-   "invites": "complaint",
-   "text": "wardens have real heals, we get songs",
-   "family": "ef7a59cbb0",
-   "id": "5ff4d537c6ac"
-  },
-  {
-   "kind": "ambient",
-   "topic": "class",
-   "who": [],
-   "realm": "hib",
-   "class": [
-    "Bard"
-   ],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1768,
+   "weight": 0.25,
    "invites": "complaint",
    "text": "wardens have real heals, we have songs",
-   "family": "ef7a59cbb0",
+   "family": "07332ac5de",
    "id": "7411adba5eed"
   },
   {
@@ -51474,7 +51138,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop is twice as sweet when the whole group cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "485d82665959"
   },
   {
@@ -51493,7 +51157,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop is twice as sweet when everyone cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "4a347f3e6b03"
   },
   {
@@ -51512,7 +51176,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop is so much better when the whole group cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "f94064aceaa7"
   },
   {
@@ -51531,7 +51195,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop is so much better when everyone cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "f209068d239f"
   },
   {
@@ -51550,7 +51214,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop feels twice as sweet when the whole group cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "c98db924d3df"
   },
   {
@@ -51569,7 +51233,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop feels twice as sweet when everyone cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "4128153b4f74"
   },
   {
@@ -51588,7 +51252,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop feels so much better when the whole group cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "3e4642f5e24f"
   },
   {
@@ -51607,7 +51271,7 @@
    "weight": 0.25,
    "invites": "chat",
    "text": "a good drop feels so much better when everyone cheers",
-   "family": "aad592f570",
+   "family": "7bb7fbafe1",
    "id": "45690652a10d"
   },
   {
@@ -51625,9 +51289,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot is twice as sweet when the whole group cheers",
-   "family": "aad592f570",
-   "id": "19aa6611c2ad"
+   "text": "a rare drop is twice as sweet when the whole group cheers",
+   "family": "7bb7fbafe1",
+   "id": "24dec9e1ae63"
   },
   {
    "kind": "ambient",
@@ -51644,9 +51308,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot is twice as sweet when everyone cheers",
-   "family": "aad592f570",
-   "id": "92401e053ea0"
+   "text": "a rare drop is twice as sweet when everyone cheers",
+   "family": "7bb7fbafe1",
+   "id": "6322534ed5dc"
   },
   {
    "kind": "ambient",
@@ -51663,9 +51327,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot is so much better when the whole group cheers",
-   "family": "aad592f570",
-   "id": "705bbf9702dd"
+   "text": "a rare drop is so much better when the whole group cheers",
+   "family": "7bb7fbafe1",
+   "id": "b045d743d314"
   },
   {
    "kind": "ambient",
@@ -51682,9 +51346,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot is so much better when everyone cheers",
-   "family": "aad592f570",
-   "id": "b67320ed312b"
+   "text": "a rare drop is so much better when everyone cheers",
+   "family": "7bb7fbafe1",
+   "id": "a9ccd6edbe08"
   },
   {
    "kind": "ambient",
@@ -51701,9 +51365,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot feels twice as sweet when the whole group cheers",
-   "family": "aad592f570",
-   "id": "250dbd0d4be3"
+   "text": "a rare drop feels twice as sweet when the whole group cheers",
+   "family": "7bb7fbafe1",
+   "id": "f86ba14aba7f"
   },
   {
    "kind": "ambient",
@@ -51720,9 +51384,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot feels twice as sweet when everyone cheers",
-   "family": "aad592f570",
-   "id": "fdf87681d256"
+   "text": "a rare drop feels twice as sweet when everyone cheers",
+   "family": "7bb7fbafe1",
+   "id": "3eec0eac6a86"
   },
   {
    "kind": "ambient",
@@ -51739,9 +51403,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot feels so much better when the whole group cheers",
-   "family": "aad592f570",
-   "id": "a3332c16489d"
+   "text": "a rare drop feels so much better when the whole group cheers",
+   "family": "7bb7fbafe1",
+   "id": "f84e1fbd31ee"
   },
   {
    "kind": "ambient",
@@ -51758,9 +51422,9 @@
    "mood": "",
    "weight": 0.25,
    "invites": "chat",
-   "text": "good loot feels so much better when everyone cheers",
-   "family": "aad592f570",
-   "id": "0506253345a8"
+   "text": "a rare drop feels so much better when everyone cheers",
+   "family": "7bb7fbafe1",
+   "id": "12b0f235b25c"
   },
   {
    "kind": "ambient",
@@ -156697,9 +156361,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves are elegant, the rest of us have seen one trip down the stairs",
-   "family": "68d9ead067",
-   "id": "ff60b8d062e3"
+   "text": "elves reckon they are elegant, the rest of us have seen one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "2a405b65da33"
   },
   {
    "kind": "ambient",
@@ -156716,9 +156380,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves are elegant, we saw one trip off the stairs",
-   "family": "68d9ead067",
-   "id": "1344876f69f9"
+   "text": "elves reckon they are elegant, the rest of us have seen one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "c0814180cf36"
   },
   {
    "kind": "ambient",
@@ -156735,9 +156399,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves are graceful, the rest of us have seen one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "07cfa7659aee"
+   "text": "elves reckon they are elegant, the rest of us saw one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "85c23a8582b6"
   },
   {
    "kind": "ambient",
@@ -156754,9 +156418,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves are graceful, the rest of us have seen one trip off a ledge",
-   "family": "68d9ead067",
-   "id": "49c1cac80212"
+   "text": "elves reckon they are elegant, the rest of us saw one trip off the stairs",
+   "family": "d90fa9023d",
+   "id": "9d16e11584ba"
   },
   {
    "kind": "ambient",
@@ -156773,9 +156437,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves look graceful, the rest of us have seen one trip down the stairs",
-   "family": "68d9ead067",
-   "id": "70424d3f436a"
+   "text": "elves reckon they are elegant, the rest of us saw them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "19f37c53de25"
   },
   {
    "kind": "ambient",
@@ -156792,9 +156456,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon elves look graceful, we have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "8f310eda82bd"
+   "text": "elves reckon they are elegant, we have seen one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "8931f4af9dbf"
   },
   {
    "kind": "ambient",
@@ -156811,9 +156475,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon they are elegant, the rest of us have seen one trip off the stairs",
-   "family": "68d9ead067",
-   "id": "1ea7fd03332a"
+   "text": "elves reckon they are elegant, we saw one trip off the stairs",
+   "family": "d90fa9023d",
+   "id": "f0b69bd764ad"
   },
   {
    "kind": "ambient",
@@ -156830,9 +156494,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon they are elegant, we saw them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "2c2a8553f552"
+   "text": "elves reckon they are graceful, the rest of us have seen them fall off the stairs",
+   "family": "d90fa9023d",
+   "id": "4b7bcddae3df"
   },
   {
    "kind": "ambient",
@@ -156849,9 +156513,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon they are graceful, the rest of us saw them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "10286b630011"
+   "text": "elves reckon they are graceful, the rest of us saw them fall down a ledge",
+   "family": "d90fa9023d",
+   "id": "ae32e956927a"
   },
   {
    "kind": "ambient",
@@ -156868,9 +156532,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon they look graceful, we have seen one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "1a82761a4f5e"
+   "text": "elves reckon they are graceful, we saw one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "abf40b4e9571"
   },
   {
    "kind": "ambient",
@@ -156887,9 +156551,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves reckon they look graceful, we saw one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "120eca4085a7"
+   "text": "elves reckon they look elegant, the rest of us have seen one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "45346cfff12b"
   },
   {
    "kind": "ambient",
@@ -156906,9 +156570,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves think elves are elegant, the rest of us have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "ab5e4b1b6280"
+   "text": "elves reckon they look elegant, the rest of us saw one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "2a29ac8a6cbe"
   },
   {
    "kind": "ambient",
@@ -156925,9 +156589,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves think elves look elegant, the rest of us have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "d1232335a708"
+   "text": "elves reckon they look graceful, the rest of us saw them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "96088c0fbab7"
   },
   {
    "kind": "ambient",
@@ -156944,85 +156608,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves think elves look elegant, the rest of us saw one trip down the stairs",
-   "family": "68d9ead067",
-   "id": "1a5fff68dacc"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "elves think elves look graceful, we have seen one trip off a ledge",
-   "family": "68d9ead067",
-   "id": "6fcddeaf1570"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "elves think they are elegant, the rest of us have seen them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "55e1feab774d"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "elves think they are elegant, the rest of us have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "e4200b069b5a"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "elves think they are elegant, the rest of us saw one trip off a ledge",
-   "family": "68d9ead067",
-   "id": "878f6b4f3e1a"
+   "text": "elves reckon they look graceful, we have seen them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "bdfec008bdf3"
   },
   {
    "kind": "ambient",
@@ -157040,7 +156628,7 @@
    "weight": 0.1443,
    "invites": "chat",
    "text": "elves think they are elegant, the rest of us saw one trip off the stairs",
-   "family": "68d9ead067",
+   "family": "d90fa9023d",
    "id": "259c0ac18c4b"
   },
   {
@@ -157058,9 +156646,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves think they look elegant, the rest of us saw one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "e745c85333b9"
+   "text": "elves think they are elegant, the rest of us saw them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "92e2839c8736"
   },
   {
    "kind": "ambient",
@@ -157077,9 +156665,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "elves think they look graceful, the rest of us saw them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "0992c292171b"
+   "text": "elves think they are elegant, the rest of us saw them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "62d37aa19712"
   },
   {
    "kind": "ambient",
@@ -157096,9 +156684,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves are elegant, the rest of us have seen them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "f12e6d5e0bd1"
+   "text": "elves think they are elegant, we have seen them fall off the stairs",
+   "family": "d90fa9023d",
+   "id": "f889d34fd231"
   },
   {
    "kind": "ambient",
@@ -157115,9 +156703,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves are elegant, we have seen one trip off a ledge",
-   "family": "68d9ead067",
-   "id": "0288439882e3"
+   "text": "elves think they are graceful, we have seen them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "43ef09505dc2"
   },
   {
    "kind": "ambient",
@@ -157134,9 +156722,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves are elegant, we saw them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "ef7dedcd69df"
+   "text": "elves think they look elegant, the rest of us saw one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "edc005aa91e7"
   },
   {
    "kind": "ambient",
@@ -157153,9 +156741,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves are graceful, we have seen them fall off a ledge",
-   "family": "68d9ead067",
-   "id": "1de898677024"
+   "text": "elves think they look elegant, the rest of us saw them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "2a2ebfefb260"
   },
   {
    "kind": "ambient",
@@ -157172,9 +156760,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves are graceful, we saw them fall down a ledge",
-   "family": "68d9ead067",
-   "id": "1b9007f78fbf"
+   "text": "elves think they look elegant, we saw one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "b0396638aef0"
   },
   {
    "kind": "ambient",
@@ -157191,9 +156779,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves look elegant, the rest of us have seen one trip off the stairs",
-   "family": "68d9ead067",
-   "id": "d88dad37fa0d"
+   "text": "elves think they look elegant, we saw them fall off the stairs",
+   "family": "d90fa9023d",
+   "id": "657a88638a5e"
   },
   {
    "kind": "ambient",
@@ -157210,9 +156798,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves look elegant, the rest of us have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "dcb5b0f96304"
+   "text": "elves think they look graceful, the rest of us have seen one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "23bd35b78377"
   },
   {
    "kind": "ambient",
@@ -157229,9 +156817,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves look elegant, the rest of us saw one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "e76216aa690a"
+   "text": "elves think they look graceful, we saw one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "f2bdd72e0cf2"
   },
   {
    "kind": "ambient",
@@ -157248,9 +156836,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon elves look graceful, the rest of us have seen one trip off the stairs",
-   "family": "68d9ead067",
-   "id": "d80f82a10d27"
+   "text": "the elves reckon they are elegant, we saw them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "c766acba9f62"
   },
   {
    "kind": "ambient",
@@ -157267,9 +156855,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they are elegant, the rest of us have seen them fall down a ledge",
-   "family": "68d9ead067",
-   "id": "0fd3265f045c"
+   "text": "the elves reckon they are graceful, the rest of us have seen one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "4d4c43142f61"
   },
   {
    "kind": "ambient",
@@ -157286,9 +156874,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they are elegant, the rest of us have seen them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "596876576414"
+   "text": "the elves reckon they are graceful, we have seen one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "d0ba48cda2b6"
   },
   {
    "kind": "ambient",
@@ -157305,9 +156893,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they are graceful, the rest of us have seen one trip down the stairs",
-   "family": "68d9ead067",
-   "id": "4d9c8868e57e"
+   "text": "the elves reckon they are graceful, we saw one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "a859a6782b9d"
   },
   {
    "kind": "ambient",
@@ -157324,9 +156912,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they are graceful, the rest of us have seen them fall down a ledge",
-   "family": "68d9ead067",
-   "id": "8d3badc31656"
+   "text": "the elves reckon they look elegant, the rest of us have seen them fall down a ledge",
+   "family": "d90fa9023d",
+   "id": "198b571b470d"
   },
   {
    "kind": "ambient",
@@ -157343,9 +156931,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they are graceful, we have seen them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "524ac663076b"
+   "text": "the elves reckon they look elegant, we have seen one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "d17d474e43c1"
   },
   {
    "kind": "ambient",
@@ -157362,9 +156950,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they look elegant, we have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "603516a2a2cd"
+   "text": "the elves reckon they look elegant, we have seen them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "9664574c7b0d"
   },
   {
    "kind": "ambient",
@@ -157381,9 +156969,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they look elegant, we saw them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "152354baad1b"
+   "text": "the elves reckon they look graceful, the rest of us saw one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "75694e0b44f7"
   },
   {
    "kind": "ambient",
@@ -157400,9 +156988,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they look graceful, the rest of us saw one trip down the stairs",
-   "family": "68d9ead067",
-   "id": "656036c1e482"
+   "text": "the elves reckon they look graceful, we have seen them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "fc93baf4e04a"
   },
   {
    "kind": "ambient",
@@ -157419,9 +157007,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves reckon they look graceful, we saw them fall off a ledge",
-   "family": "68d9ead067",
-   "id": "baae55d70c5e"
+   "text": "the elves think they are elegant, the rest of us have seen one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "2d08b116c77c"
   },
   {
    "kind": "ambient",
@@ -157438,9 +157026,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think elves look graceful, we have seen one trip off a ledge",
-   "family": "68d9ead067",
-   "id": "606f05147bf5"
+   "text": "the elves think they are elegant, the rest of us saw them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "9089e60813f3"
   },
   {
    "kind": "ambient",
@@ -157457,9 +157045,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think elves look graceful, we have seen them fall down the stairs",
-   "family": "68d9ead067",
-   "id": "427052f5cb09"
+   "text": "the elves think they are graceful, the rest of us have seen one trip down a ledge",
+   "family": "d90fa9023d",
+   "id": "3fb031af739f"
   },
   {
    "kind": "ambient",
@@ -157476,9 +157064,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think they are elegant, the rest of us have seen them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "617afd52f7ec"
+   "text": "the elves think they are graceful, the rest of us have seen one trip off the stairs",
+   "family": "d90fa9023d",
+   "id": "b68099201dd6"
   },
   {
    "kind": "ambient",
@@ -157495,47 +157083,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think they are elegant, the rest of us saw them fall off the stairs",
-   "family": "68d9ead067",
-   "id": "03f4deb9e4f3"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the elves think they are elegant, we have seen one trip down a ledge",
-   "family": "68d9ead067",
-   "id": "f66e7c334426"
-  },
-  {
-   "kind": "ambient",
-   "topic": "general",
-   "who": [],
-   "realm": "hib",
-   "class": [],
-   "levels": [
-    1,
-    50
-   ],
-   "needs": [],
-   "intent": "",
-   "mood": "",
-   "weight": 0.1443,
-   "invites": "chat",
-   "text": "the elves think they are graceful, the rest of us saw them fall off a ledge",
-   "family": "68d9ead067",
-   "id": "2cea380eb9e0"
+   "text": "the elves think they are graceful, we saw one trip down the stairs",
+   "family": "d90fa9023d",
+   "id": "a41253895936"
   },
   {
    "kind": "ambient",
@@ -157553,7 +157103,7 @@
    "weight": 0.1443,
    "invites": "chat",
    "text": "the elves think they are graceful, we saw one trip off the stairs",
-   "family": "68d9ead067",
+   "family": "d90fa9023d",
    "id": "f9b4b2e60190"
   },
   {
@@ -157571,9 +157121,9 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think they look elegant, the rest of us saw them fall down a ledge",
-   "family": "68d9ead067",
-   "id": "86f6d50575c0"
+   "text": "the elves think they look elegant, the rest of us saw one trip off a ledge",
+   "family": "d90fa9023d",
+   "id": "c94131d2ac42"
   },
   {
    "kind": "ambient",
@@ -157590,9 +157140,123 @@
    "mood": "",
    "weight": 0.1443,
    "invites": "chat",
-   "text": "the elves think they look graceful, the rest of us saw them fall off a ledge",
-   "family": "68d9ead067",
-   "id": "d67d69f22417"
+   "text": "the elves think they look elegant, the rest of us saw one trip off the stairs",
+   "family": "d90fa9023d",
+   "id": "8c774c3c1722"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look elegant, the rest of us saw them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "f5dcf7fc488a"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look elegant, we have seen them fall down a ledge",
+   "family": "d90fa9023d",
+   "id": "39e1e1f27ec1"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look elegant, we have seen them fall down the stairs",
+   "family": "d90fa9023d",
+   "id": "ca7f2e67efad"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look elegant, we have seen them fall off the stairs",
+   "family": "d90fa9023d",
+   "id": "54b1606b6a38"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look graceful, we have seen them fall down a ledge",
+   "family": "d90fa9023d",
+   "id": "de93938d057f"
+  },
+  {
+   "kind": "ambient",
+   "topic": "general",
+   "who": [],
+   "realm": "hib",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [],
+   "intent": "",
+   "mood": "",
+   "weight": 0.1443,
+   "invites": "chat",
+   "text": "the elves think they look graceful, we have seen them fall off a ledge",
+   "family": "d90fa9023d",
+   "id": "dc40675e650b"
   },
   {
    "kind": "ambient",

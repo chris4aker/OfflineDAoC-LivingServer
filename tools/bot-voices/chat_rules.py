@@ -31,7 +31,8 @@ OWNERS = [
 ALL_OWNERS = {owner for owner, _ in OWNERS} | {'unowned'}
 # The owners whose files fail on these checks. E3's PR fixed its own files, and the chat follow-up F2 (2026-11-18) cleared
 # E4's and E8's; the others' hits are warnings until their fixes merge.
-STRICT_OWNERS = {'E3', 'E4', 'E8'}
+# Every owner is strict from 1.2 (all chat audit warnings cleared, 2026-11-18): a new hit fails the build.
+STRICT_OWNERS = set(ALL_OWNERS)
 
 
 def owner_of(where):
