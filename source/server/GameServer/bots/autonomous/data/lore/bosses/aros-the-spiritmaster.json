@@ -63,7 +63,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
     },
     {
-      "text": "Negate Spirit (a spirit-resist debuff, radius 500) is laid on a random real player within 2,000 who is not his target, and on everyone near them; GameBots are never picked as its centre.",
+      "text": "Negate Spirit (a spirit-resist debuff, radius 500) is laid on a random raider within 2,000 who is not his target, and on everyone near them; Bots can be its centre as well as players.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs"
     },

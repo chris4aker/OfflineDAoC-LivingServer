@@ -8,6 +8,32 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Lore follow-up: who a mechanic picks, and stories told once (1.2, 2026-11-18; tests only)
+
+Follow-up to the chat follow-up F3. Lore is never cut: every claim and story was reworded or folded, nothing dropped. None
+of it has been seen on the owner's PC.
+
+- **Bots are picked where the scripts pick them.** 47 boss and place lore files said a mechanic picks "real players" only
+  ("bots are never chosen", "only the human gets thrown"). For each one I read the boss's script. Where the pick is
+  `EncounterTargets` (InRadius, InRegion, AsRaider, IsRaider), or a throw whose encounter ships with bot displacement on, the
+  facts, legends and bot briefings now say "a raider, bots included". This covers Anurigunda, Aros, Beliathan, Boligar,
+  Ozur, the Crypt Lord, Cuuldurach's glare, the Drau'gyn Sphere, Birghir, Hjalmar's howl, the Glacier Giant, the Green
+  Knight, Hamar, Oro, Saeor, Hurika, Hakr, Kvasir's tunnels, Steinvor, Vifil, Krevo Ricik, the Legendary Afanc, Moran,
+  Mortufoghus, Myrddraxis, Nosdoden, Oona, Orylle and Orshom's fire, Queen Kula, Risnir Cruss, Scurceol's orbs, the
+  Spectral Provisioner, Cunovinda, Lossren, Roesia, Sys'sro, Torst, Xanxicar, Yar, Ydenia and Galladoria's Eyes.
+  - **Ozur:** his crowd count includes bots, so a raid of 50 or more, bots and all, makes him hit harder. The lore had said
+    it never happens.
+  - **Hurika and Hakr:** their lore said the throws are off. Both ship with AllowDisplacement and AllowBotDisplacement on.
+  - **Asmoien and Ba'alorien:** these two were the other way round. Their lore said they eat bots, but
+    `IsDevourablePet` leaves out every GameBot, so they eat pets only.
+- **Still "real player", because the script picks players only:** Archilus (`source as GamePlayer`), Elro the Ancient,
+  Amminus Pilus's Pilus'Fury (players and summoned pets), Morgana's quest-step appearance and High Priest Andania.
+- **Stories told once.** 33 lore stories opened with a summary paragraph that the later paragraphs told again (Abomos,
+  Wyvernic Wraith, Uaimh, the primals and others), and a few places repeated a paragraph (Shrouded Isles, Muire Tomb,
+  Spraggon Den, Treibh Caillte). Each is folded into one telling, with every detail the summary alone had woven in.
+- A new test fails if any lore story repeats a sentence, if two of its paragraphs share a fifth of their word trigrams,
+  or if a lore file outside the players-only list says a mechanic picks real players only.
+
 ## Chat follow-up: lore and tales warnings, Evern, Juggernaut, five bosses who do pick bots (1.2, 2026-11-18; tests only)
 
 Chat follow-up F3. Lore is never cut: every line was reworded, no tale was dropped. None of it has been seen on the owner's PC.

@@ -61,7 +61,7 @@
       "source": "source/server/GameServer/bots/autonomous/data/lore/history/neutral.json (feature/lore-neutral)"
     },
     {
-      "text": "Beliathan comes up only when no prince or princess (Abdin, Ba'alorien, Asmoien, Nahemah) is alive in region 249, checked every ten minutes, with the broadcast 'The tunnels rumble and shake..'; each real player he kills raises a Beliathan's Minion where they fell.",
+      "text": "Beliathan comes up only when no prince or princess (Abdin, Ba'alorien, Asmoien, Nahemah) is alive in region 249, checked every ten minutes, with the broadcast 'The tunnels rumble and shake..'; each raider he kills, bots included, raises a Beliathan's Minion where they fell.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Beliathan.cs"
     },

@@ -61,17 +61,17 @@
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/"
     },
     {
-      "text": "Summoner Cunovinda, when struck, may (15% a hit) bolt a random real player within 2,000 and move them to a ledge above her room, at most every 8-12 seconds; GameBots are never picked.",
+      "text": "Summoner Cunovinda, when struck, may (15% a hit) bolt a random raider within 2,000 and move them to a ledge above her room, at most every 8-12 seconds; Bots are picked too.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs"
     },
     {
-      "text": "Summoner Lossren raises 18-25 tortured souls whenever none of his are left; once twenty have died an infected ghoul crawls toward a random real player and bursts (Plague, 1,000 matter damage, radius 500). Pets hit him for 5.",
+      "text": "Summoner Lossren raises 18-25 tortured souls whenever none of his are left; once twenty have died an infected ghoul crawls toward a random raider, bot or player, and bursts (Plague, 1,000 matter damage, radius 500). Pets hit him for 5.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs"
     },
     {
-      "text": "Summoner Roesia's Summoner Pain is spirit damage over time in a 1,000 radius around a random real player; her damage shield is heat, and below 25% she heals over time.",
+      "text": "Summoner Roesia's Summoner Pain is spirit damage over time in a 1,000 radius around a random raider, bot or player; her damage shield is heat, and below 25% she heals over time.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs"
     },

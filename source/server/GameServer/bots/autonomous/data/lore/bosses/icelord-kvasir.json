@@ -51,7 +51,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     },
     {
-      "text": "The original cold-heal (cold damage healed him a fifth) is OFF in Living Server (EpicEncounterMechanics.AllowKvasirColdHeal). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a real player passes it, then removes itself; nothing else spawns.",
+      "text": "The original cold-heal (cold damage healed him a fifth) is OFF in Living Server (EpicEncounterMechanics.AllowKvasirColdHeal). On his death a 'Tunnels Announce' NPC broadcasts a rumble of giants on the move when a raider, bot or player, passes it, then removes itself; nothing else spawns.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs"
     }

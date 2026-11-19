@@ -17,7 +17,7 @@
   "tier": "epic",
   "facts": [
     {
-      "text": "Hamar is a level-61 named with 30,000 health in Dodens Gruva. When he is first fought, the snow vendo within 1,000 of him join in against a nearby real player (GameBots are not set on); otherwise he has no scripted mechanic.",
+      "text": "Hamar is a level-61 named with 30,000 health in Dodens Gruva. When he is first fought, the snow vendo within 1,000 of him join in against a nearby raider (bots are set on too); otherwise he has no scripted mechanic.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Dodens/Hamar.cs"
     },

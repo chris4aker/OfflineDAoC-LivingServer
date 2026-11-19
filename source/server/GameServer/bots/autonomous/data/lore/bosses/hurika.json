@@ -36,7 +36,7 @@
       "source": "https://camelot.allakhazam.com/db/mob/6059"
     },
     {
-      "text": "Hurika has no spells: 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350. Every 15-20 s she picks a random real player and announces that a gust of wind sends them flying, but the throw itself is OFF in Living Server (EpicEncounterMechanics.AllowDisplacement), and so is her aerial patrol (AllowGlacierGriffonPatrol); she keeps her perch.",
+      "text": "Hurika has no spells: 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350. Every 15-20 s she picks a random raider within 1,000, bots included, and a gust of wind sends them flying 500-700 up over her (AllowDisplacement and AllowBotDisplacement ship on for her); her aerial patrol stays off (AllowGlacierGriffonPatrol); she keeps her perch.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs"
     },

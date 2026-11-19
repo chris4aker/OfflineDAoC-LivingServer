@@ -21,7 +21,7 @@
   "tier": "epic",
   "facts": [
     {
-      "text": "Ozur is a level-77 Council member with 100,000 health. He counts real players in sight: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200); at 100+ harder still (Strength 350) but with -20% resists. Bots are not counted, so offline he always has the +20% resists. Ozur's Disease: radius 400 round his target, 120 s, recast 60 s.",
+      "text": "Ozur is a level-77 Council member with 100,000 health. He counts every raider in sight, bots included: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200); at 100+ harder still (Strength 350) but with -20% resists. Bots count, so a big bot raid can push him past 50. Ozur's Disease: radius 400 round his target, 120 s, recast 60 s.",
       "provenance": "game",
       "source": "docs/encounters/epic-encounters.json"
     },
@@ -31,7 +31,7 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "Ozur counts real players in sight while he is hurt and fighting: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200) with no bonus; at 100 or more harder still (Strength 350) with -20% resists. Bots are not counted, so in Living Server he always has the +20% resists. He casts Ozur's Disease (radius 400 round his target, 120 s, 3 s cast, recast 60 s). 100,000 health, CC-immune.",
+      "text": "Ozur counts every raider in sight, bots included, while he is hurt and fighting: under 50 he gains +20% to every resist; at 50-99 he hits harder (Strength 200) with no bonus; at 100 or more harder still (Strength 350) with -20% resists. Bots are counted, so in Living Server a raid of 50 or more, bots and all, makes him hit harder. He casts Ozur's Disease (radius 400 round his target, 120 s, 3 s cast, recast 60 s). 100,000 health, CC-immune.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs"
     },
@@ -60,7 +60,7 @@
       "text": "He carries a sickness, and the sculptors say he has always carried it, as his father did: the rot of the cells at the bottom of the citadel, where the prisoners lay and the jailers lived among them. The jailers do not die of it. They give it.\n\nWhen Ozur has looked at the one in front of him long enough to take his measure, the rot settles on that one and on everyone standing close round him, a grey sickness that stays a long while and makes every remedy work at half its strength while it stays. Then the councillor looks away, and some time later looks again, and the rot settles again. The splitters who went to Hord with it in the old days called it the measurer's sickness, and said Hord could ease it but not stop it, and that the giants who stood away from the one Ozur was measuring did not catch it.\n\nHe stands in the outer hall now near Hord's heaped seat, the companies say, between the two of them the whole of the Council's idea of itself: the one who measured threats and the one who mended what the threats did. The sculptors say that is why the strangers should not fight them together.\n\nWhen Ozur dies, the companies say, he looks at the wall behind his seat, at the scratch he never finished, as if he had just decided how long it should be. The sculptors say nobody has ever stayed to see whether he cuts it, and that the knife is still in his belt."
     }
   ],
-  "legend": "Ozur's famous 'he hits harder the more people are on him' only counts REAL players: at 50 or more he gets stronger, at 100 or more stronger but softer. Bots don't count, so in Living Server it never happens; instead, with fewer than 50 real players around, he gets +20% to every resist. So you don't need the old 'polite pull': bring your whole group, just expect him to be tough. 100,000 health, CC-immune. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within 400 of his target for two minutes and halves their heals, so keep the healers and casters away from the tank and cure disease on whoever is near him. He's next to Hord, so pull them separately. His skull ring drops.",
+  "legend": "Ozur's famous 'he hits harder the more people are on him' counts everyone, bots included: at 50 or more he gets stronger, at 100 or more stronger but softer. Bots count, so in Living Server a full bot raid can set it off; with fewer than 50 of you around, he gets +20% to every resist instead. So the old 'polite pull' still matters: under 50 he is tough, over 50 he hits hard. 100,000 health, CC-immune. The thing to watch is Ozur's Disease: every 60 seconds or so it hits everyone within 400 of his target for two minutes and halves their heals, so keep the healers and casters away from the tank and cure disease on whoever is near him. He's next to Hord, so pull them separately. His skull ring drops.",
   "yells": {
     "aggro": [
       "How many of you? Let me count before I answer.",
@@ -110,11 +110,11 @@
   },
   "botLines": {
     "briefing": [
-      "ozur only counts real players, so offline he just has +20% resists. cure his disease",
+      "ozur counts everyone, bots too. under 50 of us he has +20% resists. cure his disease",
       "pull ozur and hord separately",
       "cure disease on ozur, it hits everyone near the tank",
       "ozur: cure the disease, thats the whole fight",
-      "ozurs crowd thing only counts real players, never triggers here. he just has +20% resists",
+      "ozurs crowd thing counts bots too, keep it under 50. he just has +20% resists",
       "ozurs disease is 400 round the tank, every 60s. heals off the tank, cure disease"
     ],
     "aftermathWin": [
@@ -137,7 +137,7 @@
     "rumour": [
       "ozur counts you, they say. bring a crowd and he gets mean",
       "every scratch on ozur's wall is a threat he measured. theres a lot of scratches",
-      "ozur hits harder the more real players are there. offline thats never [lol|so just cure]",
+      "ozur hits harder the more people are there. offline thats never [lol|so just cure]",
       "ozur measures every threat and answers in kind. [fair giant|fairest giant up there]",
       "ozur scratched every threat he ever measured on his wall. the last scratch isnt finished",
       "the old songs say ozur gets angrier the more of you there are. a few of you just make him tougher",

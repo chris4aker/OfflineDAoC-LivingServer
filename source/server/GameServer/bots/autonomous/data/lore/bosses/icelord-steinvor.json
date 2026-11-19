@@ -40,7 +40,7 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "Steinvor adds every real player within 1,100 to his list and, roughly every 20-25 s, names one random real player on it ('<name>, you are not going anywhere') and raises a Pillar of Ice at that player's spot; 3.5 s later it casts Pillar of Frost there (750 cold, radius 350). Bots are never chosen. On his death two hrimthursa seers (level 73-75) appear and walk to his hall. He and Skuf bring each other in. 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350.",
+      "text": "Steinvor adds every raider within 1,100, bots included, to his list and, roughly every 20-25 s, names one random raider on it ('<name>, you are not going anywhere') and raises a Pillar of Ice at that player's spot; 3.5 s later it casts Pillar of Frost there (750 cold, radius 350). Bots are chosen too. On his death two hrimthursa seers (level 73-75) appear and walk to his hall. He and Skuf bring each other in. 100,000 health, 40% melee / 70% magic resists, CC-immune, reach 350.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs"
     },
@@ -69,7 +69,7 @@
       "text": "He names strangers still. The companies of Midgard who reach the middle tunnel say he looks them over in his patient way and picks one, and says to that one, by name, that they are not going anywhere, and a breath later the ice rises where the named one stood. Then he picks another. He is never in a hurry, and he never stops.\n\nHe names only strangers. The giants of the citadel, who have been in the middle tunnel with him in every kind of fight, say he has never named a giant in his life, nor any of the dead who wander the lower halls, nor the iceweavers or the beasts. The hammer names the living who have come to the glacier uninvited, they say, because those are the ones he has been set to stop.\n\nHe has said one long thing in his life that the giants remember, and it was to the Council, the only time he went to the ribs. Birghir had asked him what he thought of the century of peace. Steinvor stood for a while and then said that peace was a matter for those who did not have a tunnel to hold, and went back to his tunnel. The sculptors cut no mark for it, because it was not a vote, but they say it is the most often repeated thing ever said in the council chamber, Guthlac's silences aside.\n\nWhen he falls he says nothing at all. The anvil bellows for him, and the seers walk out of the wall, and the middle tunnel's saying goes round the companies that have heard it: when the hammer names you, do not be standing where you stood."
     }
   ],
-  "legend": "Steinvor and Skuf are linked: hit one and both come. Steinvor's thing is the pillar: about every 20 to 25 seconds he says '<name>, you are not going anywhere' and a Pillar of Ice appears under that person; three and a half seconds later it erupts for 750 cold in a 350 radius. It only ever picks REAL players, never bots, so if you're the only human it's always you: the moment you see your name, step well out and keep the healers out of the circle. He has 100,000 health, 40% melee and 70% magic resists, is CC-immune and reaches about 350. When he dies, two hrimthursa seers (level 73-75) walk into the hall, so keep something in reserve for them. Kill whichever icelord your raid burns faster, and don't drag either out of the hall or they reset. Steinvor's axe is a good drop.",
+  "legend": "Steinvor and Skuf are linked: hit one and both come. Steinvor's thing is the pillar: about every 20 to 25 seconds he says '<name>, you are not going anywhere' and a Pillar of Ice appears under that person; three and a half seconds later it erupts for 750 cold in a 350 radius. It picks bots and players alike, so watch for your own name: the moment you see your name, step well out and keep the healers out of the circle. He has 100,000 health, 40% melee and 70% magic resists, is CC-immune and reaches about 350. When he dies, two hrimthursa seers (level 73-75) walk into the hall, so keep something in reserve for them. Kill whichever icelord your raid burns faster, and don't drag either out of the hall or they reset. Steinvor's axe is a good drop.",
   "yells": {
     "aggro": [
       "Skuf, the anvil. I will be the hammer.",
@@ -119,7 +119,7 @@
       "save mana, two seers pop when steinvor dies",
       "steinvor and skuf reset if dragged, fight them in the hall",
       "kill whichever dies faster but keep mana for the seers",
-      "steinvor pillar only ever picks real players. see your name, step out, 3 seconds",
+      "steinvor pillar can pick anyone, watch for your name. see your name, step out, 3 seconds",
       "pillar is 750 cold in 350, keep heals out of it",
       "steinvor and skuf linked. two seers walk in when steinvor dies, save something",
       "fight them in the hall or they reset"

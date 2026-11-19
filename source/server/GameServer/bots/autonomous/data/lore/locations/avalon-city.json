@@ -61,7 +61,7 @@
       "source": "LORE"
     },
     {
-      "text": "Dra'argus takes no damage and does not attack while his Drau'gyn Sphere lives; once roused it bursts 300 heat in a 500 radius every 4 s and pulls real players 200-300 from it into its middle. Sys'sro throws a random real player near him (never his target, never a bot) into his pit every 10-15 s; the 15 pit beasts take no damage and die with him. Vera'erius heals himself (400, 3 s cast, every 8 s) at or below 70% and is healed by body and spirit damage. Weno'iak's Annihilate (450 spirit) bursts in a 500 radius around himself; his Lights hit one target at up to 1,500.",
+      "text": "Dra'argus takes no damage and does not attack while his Drau'gyn Sphere lives; once roused it bursts 300 heat in a 500 radius every 4 s and pulls raiders 200-300 from it, bots included, into its middle. Sys'sro throws a random raider near him (never his target, bots included) into his pit every 10-15 s; the 15 pit beasts take no damage and die with him. Vera'erius heals himself (400, 3 s cast, every 8 s) at or below 70% and is healed by body and spirit damage. Weno'iak's Annihilate (450 spirit) bursts in a 500 radius around himself; his Lights hit one target at up to 1,500.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/AvalonCity/"
     }

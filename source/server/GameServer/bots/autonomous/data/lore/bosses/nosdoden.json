@@ -31,7 +31,7 @@
       "source": "https://camelot.allakhazam.com/db/mob/4687"
     },
     {
-      "text": "In this build a real player who dies to him becomes a 'Spirit of <name>' with that player's race, armour and class behaviour; a ghost spiritmaster raises a spirit champion, a ghost bonedancer a bone commander and bonemender.",
+      "text": "In this build anyone who dies to him, bot or player, becomes a 'Spirit of <name>' with that player's race, armour and class behaviour; a ghost spiritmaster raises a spirit champion, a ghost bonedancer a bone commander and bonemender.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/Trollheim/Nosdoden.cs"
     },
