@@ -40,6 +40,15 @@ public static class AutonomousChatBudget
         int BurstMin, int BurstMax, int BurstSpreadS, int MinReplyFit, int PileOnCap, int WpmMin, int WpmMax)
     {
         public ChannelBand Band(Channel channel) => Channels.TryGetValue(channel, out ChannelBand band) ? band : new ChannelBand(0, 0, 0, "none");
+
+        /// <summary>
+        /// The most /faction lines a player hears in any minute, every line counted (openers, replies, scene beats, events), at
+        /// bot_voices_chat_rate 2 (1.2, owner 2026-11-18: "5-7 is the right pace"). See <see cref="FactionPace"/>.
+        /// </summary>
+        public double FactionPaceMax { get; init; } = 7.0;
+
+        /// <summary>The pace a running scene (debate, storyline, tale) plays at in /faction, in lines a minute at rate 2.</summary>
+        public double ScenePacePerMinute { get; init; } = 6.0;
     }
 
     public const string FileName = "chat-budget.json";
@@ -106,13 +115,20 @@ public static class AutonomousChatBudget
             }
         root.TryGetProperty("texture", out JsonElement texture);
         root.TryGetProperty("reply", out JsonElement reply);
+        root.TryGetProperty("pace", out JsonElement pace);
+        double paceMax = Math.Clamp(Num(pace, "faction_max_per_minute", 7.0), 2.0, 60.0);
+        double scenePace = Math.Clamp(Num(pace, "faction_scene_per_minute", 6.0), 1.0, paceMax);
         return new Settings((int)Math.Max(1, Num(root, "design_bots_per_realm", 1000)), Math.Clamp(Num(root, "population_exponent", 0.65), 0.1, 1.5),
             channels, Curve(root, "hours"), Curve(root, "hours_clock_schedule"),
             Math.Clamp(Num(texture, "macro_chance", 0.5), 0, 1), (int)Num(texture, "macro_repeat_min_s", 180), (int)Num(texture, "macro_repeat_max_s", 480),
             (int)Num(texture, "macro_last_min_s", 900), (int)Num(texture, "macro_last_max_s", 2400),
             (int)Num(texture, "burst_min", 3), (int)Num(texture, "burst_max", 6), (int)Num(texture, "burst_spread_s", 90),
             (int)Math.Clamp(Num(reply, "min_fit", 2), 0, 4), (int)Math.Clamp(Num(reply, "pileon_cap", 2), 0, 3),
-            (int)Math.Clamp(Num(reply, "wpm_min", 25), 5, 200), (int)Math.Clamp(Num(reply, "wpm_max", 60), 5, 200));
+            (int)Math.Clamp(Num(reply, "wpm_min", 25), 5, 200), (int)Math.Clamp(Num(reply, "wpm_max", 60), 5, 200))
+        {
+            FactionPaceMax = paceMax,
+            ScenePacePerMinute = scenePace,
+        };
     }
 
     /// <summary>The fit a reply to a player needs (the reply budget).</summary>
@@ -250,6 +266,51 @@ public static class AutonomousChatBudget
     /// <summary>A gold spammer's ads in one wave for the bots online: fewer on a small roster, never under 2. Pure.</summary>
     public static int SceneLines(int lines, int realmBots) =>
         Math.Max(Math.Min(2, lines), (int)Math.Round(lines * SceneScale(realmBots)));
+
+    // ---- the listener's pace in /faction (1.2, owner 2026-11-18: "5-7 is the right pace") ---------------------------------
+
+    /// <summary>The window the listener's pace is counted over: every /faction line of the last minute.</summary>
+    public const long PaceWindowMs = 60_000;
+
+    /// <summary>
+    /// The realm's /faction pace now (1.2, sweep 7c on the owner's PC, build 9a173f4: a storyline and a tale played at 10-12 lines
+    /// a minute and the realm heard 13 a minute against the owner's 5-7): the most lines a player hears in any minute, and the
+    /// pace a running scene plays at. Read from chat-budget.json ("pace") at bot_voices_chat_rate 2 and scaled by the rate
+    /// against that default (between half and one and a half), so a calmer or busier setting keeps its meaning. Not scaled by
+    /// the bots online: a small realm is under it anyway. Pure.
+    /// </summary>
+    public static (double Max, double Scene) FactionPace(Settings settings, double rate)
+    {
+        double factor = Math.Clamp(rate / 2.0, 0.5, 1.5);
+        return (settings.FactionPaceMax * factor, settings.ScenePacePerMinute * factor);
+    }
+
+    /// <summary>
+    /// Whether a /faction opener (a line that starts something: an ambient line, a field question, a story, a rumour) fits the
+    /// listener's pace (1.2): itself, one answer, and one more line for each exchange already running in the channel must fit
+    /// in the last minute's count. An opener that doesn't fit waits (its feature tries again later); a line that goes on with
+    /// an exchange (an answer, a riff) is never held by the pace, so no question loses its answer. Pure.
+    /// </summary>
+    public static bool OpenerFitsPace(int linesLastMinute, int exchangesRunning, double paceMax) =>
+        linesLastMinute + Math.Max(0, exchangesRunning) + 2 <= paceMax + 1e-9;
+
+    /// <summary>
+    /// When a running scene's next line may be said (1.2): a scene owns /faction while it plays (every other line but an event or
+    /// one to the player waits for it), so its own pace is the channel's. Its next line comes no sooner than a minute over the
+    /// scene pace after the channel's last line (10 s at 6 a minute), and only while the last minute holds fewer lines than
+    /// the pace allows (an event line in between pushes it back), retried every <paramref name="retryMs"/>. Never later than
+    /// that: a scene is slowed, not cut, and the start of one (a live keep or relic scene included) is never held. Pure.
+    /// </summary>
+    public static long ScenePacedAt(long now, long lastLineAt, int linesLastMinute, (double Max, double Scene) pace, long retryMs = 3_000)
+    {
+        if (linesLastMinute + 1 > pace.Max + 1e-9)
+            return now + Math.Max(1, retryMs);
+        long gap = SceneLineGapMs(pace.Scene);
+        return lastLineAt > now ? now : Math.Max(now, lastLineAt + gap);
+    }
+
+    /// <summary>The least gap between two lines of a running scene at a scene pace (lines a minute). Pure.</summary>
+    public static long SceneLineGapMs(double scenePerMinute) => (long)Math.Ceiling(60_000.0 / Math.Max(0.5, scenePerMinute));
 
     /// <summary>Whether a reply verdict lets the line be said.</summary>
     public static bool Says(ReplyVerdict verdict) => verdict is ReplyVerdict.Exempt or ReplyVerdict.Speak or ReplyVerdict.SpeakOverTarget;
@@ -393,6 +454,13 @@ public static class AutonomousChatBudget
             return count;
         }
 
+        /// <summary>How many lines of every kind the channel moment carried in the last <paramref name="windowMs"/> (1.2: the pace).</summary>
+        public int LinesIn(Channel channel, long key, long now, long windowMs)
+        {
+            lock (_rings)
+                return _rings.TryGetValue((channel, key), out Ring ring) ? CountIn(ring, now, Math.Max(1_000, windowMs), null) : 0;
+        }
+
         /// <summary>Every line's rate (ambient and replies), per minute over the last two minutes.</summary>
         public double PerMinute(Channel channel, long key, long now)
         {
@@ -489,6 +557,9 @@ public static class AutonomousChatBudget
     public static (double Floor, double Target, double Ceiling) LiveBand(Channel channel, int count) =>
         Band(Current, channel, count, DateTime.Now.Hour, AutonomousBotSchedule.CurrentMode == AutonomousBotSchedule.Mode.Clock,
             ServerProperties.Properties.BOT_VOICES_CHAT_RATE);
+
+    /// <summary>The live /faction pace (1.2): the most lines a minute a player hears, and a running scene's pace.</summary>
+    public static (double Max, double Scene) LiveFactionPace() => FactionPace(Current, ServerProperties.Properties.BOT_VOICES_CHAT_RATE);
 
     /// <summary>The live reply band of a channel (1.2): (0, 0) where replies aren't counted apart.</summary>
     public static (double Target, double Ceiling) LiveReplyBand(Channel channel, int count) =>

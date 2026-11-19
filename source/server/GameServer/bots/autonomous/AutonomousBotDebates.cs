@@ -681,7 +681,34 @@ public static class AutonomousBotDebates
             TryStart(realm, now, liveOnly);
         }
         else
+        {
+            // 1.2 (sweep 7c on the owner's PC, build 9a173f4: a storyline's 18 lines and a tale's 7 came 4-12 s apart, and the
+            // realm heard 12-15 /faction lines a minute against the owner's 5-7): the scene plays at the listener's pace. Its next
+            // line waits for the scene gap after the channel's last line and for room in the last minute; nothing is cut.
+            long paced = PacedAt(realm, now);
+            if (now < paced)
+            {
+                running.NextAt = paced;
+                return;
+            }
             PlayBeat(realm, running, now);
+        }
+    }
+
+    /// <summary>When the realm's running scene may say its next line (AutonomousChatBudget.ScenePacedAt, read live).</summary>
+    private static long PacedAt(eRealm realm, long now)
+    {
+        try
+        {
+            var meter = AutonomousChatBudget.Meter;
+            return AutonomousChatBudget.ScenePacedAt(now, meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm),
+                meter.LinesIn(AutonomousChatBudget.Channel.Faction, (long)realm, now, AutonomousChatBudget.PaceWindowMs),
+                AutonomousChatBudget.LiveFactionPace(), RoomRetryMs);
+        }
+        catch (Exception)
+        {
+            return now;   // no server properties (tests without a world): the beat's own timing
+        }
     }
 
     private static void TryStart(eRealm realm, long now, bool liveOnly = false)

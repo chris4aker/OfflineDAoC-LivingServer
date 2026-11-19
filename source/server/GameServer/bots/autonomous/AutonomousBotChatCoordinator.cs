@@ -25,6 +25,24 @@ public static partial class AutonomousBotChatCoordinator
         AutonomousChatExchange.Fits(AutonomousChatBudget.Meter.PerMinute(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime),
             FactionCeiling(realm));
 
+    /// <summary>
+    /// Whether a /faction opener fits the realm's listener pace now (1.2, sweep 7c: 13 lines a minute heard against the owner's
+    /// 5-7): it and its answer, plus a line for each exchange already running, within the last minute's count.
+    /// </summary>
+    internal static bool OpenerFitsFactionPace(eRealm realm, long now)
+    {
+        try
+        {
+            return AutonomousChatBudget.OpenerFitsPace(
+                AutonomousChatBudget.Meter.LinesIn(AutonomousChatBudget.Channel.Faction, (long)realm, now, AutonomousChatBudget.PaceWindowMs),
+                AutonomousChatExchange.RunningCount(AutonomousChatExchange.FactionKey(realm), now), AutonomousChatBudget.LiveFactionPace().Max);
+        }
+        catch (Exception)
+        {
+            return true;   // no server properties (tests without a world): the pace does not hold
+        }
+    }
+
     /// <summary>The realm's /faction ceiling now, in lines a minute (chat-budget.json, scaled by the hour and the bots online).</summary>
     internal static double FactionCeiling(eRealm realm) => AutonomousChatBudget.LiveBand(AutonomousChatBudget.Channel.Faction, RealmBots(realm)).Ceiling;
 
@@ -444,9 +462,11 @@ public static partial class AutonomousBotChatCoordinator
                 if (said.Kind == "wts")
                     AutonomousChatBroadcast.StartMacro(starter, text, AutonomousChatBudget.Current, random, said.Item);
                 // Chat 1.2 (owner's decision 12; LOG-028: 0 of 44 /broadcast questions answered): now and then one short true
-                // answer, in /say from a bot in range of the asker, at most one a region in three minutes.
+                // answer from a bot in range of the asker, at most one a region in three minutes. Sweep 7c (build 9a173f4, 0 of
+                // 4 answerable questions answered): the region's turn is taken only once an answer is ready and a player hears
+                // it, in /say beside the player or else in /broadcast (ScheduleFieldThread).
                 if (AutonomousChatFieldTalk.WantsAnswer(said) && random.NextDouble() < BroadcastAnswerShare &&
-                    TakeBroadcastAnswerTurn(starter.CurrentRegionID, GameLoop.GameLoopTime))
+                    BroadcastAnswerTurnFree(starter.CurrentRegionID, GameLoop.GameLoopTime))
                     ScheduleFieldThread(starter, said, false, exchange, answerOnly: true);
                 break;
             case "faction":
@@ -485,6 +505,34 @@ public static partial class AutonomousBotChatCoordinator
     public const long BroadcastAnswerGapMs = 3 * 60_000;
 
     private static readonly Dictionary<ushort, long> LastBroadcastAnswer = new();
+
+    /// <summary>Whether a region may hear another /broadcast answer now (the turn is not taken).</summary>
+    private static bool BroadcastAnswerTurnFree(ushort region, long now)
+    {
+        lock (LastBroadcastAnswer)
+            return BroadcastAnswerRoom(LastBroadcastAnswer.TryGetValue(region, out long last) ? last : long.MinValue / 2, now);
+    }
+
+    /// <summary>Where a /broadcast question's answer is said so a player hears it (sweep 7c).</summary>
+    public enum BroadcastAnswerWay { None, Say, Broadcast }
+
+    /// <summary>
+    /// Where a /broadcast question's answer goes (chat 1.2 after sweep 7c, build 9a173f4): in /say when a player stands within
+    /// /say range of the answerer (E2's design), else in /broadcast when a player is in the answerer's broadcast area, else
+    /// nowhere. Before, it went only in /say and only when a player stood beside the answerer, who stands beside the asker, so a
+    /// question broadcast across a capital was almost never answered where the player could see it. Pure.
+    /// </summary>
+    public static BroadcastAnswerWay BroadcastAnswerChannel(bool playerHearsSay, bool playerHearsBroadcast) =>
+        playerHearsSay ? BroadcastAnswerWay.Say : playerHearsBroadcast ? BroadcastAnswerWay.Broadcast : BroadcastAnswerWay.None;
+
+    /// <summary>
+    /// Whether a /broadcast answer takes the region's three-minute turn (sweep 7c): only when its answer is ready (an answerer
+    /// that can answer, a line, room in the reply budget), a player hears it, and the region's last answer is three minutes
+    /// back. Before, the turn was taken when the question was asked, so a question nobody near could answer, or none the player
+    /// would hear, used up the region's next three minutes. Pure.
+    /// </summary>
+    public static bool TakesBroadcastAnswerTurn(bool answerReady, BroadcastAnswerWay way, long last, long now) =>
+        answerReady && way != BroadcastAnswerWay.None && BroadcastAnswerRoom(last, now);
 
     /// <summary>Whether a region may hear another /broadcast answer now, and if so takes the turn.</summary>
     private static bool TakeBroadcastAnswerTurn(ushort region, long now)
@@ -556,6 +604,14 @@ public static partial class AutonomousBotChatCoordinator
         // 1.2, the reply budget: a thread is said whole or not at all, decided once here.
         if (steps.Count == 0 || !ReplyAllowed(answerer ?? starter, faction, AutonomousChatBudget.ReplyKind.BotThread, "bot " + starter.Name, null, out string code))
             return;
+        // Sweep 7c: a /broadcast answer takes its region's turn only now that it is ready, and only where a player hears it.
+        if (answerOnly)
+        {
+            BroadcastAnswerWay way = answerer == null ? BroadcastAnswerWay.None
+                : BroadcastAnswerChannel(HasLocalAudience(answerer), AutonomousChatBroadcast.Listeners(answerer).Count > 0);
+            if (way == BroadcastAnswerWay.None || !TakeBroadcastAnswerTurn(starter.CurrentRegionID, now))
+                return;
+        }
         // 1.1.3, after RC5: when the answerer is fighting by the time its answer is due, another bot that can answer says it, as
         // long as the answer says nothing about the bot that would have said it ("me, thane 31") and it is of the same kind
         // (a healer for a healer's answer, the asker's class for "{same}" answers).
@@ -566,7 +622,7 @@ public static partial class AutonomousBotChatCoordinator
                                  (said.Place == null || AtPlace(bot, said.Place) == AtPlace(answerer, said.Place)))
                 .ToArray();
         PlayThread(steps, [starter, answerer, third], faction, said.Text, "field thread " + said.Kind, exchange, code, standIns,
-            said.WayTo == null ? null : speaker => BotWayFinding.Told(starter, speaker, said), said);
+            said.WayTo == null ? null : speaker => BotWayFinding.Told(starter, speaker, said), said, broadcastAnswer: answerOnly);
     }
 
     /// <summary>
@@ -738,7 +794,8 @@ public static partial class AutonomousBotChatCoordinator
     /// (a third bot's chime is skipped instead), and so does a short line whose referent other talk has scrolled away.
     /// </summary>
     private static void PlayThread(List<AutonomousChatFieldTalk.Step> steps, GameBot[] speakers, bool faction, string trigger, string rule, long exchange,
-        string code = null, GameBot[] answererStandIns = null, Action<GameBot> onSaid = null, AutonomousChatFieldTalk.Said promises = null)
+        string code = null, GameBot[] answererStandIns = null, Action<GameBot> onSaid = null, AutonomousChatFieldTalk.Said promises = null,
+        bool broadcastAnswer = false)
     {
         if (steps == null || steps.Count == 0 || speakers[0] == null)
             return;
@@ -748,7 +805,8 @@ public static partial class AutonomousBotChatCoordinator
         string lane = faction ? AutonomousChatExchange.FactionKey(starter.Realm) : AutonomousChatExchange.SayKey(starter.CurrentRegionID);
         AutonomousChatExchange.Play("thread", exchange, lane, AutonomousChatExchange.FromSteps(steps, ["asker", "answerer", "third"], step => step.Who == 2),
             speakers, bot => Eligible(bot) && !bot.InCombat && !bot.IsCasting &&
-                             (faction ? HasFactionAudience(bot.Realm) && !AutonomousBotDebates.IsRunning(bot.Realm) && FactionRoom(bot.Realm) : HasLocalAudience(bot)),
+                             (faction ? HasFactionAudience(bot.Realm) && !AutonomousBotDebates.IsRunning(bot.Realm) && FactionRoom(bot.Realm)
+                                 : HasLocalAudience(bot) || broadcastAnswer && BroadcastAnswerFits(bot)),
             (bot, line) =>
             {
                 bool Send(string raw)
@@ -764,6 +822,15 @@ public static partial class AutonomousBotChatCoordinator
                         if (bot == starter && AutonomousChatRecall.SaysFound(raw))
                             AutonomousChatRecall.Of(bot.Realm).Settle(bot.DatabaseID, AutonomousChatRecall.Kind.AskedGroup);
                     }
+                    else if (broadcastAnswer && !HasLocalAudience(bot))
+                    {
+                        // Sweep 7c: no player beside the answerer, so the answer goes back the way the question came.
+                        if (!BroadcastAnswerFits(bot) || !AutonomousChatBroadcast.Send(bot, text))
+                            return false;
+                        AutonomousChatWhy.Record(bot, "broadcast", trigger, "said", rule, AutonomousChatReplyFit.Known, "a /broadcast question's answer", text, null,
+                            code: code);
+                        return true;
+                    }
                     else if (!SayLine(bot, text, AsReply))
                         return false;
                     AutonomousChatWhy.Record(bot, faction ? "faction" : "say", trigger, "said", rule, AutonomousChatReplyFit.Known, "a line in a thread", text, null,
@@ -778,6 +845,16 @@ public static partial class AutonomousBotChatCoordinator
                 return true;
             }, faction ? AutonomousChatExchange.Rules.Faction : AutonomousChatExchange.Rules.Say,
             standIns: answererStandIns is { Length: > 0 } ? [null, answererStandIns] : null);
+    }
+
+    /// <summary>Whether a bot's /broadcast answer reaches a player and fits under its broadcast channel's ceiling (sweep 7c).</summary>
+    private static bool BroadcastAnswerFits(GameBot bot)
+    {
+        if (AutonomousChatBroadcast.Listeners(bot).Count == 0)
+            return false;
+        AutonomousChatBudget.Channel channel = AutonomousChatBroadcast.ChannelOf(bot);
+        var band = AutonomousChatBudget.LiveBand(channel, RealmBots(bot.Realm));
+        return AutonomousChatBudget.Meter.PerMinute(channel, AutonomousChatBroadcast.KeyOf(bot), GameLoop.GameLoopTime) < band.Ceiling;
     }
 
     /// <summary>
@@ -2469,7 +2546,8 @@ public static partial class AutonomousBotChatCoordinator
         long now = GameLoop.GameLoopTime;
         if (!string.IsNullOrWhiteSpace(message) &&
             AutonomousChatExchange.SinkHold(source, AutonomousBotDebates.IsRunning(realm), FactionRoom(realm), now,
-                AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm), AutonomousBotDebates.LastSceneEnd(realm)) is { } held)
+                AutonomousChatBudget.Meter.LastLine(AutonomousChatBudget.Channel.Faction, (long)realm), AutonomousBotDebates.LastSceneEnd(realm),
+                OpenerFitsFactionPace(realm, now)) is { } held)
         {
             AutonomousChatWhy.CountHeld(AutonomousChatBudget.Channel.Faction, held == "ceiling" ? AutonomousChatWhy.Held.Ceiling : AutonomousChatWhy.Held.Gap);
             LastHeld = held;

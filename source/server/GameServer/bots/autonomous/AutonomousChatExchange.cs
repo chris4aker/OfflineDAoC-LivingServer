@@ -55,9 +55,12 @@ public static class AutonomousChatExchange
     /// The /faction sink's rule (AutonomousBotChatCoordinator.BroadcastFactionAsWritten), pure: null when the line may be said,
     /// else why it is held. A tagged event or a line to the player always goes. A running scene owns the channel: only its own
     /// lines go. Every other line must fit under the ceiling, and an opener must keep its distance from the line before it
-    /// (more so in the two minutes after a scene, so the lines that waited don't all land at once).
+    /// (more so in the two minutes after a scene, so the lines that waited don't all land at once). 1.2: an opener also waits
+    /// while the listener's pace has no room for it and its answer (<paramref name="openerFitsPace"/>,
+    /// AutonomousChatBudget.OpenerFitsPace: "pace"); a line that goes on with an exchange is never held by the pace.
     /// </summary>
-    public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt)
+    public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt,
+        bool openerFitsPace = true)
     {
         if (ExemptFromCeiling(source))
             return null;
@@ -68,6 +71,8 @@ public static class AutonomousChatExchange
             return "ceiling";
         if (!scene && IsOpener(source))
         {
+            if (!openerFitsPace)
+                return "pace";
             long spacing = now - sceneEndedAt < ResumeAfterSceneMs ? ResumeSpacingMs : OpenerSpacingMs;
             if (now - lastLineAt < spacing)
                 return "spacing";
