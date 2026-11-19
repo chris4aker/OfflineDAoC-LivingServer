@@ -1765,7 +1765,7 @@ stall 1.2's pull code doesn't have), level-1 blue-only targeting, the full-backp
 brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and its keep-guard restore (not needed in
 1.2's world).
 
-## 1.2 — [RELEASE DATE]
+## 1.2 — 2026-11-19
 
 - **The 1.2 release docs, and how the project names itself (owner 2026-11-19; text only).** The release notes,
   docs/KNOWN-ISSUES.md and README.md's Living Server part now describe all of Living Server as it is in 1.2, call the

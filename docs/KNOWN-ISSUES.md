@@ -5,8 +5,31 @@ seen working is in [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md); every change, w
 [CHANGELOG-LIVING-SERVER.md](../CHANGELOG-LIVING-SERVER.md).
 
 A feature counts as working only once it has been seen working on the owner's PC. Until then it says **tests only**.
-Each result names the build it came from. None of them is from the release build ([BUILD]); its own results:
-[TESTS].
+Each result names the build it came from. None of them is from the release build (its commit is in BUILD-INFO.txt and
+the server log's FORK_BUILD line), which is cut when 1.2 is published. The last builds checked on the owner's PC are
+`c81eb5d` and `43c43aa`; the automated results are in the release notes.
+
+## Fix list for 1.2.1
+
+Seen on the owner's PC or in its log, and left for 1.2.1 (owner, 2026-11-19: publish unless there are major bugs, crashes
+or instability, and add the rest to the 1.2.1 list):
+
+- **/faction pace:** about 5 lines a minute on average, but quiet minutes drop to 2 (`43c43aa`: 4.9 a minute, 13 of 39
+  minutes under 5).
+- **Route loops at region 200 seams:** the Cruachan Gorge / Breifine seam that sent 75 Hibernian bots home on
+  `43c43aa` is fixed in 1.2 (**tests only**). The other seam loops of that log (Lough Derg / Bri Leith) are not changed
+  and can still loop.
+- **A bot removed from the world by a casting crash** (`43c43aa`, one bot). Fixed in 1.2 with a null guard: **tests
+  only**. On the list in case it comes back.
+- **A gap in the casting line-of-sight check** (`CastingComponent`, `LosChecker.Out` can be null) behind that crash; the
+  guard covers the crash, not the gap.
+- **Caer Caledon's guards can't be picked with /target** by players (checked as a GM only).
+- **Click-targeting a bot** didn't work for the test helper on `c81eb5d` (`/target` works). Unconfirmed: it may be the
+  test tool, not the game.
+- **Old merchant item templates missing at startup:** about 760 error lines at every start from the stock world data. No
+  effect seen in play.
+- **A "DrainTo in progress" error from QueuePacket**, seen once (`43c43aa`), with no effect seen.
+- **Epic raids:** still being tuned (below).
 
 ## Epic raids: still being tuned
 
@@ -22,7 +45,8 @@ bots only, at the game's own raid size:
   never been beaten by bots.**
 - **Trollheim:** timed out before Nosdoden fell (`ccba364`, `b1b6846`).
 - **Darkness Falls (Albion):** the raid looped on a chthonic knight behind it (`b1b6846`). Fixed: **tests only**.
-- **Golestandt:** lost after two wipes (`9a173f4`; won on test build 5). Dragon fights can fall apart partway.
+- **Golestandt:** lost after two wipes (`9a173f4`, `c81eb5d`); won on test build 5 and on `43c43aa`. **Cuuldurach:** lost
+  after two wipes (`c81eb5d`, `43c43aa`); won on test build 5. Dragon fights can fall apart partway.
 - **The Green Knight** and **Marfoirwort:** lost (`ccba364`).
 - **Legion:** some of his rules are in (his adds and heals are capped, wounded raiders step out of his reach), but the
   raid does not play his platform, the way down or his add waves. **Behemoth** is never fought; **Fomor City** and
@@ -33,8 +57,8 @@ Fixes made after the last raid builds the owner ran are **tests only**:
 - **Summoner Roesia:** the split camps for her Summoner Pain made the raid worse and are removed. Raid healers now cure
   Summoner Pain before a top-up heal when it is on two or more raiders and nobody in their party is in danger. On
   `9a173f4` they never did (a heal always came first). **Tests only.** Before the camps the raid also lost to her.
-- **Raid cures in general:** healers were seen curing poison and mesmerize on `9a173f4`, but up to a dozen cured the same
-  raider in the same second. Each curer now claims its target. **Tests only.**
+- **Raid cures in general:** healers were seen curing poison and mesmerize on `9a173f4` and `c81eb5d`; on `9a173f4` up to
+  a dozen cured the same raider in the same second. Each curer now claims its target: **tests only**.
 - **Curengkur:** the raid never formed (no route to its staging post). The next staging posts are now tried. **Tests
   only.**
 - **Hibernia's dragon:** "No muster post could be placed at the hub" at Innis Carthaig on `9a173f4`; it started first try
@@ -49,8 +73,8 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
 ## RvR and battlegrounds
 
-- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail; no
-  battleground keep has changed hands.
+- **Battleground keeps rarely change hands.** Bots storm the keep lord again and again and mostly fail. The first
+  capture was Caer Caledon, taken by Albion on `43c43aa` after its keep levels were repaired (guards 39, lord 46).
 - **Open-field regroups pass between groups more than planned** in dense warbands: 17.4% of regroups on `9a173f4`
   against a 15% bar. None was passed on a second time.
 - **Roaming eight-man groups** rarely find a fight and move on (under investigation).
@@ -59,10 +83,12 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 ## Chat
 
 - **/faction runs at about 5 to 7 lines a minute on a full realm, by design** (owner, 2026-11-18), never more than 7.
-  About 5 a minute was seen on `5154cae`. Lower **How much bots talk** in the Living Server tab if it's too much.
-- **Fixed after the owner's chat check on `5154cae`, tests only:** "is it far?" now gets a travel answer, not a place's
-  description; a bot-to-bot answer no longer lands before yours; a call for help gets an offer or an honest no, not a
-  story; another realm's zone gets "thats hib frontier, rvr only", not a route; "an armorcrafter", not "a armorcrafter".
+  4.9 a minute on average was seen on `43c43aa` (quiet minutes lower: see the fix list). Lower **How much bots talk** in
+  the Living Server tab if it's too much.
+- **Seen since the owner's chat check on `5154cae`:** "is it far?" gets a travel answer (`43c43aa`); a call for help gets
+  offers or honest refusals from several bots (`43c43aa`); another realm's zone gets "thats hib frontier rvr only"
+  (`c81eb5d`); a /broadcast question is answered in /broadcast (`43c43aa`). **Tests only:** a bot-to-bot answer no longer
+  landing before yours.
 - **"omw" means coming** (tests only to the end): a bot that says it has to go, with a deadline. A reply that is never
   sent leaves a short walk behind it (up to 210 seconds).
 - **Replies still guess from your words.** A bot doesn't know what you are doing beyond what you type. A bot that
@@ -82,18 +108,18 @@ can't win (on `b1b6846` they held at 99-100% through 48 minutes).
 
 ## Bots as people and 2003 builds
 
-Most of it is **tests only**: mistakes and their rate, asking the way, milestone talk, raid learning, and the era class
-mix on a fresh world. No raid has been fought by an era-built world yet. Whether the original client shows a sitting bot
-is still to be checked. [Owner: the PC notes of `b1b6846` record skill tiers, growth, places learned and movement counts
-as seen in the log; PLAYED-CHECK-1.2.md still says "Not run". Confirm before this says "seen in the log".]
+Seen in the server log on `c81eb5d` (not watched on screen): skill tiers 32/48/20 across 535 bots, bots growing a tier,
+asking the way, movement habits, and the era builds loading. **Tests only:** mistakes and their rate, milestone talk,
+raid learning, places seeded on a new world, and the era class mix on a fresh world. No raid has been fought by an
+era-built world yet. Whether the original client shows a sitting bot is still to be checked.
 
 ## Crafting and the economy
 
 - **Crafting as a player** hasn't been seen yet, and needs the original client.
 - **Trading with a crafter bot:** tried on `b1b6846`; a reply was cut mid-word, a different piece was offered, and the
   agreed deal lapsed. Fixed: **tests only**. No trade has been finished yet.
-- **Craft orders** often lapsed (156 made, 163 expired on `19e7037`). Orders now go only to crafters who stay online and
-  are withdrawn from busy ones: **tests only**.
+- **Craft orders** often lapsed on `19e7037` (156 made, 163 expired). Orders now go only to crafters who stay online and
+  are withdrawn from busy ones; on `c81eb5d` 44 were made and 1 expired (server log).
 - **Few crafted pieces sell on the Exchange**, mostly because most bot work is practice pieces.
 - **The launcher's crafter card and economy page** haven't been checked on the owner's PC.
 
@@ -108,89 +134,14 @@ window, boss yells, atmosphere lines and first-kill lines were seen on `1dc66b6`
 - Only a join over a home network has been seen (test build 7). A session played together and a character passport trip
   between two PCs are **tests only**.
 
-- **Bot guilds stay in your world when you turn them off.** Their guilds, alliances and any keeps
-  they claimed remain until you remove them. To remove them, close the game and server and run
-  `python tools\claude-version\set_bot_guilds.py --purge --apply` in your game folder. It backs up
-  your database first.
-- **Rolling back the install doesn't remove saved data.** `ROLLBACK.cmd` restores the files the
-  install replaced. The new database tables and settings stay; the original server ignores them.
-  Remove bot guilds first (above) if you used them. If you installed more than one build, run
-  `ROLLBACK.cmd` once per build.
-- **A maximized launcher ignores clicks on START SERVER, STOP SERVER or ENTER REALM (seen on the owner's PC,
-  2026-11-05 and 2026-11-18, build b1b6846).** Maximized, those buttons sit at the top right of the screen; when another
-  window is on top there, the click goes to that window, so nothing happens and nothing is logged, while the tabs further
-  left still answer. On the owner's PC that window was most likely the Claude app's (the helper's screenshots mask it; the
-  2026-11-05 notes name it; on 2026-11-18 it wasn't confirmed). Restoring the window
-  made STOP SERVER work first try both times. The launcher itself puts nothing over the buttons at any size up to 4K
-  (`LauncherWindowSizeTests`, tests only). Move the other window or use the launcher at its normal size.
-- **A fresh world needs bots.** Most features need bots online, and a realm needs at least 8 bots
-  of level 5 or higher before it forms a bot guild. Use the **+ Lv.1** / **+ Lv.50** buttons in the
-  launcher.
-- **New client (0.36c):**
-  - Rezzing a dead bot from it hasn't worked in testing (the corpse couldn't be targeted). It's not
-    confirmed whether that's the client or slow clicking; the original client wasn't tried.
-  - It has no guild window, so a bot guild's member list can't be browsed.
-  - `/face` keeps facing your target, and the turn keys do nothing until you type `/face` again.
-    `/faceloc` doesn't turn you.
-  - A bow fires from the Ranged Weapon key (`,`), not the target window's ATTACK button. There's no
-    quiver window, so arrows in a bag can't be moved into the quiver slots.
-  - The group window still shows your base class after you choose your class at level 5.
-- **Bot chat:** tested live with a scripted player (see [bot-voices/SE4-CHECKS.md](bot-voices/SE4-CHECKS.md))
-  and in the owner's own play, with every reply that didn't answer fixed. Some replies will still read oddly:
-  - A bot that remembers you may ask your level right after you said it ("i would group with you again,
-    what level are you now?").
-  - Questions with no answer set of their own get general answers ("how much xp to 6?" -> "depends on the
-    bonuses").
-  - A bot answering your "lfg" prefers bots in your zone and near your level, but one from elsewhere
-    may still answer.
-  - A bot that answers "omw" (or "coming", "ill be there") to an alarm, a keep call, free realm points, a call for help, heals
-    or a rez now has to go there, with a deadline, and a bot that can't go says something else (1.2, tests only; the
-    `CHAT_PROMISE` lines in the server log show each promise made, kept or broken). A promise is made when the reply is
-    chosen: a reply that is then never sent leaves a short walk behind it (up to 210 seconds) before it ends `unsaid`.
-  - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
-    levelled, and other replies guess from the words alone.
-  - Chat volume: about 5 to 7 /faction lines a minute on a full realm, by design; see "/faction is busy by design" in
-    [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md). On build `c81eb5d` it settled at 3.9 a minute when no scene played;
-    the budget now keeps a minimum of 5 (tests only, not yet counted on the owner's PC).
-  - Chat has been tested one line at a time, not as conversations over several turns.
-- **Added the 0.37c new client after installing this?** Run `INSTALL.cmd` again so the new client's
-  launcher gets the Living Server tab and its gate fixes too.
-- **Versions:** Living Server is for Offline DAoC 0.37 / 0.37b / 0.37c only, and the installer refuses anything
-  else. On 2026-10-31 shadowofze put Offline DAoC on hold ("will not receive any more updates"; the 0.37 downloads
-  stay up), so there is no 0.38 to wait for: 0.37 stays the game, and the later fixes from his unreleased work
-  come to you through Living Server releases instead. If an update of his ever does appear, run
-  `PREPARE-FOR-UPDATE.cmd` before applying it (it also puts the released game files back, all but the Living Server
-  loading screen) and wait for a Living
-  Server build for that version before installing one again.
-- **The new client's own fixes in Living Server's source weren't shipped (Beta 1.0 and 1.1).** `/target <name>`
-  filling the target window, the FACE/FOLLOW/STICK buttons, the stick toggle, `/lfg` and `/trade` shown as realm
-  channels and the PLAY double-click guard were fixed in `source/new-client` and played on the owner's PC, but the
-  installer only ships the gate models; a 0.37c player has shadowofze's unchanged client. The quest-marker colour
-  fix (1.1.1) is the first client script the installer carries, and the others follow the same way in 1.2.
-- **Memory over very long sessions:** Windows handles grow about 1,700 an hour with 600 bots per realm
-  (a lock inside each monster's stat table keeps the event it waited on once). That is a few MB of
-  Windows memory a day; the server's own memory stays flat (about 1.7 GB live at 1,800 bots).
-- **Bots in your own guild (0.37):** inviting gamebots into your guild is now the base game's feature. Those
-  bots don't count for your guild's merit, realm points, keep claims or buffs (the base game's choice); bots in
-  a bot-run guild still do for theirs. With bot voices on, bots in your guild talk with Living Server's
-  own lines; with them off, they use the base game's own lines. Not played in game yet.
-- **Raids:** Darkness Falls, Legion and the other level 70+ encounters are won on numbers: their special
-  mechanics aren't scripted for bots, and a raid can still lose. Raided in game so far: the three dragons,
-  Galladoria, Summoner's Hall, Darkness Falls, Avalon City, Crystal Cave, Marfach Caverns and Hall of the
-  Corrupt. Lord Gildas fell to a live raid on Beta 1.0 (2026-10-22, 180 bots in 61 minutes); the Trollheim route
-  fix was proven against the real pathfinding library but hasn't run in a live raid yet. Late Hibernian raiders once stood 33 minutes on the Cruachan Gorge
-  border before finding their way; the cause isn't found yet. Fomor City is not raided (no navmesh path to
-  Myrddraxis).
-- **Moving to 0.37:** `PREPARE-FOR-UPDATE.cmd` was used for a real update (the owner's 0.36c game to 0.37c).
-  `carry_social_tables.py` was tested on test folders and databases only.
-
 ## Launcher, install and updates
 
 - **Updating a 1.1.4 game through Setup, a new install from Setup, and a 0.37 (class-off) world** haven't been run on the
   owner's PC for 1.2. CI runs them: **tests only**.
 - **Updating a 0.36, 0.36b or 0.36c game** through Setup is **tests only** for 1.2. On 0.36 with the Social Expansion,
   run `PREPARE-FOR-UPDATE.cmd` from the package first.
-- **The online count on the main screen** stuck at "5 online" for half an hour on `5154cae`. Fixed: **tests only**.
+- **The online count on the main screen** stuck at "5 online" for half an hour on `5154cae`. Fixed: seen updating from 5
+  to 2,875 on `c81eb5d` and `43c43aa`.
 - **A maximized launcher ignores START SERVER, STOP SERVER or ENTER REALM** when another window sits over those buttons
   (seen on the owner's PC, 2026-11-05 and 2026-11-18). Use the launcher at its normal size, or move the other window.
 - **Releases marked as pre-releases are never offered** by the launcher's update check.
