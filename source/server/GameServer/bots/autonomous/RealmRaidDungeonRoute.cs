@@ -2753,9 +2753,61 @@ namespace DOL.GS
         /// 39793,32004 killed 108 Hibernian raiders in seven batches (08:11, 10:04, 11:09, 11:18, 12:06, 12:47, 13:05),
         /// each after he had come back behind the raid, all at his own spot while the raid's target was High Lord Oro or
         /// Legion. The epic-respawn hold (RealmRaidRouteGate.HoldEpicRespawn) now keeps him down once the raid has killed
-        /// him; this covers one that came back anyway (a respawn under ten minutes, or the hold switched off). True when
-        /// the raid turned on one this turn.
+        /// him, and since the DF knight loop also one with a respawn under ten minutes that the raid killed as its target;
+        /// this covers one that came back anyway (the hold switched off, or killed outside the raid's target), at most
+        /// <see cref="TrailGateRekillCap"/> times between named kills. True when the raid turned on one this turn.
         /// </summary>
+        /// <summary>
+        /// Kills of one epic the trail gate turned the raid on, with no other named killed since, after which the gate
+        /// passes it (DF knight loop). Owner's PC, build b1b6846, 2026-11-18: after Prince Abdin (16:40:16) the Albion raid's
+        /// chain to Prince Asmoien reached waypoint 6 of 10, then Chthonic Knight Ukobat (level 66, back about 3 minutes after
+        /// each death, under the ten-minute epic hold) came back on the trail behind it and the gate turned the whole raid
+        /// back to him: 14 REALM_EXPEDITION_TRAIL_GATE turns on him (12 logged "from=Ukobat") and 14 kills of him in a row
+        /// from 16:42:30 to 18:14:46, no other named killed. The respawn hold now keeps a knight the raid killed down while it runs
+        /// (<see cref="AutonomousRealmRaid.HoldKilledOnTheWay"/>); this cap covers one that comes back anyway (the hold
+        /// switched off). He is still fought if he attacks the raid.
+        /// </summary>
+        public const int TrailGateRekillCap = 3;
+
+        /// <summary>Whether the trail gate passes an epic it has turned the raid on <paramref name="trailKills"/> times since
+        /// the raid last killed another named (pure).</summary>
+        public static bool TrailGatePasses(int trailKills) => trailKills >= TrailGateRekillCap;
+
+        // The epic the trail gate turned the raid on, and the trail-gate kills of each name since another named died.
+        private GameNPC _trailGateTarget;
+        private readonly Dictionary<string, int> _trailKills = new(StringComparer.Ordinal);
+        private readonly HashSet<string> _trailPassedLogged = new(StringComparer.Ordinal);
+
+        /// <summary>The trail-gate kills of <paramref name="name"/> since the raid last killed another named (tests, logs).</summary>
+        public int TrailKills(string name) => _trailKills.GetValueOrDefault(name);
+
+        /// <summary>
+        /// The route's target is dead: it is cleared (by name for an epic), a trail-gate kill is counted (<see
+        /// cref="TrailGateRekillCap"/>), and in Darkness Falls an epic killed on the raid's way is held down while the raid
+        /// runs. With a chain walk under way (a trail gate interrupts one), the route's target name is the chain's again:
+        /// build b1b6846 kept the knight's name after each kill, so the raid's goal read "Advancing to Chthonic Knight
+        /// Ukobat (waypoint 6/10)" and every later TARGET_SWITCH "from=Ukobat to=Ukobat" while it walked to Prince Asmoien.
+        /// </summary>
+        private void TargetDefeated(long now)
+        {
+            GameNPC dead = _target;
+            log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{dead.Name}\" level={dead.Level} " +
+                     $"minutes={(now - _targetStartTick) / 60_000.0:0.0}");
+            _cleared.Add(dead);
+            _musterProgress.Remove(dead);
+            if (dead is IGameEpicNpc) _clearedNames.Add(dead.Name);
+            if (dead == _trailGateTarget) _trailKills[dead.Name] = _trailKills.GetValueOrDefault(dead.Name) + 1;
+            // Another named down is progress (the same knight killed when he attacks the raid is not).
+            else if ((dead is IGameEpicNpc || _finalTypes.Contains(dead.GetType().Name)) && !_trailKills.ContainsKey(dead.Name))
+            { _trailKills.Clear(); _trailPassedLogged.Clear(); }
+            _trailGateTarget = null;
+            if (_region == AutonomousDarknessFallsPolicy.RegionId && dead is IGameEpicNpc && !_finalTypes.Contains(dead.GetType().Name) &&
+                !EpicEncounterTactics.IsRequiredAddClass(dead))
+                AutonomousRealmRaid.HoldKilledOnTheWay(dead);
+            _target = null;
+            if (_chain != null && _chainTarget?.IsAlive == true) { TargetName = _chainTarget.Name; TargetLevel = _chainTarget.Level; }
+        }
+
         private bool TrailGate(GameNPC[] live, GameLiving[] participants, long now)
         {
             if (_region != AutonomousDarknessFallsPolicy.RegionId || _realm == eRealm.None || !RealmRaidRouteGate.On ||
@@ -2775,14 +2827,26 @@ namespace DOL.GS
                     EpicEncounterTactics.IsRequiredAddOfLiveBoss(npc, live) || _routeRetry.GetValueOrDefault(npc) > now)
                     continue;
                 if (!RealmRaidRouteGate.Blocks(trail, new Vector3(npc.X, npc.Y, npc.Z), brain.AggroRange)) continue;
+                // Killed on the trail TrailGateRekillCap times with no other named down since: the raid goes on (DF knight loop).
+                if (TrailGatePasses(_trailKills.GetValueOrDefault(npc.Name)))
+                {
+                    if (_trailPassedLogged.Add(npc.Name))
+                        log.Warn($"REALM_EXPEDITION_TRAIL_GATE_PASSED region={_region} target=\"{npc.Name}\" level={npc.Level} " +
+                                 $"at={npc.X},{npc.Y},{npc.Z} kills={_trailKills[npc.Name]} cap={TrailGateRekillCap} from=\"{TargetName}\" " +
+                                 $"reason=\"killed on the raid's trail {_trailKills[npc.Name]} times with no other named down since; " +
+                                 $"the route goes on (fought if it attacks)\"");
+                    continue;
+                }
                 gate = npc;
                 break;
             }
             if (gate == null) return false;
             log.Warn($"REALM_EXPEDITION_TRAIL_GATE region={_region} target=\"{gate.Name}\" level={gate.Level} at={gate.X},{gate.Y},{gate.Z} " +
                      $"aggro={((StandardMobBrain)gate.Brain).AggroRange} trail={trail.Length} from=\"{TargetName}\" " +
+                     $"kills={_trailKills.GetValueOrDefault(gate.Name)} " +
                      $"reason=\"a living epic stands on the raid's trail; the raid clears it before its late members walk past it\"");
             TurnOn(gate, participants, now, "it stands on the raid's trail, where late members walk");
+            _trailGateTarget = gate;
             return true;
         }
 
@@ -3053,15 +3117,7 @@ namespace DOL.GS
             if (SeenDead(_musterTarget)) _musterDeathSeen = now;
             // A fight with one of the attempt's boss's adds is the attempt's contact (AttemptAddInFight).
             if (_musterEngaged && AttemptAddInFight(_musterTarget, live)) { _pulls.SawCombat(); _attemptAddFightTick = now; }
-            if (_target != null && !_target.IsAlive)
-            {
-                log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{_target.Name}\" level={_target.Level} " +
-                         $"minutes={(now - _targetStartTick) / 60_000.0:0.0}");
-                _cleared.Add(_target);
-                _musterProgress.Remove(_target);
-                if (_target is IGameEpicNpc) _clearedNames.Add(_target.Name);
-                _target = null;
-            }
+            if (_target != null && !_target.IsAlive) TargetDefeated(now);
             if (FinalsDown()) { Complete = true; Status = IsGate ? "The way is clear" : "Final encounter defeated"; return; }
             if (TrailGate(live, participants, now)) return;
             // A required add is the target only inside an attempt on its boss whose fight is on (FightsRequiredAddsNow): with

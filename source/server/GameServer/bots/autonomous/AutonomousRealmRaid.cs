@@ -236,18 +236,41 @@ namespace DOL.GS
         /// without the raid lock by the monster's respawn timer.</summary>
         public static bool HoldsEpicRespawn(GameNPC npc)
         {
-            bool holds = npc != null && RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
-                npc.Realm == eRealm.None, npc.RespawnInterval, Array.IndexOf(_epicHoldRegions, npc.CurrentRegionID) >= 0);
-            // Once per wait, so the owner's log shows which epics a raid kept down (Gatekeeper Dommel, PC 2026-11-14).
             if (npc == null) return false;
-            if (!holds) { HeldRespawns.TryRemove(npc, out _); return false; }
+            bool killedOnWay = KilledOnTheWay.ContainsKey(npc);
+            bool holds = RealmRaidRouteGate.HoldsRespawn(RealmRaidRouteGate.HoldEpicRespawn, npc is IGameEpicNpc,
+                npc.Realm == eRealm.None, npc.RespawnInterval, Array.IndexOf(_epicHoldRegions, npc.CurrentRegionID) >= 0, killedOnWay);
+            // Once per wait, so the owner's log shows which epics a raid kept down (Gatekeeper Dommel, PC 2026-11-14).
+            if (!holds) { HeldRespawns.TryRemove(npc, out _); KilledOnTheWay.TryRemove(npc, out _); return false; }
             if (HeldRespawns.TryAdd(npc, 0))
                 Log.Info($"REALM_RAID_EPIC_RESPAWN_HELD npc=\"{npc.Name}\" region={npc.CurrentRegionID} respawn_s={npc.RespawnInterval / 1000} " +
-                         $"reason=\"a realm raid is in its dungeon; it comes back once the raid has ended\"");
+                         (npc.RespawnInterval < RealmRaidRouteGate.HeldRespawnMinimumMilliseconds
+                             ? "killedOnWay=True reason=\"the running raid killed it on its way; it comes back once the raid has ended\""
+                             : "reason=\"a realm raid is in its dungeon; it comes back once the raid has ended\""));
             return true;
         }
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, byte> HeldRespawns = new();
+
+        /// <summary>Darkness Falls epics the running raid killed as its route target (DF knight loop): their respawn is held
+        /// while the raid is in Darkness Falls, whatever its length (RealmRaidRouteGate.HoldsRespawn). Forgotten at the first
+        /// respawn check that does not hold (the raid has ended, or the hold is switched off).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<GameNPC, byte> KilledOnTheWay = new();
+
+        /// <summary>
+        /// The raid's route killed <paramref name="npc"/> as its target in Darkness Falls (RealmRaidDungeonRoute.TargetDefeated):
+        /// its respawn waits for the raid to end, like the long-respawn epics. Owner's PC, build b1b6846, 2026-11-18: Chthonic
+        /// Knight Ukobat (back about 3 minutes after each death) stood on the Albion raid's trail and was killed 14 times in a
+        /// row from 16:42:30 to 18:14:46 while the raid never reached Prince Asmoien. Only while the hold is on; solo bots'
+        /// kills and Darkness Falls outside a raid keep the knights' own timers.
+        /// </summary>
+        public static void HoldKilledOnTheWay(GameNPC npc)
+        {
+            if (npc is IGameEpicNpc && RealmRaidRouteGate.HoldEpicRespawn) KilledOnTheWay.TryAdd(npc, 0);
+        }
+
+        /// <summary>Tests: whether <paramref name="npc"/> is marked as killed on a raid's way.</summary>
+        public static bool IsKilledOnTheWay(GameNPC npc) => npc != null && KilledOnTheWay.ContainsKey(npc);
 
         /// <summary>
         /// How long a dungeon's epic respawns stay held after its raid ended, at most (sweep 6d, P-2). Owner's PC, build b1b6846,

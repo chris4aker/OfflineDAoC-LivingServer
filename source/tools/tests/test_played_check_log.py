@@ -1471,5 +1471,63 @@ class Sweep6f(unittest.TestCase):
         self.assertIn("until the log ends", self.row(log)["detail"])
 
 
+class DfKnightLoop(unittest.TestCase):
+    """Row from the DF knight loop (build b1b6846): the Albion Darkness Falls raid killed Chthonic Knight Ukobat 14 times in a
+    row from 16:42:30 to 18:14:46 with no other target killed (synthetic lines shaped like those)."""
+
+    EV = "darkness-albion"
+
+    def kill(self, log, minute, target, region=249):
+        log.add(at(minute), f'REALM_EXPEDITION_TARGET_DEFEATED region={region} target="{target}" level=66 minutes=2.0',
+                "INF", "DOL.GS.RealmRaidDungeonRoute")
+
+    def row(self, log):
+        return check(only(log.run()[1]), "rekill_loop")
+
+    def started(self):
+        log = Log().start(at(0))
+        log.add(at(1), f"REALM_RAID_STARTED event={self.EV} present=63 required=52", "INF", "DOL.GS.AutonomousRealmRaid")
+        return log
+
+    def test_the_same_knight_killed_six_times_in_a_row_contradicts(self):
+        log = self.started()
+        self.kill(log, 5, "Prince Abdin")
+        for i in range(6):
+            self.kill(log, 10 + i * 6, "Chthonic Knight Ukobat")
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn('"Chthonic Knight Ukobat" in region 249 (darkness-albion): 6 kills in a row from 06:10:00 to 06:40:00',
+                      row["detail"])
+
+    def test_five_kills_another_named_between_a_pack_or_an_add_is_seen(self):
+        log = self.started()
+        for i in range(5):
+            self.kill(log, 10 + i * 6, "Chthonic Knight Ukobat")
+        self.kill(log, 41, "Prince Asmoien")
+        for i in range(4):
+            self.kill(log, 45 + i * 6, "Chthonic Knight Ukobat")
+        for i in range(9):   # a pack of trash with one name: different monsters
+            self.kill(log, 70 + i, "essence shredder")
+        # An encounter's add the log showed raised for its boss (EPIC_TACTIC_BOT Retarget), killed again and again.
+        log.add(at(79), 'EPIC_TACTIC_BOT bot="A" action=Retarget target="Aidon the Archwizard" to="Illusion of Aidon" '
+                        'reason="its adds first"', "INF", "DOL.GS.EpicEncounterTactics")
+        for i in range(8):
+            self.kill(log, 80 + i, "Illusion of Aidon", region=277)
+        row = self.row(log)
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("no named target killed 6+ times in a row", row["detail"])
+
+    def test_a_raid_end_breaks_the_streak(self):
+        log = self.started()
+        for i in range(3):
+            self.kill(log, 10 + i * 6, "Chthonic Knight Ukobat")
+        log.add(at(30), f'REALM_RAID_ENDED event={self.EV} outcome="Timed out" minutes=200 named=4 wipes=0', "INF",
+                "DOL.GS.AutonomousRealmRaid")
+        log.add(at(31), f"REALM_RAID_STARTED event={self.EV} present=63 required=52", "INF", "DOL.GS.AutonomousRealmRaid")
+        for i in range(3):
+            self.kill(log, 35 + i * 6, "Chthonic Knight Ukobat")
+        self.assertEqual(self.row(log)["status"], pcl.SEEN, "two raids, three kills each")
+
+
 if __name__ == "__main__":
     unittest.main()

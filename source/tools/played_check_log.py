@@ -108,6 +108,10 @@ STUCK_BEFORE_WIN_SECONDS = 5 * 60
 REBASE_SILENT_SECONDS = 10 * 60
 REBASE_ACTS = ("moving", "fighting", "cleared", "met", "passable", "left", "released", "ended", "lost", "rebased")
 END_OUTCOME_SECONDS = 15
+# DF knight loop (build b1b6846): the same target killed again this many times or more in a row in one raid's dungeon,
+# with no other target killed between (REALM_EXPEDITION_TARGET_DEFEATED): Chthonic Knight Ukobat 14 times in a row from
+# 16:42:30 to 18:14:46 (13 re-kills) while the Albion raid's trail gate turned it back to him each time he respawned.
+REKILL_LOOP = 5
 REQUIRED_ADD_RE = re.compile(r'required-add \d+/\d+ of "([^"]+)"')
 CATALOG = Path(__file__).resolve().parents[2] / "docs" / "encounters" / "epic-encounters.json"
 _catalog = None
@@ -380,6 +384,9 @@ class Section:
         # Sweep 6f (build b1b6846)
         self.rebases = {}                 # (event, wave) -> (t, line) of a rebase to a step none of its raiders stood at
         self.silent_rebases = []          # (t, line, key, minutes silent, what ended the silence)
+        # DF knight loop (build b1b6846)
+        self.kill_streaks = {}            # region -> [target, kills, first t, first line, last t, event]
+        self.rekill_loops = []            # closed streaks with REKILL_LOOP+ re-kills: (first t, line, region, target, kills, last t, event)
 
     @property
     def commit7(self):
@@ -538,7 +545,7 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE",
        "BOT_SKILL_GROWTH", "RAID_MECHANIC_SEEN", "BOT_PLACE_BUDGET", "BOT_WAY_FOLLOW",
        "BOT_WAY_SUMMARY", "BOT_MOVE_STRAFE", "BOT_MOVE_STICK_LOST", "BOT_MOVE_OVERSHOOT",
        "BOT_MOVE_SIT", "BOT_MOVE_WALL", "BOT_MILESTONE_ARC", "BOT_MILESTONE_PROGRESS", "BOT_MILESTONE_REACHED",
-       "BOT_MILESTONE_SUMMARY", "ERA_BUILDS_INVALID")
+       "BOT_MILESTONE_SUMMARY", "ERA_BUILDS_INVALID", "REALM_EXPEDITION_TRAIL_GATE_PASSED")
 
 
 # Bots as people WP6: what a milestone line may claim, from the server's own tables (BotMilestones): experience from
@@ -610,6 +617,7 @@ def _raid_started(sec, t, message, level, near):
     run.present, run.required, run.forced = f.get("present"), f.get("required"), f.get("forced")
     region = sec.region_events.get(event)
     if region is not None:   # a new raid in this region: engages of an earlier one do not count for it
+        close_streak(sec, str(region))
         for table in (sec.engage_lines, sec.engaged, sec.add_owner):
             table.pop(str(region), None)
     sec.ev["REALM_RAID_STARTED"].add(t, message)
@@ -636,6 +644,8 @@ def _raid_ended(sec, t, message, level, near):
     end["regions"].update(raid_regions(sec, event))
     for key in [k for k in sec.attempts if str(k[0]) in end["regions"]]:
         close_attempt(sec, *key)
+    for region in end["regions"]:
+        close_streak(sec, region)
     waiting = sec.recent_outcomes.pop(event, ())
     for seen, members in waiting:
         if abs((t - seen).total_seconds()) <= END_OUTCOME_SECONDS:
@@ -1242,9 +1252,30 @@ def _target_status(sec, t, message, level, near):
     attempt_health(sec, t, region, target, num(f.get("health"), 100.0), message)
 
 
+def close_streak(sec, region):
+    """Ends a region's run of kills of one target; REKILL_LOOP or more re-kills (kills after the first) is a loop."""
+    streak = sec.kill_streaks.pop(region, None)
+    if streak and streak[1] - 1 >= REKILL_LOOP:
+        target, kills, first, line, last, event = streak
+        sec.rekill_loops.append((first, line, region, target, kills, last, event))
+
+
+def kill_streak(sec, t, region, target, message):
+    streak = sec.kill_streaks.get(region)
+    if streak and streak[0] == target:
+        streak[1] += 1
+        streak[4] = t
+        return
+    close_streak(sec, region)
+    sec.kill_streaks[region] = [target, 1, t, message, t, event_in_region(sec, region)]
+
+
 @handles("REALM_EXPEDITION_TARGET_DEFEATED")
 def _target_defeated(sec, t, message, level, near):
     f = kv(message)
+    sec.ev["REALM_EXPEDITION_TARGET_DEFEATED"].add(t, message)
+    if f.get("region") is not None and f.get("target"):
+        kill_streak(sec, t, str(f["region"]), f["target"], message)
     sec.bosses[f.get("region")].pop(f.get("target"), None)
     disengage(sec, f.get("region"), f.get("target"))
     sec.attempts.pop((f.get("region"), f.get("target")), None)
@@ -1878,6 +1909,7 @@ def raids(j: Judge, sec: Section, c):
     sweep6d_rows(j, sec, c)
     sweep6e_rows(j, sec, c)
     sweep6f_rows(j, sec, c)
+    rekill_rows(j, sec, c)
     sweep = j.ev("EPIC_SWEEP_START")
     j.add("raids", "sweep", "/epictest sweep progress (EPIC_SWEEP_*)", SEEN if sweep.count else NOT_SEEN, sweep,
           f"starts: {'; '.join(sec.lists['sweep_start']) or 'none'}; {c('EPIC_SWEEP_ADD')} add, "
@@ -2110,6 +2142,35 @@ def sweep6f_rows(j: Judge, sec: Section, c):
         j.add("raids", "rebase_silent", text, SEEN if c("return.rebased") else NOT_SEEN,
               j.ev("return.rebased") if c("return.rebased") else None,
               f"{c('return.rebased')} rebase(s), none silent {REBASE_SILENT_SECONDS // 60}+ minutes at a step nobody stood at")
+
+
+def rekill_rows(j: Judge, sec: Section, c):
+    """DF knight loop (build b1b6846): one raid killing the same target again and again with no other kill between."""
+    for region in list(sec.kill_streaks):
+        close_streak(sec, region)
+    # One monster killed again, not a pack: a named one (a proper name, as the server tells named from trash), and no
+    # encounter's add (the catalog's, or one the log showed raised for or required by a boss: Aidon's illusions).
+    adds = set(add_health())
+    for names in list(sec.required_adds.values()) + list(sec.boss_adds.values()):
+        adds |= names
+    loops = sorted(loop for loop in sec.rekill_loops if loop[3] != loop[3].lower() and loop[3] not in adds)
+    text = (f"A raid's route moves on: it never kills the same named target {REKILL_LOOP + 1} times in a row "
+            f"({REKILL_LOOP}+ re-kills) with no other target killed between (REALM_EXPEDITION_TARGET_DEFEATED, DF knight loop)")
+    passed = c("REALM_EXPEDITION_TRAIL_GATE_PASSED")
+    if loops:
+        bad = Evidence()
+        bad.add(loops[0][0], loops[0][1], len(loops))
+        j.add("raids", "rekill_loop", text, CONTRADICTED, bad,
+              "; ".join(f"\"{target}\" in region {region}{f' ({event})' if event else ''}: {kills} kills in a row "
+                        f"from {stamp(first)[6:]} to {stamp(last)[6:]}" for first, _, region, target, kills, last, event in loops)
+              + f"; {passed} TRAIL_GATE_PASSED line(s)",
+              note="kills of one region's route targets, in order; a named one (proper name), no encounter add; two raids "
+                   "in one region (Darkness Falls) would break a streak, never make one")
+    else:
+        kills = c("REALM_EXPEDITION_TARGET_DEFEATED")
+        j.add("raids", "rekill_loop", text, SEEN if kills else NOT_SEEN,
+              j.ev("REALM_EXPEDITION_TARGET_DEFEATED") if kills else None,
+              f"{kills} route kill(s), no named target killed {REKILL_LOOP + 1}+ times in a row; {passed} TRAIL_GATE_PASSED line(s)")
 
 
 def rvr(j: Judge, sec: Section, c):

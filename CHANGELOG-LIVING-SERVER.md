@@ -8,6 +8,35 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Darkness Falls: the raid no longer loops on a chthonic knight behind it (1.2, 2026-11-18; tests only)
+
+Seen on the owner's PC on build `b1b6846` (2026-11-18, the Albion Darkness Falls raid, `darkness-albion`, region 249).
+Nothing below is seen in game yet. No knight, boss or monster is changed: their stats and their own respawn timers are as
+they were, and Darkness Falls outside a raid (solo bots included) is unchanged.
+- **What happened.** The raid started at 15:42 and killed Princess Nahemah (16:09) and Prince Abdin (16:40). It then
+  walked its certified chain towards Prince Asmoien. Chthonic Knight Ukobat (level 66, aggro 500) stands on the raid's
+  trail, the way its late members walk, and comes back about 3 minutes after each death: under the ten-minute minimum of
+  the epic respawn hold, so he was not held. Each time he came back behind the raid the trail gate turned the whole raid
+  back to him: a new muster (2 to 8 minutes), a kill, then the chain again, which reached waypoint 6 of 10 before he was
+  back. He was killed 14 times in a row from 16:42:30 to 18:14:46, with no other named killed. After each kill the route
+  also kept his name while it walked to Asmoien, so the raid's goal read "Advancing to Chthonic Knight Ukobat (waypoint
+  6/10)" and the trail gate logged `TARGET_SWITCH from="Chthonic Knight Ukobat" to="Chthonic Knight Ukobat"` 12 times.
+- **A knight the raid killed on its way stays down while the raid runs.** In Darkness Falls an epic the raid's route
+  killed as its target (not a final, not a required add) is now held by the epic respawn hold whatever its respawn
+  (`AutonomousRealmRaid.HoldKilledOnTheWay`, `RealmRaidRouteGate.HoldsRespawn`), and comes back once the raid has ended
+  (the same end rules as the long-respawn epics). `REALM_RAID_EPIC_RESPAWN_HELD ... killedOnWay=True` logs each one. A
+  knight killed by a solo bot keeps its own timer; the switch is the existing `realm_raid_hold_epic_respawn` (on).
+- **The trail gate passes a knight it has cleared three times.** If one comes back anyway (the hold off), the trail gate
+  turns the raid on it at most three times between named kills; then it logs `REALM_EXPEDITION_TRAIL_GATE_PASSED` once and
+  the route goes on. It is still fought if it attacks the raid. `REALM_EXPEDITION_TRAIL_GATE` lines now log `kills=`.
+- **The route names its chain target again after a trail-gate kill**, so the goal and the next switch say "Prince
+  Asmoien", not the dead knight.
+- **#358's epic-trash gate (W-1) does not touch Darkness Falls:** it is built only for a raid that walks through another
+  dungeon, and every Darkness Falls raid enters region 249 straight from its realm (a test covers it).
+- **Checker:** new row `rekill_loop` (a raid's route never kills the same named target 6 times in a row, 5+ re-kills,
+  with no other target killed between). On `b1b6846` it is **Contradicted**: Ukobat, 14 kills in a row from 16:42:30 to
+  18:14:46. Packs of trash with one name and encounter adds are not counted.
+
 ## Raid fixes from sweep 6f: rebased return waves, the summoners' musters, Summoner Pain's camps (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18 15:15-16:46, `DIAG-b1b6-sweep6f`). Nothing below is seen in game yet.
