@@ -2708,6 +2708,15 @@ public static partial class AutonomousBotChatCoordinator
             hasKnowledge = !shortTalk && AutonomousChatKnowledge.TryAnswer(player, message, out knowledge);
         }
         string shape = voices ? AutonomousChatShortTalk.QuestionShape(message) : null;
+        // PC check 2026-11-19 (build 5154cae): "can someone help me in Camelot Hills?" drew the Fielath lore line. A call for
+        // someone to come and help is answered on the help path (HelpRequestReply: the promise gate, or an honest no), never by
+        // a lore or place answer.
+        bool helpCall = voices && IsHelpCall(message, shape);
+        if (helpCall)
+        {
+            hasKnowledge = false;
+            knowledge = null;
+        }
         // "ok", "nice", "me too" draw no answer; "anyone in camelot?" is answered by bots that are there, or by nobody
         // (chat audit 2026-10-21).
         if (shape == "ack")
@@ -2846,6 +2855,9 @@ public static partial class AutonomousBotChatCoordinator
         int social = 0, reactions = 0;
         string reactionKind = null;
         bool heldByBudget = false;
+        long firstDue = -1;
+        // PC check 2026-11-19 (build 5154cae): the bots' own threads in the channel wait while this line's answer is due.
+        string floorLane = faction ? AutonomousChatExchange.FactionKey(player.Realm) : AutonomousChatExchange.SayKey(player.CurrentRegionID);
         for (int index = 0; index < eligible.Length && index < count + 3 && planned < plan.Total; index++)
         {
             GameBot responder = eligible[index];
@@ -2861,6 +2873,8 @@ public static partial class AutonomousBotChatCoordinator
             {
                 choice = noneNearLevel != null
                     ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, noneNearLevel), "live none_near_level")
+                    : helpCall && HelpRequestReply(responder, player, message, Random.Shared) is { } help
+                    ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, help), "context help")
                     : hasKnowledge
                     ? new ReplyChoice(AutonomousBotVoices.StyleFor(responder, knowledge), "knowledge")
                     : directed
@@ -2915,6 +2929,8 @@ public static partial class AutonomousBotChatCoordinator
             // 1.2 chat audit (DESIGN-018): a line that names the bot is answered within 12 s, however slowly it types.
             if (directed)
                 due = Math.Min(due, before + DirectTypingCapMs);
+            if (primary)
+                firstDue = due;
             if (faction)
                 NoteFactionResponder(player.Realm, responder);
             // A bot named in the line answers itself; otherwise a busy bot's reply goes to the next bot that could say it.
@@ -2946,6 +2962,8 @@ public static partial class AutonomousBotChatCoordinator
                     SayLine(speaker, text, AsReply);
                 else
                     return 0;
+                if (primary)
+                    AutonomousChatExchange.ReleasePlayerFloor(floorLane);
                 Note(faction ? AutonomousChatThreads.Faction(speaker.Realm) : AutonomousChatThreads.Say(speaker.CurrentRegionID), speaker, text, "",
                     player.Name);
                 AutonomousChatWhy.Record(speaker, why, "player " + player.Name, outcome, route, fit,
@@ -2955,6 +2973,10 @@ public static partial class AutonomousBotChatCoordinator
                 return 0;
             }, due);
         }
+        // The player's line has the floor: threads already running in the channel wait for its first answer (2 s after it is due
+        // at most, AutonomousChatExchange.PlayerFloorMaxMs in all), so no bot-to-bot answer reads as the answer to the player.
+        if (firstDue >= 0)
+            AutonomousChatExchange.HoldForPlayer(floorLane, GameLoop.GameLoopTime, GameLoop.GameLoopTime + firstDue + 2_000);
         // The speaking lock: no unprompted line starts in this channel until the answers are out.
         if (planned > 0)
             AutonomousChatBudget.Meter.Delay(faction ? AutonomousChatBudget.Channel.Faction : AutonomousChatBudget.Channel.Say,
@@ -2970,6 +2992,62 @@ public static partial class AutonomousBotChatCoordinator
         PlanLog.Debug($"CHAT_PLAYER_REPLY_PLAN player=\"{player.Name}\" channel={(faction ? "faction" : "say")} intent={intent} " +
                       $"shape={AutonomousChatShortTalk.QuestionShape(message) ?? "-"} knowledge={hasKnowledge} eligible={eligible.Length} " +
                       $"directed={directed} count={count} planned={planned}");
+    }
+
+    /// <summary>
+    /// A call for someone to come and help (PC check 2026-11-19, build 5154cae): "can someone help me in camelot hills?", "need
+    /// help killing the named", "can any1 come to lyonesse". A plain "can you help?" ("sure, whats up?") or a how-to question
+    /// with "help" in it ("need help with my spec") is not one. Pure.
+    /// </summary>
+    public static bool IsHelpCall(string message, string shape)
+    {
+        if (shape != "ask_help" || string.IsNullOrWhiteSpace(message))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(message) + " ";
+        if (System.Text.RegularExpressions.Regex.IsMatch(t, @" (spec|quest|craft|crafting|command|macro|bind|train|trainer|skill|realm ability|ra|ras) "))
+            return false;
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+                   @" (help me|help us|help w|help with|need help|any help|come|coming|kill|killing|named|camp|mob|mobs|stuck|dying|corpse|body) ") &&
+               (System.Text.RegularExpressions.Regex.IsMatch(t, @" (in|at|near|to|by|around|out) [a-z]") || t.Contains(" come ") || t.Contains(" kill") ||
+                t.Contains(" named ") || t.Contains(" mob"));
+    }
+
+    /// <summary>
+    /// The two lines of the help path (pure but for the draw): the offer to come, which promises (ChatPromises.Gate decides
+    /// whether the bot may say it), and the honest line when it won't come: a no or a question about the fight, never a
+    /// promise.
+    /// </summary>
+    public static (string Come, string Instead) HelpRequestLines(string place, Random random)
+    {
+        random ??= Random.Shared;
+        string where = string.IsNullOrWhiteSpace(place) ? null : place.Trim().ToLowerInvariant();
+        string[] come = where == null
+            ? ["omw, where at?", "sure, omw", "on my way, where r u?", "omw, whats the mob?"]   // promise: gated (HelpRequestReply, ChatPromises.Gate)
+            : [$"omw, where in {where}?", "sure, omw", $"on my way to {where}", "omw, whats the mob?"];   // promise: gated (HelpRequestReply, ChatPromises.Gate)
+        string[] instead = ["cant, sry", "cant atm sry", "what level are the mobs?", "what lvl are the mobs?", "cant, sry. what are u fighting?",
+            "sry cant, busy here. try /lfg"];
+        return (come[random.Next(come.Length)], instead[random.Next(instead.Length)]);
+    }
+
+    /// <summary>
+    /// The help path's reply for one bot: its offer to come when the promise gate sends it there (ChatPromises.Gate, reason
+    /// Help, the player the place), else the honest line (<see cref="HelpRequestLines"/>).
+    /// </summary>
+    private static string HelpRequestReply(GameBot bot, GamePlayer player, string message, Random random)
+    {
+        if (bot == null || player == null)
+            return null;
+        AutonomousChatPlaces.Place named = null;
+        try
+        {
+            named = AutonomousChatQuestions.PlaceNamed(message, AutonomousChatPlaces.All);
+        }
+        catch (Exception)
+        {
+            // no place catalog (a test world): the player is the place
+        }
+        (string come, string instead) = HelpRequestLines(named?.Aliases.FirstOrDefault() ?? named?.Key, random);
+        return ChatPromises.Gate(bot, come, named?.Key, ChatPromiseReason.Help, message, instead, player);
     }
 
     /// <summary>

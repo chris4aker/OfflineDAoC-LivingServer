@@ -171,6 +171,34 @@ public static class AutonomousChatExchange
         public long LastAt = long.MinValue / 2;
         public readonly Dictionary<string, long> LastSeqBy = new(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<long, long> Running = new();
+        /// <summary>Until when a player's line has the floor: bots' own exchanges wait so its answer comes first (0: none).</summary>
+        public long PlayerFloorUntil;
+    }
+
+    /// <summary>
+    /// The longest a player's line holds the bots' own exchanges in its channel (PC check 2026-11-19, build 5154cae: six seconds
+    /// after "is it far?", Emberreaver's answer to Grittath's question read as the answer to the player). The hold ends as soon
+    /// as the player's answer is said (<see cref="ReleasePlayerFloor"/>).
+    /// </summary>
+    public const long PlayerFloorMaxMs = 30_000;
+
+    /// <summary>How often a held line looks again.</summary>
+    public const int PlayerFloorRetryMs = 1_000;
+
+    /// <summary>A player's line will be answered in the lane by <paramref name="until"/>: bots' exchanges wait until then (at most <see cref="PlayerFloorMaxMs"/>).</summary>
+    public static void HoldForPlayer(string key, long now, long until)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            lane.PlayerFloorUntil = Math.Max(lane.PlayerFloorUntil, Math.Min(until, now + PlayerFloorMaxMs));
+    }
+
+    /// <summary>The player's answer was said: the bots' exchanges in the lane go on.</summary>
+    public static void ReleasePlayerFloor(string key)
+    {
+        Lane lane = LaneOf(key);
+        lock (lane)
+            lane.PlayerFloorUntil = 0;
     }
 
     private static readonly Dictionary<string, Lane> Lanes = new(StringComparer.Ordinal);
@@ -304,6 +332,7 @@ public static class AutonomousChatExchange
         private readonly IReadOnlyList<Line> _lines;
         private readonly Rules _rules;
         private int _waitsSpacing, _waitsBusy;
+        private long _heldForPlayerMs;
 
         public long Id { get; }
         public string Feature { get; }
@@ -349,14 +378,18 @@ public static class AutonomousChatExchange
             Line line = Current;
             if (line == null)
                 return new Decision(Act.Stop, 0, "done");
-            long seq, lastAt, speakerSeq = 0;
+            long seq, lastAt, speakerSeq = 0, playerFloor;
             lock (Lane)
             {
                 seq = Lane.Seq;
                 lastAt = Lane.LastAt;
+                playerFloor = Lane.PlayerFloorUntil;
                 if (speakerName != null)
                     Lane.LastSeqBy.TryGetValue(speakerName, out speakerSeq);
             }
+            // PC check 2026-11-19: a player's line has the floor; its answer comes first, then the bots' talk goes on.
+            if (playerFloor > now && _heldForPlayerMs < PlayerFloorMaxMs)
+                return new Decision(Act.Wait, (int)Math.Min(PlayerFloorRetryMs, playerFloor - now), "player first");
             if (!free)
             {
                 if (_waitsBusy < _rules.MaxBusyWaits)
@@ -381,7 +414,8 @@ public static class AutonomousChatExchange
                 int cap = IsShort(line.Text) ? _rules.MaxInterleaveShort : _rules.MaxInterleave;
                 if (since > cap)
                     return new Decision(Act.Stop, 0, "lost its referent");
-                if (now - _prevAt > _rules.MaxLateMs + _rules.MaxSpacingWaits * 2L * _rules.SpacingMs + _rules.MaxBusyWaits * (long)_rules.BusyRetryMs)
+                if (now - _prevAt > _rules.MaxLateMs + _rules.MaxSpacingWaits * 2L * _rules.SpacingMs + _rules.MaxBusyWaits * (long)_rules.BusyRetryMs +
+                    _heldForPlayerMs)
                     return new Decision(Act.Stop, 0, "too late");
             }
             if (_rules.SpacingMs > 0 && now - lastAt < _rules.SpacingMs && _waitsSpacing < _rules.MaxSpacingWaits)
@@ -402,6 +436,13 @@ public static class AutonomousChatExchange
             switch (decision.Act)
             {
                 case Act.Wait:
+                    if (decision.Reason == "player first")
+                    {
+                        // The hold is waited out exactly, with no jitter, and does not count against the busy or spacing waits.
+                        _heldForPlayerMs += Math.Max(1, decision.WaitMs);
+                        DueAt = now + Math.Max(1, decision.WaitMs);
+                        return DueAt;
+                    }
                     if (decision.Reason == "spacing")
                         _waitsSpacing++;
                     else

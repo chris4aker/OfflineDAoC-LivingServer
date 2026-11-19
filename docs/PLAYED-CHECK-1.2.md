@@ -415,6 +415,21 @@ details in [TALES.md](TALES.md).
 | Boss yells, atmosphere lines and kill broadcasts on screen | must | **Seen** on `1dc66b6`: realm first-kill lines (22:52, 23:07, 04:57), the Aidon win line (00:44), an atmosphere line on arriving in Avalon Marsh (02:20) and a boss yell in Krondon (03:35). An aggro yell at a boss's death was fixed in #231 (tests only) |
 | Loremasters, books, the Herald chronicle and bestiary |  | Partly on `1dc66b6`: the `/lore` window (23:25) and a loremaster standing in Camelot's library (01:05, his dialog not opened). Books, the Herald chronicle and the bestiary: no record |
 
+## Bot chat: the in-game check of 2026-11-19 (build `5154cae`, `fix/chat-pc-check-0719`)
+
+What the helper saw as Testrunner (Albion 22, Camelot, 07:04-07:27) and how to check each fix. Every row is tests only
+(`UT_ChatPcCheck0719`; the launcher row `LauncherPresentationTests`, Windows CI only).
+
+| Check | | Result |
+|---|---|---|
+| "where do i level at 22?" in /faction, then "is it far?": the second answer says roughly how far and how to get there ("not far, take the horse to Campacorentin, Keltoi Fogou entrance is there"), not the place's description | must | Not run (tests only) |
+| Within a few seconds of your /faction question, no bot-to-bot answer comes before your answer (a running thread waits for it, 30 s at most) | | Not run (tests only) |
+| "can someone help me in Camelot Hills?" in /faction gets an offer to come (with a `CHAT_PROMISE made` line) or an honest "cant, sry" / "what level are the mobs?", never a lore line | must | Not run (tests only) |
+| Every `LORE_PLACED ... channel=Say` has the bot's /say line on screen, from a bot standing by you | must | Not run (tests only) |
+| An Albion "how do i get to breifine" is answered "thats hib frontier, rvr only" or similar, never a route | | Not run (tests only) |
+| No "a armorcrafter", "a infil": "an" before a vowel in bot lines | | Not run (tests only) |
+| The launcher's ONLINE BOTS and "Bot status updated" change every five minutes while the server runs (watch 15 minutes after START SERVER) | must | Not run (tests only). The cause on `5154cae` is not proven: the launcher writes no log |
+
 ## Bot chat: promises to come (owner decision 2 of 2026-11-18, `fix/chat-promises-real`)
 
 A bot that says "omw", "coming", "on my way", "ill be there" or "heading there" must really go, and a bot that won't go

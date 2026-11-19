@@ -8,6 +8,40 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Chat from the in-game check: "is it far?", help calls, placed lore, other realms' zones, "an", the launcher's count (1.2, 2026-11-19; tests only)
+
+Seen on the owner's PC on build `5154cae` (2026-11-19 07:04-07:27, Testrunner in Camelot; `SWEEP8-RESULTS-1119`). Nothing
+below is seen in game yet: **tests only** (`UT_ChatPcCheck0719`; the launcher test runs on the Windows CI job only).
+- **"is it far?" gets a travel answer.** After "Keltoi Fogou is good around 22", "is it far?" was completed to "is keltoi
+  fogou far?" and drew the lore bible's description (Ogria, 07:08:58). A how-far question now goes to the travel answer
+  (`AutonomousChatKnowledge.TryAnswerHowFar`): a dungeon by its entrance zone, how far that is from the asker (or from
+  where the asker's capital opens into that region), and the horse only when a stable route of the realm ends there
+  ("not far, take the horse to Campacorentin, Keltoi Fogou entrance is there"). The lore bible no longer takes such a
+  question.
+- **A player's /faction line has the floor.** Six seconds after "is it far?", Emberreaver's answer to Grittath's question
+  ("pennine mountains, a horse gets you most of the way") read as the answer to the player. Bot exchanges already running
+  in the channel now wait until the player's first answer is said (its due time plus 2 s, 30 s at most), then go on.
+- **A call for help is not a lore question.** "can someone help me in Camelot Hills?" drew the Fielath lore line
+  (Thaxard, 07:10:57). Such a call now skips the knowledge and lore answers: the bot offers to come only through
+  `ChatPromises.Gate` (reason Help), else it says "cant, sry" or "what level are the mobs?".
+- **Placed lore is logged only when it is heard.** `LORE_PLACED ... bot="Trorirrum" channel=Say` (07:30:14) came with no
+  line: the bot was picked within 1,000 units (past /say's 512) and `Speak` reported a /say nobody could hear as said. The
+  bot is now picked within /say range, not from an RvR party, and `Speak` returns false when nothing went out (/say,
+  /group and guild).
+- **Other realms' zones are told honestly.** An Albion bot answered "how do i get to breifine" with "new frontiers, a
+  horse gets u most of the way", from a leftover zone of that name in region 163. A zone of another realm's land is now
+  "thats hib frontier, rvr only" (its frontier) or "thats hib land, cant get there from here" (its home zones).
+- **"an armorcrafter".** "a" before a word said with a vowel is "an" in the corpus filler (now numbers too: "an 18
+  suit"), in field talk, bot-led group lines, styled lines and the gear answer that said "a armorcrafter".
+- **The launcher's online count.** The dashboard showed "5 online" and "Bot status updated 6:58:55" for half an hour
+  while 563+ bots were on, in the session where the server was started straight after INSTALL.cmd; after a later START
+  (07:57) it counted 2,877 at 08:14. The five-minute refresh was armed only after the launcher's first dashboard and
+  Realm Exchange reads finished. START clicked while those ran got its own refresh (the 6:58:55 one) and then no timer
+  until the exchange read ended, and that read joined every listing to every bot row with an expression no index serves
+  (10 s for 2,000 listings and 6,000 bots on a synthetic world, growing with both). The timer is now armed first, the
+  seller is looked up by the bot's id (0.01 s for the same world), and a read that never returns is given up after 60 s
+  so the refresh gate opens again. How long the read took on the PC is not known: the launcher writes no log.
+
 ## Raid fixes from sweep 7c: Suttung's empty pulls, Steinvor's pillar, cure pile-ups, Curengkur's staging, hub posts, raid-end stall (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `9a173f4` (2026-11-19 01:30 to 05:07, `DIAG-9a17-sweep7c`). Nothing below is seen in game

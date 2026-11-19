@@ -1000,7 +1000,8 @@ public static partial class BotLedGroups
             return text;
         foreach ((string key, string value) in slots)
             text = text.Replace("{" + key + "}", value ?? string.Empty, StringComparison.Ordinal);
-        return text;
+        // PC check 2026-11-19 (build 5154cae): "a {x}" before a vowel reads "an".
+        return AutonomousBotVoiceCorpus.FixArticles(text);
     }
 
     /// <summary>

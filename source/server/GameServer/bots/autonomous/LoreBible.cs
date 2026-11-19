@@ -1329,6 +1329,11 @@ public sealed class LoreBible
         // "where is krondon?" and "how do i get to krondon" are the directions route's (AutonomousChatKnowledge.TryAnswerLocation).
         if (!asks || Regex.IsMatch(plain, @" (where|wheres|how do i get|how to get|way to|directions|route to) "))
             return (null, null);
+        // PC check 2026-11-19 (build 5154cae): "is keltoi fogou far?" (the memory follow-up "is it far?") drew the place's
+        // description, and "can someone help me in Camelot Hills?" the Fielath lore line. How far a place is goes to the travel
+        // answer (AutonomousChatKnowledge.TryAnswerHowFar), a call for help to the help path; neither asks what a place is.
+        if (Regex.IsMatch(plain, @" (far|how long to|how long does it take|long way|close to here|near here) ") || IsHelpRequest(plain))
+            return (null, null);
         Location bestLocation = null;
         Boss bestBoss = null;
         int best = 0;
@@ -1350,6 +1355,13 @@ public sealed class LoreBible
                 }
         return (bestLocation, bestBoss);
     }
+
+    /// <summary>
+    /// A call for help or for someone to come ("can someone help me in camelot hills?", "need help with the named in keltoi
+    /// fogou", "anyone come to lyonesse?"): never a lore question, whatever place it names (PC check 2026-11-19). Pure.
+    /// </summary>
+    public static bool IsHelpRequest(string text) =>
+        Regex.IsMatch(Plain(text), @" (help|helps|helping|assist|rescue|save me|come get me|can (someone|anyone|any1|somebody|u|you) come|anyone (come|coming)|need a hand|lend a hand) ");
 
     /// <summary>
     /// A bot's answer to a question about a place or boss, in chat voice: a place's "tell" lines, else its rumours; a

@@ -99,6 +99,24 @@ public sealed class LauncherPresentationTests
         readinessTimer.Stop();
     }
 
+    [Test]
+    public void ADashboardReadThatNeverReturnsNoLongerHoldsTheRefreshGate()
+    {
+        // PC check 2026-11-19 (build 5154cae): "5 online" and "Bot status updated 6:58:55" for half an hour while 563+ bots
+        // were on. A read that hangs now ends in a TimeoutException, so the refresh gate opens and the next refresh runs.
+        Type mainFormType = Launcher.GetType("OfflineDaoc.Launcher.MainForm")!;
+        int timeout = (int)mainFormType.GetField("DashboardReadTimeoutMilliseconds", HiddenStatic)!.GetRawConstantValue()!;
+        int autoRefresh = (int)mainFormType.GetField("AutoRefreshMilliseconds", HiddenStatic)!.GetRawConstantValue()!;
+        Assert.That(timeout, Is.LessThan(autoRefresh), "a hung read is given up before the next five-minute refresh");
+
+        MethodInfo within = mainFormType.GetMethod("ReadWithinAsync", BindingFlags.Static | BindingFlags.NonPublic)!.MakeGenericMethod(typeof(int));
+        var never = new TaskCompletionSource<int>();
+        var hung = (Task<int>)within.Invoke(null, new object[] { never.Task, 50 })!;
+        Assert.That(async () => await hung, Throws.TypeOf<TimeoutException>());
+        var done = (Task<int>)within.Invoke(null, new object[] { Task.FromResult(7), 50 })!;
+        Assert.That(done.Result, Is.EqualTo(7));
+    }
+
     [TestCase(300.0, "5:00")]
     [TestCase(299.1, "5:00")]
     [TestCase(61.0, "1:01")]

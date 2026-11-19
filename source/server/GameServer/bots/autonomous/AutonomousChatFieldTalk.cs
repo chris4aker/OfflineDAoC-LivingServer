@@ -2570,7 +2570,8 @@ public static class AutonomousChatFieldTalk
     /// <summary>Lowercase, no full stop, the odd question mark dropped: how most people typed in /faction.</summary>
     public static string Finish(string text, Random random)
     {
-        string result = text.Trim().ToLowerInvariant().TrimEnd('.');
+        // PC check 2026-11-19 (build 5154cae): "a {cls}" filled with "infil" reads "an infil".
+        string result = AutonomousBotVoiceCorpus.FixArticles(text.Trim().ToLowerInvariant().TrimEnd('.'));
         if (result.EndsWith('?') && random.NextDouble() < 0.3)
             result = result.TrimEnd('?');
         return result;

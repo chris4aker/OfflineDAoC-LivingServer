@@ -14,6 +14,10 @@ internal sealed partial class MainForm : Form
     internal const int LiveBotSnapshotMaxAgeMilliseconds = 20_000;
     internal const int LiveBotSnapshotWaitMilliseconds = 3_000;
     internal const int ServerReadinessPollMilliseconds = 500;
+    // PC check 2026-11-19 (build 5154cae): the dashboard showed "5 online" and "Bot status updated 6:58:55" for half an hour
+    // while the server had 563+ bots on. A snapshot read that never returns held the refresh gate (_refreshing), and every
+    // later refresh (the five-minute one, REFRESH, the RvR panel) returned at that gate without a word. A read gets this long.
+    internal const int DashboardReadTimeoutMilliseconds = 60_000;
     // The launcher's own folder. In the 0.36c install the new client's launcher lives in new-client\runtime and
     // runs the SAME server as the original client's launcher (named in server_root.txt), so both clients share one
     // account, one bot roster and one world.
@@ -244,12 +248,15 @@ internal sealed partial class MainForm : Form
         _serverReadinessPoll.Tick += async (_, _) => await RefreshWhenServerReadyAsync();
         Shown += async (_, _) =>
         {
-            await RefreshDashboardAsync();
-            await RefreshRealmExchangeAsync();
+            // PC check 2026-11-19 (build 5154cae): the clocks start first. They were started only after the first dashboard
+            // and Realm Exchange reads, so START clicked while a slow exchange read ran (its seller join scanned every bot row
+            // for every listing) got the server-start refresh ("5 online", 6:58:55) and then no five-minute refresh.
             _displayClock.Start();
             ScheduleNextAutoRefresh();
             UpdateAutoRefreshCountdown();
             _autoRefresh.Start();
+            await RefreshDashboardAsync();
+            await RefreshRealmExchangeAsync();
             // One quiet look for a newer Living Server (at most once a day; the player can turn it off).
             await CheckForUpdatesAsync(asked: false);
         };
@@ -1359,7 +1366,7 @@ internal sealed partial class MainForm : Form
         _footer.Text = "Reading current playerbot status…";
         try
         {
-            var snapshot = await Task.Run(ReadSnapshot);
+            var snapshot = await ReadWithinAsync(Task.Run(ReadSnapshot), DashboardReadTimeoutMilliseconds);
             // Restore the pre-refresh baseline while still on the UI thread,
             // then apply the authoritative states from the completed snapshot.
             // No click can be processed between these operations.
@@ -1409,6 +1416,10 @@ internal sealed partial class MainForm : Form
                 _footer.Text = stuck;
             UpdateAutoRefreshCountdown();
         }
+        catch (TimeoutException)
+        {
+            _footer.Text = $"Reading the bot status took over {DashboardReadTimeoutMilliseconds / 1000} seconds; it is read again at the next refresh.";
+        }
         catch (Exception exception)
         {
             _footer.Text = $"Dashboard refresh failed: {exception.Message}";
@@ -1422,6 +1433,14 @@ internal sealed partial class MainForm : Form
                 _refreshButton.Text = "REFRESH";
         }
     }
+
+    /// <summary>
+    /// The result of a background read, or a <see cref="TimeoutException"/> once <paramref name="timeoutMilliseconds"/> pass:
+    /// a read that hangs (a locked database, a stalled file) no longer holds the refresh gate for good. The read itself runs on;
+    /// its late result is dropped.
+    /// </summary>
+    internal static Task<T> ReadWithinAsync<T>(Task<T> read, int timeoutMilliseconds) =>
+        read.WaitAsync(TimeSpan.FromMilliseconds(timeoutMilliseconds));
 
     private async Task RefreshRealmExchangeAsync()
     {
@@ -1437,7 +1456,7 @@ internal sealed partial class MainForm : Form
         _footer.Text = "Reading the Realm Exchange inventory…";
         try
         {
-            List<AuctionRow> auctions = await Task.Run(ReadRealmExchangeSnapshot);
+            List<AuctionRow> auctions = await ReadWithinAsync(Task.Run(ReadRealmExchangeSnapshot), DashboardReadTimeoutMilliseconds);
             _auctions.Clear();
             _auctions.AddRange(auctions);
             ApplyAuctionFilter();
@@ -1476,7 +1495,10 @@ internal sealed partial class MainForm : Form
             ? "COALESCE(i.RealmExchangeListedUtc, '')" : "''";
         command.CommandText = $"""
             SELECT COALESCE(NULLIF(u.Name, ''), NULLIF(t.Name, ''), 'Unknown item') AS ItemName,
-                   COALESCE(c.Name, b.Name, 'Unknown seller') AS Seller,
+                   COALESCE(c.Name,
+                            (SELECT b.Name FROM offline_world_bots b
+                             WHERE i.OwnerID LIKE 'offlinebot:%' AND b.BotId = CAST(SUBSTR(i.OwnerID, 12) AS INTEGER)),
+                            'Unknown seller') AS Seller,
                    COALESCE(u.Level, t.Level, 0) AS ItemLevel,
                    i.Count,
                    i.SellPrice,
@@ -1486,7 +1508,6 @@ internal sealed partial class MainForm : Form
             LEFT JOIN ItemTemplate t ON t.Id_nb = i.ITemplate_Id
             LEFT JOIN ItemUnique u ON u.Id_nb = i.UTemplate_Id
             LEFT JOIN DOLCharacters c ON c.DOLCharacters_ID = i.OwnerID
-            LEFT JOIN offline_world_bots b ON i.OwnerID = ('offlinebot:' || b.BotId)
             WHERE i.OwnerLot IN (65001, 65002, 65003)
               AND i.SellPrice > 0
             ORDER BY RealmName, ItemLevel DESC, ItemName
