@@ -247,6 +247,19 @@ public static partial class AutonomousLivingServer
         ClientService.Instance.GetPlayersOfRegion(bot.CurrentRegion).Any(player =>
             player.ObjectState == GameObject.eObjectState.Active && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE));
 
+    /// <summary>Whether the bot is in an RvR party (on its way to or in the frontier fight), not standing about in town.</summary>
+    internal static bool InRvrParty(GameBot bot)
+    {
+        try
+        {
+            return bot?.Group != null && AutonomousObjectiveAssignments.KindFor(bot) == eAutonomousObjectiveKind.RvR;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
     internal static bool GroupHasPlayer(Group group) =>
         group != null && group.GetMembersInTheGroup().Any(member => member is GamePlayer);
 
@@ -263,25 +276,28 @@ public static partial class AutonomousLivingServer
             text = AutonomousRoleplayers.Voice(bot, text);   // /say goes through GameBot.Say, /faction through BroadcastFaction
         switch (channel)
         {
+            // PC check 2026-11-19 (build 5154cae): true only when the line went out. A /say with no player in range said nothing
+            // and returned true, so LORE_PLACED was logged for a line nobody heard.
             case Channel.Say:
-                if (PlayerHears(bot))
-                    bot.Say(text);
-                break;
+                if (!PlayerHears(bot))
+                    return false;
+                bot.Say(text);
+                return true;
             case Channel.Group:
-                if (GroupHasPlayer(bot.Group))
-                {
-                    bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-                    BotChatTranscript.Bot("group", bot.Name, bot.Realm, text, who: bot);
-                }
-                break;
+                if (!GroupHasPlayer(bot.Group))
+                    return false;
+                bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                BotChatTranscript.Bot("group", bot.Name, bot.Realm, text, who: bot);
+                return true;
             case Channel.Faction:
                 return RealmHasPlayer(bot.Realm) && AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
             case Channel.Guild:
-                if (bot.Guild != null && AutonomousBotGuildSocial.HasListener(bot.Guild))
-                    AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
-                break;
+                if (bot.Guild == null || !AutonomousBotGuildSocial.HasListener(bot.Guild))
+                    return false;
+                AutonomousBotGuildSocial.SendGuildLine(bot.Guild, bot.Name, text);
+                return true;
         }
-        return true;
+        return false;
     }
 
     /// <summary>Runs an action on the bot's (or player's) timer after a delay, if it is still in the game and the condition still holds then.</summary>

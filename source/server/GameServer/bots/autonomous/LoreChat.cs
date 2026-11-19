@@ -135,6 +135,14 @@ public static class LoreChat
     /// <summary>The measured target: placed lore lines a player hears an hour while standing in a place with lore, out of a fight.</summary>
     public const double PlacedTargetPerHour = 2.2;
 
+    /// <summary>
+    /// Whether a gamebot beside the player may say a placed lore line in /say (PC check 2026-11-19, build 5154cae: a bot in an
+    /// RvR party, 1,000 units off, was logged as saying one and the player heard nothing): in the player's region, within
+    /// /say range (WorldMgr.SAY_DISTANCE), and not on its way with an RvR party. Pure.
+    /// </summary>
+    public static bool HearsPlacedLore(bool sameRegion, double distance, bool inRvrParty) =>
+        sameRegion && distance >= 0 && distance <= WorldMgr.SAY_DISTANCE && !inRvrParty;
+
     /// <summary>Whether a placed lore line is due for a player (pure): the gap since the last one is over and the roll says now.</summary>
     public static bool PlacedDue(long now, long lastHeard, double roll) => now - lastHeard >= PlacedGapMs && roll < PlacedChance;
 

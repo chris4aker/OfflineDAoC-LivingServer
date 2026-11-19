@@ -570,6 +570,56 @@ public sealed class AutonomousBotVoiceCorpus
         template.Contains("{boss}", StringComparison.Ordinal) && slots.TryGetValue("raid", out string raid) &&
         slots.TryGetValue("boss", out string boss) && RealmEventBanter.NamedForBoss(raid, boss);
 
+    private static readonly Regex ArticleBeforeWord = new(@"\b([Aa]) ([A-Za-z0-9][\w']*)", RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// Whether a word takes "an" as typed in chat (PC check 2026-11-19, build 5154cae: "a armorcrafter"): a word starting
+    /// with a, e, i or o ("an elementalist", not "an one-hander"), with u when it is said "uh" ("an undead", "an uber"; not
+    /// "a unique", "a useful"), and the numbers said with a vowel first ("an 8", "an 11", "an 18", "an 80"). Pure.
+    /// </summary>
+    public static bool TakesAn(string next)
+    {
+        string word = (next ?? string.Empty).TrimStart().ToLowerInvariant();
+        if (word.Length == 0)
+            return false;
+        char first = word[0];
+        if (char.IsDigit(first))
+        {
+            string digits = new(word.TakeWhile(char.IsDigit).ToArray());
+            return digits[0] == '8' || digits is "11" or "18";
+        }
+        if (first is 'a' or 'e' or 'i')
+            return !word.StartsWith("eu", StringComparison.Ordinal) && !word.StartsWith("ewe", StringComparison.Ordinal);
+        if (first == 'o')
+            return !word.StartsWith("one", StringComparison.Ordinal) && !word.StartsWith("once", StringComparison.Ordinal);
+        if (first == 'u')
+            return !(word.StartsWith("uni", StringComparison.Ordinal) || word.StartsWith("use", StringComparison.Ordinal) ||
+                     word.StartsWith("usu", StringComparison.Ordinal) || word.StartsWith("uti", StringComparison.Ordinal) ||
+                     word.StartsWith("ure", StringComparison.Ordinal) || word.StartsWith("uri", StringComparison.Ordinal) ||
+                     word.StartsWith("ura", StringComparison.Ordinal) || word.StartsWith("ubi", StringComparison.Ordinal) || word.Length == 1);
+        return word.StartsWith("hour", StringComparison.Ordinal) || word.StartsWith("honest", StringComparison.Ordinal) ||
+               word.StartsWith("honor", StringComparison.Ordinal) || word.StartsWith("honour", StringComparison.Ordinal);
+    }
+
+    /// <summary>"a" or "an" for the word after it, by <see cref="TakesAn"/>. Pure.</summary>
+    public static string AOrAn(string next) => TakesAn(next) ? "an" : "a";
+
+    /// <summary>
+    /// A finished line with "a" made "an" where the next word takes it ("a armorcrafter" -> "an armorcrafter"), for lines built
+    /// in code rather than filled from the corpus. Only the article is touched; the rest of the typing stays as it is. Pure.
+    /// </summary>
+    public static string FixArticles(string text) =>
+        string.IsNullOrEmpty(text) || !text.Contains("a ", StringComparison.OrdinalIgnoreCase) ? text
+            : ArticleBeforeWord.Replace(text, match => TakesAn(match.Groups[2].Value) && !NotANoun.Contains(match.Groups[2].Value)
+                ? match.Groups[1].Value + "n " + match.Groups[2].Value : match.Value);
+
+    // "plan a or b", "rate it a in my book": a word after a lone "a" that is no noun keeps the "a" as typed.
+    private static readonly HashSet<string> NotANoun = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "a", "an", "and", "or", "of", "on", "in", "at", "as", "is", "it", "if", "its", "i", "im", "i'm", "are", "am", "also", "all",
+        "any", "up", "us", "off", "out", "over", "into", "onto", "else", "ever", "each", "either", "even", "oh", "ok", "okay", "until",
+    };
+
     /// <summary>Fills every {slot}; false if any slot has no value (a line is never sent half-filled).</summary>
     public static bool TryFill(string template, IReadOnlyDictionary<string, string> slots, out string filled)
     {
@@ -592,9 +642,9 @@ public sealed class AutonomousBotVoiceCorpus
         var found = new List<string>();
         // "a {class}" before a vowel reads "an elementalist" (playtest 2026-11-04: "first to 50 as a elementalist"). Not
         // before u: "a unique".
+        // PC check 2026-11-19 (build 5154cae): one rule for every filler (TakesAn), numbers too ("an 18 suit").
         template = ArticleBeforeSlot.Replace(template ?? string.Empty, match =>
-            slots != null && slots.TryGetValue(match.Groups[2].Value, out string next) && next is { Length: > 0 } &&
-            "aeioAEIO".Contains(next[0])
+            slots != null && slots.TryGetValue(match.Groups[2].Value, out string next) && TakesAn(next)
                 ? match.Groups[1].Value + "n {" + match.Groups[2].Value + "}"
                 : match.Value);
         string result = SlotPattern.Replace(template, match =>

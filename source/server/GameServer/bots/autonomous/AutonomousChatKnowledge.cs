@@ -28,6 +28,9 @@ public static class AutonomousChatKnowledge
         string query = message.Trim();
         if (TryExplainTerm(query, out answer))
             return true;
+        // PC check 2026-11-19 (build 5154cae): "is it far?" about Keltoi Fogou drew the place's description; it is a travel question.
+        if (TryAnswerHowFar(player, query, out answer))
+            return true;
         // 1.2 (owner, 2026-11-15): "what is atlantis?", "is there anything under camelot?" are answered as rumours only.
         if (AutonomousBotVoices.Corpus != null && LoreLegends.TryAnswer(AutonomousBotVoices.Corpus, query, player.Realm, Random.Shared, out answer))
             return true;
@@ -467,10 +470,10 @@ public static class AutonomousChatKnowledge
 
     #endregion
 
-    private static bool TryAnswerStable(eRealm realm, string query, out string answer)
+    /// <summary>Every horse route of the realm's stable masters: who sells it, where they stand, the ticket's destination and the zone it ends in.</summary>
+    private static List<(string Master, string Area, string Destination, string EndpointArea)> StableRoutes(eRealm realm)
     {
-        answer = string.Empty;
-        var routes = new List<(string Master, string Area, string Destination)>();
+        var routes = new List<(string Master, string Area, string Destination, string EndpointArea)>();
         foreach (Region region in WorldMgr.GetAllRegions().Where(region => region != null &&
                      AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion) &&
                      RegionIsAccessible(realm, region.ID)))
@@ -490,13 +493,20 @@ public static class AutonomousChatKnowledge
                     while (endpoint?.Next != null && guard++ < 5000)
                         endpoint = endpoint.Next;
                     string endpointArea = endpoint == null ? string.Empty : region.GetZone(endpoint.X, endpoint.Y)?.Description ?? string.Empty;
-                    if (!ContainsPhrase(query, destination) && !ContainsPhrase(query, endpointArea))
-                        continue;
-                    routes.Add((master.Name, master.CurrentZone?.Description ?? region.Description,
-                        string.IsNullOrWhiteSpace(endpointArea) ? destination : endpointArea));
+                    routes.Add((master.Name, master.CurrentZone?.Description ?? region.Description, destination, endpointArea));
                 }
             }
         }
+        return routes;
+    }
+
+    private static bool TryAnswerStable(eRealm realm, string query, out string answer)
+    {
+        answer = string.Empty;
+        var routes = StableRoutes(realm)
+            .Where(route => ContainsPhrase(query, route.Destination) || ContainsPhrase(query, route.EndpointArea))
+            .Select(route => (route.Master, route.Area, Destination: string.IsNullOrWhiteSpace(route.EndpointArea) ? route.Destination : route.EndpointArea))
+            .ToList();
 
         (string Master, string Area, string Destination)[] matches = routes.Distinct().Take(3).ToArray();
         if (matches.Length == 0)
@@ -557,6 +567,14 @@ public static class AutonomousChatKnowledge
             .FirstOrDefault();
         if (match.Value == null)
             return false;
+        // PC check 2026-11-19 (build 5154cae): an Albion bot answered "how do i get to breifine" (Hibernia's frontier) with "new
+        // frontiers, a horse gets u most of the way", from a leftover zone of that name in region 163. A zone of another realm's
+        // land is told as that: its frontier is RvR, its home zones can't be reached from here.
+        if (OtherRealmZone(realm, match.Key, match.Value.Select(place => (place.Name, place.RegionId, place.IsMonster))) is { } owner)
+        {
+            answer = OtherRealmLine(match.Value[0].Name, owner, AutonomousChatLiveAnswers.FrontierHome(match.Value[0].Name) == owner, Random.Shared);
+            return true;
+        }
 
         Place[] reachable = match.Value.Where(place => RegionIsAccessible(realm, place.RegionId)).ToArray();
         if (reachable.Length == 0)
@@ -607,6 +625,161 @@ public static class AutonomousChatKnowledge
                 $"{place.Name}, a horse gets you most of the way")
             : Pick($"{place.Name} is in {place.Area}", $"{place.Name}? thats in {place.Area}", $"in {place.Area}, follow the road",
                 $"{place.Area}, a horse gets you most of the way");
+        return true;
+    }
+
+    /// <summary>The realm whose home region this is (the capitals, home zones and dungeons, and the realm's classic frontier), or None. Pure.</summary>
+    public static eRealm HomeRealmOfRegion(ushort regionId) =>
+        regionId is 1 or 10 or 20 or 21 or 22 or 23 or 24 or 50 or 51 or 60 or 61 or 62 ? eRealm.Albion
+        : regionId is 100 or 101 or 125 or 126 or 127 or 128 or 129 or 150 or 151 or 160 or 161 ? eRealm.Midgard
+        : regionId is 180 or 181 or 190 or 191 or 192 or 193 or 194 or 200 or 201 or 220 or 221 or 222 or 223 or 224 ? eRealm.Hibernia
+        : eRealm.None;
+
+    /// <summary>
+    /// The other realm a zone or region name belongs to, for an asker of <paramref name="asker"/>'s realm, or null: the name is
+    /// a zone (not a monster or NPC) of another realm's land and of no land of the asker's own. A same-named zone in a neutral
+    /// region (region 163's leftover "Breifine") doesn't make it the asker's. Pure.
+    /// </summary>
+    public static eRealm? OtherRealmZone(eRealm asker, string name, IEnumerable<(string Name, ushort RegionId, bool IsMonster)> places)
+    {
+        var zones = (places ?? []).Where(place => !place.IsMonster && string.Equals(place.Name?.Trim(), name?.Trim(), StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (zones.Length == 0 || zones.Any(place => HomeRealmOfRegion(place.RegionId) == asker))
+            return null;
+        eRealm owner = zones.Select(place => HomeRealmOfRegion(place.RegionId)).FirstOrDefault(realm => realm != eRealm.None);
+        return owner == eRealm.None || owner == asker ? null : owner;
+    }
+
+    /// <summary>
+    /// The honest answer about another realm's zone (2003 chat): its frontier is RvR land, its home zones can't be reached from
+    /// here. Pure but for the draw.
+    /// </summary>
+    public static string OtherRealmLine(string name, eRealm owner, bool frontier, Random random)
+    {
+        random ??= Random.Shared;
+        string place = (name ?? "that").Trim().ToLowerInvariant();
+        string side = owner switch { eRealm.Albion => "alb", eRealm.Midgard => "mid", eRealm.Hibernia => "hib", _ => "enemy" };
+        string realmName = owner switch { eRealm.Albion => "albion", eRealm.Midgard => "midgard", eRealm.Hibernia => "hibernia", _ => "their side" };
+        string[] lines = frontier
+            ? [$"{place}? thats {side} frontier, rvr only. bring a grp", $"{place} is {side} frontier, go with an rvr grp", $"thats {side} frontier lol, not a place to go alone"]
+            : [$"{place}? thats {side} land, cant get there from here", $"{place} is in {realmName}, we cant go there", $"thats {side} side, no way over from here"];
+        return lines[random.Next(lines.Length)];
+    }
+
+    /// <summary>
+    /// "is keltoi fogou far?", "how far is lyonesse", "how long to get to camelot hills" (and "is it far?" completed from the
+    /// conversation, ChatConversations.Resolve): a question about the distance or the trip, not about the place. Pure.
+    /// </summary>
+    public static bool AsksHowFar(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+        string t = " " + AutonomousChatQuestions.Normalize(text) + " ";
+        return System.Text.RegularExpressions.Regex.IsMatch(t,
+            @" (is (it|that|\w+( \w+){0,3}) (far|close|a long way|far from here|close to here)|how far|how long (to get|to run|does it take to get|does it take to run|is the run|of a run)|far from (here|camelot|jordheim|tir na nog)|a long run) ");
+    }
+
+    /// <summary>How far a trip is, in four steps (world units; a zone is 65,536 across, a minute's run about 11,000). Pure.</summary>
+    public enum Far { Here, Close, NotFar, Trip, LongWay, Unknown }
+
+    public static Far FarOf(bool alreadyThere, double? distance) =>
+        alreadyThere ? Far.Here
+        : distance is not { } d ? Far.Unknown
+        : d < 15_000 ? Far.Close
+        : d < 45_000 ? Far.NotFar
+        : d < 100_000 ? Far.Trip
+        : Far.LongWay;
+
+    /// <summary>
+    /// The answer to "is it far?" (PC check 2026-11-19, build 5154cae: "is it far?" about Keltoi Fogou drew the place's
+    /// description): roughly how far, and how to get there: the horse when a stable route really ends in that zone, else the
+    /// run; a dungeon's entrance zone. 2003 typing, true for the place. Pure but for the draw.
+    /// </summary>
+    public static string HowFarLine(string name, string area, Far far, bool horse, bool dungeon, Random random)
+    {
+        random ??= Random.Shared;
+        string n = (name ?? "it").Trim();
+        string a = string.IsNullOrWhiteSpace(area) ? n : area.Trim();
+        string there = dungeon ? $", {n} entrance is there" : "";
+        string[] lines = far switch
+        {
+            Far.Here => dungeon ? [$"close, the {n} entrance is right here in {a}", $"not far at all, ur in {a} already, entrance is here"]
+                : [$"ur in {a} already lol", $"not far, ur standing in it"],
+            Far.Close => dungeon ? [$"not far at all, entrance is in {a}", $"close, {n} entrance is right in {a}"]
+                : [$"not far, {a} is right there", $"close, just head into {a}"],
+            Far.NotFar => horse ? [$"not far, take the horse to {a}{there}", $"not too far, horse to {a} then a short run"]
+                : [$"not too far, run to {a}{there}", $"few min run, its in {a}"],
+            Far.Trip => horse ? [$"bit of a trip, horse to {a} then run{there}", $"kinda far, take the horse to {a}"]
+                : [$"bit of a run, its out in {a}{there}", $"kinda far, follow the road to {a}"],
+            Far.LongWay => horse ? [$"long way, horse to {a} and then run{there}", $"far, get a horse to {a}"]
+                : [$"long way, its way out in {a}{there}", $"far lol, its all the way out in {a}"],
+            _ => horse ? [$"take the horse to {a}{there}", $"horse to {a}, not bad from there"]
+                : [$"its in {a}, follow the road{there}", $"{a}, its a run but not bad"],
+        };
+        return lines[random.Next(lines.Length)];
+    }
+
+    /// <summary>
+    /// The live answer to a how-far question: where the place is (a dungeon by its entrance), how far that is from the asker
+    /// (in the same region, or from where the asker's region opens into it), and whether a horse route of the asker's realm ends
+    /// in that zone. Another realm's zone is told honestly (<see cref="OtherRealmLine"/>).
+    /// </summary>
+    private static bool TryAnswerHowFar(GamePlayer player, string query, out string answer)
+    {
+        answer = string.Empty;
+        if (player == null || !AsksHowFar(query))
+            return false;
+        eRealm realm = player.Realm;
+        KeyValuePair<string, Place[]> match = GetPlaces()
+            .Where(entry => entry.Key.Length >= 3 && ContainsPhrase(query, entry.Key))
+            .OrderByDescending(entry => entry.Key.Length)
+            .FirstOrDefault();
+        if (match.Value == null)
+            return false;
+        if (OtherRealmZone(realm, match.Key, match.Value.Select(place => (place.Name, place.RegionId, place.IsMonster))) is { } owner)
+        {
+            answer = OtherRealmLine(match.Value[0].Name, owner, AutonomousChatLiveAnswers.FrontierHome(match.Value[0].Name) == owner, Random.Shared);
+            return true;
+        }
+        Place place = match.Value.Where(entry => !entry.IsMonster && RegionIsAccessible(realm, entry.RegionId))
+            .GroupBy(entry => (entry.Area, entry.RegionId, entry.IsDungeon))
+            .OrderByDescending(group => group.Count())
+            .Select(group => group.First())
+            .FirstOrDefault();
+        if (place == null)
+            return false;
+        ushort regionId;
+        double x, y;
+        string area;
+        if (place.IsDungeon)
+        {
+            DbZonePoint entrance = DOLDB<DbZonePoint>.SelectObjects(DB.Column("TargetRegion").IsEqualTo(place.RegionId))
+                .Where(point => point.SourceRegion != 0 && point.SourceRegion != place.RegionId && (point.Realm == 0 || point.Realm == (ushort)realm))
+                .FirstOrDefault(point => RegionIsAccessible(realm, point.SourceRegion));
+            Region source = entrance == null ? null : WorldMgr.GetRegion(entrance.SourceRegion);
+            area = source?.GetZone(entrance.SourceX, entrance.SourceY)?.Description;
+            if (entrance == null || string.IsNullOrWhiteSpace(area))
+                return false;
+            (regionId, x, y) = (entrance.SourceRegion, entrance.SourceX, entrance.SourceY);
+        }
+        else
+        {
+            Region region = WorldMgr.GetRegion(place.RegionId);
+            Zone zone = region?.Zones.FirstOrDefault(z => z != null && string.Equals(z.Description, place.Name, StringComparison.OrdinalIgnoreCase));
+            if (zone == null)
+                return false;
+            (regionId, x, y, area) = (place.RegionId, zone.XOffset + zone.Width / 2.0, zone.YOffset + zone.Height / 2.0, zone.Description);
+        }
+        bool alreadyThere = string.Equals(player.CurrentZone?.Description, area, StringComparison.OrdinalIgnoreCase);
+        double? distance = null;
+        if (player.CurrentRegionID == regionId)
+            distance = Math.Sqrt(Math.Pow(player.X - x, 2) + Math.Pow(player.Y - y, 2));
+        else if (DOLDB<DbZonePoint>.SelectObjects(DB.Column("SourceRegion").IsEqualTo(player.CurrentRegionID))
+                     .FirstOrDefault(point => point.TargetRegion == regionId) is { } exit)
+            // From a capital or a dungeon: from where its door opens into that region.
+            distance = Math.Sqrt(Math.Pow(exit.TargetX - x, 2) + Math.Pow(exit.TargetY - y, 2));
+        bool horse = StableRoutes(realm).Any(route => string.Equals(route.EndpointArea, area, StringComparison.OrdinalIgnoreCase) ||
+                                                     string.Equals(route.Destination, area, StringComparison.OrdinalIgnoreCase));
+        answer = HowFarLine(place.Name, area, FarOf(alreadyThere, distance), horse, place.IsDungeon, Random.Shared);
         return true;
     }
 
@@ -725,8 +898,10 @@ public static class AutonomousChatKnowledge
             return false;
         string capital = realm switch { eRealm.Midgard => "jordheim", eRealm.Hibernia => "tir na nog", _ => "camelot" };
         answer = crafter != null
-            ? Pick($"realm exchange in {capital}, or get a {crafter} to make you one", $"check the exchange in {capital}. a {crafter} can make one too",
-                $"a {crafter} can make it, or look on the realm exchange in {capital}")
+            // PC check 2026-11-19 (build 5154cae): "a armorcrafter can make it" -> "an armorcrafter".
+            ? Pick($"realm exchange in {capital}, or get {AutonomousBotVoiceCorpus.AOrAn(crafter)} {crafter} to make you one",
+                $"check the exchange in {capital}. {AutonomousBotVoiceCorpus.AOrAn(crafter)} {crafter} can make one too",
+                $"{AutonomousBotVoiceCorpus.AOrAn(crafter)} {crafter} can make it, or look on the realm exchange in {capital}")
             : jewelry
                 ? Pick($"mostly drops, but check the realm exchange in {capital}", $"exchange in {capital} sometimes has some, otherwise drops")
                 : Pick($"realm exchange in {capital}, or a crafter", $"check the exchange in {capital}, crafters too");

@@ -1230,8 +1230,12 @@ public static class AutonomousTales
                 GameBot mate = player.Group?.GetMembersInTheGroup().OfType<GameBot>()
                     .Where(bot => AutonomousLivingServer.CanTalk(bot) && bot.Realm == realm && bot.CurrentRegionID == player.CurrentRegionID)
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
-                GameBot near = mate ?? player.GetNPCsInRadius(1_000).OfType<GameBot>()
-                    .Where(bot => AutonomousLivingServer.CanTalk(bot) && bot.Realm == realm && !IsTelling(bot.DatabaseID))
+                // PC check 2026-11-19 (build 5154cae): LORE_PLACED named a bot 1,000 units off (past /say's 512), so nothing was
+                // heard. A /say remark comes from a bot the player hears: same region, within say range, not in an RvR party.
+                GameBot near = mate ?? player.GetNPCsInRadius(WorldMgr.SAY_DISTANCE).OfType<GameBot>()
+                    .Where(bot => AutonomousLivingServer.CanTalk(bot) && bot.Realm == realm && !IsTelling(bot.DatabaseID) &&
+                                  LoreChat.HearsPlacedLore(bot.CurrentRegionID == player.CurrentRegionID, bot.GetDistanceTo(player),
+                                      AutonomousLivingServer.InRvrParty(bot)))
                     .OrderBy(_ => Random.Shared.Next()).FirstOrDefault();
                 if (near == null)
                     continue;

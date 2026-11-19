@@ -712,7 +712,8 @@ public static class AutonomousBotVoices
         if (string.IsNullOrEmpty(text) || voice == null)
             return text;
         var values = new List<string>();
-        string masked = text;
+        // PC check 2026-11-19 (build 5154cae): "a armorcrafter" from a line built in code; the article is put right first.
+        string masked = VC.FixArticles(text);
         foreach (string word in (protect ?? []).Where(word => !string.IsNullOrWhiteSpace(word)).Distinct().OrderByDescending(word => word.Length))
         {
             if (values.Count > 200 || masked.IndexOf(word, StringComparison.Ordinal) < 0)
@@ -737,7 +738,7 @@ public static class AutonomousBotVoices
         if (bot == null || string.IsNullOrEmpty(text))
             return text;
         if (!Enabled || VC.IsFunctional(text))
-            return AutonomousChatIdiolect.Apply(text, bot.DatabaseID, false, random, terse: true);
+            return AutonomousChatIdiolect.Apply(VC.FixArticles(text), bot.DatabaseID, false, random, terse: true);
         return StyleText(Corpus.VoiceFor(bot.DatabaseID), bot.DatabaseID, text, random);
     }
 
