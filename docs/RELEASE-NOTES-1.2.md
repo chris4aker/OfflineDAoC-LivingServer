@@ -8,8 +8,6 @@ Before publishing:
 - **Files table:** the Setup row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only
   that text with the exe's SHA-256. The zip row must keep exactly `(zip SHA-256: filled in by hand at publish)`:
   `publish_release.py notes` replaces it with the zip's SHA-256. Both rows name the build (`1.2`); the tag is `v1.2`.
-- **The `<!-- AA537CE -->` marker** in "Tests only" is where the result of the last candidate (`aa537ce`) on the owner's
-  PC goes, as one line. GitHub doesn't show the marker.
 
 Nothing here names the Easter eggs or the project's internal vocabulary.
 
@@ -339,7 +337,7 @@ build.**
 - Every raid fix after `9a173f4` (Roesia's cure, Suttung's pulls, Steinvor's pillar, Curengkur, Hibernia's dragon hub).
 - Updating a 1.1.4 game through Setup, a new install from Setup, and a class-off (0.37) world, on the owner's PC (CI runs
   them).
-<!-- AA537CE -->
+- **`aa537ce` on the owner's PC (16:14 to 16:46):** a clean start in 13 s, no errors after startup and no stall of 2 s or more; the rally delay alarm fired 5 times in 32 minutes (50 in 40 minutes on `43c43aa`), and two bots that had no route to their keep restarted from the frontier drop (`RVR_KEEP_ROUTE_RESTART`). Keep captures on this build: not seen yet.
 - **Automated:** the full server suite on integration `631ba1f`: 9,200 passed, 0 failed, 2 skipped. CI's build-and-test
   on the candidate `aa537ce` (`631ba1f` merged into main): 9,109 server tests passed, 0 failed; the other 65 read an
   installed game's files and run only on a PC with the game. The rest of that CI run passed.
