@@ -1712,6 +1712,35 @@ public static partial class AutonomousBotGroupCoordinator
     /// <summary>The time one group formation pass may spend once it has tried a leader.</summary>
     public const long FormationPassBudgetMilliseconds = 150;
 
+    /// <summary>
+    /// Past this much of a formation pass, a party's rendezvous checks stop between members and the party is formed on a
+    /// later pass instead (its members stay free; the zone steps already proven are remembered, AutonomousZoneItinerary).
+    /// Owner's PC, build 9a173f4, 2026-11-19 (sweep 7c): Tuscaran Glacier (04:07:08) and Evern (04:07:31) ended 23 s apart
+    /// and released about 150 raiders; the next PvE formation pass held the coordinator lock 2,817 ms
+    /// (AI_PROFILE_BUDGET over=pulse.try_form_groups:2817.3) and the server stalled 3,040 ms at 04:07:46. The pass budget
+    /// is checked only between leaders, and one party's rendezvous proves a zone itinerary for each of its members.
+    /// Timing only: the same parties form, a pass or a few later.
+    /// </summary>
+    public const long FormationPassHardCapMilliseconds = 2 * FormationPassBudgetMilliseconds;
+
+    /// <summary>A party's rendezvous checks stop now and go on in a later pass (pure).</summary>
+    public static bool DefersRendezvous(long passElapsedMilliseconds, long capMilliseconds) =>
+        capMilliseconds > 0 && passElapsedMilliseconds >= capMilliseconds;
+
+    // Set by a formation pass around its NewSession calls only (one thread: the coordinator's lock is held).
+    [ThreadStatic] private static System.Diagnostics.Stopwatch _formationPassClock;
+    [ThreadStatic] private static bool _rendezvousDeferred;
+
+    /// <summary>The formation pass asks for no more rendezvous checks this pass.</summary>
+    private static bool RendezvousOverBudget()
+    {
+        if (_rendezvousDeferred) return true;
+        if (_formationPassClock == null || !DefersRendezvous(_formationPassClock.ElapsedMilliseconds, FormationPassHardCapMilliseconds))
+            return false;
+        _rendezvousDeferred = true;
+        return true;
+    }
+
     /// <summary>Whether a formation pass has spent its budget: at least one leader tried and the budget used. Pure.</summary>
     public static bool FormationPassSpent(int leadersTried, long elapsedMilliseconds) =>
         leadersTried > 0 && elapsedMilliseconds >= FormationPassBudgetMilliseconds;
@@ -1928,7 +1957,22 @@ public static partial class AutonomousBotGroupCoordinator
             }
 
             rendezvousChecks++;
-            Session session = NewSession(group, leader, rolledSize, objectiveKind);
+            Session session;
+            _formationPassClock = passClock;
+            _rendezvousDeferred = false;
+            try { session = NewSession(group, leader, rolledSize, objectiveKind); }
+            finally { _formationPassClock = null; }
+            if (session == null && _rendezvousDeferred)
+            {
+                // Sweep 7c: the pass spent its time; the party forms on a later pass and its members stay free meanwhile.
+                _rendezvousDeferred = false;
+                GameBot[] deferred = BotMembers(group);
+                group.DisbandGroup();
+                Log.Info($"AUTONOMOUS_GROUP_FORMATION_DEFERRED realm={GlobalConstants.RealmToName(leader.Realm)} objective={objectiveKind} " +
+                         $"leader={leader.Name} size={deferred.Length} passMs={passClock.ElapsedMilliseconds} " +
+                         $"reason=\"the formation pass spent {FormationPassHardCapMilliseconds} ms; the rendezvous checks go on in a later pass\"");
+                break;
+            }
             if (session == null)
             {
                 GameBot[] unmatched = BotMembers(group);
@@ -2782,6 +2826,8 @@ public static partial class AutonomousBotGroupCoordinator
             bool tight = zone?.IsDungeon == true;
             foreach (GameBot member in members)
             {
+                // Sweep 7c: past the formation pass's hard cap the checks go on in a later pass.
+                if (RendezvousOverBudget()) return false;
                 Vector3 desired = DesiredFormationPoint(member, chosen, tight);
                 if (!AutonomousRendezvousNavigation.TryResolveFormationSlot(nav, zone, chosen, desired, out Vector3 slot))
                     return false;

@@ -50,13 +50,20 @@ namespace DOL.GS
 
         /// <summary>Whom a single cure goes to (pure; an index into <paramref name="dotted"/>, -1: nobody): the own party's
         /// lowest, else one of the others by the curer's id, so that the raid's curers spread.</summary>
-        public static int Choose(IReadOnlyList<Dotted> dotted, long curerId)
+        public static int Choose(IReadOnlyList<Dotted> dotted, long curerId) => Choose(dotted, curerId, null);
+
+        /// <summary>As <see cref="Choose(IReadOnlyList{Dotted}, long)"/>, leaving out every raider another curer has claimed
+        /// for a single cure (<paramref name="claimed"/>: RaidCureClaims, sweep 7c H-1); -1 when all are claimed. With two
+        /// dotted raiders of other parties and twelve curers, six cast on each in the same moment; now one does.</summary>
+        public static int Choose(IReadOnlyList<Dotted> dotted, long curerId, Func<long, bool> claimed)
         {
             if (dotted == null || dotted.Count == 0) return -1;
-            int own = Enumerable.Range(0, dotted.Count).Where(i => dotted[i].OwnParty)
+            int[] open = Enumerable.Range(0, dotted.Count).Where(i => claimed?.Invoke(dotted[i].Id) != true).ToArray();
+            if (open.Length == 0) return -1;
+            int own = open.Where(i => dotted[i].OwnParty)
                 .OrderBy(i => dotted[i].HealthPercent).ThenBy(i => dotted[i].Id).DefaultIfEmpty(-1).First();
             if (own >= 0) return own;
-            int[] others = Enumerable.Range(0, dotted.Count).OrderBy(i => dotted[i].Id).ToArray();
+            int[] others = open.OrderBy(i => dotted[i].Id).ToArray();
             return others[(int)(Math.Abs(curerId) % others.Length)];
         }
 
@@ -66,7 +73,7 @@ namespace DOL.GS
         /// is over. <paramref name="partyInDanger"/>: its own party's members in reach under <see cref="DangerPercent"/>%.
         /// </summary>
         public static (Cure Cure, int Target) Decide(bool inRaid, bool cureReady, bool canGroup, bool canSingle,
-            IReadOnlyList<Dotted> dotted, int partyInDanger, bool markedPatient, long curerId)
+            IReadOnlyList<Dotted> dotted, int partyInDanger, bool markedPatient, long curerId, Func<long, bool> claimed = null)
         {
             int count = dotted?.Count ?? 0;
             if (!cureReady || !CuresFirst(inRaid, count, partyInDanger, markedPatient)) return (Cure.None, -1);
@@ -76,7 +83,9 @@ namespace DOL.GS
             if (cure == Cure.Group)
                 return (cure, Enumerable.Range(0, count).Where(i => dotted[i].OwnParty)
                     .OrderBy(i => dotted[i].HealthPercent).ThenBy(i => dotted[i].Id).First());
-            return (cure, Choose(dotted, curerId));
+            // A single cure skips a raider another curer is already curing (the group cure is the curer's own party's).
+            int pick = Choose(dotted, curerId, claimed);
+            return pick < 0 ? (Cure.None, -1) : (cure, pick);
         }
     }
 }

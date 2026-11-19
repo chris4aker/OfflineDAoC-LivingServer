@@ -126,6 +126,8 @@ namespace DOL.GS
             public Vector3[] OutboundSeams = [];
             public readonly List<GameBot[]> ForcedParties = new();
             public readonly Dictionary<int, Vector3> StagingPosts = new();
+            /// <summary>Staging posts no route from the hub reached (sweep 7c, C-1): no slot takes one again.</summary>
+            public readonly List<Vector3> RejectedStaging = new();
             /// <summary>An open-world boss's neighbours no staging post stands near (AutonomousRealmRaid.RingMonsters).</summary>
             public RealmRaidTetherReach.RingMonster[] RingMonsters;
             /// <summary>Formation slots with no staging or hub post (tight ground by the entrance); skipped from then on.</summary>
@@ -933,12 +935,20 @@ namespace DOL.GS
                             (ushort)(stagingZone?.ID ?? 0), 0, 0, destination);
                     }
                     bool posted = TryHubPost(candidate, 0, out var origin);
-                    if (!staged || !posted || !RealmRaidMuster.TryRoute(WorldMgr.GetRegion(candidate.Hub.Region), PathfindingProvider.Instance, realm,
-                            origin, destination, out candidate.OutboundSeams, candidate.Hub.Via))
+                    bool routed = staged && posted && RealmRaidMuster.TryRoute(WorldMgr.GetRegion(candidate.Hub.Region), PathfindingProvider.Instance,
+                        realm, origin, destination, out candidate.OutboundSeams, candidate.Hub.Via);
+                    // C-1 (sweep 7c): a dragon's or open-world boss's first post the hub's route doesn't reach: the next posts.
+                    if (staged && posted && !routed && !definition.IsDungeon && !playtestAtStaging)
+                        routed = TryRerouteStaging(candidate, realm, origin, ref destination);
+                    if (!routed)
                     {
                         reason = StartUnavailableReason(staged, posted);
                         Log.Warn($"REALM_RAID_START_UNAVAILABLE event={id} hub=\"{hub.Name}\" staging={staged} hubPost={posted} " +
                                  $"entrance={candidate.DungeonRoute?.Entrance?.Id} route=\"{(staged && posted ? RealmRaidMuster.LastRouteFailure : "not tried")}\"");
+                        // Sweep 7c: which check refused every muster post at the hub (dragon-hibernia, Innis Carthaig, twice).
+                        if (staged && !posted)
+                            Log.Warn($"REALM_RAID_HUB_POST_REJECTED event={id} hub=\"{hub.Name}\" at={(int)hub.Center.X},{(int)hub.Center.Y},{(int)hub.Center.Z} " +
+                                     $"{LastHubPostFailure ?? "rejectedBy=unknown"}");
                         continue;
                     }
                     raid = candidate;
@@ -1123,6 +1133,55 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>The other staging posts a raid's start tries when the hub's route reaches no corridor to its first one.</summary>
+        public const int StagingRouteRetries = 7;
+
+        /// <summary>
+        /// The staging slots a raid's start tries, in order, after the first post's route failed (pure): slots 1 to
+        /// <see cref="StagingRouteRetries"/>, only when the route stopped inside the staging zone (a seam failure is the
+        /// same for every post of the ring).
+        /// </summary>
+        public static IEnumerable<int> RerouteSlots(string routeFailure) =>
+            routeFailure != null && routeFailure.Contains("to the staging post") ? Enumerable.Range(1, StagingRouteRetries) : [];
+
+        /// <summary>
+        /// Owner's PC, build 9a173f4, 2026-11-19 (sweep 7c, C-1): Curengkur's raid has never started. At 04:32:18 the first
+        /// post (381686,172803,4074, 5,634 out) walked to him (RealmRaidStaging.TryDragonPost), but the hub's route found
+        /// "no corridor inside zone 187 to the staging post". On the PC's zone187.nav (UT_CurengkurEntryProbe) that post has
+        /// no corridor from any of 16 points of the zone 185/187 seam, while slots 1, 3, 4, 6 and 7 have one from some. Now
+        /// the start tries the next posts (<see cref="RerouteSlots"/>); the first one the route reaches becomes the raid's
+        /// first post, and the rejected ones are never taken by another slot. Curengkur and his ring are unchanged.
+        /// </summary>
+        private static bool TryRerouteStaging(Raid raid, eRealm realm, Vector3 origin, ref Vector3 destination)
+        {
+            string first = RealmRaidMuster.LastRouteFailure;
+            Region region = WorldMgr.GetRegion(raid.Hub.Region);
+            Vector3 failed = destination;
+            raid.RejectedStaging.Add(failed);
+            int tried = 0;
+            foreach (int slot in RerouteSlots(first))
+            {
+                if (!TryStaging(raid, slot, out Vector3 other)) continue;
+                tried++;
+                if (RealmRaidMuster.TryRoute(region, PathfindingProvider.Instance, realm, origin, other, out raid.OutboundSeams, raid.Hub.Via))
+                {
+                    raid.StagingPosts.Clear();
+                    raid.StagingPosts[0] = other;
+                    destination = other;
+                    Log.Warn($"REALM_RAID_STAGING_REROUTED event={raid.Definition.Id} hub=\"{raid.Hub.Name}\" slot={slot} tried={tried} " +
+                             $"from={(int)failed.X},{(int)failed.Y},{(int)failed.Z} to={(int)other.X},{(int)other.Y},{(int)other.Z} " +
+                             $"rejected={raid.RejectedStaging.Count} reason=\"{first}; the next staging post the hub's route reaches is the raid's first\"");
+                    return true;
+                }
+                raid.RejectedStaging.Add(other);
+                raid.StagingPosts.Remove(slot);
+            }
+            raid.StagingPosts.Clear();
+            raid.StagingPosts[0] = failed;
+            RealmRaidMuster.LastRouteFailure = tried == 0 ? first : $"{first} (and to {tried} other staging posts)";
+            return false;
+        }
+
         /// <summary>
         /// Why a raid could not start at a hub (pure). Owner's PC, 2026-11-16: Curengkur's raid failed with "No complete connected
         /// hub-to-encounter route was found" while the route was never tried (staging=False): no staging post round the
@@ -1259,20 +1318,37 @@ namespace DOL.GS
         private static string PartyCapRefusal(Raid raid, bool specialForces, int joining, int recruitCap = RealmRaidRecruitmentPolicy.MaximumBots) =>
             RealmRaidRecruitmentPolicy.PartyCapRefusal(specialForces, RealmParties(raid), RealmBots(raid), SpecialForcesParties(raid), joining, recruitCap);
 
+        /// <summary>Why the last failed <see cref="TryHubPost"/> on this thread failed (sweep 7c: the start log names the check).</summary>
+        [ThreadStatic] private static string LastHubPostFailure;
+
         private static bool TryHubPost(Raid raid, int slot, out Vector3 post)
         {
             if (raid.HubPosts.TryGetValue(slot, out post)) return true;
+            LastHubPostFailure = null;
             var hub = raid.Hub;
             var region = WorldMgr.GetRegion(hub.Region);
             var zone = region?.GetZone((int)hub.Center.X, (int)hub.Center.Y);
             // Cached once per party, not a scan on each bot's AI turn.
             var nearby = region?.Objects.OfType<GameNPC>().Where(n => n is not GameBot && n.IsAlive &&
                 Vector3.DistanceSquared(new(n.X,n.Y,n.Z),hub.Center) < 3000*3000).ToArray() ?? [];
-            bool Safe(Vector3 p) => !nearby.Any(n =>
-                Vector3.DistanceSquared(new(n.X,n.Y,n.Z),p) <
-                (n.Realm == eRealm.None && n.Brain is StandardMobBrain { AggroLevel: > 0 } ? 750*750 : 100*100));
+            // The monsters and NPCs that refused posts, for the start log (sweep 7c).
+            var blockers = new Dictionary<string, int>();
+            bool Safe(Vector3 p)
+            {
+                GameNPC by = nearby.FirstOrDefault(n =>
+                    Vector3.DistanceSquared(new(n.X,n.Y,n.Z),p) <
+                    (n.Realm == eRealm.None && n.Brain is StandardMobBrain { AggroLevel: > 0 } ? 750*750 : 100*100));
+                if (by == null) return true;
+                blockers[by.Name] = blockers.GetValueOrDefault(by.Name) + 1;
+                return false;
+            }
             if (!RealmRaidMuster.TryPost(PathfindingProvider.Instance, zone, hub, slot,
-                raid.HubPosts.Values.ToArray(), out post, Safe)) return false;
+                raid.HubPosts.Values.ToArray(), out post, Safe))
+            {
+                LastHubPostFailure = $"slot={slot} {RealmRaidMuster.LastPostRejections} nearby={nearby.Length} " +
+                    $"unsafeBy=\"{string.Join(",", blockers.OrderByDescending(b => b.Value).Take(5).Select(b => $"{b.Key}:{b.Value}"))}\"";
+                return false;
+            }
             raid.HubPosts[slot] = post;
             return true;
         }
@@ -1643,7 +1719,7 @@ namespace DOL.GS
                 inner > RealmRaidTetherReach.DefaultStagingInner)
             {
                 raid.RingMonsters ??= RingMonsters(region, raid.Boss, centre, inner + 3_000);
-                if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, raid.StagingPosts.Values.ToArray(), out staging, inner,
+                if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, [.. raid.StagingPosts.Values, .. raid.RejectedStaging], out staging, inner,
                         p => RealmRaidTetherReach.ClearOfMonsters(p, raid.RingMonsters)))
                 {
                     raid.StagingPosts[slot] = staging;
@@ -1656,7 +1732,7 @@ namespace DOL.GS
                 Log.Info($"REALM_RAID_STAGING_IN_REACH event={raid.Definition.Id} boss=\"{raid.Boss.Name}\" slot={slot} inner={(int)inner} " +
                          $"reason=\"no post out of the boss's reach; the 3,600 ring is used for this slot\"");
             }
-            if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, raid.StagingPosts.Values.ToArray(), out staging))
+            if (RealmRaidStaging.TryDragonPost(nav, zone, centre, slot, [.. raid.StagingPosts.Values, .. raid.RejectedStaging], out staging))
             {
                 raid.StagingPosts[slot] = staging;
                 return true;

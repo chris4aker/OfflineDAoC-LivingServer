@@ -126,9 +126,50 @@ public static class RealmRaidMuster
         new("openworld-hibernia-mollunero", "Dalniver's service settlement (World's End)", 181, 185, 42, 28, new(368881,263409,3472))
     ];
 
-    /// <summary>The hub's centre has a walk to <paramref name="post"/> (a post above a drop may be reached only one way).</summary>
+    /// <summary>The hub's centre has a walk to <paramref name="post"/> (a post above a drop may be reached only one way).
+    /// <paramref name="center"/> is the walk's start: pass <see cref="HubFloor"/>.</summary>
     public static bool HubReachesPost(IPathfindingMgr nav, Zone zone, Vector3 center, Vector3 post) =>
         AutonomousZonePointApproach.TryResolve(nav, zone, center, post, 160, out _);
+
+    /// <summary>How far round a hub's centre its walkable floor is looked for when the centre itself is off the mesh.</summary>
+    public const float HubFloorReach = 160f;
+
+    /// <summary>
+    /// Where the walks from a hub's centre start (<see cref="HubReachesPost"/>): its own floor
+    /// (AutonomousNavigationSurface.TryPlanningFloor: within 2 across), else the nearest walkable floor within
+    /// <see cref="HubFloorReach"/> that leads on (TryNearestWalkableFloor), else the centre (and every walk from it fails, as
+    /// before). The centres are service NPCs' spots, and an NPC can stand on a prop or by a wall where the mesh has no
+    /// floor right under it; the walk from the centre (#224, 2026-11-14) then failed for every post.
+    /// Owner's PC, build 9a173f4 (sweep 7c): dragon-hibernia "No muster post could be placed at the hub" at Innis Carthaig
+    /// on both tries (22:26:23 and 04:07:42), staging=True; no start of it is logged since #224. Inference: zone204.nav is
+    /// not in this repository, so which check refused the posts is logged now (<see cref="LastPostRejections"/>).
+    /// </summary>
+    public static Vector3 HubFloor(IPathfindingMgr nav, Zone zone, Vector3 center, out string how)
+    {
+        how = "none";
+        if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return center;
+        if (AutonomousNavigationSurface.TryPlanningFloor(nav, zone, center, out Vector3 floor)) { how = "centre"; return floor; }
+        if (AutonomousNavigationSurface.TryNearestWalkableFloor(nav, zone, center, HubFloorReach, out Vector3 near)) { how = "nearest"; return near; }
+        return center;
+    }
+
+    /// <summary>The checks a hub's muster post can fail (<see cref="TryPost"/>), in the order they run.</summary>
+    public enum PostCheck { NoFloor, Height, Spacing, Unsafe, NoExit, NoWalkToHub, NoWalkFromHub, NoPartySpace }
+
+    /// <summary>Why the last failed <see cref="TryPost"/> on this thread failed: every check's count of refused candidates
+    /// and the check that refused most (for the start log; sweep 7c).</summary>
+    [ThreadStatic] public static string LastPostRejections;
+
+    /// <summary>The rejection counts as a log value (pure): "rejectedBy=&lt;check&gt; NoFloor=3,Height=0,...".</summary>
+    public static string PostRejectionText(IReadOnlyList<int> counts, string hubFloor = null)
+    {
+        var names = Enum.GetValues<PostCheck>();
+        int top = -1;
+        for (int i = 0; i < names.Length && i < counts.Count; i++)
+            if (counts[i] > 0 && (top < 0 || counts[i] > counts[top])) top = i;
+        string list = string.Join(",", names.Select((n, i) => $"{n}={(i < counts.Count ? counts[i] : 0)}"));
+        return $"rejectedBy={(top < 0 ? "none" : names[top].ToString())} {list}" + (hubFloor != null ? $" hubFloor={hubFloor}" : "");
+    }
 
     /// <summary>Where a raider of a raid without a staging post releases at its hub (pure): its party's post, else the
     /// hub's centre.</summary>
@@ -141,7 +182,16 @@ public static class RealmRaidMuster
         IReadOnlyCollection<Vector3> occupied, out Vector3 post, Func<Vector3, bool> safe = null)
     {
         post = default;
-        if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone) || slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots) return false;
+        LastPostRejections = null;
+        if (nav == null || zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone) || slot < 0 || slot >= RealmRaidRecruitmentPolicy.FormationSlots)
+        {
+            LastPostRejections = "rejectedBy=NoNavmesh";
+            return false;
+        }
+        // The walks from the hub start on its floor (HubFloor; sweep 7c).
+        Vector3 hubFloor = HubFloor(nav, zone, hub.Center, out string hubFloorHow);
+        int[] rejected = new int[Enum.GetValues<PostCheck>().Length];
+        bool Refused(PostCheck check) { rejected[(int)check]++; return true; }
         // 38 parties need 38 posts. Border-keep hubs among now-walled mountains (Svasud Faste,
         // Druim Cain) fit only ~20 within 2,250 units, so musters stalled below 200 (2026-10-06).
         for (int attempt = 0; attempt < MusterPostAttempts; attempt++)
@@ -150,20 +200,22 @@ public static class RealmRaidMuster
             float radius = 450 + attempt % 16 * 220;
             var raw = hub.Center + new Vector3((float)Math.Cos(angle)*radius, (float)Math.Sin(angle)*radius, 0);
             var floor = nav.GetClosestPoint(zone, raw, 64, 64, 512, nav.DefaultFilters);
-            if (!floor.HasValue || Math.Abs(floor.Value.Z-hub.Center.Z) > 512 ||
-                occupied.Any(p => Vector3.DistanceSquared(p,floor.Value) < MusterPostSpacing*MusterPostSpacing) ||
-                safe?.Invoke(floor.Value) == false ||
-                !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) ||
-                !AutonomousZonePointApproach.TryResolve(nav, zone, floor.Value, hub.Center, 160, out _) ||
+            if (!floor.HasValue && Refused(PostCheck.NoFloor) ||
+                Math.Abs(floor.Value.Z-hub.Center.Z) > 512 && Refused(PostCheck.Height) ||
+                occupied.Any(p => Vector3.DistanceSquared(p,floor.Value) < MusterPostSpacing*MusterPostSpacing) && Refused(PostCheck.Spacing) ||
+                safe?.Invoke(floor.Value) == false && Refused(PostCheck.Unsafe) ||
+                !AutonomousRendezvousNavigation.HasLocalExit(nav, zone, floor.Value) && Refused(PostCheck.NoExit) ||
+                !AutonomousZonePointApproach.TryResolve(nav, zone, floor.Value, hub.Center, 160, out _) && Refused(PostCheck.NoWalkToHub) ||
                 // ...and from the hub's centre to the post, where the members arrive (the play test's move, the Special
                 // Forces, a release to the hub). Owner's PC, 2026-11-14 (build e3b8238), Snowdonia Station: 12 of 64 raiders
                 // failed "member-to-formation navmesh corridor is disconnected" three times each, some 100-340 from the
                 // centre 523562,408847 (REALM_RAID_HUB_ROUTE_FAILED/RELEASED); a post was only proven to lead down to it.
-                !HubReachesPost(nav, zone, hub.Center, floor.Value) ||
-                !RealmRaidStaging.HasOpenPartySpace(nav, zone, floor.Value)) continue;
+                !HubReachesPost(nav, zone, hubFloor, floor.Value) && Refused(PostCheck.NoWalkFromHub) ||
+                !RealmRaidStaging.HasOpenPartySpace(nav, zone, floor.Value) && Refused(PostCheck.NoPartySpace)) continue;
             post = floor.Value;
             return true;
         }
+        LastPostRejections = PostRejectionText(rejected, $"{(int)hubFloor.X},{(int)hubFloor.Y},{(int)hubFloor.Z}({hubFloorHow})");
         return false;
     }
 }

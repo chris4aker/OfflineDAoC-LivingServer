@@ -264,7 +264,7 @@ namespace DOL.AI.Brain
                         PlayerZ = RandomTarget.Z;
                         SpawnEffectMob();
                         BroadcastMessage(String.Format(Body.Name + " says, '" + RandomTarget.Name +" you are not going anywhere'"));
-                        new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(EffectTimer), 8000);
+                        new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(EffectTimer), EffectMob.LifetimeMilliseconds);
                     }
                 }
             }
@@ -670,8 +670,25 @@ namespace DOL.GS
             if (success)
             {
                 new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(Show_Effect), 3000);
+                // Offline DAoC 1.2 (sweep 7c, P-1): the pillar leaves on its own timer too. Steinvor's EffectTimer removed it
+                // only while he lived, so a pillar raised just before his death stood for good (owner's PC, build 9a173f4,
+                // 2026-11-19: his last pillar at 02:25:54, his death at 02:26:00, and 73 raiders stepped out of it until 03:48).
+                // Same moment as his own removal; its one Pillar of Frost (3.5 s in) is unchanged.
+                new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(Expire), LifetimeMilliseconds);
             }
             return success;
+        }
+
+        /// <summary>How long a Pillar of Ice stands: Steinvor's EffectTimer removes it this long after he raises it, and the
+        /// pillar's own timer removes it then whether he lives or not.</summary>
+        public const int LifetimeMilliseconds = 8000;
+
+        /// <summary>The pillar leaves the world (its own timer; Steinvor's state does not matter). Nothing when it already left.</summary>
+        public int Expire(ECSGameTimer timer)
+        {
+            if (ObjectState == eObjectState.Active)
+                RemoveFromWorld();
+            return 0;
         }
 
         private Spell m_Icelord_Gtaoe;

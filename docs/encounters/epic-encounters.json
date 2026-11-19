@@ -211,7 +211,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordAgmundr.cs": "b61905e087baeca0d1c6e197b64d4f776f3d5363543839c02eb3feb39b5d3f92",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordHakr.cs": "6829e6e27f2c56d57f5ecc4231ad540d061dcee0284412c4b33b8da5d43b85d5",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "6f0d544f2f611c9a225433005f35aab26e3eec05e2d00f71576b9c5cfd9b3037",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "bf67dd0e576725fd5b940929146fef8385fcf000a27b6ded2fcb1b3639fbdaeb",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "1cdc6e4e909d849e8f375cface245c3da49aa49683181429de911c23889561d7",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764",
@@ -691,7 +691,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 567
+   "line": 569
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +703,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 568
+   "line": 570
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +715,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 569
+   "line": 571
   },
   {
    "id": "epic-albion",
@@ -727,7 +727,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 570
+   "line": 572
   },
   {
    "id": "epic-midgard",
@@ -740,7 +740,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 571
+   "line": 573
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +752,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 572
+   "line": 574
   },
   {
    "id": "summoners-albion",
@@ -764,7 +764,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 573
+   "line": 575
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 574
+   "line": 576
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 575
+   "line": 577
   },
   {
    "id": "darkness-albion",
@@ -800,7 +800,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 576
+   "line": 578
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 577
+   "line": 579
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 578
+   "line": 580
   },
   {
    "id": "openworld-albion-greenknight",
@@ -836,7 +836,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 2848
+   "line": 2924
   },
   {
    "id": "openworld-albion-coliath",
@@ -848,7 +848,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 2850
+   "line": 2926
   },
   {
    "id": "openworld-albion-emthoro",
@@ -860,7 +860,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 2852
+   "line": 2928
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -872,7 +872,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 2855
+   "line": 2931
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -884,7 +884,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 2857
+   "line": 2933
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 2859
+   "line": 2935
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 2861
+   "line": 2937
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 2863
+   "line": 2939
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 2865
+   "line": 2941
   },
   {
    "id": "openworld-midgard-revenant",
@@ -944,7 +944,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 2867
+   "line": 2943
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -956,7 +956,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 2869
+   "line": 2945
   },
   {
    "id": "openworld-hibernia-evern",
@@ -968,7 +968,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 2872
+   "line": 2948
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -980,7 +980,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 2874
+   "line": 2950
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -992,7 +992,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 2876
+   "line": 2952
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 2878
+   "line": 2954
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 2880
+   "line": 2956
   }
  ],
  "neutralObjectives": {
@@ -33538,7 +33538,7 @@
      "value": null,
      "target": "AREA",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs",
-     "line": 684,
+     "line": 701,
      "sourceClass": "EffectMob"
     }
    ],
@@ -33559,7 +33559,7 @@
     }
    ],
    "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
-   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed.",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Its adds (upstream's \"death-spawned adds\") leave the world 3 minutes after they spawn if by then they neither fight nor hold aggro, checked again every 30 s while they still fight; adds left alive after the fight no longer stand there. The hrimthursa seers' walk into the room uses PathTo instead of WalkTo, and the walked-in flag is per seer instead of one static flag for all (OpenDAoC-Core 12872751a); same spot, same speed. Sweep 7c (P-1, tests only): a Pillar of Ice (EffectMob) now leaves the world on its own timer 8 s after it is raised, whether Steinvor lives or not; before, only his EffectTimer removed it and only while he was alive, so a pillar raised just before his death stood for good (owner's PC, build 9a173f4, 2026-11-19: 73 raiders stepped out of it until 03:48). While he lives it is removed at the same moment as before, and its one Pillar of Frost (3.5 s in) is unchanged; he is not changed.",
    "aiTactics": {
     "hazards": [
      "EffectMob"
