@@ -326,7 +326,10 @@ something short that fits, or nothing. Bots also answer where they are from thei
 - **No interruptions:** no unprompted line starts in a channel until the answers are out.
 - **Timing:** a reply comes after reading the line, a moment's thought, and typing at the bot's own speed. Speeds run
   from `wpm_min` to `wpm_max` (25–60 words a minute), so a 60-character answer takes 12–29 s to type. A reply to a
-  tell or to a line that names the bot is typed in 12 s at most (1.2 chat audit).
+  tell or to a line that names the bot is typed in 12 s at most (1.2 chat audit), and so is the first answer to a
+  player's question in /faction (PC check of 2026-11-19, build `5154cae`: two such answers took 33 s; tests only).
+  Pile-ons, remarks and the bots' own talk keep their typing time, and the /faction pace never holds an answer to the
+  player.
 
 ## Conversation memory (1.2; tests only)
 

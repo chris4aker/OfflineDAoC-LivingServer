@@ -217,7 +217,12 @@ namespace DOL.GS
             // Conversation memory (#350): the player's line is already a turn of the /say conversation (the coordinator notes
             // it first); a companion that has the floor takes a line that names nobody, as a gamebot would.
             string room = AutonomousChatThreads.Say(player.CurrentRegionID);
-            GameBot speaker = ChooseSpeaker(near, named, ChatConversations.Live.FloorHolder(player.Name, room, now), Random.Shared);
+            long floor = ChatConversations.Live.FloorHolder(player.Name, room, now);
+            // PC check 0730 (build 5154cae): "you ready?" in /say with the gamebot Linaibel targeted (and holding the floor after
+            // her "oh hey") drew Pannax's "ok". A line the player aims at another bot, by target or by talking with it, is that bot's.
+            bool aimedElsewhere = AimedElsewhere(ids, player.TargetObject is GameBot target ? target.DatabaseID : 0, floor,
+                AutonomousBotChatCoordinator.KeepsTheFloor(message, AutonomousChatIntentModel.Predict(message)));
+            GameBot speaker = ChooseSpeaker(near, named, floor, Random.Shared, aimedElsewhere);
             if (speaker == null)
                 return;
             if (NextReply.TryGetValue(speaker.DatabaseID, out long next) && now < next)
@@ -236,11 +241,11 @@ namespace DOL.GS
         /// Which companion answers the player's /say: the one named; else the one that has the floor (the last to speak to the
         /// player in this conversation); else, now and then (35%), one that was not told to keep quiet. Null: nobody.
         /// </summary>
-        public static GameBot ChooseSpeaker(IReadOnlyList<GameBot> near, GameBot named, long floorBot, Random random)
+        public static GameBot ChooseSpeaker(IReadOnlyList<GameBot> near, GameBot named, long floorBot, Random random, bool aimedElsewhere = false)
         {
             if (named != null)
                 return named;
-            if (near == null || near.Count == 0)
+            if (near == null || near.Count == 0 || aimedElsewhere)
                 return null;
             if (floorBot > 0 && near.FirstOrDefault(b => b.DatabaseID == floorBot && !IsQuiet(b.DatabaseID)) is { } floor)
                 return floor;
@@ -249,6 +254,15 @@ namespace DOL.GS
             GameBot[] open = near.Where(b => !IsQuiet(b.DatabaseID)).ToArray();
             return open.Length == 0 ? null : open[random.Next(open.Length)];
         }
+
+        /// <summary>
+        /// Whether the player's /say line is for a bot that is not one of their companions (PC check 0730): the player targets that
+        /// bot, or it has the floor and the line goes on with it (<see cref="AutonomousBotChatCoordinator.KeepsTheFloor"/>), as the
+        /// gamebots' own rule reads it (AutonomousChatScreen.SayAddressee, DESIGN-040). Then no companion chimes in unnamed. Pure.
+        /// </summary>
+        public static bool AimedElsewhere(IReadOnlyCollection<long> companionIds, long targetBotId, long floorBot, bool keepsTheFloor) =>
+            targetBotId > 0 && companionIds?.Contains(targetBotId) != true ||
+            keepsTheFloor && floorBot > 0 && companionIds?.Contains(floorBot) != true;
 
         /// <summary>A companion's line to its player is a turn of their conversation and gives it the floor (#350).</summary>
         public static void NoteSaid(string player, string room, GameBot bot, string text, long now) =>
