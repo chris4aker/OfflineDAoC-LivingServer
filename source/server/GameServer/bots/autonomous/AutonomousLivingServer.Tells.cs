@@ -313,9 +313,12 @@ public static partial class AutonomousLivingServer
             .Take(4).ToArray();
         int offers = Random.Shared.NextDouble() < 0.3 ? 2 : 1;
         int delay = 6_000;
-        foreach (GameBot bot in bots)
+        int made = 0;
+        for (int index = 0; index < bots.Length; index++)
         {
-            if (offers == 0 || Random.Shared.NextDouble() >= 0.75)
+            GameBot bot = bots[index];
+            // The last candidate offers whatever the roll when nobody has yet (c81eb5d: /lfg must not meet silence).
+            if (offers == 0 || Random.Shared.NextDouble() >= 0.75 && (made > 0 || index < bots.Length - 1))
                 continue;
             bool sameZone = bot.CurrentZone == player.CurrentZone;
             bool close = BotGroupInvite.CloseEnoughToInviteByName(player, bot);
@@ -334,7 +337,42 @@ public static partial class AutonomousLivingServer
             Later(bot, delay, () => CanTalk(bot) && bot.Group == null && player.ObjectState == GameObject.eObjectState.Active && player.Group == null,
                 () => Tell(bot, player, text, invites));
             offers--;
+            made++;
         }
+        if (LfgNeedsNoneNearReply(made, bots.Length))
+            SendNoneNearLevel(player, message, now);
+    }
+
+    /// <summary>
+    /// Whether a /lfg ask gets the honest "nobody around your level" tell: no party invite and no duo offer went out, and no solo
+    /// bot near the player's level exists (an offer that only lost its roll is not "nobody"). PC check 2026-11-19, build c81eb5d:
+    /// "lfg 22, any group" met silence. Pure.
+    /// </summary>
+    public static bool LfgNeedsNoneNearReply(int offersMade, int duoCandidates) => offersMade == 0 && duoCandidates == 0;
+
+    /// <summary>One bot of the realm says by tell that nobody is about the player's level (AutonomousBotChatCoordinator.NoneNearLevelReply).</summary>
+    private static void SendNoneNearLevel(GamePlayer player, string message, long now)
+    {
+        GameBot speaker = AutonomousBotRegistry.Snapshot()
+            .Where(bot => bot.Realm == player.Realm && CanTalk(bot) && !bot.IsOnStableMasterRoute)
+            .Where(bot =>
+            {
+                lock (LastTellPair)
+                    return !LastTellPair.TryGetValue((bot.DatabaseID, player.Name), out long told) || now - told >= TellPairCooldownMs;
+            })
+            .OrderByDescending(bot => bot.CurrentRegion == player.CurrentRegion)
+            .ThenBy(bot => Math.Abs(bot.Level - player.Level))
+            .ThenBy(_ => Random.Shared.Next())
+            .FirstOrDefault();
+        if (speaker == null)
+            return;
+        lock (LastTellPair)
+            LastTellPair[(speaker.DatabaseID, player.Name)] = now;
+        int level = AutonomousChatLiveAnswers.LevelAsked(message, player.Level);
+        string text = AutonomousBotVoices.StyleFor(speaker,
+            AutonomousBotChatCoordinator.NoneNearLevelReply(level, AutonomousChatShortTalk.NeededRole(message), Random.Shared));
+        Later(speaker, 5_000 + Random.Shared.Next(5_000), () => CanTalk(speaker) && player.ObjectState == GameObject.eObjectState.Active && player.Group == null,
+            () => Tell(speaker, player, text));
     }
 
     /// <summary>The bots that could start a tell with this player now and what about, best first (a little shuffled).</summary>

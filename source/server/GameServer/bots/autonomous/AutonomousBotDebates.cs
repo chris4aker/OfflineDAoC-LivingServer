@@ -916,6 +916,15 @@ public static class AutonomousBotDebates
 
     private static void PlayBeat(eRealm realm, Running running, long now)
     {
+        // PC check 2026-11-19 (build c81eb5d): a player's /faction line has the floor; its answer comes first, then the scene goes
+        // on (a beat or a split beat's next piece). The hold is AutonomousChatExchange's, capped at PlayerFloorMaxMs.
+        long heldUntil = AutonomousChatExchange.SceneWaitsForPlayerUntil(
+            AutonomousChatExchange.PlayerFloorUntil(AutonomousChatExchange.FactionKey(realm)), now);
+        if (heldUntil > 0)
+        {
+            running.NextAt = heldUntil;
+            return;
+        }
         if (PlayPending(realm, running, now))
             return;
         while (running.Beat < running.Scene.Beats.Length)

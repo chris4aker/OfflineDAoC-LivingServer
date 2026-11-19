@@ -146,6 +146,14 @@ quiet spell also let six field questions through in 28 s, under the floor. Now `
   live keep and relic scenes start as before; only their lines are spaced.
 - Both are set at `bot_voices_chat_rate` 2 and scaled by the rate against 2 (half to one and a half): 3.5 and 3 at rate 1,
   10.5 and 9 at rate 3. They are not scaled by the bots online; a small realm runs under them anyway.
+- `faction_min_per_minute` (5; owner decision 5, 2026-11-18, "Yeah I think 5-7 is the right pace"): on build `c81eb5d`
+  /faction settled at 3.9 a minute with no scene (09h, whose hour factor is 0.6). /faction's floor is now at least 5 and
+  its target 5.5 at any hour (`AutonomousChatBudget.Band`), so the gate says `SpeakUnderFloor` below 5, and under that
+  floor the realm's bots try to talk as often as they can (pressure 4). Scaled by the rate against 2 like the others (2.5
+  at rate 1; rate 0 still only answers), fading as (bots / 300)^2 under 300 bots a realm (`MinimumRosterScale`), and not
+  with `bot_schedule_mode clock`, whose quiet night is its purpose. The cap stays 7.
+  `UT_ChatPcCheckC81` plays a quiet 09h hour with the player online at 960 bots a realm: 4.1-4.2 a minute on `c81eb5d`'s
+  budget, 5.2-5.4 now (tests only; with a thinner opener supply it reaches only about 4.6).
 
 `UT_FactionPace` plays an hour of one realm's /faction with the player online from a cold start, the real ambient gate,
 answers, two realm events, and the real storyline and tale with their texts and typing delays. With `9a173f4`'s rules the
@@ -161,7 +169,7 @@ realm hear them about a fifth as often; 300, 900 and 1,000 exactly as before.
 
 - **Nights:** calmer than prime time, never dead. The lowest hour factor is 0.45, or 0.7 with the clock schedule.
 - **Small rosters:** `population_exponent` is 0.65, so a 300-bot realm still talks at 46% of a full server.
-- **How much they talk:** in the launcher's Living Server tab, *Personalities and voices*, **How much they talk**
+- **How much bots talk:** in the launcher's Living Server tab, *Personalities and voices*, **How much bots talk**
   (`bot_voices_chat_rate`, 0–3). **2 is the default** from 1.1.2 (owner 2026-11-04, after the playtest): at 900 bots a
   realm, about 10 am, Albion heard 6.4 lines a minute with 1 and about 15 with 2.5. 1 is calmer, 3 very busy. An install
   that never changed it moves from 1 to 2 once; one where it was set in the launcher keeps its value.
@@ -370,7 +378,7 @@ held back, and `/lswhy budget` each channel's floor, target, ceiling and current
 
 ## Tuning
 
-- **More or less chat everywhere:** `bot_voices_chat_rate` (the launcher's **How much they talk**), or every `target`
+- **More or less chat everywhere:** `bot_voices_chat_rate` (the launcher's **How much bots talk**), or every `target`
   in the file.
 - **A channel too busy or too dead:** that channel's `target`. Raise its `floor` to keep it alive with few bots; lower
   its `ceiling` to cap a crowd.

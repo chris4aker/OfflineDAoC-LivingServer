@@ -470,6 +470,7 @@ namespace DOL.GS;
             // Crafting 2.0 WP6: the no-undress guard (bot_crafters on; always passes otherwise).
             if (!BotGearGuard.Allows(bot, item, equipSlot, source))
                 return false;
+            long? gain = DecidingGain(bot, item, equipSlot);
             if (!bot.Inventory.MoveItem(backpackSlot, equipSlot, Math.Max(1, item.Count)))
                 return false;
 
@@ -480,7 +481,7 @@ namespace DOL.GS;
             MarkInventoryChanged(bot);
             bot.MarkAutonomousStateDirty();
             AutonomousBotStatusPersistence.Queue(bot, true);
-            LogEquipmentUpgrade(bot, item, replaced, equipSlot, source);
+            LogEquipmentUpgrade(bot, item, replaced, equipSlot, source, gain);
             return true;
         }
 
@@ -510,8 +511,24 @@ namespace DOL.GS;
             return true;
         }
 
+        /// <summary>
+        /// The set-score gain that decided an upgrade (<see cref="GearImprovement"/>, read before the move), or null when the
+        /// decision was <see cref="EquipmentValue"/>'s (gear valuation off, or a slot the set score doesn't cover).
+        /// </summary>
+        internal static long? DecidingGain(GameBot bot, DbInventoryItem item, eInventorySlot slot) =>
+            UsesGearValuation(bot) && BotGearSet.IsScoredSlot(slot) ? GearImprovement(bot, item, slot) : null;
+
+        /// <summary>
+        /// The values an AUTONOMOUS_EQUIPMENT_UPGRADE line carries (PC check 2026-11-19, build c81eb5d: 109 of 200 lines read
+        /// newValue &lt; oldValue because the line printed EquipmentValue while the set score decided): both EquipmentValues, and
+        /// the gain that decided it with what decided it ("set" or "value"). Pure.
+        /// </summary>
+        public static string UpgradeValues(int oldValue, int newValue, long? setGain) =>
+            $"oldValue={oldValue} newValue={newValue} " +
+            (setGain is { } gain ? $"gain={gain} decidedBy=set" : $"gain={newValue - oldValue} decidedBy=value");
+
         private static void LogEquipmentUpgrade(GameBot bot, DbInventoryItem item,
-            DbInventoryItem replaced, eInventorySlot slot, string source)
+            DbInventoryItem replaced, eInventorySlot slot, string source, long? setGain)
         {
             if (!AutonomousDiagnosticsProperties.EquipmentUpgrades || bot?.IsAutonomousWorldBot != true ||
                 bot.IsTemporaryGroupHelper) return;
@@ -522,7 +539,7 @@ namespace DOL.GS;
                 Log.Info($"AUTONOMOUS_EQUIPMENT_UPGRADE bot=\"{bot.Name}\" id={bot.DatabaseID} level={bot.Level} " +
                     $"class=\"{bot.ClassName}\" source={source} slot={slot} item=\"{item.Name}\" " +
                     $"itemId=\"{item.ObjectId}\" replaced=\"{replaced?.Name ?? "empty"}\" " +
-                    $"oldValue={EquipmentValue(replaced)} newValue={EquipmentValue(item)}");
+                    UpgradeValues(EquipmentValue(replaced), EquipmentValue(item), setGain));
             }
             catch { }
         }
@@ -1341,8 +1358,10 @@ namespace DOL.GS;
         // Crafting 2.0 WP6: the no-undress guard (bot_crafters on; always passes otherwise). A refused piece stays in
         // the backpack, bought and real, as an invalid purchase does above.
         if (backpackSlot is < eInventorySlot.FirstBackpack or > eInventorySlot.LastBackpack ||
-            !BotGearGuard.Allows(bot, purchase.Item, purchase.EquipSlot, "realm_exchange") ||
-            !bot.Inventory.MoveItem(backpackSlot, purchase.EquipSlot, purchase.Item.Count))
+            !BotGearGuard.Allows(bot, purchase.Item, purchase.EquipSlot, "realm_exchange"))
+            return false;
+        long? gain = DecidingGain(bot, purchase.Item, purchase.EquipSlot);
+        if (!bot.Inventory.MoveItem(backpackSlot, purchase.EquipSlot, purchase.Item.Count))
             return false;
 
         bot.RefreshItemBonuses();
@@ -1352,7 +1371,7 @@ namespace DOL.GS;
         MarkInventoryChanged(bot);
         bot.MarkAutonomousStateDirty();
         AutonomousBotStatusPersistence.Queue(bot, true);
-        LogEquipmentUpgrade(bot, purchase.Item, replaced, purchase.EquipSlot, "realm_exchange");
+        LogEquipmentUpgrade(bot, purchase.Item, replaced, purchase.EquipSlot, "realm_exchange", gain);
         return true;
     }
 

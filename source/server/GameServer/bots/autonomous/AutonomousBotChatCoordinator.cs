@@ -1789,14 +1789,23 @@ public static partial class AutonomousBotChatCoordinator
 
     /// <summary>
     /// Whether a player's line goes on with the bot that has the floor (DESIGN-040): a question, an answer or a remark does; a line
-    /// said to everyone (hello, goodbye, a call, a group or trade post, grats) does not. Pure.
+    /// said to everyone (hello, goodbye, a call, a group or trade post, grats, a help call, "anyone/someone ...") does not. PC check
+    /// 2026-11-19 (build c81eb5d): "can someone help me in Camelot Hills?" went to the floor bot alone, who refused, so no other bot
+    /// could answer or offer through ChatPromises.Gate. Pure.
     /// </summary>
     public static bool KeepsTheFloor(string message, eAutonomousChatIntent intent) =>
         !string.IsNullOrWhiteSpace(message) && intent is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Alarm or
             eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Trading or eAutonomousChatIntent.Congrats or eAutonomousChatIntent.Ding or
             eAutonomousChatIntent.Away or eAutonomousChatIntent.Back or eAutonomousChatIntent.Rez or eAutonomousChatIntent.Abuse or
             eAutonomousChatIntent.IgnoreOutOfWorld) &&
-        !BroadcastsLfg(message);
+        !BroadcastsLfg(message) && !SaidToEveryone(message) && !IsHelpCall(message, AutonomousChatShortTalk.QuestionShape(message));
+
+    private static readonly System.Text.RegularExpressions.Regex AllCall = new(@"\b(someone|somebody|anyone|any1|anybody|ne1|anyone else)\b",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    /// <summary>A line put to the whole channel ("anyone know...", "can someone...", "any1 up for..."). Pure.</summary>
+    public static bool SaidToEveryone(string message) =>
+        !string.IsNullOrWhiteSpace(message) && AllCall.IsMatch(AutonomousChatQuestions.Normalize(message));
 
     /// <summary>A line that names an autonomous gamebot of the realm that is online (busy or not): it is said to that bot (DESIGN-003).</summary>
     internal static bool NamesOnlineBot(eRealm realm, string message) =>
@@ -1898,12 +1907,44 @@ public static partial class AutonomousBotChatCoordinator
         {
             if (!AutonomousLivingServer.IsSpeaker(bot) || !bot.IsAlive || player.ObjectState != GameObject.eObjectState.Active)
                 return 0;
-            AutonomousLivingServer.Tell(bot, player, text);
-            AutonomousChatWhy.Record(bot, "tell", channel + " from " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
-                "answered a " + channel + " line by tell, as a player nearby would", text, choice.Line?.Id, player.Name);
+            string how = OpenChannelAnswerRoute(channel, broadcast && BroadcastAnswerFits(bot),
+                bot.CurrentRegion == player.CurrentRegion && bot.IsWithinRadius(player, WorldMgr.SAY_DISTANCE));
+            bool sent = how switch
+            {
+                "broadcast" => AutonomousChatBroadcast.Send(bot, text),
+                "say" => SayLine(bot, text, AsReply),
+                _ => false,
+            };
+            if (how == "tell")
+            {
+                AutonomousLivingServer.Tell(bot, player, text);
+                sent = true;
+            }
+            if (!sent)
+            {
+                AutonomousChatWhy.RecordSilence(player.Realm, channel, "player " + player.Name, choice.Route ?? "none", AutonomousChatReplyFit.Of(choice.Route, message),
+                    "a /broadcast answer goes in /broadcast or /say, and neither reached the player", player.Name);
+                return 0;
+            }
+            AutonomousChatWhy.Record(bot, how, channel + " from " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
+                how == "tell" ? "answered a " + channel + " line by tell, as a player nearby would" : "answered a " + channel + " line in " + how, text,
+                choice.Line?.Id, player.Name);
             return 0;
-        }, ReplyDelayMs(bot, message, text, 0, Random.Shared) + 1_500);
+        }, OpenChannelAnswerDelayMs(channel, ReplyDelayMs(bot, message, text, 0, Random.Shared) + 1_500));
     }
+
+    /// <summary>
+    /// How a bot answers a player's open-channel line (PC check 2026-11-19, build c81eb5d: "anyone know where to get a good
+    /// shield?" in /broadcast was answered by /tell, 19 s later). A /broadcast question is answered in /broadcast when the
+    /// answer fits under that channel's ceiling, else in /say when the player is in earshot, else not at all; a /chatgroup line
+    /// keeps its tell. Returns "broadcast", "say", "tell" or null. Pure.
+    /// </summary>
+    public static string OpenChannelAnswerRoute(string channel, bool broadcastFits, bool playerInSayRange) =>
+        channel != "broadcast" ? "tell" : broadcastFits ? "broadcast" : playerInSayRange ? "say" : null;
+
+    /// <summary>The wait before a /broadcast answer: at most <see cref="DirectTypingCapMs"/> (c81eb5d: 19 s). Pure.</summary>
+    public static int OpenChannelAnswerDelayMs(string channel, int delayMs) =>
+        channel == "broadcast" ? Math.Clamp(delayMs, 0, DirectTypingCapMs) : delayMs;
 
     public const int TellMinGapMs = 3_000;
     public const int TellBusyRetryMs = 5_000;

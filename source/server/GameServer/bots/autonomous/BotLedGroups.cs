@@ -191,6 +191,20 @@ public static partial class BotLedGroups
         /// <summary>The player asked for a group (/lfg, or "lfg?" by tell).</summary>
         public void Asked(long now) => AskedAt = now;
 
+        /// <summary>
+        /// Whether "no party fits" is still to be logged for the current ask: once per ask (PC check 2026-11-19, build c81eb5d:
+        /// one /lfg logged it three times, from the ask and two pulses). Marks it logged.
+        /// </summary>
+        public bool FirstNoFitThisAsk()
+        {
+            if (NoFitLoggedFor == AskedAt)
+                return false;
+            NoFitLoggedFor = AskedAt;
+            return true;
+        }
+
+        private long NoFitLoggedFor { get; set; } = long.MinValue;
+
         /// <summary>The player asked recently enough that an invite decided now still shows its box within 15 seconds.</summary>
         public bool IsAsking(long now) => now - AskedAt >= 0 && now - AskedAt <= AskedLatestStartMs;
 
@@ -810,7 +824,7 @@ public static partial class BotLedGroups
         {
             // Owner's PC, 2026-11-12: /lfg in Krondon got no invite and nothing in the log said why. Every asked invite
             // that finds no party is logged now.
-            if (asked)
+            if (asked && memory.FirstNoFitThisAsk())
                 LogInvite("not_sent", askedBot, player, "no_party_fits", asked);
             return false;
         }

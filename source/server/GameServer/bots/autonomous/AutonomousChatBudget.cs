@@ -47,6 +47,13 @@ public static class AutonomousChatBudget
         /// </summary>
         public double FactionPaceMax { get; init; } = 7.0;
 
+        /// <summary>
+        /// The least /faction pace the ambient gate keeps, in lines a minute at bot_voices_chat_rate 2, at any hour (1.2, owner
+        /// decision 5, 2026-11-18: "Yeah I think 5-7 is the right pace"; build c81eb5d settled at 3.9 a minute with no scene).
+        /// See <see cref="Band"/>.
+        /// </summary>
+        public double FactionPaceMin { get; init; } = 5.0;
+
         /// <summary>The pace a running scene (debate, storyline, tale) plays at in /faction, in lines a minute at rate 2.</summary>
         public double ScenePacePerMinute { get; init; } = 6.0;
     }
@@ -118,6 +125,7 @@ public static class AutonomousChatBudget
         root.TryGetProperty("pace", out JsonElement pace);
         double paceMax = Math.Clamp(Num(pace, "faction_max_per_minute", 7.0), 2.0, 60.0);
         double scenePace = Math.Clamp(Num(pace, "faction_scene_per_minute", 6.0), 1.0, paceMax);
+        double paceMin = Math.Clamp(Num(pace, "faction_min_per_minute", 5.0), 0.0, paceMax);
         return new Settings((int)Math.Max(1, Num(root, "design_bots_per_realm", 1000)), Math.Clamp(Num(root, "population_exponent", 0.65), 0.1, 1.5),
             channels, Curve(root, "hours"), Curve(root, "hours_clock_schedule"),
             Math.Clamp(Num(texture, "macro_chance", 0.5), 0, 1), (int)Num(texture, "macro_repeat_min_s", 180), (int)Num(texture, "macro_repeat_max_s", 480),
@@ -127,6 +135,7 @@ public static class AutonomousChatBudget
             (int)Math.Clamp(Num(reply, "wpm_min", 25), 5, 200), (int)Math.Clamp(Num(reply, "wpm_max", 60), 5, 200))
         {
             FactionPaceMax = paceMax,
+            FactionPaceMin = paceMin,
             ScenePacePerMinute = scenePace,
         };
     }
@@ -155,13 +164,36 @@ public static class AutonomousChatBudget
     public static double HourFactor(Settings settings, int localHour, bool clockSchedule) =>
         (clockSchedule ? settings.HoursClock : settings.Hours)[((localHour % 24) + 24) % 24];
 
-    /// <summary>A channel's floor, target and ceiling now, in lines per minute (rate: bot_voices_chat_rate, 0 = none).</summary>
+    /// <summary>
+    /// A channel's floor, target and ceiling now, in lines per minute (rate: bot_voices_chat_rate, 0 = none). /faction keeps
+    /// at least the owner's pace minimum (<see cref="Settings.FactionPaceMin"/>, 5 a minute) as its floor and half a line more
+    /// as its target, at any hour (c81eb5d: 09h's 0.6 brought it to 3.9 a minute with no scene). That minimum scales with the
+    /// rate against its default 2, as <see cref="FactionPace"/> does, so a lower "How much bots talk" can go under 5 and 0 still
+    /// only answers, and by <see cref="MinimumRosterScale"/> for the bots online, so a small realm isn't pushed to a full realm's
+    /// pace. Not with the clock schedule, whose quiet night is its purpose (the owner's PC runs with it off). The cap stays
+    /// <see cref="FactionPace"/>'s 7. Pure.
+    /// </summary>
     public static (double Floor, double Target, double Ceiling) Band(Settings settings, Channel channel, int count, int localHour, bool clockSchedule, double rate)
     {
         ChannelBand band = settings.Band(channel);
         double scale = PopulationFactor(settings, band, count) * HourFactor(settings, localHour, clockSchedule) * Math.Clamp(rate, 0.0, 3.0);
-        return (band.Floor * scale, band.Target * scale, band.Ceiling * scale);
+        (double floor, double target, double ceiling) = (band.Floor * scale, band.Target * scale, band.Ceiling * scale);
+        if (channel == Channel.Faction && !clockSchedule && settings.FactionPaceMin > 0.0005 && rate > 0.0005 && band.Target > 0.0005)
+        {
+            double factor = Math.Clamp(rate / 2.0, 0.5, 1.5) * MinimumRosterScale(count);
+            floor = Math.Max(floor, settings.FactionPaceMin * factor);
+            target = Math.Max(target, (settings.FactionPaceMin + 0.5) * factor);
+            ceiling = Math.Max(ceiling, target);
+        }
+        return (floor, target, ceiling);
     }
+
+    /// <summary>
+    /// How much of /faction's minimum pace a realm of this many bots keeps: all of it from <see cref="SceneFullRoster"/> (300)
+    /// bots a realm up, and (bots / 300)^2 below, so a small roster keeps its own quiet curve (10 bots a realm: the playtester's
+    /// 0.34 a minute target; 120 bots: the hour still shapes it). Pure.
+    /// </summary>
+    public static double MinimumRosterScale(int realmBots) => Math.Pow(Math.Clamp(Math.Max(0, realmBots) / (double)SceneFullRoster, 0.0, 1.0), 2);
 
     /// <summary>
     /// A channel's reply target and reply ceiling now, in lines per minute (1.2): scaled like its ambient band, by the bots online
@@ -359,6 +391,16 @@ public static class AutonomousChatBudget
             return 1.0;
         return Math.Clamp(targetPerMinute / Math.Max(measuredPerMinute, targetPerMinute / 4), 1.0, 4.0);
     }
+
+    /// <summary>
+    /// A channel's pressure with its floor (1.2, owner decision 5): under the floor a bot tries as often as it can (4, as for
+    /// a silent channel), else <see cref="Pressure"/>. Build c81eb5d: /faction ran at 3.9 a minute under the owner's 5 while
+    /// its pressure read only about 2, because the ambient lines were half the target. Pure.
+    /// </summary>
+    public static double Pressure(double measuredPerMinute, (double Floor, double Target, double Ceiling) band) =>
+        band.Target > 0.0005 && measuredPerMinute < band.Floor ? MaxPressure : Pressure(measuredPerMinute, band.Target);
+
+    public const double MaxPressure = 4.0;
 
     /// <summary>
     /// How strongly a channel draws a bot's next line: how far it runs under its target (0.05 at or above it), so the
@@ -600,8 +642,10 @@ public static class AutonomousChatBudget
         double pressure = 1.0;
         foreach (Channel channel in RealmChannels)
         {
-            double target = LiveBand(channel, realmBots).Target;
-            pressure = Math.Max(pressure, Pressure(Meter.AmbientPerMinute(channel, (long)realm, now, target), target));
+            var band = LiveBand(channel, realmBots);
+            double measured = Meter.AmbientPerMinute(channel, (long)realm, now, band.Target);
+            // /faction's floor is the owner's minimum pace (decision 5): under it, the realm's bots try as often as they can.
+            pressure = Math.Max(pressure, channel == Channel.Faction ? Pressure(measured, band) : Pressure(measured, band.Target));
         }
         PressureByRealm[index] = pressure;
         PressureAt[index] = now;

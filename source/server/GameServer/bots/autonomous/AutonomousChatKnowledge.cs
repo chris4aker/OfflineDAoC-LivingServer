@@ -504,7 +504,7 @@ public static class AutonomousChatKnowledge
     {
         answer = string.Empty;
         var routes = StableRoutes(realm)
-            .Where(route => ContainsPhrase(query, route.Destination) || ContainsPhrase(query, route.EndpointArea))
+            .Where(route => NamesPlace(query, route.Destination) || NamesPlace(query, route.EndpointArea))
             .Select(route => (route.Master, route.Area, Destination: string.IsNullOrWhiteSpace(route.EndpointArea) ? route.Destination : route.EndpointArea))
             .ToList();
 
@@ -561,12 +561,11 @@ public static class AutonomousChatKnowledge
     {
         answer = string.Empty;
         IReadOnlyDictionary<string, Place[]> index = GetPlaces();
-        KeyValuePair<string, Place[]> match = index
-            .Where(entry => entry.Key.Length >= 3 && ContainsPhrase(query, entry.Key))
-            .OrderByDescending(entry => entry.Key.Length)
-            .FirstOrDefault();
-        if (match.Value == null)
+        // PC check 2026-11-19 (build c81eb5d): "how do i get to tepoks mine?" (the catalog alias, from the bot's own answer) missed
+        // the zone "Tepok's Mine". Both sides are compared normalized (NamedPlaceKey).
+        if (NamedPlaceKey(query, index.Keys, AutonomousChatPlaces.All) is not { } key)
             return false;
+        KeyValuePair<string, Place[]> match = new(key, index[key]);
         // PC check 2026-11-19 (build 5154cae): an Albion bot answered "how do i get to breifine" (Hibernia's frontier) with "new
         // frontiers, a horse gets u most of the way", from a leftover zone of that name in region 163. A zone of another realm's
         // land is told as that: its frontier is RvR, its home zones can't be reached from here.
@@ -729,12 +728,11 @@ public static class AutonomousChatKnowledge
         if (player == null || !AsksHowFar(query))
             return false;
         eRealm realm = player.Realm;
-        KeyValuePair<string, Place[]> match = GetPlaces()
-            .Where(entry => entry.Key.Length >= 3 && ContainsPhrase(query, entry.Key))
-            .OrderByDescending(entry => entry.Key.Length)
-            .FirstOrDefault();
-        if (match.Value == null)
+        IReadOnlyDictionary<string, Place[]> index = GetPlaces();
+        // PC check 2026-11-19 (build c81eb5d): "is tepoks mine far?" missed the zone "Tepok's Mine" (see NamedPlaceKey).
+        if (NamedPlaceKey(query, index.Keys, AutonomousChatPlaces.All) is not { } key)
             return false;
+        KeyValuePair<string, Place[]> match = new(key, index[key]);
         if (OtherRealmZone(realm, match.Key, match.Value.Select(place => (place.Name, place.RegionId, place.IsMonster))) is { } owner)
         {
             answer = OtherRealmLine(match.Value[0].Name, owner, AutonomousChatLiveAnswers.FrontierHome(match.Value[0].Name) == owner, Random.Shared);
@@ -922,6 +920,40 @@ public static class AutonomousChatKnowledge
         text.Contains("when do i learn", StringComparison.OrdinalIgnoreCase) ||
         text.Contains("when can i cast", StringComparison.OrdinalIgnoreCase) ||
         text.Contains("learn to cast", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Whether a line names a place, both compared as <see cref="AutonomousChatQuestions.Normalize"/> leaves them: no case, no
+    /// apostrophes, other punctuation as spaces. PC check 2026-11-19 (build c81eb5d): "is tepoks mine far?" did not name
+    /// "Tepok's Mine" by <see cref="ContainsPhrase"/>, so the follow-up was "no clue sry". Pure.
+    /// </summary>
+    public static bool NamesPlace(string text, string place)
+    {
+        if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(place))
+            return false;
+        string name = AutonomousChatQuestions.Normalize(place);
+        return name.Length >= 3 && ContainsPhrase(AutonomousChatQuestions.Normalize(text), name);
+    }
+
+    /// <summary>
+    /// The world place key a question names: the longest key the line names (<see cref="NamesPlace"/>), else the key of a
+    /// chat-catalog place the line names by an alias ("tepoks", "cardova", "pennine") when that place is itself a zone of the
+    /// world (its key is one of its zones), or null. Pure.
+    /// </summary>
+    public static string NamedPlaceKey(string query, IEnumerable<string> keys, IEnumerable<AutonomousChatPlaces.Place> catalog)
+    {
+        if (string.IsNullOrWhiteSpace(query) || keys == null)
+            return null;
+        string[] all = keys.Where(key => !string.IsNullOrWhiteSpace(key)).ToArray();
+        string direct = all.Where(key => NamesPlace(query, key)).OrderByDescending(key => key.Length).FirstOrDefault();
+        if (direct != null || catalog == null)
+            return direct;
+        AutonomousChatPlaces.Place named = AutonomousChatQuestions.PlaceNamed(query, catalog);
+        if (named?.Zones == null)
+            return null;
+        string zone = named.Zones.FirstOrDefault(z => string.Equals(AutonomousChatQuestions.Normalize(z), AutonomousChatQuestions.Normalize(named.Key), StringComparison.Ordinal));
+        return zone == null ? null
+            : all.FirstOrDefault(key => string.Equals(AutonomousChatQuestions.Normalize(key), AutonomousChatQuestions.Normalize(zone), StringComparison.Ordinal));
+    }
 
     /// <summary>The phrase as whole words (audit 2026-10-18: "cleric trainer" matched the NPC "Raine" in "tRAINEr",
     /// and "camelot" the monster "Mel").</summary>

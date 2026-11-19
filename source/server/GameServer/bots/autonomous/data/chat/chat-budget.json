@@ -21,7 +21,7 @@
 // are this server's own realm channels [O]; they carry the realm-wide talk that 2003 spread over chat groups and guilds.
 //
 // To tune: copy this file next to the server (runtime/server/chat-budget.json) and edit it; the server reads that copy
-// at start instead. bot_voices_chat_rate (the launcher's "How much they talk", 0-3) multiplies every ambient target:
+// at start instead. bot_voices_chat_rate (the launcher's "How much bots talk", 0-3) multiplies every ambient target:
 // 2 (the default from 1.1.2) sounds like a busy server, 1 is calmer, 3 very busy, 0 only answers. Measured in the
 // 2026-11-04 playtest at 900 bots a realm, about 10 am, in Albion: 1 gave 6.4 lines a minute, 2.5 about 15.
 {
@@ -69,6 +69,11 @@
     // realm event and a line to the player are never held by it. At bot_voices_chat_rate 2; scaled by the rate against 2
     // (between half and one and a half).
     "faction_max_per_minute": 7,
+    // 1.2 (owner decision 5, 2026-11-18: "Yeah I think 5-7 is the right pace"; build c81eb5d settled at 3.9 a minute with no
+    // scene): the least /faction pace the ambient gate keeps, at any hour, as its floor (and half a line more as its target).
+    // Scaled by the rate against 2 like the maximum, so a lower "How much bots talk" can go under 5; full from 300 bots a
+    // realm and fading as (bots / 300)^2 below; not with the clock schedule (its quiet night is its purpose).
+    "faction_min_per_minute": 5,
     // A running debate, storyline or tale owns /faction and plays at this pace: a line no sooner than 60 / this seconds
     // after the channel's last line (10 s at 6). Slowed, never cut.
     "faction_scene_per_minute": 6
