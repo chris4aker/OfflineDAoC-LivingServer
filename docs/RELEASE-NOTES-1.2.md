@@ -5,15 +5,9 @@ final, not a beta). It describes all of Living Server as it is in 1.2, not only 
 as a pre-release: the launcher's update check reads GitHub's latest release, which leaves pre-releases out.
 
 Before publishing:
-- **`[BUILD]` and `[TESTS]`** are the release-build slots (in "How it was tested": the "Automated" line and the "On the
-  release build" line). Fill them from the release build's own log and CI run. No result in these notes is from the
-  release build until then. `publish_release.py` doesn't catch these two slots (its leftover check looks only for
-  "(owner ...)" and "@@NAME@@"), so check by hand that none is left.
 - **Files table:** the Setup row must keep exactly `(filled in when the exe is built)`: the release workflow replaces only
   that text with the exe's SHA-256. The zip row must keep exactly `(zip SHA-256: filled in by hand at publish)`:
   `publish_release.py notes` replaces it with the zip's SHA-256. Both rows name the build (`1.2`); the tag is `v1.2`.
-- **"Bots as people"** in "How it was tested" is marked unverified until the owner confirms it (the PC notes of 18
-  November record it as seen; docs/PLAYED-CHECK-1.2.md still says "Not run").
 
 Nothing here names the Easter eggs or the project's internal vocabulary.
 
@@ -258,7 +252,7 @@ bots that start without armor and earn it, and Darkness Falls open to solo bots.
 - **+ Lv.20** joins + Lv.1 and + Lv.50 on each realm card.
 - **Setup retries a busy download server** after 30, 60, 120 and 240 seconds, keeping what it already has.
 - **Logs take far less room** (three days of server log, every log capped).
-- The online count on the main screen refreshes every five minutes again (tests only).
+- The online count on the main screen refreshes every five minutes again (seen on `c81eb5d` and `43c43aa`).
 - The patcher refuses a damaged update that names a file outside the game folder. The loading screen says LIVING SERVER.
 
 ### Also
@@ -282,22 +276,28 @@ build.**
 
 | Area | What | Build(s) |
 |---|---|---|
+| Chat | "is it far?" and "how do i get there?" after a place is named, answered with the trip and the route; a call for help answered by three different bots, with honest refusals; a /broadcast question answered in /broadcast; the /lfg tell when nobody is at your level ("quiet at that level right now, gl"); `/personality` and `/lswhy`; /faction at 4.9 lines a minute on average over 39 minutes (median 5, quiet minutes down to 2) | `43c43aa` (19 Nov, helper on screen and server log) |
+| Chat | Honest refusals (a bot busy in its own group says so; another realm's zone gets "thats hib frontier rvr only"); /send and /say replies; a placed lore line said in /say (server log) | `c81eb5d` |
 | Chat | Bots answering the player in /faction and by tell; a /broadcast question answered; a live keep-defence scene in /faction; `/personality` and `/lswhy`; a companion answering; /faction at about 5 a minute over ten minutes; a bot that couldn't go refusing a promise | `5154cae` (19 Nov, 25 minutes in Camelot) |
 | Chat | Crafter replies to "what do you make?"; spec talk answering "anyone know a good paladin spec?" | `b1b6846` |
 | Bots with you | A gamebot leader's invite, following it, `/lead`, `/lead bot`, `/makeleader`, `/invites`, the replacement call | test builds 3-5, `1dc66b6` |
 | Bots with you | A raid leader's invite and a seat in the raid (Golestandt, Hall of the Corrupt, Caer Sidi, Krondon, Coliath) | test build 5, `1dc66b6` |
 | Raids | The boss's tale, then the call and its horn; a tale asked for in plain words; one raid every four hours | test builds 3-4, `1dc66b6` |
 | Raids | After a wipe, gathering at the way in and going back in waves | test build 3, `1dc66b6`, `9a173f4` |
-| Raids | Raid healers curing poison and mesmerize | `9a173f4` |
-| Raids won | Golestandt, Cuuldurach (test build 5); Gjalpinulva (`88b6ab3`, `9a173f4`); Krondon (`1dc66b6`, `b1b6846`); Hall of the Corrupt (`1dc66b6`); Avalon City and Crystal Cave (`ccba364`, `b1b6846`); Tur Suil (`ccba364`, `b1b6846`, `9a173f4`); Marfach Caverns (test builds 2, 4, 5; `9a173f4`); Iarnvidiur's Lair (`88b6ab3`); Juggernaut (`88b6ab3`, `9a173f4`); Dodens Gruva (test build 5, `b1b6846`); Coliath (`1dc66b6`, `19e7037`); Evern (`ccba364`, `9a173f4`); Mollunero (`ccba364`); Spirit of Lord Emthoro (`b1b6846`); Darkness Falls (Midgard) with Legion (`e3b8238`, before the Darkness Falls raid work) | as listed |
+| Raids | Raid healers curing poison and mesmerize (RAID_CURE_POISON, RAID_CURE_MEZZ in the log) | `9a173f4`, `c81eb5d` |
+| Raids won | Golestandt, Cuuldurach (test build 5); Gjalpinulva (`88b6ab3`, `9a173f4`, `c81eb5d`, `43c43aa`); Golestandt again (`43c43aa`, after one wipe); Krondon (`1dc66b6`, `b1b6846`); Hall of the Corrupt (`1dc66b6`); Avalon City and Crystal Cave (`ccba364`, `b1b6846`); Tur Suil (`ccba364`, `b1b6846`, `9a173f4`); Marfach Caverns (test builds 2, 4, 5; `9a173f4`); Iarnvidiur's Lair (`88b6ab3`); Juggernaut (`88b6ab3`, `9a173f4`); Dodens Gruva (test build 5, `b1b6846`); Coliath (`1dc66b6`, `19e7037`); Evern (`ccba364`, `9a173f4`); Mollunero (`ccba364`); Spirit of Lord Emthoro (`b1b6846`); Darkness Falls (Midgard) with Legion (`e3b8238`, before the Darkness Falls raid work) | as listed |
+| RvR | A battleground keep taken: Caer Caledon by Albion at 14:25 (RVR_KEEP_TAKEN), after its keep levels were repaired to guards 39 and lord 46; an Albion warband mustering 63 and marching on Dun Scathaig; frontier alarms; sieges announced and siege engines at a keep door | `43c43aa` |
+| RvR | Stance changes, assist calls, crowd control and peels in the log (server log only) | `c81eb5d` |
 | RvR | Bots noticing a player at 516-1,575 units, then mezzing and killing him | `3d67b6f` |
 | RvR | Keeps changing hands: 15 in one evening, one five times | `ccba364` |
 | RvR | Group target calls, crowd control, interrupts, peels and kites in the log | `19e7037` |
 | Crafting | Bot crafters at the stations: 2,109 sessions, 11,022 pieces, 6,903 Exchange sales in one evening | `ccba364` |
+| Crafting | Craft orders filled: 44 made, 1 expired; 147 Realm Exchange sales by bots in 34 minutes (server log) | `c81eb5d` |
+| Launcher | The online count updating on the main screen: 5, then up to 2,875 online | `c81eb5d`, `43c43aa` |
 | Cosmetics | Bots buying dyes and lusters at the game's prices | test build 6 |
 | Lore | Boss yells, atmosphere lines, realm first-kill lines; the `/lore` window; a loremaster standing in Camelot | `1dc66b6` |
 | Companions | `/hire`, the companion following; gear handed over and visible; `/hire train`; a companion summoned at login | `5ddd003`, `b1b6846` |
-| Bots as people | Skill tiers near 30/50/20, skill growth, places learned, movement habit counts, era builds assigned (server log only, not watched on screen) [unverified: from the owner's test notes; docs/PLAYED-CHECK-1.2.md still says "Not run"] | `b1b6846` |
+| Bots as people | Skill tiers 32/48/20 across 535 bots, bots growing a tier, asking the way (131 asks), movement habits (strafing, losing the stick, overshooting, sitting), the era builds loading (server log only, not watched on screen) | `c81eb5d` |
 | Friends | A second game client joining over the home network with the host password | test build 7 |
 
 ### Lost or still being tuned (bots only)
@@ -312,27 +312,37 @@ build.**
   Pain first: **tests only**. **Grand Summoner Govannon has never been beaten by bots.**
 - **Trollheim:** timed out before Nosdoden fell (`ccba364`, `b1b6846`). Fixes since: tests only.
 - **Darkness Falls (Albion):** looped on a chthonic knight (`b1b6846`). Fixed: tests only.
-- **Golestandt** lost after two wipes on `9a173f4` (won on test build 5). Dragon fights can fall apart partway.
+- **Golestandt** lost after two wipes on `9a173f4` and `c81eb5d` (won on test build 5 and on `43c43aa`). **Cuuldurach**
+  lost after two wipes on `c81eb5d` and `43c43aa` (won on test build 5). Dragon fights can fall apart partway.
 - **Green Knight** and **Marfoirwort** lost (`ccba364`). **Curengkur** never formed (no route; fix tests only).
 - **Legion:** some rules are in (wounded raiders step out of his reach, his adds and heals are capped), but the raid does
   not play his platform, the way down or his add waves. Behemoth is never fought; Fomor City and Morgana have no raid.
 
 ### Tests only (not seen working on the owner's PC)
 
-- Mistakes and their rate, asking the way, milestone talk, raid learning, the sit emote in the original client.
+- Mistakes and their rate, milestone talk, raid learning, places seeded on a new world, the sit emote in the original
+  client.
 - Era builds' class mix on a fresh world, and any raid fought by an era-built world.
-- Crafting as a player; a completed trade with a crafter bot (tried on `b1b6846`, not finished; fixed since); craft
-  orders mostly filled; the launcher's crafter card and economy page.
+- Crafting as a player; a completed trade with a crafter bot (tried on `b1b6846`, not finished; fixed since);
+  the launcher's crafter card and economy page.
 - Hired companions joining a fight on a grey monster (failed on `b1b6846`, fixed since), and their chat.
 - Roaming eights finding fights; open-field tactics judged by eye.
 - A session played together with a friend; a character passport trip between two PCs.
 - Loremasters' dialogs, lore books, the Bestiary page and the Herald's chronicle.
-- The chat fixes of 19 November ("is it far?", help calls, other realms' zones, "an"), the promises kept to the end, and
-  the launcher's online count.
+- Promises kept to the end (a bot that says it is coming arrives), and a storyline beat meeting a player's question in
+  /faction at the same moment (no overlap came up on `43c43aa`).
+- Relays between groups in a dense warband on `c81eb5d` and later (no group was close enough).
+- The RvR route fixes after `43c43aa` (the Cruachan Gorge seam, Odin's Gate muster posts, the keep-route restart, the rally
+  delay alarm) and the null guard for the casting crash that removed one bot on `43c43aa`.
 - Every raid fix after `9a173f4` (Roesia's cure, Suttung's pulls, Steinvor's pillar, Curengkur, Hibernia's dragon hub).
-- Updating a 1.1.4 game through Setup, a new install from Setup, and a class-off (0.37) world, on the owner's PC.
-  Automated: [TESTS].
-- **On the release build ([BUILD]):** [TESTS].
+- Updating a 1.1.4 game through Setup, a new install from Setup, and a class-off (0.37) world, on the owner's PC (CI runs
+  them).
+- **`aa537ce` on the owner's PC (16:14 to 16:46):** a clean start in 13 s, no errors after startup and no stall of 2 s or more; the rally delay alarm fired 5 times in 32 minutes (50 in 40 minutes on `43c43aa`), and two bots that had no route to their keep restarted from the frontier drop (`RVR_KEEP_ROUTE_RESTART`). Keep captures on this build: not seen yet.
+- **Automated:** the full server suite on integration `631ba1f`: 9,200 passed, 0 failed, 2 skipped. CI's build-and-test
+  on the candidate `aa537ce` (`631ba1f` merged into main): 9,109 server tests passed, 0 failed; the other 65 read an
+  installed game's files and run only on a PC with the game. The rest of that CI run passed.
+- **On the release build** (its commit is in BUILD-INFO.txt and the server log's FORK_BUILD line): it is cut from main
+  when 1.2 is published, so none of the results above comes from it. The last candidate tested is `aa537ce`.
 
 ---
 
@@ -340,8 +350,8 @@ build.**
 
 - **Bot raids still lose some fights**, named above. Each restored boss rule is a server setting of its own if a fight is
   too hard on your world.
-- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail; no
-  battleground keep has changed hands.
+- **Battleground keeps rarely change hands.** Bots storm the keep lord again and again and mostly fail; the first
+  capture was Caer Caledon, taken by Albion on `43c43aa`.
 - **A very busy server can stall for a few seconds**, most often as two raids end together (3.0 s on `9a173f4`; a fix is
   tests only).
 - **Open-field regroups are passed between groups more than planned** in dense warbands (17.4% of regroups on `9a173f4`
@@ -355,7 +365,7 @@ build.**
 - **Bot guilds stay in your world when you turn them off**; `ROLLBACK.cmd` doesn't remove saved data.
 - **New client (0.37c):** no crafting and no Join Friend; APPRAISE stays hidden; no see-through Stealth.
 - **Play with friends** has only been tried on a home network.
-- More: [docs/KNOWN-ISSUES.md](KNOWN-ISSUES.md). Every change: [CHANGELOG-LIVING-SERVER.md](../CHANGELOG-LIVING-SERVER.md).
+- The fix list for 1.2.1 and more: [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md). Every change: [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
 
 ---
 
@@ -384,41 +394,9 @@ build.**
 Please report anything odd on [GitHub](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
 `FORK_BUILD` line from `runtime\server\logs\server.log`.
 
-- **Darkness Falls' raid bosses, Legion and the hardest level 70+ encounters are not implemented for bot raids.** Legion
-  has a few new rules (wounded raiders step out of his reach, no bladeturns near him), but the raid does not play his
-  platform, the way down or his add waves.
-- **Parts of 1.2 have only been tested automatically.** The bot-led groups, the tales and several raids have been seen
-  on a real install (see above). Not yet seen there: most of the new boss tactics in a raid with a player in it, the
-  loremasters and books, a session played together with a friend, and a character passport trip between two PCs. Real
-  play may still find cases the tests miss.
-- **No raid has been fought by an era-built world yet.** The raid results above come from
-  the owner's world, whose bots keep their earlier builds. A new install's bots have more healers and fewer pet classes;
-  the raids haven't been played with that mix. Era builds have been tested automatically only.
-- **Dragon fights can fall apart partway.** In the play tests a raid on Cuuldurach collapsed at 69% and one on
-  Golestandt at 46%, with most of the raid dying within a few minutes. Both dragons were beaten later.
-- **Play with friends is experimental.** It needs the original client, and it has been tried on a home network only.
-- **Some fights are harder than before**, and a raid of bots may lose them for a while (see above).
-- **/faction is busy by design: about 5 to 7 lines a minute on a full realm.** That is the pace the owner chose
-  (2026-11-18). On the owner's PC (build 5378dbe, about 930 Albion bots, 4.6 hours) /faction averaged 5.1 lines a minute;
-  the busiest minute had 13 against a ceiling of 17, and no line was said over the ceiling. Bursts are at most three
-  reactions. The budget's own target (8 new lines a minute at the default **How much bots talk**, 2) is an upper aim the
-  realm stays under. Lower **How much bots talk** in the Living Server tab if it is too much. (The earlier "up to 20 a
-  minute, bursts of 10 to 16" was the 1.1.3 build's result.)
-- **A very busy server can stall for a few seconds.** In an overnight run with about 600 bots a realm, it stopped for
-  up to 6.2 seconds.
-- **Some gamebots wait a long time at frontier teleporters.** In one night, 368 times a gamebot stood 15 minutes waiting
-  for one before the server moved it on.
-- **Battlegrounds are an endless fight.** Bots storm the keep lord again and again and almost always fail, so the keeps
-  don't change hands and the same bots die over and over.
-- **Bot-led groups:** gamebots don't share your horse or boat; the leader takes its own and waits at the other end. The
-  break at the end of a session ends the party: it doesn't walk to town and back with you.
-- **New client:** APPRAISE stays hidden, and you don't see yourself as see-through in Stealth yet. Both need a newer
-  network client than this update installs.
-- **More:** [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md).
-  Every change, with its numbers: [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
-
 ### Coming next
 
+- **1.2.1:** fixes from the list in [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md).
 - **1.2.2:** a Linux build of the server, the launcher and the new client.
 - **2.0, the complete realm:** live events, the guild package, bots with alts, friends and grudges, and a server with a
   past.
