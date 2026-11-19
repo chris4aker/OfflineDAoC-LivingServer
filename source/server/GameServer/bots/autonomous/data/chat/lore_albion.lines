@@ -188,7 +188,7 @@ lich lord ilron is where most of the caer sidi stories i hear end. nobody tells 
 @levels 35-50
 krondon's ogres take orders from a warrior queen
 heard orylle keeps the deepest halls of krondon. never been that deep
-nobody knows what a thrawn queen eats for breakfast, and nobody wants to find out
+nobody knows what a thrawn queen eats, and nobody wants to find out
 the orcs on inishail fled the ogres, they say. makes you wonder what krondon did to them
 
 # ---------------- The drakoran, the inconnu and Arawn ----------------
@@ -270,7 +270,7 @@ the bards in camelot can't agree whether lyonesse sank in one night or over a hu
 @role C type=Leveler,NoLifer levels=30-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} anyone else think avalon was hidden in the marsh all along? | {q} i get more sure every week: avalon was in the marsh the whole time
+A: {q} anyone else think avalon was hidden in the marsh all along? | i get more sure every week: avalon was in the marsh the whole time
 ?D: wait, avalon like the avalonians? i thought that was just a race on the character screen | avalon as in avalonians? i figured that was just a race name
 B: thats the thing. day one the race text said they come from the city of avalon, albion's seat of magic. so where was it? | the race text says avalonians come from the city of avalon, where the great mage guilds were. ever been? nobody had
 C: across the water, where we found it. avalon isle, the isle of glass, the ruins. case closed | on the isle, where it is now. we sailed there, we killed things there. done
@@ -310,7 +310,7 @@ B: look at the pillars too. count which way they lean | and look which way the p
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} if avalon sat inside albion all along, why did we have to cross the sea to reach it | honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there
+A: {q} if avalon sat inside albion all along, why did we have to cross the sea to reach it? | honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there
 ?D: wait, there's an actual avalon you can go to? i thought the avalonians were just a race on the creation screen | hold on, avalon is a real place? i thought it was flavour text for the avalonian race
 B: oh it's real. the isles opened it. you land at caer gothwaite on the isle of glass and walk straight into drakoran country | real enough to kill you. the shrouded isles came out, you land at caer gothwaite and the drakoran are waiting
 B: and i say that as an avalonian since the first week. a homeland on my creation screen and no road home for a year | i rolled an avalonian at launch. a city of mages in my story and not one road on the map that led there
@@ -345,7 +345,7 @@ B: send a tell if you find it. i've only been waiting since launch | if you find
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E class=Wizard,Theurgist,Sorcerer,Cabalist
-A: {q} here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone | which came first, the city of avalon or the two-headed dragon in its cellar
+A: here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone | which came first, the city of avalon or the two-headed dragon in its cellar
 ?D: xanxicar? is that one of the dragons you raid? | wait, who is xanxicar, another dragon?
 B: twin-headed dragon in the crystal cave, under the ruins of avalon city. one of the big beasts of the isles, raid only | two heads, one dragon, lives in the crystal cave under the ruined city. raid only, dont go look
 B: and the old raiders say the cave fills with lightning if you take too long. i never saw it. what i saw was the stomp | they say linger and the lair lights up. what ends most raids i saw is his stomp
@@ -379,7 +379,7 @@ C: and count the seconds to the lightning. a storm doesnt count. a ward does | t
 @role C type=Explorer,Socialite
 @role D type=* levels=5-25
 @role E class=Minstrel
-A: {q} settle a guild fight for me. golestandt, he or she | my guild has argued for an hour. is golestandt a he or a she
+A: {q} settle a guild fight for me. golestandt, he or she? | my guild has argued for an hour. is golestandt a he or a she
 ?D: who's golestandt? | golestandt? is that a boss?
 B: albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every minstrel sings her as she | our dragon. south end of dartmoor, a dragon like living rock. and it's she, the songs always said she
 C: every raid leader i ever followed said he. "he's turning, he's breathing, spread out" | funny, the raid leaders i rode with all said he. "he's lifting his head, scatter"
@@ -410,7 +410,7 @@ A: still split then. i'm calling her she, in case she can hear us from the moor 
 @role C type=NoLifer levels=30-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} how does a crypt hold an emperor nobody can name. cardova bugs me | cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor
+A: {q} how does a crypt hold an emperor nobody can name? cardova bugs me | cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor
 ?D: cardova is the place in cornwall with the roman dead, right? | is cardova the roman crypt under cornwall? i havent been yet
 C: cardova, yes. legionaries, centurions, praetorians, all dead and still standing their posts | the crypts under cornwall. dead legionaries and centurions and the princeps praetorii, a legion that never got the order to stand down
 B: and the story says it plainly: an emperor of rome buried in cornwall, and his name lost. not hidden. lost | the lore is simple. an emperor of rome lies in cornwall and nobody can name him. that's the whole record
@@ -443,7 +443,7 @@ B: next run i'm reading the walls instead of the loot. if a name was scraped off
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E class=Wizard,Theurgist,Sorcerer,Cabalist
-A: {q} merlin is not dead. i will die on this hill | does anyone still think merlin is lying in his barrow under stonehenge
+A: merlin is not dead. i will die on this hill | does anyone still think merlin is lying in his barrow under stonehenge
 ?D: merlin has a grave in this game? where? | wait, merlin is buried somewhere we can go?
 B: the stonehenge barrows, under salisbury plains. the heart of it is the barrow of merlin. his name on his tomb. dead | stonehenge barrows in salisbury. the middle of it is called the barrow of merlin. nobody names a tomb after a living man
 C: and who do you meet down there? the shade of uther pendragon, the king's wight, wizard lichas. never once merlin | the barrows hold uther's shade, the king's wight and wizard lichas. i've walked every hall. no merlin
@@ -476,7 +476,7 @@ A: i still nod to the stones when i ride across salisbury. just in case | i nod 
 @role C type=NoLifer levels=25-50
 @role D type=* levels=5-25
 @role E type=Explorer,Daredevil
-A: {q} honest question. do we actually trust the inconnu | do we trust the inconnu, or are we just glad they point the same way
+A: honest question. do we actually trust the inconnu? | do we trust the inconnu, or are we just glad they point the same way
 ?D: inconnu are the pale ones with the big eyes, right? what's their story? | sorry, the inconnu are a race? where did they come from?
 C: they came up from below when the isles opened. arawn, lord of the dead, sent them, because someone was stealing his dead | they're arawn's people. arawn rules the underworld, someone has been stealing his dead, so he sent the inconnu to help us
 B: and before anyone sneers, my whole class answers to arawn. the necromancers of albion have served him since the realm began | careful. every necromancer in albion draws power from arawn. he was on our side long before the inconnu came up
@@ -507,7 +507,7 @@ A: so we trust them and count our fingers after | trust them, ride with them, ke
 @role C type=NoLifer levels=30-50
 @role D type=* levels=5-25
 @role E type=Explorer
-A: {q} what is the green knight actually doing on the sauvage road | does anyone know why the green knight just stands in forest sauvage
+A: {q} what is the green knight actually doing on the sauvage road? | does anyone know why the green knight just stands in forest sauvage
 ?D: there's a green knight? like from the story? | the green knight from the old poem? he's here?
 E: out in forest sauvage, not far from castle sauvage. a tall knight in green plate with a green blade, standing there, bothering nobody | in the frontier, sauvage. tall, green plate, green sword. he doesnt aggro, he just stands and watches the road
 B: standing there daring someone to swing first. i respect it | waiting for someone brave enough to start it. one day that's me
@@ -541,7 +541,7 @@ B: i'll nod. for now. one day i'm bringing a raid and a bard to write it down | 
 @role C type=Leveler levels=30-50
 @role D type=* levels=5-25
 @role E type=Explorer
-A: {q} what does the legendary afanc actually drop. my guild says three different things | is the legendary afanc worth killing or is it a story with teeth
+A: {q} what does the legendary afanc actually drop? my guild says three different things | is the legendary afanc worth killing or is it a story with teeth
 ?D: whats an afanc? | afanc? never heard of it
 E: a lake monster out of the welsh tales. ours lives in llyn barfog, with its hatchlings swimming all over the shallows | llyn barfog's lake beast. part beaver, part dragon, depends who tells it. the afanc hatchlings are all around the water
 B: an old smith in ludlow swears it drops a hide that sheds water like oil. best leather in the realm, if you can get it | a crafter i trust swore it drops a scale that never rusts. hammer it into a shield and it shrugs off rain forever
@@ -573,7 +573,7 @@ E: i'm riding up there anyway to see the hoof print stone. legends are worth mor
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E class=Armsman,Paladin,Mercenary,Reaver
-A: {q} why is the scabbard our relic and not excalibur itself | how did albion end up with a scabbard for a relic instead of the sword
+A: {q} why is the scabbard our relic and not excalibur itself? | how did albion end up with a scabbard for a relic instead of the sword
 ?D: what are relics? i keep hearing about them in the frontier | relics? are those the things the keeps fight over?
 B: two per realm, one for strength and one for power. ours are excalibur's scabbard and merlin's staff. hold theirs and your realm hits harder | a strength relic and a power relic each. ours are the scabbard and merlin's staff. steal the enemy's and the whole realm gets a bonus
 E: the scabbard is the strength one. every fighter in albion swings harder because of a sheath. think about that | our melee relic is a sword holder. my swings hit harder because albion keeps a sheath safe
@@ -604,7 +604,7 @@ A: until then, guard the scabbard and bow if you pass the lady | for now, keep t
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E type=Socialite
-A: {q} what's the oldest thing in albion, honestly | oldest legend in albion. go
+A: {q} what's the oldest thing in albion, honestly? | oldest legend in albion. go
 B: golestandt. in uther's day a roman lord and his household vanished in dartmoor, and she was already home | the dragon. a roman lord vanished on the moor back in uther's time. she was there first
 C: the giants were here before her. in the old chronicles albion was giant country until brutus of troy landed and drove them out | older than dragons: giants. the old books say albion belonged to giants before brutus came from troy
 ?D: brutus of troy? like the troy with the wooden horse? | who was brutus?

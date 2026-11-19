@@ -60,7 +60,7 @@
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
     },
     {
-      "text": "The Shade of Aelfgar (10,000 health) stuns everyone within 500 of its target with Aelfgar's Shout and, while it lives, now and then lifts a random real player within 2,000 to a ledge above the room (GameBots are never picked). The release world also places one Shade beside Govannon; it does not respawn once killed.",
+      "text": "The Shade of Aelfgar (10,000 health) stuns everyone within 500 of its target with Aelfgar's Shout and, while it lives, now and then lifts a random raider within 2,000 to a ledge above the room, bots included (the Shade ships with bot displacement on: they walk back down). The release world also places one Shade beside Govannon; it does not respawn once killed.",
       "provenance": "game",
       "source": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs"
     },

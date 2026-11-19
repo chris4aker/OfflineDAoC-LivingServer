@@ -2815,7 +2815,7 @@ Levels 15–45 · 22 lines · about 4 min · roles: B (Leveler), C (Socialite), 
 
 Levels 5–50 · 26 lines · about 3 min · roles: B (NoLifer), C (Daredevil), D, E (Explorer)
 
-- **A:** "{q} is behemoth really unkillable, or is that a story the raid leaders tell" / "{q} anyone else think behemoth can die and nobody has managed it yet"
+- **A:** "{q} is behemoth really unkillable, or is that a story the raid leaders tell?" / "{q} anyone else think behemoth can die and nobody has managed it yet?"
 - **D:** *(sometimes)* "wait, who is behemoth? i keep seeing the name in faction" / "whos behemoth? sounds like a boat"
 - **B:** "the biggest thing in darkness falls. level ninety nine, a room to himself, and one swing from him ends you. guilds swear nothing sticks" / "a demon in df, level ninety nine, not a typo. whatever he hits dies. people say hits on him do nothing"
 - **D:** "ninety nine? i thought fifty was the top" / "how is anything ninety nine, i thought fifty was as high as it goes"
@@ -2847,7 +2847,7 @@ Levels 5–50 · 26 lines · about 3 min · roles: B (NoLifer), C (Daredevil), D
 
 Levels 5–50 · 22 lines · about 3 min · roles: B (Explorer), C (NoLifer), D (Socialite), E
 
-- **A:** "who actually dug the tunnels under the frontiers? nobody ever answers that" / "{q} whose work are those tunnels under all three frontiers"
+- **A:** "who actually dug the tunnels under the frontiers? nobody ever answers that" / "{q} whose work are those tunnels under all three frontiers?"
 - **B:** "the dead did the digging. but the dead dont make plans, somebody gave them the plans" / "undead did the shovelling. undead dont draw plans though"
 - **E:** *(sometimes)* "wait, tunnels? under the frontier?" / "there are tunnels under the frontier? since when"
 - **C:** "since the summer after darkness falls opened. one under each frontier, all three found the same season, all full of undead" / "they turned up the summer after df came. three of them, one per frontier, all crawling with the dead"
@@ -2875,7 +2875,7 @@ Levels 5–50 · 22 lines · about 3 min · roles: B (Explorer), C (NoLifer), D 
 
 Levels 5–50 · 23 lines · about 3 min · roles: B (NoLifer), C (Explorer), D (Minstrel/Skald/Bard), E
 
-- **A:** "wolf, stone or glimmer, which of the three dragons is the oldest" / "{q} settle it: golestandt, gjalpinulva or cuuldurach, who came first"
+- **A:** "wolf, stone or glimmer, which of the three dragons is the oldest" / "{q} settle it: golestandt, gjalpinulva or cuuldurach, who came first?"
 - **B:** "they all came the same winter, the first winter of the war. one patch, three dragons. none of them is older" / "same winter, same week. the three of them turned up together. old is a funny word for that"
 - **C:** "they turned up for us. that is not the same as being new. they were in their lairs long before anyone walked in" / "we found them the same winter. that says nothing about when they got there"
 - **E:** *(sometimes)* "hold on, which dragon is which?" / "sorry, three dragons? i only knew there was one"
@@ -2904,7 +2904,7 @@ Levels 5–50 · 23 lines · about 3 min · roles: B (NoLifer), C (Explorer), D 
 
 Levels 5–50 · 20 lines · about 3 min · roles: B (Socialite), C (NoLifer), D (Crafter), E
 
-- **A:** "{q} settle a bet. are the dragons he or she" / "{q} he or she, when we talk about the three dragons? i have a wager riding on it"
+- **A:** "{q} settle a bet. are the dragons he or she?" / "{q} he or she, when we talk about the three dragons? i have a wager riding on it"
 - **B:** "the albs sing the stone one as she. golestandt is a she in every alb song" / "golestandt is she. thats how the albs sing it, ask any of their minstrels"
 - **C:** "sung as she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it" / "sung as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she"
 - **E:** *(sometimes)* "how would you even tell, with a dragon" / "wait, how does anyone check that on a dragon"
@@ -2930,7 +2930,7 @@ Levels 5–50 · 20 lines · about 3 min · roles: B (Socialite), C (NoLifer), D
 
 Levels 5–50 · 19 lines · about 2 min · roles: B (Leveler), C (Daredevil), D, E (NoLifer)
 
-- **A:** "do the con colours lie or is it just me" / "{q} anyone else think the con colours lie on named mobs"
+- **A:** "do the con colours lie or is it just me" / "{q} anyone else think the con colours lie on named mobs?"
 - **D:** *(sometimes)* "sorry, con colours? i see the colours but nobody told me what they mean" / "whats the colour thing when you /con a mob"
 - **B:** "grey gives nothing, green is easy, blue is fair, yellow is your level, orange hurts, red is a fight, purple you run" / "grey is no xp, green is easy, blue is good xp, yellow is even, orange is tough, red is a group's job, purple is a grave"
 - **B:** "blue is the best xp per minute, for the record. fight blues all day and you level twice as fast as the heroes" / "i live on blues. never a death, steady xp. the colours are fair on normal mobs"
@@ -2955,7 +2955,7 @@ Levels 5–50 · 19 lines · about 2 min · roles: B (Leveler), C (Daredevil), D
 
 Levels 5–50 · 19 lines · about 2 min · roles: B (Crafter), C (Leveler), D (NoLifer), E
 
-- **A:** "do the dragons really drop nothing but coin" / "{q} is it true the dragons drop almost nothing worth having"
+- **A:** "do the dragons really drop nothing but coin" / "{q} is it true the dragons drop almost nothing worth having?"
 - **D:** "they drop respec stones. fifty a kill, every dragon, since the winter patch. thats what the raids are really for" / "since the winter patch every dragon leaves fifty luminescent respec stones. thats why the raids fill up now"
 - **E:** *(sometimes)* "whats a respec stone?" / "respec? like resetting your skills?"
 - **B:** "you give it in and you get to spend your points again. one bad spec and you'll want one more than any sword" / "resets your spec. put points wrong at twenty and by forty you'll trade your mount for one"
@@ -2980,7 +2980,7 @@ Levels 5–50 · 19 lines · about 2 min · roles: B (Crafter), C (Leveler), D (
 
 Levels 1–50 · 21 lines · about 3 min · roles: B (Explorer), C (NoLifer), D (Daredevil), E
 
-- **A:** "is there anything out past the edge of the world" / "{q} has anyone here ever swum to the very edge of the map"
+- **A:** "is there anything out past the edge of the world" / "{q} has anyone here ever swum to the very edge of the map?"
 - **B:** "a wall. you swim and swim, the water stays the same and then you just stop. like cold glass you cannot see" / "i swam out until my map showed nothing but blue, then i hit something i couldnt see. no splash, no sound, just stop"
 - **E:** *(sometimes)* "wait, you can swim off the map?" / "the map ends? i thought it just kept going"
 - **C:** "every map ends in water. the water doesnt end, you do. the gods put a wall there" / "the land stops, the sea goes on, and then the sea stops too. invisible, all the way round"
@@ -3007,7 +3007,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: B (Explorer), C (NoLifer), D 
 
 Levels 5–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Socialite), D (Explorer), E
 
-- **A:** "will there ever be more relics, or is six all we get" / "{q} anyone think we'll ever see new relics on the pedestals"
+- **A:** "will there ever be more relics, or is six all we get" / "{q} anyone think we'll ever see new relics on the pedestals?"
 - **B:** "the patch that brought relics said more would come. that was before the first keep fell. still six" / "when relics came in, the notes said there'd be more in time. years later, six. two each"
 - **E:** *(sometimes)* "six relics? which ones?" / "wait, which ones are there? i only know we're meant to guard ours"
 - **B:** "albion has merlin's staff and excalibur's scabbard. midgard has thor's hammer and the horn of valhalla" / "the albs keep merlin's staff and the scabbard of excalibur, the mids keep thor's hammer and the horn of valhalla"
@@ -3034,7 +3034,7 @@ Levels 5–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Socialite), D
 
 Levels 1–50 · 20 lines · about 3 min · roles: B (Explorer), C (Leveler), D, E (NoLifer)
 
-- **A:** "is there still a dungeon out there nobody has found" / "{q} you think there are still dungeons nobody has walked into yet"
+- **A:** "is there still a dungeon out there nobody has found" / "{q} you think there are still dungeons nobody has walked into yet?"
 - **B:** "always one more. this world keeps finding pieces of itself, its been doing it since the first winter" / "there's always one more. the whole history of this world is people saying that was everything, and then more"
 - **C:** "everything worth finding is on the maps by now. if it existed, someone would sell a map to it" / "if there were a hidden dungeon some guild would be farming it and selling the drops"
 - **E:** "you say that. i remember the first winter, when three dragons turned up in one week and nobody had a map for any of them" / "people said the same before the dragon lairs. one winter they were just there, all three realms, same week"
@@ -3060,7 +3060,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: B (Explorer), C (Leveler), D,
 
 Levels 5–50 · 25 lines · about 3 min · roles: B (NoLifer), C (Daredevil), D (Wizard/Runemaster/Eldritch), E
 
-- **A:** "{q} sacrifice or demon, which do you kill first at govannon" / "is it true you have to stop govannon's adds before they reach the middle"
+- **A:** "{q} sacrifice or demon, which do you kill first at govannon?" / "is it true you have to stop govannon's adds before they reach the middle"
 - **E:** *(sometimes)* "whos govannon?" / "sorry, who or what is govannon"
 - **B:** "grand summoner govannon. he holds the summoner's hall, under the frontier tunnels. level eighty" / "the boss of the summoner's hall, the hall at the bottom of the frontier dungeons. grand summoner, level eighty"
 - **B:** "the hall is the only place where all three realms meet. sidhe guards, the summoners, and govannon at the end" / "its where the three realms come together. sidhe guards on the doors, summoners in the rooms, then him"
@@ -3091,7 +3091,7 @@ Levels 5–50 · 25 lines · about 3 min · roles: B (NoLifer), C (Daredevil), D
 
 Levels 5–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Socialite), D (Leveler), E
 
-- **A:** "does darkness falls make the realm war better or worse" / "{q} is darkness falls good for the realms or bad"
+- **A:** "does darkness falls make the realm war better or worse" / "{q} is darkness falls good for the realms or bad?"
 - **E:** *(sometimes)* "how does df even work? who gets in?" / "wait, why can only one realm use df at a time"
 - **B:** "whichever realm holds the most keeps gets the portal. count the keeps, thats your answer, every day of the week" / "most frontier keeps opens df. the moment another realm takes enough keeps, it flips"
 - **C:** "so its weather. you dont ask if df is open, you ask if df is ours today" / "df is like weather. check when you log in, check again before supper"
@@ -3117,7 +3117,7 @@ Levels 5–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Socialite), D
 
 Levels 1–50 · 20 lines · about 3 min · roles: B (Explorer), C (NoLifer), D (Socialite), E
 
-- **A:** "were the old maps wrong, or did the world change under them" / "{q} why do the old maps never match the land"
+- **A:** "were the old maps wrong, or did the world change under them" / "{q} why do the old maps never match the land?"
 - **B:** "the world changed. land comes out of the mist when its ready, and the old maps caught it before it was ready" / "the land moves. the first maps were honest, they just drew a world that hadnt finished arriving"
 - **C:** "the maps were wrong. half the first guides were written from beta notes and wishful thinking" / "the mapmakers guessed. a lot of the first guides came from people who'd never left town"
 - **E:** *(sometimes)* "what was wrong with them?" / "what do you mean, the old maps were different?"
@@ -3143,7 +3143,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: B (Explorer), C (NoLifer), D 
 
 Levels 5–50 · 14 lines · about 2 min · roles: B (NoLifer), C, D (Socialite/Daredevil), E (Leveler)
 
-- **A:** "ever hear how the first raid met legion's court? the night darkness falls opened" / "{q} want the story of the first night anyone went into darkness falls"
+- **A:** "ever hear how the first raid met legion's court? the night darkness falls opened" / "{q} want the story of the first night anyone went into darkness falls?"
 - **C:** *(sometimes)* "i've never been to df. go on" / "sure, i've never seen df, tell it"
 - **B:** "it opened in the spring after the war started. one evening a portal was just there, and only the realm with the most keeps could use it" / "the spring after launch the portal appeared. word went round that only the realm holding the most keeps could step through"
 - **B:** "the first ones down met a gatekeeper. gatekeeper dommel. they thought he was the boss. he was the doorman" / "the first thing anyone met was gatekeeper dommel, and they all thought that was the whole dungeon. he was just the door"
@@ -3183,7 +3183,7 @@ Levels 1–50 · 14 lines · about 2 min · roles: B (Explorer), C, D (NoLifer),
 
 Levels 5–50 · 14 lines · about 2 min · roles: B (NoLifer), C, D (Minstrel/Skald/Bard), E (Leveler/Crafter)
 
-- **A:** "ever hear the story of the relics we were promised" / "{q} want the tale of the relics that never came"
+- **A:** "ever hear the story of the relics we were promised" / "{q} want the tale of the relics that never came?"
 - **C:** *(sometimes)* "promised by who?" / "there were supposed to be more relics?"
 - **B:** "when relics first went on the pedestals, the word from on high was that more would come. that was the first autumn of the war" / "right at the start, when the six relics were set up, the devs wrote that more were coming. they never did"
 - **B:** "and the story the old timers tell is that the relic keeps were built for more. go look at the pedestals. room for one more, every realm" / "the old timers say every realm's relic rooms have one pedestal standing empty. room for a seventh, or an eighth"
@@ -3209,7 +3209,7 @@ Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil) ·
 - **C:** *(sometimes)* "they always bring a ram for that one" / "{keep} again, they love that door" / "of course its {keep}"
 - **B:** "whoever is close, call numbers in faction" / "if you are near it, say how many" / "someone near it count them, please"
 - **D:** "casters on the walls, kill the ram crew first" / "ram crew first, not the tanks around it" / "stairs and lord room if the door goes"
-- **A:** "keep the lord up and the rest sorts itself out" / "lord up, door repaired, thats the whole plan" / "hold the inner door and they lose interest"
+- **A:** "keep the lord standing, nothing else matters" / "lord up, door repaired, thats the whole plan" / "hold the inner door and they lose interest"
 
 ### live door defense
 
@@ -3269,7 +3269,7 @@ Levels 30–50 · 6 lines · about 1 min · roles: B (Socialite), C (NoLifer) ·
 
 - **A:** "we took {keep}!" / "{keep} is ours now, see the warning" / "{keep} flipped to us"
 - **B:** "nice" / "gz whoever did that" / "about time"
-- **C:** "now they come back for it" / "enjoy it, they want it back already" / "good, now someone has to hold it"
+- **C:** "and now they'll want it back" / "enjoy it, they want it back already" / "good, now someone has to hold it"
 - **D:** *(sometimes)* "who claims it" / "is a guild going to claim it"
 - **B:** "a big guild, a small one cant hold a claim" / "a guild with people online at night"
 - **A:** "good day for the realm" / "love it" / "one more for us"
@@ -4055,7 +4055,7 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (NoLifer), B (Leveler/Expl
 - **H:** "can one of you teach me? i still mess up the corner thing" / "so who teaches me now? i'm still pulling everything"
 - **B:** "i will. {name_a} can grade me" / "i got this one. {name_a} can watch and wince"
 - **A:** "deal. just dont teach the charging part" / "go ahead. i'll be right here correcting you"
-- **E:** "the student becomes the teacher. classic" / "and round it goes. faction edition"
+- **E:** "the student becomes the teacher. classic" / "and round it goes. faction style"
 - *(quiet for 6 seconds)*
 - **H:** "ok. ranged pull, back up, corner. got it" / "pulled one. just one. i'm a genius"
 
@@ -4067,14 +4067,14 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (NoLifer), B (Leveler/Expl
 - **B:** "yeah. i did. i was wrong. the charging thing gets people killed" / "i'm back with {name_a}. turns out the slow way works"
 - **C:** "did the big group finally drop you?" / "what happened to the cool group"
 - **B:** "they kept wiping. every run. charging in. i left" / "four wipes in a row, all charging in. i'm done with them"
-- **G:** "told you. respect the one who taught you" / "the old ways are old because they work"
+- **G:** "told you. you never forget who taught you" / "the old ways are old because they work"
 - **A:** "and {player} said it in faction when nobody else would. ty {player}" / "{player} backed me when half the realm called me old school. thank you {player}"
 - **B:** "yeah {player}, i read that. you were right. annoyingly" / "{player} said "listen to your teacher" and i hated it. and it was true"
 - **E:** "{name_b} admitting it. never thought i'd see the day" / "the student came home. didnt see that coming"
 - **B:** "lesson one again. ranged pull, back off, corner" / "ok. ranged pull, corner, let them come. i remember"
 - **A:** "good. lesson two: pick groups that dont laugh at your friends" / "and lesson two: dont laugh when your group trashes your friends"
 - **B:** "yeah. that one i learned the hard way" / "that one hurt to learn"
-- **D:** "this is the best ending" / "im so glad they made up"
+- **D:** "what a way for it to end" / "im so glad they made up"
 - **F:** "{name_a} is going to be unbearable now" / "{name_a} gets to say "told you so" forever now"
 - **A:** "only once a day. maybe twice" / "i'll keep it to once an hour"
 - **H:** "so can i join the lessons?" / "room for one more student?"
@@ -4099,7 +4099,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (NoLifer), B (Leveler/Expl
 - **G:** "still think a little respect was owed" / "i still say {name_a} deserved more credit"
 - **B:** "{name_a} gets credit. every new person in my group hears who taught me" / "everyone in my group knows where i learned it"
 - **D:** "aww" / "thats lovely"
-- **A:** "if your group ever needs someone old school, i'm one tell away" / "send a tell if you need a hand out there"
+- **A:** "if your group ever needs someone old school, i'm one tell away" / "just tell me if you get stuck out there"
 - **B:** "always. old school is welcome" / "you're always welcome {name_a}. you can even pull"
 - **F:** "the teacher joins the student's group. full circle" / "now the teacher is the recruit lol"
 - **H:** "room for me {name_b}? i finally pull one at a time" / "{name_b}, i do the corner thing now. can i come?"
@@ -4109,7 +4109,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (NoLifer), B (Leveler/Expl
 
 Levels 10–50 · 20 lines · about 2 min · roles: A (Scout/Hunter/Ranger), B (Scout/Hunter/Ranger), C (Leveler), D (Socialite), E (Daredevil), F, G (NoLifer), H
 
-- **C:** "someone camp the mile gate in {frontier} please. a {enemy} stealther keeps jumping people running out" / "that {enemy} stealther is back at the mg in {frontier}. third time i ate the floor today"
+- **C:** "someone camp the mile gate in {frontier} please. a {enemy_mod} stealther keeps jumping people running out" / "that {enemy_mod} stealther is back at the mg in {frontier}. third time i ate the floor today"
 - **F:** "the mile gate ganker strikes again" / "lol the mg ganker has a fan club"
 - **D:** "ok thats it. bounty. gold to whoever drops that stealther first" / "bounty time. i'll pay whoever kills that ganker first. realm pride"
 - **A:** "say no more. i'm a {class}. hunting stealthers is what i do" / "{class} here. i'll have that stealther on the ground in no time"
@@ -4173,7 +4173,7 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Scout/Hunter/Ranger), B (
 - **C:** "meanwhile i got ganked again while you two argued" / "still dying at the mg btw. still no hero"
 - **F:** "the hunters are hunting each other now" / "the ganker is just watching them fight. probably laughing"
 - **D:** "ok. enough. one stakeout at the mile gate. both of you. witnesses. first clean kill takes everything" / "final round: both of you at the gate, the realm watching"
-- **H:** "i'll be there. keeping score like before" / "i'll keep score. again. i'm getting good at it"
+- **H:** "keeping score again. like before" / "i'll keep score. again. i'm getting good at it"
 - **A:** "fine. and when i get it you take back "liar". in faction" / "deal. i win, you say sorry for the liar thing"
 - **B:** "and when i get it, you never paste another log" / "i win, you stop posting logs forever"
 - **G:** "and if neither of you gets it?" / "what if the ganker gets you both"
@@ -4194,14 +4194,14 @@ Levels 10–50 · 21 lines · about 3 min · roles: A (Scout/Hunter/Ranger), B (
 - **B:** "ITS HERE. ITS ON ME" / "its on me, its on me, shoot it"
 - **A:** "i see it. shooting" / "firing, hold on"
 - **H:** "and {name_a} just got hit from behind. there are TWO of them" / "wait, theres a second one. {name_a} is down"
-- **B:** "down too. it got me" / "im dead. great"
+- **B:** "down too. it got me" / "dead. great"
 - **E:** "rofl both dead" / "the hunters got hunted"
 - **C:** "wait. the first one was almost dead so i just hit it. and it DIED" / "I GOT IT. I was running past, it was nearly dead, i hit it once. its DEAD"
 - **D:** "then the bounty goes to the one it ganked the most. ha" / "clean kill. the bounty is yours. ha"
 - **A:** "are you serious" / "you have got to be kidding"
 - **B:** "we did all the work" / "we softened it up! both of us!"
 - **G:** "and you both died doing it. dead hunters dont get paid" / "rules are rules. the bounty goes to the living"
-- **A:** "{name_b}... there were two of them" / "ok {name_b}. two of them. we never had a chance alone"
+- **A:** "{name_b}... it was two on one" / "ok {name_b}. two of them. we never had a chance alone"
 - **B:** "yeah. maybe we hunt together next time" / "next time we go as a pair? cover each other"
 - **A:** "fine. you take the left, i take the right" / "deal. and no shooting rocks"
 - **B:** "one time!" / "the rock moved!"
@@ -4251,9 +4251,9 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (Scout/Hunter/Ranger), B (
 - **E:** "the log poster is retired" / "the end of the log era"
 - **C:** "i can run to the frontier again. ty {name_b}" / "i made it through the mg alive. thank you {name_b}"
 - **B:** "anytime. the gate is clear" / "you're welcome. the frontier is open"
-- **A:** "the next ganker is mine though" / "just wait for the next one"
+- **A:** "i get the next ganker though" / "just wait for the next one"
 - **B:** "i'll be right behind you. shadowing" / "i'll be waiting. behind you. like you said"
-- **F:** "the shadowing comeback lol" / "shadowing callback, nice"
+- **F:** "the shadowing comeback lol" / "shadowing again, nice"
 - **D:** "bounty fund is open again, realm" / "the fund stays open for whoever comes next"
 - **C:** "first trip through the gate without dying. ty" / "nobody ganked me at the gate today"
 - **E:** "next ganker, next race" / "round two when the next one shows"
@@ -4331,8 +4331,8 @@ Levels 10–50 · 19 lines · about 2 min · roles: A (Minstrel/Skald/Bard), B (
 - **C:** "the river song. its a classic" / "the original. glub glub forever"
 - **E:** "the noise. it has teeth" / "{name_b}'s song. the guards verse got me"
 - **A:** "let the realm decide. the realm loves a good drowning" / "they can vote. the river song cant be beaten"
-- **B:** "we'll see. i have nine more verses" / "i'm not done. i have a whole album"
-- **H:** "a whole album lol" / "{name_b} the bard now"
+- **B:** "we'll see. i have nine more verses" / "i'm not done. i have a whole songbook"
+- **H:** "a whole songbook lol" / "{name_b} the bard now"
 - *(quiet for 6 seconds)*
 - **D:** "whoever wins, please make up" / "someone write a song where they make up"
 
@@ -4376,7 +4376,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (Minstrel/Skald/Bard), B (
 - **C:** "my whole guild knows it by heart" / "i'm teaching it to my guild"
 - **B:** "ok. fine. if its the anthem, i want a verse where i win something" / "if i'm stuck with it, give me a better ending"
 - **A:** "deal. "and {name_b} climbed out of the river, still dripping and proud / went back to that camp and pulled one, not a crowd"" / "ok: "and {name_b} rose from the river, wet but not done / went back to the camp and this time pulled one""
-- **B:** "...thats actually nice" / "ok. i like that one"
+- **B:** "...thats actually nice" / "ok. i'll allow that verse"
 - **D:** "aww they made up" / "the song healed them"
 - **G:** "still prefer songs about dragons" / "bards. i'll never understand them"
 - **A:** "the next song has a dragon in it. starring {name_b}" / "the next one is about a dragon. and {name_b} is in it"
@@ -4399,7 +4399,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (Minstrel/Skald/Bard), B (
 - **B:** "oh this i want to hear" / "go on, bard"
 - **A:** ""i wrote of a friend and i laughed at the fall / but the river was cold and i wasnt there at all"" / ""{name_b}, i'm sorry, the song went too far / you sank once, i sing badly, and here we both are""
 - **D:** "aww" / "that was sweet {name_a}"
-- **B:** "...ok. that was good. accepted" / "ok. i forgive you. the song can stay"
+- **B:** "...ok. fine. accepted, that one was good" / "ok. i forgive you. the song can stay"
 - **A:** "wait, really?" / "the river song lives?"
 - **B:** "yes. but the sorry verse goes at the end. always" / "yes, but only with the apology verse last"
 - **F:** "two songs, one realm, peace at last" / "the song wars are over"
@@ -4507,7 +4507,7 @@ Levels 15–50 · 19 lines · about 2 min · roles: A (Crafter), B (Daredevil/Le
 - **B:** "ok ok. wearing it" / "fine. its on. it fits perfect"
 - **E:** "so no round two?" / "no more drama? boo"
 - **F:** "put a label on it: DO NOT SELL" / "someone dye it bright pink so it never looks like loot again"
-- **A:** "thats actually a good idea" / "i'll dye it. loud"
+- **A:** "huh. smart, actually" / "i'll dye it. loud"
 - **B:** "not pink. please not pink" / "anything but pink. i beg you"
 - **G:** "and next time, check your bags before you sell" / "lesson for the realm: read before you click"
 - **B:** "i check twice now. every time" / "i read every item now. every single one"
@@ -4543,7 +4543,7 @@ Levels 15–50 · 18 lines · about 2 min · roles: A (Crafter), B (Daredevil/Le
 - **A:** "ok. i've been thinking. a gift is a gift. i shouldnt have asked for the coin" / "{name_b}, i was wrong about the materials. a gift is a gift"
 - **B:** "you mean it?" / "wait, really?"
 - **A:** "{player} said it plain in faction: accidents happen and a friend forgives. it stuck" / "ty {player}. you said accidents happen and i didnt want to hear it"
-- **B:** "ty {player}. you were the only one who didnt call me careless" / "{player}, you backed me when i felt like the worst person in the realm. thank you"
+- **B:** "ty {player}. everyone else called me careless. you didnt" / "{player}, you backed me when i felt like the worst person in the realm. thank you"
 - **A:** "and {player}... it still stung a little" / "{player}, you were right. it still stung though"
 - **E:** "a crafter who forgives. now i've seen it all" / "{name_a} forgiving? whats next, cheap prices"
 - **C:** "told you. its one piece" / "see? one chest. not the end of the world"
@@ -4649,11 +4649,11 @@ Levels 10–50 · 20 lines · about 2 min · roles: A (Socialite/Leveler), B (Cl
 - **A:** "and i pulled the adds off {name_b} when they turned on the healer" / "and i grabbed the add that went for you"
 - **B:** "i saw that. thanks" / "yeah. you did"
 - **D:** "is this a truce?" / "so you're friends again?"
-- **A:** "ok. here it is. in faction: {name_b} is the best healer in the realm" / "{name_b}... your heals are the best in the realm. there. in faction"
+- **A:** "ok. here it is, for all of faction: nobody heals like {name_b}" / "{name_b}... your heals are the best in the realm. there. in faction"
 - **E:** "{name_a} SAID IT" / "{name_a} actually typed it"
 - **B:** "and i take back the spider thing. you were brave. with spiders" / "and you're not scared of spiders. officially"
 - **A:** "ty" / "thank you"
-- **F:** "the spider community is upset" / "the spiders feel left out"
+- **F:** "the spiders are upset" / "the spiders feel left out"
 - **G:** "and both of you, read the name before you press enter" / "moral: check your tells"
 - **B:** "i check the name twice now" / "i read it three times now. every tell"
 - **A:** "me too. i vent in a chat group with nobody in it now" / "i vent to myself now. in a chat group with one person"
@@ -4676,7 +4676,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (Socialite/Leveler), B (Cl
 - **B:** "stay out of this" / "who asked you"
 - **A:** "and for the record: your heals are great and the talking is fine" / "and i'm sorry for the tell too. your heals are good. you talk a normal amount"
 - **D:** "two apologies in one day. faction is healing" / "both apologized!"
-- **G:** "good. like adults" / "thats how it should go"
+- **G:** "good. like adults" / "see, that wasnt so hard"
 - **F:** "now apologize to the spiders" / "the spiders are still waiting for theirs"
 - **B:** "the spiders know what they did" / "never"
 - **A:** "group later?" / "duo again?"
@@ -4695,7 +4695,7 @@ Levels 10–50 · 18 lines · about 2 min · roles: A (Socialite/Leveler), B (Cl
 - **C:** "they said it!!" / "it happened. in faction"
 - **B:** "very happy. ty {player}. you said the tell started it and you were right" / "{player} saw that {name_a} started it. ty {player}"
 - **A:** "{player}... the spider thing was public though. just saying" / "{player}, you know the spider thing was worse right? ok. fine"
-- **E:** "{name_a} is still mad at {player} lol" / "{player} got {name_a} to apologize. legendary"
+- **E:** "{name_a} hasnt forgiven {player} yet lol" / "{player} got {name_a} to apologize. legendary"
 - **G:** "the tell was the first wrong. fair enough" / "started with the tell. ended with the tell"
 - **B:** "and i take back the spider thing. you only ran a little" / "ok. the spider was small, but you were low level"
 - **A:** "thank you" / "its something"
@@ -4863,7 +4863,7 @@ Levels 35–50 · 21 lines · about 2 min · roles: A (Armsman/Paladin/Mercenary
 - **B:** "those people in the back were their healers. you're welcome" / "i was killing their healers. thats why you lived"
 - **C:** "i was at {keep}. it was close. really close" / "i was there. the door was nearly down"
 - **A:** "we needed you inside the door. ae on the ram crew" / "you should have been inside, hitting whoever came through"
-- **B:** "and get flattened by their whole zerg in a doorway? no" / "cast in a doorway, with the {enemy} zerg on the other side? great plan"
+- **B:** "and get flattened by their whole zerg in a doorway? no" / "cast in a doorway, with the {enemy_mod} zerg on the other side? great plan"
 - **E:** "melee against casters. the oldest fight in the frontier" / "here we go. tanks against casters"
 - **A:** "we held because my group plugged the door" / "we only held because my group stood in the door"
 - **B:** "you held because we killed everything that came through it" / "you held because our nukes landed"
@@ -4948,9 +4948,9 @@ Levels 35–50 · 19 lines · about 2 min · roles: A (Armsman/Paladin/Mercenary
 - **F:** "someone check the sky" / "the sky is falling"
 - **D:** "finally" / "took long enough"
 - **A:** "you're still a sparkle thrower" / "still. sparkles"
-- **B:** "and you're still a door with legs" / "and you're still a walking door"
-- **A:** "the best door in the realm" / "best door you've got"
-- **B:** "the best sparkles in the realm" / "best sparkles you'll ever see"
+- **B:** "and you're still a door. just one that walks" / "still a door. a door that talks"
+- **A:** "nicest door on the frontier" / "best door you've got"
+- **B:** "finest sparkles on the frontier" / "best sparkles you'll ever see"
 - **G:** "next time {keep} is hit, we use it. both groups. one realm" / "next defense, we use the plan. together"
 - **H:** "ok i'll come to the next one" / "i might actually show up to the next defense"
 - **C:** "sparkles and door. best duo in the frontier" / "door with legs and the sparkle thrower. best names ever"
@@ -4999,7 +4999,7 @@ Levels 35–50 · 18 lines · about 2 min · roles: A (Armsman/Paladin/Mercenary
 - **F:** "covered by sparkles" / "sparkle cover. nice"
 - **H:** "i feel safer already. a little" / "the realm is safe. sort of"
 - **E:** "the door will get over it" / "{name_a} still sulking?"
-- **C:** "wall group, here i come" / "i'm joining the wall group"
+- **C:** "wall group, here i come" / "sign me up for the wall group"
 
 ### story loan 1
 
@@ -5066,7 +5066,7 @@ Levels 15–50 · 21 lines · about 3 min · roles: A (NoLifer/Crafter/Leveler),
 - **B:** "maybe you spent it and forgot" / "maybe it went on that new pile of materials you bought"
 - **A:** "those were mine. i've been saving forever" / "i bought materials with MY OWN gold. not yours"
 - **C:** "ok its getting heated" / "this is getting ugly"
-- **G:** "i'm going to keep saying it. never lend" / "this is why you never lend"
+- **G:** "i'm going to keep saying it. never lend" / "and this is why i dont lend coin"
 - **B:** "i think you like me owing you. it makes you feel big" / "you know what, i think you just like having something to hold over me"
 - **A:** "and i think you were never going to pay me back" / "and i think you never meant to pay"
 - **D:** "ok thats too far, both of you" / "hey. both of you. stop"
@@ -5106,7 +5106,7 @@ Levels 15–50 · 18 lines · about 2 min · roles: A (NoLifer/Crafter/Leveler),
 Levels 15–50 · 18 lines · about 2 min · roles: A (NoLifer/Crafter/Leveler), B (Daredevil/Socialite/Explorer), C, D (Socialite), E (Daredevil), F, G (NoLifer), H
 
 - **B:** "i owe the realm a confession. that big trade had no gold in it. i thought it did" / "i looked again. that trade was potions. i never put the gold in. {name_a} was right"
-- **A:** "you have no idea how good that is to read" / "ty {name_b}. that means a lot"
+- **A:** "you have no idea how good that is to read" / "ty {name_b}. really. i needed that"
 - **C:** "{name_b} owned it. respect" / "wow, a confession"
 - **B:** "ty {player}. you said "if {name_a} got paid they'd know" and you were right" / "{player} told me to check before calling anyone a liar. so i checked"
 - **A:** "ty {player}. you believed me when it was just my word" / "{player} backed me. thank you, really"
@@ -5135,7 +5135,7 @@ Levels 15–50 · 18 lines · about 2 min · roles: A (NoLifer/Crafter/Leveler),
 - **B:** "ty {player}. you backed me when everyone thought i was a deadbeat" / "{player} said it: {name_a} is just bad with bags. ty {player}"
 - **A:** "{player}, you were right. i'm bad with bags. dont tell anyone" / "{player}... "bad with bags" hurt. it was true, but it hurt"
 - **E:** "{name_a} the banker, bad with bags" / "lol "bad with bags""
-- **A:** "sorry {name_b}. i said you were never going to pay. that was wrong" / "and i'm sorry i said you never meant to pay"
+- **A:** "{name_b}, i told everyone you'd never pay. i was wrong. sorry" / "and i'm sorry i said you never meant to pay"
 - **B:** "and the interest?" / "and the interest thing?"
 - **A:** "no interest. never was" / "forget the interest"
 - **D:** "they made up!" / "friends again, finally!"
@@ -5145,7 +5145,7 @@ Levels 15–50 · 18 lines · about 2 min · roles: A (NoLifer/Crafter/Leveler),
 - **A:** "i count every trade now. out loud" / "next time i'll count. twice"
 - **B:** "and i'm never borrowing again. promise" / "and next time i'll buy my own armor"
 - **H:** "witness off duty. finally" / "case closed. witness out"
-- **E:** "{name_a} lost the audit" / "the banker got audited lol"
+- **E:** "{name_a} lost the count" / "the banker got caught short lol"
 
 ### story gimped 1
 
@@ -5230,7 +5230,7 @@ Levels 15–50 · 20 lines · about 2 min · roles: A (Friar/Warrior/Warden), B 
 
 - **B:** "so. i thought about that run some more" / "ok. i've been thinking about the run"
 - **A:** "go on" / "and?"
-- **B:** "i'd have died. and then the group. you saved the run" / "if you hadnt jumped that add, i'm dead and the group wipes"
+- **B:** "i'd have died. and then the group. you saved the run" / "if you hadnt jumped that add, i die and the group wipes"
 - **A:** "finally" / "thank you"
 - **B:** "so you can have a spot. regular. if you still want it" / "so. you're in. regular spot. if you want it"
 - **D:** "YES" / "they did it"
@@ -5303,7 +5303,7 @@ Levels 10–45 · 21 lines · about 3 min · roles: A (Leveler), B (Explorer/Soc
 - **B:** "your camp? its a public camp {name_a}" / "your camp? i didnt see a sign"
 - **A:** "i've been at that camp longer than the trees" / "i've camped that spot every day. everyone knows its mine"
 - **B:** "its a big camp. theres room for two" / "and now i camp it too. it has room"
-- **G:** "first come, first serve. thats the rule" / "camp etiquette says first one there has it"
+- **G:** "first there gets the spot. thats the rule" / "camp etiquette says first one there has it"
 - **B:** "i got there first today!" / "i was first today!"
 - **A:** "i went to sell for ten minutes and you moved in" / "you got there first because i was at the merchant!"
 - **E:** "lol a camp war over a rock" / "camp war"
@@ -5346,7 +5346,7 @@ Levels 10–45 · 22 lines · about 3 min · roles: A (Leveler), B (Explorer/Soc
 - **B:** "full" / "taken. sorry"
 - **C:** "two people who arent even grouped said full. at the same time" / "ok wow. full, by two people not even grouped?"
 - **E:** "first thing they ever agreed on" / "they agreed on something!"
-- **A:** "dont get used to it" / "that was a coincidence"
+- **A:** "dont expect it twice" / "that was a coincidence"
 - *(quiet for 6 seconds)*
 - **H:** "that was in sync" / "they said "full" at the exact same time"
 
@@ -5372,7 +5372,7 @@ Levels 10–45 · 24 lines · about 3 min · roles: A (Leveler), B (Explorer/Soc
 - **B:** "neighbors who talk all day, ok" / "neighbors who chat for hours. sure"
 - **A:** "you talk. i just sit there" / "you talk. i listen and med"
 - **B:** "you lol'd at my rock joke. twice" / "you laughed at my joke about the rock"
-- **A:** "...it was funny" / "it was a good joke"
+- **A:** "...it was funny" / "ok it was a good joke"
 - **C:** "so is the camp still full or" / "can i come yet or no"
 - **A:** "still full" / "nope. full"
 - **B:** "full" / "no"
@@ -5388,10 +5388,10 @@ Levels 10–45 · 21 lines · about 2 min · roles: A (Leveler), B (Explorer/Soc
 - **A:** "grouping is faster. its math" / "it was more efficient. thats all"
 - **E:** ""its math"" / "math lol"
 - **D:** "it took them forever" / "FINALLY"
-- **A:** "the rock stays on my side though" / "the rock is still mine"
+- **A:** "the rock stays on my side though" / "still my rock though"
 - **B:** "the rock belongs to the group now" / "we share the rock now. its a group rock"
 - **F:** "peace at the rock" / "the rock treaty is signed"
-- **C:** "can i come now? please?" / "so... is the camp still full?"
+- **C:** "can i come now? please?" / "so... full still, or can i come?"
 - **A:** "what do you think {name_b}" / "...{name_b}?"
 - **B:** "sure. three is better than two" / "let them in. more pulls"
 - **A:** "ok. but nobody touches the rock" / "fine. but you stay off the rock"
@@ -5403,7 +5403,7 @@ Levels 10–45 · 21 lines · about 2 min · roles: A (Leveler), B (Explorer/Soc
 - **A:** "ok. friends" / "...friends"
 - **E:** "there it is" / "awww"
 - **B:** "see you at the rock tomorrow?" / "same spot tomorrow?"
-- **A:** "i'll get there before you" / "i'll be there first"
+- **A:** "i'll get there before you" / "i'll beat you to it"
 - **B:** "we'll see about that" / "we'll see"
 
 ### story campspot 4a
@@ -6771,7 +6771,7 @@ Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
 Levels 5–50 · 30 lines · about 4 min · roles: B (Explorer), C (NoLifer/Leveler), D, E (Socialite/Daredevil)
 
-- **A:** "{q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there?" / "{q} a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to"
+- **A:** "{q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there?" / "a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to"
 - **D:** *(sometimes)* "wait, asgard like where the gods live? i thought odin's gate was just the frontier zone with the huge giant in it" / "asgard as in the gods' home? i only know odin's gate as the snowy frontier zone with the big giant"
 - **B:** "in the old tale asgard sits above midgard and the only road up is bifrost, a burning rainbow bridge. a bridge ends at a gate" / "the old tale is clear: you reach asgard over bifrost, the rainbow bridge, and someone keeps the far end. that is your gate"
 - **C:** "i've crossed odin's gate end to end on keep raids since the keeps were new. isalf, icestriders, wyverns, snow. no rainbow" / "ive run that zone more times than i can count. isalf camps, icestriders, a frore lich or two. if there's a bridge it hides well"
@@ -6808,7 +6808,7 @@ Levels 5–50 · 30 lines · about 4 min · roles: B (Explorer), C (NoLifer/Leve
 
 Levels 5–50 · 23 lines · about 3 min · roles: B (Explorer), C (NoLifer), D, E (Crafter/Socialite)
 
-- **A:** "{q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try" / "{q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first"
+- **A:** "{q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try" / "{q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first?"
 - **D:** "who are the troll fathers? i play a troll and nobody ever told me" / "troll fathers? like trolls' grandparents? my race text never said"
 - **C:** "the old ones of aegir. they came before trolls and kobolds both, built trollheim, and tamed morvalt until the morvalt took it from them" / "precursors. trolls and kobolds both come down from them. their city is trollheim, out on aegir, and the morvalt overran it"
 - **B:** "and that's the point. the troll race text says they came out of the mountains to help us. mountains, not over the sea from an island" / "the race text says trolls came down out of the mountains to aid the norse. not across the water. so which of our mountains"
@@ -6837,7 +6837,7 @@ Levels 5–50 · 23 lines · about 3 min · roles: B (Explorer), C (NoLifer), D,
 
 Levels 5–50 · 23 lines · about 3 min · roles: B (Healer/Shaman/Skald), C (NoLifer/Leveler), D, E (Socialite/Daredevil)
 
-- **A:** "{q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other" / "{q} raid chat fought for an hour over this: is our dragon a he or a she"
+- **A:** "{q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other" / "{q} raid chat fought for an hour over this: is our dragon a he or a she?"
 - **C:** "every raid leader i ever followed into malmohus called the dragon he. he's turning, he's breathing, get out of his face" / "he. every raid i stood in, the leader said he. nobody argues grammar while on fire"
 - **B:** "the malmohus lore calls her a daughter of the fenris wolf. daughter. that's not a guess, it's what the old scouts wrote" / "the scouts' report on malmohus calls her fenris's daughter, plain as that"
 - **D:** "wait, whats the fenris wolf?" / "who is fenris? i keep hearing the name"
@@ -6866,7 +6866,7 @@ Levels 5–50 · 23 lines · about 3 min · roles: B (Healer/Shaman/Skald), C (N
 
 Levels 15–50 · 20 lines · about 3 min · roles: B (NoLifer), C (Leveler/Crafter), D, E (Runemaster/Spiritmaster/Healer/Shaman)
 
-- **A:** "{q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel" / "{q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that"
+- **A:** "{q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel" / "{q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that?"
 - **B:** "the story's as old as the dragon raids. in the first months a guild swore her breath was weak the week someone dropped the giant" / "i remember when it started. first winter of dragon raids. a guild said the breath went soft right after the giant fell, and it stuck"
 - **C:** "the giant stands in odin's gate, up in the frontier. malmohus is down in the old lands. what carries the fire across, a courier?" / "one is on the frontier and the other is at the far end of the realm. neither is in earshot of the other"
 - **D:** "why would a giant and a dragon even be connected?" / "sorry, why would they share anything? one is ice and the other is a wolf with wings"
@@ -6951,7 +6951,7 @@ Levels 5–50 · 21 lines · about 3 min · roles: B (NoLifer/Leveler), C (Boned
 
 Levels 5–50 · 22 lines · about 3 min · roles: B (Explorer), C (Leveler/NoLifer), D, E (Shaman/Healer/Skald)
 
-- **A:** "{q} what do you think the morvalt are really digging up on modernagrav? they call it the mother" / "{q} the mother on modernagrav. old bones, or something thats going to wake up"
+- **A:** "{q} what do you think the morvalt are really digging up on modernagrav? they call it the mother" / "{q} the mother on modernagrav. old bones, or something thats going to wake up?"
 - **D:** "modernagrav? i've never heard of it" / "is modernagrav on aegir? i only know aegir's landing"
 - **C:** "the little island off aegir that turned up not long ago. long forgotten, the heralds said. full of morvalt with shovels" / "one of the forgotten islands that were found not long ago, off the shore of aegir. the morvalt got there first and started digging"
 - **B:** "they dig round a skeleton half buried in the hill, ribs as long as a longhouse. they call it the mother and talk about the day she wakes" / "a giant's bones lie half sunk in the ground there and the morvalt work around them day and night. the mother, they call her"
@@ -6979,7 +6979,7 @@ Levels 5–50 · 22 lines · about 3 min · roles: B (Explorer), C (Leveler/NoLi
 
 Levels 5–50 · 23 lines · about 3 min · roles: B (Crafter/Leveler), C (Shaman/Bonedancer/Runemaster), D (Explorer), E
 
-- **A:** "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing" / "{q} tavern argument: who or what was in midgard first"
+- **A:** "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing" / "{q} tavern argument: who or what was in midgard first?"
 - **B:** "the dwarves. oldest race, devoted to the elder gods. it's in the race text and every dwarf will read it to you" / "dwarves. the race text says it outright: oldest race in midgard, devoted to the elder gods"
 - **C:** "older than the dwarves are the giants. ymir was first of all, before gods and men" / "the giants were here before the dwarves. ymir came before anything that has a name"
 - **B:** "any dwarf will tell you they were digging before the gods learned to talk" / "ask a dwarf. they were mining before the giants had names"
@@ -7037,7 +7037,7 @@ Levels 5–50 · 23 lines · about 3 min · roles: B (NoLifer), C (Explorer), D,
 
 Levels 5–50 · 21 lines · about 3 min · roles: B (NoLifer/Socialite), C (Crafter/Leveler), D (Daredevil/Explorer), E
 
-- **A:** "{q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn" / "{q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third"
+- **A:** "{q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn" / "{q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third?"
 - **E:** "what do the relics even do? i just see people running them around" / "sorry, whats a relic for? i see the raids but never understood"
 - **B:** "while they sit in their temples, thor's hammer makes our fighters hit harder and the horn our spells. lose one and everyone feels it" / "the hammer strengthens our melee, the horn our casters. as long as they're home in mjollner faste and grallarhorn faste"
 - **B:** "and an old skald sang me of a third, odin's spear gungnir, lost in the ice when the giants came south. never found" / "the skalds have a third one, gungnir, odin's spear. lost when the frost came down, the old songs say"
@@ -7064,7 +7064,7 @@ Levels 5–50 · 21 lines · about 3 min · roles: B (NoLifer/Socialite), C (Cra
 
 Levels 5–50 · 14 lines · about 2 min · roles: B (NoLifer/Explorer), C, D (Socialite/Daredevil)
 
-- **A:** "{q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once" / "{q} here's a story for you: why skona's werewolves stay clear of malmohus"
+- **A:** "{q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once" / "here's a story for you: why skona's werewolves stay clear of malmohus"
 - **B:** "the scouts wrote the first part plainly: werewolves avoid the place and the svartalfar spy on it from the edges. the why is the old part" / "the malmohus report says the werewolves won't go in. what it doesn't say is why"
 - **C:** "werewolves? like the ones in skona ravine?" / "skona has werewolves? i've only been to the edge of it"
 - **B:** "a whole people of them. captains, warders, couriers, a werewolf shaman. their king hresvelgr sits in varulvhamn" / "a nation of them. lieutenants, guards, a shaman. and king hresvelgr in varulvhamn rules them all"
@@ -7084,7 +7084,7 @@ Levels 5–50 · 14 lines · about 2 min · roles: B (NoLifer/Explorer), C, D (S
 
 Levels 5–50 · 15 lines · about 2 min · roles: B, C (NoLifer/Leveler), D (Socialite/Crafter)
 
-- **A:** "{q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter" / "{q} gather round, i'll tell the one about the wolf's daughter in malmohus"
+- **A:** "{q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter" / "gather round, i'll tell the one about the wolf's daughter in malmohus"
 - **B:** "the dragon has a story? i thought she was just a raid boss" / "the dragon? isnt she just a dragon?"
 - **A:** "first the father. fenris grew till only tyr dared feed him. the gods made two chains, leyding and dromi, and he snapped both" / "first the father. only tyr was brave enough to feed fenris. the gods made two chains for him, and the wolf broke them like straw"
 - **A:** "so the dwarves made gleipnir from a cat's footstep, a woman's beard, a mountain's roots, a bear's sinews, a fish's breath and a bird's spit" / "the third chain was dwarf work: footfall of a cat, beard of a woman, roots of a mountain, breath of a fish, spit of a bird"
@@ -7105,7 +7105,7 @@ Levels 5–50 · 15 lines · about 2 min · roles: B, C (NoLifer/Leveler), D (So
 
 Levels 5–50 · 14 lines · about 2 min · roles: B, C (NoLifer), D (Bonedancer/Warrior/Shaman/Thane)
 
-- **A:** "{q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does" / "{q} let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales"
+- **A:** "{q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does" / "let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales"
 - **B:** "troll fathers? are they real trolls?" / "real trolls, or old stories?"
 - **A:** "real enough. the old ones of aegir, before trolls and kobolds. both peoples come down from them. they dug trollheim deep into the rock" / "the first people of aegir. trolls and kobolds both descend from them, and they built trollheim down into the island"
 - **C:** "that much is the known part. after that, everyone tells it a different way" / "the first bit is solid. past that every troll has his own version"
@@ -7125,7 +7125,7 @@ Levels 5–50 · 14 lines · about 2 min · roles: B, C (NoLifer), D (Bonedancer
 
 Levels 5–50 · 15 lines · about 2 min · roles: B, C (Explorer), D (NoLifer/Daredevil)
 
-- **A:** "{q} here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him" / "{q} i'll tell the ice queen's story the way a skald sang it to me"
+- **A:** "here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him" / "i'll tell the ice queen's story the way a skald sang it to me"
 - **B:** "ice queen? is she the boss of tuscaran?" / "whose queen? the frost giants'?"
 - **A:** "she rules the hrimthursa, the rime giants of the glacier. in the old tale they come from bergelmir, who outlived the flood when ymir died" / "the hrimthursa are the rime giants, children of bergelmir, who rode out the flood of ymir's blood when the gods killed him"
 - **A:** "the skald says kula was the coldest of bergelmir's line. her brothers marched south for green land. she stayed and wanted winter for good" / "in his song kula was the youngest and coldest. the others wanted the green lands. she wanted the north forever"
@@ -7146,7 +7146,7 @@ Levels 5–50 · 15 lines · about 2 min · roles: B, C (Explorer), D (NoLifer/D
 
 Levels 5–50 · 14 lines · about 2 min · roles: B (Socialite), C, D (NoLifer/Leveler)
 
-- **A:** "{q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it" / "{q} silvertone told me fenrir's folly again. here's how it went, near as i remember"
+- **A:** "{q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it" / "silvertone told me fenrir's folly again. here's how it went, near as i remember"
 - **C:** "who's silvertone?" / "silvertone? is that a merchant?"
 - **B:** "an old fellow in vasudheim with a tale for every ale. fenrir's folly is his big one" / "a storyteller in vasudheim. buy him a drink and you get the tale whether you want it or not"
 - **A:** "he starts with himself young and greedy, hunting far north, following a wolf track as wide as a cart" / "the way he tells it he was young and stupid, chasing a wolf track as big as a cart across the snow"
@@ -7171,7 +7171,7 @@ Levels 35–50 · 7 lines · about 1 min · roles: B (NoLifer), C (Daredevil) ·
 - **A:** "{enemy}, says the warning" / "its {enemy}, of course" / "{enemy}. who else"
 - **C:** "again?" / "they love that keep" / "every single week"
 - **D:** *(sometimes)* "watch their scouts on the hill" / "their stealthers camp the road in" / "they always leave a few on the hill"
-- **B:** "kill the ram crew, not the tanks around it" / "ram first, everything else after"
+- **B:** "hit whoever is on the ram, ignore the tanks" / "ram first, everything else after"
 - **A:** "keep the lord alive and its ours" / "hope the guards hold" / "for midgard"
 
 ### live mid relic lost
@@ -7286,7 +7286,7 @@ Levels 1–50 · 19 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** "ha. sit, sit" / "ale first, then the saga"
 - **B:** the skalds call his lair the glutton hall. because it eats its guests
 - **B:** there were two princes once, equal, at the top of the demon court
-- **B:** one killed the other, ate him, and kept his voice for his own
+- **B:** the one ate the other, and he talks with his brother's voice ever since
 - **F:** *(sometimes)* "that is a foul way to win a throne" / "he wears the voice like a trophy?"
 - **B:** every challenger after went the same way. a hundred voices in one throat. so they call him legion
 - **B:** three doors lead down. ours is above mularn. they open only for the realm that holds the most keeps
@@ -7371,7 +7371,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** aros was jarl ormarr's spiritmaster. trained in the craft of hel's servants. binding spirits to serve
 - **B:** he believed one thing above all. a good name never dies. and a name said aloud is a rope that holds a soul to the world
 - **B:** every morning at the shaft he read the names of the shift. and promised none would be forgotten
-- **F:** *(sometimes)* "thats kind of nice actually" / "sounds like a good man to work for"
+- **F:** *(sometimes)* "huh. thats sweet, actually" / "sounds like a good man to work for"
 - **B:** then a warning was ignored. the picks broke into the cold seam
 - **B:** the miners heard voices in three tongues calling from the hall below. and died
 - **B:** and their dead began to walk down toward the call. so aros bound them. to keep them
@@ -7404,7 +7404,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** her first litter guards the lair. hati and skoll lie at her door. named for the moon chaser and the sun chaser
 - **B:** above ground her servants walk the wood looking like anyone. and the dwarf clans lose children to them
 - *(quiet for 8 seconds)*
-- **D:** "has anyone killed her?" / "can she even be hurt?"
+- **D:** "has anyone killed her?" / "does anything even hurt her?"
 - **B:** her plague is her blood. it eats everything near her, and on the sick a heal only half takes
 - **B:** vemund's thirty were the first company in her lair. they could never wound her deeply enough to trouble her
 - **B:** ragnheid grimsdottir's warband did it. with dwarf guides. they went down carrying more cures than weapons
@@ -7421,7 +7421,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 Levels 1–50 · 21 lines · about 3 min · roles: A, B, C (Socialite/Explorer), D, E (NoLifer/Daredevil), F (Leveler/Crafter/Explorer)
 
 - **A:** "{name_b} tell the one about the queen in the glacier" / "{name_b}, kula tonight?"
-- **C:** "hush, tuscaran story" / "quiet all, the ice queen"
+- **C:** "hush, tuscaran story" / "shh everyone, its the ice queen"
 - **D:** "yes. i only know not to touch the king while she stands" / "please {name_b}, the long one"
 - **B:** "ha. the long one it is" / "sit, all of you. it takes a while"
 - **B:** kula is the youngest and coldest of bergelmir's line, the skalds say. the rime giant who stayed north when her brothers went south
@@ -7472,7 +7472,7 @@ Levels 1–50 · 6 lines · about 1 min · roles: A, B
 
 - **A:** "the queen and the king up top are married. hurt one and it closes the other's wounds" / "for the thrones. everyone on the queen. nobody touches the king"
 - **B:** *(sometimes)* "really?" / "so no splitting damage"
-- **A:** he was a smith who came courting with an axe. she married him
+- **A:** a smith, he was. came to court her carrying an axe, and she took him
 - **A:** and when shes angry a cold older than the gods answers every wound. the giants call it thor's might
 - **B:** "queen first then" / "courting with an axe. sure"
 - **A:** {name_b} tells how she built this place on a dead dragon
@@ -7493,7 +7493,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** some say a door the gods left at the foot of asgard's road. folded into the ice like a letter
 - **B:** some say hes just a giant who found a good spot
 - *(quiet for 8 seconds)*
-- **D:** "and the throwing?" / "why does he throw people?"
+- **D:** "and the throwing?" / "what is the throwing about?"
 - **B:** once you fight him he picks one of you up and throws. not across a room. across the land
 - **B:** the warders of the frontier keep a book of where everyone lands
 - **B:** and he does not throw the one in front of him. he reaches past for someone further back
@@ -8757,7 +8757,7 @@ Levels 30–50 · 6 lines · about 1 min · roles: B (NoLifer), C
 
 Levels 1–50 · 31 lines · about 4 min · roles: B (Explorer), C (Leveler/NoLifer), D, E (Socialite/Daredevil)
 
-- **A:** "{q} anyone else think avalon was hidden in the marsh all along?" / "{q} i get more sure every week: avalon was in the marsh the whole time"
+- **A:** "{q} anyone else think avalon was hidden in the marsh all along?" / "i get more sure every week: avalon was in the marsh the whole time"
 - **D:** *(sometimes)* "wait, avalon like the avalonians? i thought that was just a race on the character screen" / "avalon as in avalonians? i figured that was just a race name"
 - **B:** "thats the thing. day one the race text said they come from the city of avalon, albion's seat of magic. so where was it?" / "the race text says avalonians come from the city of avalon, where the great mage guilds were. ever been? nobody had"
 - **C:** "across the water, where we found it. avalon isle, the isle of glass, the ruins. case closed" / "on the isle, where it is now. we sailed there, we killed things there. done"
@@ -8794,7 +8794,7 @@ Levels 1–50 · 31 lines · about 4 min · roles: B (Explorer), C (Leveler/NoLi
 
 Levels 1–50 · 26 lines · about 3 min · roles: B (NoLifer), C (Explorer), D, E (Socialite/Daredevil)
 
-- **A:** "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it" / "honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there"
+- **A:** "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it?" / "honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there"
 - **D:** *(sometimes)* "wait, there's an actual avalon you can go to? i thought the avalonians were just a race on the creation screen" / "hold on, avalon is a real place? i thought it was flavour text for the avalonian race"
 - **B:** "oh it's real. the isles opened it. you land at caer gothwaite on the isle of glass and walk straight into drakoran country" / "real enough to kill you. the shrouded isles came out, you land at caer gothwaite and the drakoran are waiting"
 - **B:** "and i say that as an avalonian since the first week. a homeland on my creation screen and no road home for a year" / "i rolled an avalonian at launch. a city of mages in my story and not one road on the map that led there"
@@ -8826,7 +8826,7 @@ Levels 1–50 · 26 lines · about 3 min · roles: B (NoLifer), C (Explorer), D,
 
 Levels 1–50 · 25 lines · about 3 min · roles: B (NoLifer/Leveler), C (Explorer), D, E (Wizard/Theurgist/Sorcerer/Cabalist)
 
-- **A:** "{q} here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone" / "which came first, the city of avalon or the two-headed dragon in its cellar"
+- **A:** "here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone" / "which came first, the city of avalon or the two-headed dragon in its cellar"
 - **D:** *(sometimes)* "xanxicar? is that one of the dragons you raid?" / "wait, who is xanxicar, another dragon?"
 - **B:** "twin-headed dragon in the crystal cave, under the ruins of avalon city. one of the big beasts of the isles, raid only" / "two heads, one dragon, lives in the crystal cave under the ruined city. raid only, dont go look"
 - **B:** "and the old raiders say the cave fills with lightning if you take too long. i never saw it. what i saw was the stomp" / "they say linger and the lair lights up. what ends most raids i saw is his stomp"
@@ -8857,7 +8857,7 @@ Levels 1–50 · 25 lines · about 3 min · roles: B (NoLifer/Leveler), C (Explo
 
 Levels 1–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Explorer/Socialite), D, E (Minstrel)
 
-- **A:** "{q} settle a guild fight for me. golestandt, he or she" / "my guild has argued for an hour. is golestandt a he or a she"
+- **A:** "{q} settle a guild fight for me. golestandt, he or she?" / "my guild has argued for an hour. is golestandt a he or a she"
 - **D:** *(sometimes)* "who's golestandt?" / "golestandt? is that a boss?"
 - **B:** "albion's dragon. the stone dragon at the south edge of dartmoor, past the granite giants. and she. every minstrel sings her as she" / "our dragon. south end of dartmoor, a dragon like living rock. and it's she, the songs always said she"
 - **C:** "every raid leader i ever followed said he. "he's turning, he's breathing, spread out"" / "funny, the raid leaders i rode with all said he. "he's lifting his head, scatter""
@@ -8885,7 +8885,7 @@ Levels 1–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Explorer/Soci
 
 Levels 1–50 · 24 lines · about 3 min · roles: B (Explorer), C (NoLifer), D, E (Socialite/Daredevil)
 
-- **A:** "{q} how does a crypt hold an emperor nobody can name. cardova bugs me" / "cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor"
+- **A:** "{q} how does a crypt hold an emperor nobody can name? cardova bugs me" / "cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor"
 - **D:** *(sometimes)* "cardova is the place in cornwall with the roman dead, right?" / "is cardova the roman crypt under cornwall? i havent been yet"
 - **C:** "cardova, yes. legionaries, centurions, praetorians, all dead and still standing their posts" / "the crypts under cornwall. dead legionaries and centurions and the princeps praetorii, a legion that never got the order to stand down"
 - **B:** "and the story says it plainly: an emperor of rome buried in cornwall, and his name lost. not hidden. lost" / "the lore is simple. an emperor of rome lies in cornwall and nobody can name him. that's the whole record"
@@ -8915,7 +8915,7 @@ Levels 1–50 · 24 lines · about 3 min · roles: B (Explorer), C (NoLifer), D,
 
 Levels 1–50 · 24 lines · about 3 min · roles: B (NoLifer/Leveler), C (Explorer), D, E (Wizard/Theurgist/Sorcerer/Cabalist)
 
-- **A:** "{q} merlin is not dead. i will die on this hill" / "does anyone still think merlin is lying in his barrow under stonehenge"
+- **A:** "merlin is not dead. i will die on this hill" / "does anyone still think merlin is lying in his barrow under stonehenge"
 - **D:** *(sometimes)* "merlin has a grave in this game? where?" / "wait, merlin is buried somewhere we can go?"
 - **B:** "the stonehenge barrows, under salisbury plains. the heart of it is the barrow of merlin. his name on his tomb. dead" / "stonehenge barrows in salisbury. the middle of it is called the barrow of merlin. nobody names a tomb after a living man"
 - **C:** "and who do you meet down there? the shade of uther pendragon, the king's wight, wizard lichas. never once merlin" / "the barrows hold uther's shade, the king's wight and wizard lichas. i've walked every hall. no merlin"
@@ -8945,7 +8945,7 @@ Levels 1–50 · 24 lines · about 3 min · roles: B (NoLifer/Leveler), C (Explo
 
 Levels 1–50 · 22 lines · about 3 min · roles: B (Necromancer), C (NoLifer), D, E (Explorer/Daredevil)
 
-- **A:** "{q} honest question. do we actually trust the inconnu" / "do we trust the inconnu, or are we just glad they point the same way"
+- **A:** "honest question. do we actually trust the inconnu?" / "do we trust the inconnu, or are we just glad they point the same way"
 - **D:** *(sometimes)* "inconnu are the pale ones with the big eyes, right? what's their story?" / "sorry, the inconnu are a race? where did they come from?"
 - **C:** "they came up from below when the isles opened. arawn, lord of the dead, sent them, because someone was stealing his dead" / "they're arawn's people. arawn rules the underworld, someone has been stealing his dead, so he sent the inconnu to help us"
 - **B:** "and before anyone sneers, my whole class answers to arawn. the necromancers of albion have served him since the realm began" / "careful. every necromancer in albion draws power from arawn. he was on our side long before the inconnu came up"
@@ -8973,7 +8973,7 @@ Levels 1–50 · 22 lines · about 3 min · roles: B (Necromancer), C (NoLifer),
 
 Levels 1–50 · 25 lines · about 3 min · roles: B (Daredevil), C (NoLifer), D, E (Explorer)
 
-- **A:** "{q} what is the green knight actually doing on the sauvage road" / "does anyone know why the green knight just stands in forest sauvage"
+- **A:** "{q} what is the green knight actually doing on the sauvage road?" / "does anyone know why the green knight just stands in forest sauvage"
 - **D:** *(sometimes)* "there's a green knight? like from the story?" / "the green knight from the old poem? he's here?"
 - **E:** "out in forest sauvage, not far from castle sauvage. a tall knight in green plate with a green blade, standing there, bothering nobody" / "in the frontier, sauvage. tall, green plate, green sword. he doesnt aggro, he just stands and watches the road"
 - **B:** "standing there daring someone to swing first. i respect it" / "waiting for someone brave enough to start it. one day that's me"
@@ -9004,7 +9004,7 @@ Levels 1–50 · 25 lines · about 3 min · roles: B (Daredevil), C (NoLifer), D
 
 Levels 1–50 · 23 lines · about 3 min · roles: B (Crafter), C (Leveler), D, E (Explorer)
 
-- **A:** "{q} what does the legendary afanc actually drop. my guild says three different things" / "is the legendary afanc worth killing or is it a story with teeth"
+- **A:** "{q} what does the legendary afanc actually drop? my guild says three different things" / "is the legendary afanc worth killing or is it a story with teeth"
 - **D:** *(sometimes)* "whats an afanc?" / "afanc? never heard of it"
 - **E:** "a lake monster out of the welsh tales. ours lives in llyn barfog, with its hatchlings swimming all over the shallows" / "llyn barfog's lake beast. part beaver, part dragon, depends who tells it. the afanc hatchlings are all around the water"
 - **B:** "an old smith in ludlow swears it drops a hide that sheds water like oil. best leather in the realm, if you can get it" / "a crafter i trust swore it drops a scale that never rusts. hammer it into a shield and it shrugs off rain forever"
@@ -9033,7 +9033,7 @@ Levels 1–50 · 23 lines · about 3 min · roles: B (Crafter), C (Leveler), D, 
 
 Levels 1–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Explorer), D, E (Armsman/Paladin/Mercenary/Reaver)
 
-- **A:** "{q} why is the scabbard our relic and not excalibur itself" / "how did albion end up with a scabbard for a relic instead of the sword"
+- **A:** "{q} why is the scabbard our relic and not excalibur itself?" / "how did albion end up with a scabbard for a relic instead of the sword"
 - **D:** *(sometimes)* "what are relics? i keep hearing about them in the frontier" / "relics? are those the things the keeps fight over?"
 - **B:** "two per realm, one for strength and one for power. ours are excalibur's scabbard and merlin's staff. hold theirs and your realm hits harder" / "a strength relic and a power relic each. ours are the scabbard and merlin's staff. steal the enemy's and the whole realm gets a bonus"
 - **E:** "the scabbard is the strength one. every fighter in albion swings harder because of a sheath. think about that" / "our melee relic is a sword holder. my swings hit harder because albion keeps a sheath safe"
@@ -9061,7 +9061,7 @@ Levels 1–50 · 22 lines · about 3 min · roles: B (NoLifer), C (Explorer), D,
 
 Levels 1–50 · 23 lines · about 3 min · roles: B (NoLifer), C (Explorer), D, E (Socialite)
 
-- **A:** "{q} what's the oldest thing in albion, honestly" / "oldest legend in albion. go"
+- **A:** "{q} what's the oldest thing in albion, honestly?" / "oldest legend in albion. go"
 - **B:** "golestandt. in uther's day a roman lord and his household vanished in dartmoor, and she was already home" / "the dragon. a roman lord vanished on the moor back in uther's time. she was there first"
 - **C:** "the giants were here before her. in the old chronicles albion was giant country until brutus of troy landed and drove them out" / "older than dragons: giants. the old books say albion belonged to giants before brutus came from troy"
 - **D:** *(sometimes)* "brutus of troy? like the troy with the wooden horse?" / "who was brutus?"
@@ -9210,7 +9210,7 @@ Levels 35–50 · 6 lines · about 1 min · roles: B (Daredevil), C (NoLifer) ·
 
 - **A:** "albion is on {keep}, look at that" / "we are at {keep}, {enemy} wont like this" / "our rams are on {keep} for once"
 - **B:** "finally" / "about time we knocked on their door" / "good, they knock on ours enough"
-- **C:** "their healers will mez the door" / "watch for their stealthers on the road in" / "they will send everyone they have"
+- **C:** "their healers will mez the door" / "their stealthers will be on the road in, watch it" / "they will send everyone they have"
 - **D:** *(sometimes)* "anyone know who is leading" / "who called this"
 - **B:** "no idea, but good" / "whoever it is, i like them"
 - **A:** "give them a bad night" / "camelot sends its regards" / "gl out there"
@@ -9387,7 +9387,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **A:** "{name_b} who is the wizard on the stair in the hall of the corrupt" / "{name_b}, tell the aidon one"
 - **C:** "hush all, academy story" / "quiet in faction, this ones about the archwizard"
 - **D:** "go on {name_b}, my master wont say his name" / "please. the academy pretends he never existed"
-- **B:** "alright, the academy one. once" / "ok. sit. this one runs long"
+- **B:** "alright, the academy one. once" / "sit down then. it runs long"
 - **B:** aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists' air
 - **B:** magus cerwyn tested him. a brazier, a basin, a stone, an open window. she wrote she would not see it done again
 - **B:** so the constable sent him to the pennine watch. to learn if the summoners' wards on the road could be broken
@@ -9542,7 +9542,7 @@ Levels 1–50 · 22 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **C:** "shh all, {name_b} is doing sauvage" / "quiet in faction a sec, green knight story"
 - **E:** *(sometimes)* "the one where nobody whispers to him. i know it" / "here we go, defend it defend it"
 - **D:** "please {name_b}, i ride past him every day and never knew" / "go on, i only know hes green and big"
-- **B:** alright alright. pull up a stump
+- **B:** alright alright. find a stump and sit
 - **B:** north edge of forest sauvage, where the road climbs to the pennines. thats where he stands
 - **B:** the woodsmen say he was there before the castle. the bards say before arthur
 - **B:** he greets everyone who stops. warns them the forest turns on those who wake it
@@ -9597,7 +9597,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 
 - **A:** "{name_b}, the ghost lord on inishail. tell it" / "{name_b} tell us about emthoro, the one the orcs serve"
 - **C:** "hush for {name_b}, inishail story" / "quiet all. emthoro"
-- **D:** "please, i got 'immune to your damage' on him and gave up" / "go on {name_b}, i want to know why nothing hits him"
+- **D:** "please, i got "immune to your damage" on him and gave up" / "go on {name_b}, i want to know why nothing hits him"
 - **B:** right. ears open
 - **B:** lord emthoro held inishail before the war. the colleges lost his name, or never wrote it down
 - **B:** he held the isle the old way. by standing on it
@@ -9637,7 +9637,7 @@ Levels 1–50 · 7 lines · about 1 min · roles: A, B
 - **A:** "see that height to the north? coliath has stood there since the war started" / "ever wonder what the lich up there guards"
 - **B:** *(sometimes)* "treasure?" / "no idea"
 - **A:** the garrison says treasure. the clifton lammia say a drowned king under it
-- **A:** the lacula sept say nothing but itself. a lich keeps its death close
+- **A:** the lacula sept reckon its own death is the treasure. liches hide those close
 - **A:** and it never comes down. not once. so we are fine sitting here
 - **B:** "unless someone pulls it" / "i am holding you to that"
 - **A:** {name_b} knows the whole story, if you ask nice in faction
@@ -10765,7 +10765,7 @@ Levels 20–45 · 8 lines · about 1 min · roles: B (Champion), C (Hero)
 
 Levels 1–50 · 30 lines · about 4 min · roles: B (Explorer), C (NoLifer/Leveler), D, E (Socialite/Daredevil)
 
-- **A:** "{q} does anyone else think there is a real door to the otherworld under one of our hills?" / "{q} i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld"
+- **A:** "{q} does anyone else think there is a real door to the otherworld under one of our hills?" / "i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld"
 - **D:** *(sometimes)* "wait, the otherworld? like tir na nog? i bind there, it is just a city" / "otherworld as in tir na nog the capital? i thought that was just where the trainers are"
 - **B:** "the old tale says when the milesians came, the tuatha went under the hills into the sidhe mounds. the land of youth was down there" / "in the old story the tuatha lost the land to the milesians and went down under the hills. tir na nog, the land of youth, was below"
 - **C:** "and the realm named its capital after it, and two towns, mag mell and tir na mbeo. names on a map are not doors" / "we named a city tir na nog and a town mag mell. that is a realm that likes old songs, not proof of a hole in a hill"
@@ -10801,7 +10801,7 @@ Levels 1–50 · 30 lines · about 4 min · roles: B (Explorer), C (NoLifer/Leve
 
 Levels 1–50 · 22 lines · about 3 min · roles: B (Bard), C (NoLifer/Leveler), D, E (Socialite/Daredevil)
 
-- **A:** "{q} the bards keep singing that the fianna never died, they only sleep under a hill in connacht" / "{q} heard another bard tonight swear the fianna are asleep under some hill in connacht"
+- **A:** "the bards keep singing that the fianna never died, they only sleep under a hill in connacht" / "heard another bard tonight swear the fianna are asleep under some hill in connacht"
 - **D:** *(sometimes)* "who are the fianna? is that a guild?" / "sorry, the fianna? are they a guild or a camp?"
 - **B:** "fionn mac cumhaill's war band, the best fighters this land ever had. they kept the coasts for the high king and hunted the whole land" / "fionn's men. a war band that guarded the high king, hunted with the great hounds bran and sceolang, and kept the coasts"
 - **B:** "you could not even join unless you ran the forest with men chasing you and broke no dry twig and loosened no braid" / "to join you leapt a branch as high as your brow, ducked one as low as your knee, and pulled a thorn from your foot at full run"
@@ -10856,7 +10856,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Explorer), D,
 
 Levels 1–50 · 19 lines · about 2 min · roles: B (Daredevil), C (NoLifer), D (Druid), E
 
-- **A:** "{q} what is the real trick to evern? every story i hear is different" / "{q} three people have told me how to fight evern and none of them agree"
+- **A:** "{q} what is the real trick to evern? every story i hear is different" / "three people have told me how to fight evern and none of them agree"
 - **E:** *(sometimes)* "who is evern?" / "evern? is that a person or a place?"
 - **C:** "a big named in breifine, our own frontier. seventy something, standing stones all round him, and fairies flying in to land on them" / "a named of seventy plus in breifine, among a field of standing stones, and fairies that keep coming to sit on the stones"
 - **B:** "and every fairy that lands on a stone heals him. so you kill the fairies first, every one, before they touch down" / "the trick is fairies first. each one that sits on a stone heals him, so the whole raid shoots fairies before anyone hits evern"
@@ -10906,7 +10906,7 @@ Levels 1–50 · 19 lines · about 2 min · roles: B (Explorer), C (Socialite), 
 
 Levels 1–50 · 20 lines · about 3 min · roles: B (Daredevil/Socialite), C (Explorer), D (Leveler), E
 
-- **A:** "{q} are the azure right to want every glimmer burned out of sheeroe?" / "{q} serious question, should hibernia back the azure crusade or leave sheeroe be?"
+- **A:** "{q} are the azure right to want every glimmer burned out of sheeroe?" / "serious question, should hibernia back the azure crusade or leave sheeroe be?"
 - **E:** *(sometimes)* "the azure, the blue firbolg up in sheeroe? i thought they were just mobs" / "who are the azure? the ones preaching at the glimmers?"
 - **C:** "firbolg kin who pray to the sky. they look at the glimmers and see death itself, so they crusade against the whole kingdom" / "sky worshipping firbolg kin. to them the glimmers are death given light, and they want every last one put out"
 - **B:** "they are firbolg blood. kin over strangers, every time" / "the azure are ours by blood. the glimmers are not ours by anything"
@@ -10932,7 +10932,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: B (Daredevil/Socialite), C (E
 
 Levels 1–50 · 19 lines · about 2 min · roles: B (NoLifer), C (Explorer), D, E (Crafter)
 
-- **A:** "{q} honest question: does hibernia trust the sylvan, or are we only glad of the help?" / "{q} do we really trust the sylvan, or do we just need them?"
+- **A:** "honest question: does hibernia trust the sylvan, or are we only glad of the help?" / "{q} do we really trust the sylvan, or do we just need them?"
 - **D:** *(sometimes)* "the sylvan, the tree people? i saw one in tir na nog and thought it was decoration" / "the sylvan like the race? i nearly hit one thinking it was a tree mob"
 - **B:** "they came out of hy brasil asking for swords against the fomorians. anyone who fights balor's lot is my friend" / "they asked us for help against the fomor and tur suil. an enemy of balor is a friend of mine"
 - **C:** "they let us onto hy brasil, an island every fisherman called a story. without them it would still be a tale in a bard's mouth" / "thanks to them we walk on hy brasil. we called that island a myth for as long as anyone can remember"
@@ -10983,7 +10983,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: B (Crafter), C (NoLifer), D (
 
 Levels 1–50 · 19 lines · about 2 min · roles: B (Bard), C (NoLifer), D (Eldritch), E
 
-- **A:** "{q} honest question, are bards overpowered or just loved?" / "{q} the other realms all say our bards are overpowered. are they right?"
+- **A:** "honest question, are bards overpowered or just loved?" / "{q} the other realms all say our bards are overpowered. are they right?"
 - **C:** "speed, mez, heals and a harp. yes. every alb in emain would say so with his last breath" / "speed, mez and heals in one kilt. that is three classes, and every enemy in emain macha knows it"
 - **B:** "and we die first in every fight because of it. first name on every target list in the frontier" / "so we die first. ask anyone who plays a bard in a keep fight: the albs go for us before the casters"
 - **C:** "you get rezzed first too, because nobody can run home without your speed" / "and you get the first rez, because the group cannot leave without your speed song"
@@ -11015,7 +11015,7 @@ Levels 10–40 · 21 lines · about 3 min · roles: B (Explorer), C (Leveler), D
 - **B:** "look at the names. quillan muire, beare muire, kacey muire, alsandair muire, even the muire herbalist. a whole house, laid down together" / "read the cons. quillan, beare, kacey, alsandair, all muires. there is even the family herbalist down there with them"
 - **C:** "and the muire hero still guards the rest. at level twenty one he guards them very poorly" / "the muire hero guards them still. i have killed him so many times i feel bad about it"
 - **E:** "you do realise that makes you the haunting, right?" / "so you are the thing that haunts them. congratulations"
-- **B:** "what i want to know is why the lord went mad. lords do not just wake up and kill their families" / "nobody says why. a lord does not murder his house over breakfast. something did that to him"
+- **B:** "what i want to know is why the lord went mad. lords do not just wake up and kill their families" / "nobody says why. a lord does not murder his house over nothing. something did that to him"
 - **C:** "some lords do. read the old tales, half the kings in them end at a feast with knives" / "have you read the old songs? half the kings in them end their own families"
 - **B:** "my guess is a geis. the old heroes carried bans they could not break. break your geis and your luck turns on you, and your mind" / "a geis, i think. the old tales are full of them, a sacred ban. break it and everything you love turns on you"
 - **D:** "what is a geis?" / "a geis?"
@@ -11062,7 +11062,7 @@ Levels 1–50 · 21 lines · about 3 min · roles: B (NoLifer), C (Explorer), D,
 
 Levels 1–50 · 20 lines · about 3 min · roles: B (Daredevil), C (NoLifer), D (Explorer), E
 
-- **A:** "{q} is juggernaut really as strong as people say, or is it all fear?" / "{q} heard juggernaut hits way harder than his con says"
+- **A:** "{q} is juggernaut really as strong as people say, or is it all fear?" / "heard juggernaut hits way harder than his con says"
 - **E:** *(sometimes)* "juggernaut?" / "who is juggernaut?"
 - **C:** "a named in the cursed forest. listed at seventy five, and i never met anyone who believed the listing" / "he walks the cursed forest. seventy five on paper. nobody who has met him believes the paper"
 - **B:** "i say he is soft. a big brute with legs. someone just has to commit" / "he is a big lump with legs. we could take him with a real group"
@@ -11088,7 +11088,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: B (Daredevil), C (NoLifer), D
 
 Levels 1–50 · 15 lines · about 2 min · roles: A (NoLifer), B, C (Explorer), D (Socialite/Leveler)
 
-- **A:** "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it" / "{q} the tale of the sheeroe pass, for anyone who never heard it. my version, anyway"
+- **A:** "sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it" / "the tale of the sheeroe pass, for anyone who never heard it. my version, anyway"
 - **B:** *(sometimes)* "please. i only know sheeroe as the glowing place nobody lets me near" / "go on, all i know is the glow"
 - **A:** "the rangers knew the bog of cullen like their own hands. every pool, every hummock, every crow that badb sends out to look" / "in those days the rangers had walked every foot of cullen. they knew every pool and every one of badb's birds"
 - **A:** "then one grey morning the mist came up off the bog thicker than they had ever seen it, and it stayed" / "then came a morning when the mist rose and would not lift. the bog went white, and nobody went in"
@@ -11108,7 +11108,7 @@ Levels 1–50 · 15 lines · about 2 min · roles: A (NoLifer), B, C (Explorer),
 
 Levels 10–50 · 13 lines · about 2 min · roles: A (NoLifer/Explorer), B, C (Leveler), D (Socialite/Daredevil)
 
-- **A:** "{q} anyone want the tale of the muire house? the way my first guild told it, anyway" / "{q} here is how my old guild told the story of muire tomb. take it as a story"
+- **A:** "{q} anyone want the tale of the muire house? the way my first guild told it, anyway" / "here is how my old guild told the story of muire tomb. take it as a story"
 - **B:** *(sometimes)* "yes please. i camp there and nobody tells me anything" / "go on, i am in there most nights"
 - **A:** "the muires were an old house with good land and a lord people liked. a family herbalist, a hero sworn to them, children in the hall" / "they were an old family, the muires, with a lord, a hero sworn to the house, a herbalist and a hall full of kin"
 - **A:** "the story says the lord rode out hunting one winter and came back quiet. he would not eat, and he would not sit by the fire" / "then one winter the lord came home from the hills changed. he would not eat at the table or look anyone in the eye"
@@ -11126,7 +11126,7 @@ Levels 10–50 · 13 lines · about 2 min · roles: A (NoLifer/Explorer), B, C (
 
 Levels 1–50 · 15 lines · about 2 min · roles: A (Bard/Druid), B, C (NoLifer), D (Daredevil/Socialite)
 
-- **A:** "{q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil" / "{q} story time. the tale of balor's eye, the way the bards sing it in tir na nog"
+- **A:** "{q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil" / "story time. the tale of balor's eye, the way the bards sing it in tir na nog"
 - **B:** *(sometimes)* "yes, everyone says do not look him in the eye and nobody says why" / "go on. i keep hearing about his eye"
 - **A:** "balor was king of the fomorians. as a boy he spied on his father's druids brewing a spell, and the fumes went into one eye" / "balor of the fomor was a boy when he watched druids at their cauldron. the fumes got into one eye, and it went bad for ever"
 - **A:** "after that whatever the eye looked on died. in battle four men raised the lid with a polished handle, and armies fell" / "from then on the eye killed whatever it saw. it took four men with a handle to lift the lid, and then whole hosts died"
@@ -11146,7 +11146,7 @@ Levels 1–50 · 15 lines · about 2 min · roles: A (Bard/Druid), B, C (NoLifer
 
 Levels 1–50 · 14 lines · about 2 min · roles: A (Socialite/NoLifer), B, C (Leveler), D (Explorer)
 
-- **A:** "{q} since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it" / "{q} the story of oisin and niamh, for anyone who never heard it. the short version"
+- **A:** "since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it" / "the story of oisin and niamh, for anyone who never heard it. the short version"
 - **A:** "oisin was fionn's son, a poet and a fighter of the fianna. one day a woman rode out of the west on a white horse, niamh of the golden hair" / "oisin, son of fionn, was hunting with the fianna when niamh of the golden hair rode to them out of the sea mist on a white horse"
 - **B:** "who was she?" / "wait, who is niamh?"
 - **A:** "a king's daughter from tir na nog, the land of youth. she had come for oisin alone, and he got up behind her and they rode over the waves" / "a princess of the land of youth. she asked oisin to come with her, and he climbed up behind her and they rode out across the sea"
@@ -11165,7 +11165,7 @@ Levels 1–50 · 14 lines · about 2 min · roles: A (Socialite/NoLifer), B, C (
 
 Levels 1–50 · 15 lines · about 2 min · roles: A (Explorer/NoLifer), B, C (Leveler), D (Crafter)
 
-- **A:** "{q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it?" / "{q} heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one"
+- **A:** "{q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it?" / "heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one"
 - **B:** "who is olcasgean?" / "olcasgean? never heard of that one"
 - **A:** "a titan, a child of gaea, old as the first hills. he waits at the end of galladoria, and his roots run under all of hy brasil" / "the titan at the bottom of galladoria. a child of gaea, older than tuatha and fomor, with roots under the whole isle"
 - **A:** "the way the sylvan tell it, he wanted the whole isle for himself. every tree to lean toward him, every root to drink from his" / "the sylvan say he was not content to be one old power among many. he wanted every root on the isle to answer to him"
@@ -11248,7 +11248,7 @@ Levels 1–50 · 20 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 
 - **A:** "{name_b} what is actually at the bottom of galladoria? the sylvan go quiet when i ask" / "{name_b}, tell us of the root"
 - **C:** "hush, everyone, {name_b} has the galladoria tale" / "quiet now, this is the old one. older than us"
-- **D:** "yes, tell it. i have only seen the first rooms" / "please {name_b}, the whole of it"
+- **D:** "go on, tell it. i never got past the first rooms" / "please {name_b}, the whole of it"
 - **B:** "if you will be quiet, yes" / "very well. sit close"
 - **B:** his name is olcasgean. the root. he was old and angry before the first forest of hy brasil woke
 - **B:** the sylvan will not call him a god. the scholars of tir na nog say titan
@@ -11305,7 +11305,7 @@ Levels 1–50 · 19 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **B:** "if you will listen to the end, yes" / "very well. the bards will not, so i will"
 - **B:** the druids call him a lord made of his own subjects. here is why
 - **B:** two princes stood equal at the head of the demon court
-- **B:** one slew the other and ate him, and kept his voice
+- **B:** one prince devoured his brother, and speaks with that voice still
 - **F:** *(sometimes)* "a lord made of his own subjects. oh" / "that is what the druids meant"
 - **B:** and so with each who challenged him. a hundred voices now. the court named him legion
 - **B:** the druids say he is what the otherworld becomes with no law in it
@@ -11385,7 +11385,7 @@ Levels 1–50 · 22 lines · about 3 min · roles: A, B, C (Socialite/Explorer),
 - **A:** "{name_b} who is the champion before the hall in marfach" / "{name_b} tell avartack tonight"
 - **C:** "hush, breifine story" / "quiet in faction, the ferryman's son"
 - **D:** "please. he would not die and i want to know why" / "tell it {name_b}, the ford and all"
-- **B:** "very well. gather in, the ford is a long tale" / "if you will be quiet, i will"
+- **B:** "very well. gather in, the ford is a long tale" / "i will, if you all hush"
 - **B:** avartack was the son of aed dub. the ferryman who kept the ford of the erne
 - **B:** he grew up fighting in the water. where a man cannot step back or aside. only reach
 - **B:** he was fostered beside the boy who became caimheul. the day caimheul was made chieftain he named his foster brother champion
@@ -11472,7 +11472,7 @@ Levels 1–50 · 6 lines · about 1 min · roles: A, B
 - **A:** "the champion ahead. somebody faces him at all times. never turn your back" / "marfach rule. dont all step away from avartack at once"
 - **B:** *(sometimes)* "or what" / "why"
 - **A:** he thinks that floor is a ford. law of the water. a turned back may be struck down
-- **A:** and the moment nobody stands against him he is whole again
+- **A:** the second nobody is fighting him, hes back to full
 - **B:** "face him. dont turn. ok" / "so no running. lovely"
 - **A:** {name_b} tells about his oath. it had no ending in it
 
@@ -11485,7 +11485,7 @@ Levels 1–50 · 6 lines · about 1 min · roles: A, B
 - **A:** he taught his sons that in the dust of the yard. the man you cannot see dies first. long spear
 - **A:** and when he throws the shield away hes hurt deep and thinks we are breaking. thats the moment
 - **B:** "front or far. ok" / "so the shield going is good news"
-- **A:** {name_b} tells about the nine. ask on a quiet night
+- **A:** {name_b} tells about the nine. ask when faction is quiet
 
 ### fireside balor
 

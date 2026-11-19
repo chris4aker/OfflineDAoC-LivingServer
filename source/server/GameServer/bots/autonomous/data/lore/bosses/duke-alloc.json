@@ -132,7 +132,7 @@
  "botLines": {
   "briefing": [
    "alloc is west side of balns hall. [pull him to the west wall|pull him west], away from baln",
-   "75, no tricks. tanks hold him, [dps go|nuke away], dont touch baln",
+   "75, no tricks. tanks hold him, [everyone else hits|nuke away], dont touch baln",
    "zhalzhak and chaosmar are close. [watch the pull|careful on the pull]",
    "dont ask for the standard, it doesnt drop. [lol|seriously]"
   ],

@@ -114,16 +114,16 @@
   },
   "botLines": {
     "briefing": [
-      "hord self heals now and then, its tiny. just keep dps on",
-      "hord: steady dps, his heal is small and instant",
+      "hord self heals now and then, its tiny. just keep hitting him",
+      "hord: steady damage, his heal is small and instant",
       "clear the social adds around hord first",
-      "hord first, steady dps",
+      "hord first, keep hitting",
       "hords heal is tiny and instant, dont bother interrupting",
-      "hord: steady dps, real tank, clear his room first",
+      "hord: steady damage, real tank, clear his room first",
       "hord is cc immune, save your stuns"
     ],
     "aftermathWin": [
-      "hord down, steady dps",
+      "hord down, steady hitting does it",
       "hord down, nobody wandered off",
       "the healer giant is dead. felt bad tbh",
       "hord's braided belt dropped",
@@ -133,7 +133,7 @@
     ],
     "aftermathLoss": [
       "we stopped to fight the socials and hord ticked back up a bit",
-      "we stopped dps for the adds and hord got a few heals in",
+      "we stopped hitting him for the adds and hord got a few heals in",
       "too many adds pulled with hord",
       "we pulled hord and ozur together",
       "wasted every interrupt on a heal you cant interrupt",

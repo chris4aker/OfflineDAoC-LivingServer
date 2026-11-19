@@ -244,7 +244,7 @@ someday i will stand where legion can see me and not run. someday
 @role C type=Daredevil
 @role D type=* levels=5-25
 @role E type=Explorer levels=30-50
-A: {q} is behemoth really unkillable, or is that a story the raid leaders tell | {q} anyone else think behemoth can die and nobody has managed it yet
+A: {q} is behemoth really unkillable, or is that a story the raid leaders tell? | {q} anyone else think behemoth can die and nobody has managed it yet?
 ?D: wait, who is behemoth? i keep seeing the name in faction | whos behemoth? sounds like a boat
 B: the biggest thing in darkness falls. level ninety nine, a room to himself, and one swing from him ends you. guilds swear nothing sticks | a demon in df, level ninety nine, not a typo. whatever he hits dies. people say hits on him do nothing
 D: ninety nine? i thought fifty was the top | how is anything ninety nine, i thought fifty was as high as it goes
@@ -279,7 +279,7 @@ B: i'll hold your bind point | dont expect a rez from me
 @role C type=NoLifer levels=30-50
 @role D type=Socialite
 @role E type=* levels=5-25
-A: who actually dug the tunnels under the frontiers? nobody ever answers that | {q} whose work are those tunnels under all three frontiers
+A: who actually dug the tunnels under the frontiers? nobody ever answers that | {q} whose work are those tunnels under all three frontiers?
 B: the dead did the digging. but the dead dont make plans, somebody gave them the plans | undead did the shovelling. undead dont draw plans though
 ?E: wait, tunnels? under the frontier? | there are tunnels under the frontier? since when
 C: since the summer after darkness falls opened. one under each frontier, all three found the same season, all full of undead | they turned up the summer after df came. three of them, one per frontier, all crawling with the dead
@@ -310,7 +310,7 @@ C: bring a healer. the dead down there hit like they mean it | if it bends down,
 @role C type=Explorer
 @role D class=Minstrel,Skald,Bard
 @role E type=* levels=5-25
-A: wolf, stone or glimmer, which of the three dragons is the oldest | {q} settle it: golestandt, gjalpinulva or cuuldurach, who came first
+A: wolf, stone or glimmer, which of the three dragons is the oldest | {q} settle it: golestandt, gjalpinulva or cuuldurach, who came first?
 B: they all came the same winter, the first winter of the war. one patch, three dragons. none of them is older | same winter, same week. the three of them turned up together. old is a funny word for that
 C: they turned up for us. that is not the same as being new. they were in their lairs long before anyone walked in | we found them the same winter. that says nothing about when they got there
 ?E: hold on, which dragon is which? | sorry, three dragons? i only knew there was one
@@ -342,7 +342,7 @@ C: i'd sing along to that one | do it, and sing it in every town. i want to see 
 @role C type=NoLifer levels=30-50
 @role D type=Crafter
 @role E type=* levels=5-25
-A: {q} settle a bet. are the dragons he or she | {q} he or she, when we talk about the three dragons? i have a wager riding on it
+A: {q} settle a bet. are the dragons he or she? | {q} he or she, when we talk about the three dragons? i have a wager riding on it
 B: the albs sing the stone one as she. golestandt is a she in every alb song | golestandt is she. thats how the albs sing it, ask any of their minstrels
 C: sung as she. half the raid leaders call her he. the journal that fell out of the sky only had her name on it | sung as she, shouted at as he. the scorched journal from the moor only gave a name, not a he or she
 ?E: how would you even tell, with a dragon | wait, how does anyone check that on a dragon
@@ -371,7 +371,7 @@ D: i'm paying out the bet on the stone one and holding the money on the wolf | i
 @role C type=Daredevil
 @role D type=* levels=5-15
 @role E type=NoLifer levels=35-50
-A: do the con colours lie or is it just me | {q} anyone else think the con colours lie on named mobs
+A: do the con colours lie or is it just me | {q} anyone else think the con colours lie on named mobs?
 ?D: sorry, con colours? i see the colours but nobody told me what they mean | whats the colour thing when you /con a mob
 B: grey gives nothing, green is easy, blue is fair, yellow is your level, orange hurts, red is a fight, purple you run | grey is no xp, green is easy, blue is good xp, yellow is even, orange is tough, red is a group's job, purple is a grave
 B: blue is the best xp per minute, for the record. fight blues all day and you level twice as fast as the heroes | i live on blues. never a death, steady xp. the colours are fair on normal mobs
@@ -399,7 +399,7 @@ E: you'll do fine | that's the whole lesson. took me forty levels to learn it
 @role C type=Leveler
 @role D type=NoLifer levels=35-50
 @role E type=* levels=5-25
-A: do the dragons really drop nothing but coin | {q} is it true the dragons drop almost nothing worth having
+A: do the dragons really drop nothing but coin | {q} is it true the dragons drop almost nothing worth having?
 D: they drop respec stones. fifty a kill, every dragon, since the winter patch. thats what the raids are really for | since the winter patch every dragon leaves fifty luminescent respec stones. thats why the raids fill up now
 ?E: whats a respec stone? | respec? like resetting your skills?
 B: you give it in and you get to spend your points again. one bad spec and you'll want one more than any sword | resets your spec. put points wrong at twenty and by forty you'll trade your mount for one
@@ -427,7 +427,7 @@ B: if a scale ever drops, it's mine. i called it, everyone heard | first scale c
 @role C type=NoLifer levels=30-50
 @role D type=Daredevil
 @role E type=* levels=5-25
-A: is there anything out past the edge of the world | {q} has anyone here ever swum to the very edge of the map
+A: is there anything out past the edge of the world | {q} has anyone here ever swum to the very edge of the map?
 B: a wall. you swim and swim, the water stays the same and then you just stop. like cold glass you cannot see | i swam out until my map showed nothing but blue, then i hit something i couldnt see. no splash, no sound, just stop
 ?E: wait, you can swim off the map? | the map ends? i thought it just kept going
 C: every map ends in water. the water doesnt end, you do. the gods put a wall there | the land stops, the sea goes on, and then the sea stops too. invisible, all the way round
@@ -457,7 +457,7 @@ B: i'm going this weekend. i'll /say what i see at the wall and type it in facti
 @role C type=Socialite
 @role D type=Explorer
 @role E type=* levels=5-25
-A: will there ever be more relics, or is six all we get | {q} anyone think we'll ever see new relics on the pedestals
+A: will there ever be more relics, or is six all we get | {q} anyone think we'll ever see new relics on the pedestals?
 B: the patch that brought relics said more would come. that was before the first keep fell. still six | when relics came in, the notes said there'd be more in time. years later, six. two each
 ?E: six relics? which ones? | wait, which ones are there? i only know we're meant to guard ours
 B: albion has merlin's staff and excalibur's scabbard. midgard has thor's hammer and the horn of valhalla | the albs keep merlin's staff and the scabbard of excalibur, the mids keep thor's hammer and the horn of valhalla
@@ -487,7 +487,7 @@ C: first to find one buys the drinks in every capital | if anyone finds one, the
 @role C type=Leveler
 @role D type=* levels=5-25
 @role E type=NoLifer levels=35-50
-A: is there still a dungeon out there nobody has found | {q} you think there are still dungeons nobody has walked into yet
+A: is there still a dungeon out there nobody has found | {q} you think there are still dungeons nobody has walked into yet?
 B: always one more. this world keeps finding pieces of itself, its been doing it since the first winter | there's always one more. the whole history of this world is people saying that was everything, and then more
 C: everything worth finding is on the maps by now. if it existed, someone would sell a map to it | if there were a hidden dungeon some guild would be farming it and selling the drops
 E: you say that. i remember the first winter, when three dragons turned up in one week and nobody had a map for any of them | people said the same before the dragon lairs. one winter they were just there, all three realms, same week
@@ -516,7 +516,7 @@ C: you two have fun. i'll be at my camp, getting xp from the dungeons that exist
 @role C type=Daredevil
 @role D class=Wizard,Runemaster,Eldritch levels=30-50
 @role E type=* levels=5-25
-A: {q} sacrifice or demon, which do you kill first at govannon | is it true you have to stop govannon's adds before they reach the middle
+A: {q} sacrifice or demon, which do you kill first at govannon? | is it true you have to stop govannon's adds before they reach the middle
 ?E: whos govannon? | sorry, who or what is govannon
 B: grand summoner govannon. he holds the summoner's hall, under the frontier tunnels. level eighty | the boss of the summoner's hall, the hall at the bottom of the frontier dungeons. grand summoner, level eighty
 B: the hall is the only place where all three realms meet. sidhe guards, the summoners, and govannon at the end | its where the three realms come together. sidhe guards on the doors, summoners in the rooms, then him
@@ -550,7 +550,7 @@ C: if i ever get in there i want the demon. it has the better name | one day i'l
 @role C type=Socialite
 @role D type=Leveler
 @role E type=* levels=5-25
-A: does darkness falls make the realm war better or worse | {q} is darkness falls good for the realms or bad
+A: does darkness falls make the realm war better or worse | {q} is darkness falls good for the realms or bad?
 ?E: how does df even work? who gets in? | wait, why can only one realm use df at a time
 B: whichever realm holds the most keeps gets the portal. count the keeps, thats your answer, every day of the week | most frontier keeps opens df. the moment another realm takes enough keeps, it flips
 C: so its weather. you dont ask if df is open, you ask if df is ours today | df is like weather. check when you log in, check again before supper
@@ -579,7 +579,7 @@ B: so it depends whose it is this week. same as always | no answer then. it's go
 @role C type=NoLifer levels=30-50
 @role D type=Socialite
 @role E type=* levels=5-25
-A: were the old maps wrong, or did the world change under them | {q} why do the old maps never match the land
+A: were the old maps wrong, or did the world change under them | {q} why do the old maps never match the land?
 B: the world changed. land comes out of the mist when its ready, and the old maps caught it before it was ready | the land moves. the first maps were honest, they just drew a world that hadnt finished arriving
 C: the maps were wrong. half the first guides were written from beta notes and wishful thinking | the mapmakers guessed. a lot of the first guides came from people who'd never left town
 ?E: what was wrong with them? | what do you mean, the old maps were different?
@@ -609,7 +609,7 @@ B: i trust a map that admits what it doesnt know. go ride to a blank bit sometim
 @role C type=* levels=5-25
 @role D type=Socialite,Daredevil
 @role E type=Leveler
-A: ever hear how the first raid met legion's court? the night darkness falls opened | {q} want the story of the first night anyone went into darkness falls
+A: ever hear how the first raid met legion's court? the night darkness falls opened | {q} want the story of the first night anyone went into darkness falls?
 ?C: i've never been to df. go on | sure, i've never seen df, tell it
 B: it opened in the spring after the war started. one evening a portal was just there, and only the realm with the most keeps could use it | the spring after launch the portal appeared. word went round that only the realm holding the most keeps could step through
 B: the first ones down met a gatekeeper. gatekeeper dommel. they thought he was the boss. he was the doorman | the first thing anyone met was gatekeeper dommel, and they all thought that was the whole dungeon. he was just the door
@@ -655,7 +655,7 @@ D: bring a bard. it's tradition | sing on the way. thats how the story starts, a
 @role C type=* levels=5-25
 @role D class=Minstrel,Skald,Bard
 @role E type=Leveler,Crafter
-A: ever hear the story of the relics we were promised | {q} want the tale of the relics that never came
+A: ever hear the story of the relics we were promised | {q} want the tale of the relics that never came?
 ?C: promised by who? | there were supposed to be more relics?
 B: when relics first went on the pedestals, the word from on high was that more would come. that was the first autumn of the war | right at the start, when the six relics were set up, the devs wrote that more were coming. they never did
 B: and the story the old timers tell is that the relic keeps were built for more. go look at the pedestals. room for one more, every realm | the old timers say every realm's relic rooms have one pedestal standing empty. room for a seventh, or an eighth

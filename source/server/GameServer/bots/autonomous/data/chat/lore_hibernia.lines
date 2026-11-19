@@ -231,7 +231,7 @@ lore is nice and all but i go to sheeroe for xp, not for the otherworld
 @role C type=NoLifer,Leveler levels=35-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} does anyone else think there is a real door to the otherworld under one of our hills? | {q} i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld
+A: {q} does anyone else think there is a real door to the otherworld under one of our hills? | i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld
 ?D: wait, the otherworld? like tir na nog? i bind there, it is just a city | otherworld as in tir na nog the capital? i thought that was just where the trainers are
 B: the old tale says when the milesians came, the tuatha went under the hills into the sidhe mounds. the land of youth was down there | in the old story the tuatha lost the land to the milesians and went down under the hills. tir na nog, the land of youth, was below
 C: and the realm named its capital after it, and two towns, mag mell and tir na mbeo. names on a map are not doors | we named a city tir na nog and a town mag mell. that is a realm that likes old songs, not proof of a hole in a hill
@@ -271,7 +271,7 @@ C: send me a tell from inside. if it arrives three hundred years late i will kno
 @role C type=NoLifer,Leveler levels=30-50
 @role D type=* levels=5-25
 @role E type=Socialite,Daredevil
-A: {q} the bards keep singing that the fianna never died, they only sleep under a hill in connacht | {q} heard another bard tonight swear the fianna are asleep under some hill in connacht
+A: the bards keep singing that the fianna never died, they only sleep under a hill in connacht | heard another bard tonight swear the fianna are asleep under some hill in connacht
 ?D: who are the fianna? is that a guild? | sorry, the fianna? are they a guild or a camp?
 B: fionn mac cumhaill's war band, the best fighters this land ever had. they kept the coasts for the high king and hunted the whole land | fionn's men. a war band that guarded the high king, hunted with the great hounds bran and sceolang, and kept the coasts
 B: you could not even join unless you ran the forest with men chasing you and broke no dry twig and loosened no braid | to join you leapt a branch as high as your brow, ducked one as low as your knee, and pulled a thorn from your foot at full run
@@ -334,7 +334,7 @@ C: i will watch from the ridge and call him he until someone proves otherwise | 
 @role C type=NoLifer levels=40-50
 @role D class=Druid
 @role E type=* levels=5-25
-A: {q} what is the real trick to evern? every story i hear is different | {q} three people have told me how to fight evern and none of them agree
+A: {q} what is the real trick to evern? every story i hear is different | three people have told me how to fight evern and none of them agree
 ?E: who is evern? | evern? is that a person or a place?
 C: a big named in breifine, our own frontier. seventy something, standing stones all round him, and fairies flying in to land on them | a named of seventy plus in breifine, among a field of standing stones, and fairies that keep coming to sit on the stones
 B: and every fairy that lands on a stone heals him. so you kill the fairies first, every one, before they touch down | the trick is fairies first. each one that sits on a stone heals him, so the whole raid shoots fairies before anyone hits evern
@@ -392,7 +392,7 @@ D: tell him the fomorians want their land back. that should keep him quiet for a
 @role C type=Explorer
 @role D type=Leveler levels=25-50
 @role E type=* levels=5-25
-A: {q} are the azure right to want every glimmer burned out of sheeroe? | {q} serious question, should hibernia back the azure crusade or leave sheeroe be?
+A: {q} are the azure right to want every glimmer burned out of sheeroe? | serious question, should hibernia back the azure crusade or leave sheeroe be?
 ?E: the azure, the blue firbolg up in sheeroe? i thought they were just mobs | who are the azure? the ones preaching at the glimmers?
 C: firbolg kin who pray to the sky. they look at the glimmers and see death itself, so they crusade against the whole kingdom | sky worshipping firbolg kin. to them the glimmers are death given light, and they want every last one put out
 B: they are firbolg blood. kin over strangers, every time | the azure are ours by blood. the glimmers are not ours by anything
@@ -422,7 +422,7 @@ A: so the realm is split, as usual | as usual, three opinions and no answer
 @role C type=Explorer
 @role D type=* levels=5-25
 @role E type=Crafter
-A: {q} honest question: does hibernia trust the sylvan, or are we only glad of the help? | {q} do we really trust the sylvan, or do we just need them?
+A: honest question: does hibernia trust the sylvan, or are we only glad of the help? | {q} do we really trust the sylvan, or do we just need them?
 ?D: the sylvan, the tree people? i saw one in tir na nog and thought it was decoration | the sylvan like the race? i nearly hit one thinking it was a tree mob
 B: they came out of hy brasil asking for swords against the fomorians. anyone who fights balor's lot is my friend | they asked us for help against the fomor and tur suil. an enemy of balor is a friend of mine
 C: they let us onto hy brasil, an island every fisherman called a story. without them it would still be a tale in a bard's mouth | thanks to them we walk on hy brasil. we called that island a myth for as long as anyone can remember
@@ -481,7 +481,7 @@ D: if you ever get one, show it before you sell it. i want proof | put it on dis
 @role C type=NoLifer levels=35-50
 @role D class=Eldritch
 @role E type=* levels=5-25
-A: {q} honest question, are bards overpowered or just loved? | {q} the other realms all say our bards are overpowered. are they right?
+A: honest question, are bards overpowered or just loved? | {q} the other realms all say our bards are overpowered. are they right?
 C: speed, mez, heals and a harp. yes. every alb in emain would say so with his last breath | speed, mez and heals in one kilt. that is three classes, and every enemy in emain macha knows it
 B: and we die first in every fight because of it. first name on every target list in the frontier | so we die first. ask anyone who plays a bard in a keep fight: the albs go for us before the casters
 C: you get rezzed first too, because nobody can run home without your speed | and you get the first rez, because the group cannot leave without your speed song
@@ -517,7 +517,7 @@ B: it is more than that. the old lord of the muire house went mad and killed his
 B: look at the names. quillan muire, beare muire, kacey muire, alsandair muire, even the muire herbalist. a whole house, laid down together | read the cons. quillan, beare, kacey, alsandair, all muires. there is even the family herbalist down there with them
 C: and the muire hero still guards the rest. at level twenty one he guards them very poorly | the muire hero guards them still. i have killed him so many times i feel bad about it
 E: you do realise that makes you the haunting, right? | so you are the thing that haunts them. congratulations
-B: what i want to know is why the lord went mad. lords do not just wake up and kill their families | nobody says why. a lord does not murder his house over breakfast. something did that to him
+B: what i want to know is why the lord went mad. lords do not just wake up and kill their families | nobody says why. a lord does not murder his house over nothing. something did that to him
 C: some lords do. read the old tales, half the kings in them end at a feast with knives | have you read the old songs? half the kings in them end their own families
 B: my guess is a geis. the old heroes carried bans they could not break. break your geis and your luck turns on you, and your mind | a geis, i think. the old tales are full of them, a sacred ban. break it and everything you love turns on you
 D: what is a geis? | a geis?
@@ -572,7 +572,7 @@ E: dare stands: i stand on moher with a fire arrow every evening until something
 @role C type=NoLifer levels=40-50
 @role D type=Explorer
 @role E type=* levels=5-25
-A: {q} is juggernaut really as strong as people say, or is it all fear? | {q} heard juggernaut hits way harder than his con says
+A: {q} is juggernaut really as strong as people say, or is it all fear? | heard juggernaut hits way harder than his con says
 ?E: juggernaut? | who is juggernaut?
 C: a named in the cursed forest. listed at seventy five, and i never met anyone who believed the listing | he walks the cursed forest. seventy five on paper. nobody who has met him believes the paper
 B: i say he is soft. a big brute with legs. someone just has to commit | he is a big lump with legs. we could take him with a real group
@@ -605,7 +605,7 @@ A: i will watch from the werewolf camp and cheer | i will be at the werewolf cam
 @role B type=* levels=5-25
 @role C type=Explorer
 @role D type=Socialite,Leveler
-A: {q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it | {q} the tale of the sheeroe pass, for anyone who never heard it. my version, anyway
+A: sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it | the tale of the sheeroe pass, for anyone who never heard it. my version, anyway
 ?B: please. i only know sheeroe as the glowing place nobody lets me near | go on, all i know is the glow
 A: the rangers knew the bog of cullen like their own hands. every pool, every hummock, every crow that badb sends out to look | in those days the rangers had walked every foot of cullen. they knew every pool and every one of badb's birds
 A: then one grey morning the mist came up off the bog thicker than they had ever seen it, and it stayed | then came a morning when the mist rose and would not lift. the bog went white, and nobody went in
@@ -628,7 +628,7 @@ A: that is the short of it. ask one of the realm's storytellers for the real one
 @role B type=* levels=10-20
 @role C type=Leveler
 @role D type=Socialite,Daredevil
-A: {q} anyone want the tale of the muire house? the way my first guild told it, anyway | {q} here is how my old guild told the story of muire tomb. take it as a story
+A: {q} anyone want the tale of the muire house? the way my first guild told it, anyway | here is how my old guild told the story of muire tomb. take it as a story
 ?B: yes please. i camp there and nobody tells me anything | go on, i am in there most nights
 A: the muires were an old house with good land and a lord people liked. a family herbalist, a hero sworn to them, children in the hall | they were an old family, the muires, with a lord, a hero sworn to the house, a herbalist and a hall full of kin
 A: the story says the lord rode out hunting one winter and came back quiet. he would not eat, and he would not sit by the fire | then one winter the lord came home from the hills changed. he would not eat at the table or look anyone in the eye
@@ -649,7 +649,7 @@ D: so that is why you do not whistle in there. he is listening | that explains t
 @role B type=* levels=5-25
 @role C type=NoLifer levels=35-50
 @role D type=Daredevil,Socialite
-A: {q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil | {q} story time. the tale of balor's eye, the way the bards sing it in tir na nog
+A: {q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil | story time. the tale of balor's eye, the way the bards sing it in tir na nog
 ?B: yes, everyone says do not look him in the eye and nobody says why | go on. i keep hearing about his eye
 A: balor was king of the fomorians. as a boy he spied on his father's druids brewing a spell, and the fumes went into one eye | balor of the fomor was a boy when he watched druids at their cauldron. the fumes got into one eye, and it went bad for ever
 A: after that whatever the eye looked on died. in battle four men raised the lid with a polished handle, and armies fell | from then on the eye killed whatever it saw. it took four men with a handle to lift the lid, and then whole hosts died
@@ -672,7 +672,7 @@ C: and that is only the nursery verse. ask one of the realm's storytellers for t
 @role B type=* levels=5-25
 @role C type=Leveler
 @role D type=Explorer
-A: {q} since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it | {q} the story of oisin and niamh, for anyone who never heard it. the short version
+A: since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it | the story of oisin and niamh, for anyone who never heard it. the short version
 A: oisin was fionn's son, a poet and a fighter of the fianna. one day a woman rode out of the west on a white horse, niamh of the golden hair | oisin, son of fionn, was hunting with the fianna when niamh of the golden hair rode to them out of the sea mist on a white horse
 B: who was she? | wait, who is niamh?
 A: a king's daughter from tir na nog, the land of youth. she had come for oisin alone, and he got up behind her and they rode over the waves | a princess of the land of youth. she asked oisin to come with her, and he climbed up behind her and they rode out across the sea
@@ -694,7 +694,7 @@ D: and why i think the door under the hill is real. you do not give a warning th
 @role B type=* levels=5-25
 @role C type=Leveler
 @role D type=Crafter
-A: {q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it? | {q} heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one
+A: {q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it? | heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one
 B: who is olcasgean? | olcasgean? never heard of that one
 A: a titan, a child of gaea, old as the first hills. he waits at the end of galladoria, and his roots run under all of hy brasil | the titan at the bottom of galladoria. a child of gaea, older than tuatha and fomor, with roots under the whole isle
 A: the way the sylvan tell it, he wanted the whole isle for himself. every tree to lean toward him, every root to drink from his | the sylvan say he was not content to be one old power among many. he wanted every root on the isle to answer to him

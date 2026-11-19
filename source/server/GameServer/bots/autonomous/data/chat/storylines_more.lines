@@ -143,7 +143,7 @@ F: "told you so" is the teacher's last weapon | the teacher always keeps one les
 H: can one of you teach me? i still mess up the corner thing | so who teaches me now? i'm still pulling everything
 B: i will. {name_a} can grade me | i got this one. {name_a} can watch and wince
 A: deal. just dont teach the charging part | go ahead. i'll be right here correcting you
-E: the student becomes the teacher. classic | and round it goes. faction edition
+E: the student becomes the teacher. classic | and round it goes. faction style
 ~ 6
 H: ok. ranged pull, back up, corner. got it | pulled one. just one. i'm a genius
 
@@ -162,14 +162,14 @@ A: big news. {name_b} sent me a tell and asked for lessons again | so {name_b} c
 B: yeah. i did. i was wrong. the charging thing gets people killed | i'm back with {name_a}. turns out the slow way works
 C: did the big group finally drop you? | what happened to the cool group
 B: they kept wiping. every run. charging in. i left | four wipes in a row, all charging in. i'm done with them
-G: told you. respect the one who taught you | the old ways are old because they work
+G: told you. you never forget who taught you | the old ways are old because they work
 A: and {player} said it in faction when nobody else would. ty {player} | {player} backed me when half the realm called me old school. thank you {player}
 B: yeah {player}, i read that. you were right. annoyingly | {player} said "listen to your teacher" and i hated it. and it was true
 E: {name_b} admitting it. never thought i'd see the day | the student came home. didnt see that coming
 B: lesson one again. ranged pull, back off, corner | ok. ranged pull, corner, let them come. i remember
 A: good. lesson two: pick groups that dont laugh at your friends | and lesson two: dont laugh when your group trashes your friends
 B: yeah. that one i learned the hard way | that one hurt to learn
-D: this is the best ending | im so glad they made up
+D: what a way for it to end | im so glad they made up
 F: {name_a} is going to be unbearable now | {name_a} gets to say "told you so" forever now
 A: only once a day. maybe twice | i'll keep it to once an hour
 H: so can i join the lessons? | room for one more student?
@@ -201,7 +201,7 @@ B: some of it. the good parts | the parts that work, yes
 G: still think a little respect was owed | i still say {name_a} deserved more credit
 B: {name_a} gets credit. every new person in my group hears who taught me | everyone in my group knows where i learned it
 D: aww | thats lovely
-A: if your group ever needs someone old school, i'm one tell away | send a tell if you need a hand out there
+A: if your group ever needs someone old school, i'm one tell away | just tell me if you get stuck out there
 B: always. old school is welcome | you're always welcome {name_a}. you can even pull
 F: the teacher joins the student's group. full circle | now the teacher is the recruit lol
 H: room for me {name_b}? i finally pull one at a time | {name_b}, i do the corner thing now. can i come?
@@ -220,7 +220,7 @@ B: sure. you learned from the best. well, second best | of course. {name_a} woul
 @role F type=*
 @role G type=NoLifer
 @role H type=*
-C: someone camp the mile gate in {frontier} please. a {enemy} stealther keeps jumping people running out | that {enemy} stealther is back at the mg in {frontier}. third time i ate the floor today
+C: someone camp the mile gate in {frontier} please. a {enemy_mod} stealther keeps jumping people running out | that {enemy_mod} stealther is back at the mg in {frontier}. third time i ate the floor today
 F: the mile gate ganker strikes again | lol the mg ganker has a fan club
 D: ok thats it. bounty. gold to whoever drops that stealther first | bounty time. i'll pay whoever kills that ganker first. realm pride
 A: say no more. i'm a {class}. hunting stealthers is what i do | {class} here. i'll have that stealther on the ground in no time
@@ -298,7 +298,7 @@ B: shadowing you? i was hunting. its a free frontier | i was there first. you fo
 C: meanwhile i got ganked again while you two argued | still dying at the mg btw. still no hero
 F: the hunters are hunting each other now | the ganker is just watching them fight. probably laughing
 D: ok. enough. one stakeout at the mile gate. both of you. witnesses. first clean kill takes everything | final round: both of you at the gate, the realm watching
-H: i'll be there. keeping score like before | i'll keep score. again. i'm getting good at it
+H: keeping score again. like before | i'll keep score. again. i'm getting good at it
 A: fine. and when i get it you take back "liar". in faction | deal. i win, you say sorry for the liar thing
 B: and when i get it, you never paste another log | i win, you stop posting logs forever
 G: and if neither of you gets it? | what if the ganker gets you both
@@ -326,14 +326,14 @@ H: something just opened on {name_b} | {name_b} just got jumped
 B: ITS HERE. ITS ON ME | its on me, its on me, shoot it
 A: i see it. shooting | firing, hold on
 H: and {name_a} just got hit from behind. there are TWO of them | wait, theres a second one. {name_a} is down
-B: down too. it got me | im dead. great
+B: down too. it got me | dead. great
 E: rofl both dead | the hunters got hunted
 C: wait. the first one was almost dead so i just hit it. and it DIED | I GOT IT. I was running past, it was nearly dead, i hit it once. its DEAD
 D: then the bounty goes to the one it ganked the most. ha | clean kill. the bounty is yours. ha
 A: are you serious | you have got to be kidding
 B: we did all the work | we softened it up! both of us!
 G: and you both died doing it. dead hunters dont get paid | rules are rules. the bounty goes to the living
-A: {name_b}... there were two of them | ok {name_b}. two of them. we never had a chance alone
+A: {name_b}... it was two on one | ok {name_b}. two of them. we never had a chance alone
 B: yeah. maybe we hunt together next time | next time we go as a pair? cover each other
 A: fine. you take the left, i take the right | deal. and no shooting rocks
 B: one time! | the rock moved!
@@ -397,9 +397,9 @@ A: fine. no more logs. i'll just hunt quietly | ugh. fine. no logs. ever again
 E: the log poster is retired | the end of the log era
 C: i can run to the frontier again. ty {name_b} | i made it through the mg alive. thank you {name_b}
 B: anytime. the gate is clear | you're welcome. the frontier is open
-A: the next ganker is mine though | just wait for the next one
+A: i get the next ganker though | just wait for the next one
 B: i'll be right behind you. shadowing | i'll be waiting. behind you. like you said
-F: the shadowing comeback lol | shadowing callback, nice
+F: the shadowing comeback lol | shadowing again, nice
 D: bounty fund is open again, realm | the fund stays open for whoever comes next
 C: first trip through the gate without dying. ty | nobody ganked me at the gate today
 E: next ganker, next race | round two when the next one shows
@@ -500,8 +500,8 @@ F: realm vote! which song is better | faction, pick a song. {name_a}'s river son
 C: the river song. its a classic | the original. glub glub forever
 E: the noise. it has teeth | {name_b}'s song. the guards verse got me
 A: let the realm decide. the realm loves a good drowning | they can vote. the river song cant be beaten
-B: we'll see. i have nine more verses | i'm not done. i have a whole album
-H: a whole album lol | {name_b} the bard now
+B: we'll see. i have nine more verses | i'm not done. i have a whole songbook
+H: a whole songbook lol | {name_b} the bard now
 ~ 6
 D: whoever wins, please make up | someone write a song where they make up
 
@@ -559,7 +559,7 @@ F: the river song is the realm anthem now | its basically our anthem at this poi
 C: my whole guild knows it by heart | i'm teaching it to my guild
 B: ok. fine. if its the anthem, i want a verse where i win something | if i'm stuck with it, give me a better ending
 A: deal. "and {name_b} climbed out of the river, still dripping and proud / went back to that camp and pulled one, not a crowd" | ok: "and {name_b} rose from the river, wet but not done / went back to the camp and this time pulled one"
-B: ...thats actually nice | ok. i like that one
+B: ...thats actually nice | ok. i'll allow that verse
 D: aww they made up | the song healed them
 G: still prefer songs about dragons | bards. i'll never understand them
 A: the next song has a dragon in it. starring {name_b} | the next one is about a dragon. and {name_b} is in it
@@ -589,7 +589,7 @@ A: ok. i owe {name_b} something. an apology verse | fine. one more verse, and it
 B: oh this i want to hear | go on, bard
 A: "i wrote of a friend and i laughed at the fall / but the river was cold and i wasnt there at all" | "{name_b}, i'm sorry, the song went too far / you sank once, i sing badly, and here we both are"
 D: aww | that was sweet {name_a}
-B: ...ok. that was good. accepted | ok. i forgive you. the song can stay
+B: ...ok. fine. accepted, that one was good | ok. i forgive you. the song can stay
 A: wait, really? | the river song lives?
 B: yes. but the sorry verse goes at the end. always | yes, but only with the apology verse last
 F: two songs, one realm, peace at last | the song wars are over
@@ -725,7 +725,7 @@ A: dont put it in the bank! wear it! thats what its for | WEAR it. armor in a ba
 B: ok ok. wearing it | fine. its on. it fits perfect
 E: so no round two? | no more drama? boo
 F: put a label on it: DO NOT SELL | someone dye it bright pink so it never looks like loot again
-A: thats actually a good idea | i'll dye it. loud
+A: huh. smart, actually | i'll dye it. loud
 B: not pink. please not pink | anything but pink. i beg you
 G: and next time, check your bags before you sell | lesson for the realm: read before you click
 B: i check twice now. every time | i read every item now. every single one
@@ -775,7 +775,7 @@ H: the guild gets the happy ending too | i'm telling my guild this part too
 A: ok. i've been thinking. a gift is a gift. i shouldnt have asked for the coin | {name_b}, i was wrong about the materials. a gift is a gift
 B: you mean it? | wait, really?
 A: {player} said it plain in faction: accidents happen and a friend forgives. it stuck | ty {player}. you said accidents happen and i didnt want to hear it
-B: ty {player}. you were the only one who didnt call me careless | {player}, you backed me when i felt like the worst person in the realm. thank you
+B: ty {player}. everyone else called me careless. you didnt | {player}, you backed me when i felt like the worst person in the realm. thank you
 A: and {player}... it still stung a little | {player}, you were right. it still stung though
 E: a crafter who forgives. now i've seen it all | {name_a} forgiving? whats next, cheap prices
 C: told you. its one piece | see? one chest. not the end of the world
@@ -911,11 +911,11 @@ B: i thought about it. for a second | i was going to let you die. then i didnt
 A: and i pulled the adds off {name_b} when they turned on the healer | and i grabbed the add that went for you
 B: i saw that. thanks | yeah. you did
 D: is this a truce? | so you're friends again?
-A: ok. here it is. in faction: {name_b} is the best healer in the realm | {name_b}... your heals are the best in the realm. there. in faction
+A: ok. here it is, for all of faction: nobody heals like {name_b} | {name_b}... your heals are the best in the realm. there. in faction
 E: {name_a} SAID IT | {name_a} actually typed it
 B: and i take back the spider thing. you were brave. with spiders | and you're not scared of spiders. officially
 A: ty | thank you
-F: the spider community is upset | the spiders feel left out
+F: the spiders are upset | the spiders feel left out
 G: and both of you, read the name before you press enter | moral: check your tells
 B: i check the name twice now | i read it three times now. every tell
 A: me too. i vent in a chat group with nobody in it now | i vent to myself now. in a chat group with one person
@@ -945,7 +945,7 @@ E: they're a little slow | they kind of are
 B: stay out of this | who asked you
 A: and for the record: your heals are great and the talking is fine | and i'm sorry for the tell too. your heals are good. you talk a normal amount
 D: two apologies in one day. faction is healing | both apologized!
-G: good. like adults | thats how it should go
+G: good. like adults | see, that wasnt so hard
 F: now apologize to the spiders | the spiders are still waiting for theirs
 B: the spiders know what they did | never
 A: group later? | duo again?
@@ -971,7 +971,7 @@ A: {name_b} is the best healer in the realm. there | {name_b} is the best healer
 C: they said it!! | it happened. in faction
 B: very happy. ty {player}. you said the tell started it and you were right | {player} saw that {name_a} started it. ty {player}
 A: {player}... the spider thing was public though. just saying | {player}, you know the spider thing was worse right? ok. fine
-E: {name_a} is still mad at {player} lol | {player} got {name_a} to apologize. legendary
+E: {name_a} hasnt forgiven {player} yet lol | {player} got {name_a} to apologize. legendary
 G: the tell was the first wrong. fair enough | started with the tell. ended with the tell
 B: and i take back the spider thing. you only ran a little | ok. the spider was small, but you were low level
 A: thank you | its something
@@ -1192,7 +1192,7 @@ A: the ram was on the door and you were up there throwing sparkles at their back
 B: those people in the back were their healers. you're welcome | i was killing their healers. thats why you lived
 C: i was at {keep}. it was close. really close | i was there. the door was nearly down
 A: we needed you inside the door. ae on the ram crew | you should have been inside, hitting whoever came through
-B: and get flattened by their whole zerg in a doorway? no | cast in a doorway, with the {enemy} zerg on the other side? great plan
+B: and get flattened by their whole zerg in a doorway? no | cast in a doorway, with the {enemy_mod} zerg on the other side? great plan
 E: melee against casters. the oldest fight in the frontier | here we go. tanks against casters
 A: we held because my group plugged the door | we only held because my group stood in the door
 B: you held because we killed everything that came through it | you held because our nukes landed
@@ -1298,9 +1298,9 @@ E: wait. are they agreeing? | is this agreement? in faction?
 F: someone check the sky | the sky is falling
 D: finally | took long enough
 A: you're still a sparkle thrower | still. sparkles
-B: and you're still a door with legs | and you're still a walking door
-A: the best door in the realm | best door you've got
-B: the best sparkles in the realm | best sparkles you'll ever see
+B: and you're still a door. just one that walks | still a door. a door that talks
+A: nicest door on the frontier | best door you've got
+B: finest sparkles on the frontier | best sparkles you'll ever see
 G: next time {keep} is hit, we use it. both groups. one realm | next defense, we use the plan. together
 H: ok i'll come to the next one | i might actually show up to the next defense
 C: sparkles and door. best duo in the frontier | door with legs and the sparkle thrower. best names ever
@@ -1363,7 +1363,7 @@ G: thats a good plan | thats the plan i would have written
 F: covered by sparkles | sparkle cover. nice
 H: i feel safer already. a little | the realm is safe. sort of
 E: the door will get over it | {name_a} still sulking?
-C: wall group, here i come | i'm joining the wall group
+C: wall group, here i come | sign me up for the wall group
 
 # ==== loan: A lent B gold for armor; B pays in silver, then swears it was all paid at the bank ========================
 
@@ -1453,7 +1453,7 @@ A: if i'd been paid i'd be telling the whole realm. i'm not | i would know if i 
 B: maybe you spent it and forgot | maybe it went on that new pile of materials you bought
 A: those were mine. i've been saving forever | i bought materials with MY OWN gold. not yours
 C: ok its getting heated | this is getting ugly
-G: i'm going to keep saying it. never lend | this is why you never lend
+G: i'm going to keep saying it. never lend | and this is why i dont lend coin
 B: i think you like me owing you. it makes you feel big | you know what, i think you just like having something to hold over me
 A: and i think you were never going to pay me back | and i think you never meant to pay
 D: ok thats too far, both of you | hey. both of you. stop
@@ -1507,7 +1507,7 @@ H: witness for hire | i'm available
 @role G type=NoLifer
 @role H type=*
 B: i owe the realm a confession. that big trade had no gold in it. i thought it did | i looked again. that trade was potions. i never put the gold in. {name_a} was right
-A: you have no idea how good that is to read | ty {name_b}. that means a lot
+A: you have no idea how good that is to read | ty {name_b}. really. i needed that
 C: {name_b} owned it. respect | wow, a confession
 B: ty {player}. you said "if {name_a} got paid they'd know" and you were right | {player} told me to check before calling anyone a liar. so i checked
 A: ty {player}. you believed me when it was just my word | {player} backed me. thank you, really
@@ -1543,7 +1543,7 @@ A: i saw three potions and thought that was it. i never counted | i saw the poti
 B: ty {player}. you backed me when everyone thought i was a deadbeat | {player} said it: {name_a} is just bad with bags. ty {player}
 A: {player}, you were right. i'm bad with bags. dont tell anyone | {player}... "bad with bags" hurt. it was true, but it hurt
 E: {name_a} the banker, bad with bags | lol "bad with bags"
-A: sorry {name_b}. i said you were never going to pay. that was wrong | and i'm sorry i said you never meant to pay
+A: {name_b}, i told everyone you'd never pay. i was wrong. sorry | and i'm sorry i said you never meant to pay
 B: and the interest? | and the interest thing?
 A: no interest. never was | forget the interest
 D: they made up! | friends again, finally!
@@ -1553,7 +1553,7 @@ F: the dye is clean money | the dye was paid for with honest gold
 A: i count every trade now. out loud | next time i'll count. twice
 B: and i'm never borrowing again. promise | and next time i'll buy my own armor
 H: witness off duty. finally | case closed. witness out
-E: {name_a} lost the audit | the banker got audited lol
+E: {name_a} lost the count | the banker got caught short lol
 
 # ==== gimped: B kicks A from a group for playing a "gimped" class; A sets out to prove the class ======================
 # A is the realm's class the 2002-2003 boards called gimped (Friar, Warrior, Warden), and so is H, A's classmate.
@@ -1669,7 +1669,7 @@ G: dice. all dice | one run proves nothing. i said so
 @role H class=Friar,Warrior,Warden
 B: so. i thought about that run some more | ok. i've been thinking about the run
 A: go on | and?
-B: i'd have died. and then the group. you saved the run | if you hadnt jumped that add, i'm dead and the group wipes
+B: i'd have died. and then the group. you saved the run | if you hadnt jumped that add, i die and the group wipes
 A: finally | thank you
 B: so you can have a spot. regular. if you still want it | so. you're in. regular spot. if you want it
 D: YES | they did it
@@ -1764,7 +1764,7 @@ A: someone has been sitting at my camp for hours. {name_b}, i'm looking at you |
 B: your camp? its a public camp {name_a} | your camp? i didnt see a sign
 A: i've been at that camp longer than the trees | i've camped that spot every day. everyone knows its mine
 B: its a big camp. theres room for two | and now i camp it too. it has room
-G: first come, first serve. thats the rule | camp etiquette says first one there has it
+G: first there gets the spot. thats the rule | camp etiquette says first one there has it
 B: i got there first today! | i was first today!
 A: i went to sell for ten minutes and you moved in | you got there first because i was at the merchant!
 E: lol a camp war over a rock | camp war
@@ -1814,7 +1814,7 @@ A: FULL | no. full
 B: full | taken. sorry
 C: two people who arent even grouped said full. at the same time | ok wow. full, by two people not even grouped?
 E: first thing they ever agreed on | they agreed on something!
-A: dont get used to it | that was a coincidence
+A: dont expect it twice | that was a coincidence
 ~ 6
 H: that was in sync | they said "full" at the exact same time
 
@@ -1847,7 +1847,7 @@ A: not friends. camp neighbors | we are not friends. we're neighbors
 B: neighbors who talk all day, ok | neighbors who chat for hours. sure
 A: you talk. i just sit there | you talk. i listen and med
 B: you lol'd at my rock joke. twice | you laughed at my joke about the rock
-A: ...it was funny | it was a good joke
+A: ...it was funny | ok it was a good joke
 C: so is the camp still full or | can i come yet or no
 A: still full | nope. full
 B: full | no
@@ -1870,10 +1870,10 @@ B: update: {name_a} invited me to group. i accepted | so {name_a} sent me a grou
 A: grouping is faster. its math | it was more efficient. thats all
 E: "its math" | math lol
 D: it took them forever | FINALLY
-A: the rock stays on my side though | the rock is still mine
+A: the rock stays on my side though | still my rock though
 B: the rock belongs to the group now | we share the rock now. its a group rock
 F: peace at the rock | the rock treaty is signed
-C: can i come now? please? | so... is the camp still full?
+C: can i come now? please? | so... full still, or can i come?
 A: what do you think {name_b} | ...{name_b}?
 B: sure. three is better than two | let them in. more pulls
 A: ok. but nobody touches the rock | fine. but you stay off the rock
@@ -1885,7 +1885,7 @@ B: friends, {name_a}. say it | friends
 A: ok. friends | ...friends
 E: there it is | awww
 B: see you at the rock tomorrow? | same spot tomorrow?
-A: i'll get there before you | i'll be there first
+A: i'll get there before you | i'll beat you to it
 B: we'll see about that | we'll see
 
 @topic story_campspot
