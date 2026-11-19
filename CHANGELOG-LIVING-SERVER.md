@@ -8,6 +8,29 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Chat follow-up: lore and tales warnings, Evern, Juggernaut, five bosses who do pick bots (1.2, 2026-11-18; tests only)
+
+Chat follow-up F3. Lore is never cut: every line was reworded, no tale was dropped. None of it has been seen on the owner's PC.
+
+- **No file without an owner:** tales_more.lines is E6's (the tales), storylines_more.lines E4's (the storylines) and
+  scenes_live.lines E8's (the scenes), so their warnings will fail once STRICT_OWNERS covers them. A test fails if a new line
+  file has no owner.
+- **Builder warnings in E6's files and those three are 0** (`build_corpus.py --check --warnings`): {q} only before a
+  question (statements lose it, questions get their "?"), near-copies of other scenes' beats reworded, "dps" in boss briefings
+  said the 2003 way ("damage", "hitting"), "{enemy} stealther" and "{enemy} zerg" as {enemy_mod}, figures of speech
+  that read as a time of day ("over breakfast", "on a quiet night") reworded, two "i'll be there" lines no code keeps,
+  "album", "audit", "callback", "community" and "edition" replaced, and the remaining new words reviewed into
+  vocabulary.txt (names from the lore bible, period words).
+- **Evern** told his story twice and leapt to his target. Evern.cs has no leap (the move in his catalog entry is the
+  fairies flying to the stones), so the lore, the legend and the bot lines speak of his long reach (350) instead, and the
+  repeated paragraph is folded into the other two with every detail kept. **Juggernaut** told his story twice too, and his
+  legend and one aggro emote said the same thing twice; each is said once now, nothing dropped.
+- **Grand Summoner Govannon, Mistress of Runes, Morgus Urgalorg, Krackenschtein, Elder Council Guthlac:** their lore said only
+  real players were picked ("bots are never chosen", "only the human gets those"). Their scripts pick from
+  EncounterTargets.InRadius, bots included, and the two throws (the Shade of Aelfgar's ledge, Krackenschtein's throw) ship
+  with bot displacement on, so the facts, legends and bot briefings now say a random raider, bots included. Krackenschtein's
+  Bolt of Doom picks within 2,000 (the script), not 2,500.
+
 ## Darkness Falls: the raid no longer loops on a chthonic knight behind it (1.2, 2026-11-18; tests only)
 
 Seen on the owner's PC on build `b1b6846` (2026-11-18, the Albion Darkness Falls raid, `darkness-albion`, region 249).

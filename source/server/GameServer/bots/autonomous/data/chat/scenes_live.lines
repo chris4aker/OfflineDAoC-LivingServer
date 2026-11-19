@@ -23,7 +23,7 @@ A: no idea, nobody out there has said | cant tell, just the warning so far | onl
 ?C: they always bring a ram for that one | {keep} again, they love that door | of course its {keep}
 B: whoever is close, call numbers in faction | if you are near it, say how many | someone near it count them, please
 D: casters on the walls, kill the ram crew first | ram crew first, not the tanks around it | stairs and lord room if the door goes
-A: keep the lord up and the rest sorts itself out | lord up, door repaired, thats the whole plan | hold the inner door and they lose interest
+A: keep the lord standing, nothing else matters | lord up, door repaired, thats the whole plan | hold the inner door and they lose interest
 
 @topic keep_live
 @levels 35-50
@@ -94,7 +94,7 @@ A: hope so | fine. later then | noted
 @role C type=NoLifer
 A: we took {keep}! | {keep} is ours now, see the warning | {keep} flipped to us
 B: nice | gz whoever did that | about time
-C: now they come back for it | enjoy it, they want it back already | good, now someone has to hold it
+C: and now they'll want it back | enjoy it, they want it back already | good, now someone has to hold it
 ?D: who claims it | is a guild going to claim it
 B: a big guild, a small one cant hold a claim | a guild with people online at night
 A: good day for the realm | love it | one more for us
@@ -154,7 +154,7 @@ B: albs or hibs | which realm | who is it this time
 A: {enemy}, says the warning | its {enemy}, of course | {enemy}. who else
 C: again? | they love that keep | every single week
 ?D: watch their scouts on the hill | their stealthers camp the road in | they always leave a few on the hill
-B: kill the ram crew, not the tanks around it | ram first, everything else after
+B: hit whoever is on the ram, ignore the tanks | ram first, everything else after
 A: keep the lord alive and its ours | hope the guards hold | for midgard
 
 @topic relic_live
@@ -220,7 +220,7 @@ A: pints all round | best news in hours | good work, albion
 @role C type=NoLifer
 A: albion is on {keep}, look at that | we are at {keep}, {enemy} wont like this | our rams are on {keep} for once
 B: finally | about time we knocked on their door | good, they knock on ours enough
-C: their healers will mez the door | watch for their stealthers on the road in | they will send everyone they have
+C: their healers will mez the door | their stealthers will be on the road in, watch it | they will send everyone they have
 ?D: anyone know who is leading | who called this
 B: no idea, but good | whoever it is, i like them
 A: give them a bad night | camelot sends its regards | gl out there

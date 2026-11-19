@@ -168,11 +168,11 @@
   },
   "botLines": {
     "briefing": [
-      "iarnvidiur heals fast, we need dps and cure disease, [shamans|healers] on cure duty",
+      "iarnvidiur heals fast, we need damage and cure disease, [shamans|healers] on cure duty",
       "from 50% she ports people to the corners. if you land in the water climb the pillars and come back",
       "kill hati and skoll at the door first",
       "rezzer by the bridge for the ported people",
-      "if the fight stalls she heals back. keep dps on"
+      "if the fight stalls she heals back. keep hitting her"
     ],
     "aftermathWin": [
       "iarnvidiur down! [gg|grats raid] the old wolf mother is dead",

@@ -70,7 +70,7 @@
   "botLines": {
     "briefing": [
       "kill dremcis, not the stag. [beomarbhan dies when he dies|the stag drops with him]",
-      "the stag resists 70% magic and 40% melee. [offtank it|dont dps it]",
+      "the stag resists 70% magic and 40% melee. [offtank it|dont waste damage on it]",
       "4-6 blood blobs, 2.5k each. [aoe them|tank them]",
       "dremcis has no spells, just melee. [burn him|tank and spank with friends]"
     ],

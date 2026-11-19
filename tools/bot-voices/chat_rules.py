@@ -16,15 +16,17 @@ SERVER = ROOT / 'source/server/GameServer'
 VOCABULARY = HERE / 'vocabulary.txt'
 
 # Who edits which line file (scratchpad CHAT-FIX-BRIEF.md, OWNERSHIP). A file no pattern names is "unowned".
+# The 1.2 content added after the audit has owners too (chat follow-up F3): tales_more (E6, the tales), storylines_more (E4,
+# the storylines) and scenes_live (E8, the scenes). A test fails if a new line file has none.
 OWNERS = [
     ('E3', r'ambient_.*|classes.*|personalities|experience|capitals|camp_more|dungeons|moments|extras|living_server|more_realms|'
            r'battlegrounds|battleground_lore|rvr|rvr_more'),
     ('E4', r'storylines|dunce|deeds|news|news_replies|rumours|era_rumours|holidays|spammers|roleplayers|beggars|charity|bonds|'
-           r'milestones|memory|memory_more'),
+           r'milestones|memory|memory_more|storylines_more'),
     ('E5', r'replies.*|followups|closings.*|talking_audit|tells|lfg_.*|group_chatter|group_talk|bot_led_groups|combat_calls|'
            r'guild_chat.*|guild_more|trade_crafting|bot_trade|craft_commerce|craft_drama|crafters'),
-    ('E6', r'tales|lore_.*|data/lore/.*'),
-    ('E8', r'debates.*|gen_.*|threads_long'),
+    ('E6', r'tales|tales_more|lore_.*|data/lore/.*'),
+    ('E8', r'debates.*|gen_.*|threads_long|scenes_live'),
 ]
 ALL_OWNERS = {owner for owner, _ in OWNERS} | {'unowned'}
 # The owners whose files fail on these checks. E3's PR fixed its own files; the others' hits are warnings until their PRs merge.

@@ -249,7 +249,7 @@ A: thank you {name_b}. lovely as ever | beautifully told, {name_b}
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} what is actually at the bottom of galladoria? the sylvan go quiet when i ask | {name_b}, tell us of the root
 C: hush, everyone, {name_b} has the galladoria tale | quiet now, this is the old one. older than us
-D: yes, tell it. i have only seen the first rooms | please {name_b}, the whole of it
+D: go on, tell it. i never got past the first rooms | please {name_b}, the whole of it
 B: if you will be quiet, yes | very well. sit close
 B: his name is olcasgean. the root. he was old and angry before the first forest of hy brasil woke
 B: the sylvan will not call him a god. the scholars of tir na nog say titan
@@ -353,7 +353,7 @@ D: tell it {name_b}, i want to know what waits under mularn | aye, go on, i have
 B: ha. sit, sit | ale first, then the saga
 B: the skalds call his lair the glutton hall. because it eats its guests
 B: there were two princes once, equal, at the top of the demon court
-B: one killed the other, ate him, and kept his voice for his own
+B: the one ate the other, and he talks with his brother's voice ever since
 ?F: that is a foul way to win a throne | he wears the voice like a trophy?
 B: every challenger after went the same way. a hundred voices in one throat. so they call him legion
 B: three doors lead down. ours is above mularn. they open only for the realm that holds the most keeps
@@ -386,7 +386,7 @@ D: i would hear it {name_b} | go on, i have wondered about that door in connacht
 B: if you will listen to the end, yes | very well. the bards will not, so i will
 B: the druids call him a lord made of his own subjects. here is why
 B: two princes stood equal at the head of the demon court
-B: one slew the other and ate him, and kept his voice
+B: one prince devoured his brother, and speaks with that voice still
 ?F: a lord made of his own subjects. oh | that is what the druids meant
 B: and so with each who challenged him. a hundred voices now. the court named him legion
 B: the druids say he is what the otherworld becomes with no law in it
@@ -657,7 +657,7 @@ A: {name_b} tells where the shape came from. depends which realm you ask
 A: {name_b} who is the wizard on the stair in the hall of the corrupt | {name_b}, tell the aidon one
 C: hush all, academy story | quiet in faction, this ones about the archwizard
 D: go on {name_b}, my master wont say his name | please. the academy pretends he never existed
-B: alright, the academy one. once | ok. sit. this one runs long
+B: alright, the academy one. once | sit down then. it runs long
 B: aidon was the first mage of the academy to master all four. fire ice earth, and the theurgists' air
 B: magus cerwyn tested him. a brazier, a basin, a stone, an open window. she wrote she would not see it done again
 B: so the constable sent him to the pennine watch. to learn if the summoners' wards on the road could be broken
@@ -793,7 +793,7 @@ B: aye. benches, all of you | ha. alright, the mine one
 B: aros was jarl ormarr's spiritmaster. trained in the craft of hel's servants. binding spirits to serve
 B: he believed one thing above all. a good name never dies. and a name said aloud is a rope that holds a soul to the world
 B: every morning at the shaft he read the names of the shift. and promised none would be forgotten
-?F: thats kind of nice actually | sounds like a good man to work for
+?F: huh. thats sweet, actually | sounds like a good man to work for
 B: then a warning was ignored. the picks broke into the cold seam
 B: the miners heard voices in three tongues calling from the hall below. and died
 B: and their dead began to walk down toward the call. so aros bound them. to keep them
@@ -831,7 +831,7 @@ B: the dwarves say her plague made the rot. the narfi say the rot made her
 B: her first litter guards the lair. hati and skoll lie at her door. named for the moon chaser and the sun chaser
 B: above ground her servants walk the wood looking like anyone. and the dwarf clans lose children to them
 ~ 8
-D: has anyone killed her? | can she even be hurt?
+D: has anyone killed her? | does anything even hurt her?
 B: her plague is her blood. it eats everything near her, and on the sick a heal only half takes
 B: vemund's thirty were the first company in her lair. they could never wound her deeply enough to trouble her
 B: ragnheid grimsdottir's warband did it. with dwarf guides. they went down carrying more cures than weapons
@@ -853,7 +853,7 @@ C: some grandmothers say gjalpinulva is her daughter. thats all i am saying | wa
 @role E type=NoLifer,Daredevil
 @role F type=Leveler,Crafter,Explorer
 A: {name_b} tell the one about the queen in the glacier | {name_b}, kula tonight?
-C: hush, tuscaran story | quiet all, the ice queen
+C: hush, tuscaran story | shh everyone, its the ice queen
 D: yes. i only know not to touch the king while she stands | please {name_b}, the long one
 B: ha. the long one it is | sit, all of you. it takes a while
 B: kula is the youngest and coldest of bergelmir's line, the skalds say. the rime giant who stayed north when her brothers went south
@@ -890,7 +890,7 @@ C: when she dies the throne room cracks. the skalds say the ice remembers her na
 A: {name_b} who is the champion before the hall in marfach | {name_b} tell avartack tonight
 C: hush, breifine story | quiet in faction, the ferryman's son
 D: please. he would not die and i want to know why | tell it {name_b}, the ford and all
-B: very well. gather in, the ford is a long tale | if you will be quiet, i will
+B: very well. gather in, the ford is a long tale | i will, if you all hush
 B: avartack was the son of aed dub. the ferryman who kept the ford of the erne
 B: he grew up fighting in the water. where a man cannot step back or aside. only reach
 B: he was fostered beside the boy who became caimheul. the day caimheul was made chieftain he named his foster brother champion
@@ -1065,7 +1065,7 @@ A: {name_b} tells who she might be. the skalds and the dwarves dont agree
 @role B type=*
 A: the queen and the king up top are married. hurt one and it closes the other's wounds | for the thrones. everyone on the queen. nobody touches the king
 ?B: really? | so no splitting damage
-A: he was a smith who came courting with an axe. she married him
+A: a smith, he was. came to court her carrying an axe, and she took him
 A: and when shes angry a cold older than the gods answers every wound. the giants call it thor's might
 B: queen first then | courting with an axe. sure
 A: {name_b} tells how she built this place on a dead dragon
@@ -1080,7 +1080,7 @@ A: {name_b} tells how she built this place on a dead dragon
 A: the champion ahead. somebody faces him at all times. never turn your back | marfach rule. dont all step away from avartack at once
 ?B: or what | why
 A: he thinks that floor is a ford. law of the water. a turned back may be struck down
-A: and the moment nobody stands against him he is whole again
+A: the second nobody is fighting him, hes back to full
 B: face him. dont turn. ok | so no running. lovely
 A: {name_b} tells about his oath. it had no ending in it
 
@@ -1094,7 +1094,7 @@ A: nobody stands at the chieftain's side. he kills that one first | caimheul ahe
 A: he taught his sons that in the dust of the yard. the man you cannot see dies first. long spear
 A: and when he throws the shield away hes hurt deep and thinks we are breaking. thats the moment
 B: front or far. ok | so the shield going is good news
-A: {name_b} tells about the nine. ask on a quiet night
+A: {name_b} tells about the nine. ask when faction is quiet
 
 @topic fireside_balor
 @levels 1-50

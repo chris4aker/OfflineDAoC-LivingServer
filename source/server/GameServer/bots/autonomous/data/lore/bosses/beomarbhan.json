@@ -60,7 +60,7 @@
   },
   "botLines": {
     "briefing": [
-      "offtank beomarbhan, kill dremcis. [the stag dies with him|dont dps the stag]",
+      "offtank beomarbhan, kill dremcis. [the stag dies with him|dont waste damage on the stag]",
       "beomarbhan resists 70% magic, 40% melee. [casters especially leave it|waste of mana]",
       "no cc on the stag. [cc immune|dont try]",
       "he only comes once per dremcis spawn. [no second stag|one stag]"

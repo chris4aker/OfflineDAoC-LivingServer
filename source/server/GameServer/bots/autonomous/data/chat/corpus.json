@@ -439081,8 +439081,8 @@
    "mood": "",
    "weight": 1.0,
    "invites": "chat",
-   "text": "nobody knows what a thrawn queen eats for breakfast, and nobody wants to find out",
-   "id": "b4d29a1a96c4"
+   "text": "nobody knows what a thrawn queen eats, and nobody wants to find out",
+   "id": "7244ce8af817"
   },
   {
    "kind": "ambient",
@@ -722025,7 +722025,7 @@
      "text": "{q} anyone else think avalon was hidden in the marsh all along?",
      "variants": [
       "{q} anyone else think avalon was hidden in the marsh all along?",
-      "{q} i get more sure every week: avalon was in the marsh the whole time"
+      "i get more sure every week: avalon was in the marsh the whole time"
      ],
      "optional": false
     },
@@ -722349,9 +722349,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it",
+     "text": "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it?",
      "variants": [
-      "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it",
+      "{q} if avalon sat inside albion all along, why did we have to cross the sea to reach it?",
       "honest question for the marsh crowd: if avalon was always ours, why did it take a crossing to get there"
      ],
      "optional": false
@@ -722635,9 +722635,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone",
+     "text": "here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone",
      "variants": [
-      "{q} here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone",
+      "here's a thought i cant shake. xanxicar was under avalon before the first mage laid a stone",
       "which came first, the city of avalon or the two-headed dragon in its cellar"
      ],
      "optional": false
@@ -722909,9 +722909,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} settle a guild fight for me. golestandt, he or she",
+     "text": "{q} settle a guild fight for me. golestandt, he or she?",
      "variants": [
-      "{q} settle a guild fight for me. golestandt, he or she",
+      "{q} settle a guild fight for me. golestandt, he or she?",
       "my guild has argued for an hour. is golestandt a he or a she"
      ],
      "optional": false
@@ -723156,9 +723156,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} how does a crypt hold an emperor nobody can name. cardova bugs me",
+     "text": "{q} how does a crypt hold an emperor nobody can name? cardova bugs me",
      "variants": [
-      "{q} how does a crypt hold an emperor nobody can name. cardova bugs me",
+      "{q} how does a crypt hold an emperor nobody can name? cardova bugs me",
       "cardova question. the lore says a roman emperor no one can name lies there. how do you lose an emperor"
      ],
      "optional": false
@@ -723424,9 +723424,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} merlin is not dead. i will die on this hill",
+     "text": "merlin is not dead. i will die on this hill",
      "variants": [
-      "{q} merlin is not dead. i will die on this hill",
+      "merlin is not dead. i will die on this hill",
       "does anyone still think merlin is lying in his barrow under stonehenge"
      ],
      "optional": false
@@ -723689,9 +723689,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} honest question. do we actually trust the inconnu",
+     "text": "honest question. do we actually trust the inconnu?",
      "variants": [
-      "{q} honest question. do we actually trust the inconnu",
+      "honest question. do we actually trust the inconnu?",
       "do we trust the inconnu, or are we just glad they point the same way"
      ],
      "optional": false
@@ -723935,9 +723935,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} what is the green knight actually doing on the sauvage road",
+     "text": "{q} what is the green knight actually doing on the sauvage road?",
      "variants": [
-      "{q} what is the green knight actually doing on the sauvage road",
+      "{q} what is the green knight actually doing on the sauvage road?",
       "does anyone know why the green knight just stands in forest sauvage"
      ],
      "optional": false
@@ -724208,9 +724208,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} what does the legendary afanc actually drop. my guild says three different things",
+     "text": "{q} what does the legendary afanc actually drop? my guild says three different things",
      "variants": [
-      "{q} what does the legendary afanc actually drop. my guild says three different things",
+      "{q} what does the legendary afanc actually drop? my guild says three different things",
       "is the legendary afanc worth killing or is it a story with teeth"
      ],
      "optional": false
@@ -724466,9 +724466,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} why is the scabbard our relic and not excalibur itself",
+     "text": "{q} why is the scabbard our relic and not excalibur itself?",
      "variants": [
-      "{q} why is the scabbard our relic and not excalibur itself",
+      "{q} why is the scabbard our relic and not excalibur itself?",
       "how did albion end up with a scabbard for a relic instead of the sword"
      ],
      "optional": false
@@ -724712,9 +724712,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} what's the oldest thing in albion, honestly",
+     "text": "{q} what's the oldest thing in albion, honestly?",
      "variants": [
-      "{q} what's the oldest thing in albion, honestly",
+      "{q} what's the oldest thing in albion, honestly?",
       "oldest legend in albion. go"
      ],
      "optional": false
@@ -725780,7 +725780,7 @@
      "text": "{q} does anyone else think there is a real door to the otherworld under one of our hills?",
      "variants": [
       "{q} does anyone else think there is a real door to the otherworld under one of our hills?",
-      "{q} i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld"
+      "i keep coming back to it: somewhere under a hill in hibernia there is a door to the otherworld"
      ],
      "optional": false
     },
@@ -726097,10 +726097,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} the bards keep singing that the fianna never died, they only sleep under a hill in connacht",
+     "text": "the bards keep singing that the fianna never died, they only sleep under a hill in connacht",
      "variants": [
-      "{q} the bards keep singing that the fianna never died, they only sleep under a hill in connacht",
-      "{q} heard another bard tonight swear the fianna are asleep under some hill in connacht"
+      "the bards keep singing that the fianna never died, they only sleep under a hill in connacht",
+      "heard another bard tonight swear the fianna are asleep under some hill in connacht"
      ],
      "optional": false
     },
@@ -726588,7 +726588,7 @@
      "text": "{q} what is the real trick to evern? every story i hear is different",
      "variants": [
       "{q} what is the real trick to evern? every story i hear is different",
-      "{q} three people have told me how to fight evern and none of them agree"
+      "three people have told me how to fight evern and none of them agree"
      ],
      "optional": false
     },
@@ -727027,7 +727027,7 @@
      "text": "{q} are the azure right to want every glimmer burned out of sheeroe?",
      "variants": [
       "{q} are the azure right to want every glimmer burned out of sheeroe?",
-      "{q} serious question, should hibernia back the azure crusade or leave sheeroe be?"
+      "serious question, should hibernia back the azure crusade or leave sheeroe be?"
      ],
      "optional": false
     },
@@ -727252,9 +727252,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} honest question: does hibernia trust the sylvan, or are we only glad of the help?",
+     "text": "honest question: does hibernia trust the sylvan, or are we only glad of the help?",
      "variants": [
-      "{q} honest question: does hibernia trust the sylvan, or are we only glad of the help?",
+      "honest question: does hibernia trust the sylvan, or are we only glad of the help?",
       "{q} do we really trust the sylvan, or do we just need them?"
      ],
      "optional": false
@@ -727704,9 +727704,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} honest question, are bards overpowered or just loved?",
+     "text": "honest question, are bards overpowered or just loved?",
      "variants": [
-      "{q} honest question, are bards overpowered or just loved?",
+      "honest question, are bards overpowered or just loved?",
       "{q} the other realms all say our bards are overpowered. are they right?"
      ],
      "optional": false
@@ -727985,7 +727985,7 @@
      "text": "what i want to know is why the lord went mad. lords do not just wake up and kill their families",
      "variants": [
       "what i want to know is why the lord went mad. lords do not just wake up and kill their families",
-      "nobody says why. a lord does not murder his house over breakfast. something did that to him"
+      "nobody says why. a lord does not murder his house over nothing. something did that to him"
      ],
      "optional": false
     },
@@ -728397,7 +728397,7 @@
      "text": "{q} is juggernaut really as strong as people say, or is it all fear?",
      "variants": [
       "{q} is juggernaut really as strong as people say, or is it all fear?",
-      "{q} heard juggernaut hits way harder than his con says"
+      "heard juggernaut hits way harder than his con says"
      ],
      "optional": false
     },
@@ -728623,10 +728623,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
+     "text": "sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
      "variants": [
-      "{q} sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
-      "{q} the tale of the sheeroe pass, for anyone who never heard it. my version, anyway"
+      "sit down, newer folk. here is how the sheeroe pass came out of the mist, as near as i remember it",
+      "the tale of the sheeroe pass, for anyone who never heard it. my version, anyway"
      ],
      "optional": false
     },
@@ -728807,7 +728807,7 @@
      "text": "{q} anyone want the tale of the muire house? the way my first guild told it, anyway",
      "variants": [
       "{q} anyone want the tale of the muire house? the way my first guild told it, anyway",
-      "{q} here is how my old guild told the story of muire tomb. take it as a story"
+      "here is how my old guild told the story of muire tomb. take it as a story"
      ],
      "optional": false
     },
@@ -728970,7 +728970,7 @@
      "text": "{q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil",
      "variants": [
       "{q} want the old tale of balor's eye? worth knowing before anyone goes near tur suil",
-      "{q} story time. the tale of balor's eye, the way the bards sing it in tir na nog"
+      "story time. the tale of balor's eye, the way the bards sing it in tir na nog"
      ],
      "optional": false
     },
@@ -729143,10 +729143,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it",
+     "text": "since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it",
      "variants": [
-      "{q} since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it",
-      "{q} the story of oisin and niamh, for anyone who never heard it. the short version"
+      "since people keep mentioning the land of youth, here is the tale of oisin, the way my gran told it",
+      "the story of oisin and niamh, for anyone who never heard it. the short version"
      ],
      "optional": false
     },
@@ -729317,7 +729317,7 @@
      "text": "{q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it?",
      "variants": [
       "{q} the sylvan in domnann have a tale about why olcasgean ended up at world's end. want it?",
-      "{q} heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one"
+      "heard a sylvan tell why olcasgean was banished. it is their tale, not mine, but it is a good one"
      ],
      "optional": false
     },
@@ -729498,7 +729498,7 @@
      "text": "{q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there?",
      "variants": [
       "{q} odin's gate has a giant, a glacier and no gate. anyone else think the road to asgard starts up there?",
-      "{q} a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to"
+      "a zone called odin's gate and not a door in sight. i keep wondering what it is the gate to"
      ],
      "optional": false
     },
@@ -729821,7 +729821,7 @@
      "text": "{q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try",
      "variants": [
       "{q} if trollheim was the troll fathers' city, where did they live before it? nobody builds halls like that on the first try",
-      "{q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first"
+      "{q} trollheim cant be the troll fathers' first city. it's too deep and too well made. so where was the first?"
      ],
      "optional": false
     },
@@ -730080,7 +730080,7 @@
      "text": "{q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other",
      "variants": [
       "{q} settle something for my guild. gjalpinulva, he or she? half of us say one, half the other",
-      "{q} raid chat fought for an hour over this: is our dragon a he or a she"
+      "{q} raid chat fought for an hour over this: is our dragon a he or a she?"
      ],
      "optional": false
     },
@@ -730343,7 +730343,7 @@
      "text": "{q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel",
      "variants": [
       "{q} anyone still believe killing the glacier giant takes the fire out of the dragon? an old raid leader told me it like gospel",
-      "{q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that"
+      "{q} heard it again: drop the glacier giant first and the dragon in malmohus breathes less. any truth in that?"
      ],
      "optional": false
     },
@@ -731100,7 +731100,7 @@
      "text": "{q} what do you think the morvalt are really digging up on modernagrav? they call it the mother",
      "variants": [
       "{q} what do you think the morvalt are really digging up on modernagrav? they call it the mother",
-      "{q} the mother on modernagrav. old bones, or something thats going to wake up"
+      "{q} the mother on modernagrav. old bones, or something thats going to wake up?"
      ],
      "optional": false
     },
@@ -731345,7 +731345,7 @@
      "text": "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing",
      "variants": [
       "{q} what's the oldest thing in midgard? not the oldest player, the oldest thing",
-      "{q} tavern argument: who or what was in midgard first"
+      "{q} tavern argument: who or what was in midgard first?"
      ],
      "optional": false
     },
@@ -731859,7 +731859,7 @@
      "text": "{q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn",
      "variants": [
       "{q} was there ever a third midgard relic? the old skalds sing about one besides the hammer and the horn",
-      "{q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third"
+      "{q} two relics, thor's hammer and the horn of valhalla. anyone else think there should be a third?"
      ],
      "optional": false
     },
@@ -732092,7 +732092,7 @@
      "text": "{q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once",
      "variants": [
       "{q} ever wondered why the werewolves of skona won't set foot in malmohus? an old ranger told me the story once",
-      "{q} here's a story for you: why skona's werewolves stay clear of malmohus"
+      "here's a story for you: why skona's werewolves stay clear of malmohus"
      ],
      "optional": false
     },
@@ -732262,7 +732262,7 @@
      "text": "{q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter",
      "variants": [
       "{q} want the tale of how the fenris wolf got a daughter with wings? my grandmother told it every winter",
-      "{q} gather round, i'll tell the one about the wolf's daughter in malmohus"
+      "gather round, i'll tell the one about the wolf's daughter in malmohus"
      ],
      "optional": false
     },
@@ -732442,7 +732442,7 @@
      "text": "{q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does",
      "variants": [
       "{q} want the tale of the troll fathers and the morvalt? it's why aegir looks the way it does",
-      "{q} let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales"
+      "let me tell you how trollheim fell. a troll in bjarken told it to me over too many ales"
      ],
      "optional": false
     },
@@ -732608,10 +732608,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him",
+     "text": "here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him",
      "variants": [
-      "{q} here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him",
-      "{q} i'll tell the ice queen's story the way a skald sang it to me"
+      "here's the tale of how queen kula raised her citadel on a dragon's bones. a skald in jordheim sings it if you pay him",
+      "i'll tell the ice queen's story the way a skald sang it to me"
      ],
      "optional": false
     },
@@ -732793,7 +732793,7 @@
      "text": "{q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it",
      "variants": [
       "{q} anyone heard silvertone in vasudheim tell fenrir's folly? i got him going not long ago and remember most of it",
-      "{q} silvertone told me fenrir's folly again. here's how it went, near as i remember"
+      "silvertone told me fenrir's folly again. here's how it went, near as i remember"
      ],
      "optional": false
     },
@@ -732968,10 +732968,10 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} is behemoth really unkillable, or is that a story the raid leaders tell",
+     "text": "{q} is behemoth really unkillable, or is that a story the raid leaders tell?",
      "variants": [
-      "{q} is behemoth really unkillable, or is that a story the raid leaders tell",
-      "{q} anyone else think behemoth can die and nobody has managed it yet"
+      "{q} is behemoth really unkillable, or is that a story the raid leaders tell?",
+      "{q} anyone else think behemoth can die and nobody has managed it yet?"
      ],
      "optional": false
     },
@@ -733253,7 +733253,7 @@
      "text": "who actually dug the tunnels under the frontiers? nobody ever answers that",
      "variants": [
       "who actually dug the tunnels under the frontiers? nobody ever answers that",
-      "{q} whose work are those tunnels under all three frontiers"
+      "{q} whose work are those tunnels under all three frontiers?"
      ],
      "optional": false
     },
@@ -733501,7 +733501,7 @@
      "text": "wolf, stone or glimmer, which of the three dragons is the oldest",
      "variants": [
       "wolf, stone or glimmer, which of the three dragons is the oldest",
-      "{q} settle it: golestandt, gjalpinulva or cuuldurach, who came first"
+      "{q} settle it: golestandt, gjalpinulva or cuuldurach, who came first?"
      ],
      "optional": false
     },
@@ -733753,9 +733753,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} settle a bet. are the dragons he or she",
+     "text": "{q} settle a bet. are the dragons he or she?",
      "variants": [
-      "{q} settle a bet. are the dragons he or she",
+      "{q} settle a bet. are the dragons he or she?",
       "{q} he or she, when we talk about the three dragons? i have a wager riding on it"
      ],
      "optional": false
@@ -733984,7 +733984,7 @@
      "text": "do the con colours lie or is it just me",
      "variants": [
       "do the con colours lie or is it just me",
-      "{q} anyone else think the con colours lie on named mobs"
+      "{q} anyone else think the con colours lie on named mobs?"
      ],
      "optional": false
     },
@@ -734203,7 +734203,7 @@
      "text": "do the dragons really drop nothing but coin",
      "variants": [
       "do the dragons really drop nothing but coin",
-      "{q} is it true the dragons drop almost nothing worth having"
+      "{q} is it true the dragons drop almost nothing worth having?"
      ],
      "optional": false
     },
@@ -734422,7 +734422,7 @@
      "text": "is there anything out past the edge of the world",
      "variants": [
       "is there anything out past the edge of the world",
-      "{q} has anyone here ever swum to the very edge of the map"
+      "{q} has anyone here ever swum to the very edge of the map?"
      ],
      "optional": false
     },
@@ -734659,7 +734659,7 @@
      "text": "will there ever be more relics, or is six all we get",
      "variants": [
       "will there ever be more relics, or is six all we get",
-      "{q} anyone think we'll ever see new relics on the pedestals"
+      "{q} anyone think we'll ever see new relics on the pedestals?"
      ],
      "optional": false
     },
@@ -734896,7 +734896,7 @@
      "text": "is there still a dungeon out there nobody has found",
      "variants": [
       "is there still a dungeon out there nobody has found",
-      "{q} you think there are still dungeons nobody has walked into yet"
+      "{q} you think there are still dungeons nobody has walked into yet?"
      ],
      "optional": false
     },
@@ -735127,9 +735127,9 @@
    "beats": [
     {
      "role": "A",
-     "text": "{q} sacrifice or demon, which do you kill first at govannon",
+     "text": "{q} sacrifice or demon, which do you kill first at govannon?",
      "variants": [
-      "{q} sacrifice or demon, which do you kill first at govannon",
+      "{q} sacrifice or demon, which do you kill first at govannon?",
       "is it true you have to stop govannon's adds before they reach the middle"
      ],
      "optional": false
@@ -735403,7 +735403,7 @@
      "text": "does darkness falls make the realm war better or worse",
      "variants": [
       "does darkness falls make the realm war better or worse",
-      "{q} is darkness falls good for the realms or bad"
+      "{q} is darkness falls good for the realms or bad?"
      ],
      "optional": false
     },
@@ -735631,7 +735631,7 @@
      "text": "were the old maps wrong, or did the world change under them",
      "variants": [
       "were the old maps wrong, or did the world change under them",
-      "{q} why do the old maps never match the land"
+      "{q} why do the old maps never match the land?"
      ],
      "optional": false
     },
@@ -735860,7 +735860,7 @@
      "text": "ever hear how the first raid met legion's court? the night darkness falls opened",
      "variants": [
       "ever hear how the first raid met legion's court? the night darkness falls opened",
-      "{q} want the story of the first night anyone went into darkness falls"
+      "{q} want the story of the first night anyone went into darkness falls?"
      ],
      "optional": false
     },
@@ -736211,7 +736211,7 @@
      "text": "ever hear the story of the relics we were promised",
      "variants": [
       "ever hear the story of the relics we were promised",
-      "{q} want the tale of the relics that never came"
+      "{q} want the tale of the relics that never came?"
      ],
      "optional": false
     },
@@ -736424,9 +736424,9 @@
     },
     {
      "role": "A",
-     "text": "keep the lord up and the rest sorts itself out",
+     "text": "keep the lord standing, nothing else matters",
      "variants": [
-      "keep the lord up and the rest sorts itself out",
+      "keep the lord standing, nothing else matters",
       "lord up, door repaired, thats the whole plan",
       "hold the inner door and they lose interest"
      ],
@@ -736899,9 +736899,9 @@
     },
     {
      "role": "C",
-     "text": "now they come back for it",
+     "text": "and now they'll want it back",
      "variants": [
-      "now they come back for it",
+      "and now they'll want it back",
       "enjoy it, they want it back already",
       "good, now someone has to hold it"
      ],
@@ -737292,9 +737292,9 @@
     },
     {
      "role": "B",
-     "text": "kill the ram crew, not the tanks around it",
+     "text": "hit whoever is on the ram, ignore the tanks",
      "variants": [
-      "kill the ram crew, not the tanks around it",
+      "hit whoever is on the ram, ignore the tanks",
       "ram first, everything else after"
      ],
      "optional": false
@@ -737705,7 +737705,7 @@
      "text": "their healers will mez the door",
      "variants": [
       "their healers will mez the door",
-      "watch for their stealthers on the road in",
+      "their stealthers will be on the road in, watch it",
       "they will send everyone they have"
      ],
      "optional": false
@@ -745180,7 +745180,7 @@
      "text": "the student becomes the teacher. classic",
      "variants": [
       "the student becomes the teacher. classic",
-      "and round it goes. faction edition"
+      "and round it goes. faction style"
      ],
      "optional": false
     },
@@ -745301,9 +745301,9 @@
     },
     {
      "role": "G",
-     "text": "told you. respect the one who taught you",
+     "text": "told you. you never forget who taught you",
      "variants": [
-      "told you. respect the one who taught you",
+      "told you. you never forget who taught you",
       "the old ways are old because they work"
      ],
      "optional": false
@@ -745364,9 +745364,9 @@
     },
     {
      "role": "D",
-     "text": "this is the best ending",
+     "text": "what a way for it to end",
      "variants": [
-      "this is the best ending",
+      "what a way for it to end",
       "im so glad they made up"
      ],
      "optional": false
@@ -745613,7 +745613,7 @@
      "text": "if your group ever needs someone old school, i'm one tell away",
      "variants": [
       "if your group ever needs someone old school, i'm one tell away",
-      "send a tell if you need a hand out there"
+      "just tell me if you get stuck out there"
      ],
      "optional": false
     },
@@ -745725,10 +745725,10 @@
    "beats": [
     {
      "role": "C",
-     "text": "someone camp the mile gate in {frontier} please. a {enemy} stealther keeps jumping people running out",
+     "text": "someone camp the mile gate in {frontier} please. a {enemy_mod} stealther keeps jumping people running out",
      "variants": [
-      "someone camp the mile gate in {frontier} please. a {enemy} stealther keeps jumping people running out",
-      "that {enemy} stealther is back at the mg in {frontier}. third time i ate the floor today"
+      "someone camp the mile gate in {frontier} please. a {enemy_mod} stealther keeps jumping people running out",
+      "that {enemy_mod} stealther is back at the mg in {frontier}. third time i ate the floor today"
      ],
      "optional": false
     },
@@ -746346,9 +746346,9 @@
     },
     {
      "role": "H",
-     "text": "i'll be there. keeping score like before",
+     "text": "keeping score again. like before",
      "variants": [
-      "i'll be there. keeping score like before",
+      "keeping score again. like before",
       "i'll keep score. again. i'm getting good at it"
      ],
      "optional": false
@@ -746558,7 +746558,7 @@
      "text": "down too. it got me",
      "variants": [
       "down too. it got me",
-      "im dead. great"
+      "dead. great"
      ],
      "optional": false
     },
@@ -746618,9 +746618,9 @@
     },
     {
      "role": "A",
-     "text": "{name_b}... there were two of them",
+     "text": "{name_b}... it was two on one",
      "variants": [
-      "{name_b}... there were two of them",
+      "{name_b}... it was two on one",
       "ok {name_b}. two of them. we never had a chance alone"
      ],
      "optional": false
@@ -747113,9 +747113,9 @@
     },
     {
      "role": "A",
-     "text": "the next ganker is mine though",
+     "text": "i get the next ganker though",
      "variants": [
-      "the next ganker is mine though",
+      "i get the next ganker though",
       "just wait for the next one"
      ],
      "optional": false
@@ -747134,7 +747134,7 @@
      "text": "the shadowing comeback lol",
      "variants": [
       "the shadowing comeback lol",
-      "shadowing callback, nice"
+      "shadowing again, nice"
      ],
      "optional": false
     },
@@ -747895,15 +747895,15 @@
      "text": "we'll see. i have nine more verses",
      "variants": [
       "we'll see. i have nine more verses",
-      "i'm not done. i have a whole album"
+      "i'm not done. i have a whole songbook"
      ],
      "optional": false
     },
     {
      "role": "H",
-     "text": "a whole album lol",
+     "text": "a whole songbook lol",
      "variants": [
-      "a whole album lol",
+      "a whole songbook lol",
       "{name_b} the bard now"
      ],
      "optional": false
@@ -748341,7 +748341,7 @@
      "text": "...thats actually nice",
      "variants": [
       "...thats actually nice",
-      "ok. i like that one"
+      "ok. i'll allow that verse"
      ],
      "optional": false
     },
@@ -748568,9 +748568,9 @@
     },
     {
      "role": "B",
-     "text": "...ok. that was good. accepted",
+     "text": "...ok. fine. accepted, that one was good",
      "variants": [
-      "...ok. that was good. accepted",
+      "...ok. fine. accepted, that one was good",
       "ok. i forgive you. the song can stay"
      ],
      "optional": false
@@ -749612,9 +749612,9 @@
     },
     {
      "role": "A",
-     "text": "thats actually a good idea",
+     "text": "huh. smart, actually",
      "variants": [
-      "thats actually a good idea",
+      "huh. smart, actually",
       "i'll dye it. loud"
      ],
      "optional": false
@@ -749982,9 +749982,9 @@
     },
     {
      "role": "B",
-     "text": "ty {player}. you were the only one who didnt call me careless",
+     "text": "ty {player}. everyone else called me careless. you didnt",
      "variants": [
-      "ty {player}. you were the only one who didnt call me careless",
+      "ty {player}. everyone else called me careless. you didnt",
       "{player}, you backed me when i felt like the worst person in the realm. thank you"
      ],
      "optional": false
@@ -751030,9 +751030,9 @@
     },
     {
      "role": "A",
-     "text": "ok. here it is. in faction: {name_b} is the best healer in the realm",
+     "text": "ok. here it is, for all of faction: nobody heals like {name_b}",
      "variants": [
-      "ok. here it is. in faction: {name_b} is the best healer in the realm",
+      "ok. here it is, for all of faction: nobody heals like {name_b}",
       "{name_b}... your heals are the best in the realm. there. in faction"
      ],
      "optional": false
@@ -751066,9 +751066,9 @@
     },
     {
      "role": "F",
-     "text": "the spider community is upset",
+     "text": "the spiders are upset",
      "variants": [
-      "the spider community is upset",
+      "the spiders are upset",
       "the spiders feel left out"
      ],
      "optional": false
@@ -751302,7 +751302,7 @@
      "text": "good. like adults",
      "variants": [
       "good. like adults",
-      "thats how it should go"
+      "see, that wasnt so hard"
      ],
      "optional": false
     },
@@ -751496,9 +751496,9 @@
     },
     {
      "role": "E",
-     "text": "{name_a} is still mad at {player} lol",
+     "text": "{name_a} hasnt forgiven {player} yet lol",
      "variants": [
-      "{name_a} is still mad at {player} lol",
+      "{name_a} hasnt forgiven {player} yet lol",
       "{player} got {name_a} to apologize. legendary"
      ],
      "optional": false
@@ -753176,7 +753176,7 @@
      "text": "and get flattened by their whole zerg in a doorway? no",
      "variants": [
       "and get flattened by their whole zerg in a doorway? no",
-      "cast in a doorway, with the {enemy} zerg on the other side? great plan"
+      "cast in a doorway, with the {enemy_mod} zerg on the other side? great plan"
      ],
      "optional": false
     },
@@ -754044,27 +754044,27 @@
     },
     {
      "role": "B",
-     "text": "and you're still a door with legs",
+     "text": "and you're still a door. just one that walks",
      "variants": [
-      "and you're still a door with legs",
-      "and you're still a walking door"
+      "and you're still a door. just one that walks",
+      "still a door. a door that talks"
      ],
      "optional": false
     },
     {
      "role": "A",
-     "text": "the best door in the realm",
+     "text": "nicest door on the frontier",
      "variants": [
-      "the best door in the realm",
+      "nicest door on the frontier",
       "best door you've got"
      ],
      "optional": false
     },
     {
      "role": "B",
-     "text": "the best sparkles in the realm",
+     "text": "finest sparkles on the frontier",
      "variants": [
-      "the best sparkles in the realm",
+      "finest sparkles on the frontier",
       "best sparkles you'll ever see"
      ],
      "optional": false
@@ -754580,7 +754580,7 @@
      "text": "wall group, here i come",
      "variants": [
       "wall group, here i come",
-      "i'm joining the wall group"
+      "sign me up for the wall group"
      ],
      "optional": false
     }
@@ -755247,7 +755247,7 @@
      "text": "i'm going to keep saying it. never lend",
      "variants": [
       "i'm going to keep saying it. never lend",
-      "this is why you never lend"
+      "and this is why i dont lend coin"
      ],
      "optional": false
     },
@@ -755648,7 +755648,7 @@
      "text": "you have no idea how good that is to read",
      "variants": [
       "you have no idea how good that is to read",
-      "ty {name_b}. that means a lot"
+      "ty {name_b}. really. i needed that"
      ],
      "optional": false
     },
@@ -755929,9 +755929,9 @@
     },
     {
      "role": "A",
-     "text": "sorry {name_b}. i said you were never going to pay. that was wrong",
+     "text": "{name_b}, i told everyone you'd never pay. i was wrong. sorry",
      "variants": [
-      "sorry {name_b}. i said you were never going to pay. that was wrong",
+      "{name_b}, i told everyone you'd never pay. i was wrong. sorry",
       "and i'm sorry i said you never meant to pay"
      ],
      "optional": false
@@ -756019,10 +756019,10 @@
     },
     {
      "role": "E",
-     "text": "{name_a} lost the audit",
+     "text": "{name_a} lost the count",
      "variants": [
-      "{name_a} lost the audit",
-      "the banker got audited lol"
+      "{name_a} lost the count",
+      "the banker got caught short lol"
      ],
      "optional": false
     }
@@ -756877,7 +756877,7 @@
      "text": "i'd have died. and then the group. you saved the run",
      "variants": [
       "i'd have died. and then the group. you saved the run",
-      "if you hadnt jumped that add, i'm dead and the group wipes"
+      "if you hadnt jumped that add, i die and the group wipes"
      ],
      "optional": false
     },
@@ -757597,9 +757597,9 @@
     },
     {
      "role": "G",
-     "text": "first come, first serve. thats the rule",
+     "text": "first there gets the spot. thats the rule",
      "variants": [
-      "first come, first serve. thats the rule",
+      "first there gets the spot. thats the rule",
       "camp etiquette says first one there has it"
      ],
      "optional": false
@@ -757999,9 +757999,9 @@
     },
     {
      "role": "A",
-     "text": "dont get used to it",
+     "text": "dont expect it twice",
      "variants": [
-      "dont get used to it",
+      "dont expect it twice",
       "that was a coincidence"
      ],
      "optional": false
@@ -758251,7 +758251,7 @@
      "text": "...it was funny",
      "variants": [
       "...it was funny",
-      "it was a good joke"
+      "ok it was a good joke"
      ],
      "optional": false
     },
@@ -758410,7 +758410,7 @@
      "text": "the rock stays on my side though",
      "variants": [
       "the rock stays on my side though",
-      "the rock is still mine"
+      "still my rock though"
      ],
      "optional": false
     },
@@ -758437,7 +758437,7 @@
      "text": "can i come now? please?",
      "variants": [
       "can i come now? please?",
-      "so... is the camp still full?"
+      "so... full still, or can i come?"
      ],
      "optional": false
     },
@@ -758545,7 +758545,7 @@
      "text": "i'll get there before you",
      "variants": [
       "i'll get there before you",
-      "i'll be there first"
+      "i'll beat you to it"
      ],
      "optional": false
     },
@@ -760637,9 +760637,9 @@
     },
     {
      "role": "D",
-     "text": "yes, tell it. i have only seen the first rooms",
+     "text": "go on, tell it. i never got past the first rooms",
      "variants": [
-      "yes, tell it. i have only seen the first rooms",
+      "go on, tell it. i never got past the first rooms",
       "please {name_b}, the whole of it"
      ],
      "optional": false
@@ -761328,9 +761328,9 @@
     },
     {
      "role": "B",
-     "text": "one killed the other, ate him, and kept his voice for his own",
+     "text": "the one ate the other, and he talks with his brother's voice ever since",
      "variants": [
-      "one killed the other, ate him, and kept his voice for his own"
+      "the one ate the other, and he talks with his brother's voice ever since"
      ],
      "optional": false
     },
@@ -761544,9 +761544,9 @@
     },
     {
      "role": "B",
-     "text": "one slew the other and ate him, and kept his voice",
+     "text": "one prince devoured his brother, and speaks with that voice still",
      "variants": [
-      "one slew the other and ate him, and kept his voice"
+      "one prince devoured his brother, and speaks with that voice still"
      ],
      "optional": false
     },
@@ -763165,7 +763165,7 @@
      "text": "alright, the academy one. once",
      "variants": [
       "alright, the academy one. once",
-      "ok. sit. this one runs long"
+      "sit down then. it runs long"
      ],
      "optional": false
     },
@@ -764111,9 +764111,9 @@
     },
     {
      "role": "F",
-     "text": "thats kind of nice actually",
+     "text": "huh. thats sweet, actually",
      "variants": [
-      "thats kind of nice actually",
+      "huh. thats sweet, actually",
       "sounds like a good man to work for"
      ],
      "optional": true
@@ -764384,7 +764384,7 @@
      "text": "has anyone killed her?",
      "variants": [
       "has anyone killed her?",
-      "can she even be hurt?"
+      "does anything even hurt her?"
      ],
      "optional": false
     },
@@ -764529,7 +764529,7 @@
      "text": "hush, tuscaran story",
      "variants": [
       "hush, tuscaran story",
-      "quiet all, the ice queen"
+      "shh everyone, its the ice queen"
      ],
      "optional": false
     },
@@ -764780,7 +764780,7 @@
      "text": "very well. gather in, the ford is a long tale",
      "variants": [
       "very well. gather in, the ford is a long tale",
-      "if you will be quiet, i will"
+      "i will, if you all hush"
      ],
      "optional": false
     },
@@ -765903,9 +765903,9 @@
     },
     {
      "role": "A",
-     "text": "he was a smith who came courting with an axe. she married him",
+     "text": "a smith, he was. came to court her carrying an axe, and she took him",
      "variants": [
-      "he was a smith who came courting with an axe. she married him"
+      "a smith, he was. came to court her carrying an axe, and she took him"
      ],
      "optional": false
     },
@@ -765984,9 +765984,9 @@
     },
     {
      "role": "A",
-     "text": "and the moment nobody stands against him he is whole again",
+     "text": "the second nobody is fighting him, hes back to full",
      "variants": [
-      "and the moment nobody stands against him he is whole again"
+      "the second nobody is fighting him, hes back to full"
      ],
      "optional": false
     },
@@ -766074,9 +766074,9 @@
     },
     {
      "role": "A",
-     "text": "{name_b} tells about the nine. ask on a quiet night",
+     "text": "{name_b} tells about the nine. ask when faction is quiet",
      "variants": [
-      "{name_b} tells about the nine. ask on a quiet night"
+      "{name_b} tells about the nine. ask when faction is quiet"
      ],
      "optional": false
     }
@@ -766239,9 +766239,9 @@
     },
     {
      "role": "B",
-     "text": "alright alright. pull up a stump",
+     "text": "alright alright. find a stump and sit",
      "variants": [
-      "alright alright. pull up a stump"
+      "alright alright. find a stump and sit"
      ],
      "optional": false
     },
@@ -766694,9 +766694,9 @@
     },
     {
      "role": "D",
-     "text": "please, i got 'immune to your damage' on him and gave up",
+     "text": "please, i got \"immune to your damage\" on him and gave up",
      "variants": [
-      "please, i got 'immune to your damage' on him and gave up",
+      "please, i got \"immune to your damage\" on him and gave up",
       "go on {name_b}, i want to know why nothing hits him"
      ],
      "optional": false
@@ -767000,7 +767000,7 @@
      "text": "and the throwing?",
      "variants": [
       "and the throwing?",
-      "why does he throw people?"
+      "what is the throwing about?"
      ],
      "optional": false
     },
@@ -769497,9 +769497,9 @@
     },
     {
      "role": "A",
-     "text": "the lacula sept say nothing but itself. a lich keeps its death close",
+     "text": "the lacula sept reckon its own death is the treasure. liches hide those close",
      "variants": [
-      "the lacula sept say nothing but itself. a lich keeps its death close"
+      "the lacula sept reckon its own death is the treasure. liches hide those close"
      ],
      "optional": false
     },

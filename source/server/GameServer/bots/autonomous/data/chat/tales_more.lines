@@ -24,7 +24,7 @@ A: {name_b} you about? tell the green knight one | {name_b}, the knight up in sa
 C: shh all, {name_b} is doing sauvage | quiet in faction a sec, green knight story
 ?E: the one where nobody whispers to him. i know it | here we go, defend it defend it
 D: please {name_b}, i ride past him every day and never knew | go on, i only know hes green and big
-B: alright alright. pull up a stump
+B: alright alright. find a stump and sit
 B: north edge of forest sauvage, where the road climbs to the pennines. thats where he stands
 B: the woodsmen say he was there before the castle. the bards say before arthur
 B: he greets everyone who stops. warns them the forest turns on those who wake it
@@ -89,7 +89,7 @@ C: the lacula bury their dead facing the height. to watch if anyone ever is quic
 @role F type=Leveler,Crafter,Explorer
 A: {name_b}, the ghost lord on inishail. tell it | {name_b} tell us about emthoro, the one the orcs serve
 C: hush for {name_b}, inishail story | quiet all. emthoro
-D: please, i got 'immune to your damage' on him and gave up | go on {name_b}, i want to know why nothing hits him
+D: please, i got "immune to your damage" on him and gave up | go on {name_b}, i want to know why nothing hits him
 B: right. ears open
 B: lord emthoro held inishail before the war. the colleges lost his name, or never wrote it down
 B: he held the isle the old way. by standing on it
@@ -133,7 +133,7 @@ B: he does not walk like other giants. he stands. the skalds argue what for
 B: some say a door the gods left at the foot of asgard's road. folded into the ice like a letter
 B: some say hes just a giant who found a good spot
 ~ 8
-D: and the throwing? | why does he throw people?
+D: and the throwing? | what is the throwing about?
 B: once you fight him he picks one of you up and throws. not across a room. across the land
 B: the warders of the frontier keep a book of where everyone lands
 B: and he does not throw the one in front of him. he reaches past for someone further back
@@ -505,7 +505,7 @@ A: {name_b} tells the long one in faction. the clearings bit is good
 A: see that height to the north? coliath has stood there since the war started | ever wonder what the lich up there guards
 ?B: treasure? | no idea
 A: the garrison says treasure. the clifton lammia say a drowned king under it
-A: the lacula sept say nothing but itself. a lich keeps its death close
+A: the lacula sept reckon its own death is the treasure. liches hide those close
 A: and it never comes down. not once. so we are fine sitting here
 B: unless someone pulls it | i am holding you to that
 A: {name_b} knows the whole story, if you ask nice in faction
