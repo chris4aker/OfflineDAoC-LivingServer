@@ -428,14 +428,13 @@ namespace DOL.GS.Tests
                             foreach (string piece in pieces)
                             {
                                 string where = $"{scene.Id} ({voice.Name}): {filled} -> {piece}";
-                                // (a writer's "lol" or smiley at the end is not part of the sentence, nor of its word count: chat
-                                // follow-up F2, a 12-word line with a short tail plus "lol" is still one sentence's worth)
-                                string sentence = Regex.Replace(piece, @" (lol|heh|haha|:\)|:P|:D)$", string.Empty);
-                                if (Speech.Words(sentence) > max + 2)
+                                if (Speech.Words(piece) > max + 2)
                                 {
                                     // Only one long sentence with nowhere to split it, or the last of three pieces; still within the
                                     // corpus's line length.
                                     unsplittable++;
+                                    // (a writer's "lol" or smiley at the end is not part of the sentence)
+                                    string sentence = Regex.Replace(piece, @" (lol|heh|haha|:\)|:P|:D)$", string.Empty);
                                     Assert.That(Speech.Split(sentence, max).Count == 1 || pieces.Count == Speech.MaxPieces && piece == pieces[^1], Is.True, where);
                                     Assert.That(piece.Length, Is.LessThanOrEqualTo(VC.MaxLength), where);
                                 }

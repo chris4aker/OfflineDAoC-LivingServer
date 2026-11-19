@@ -729,8 +729,10 @@ public sealed class AutonomousBotVoiceCorpus
     /// <see cref="NoEmoteKinds"/> (DESIGN-013); the terse strip keeps a list's commas, keeps "!" in capitals and keeps a
     /// sentence break as a comma (CORPUS-B1-028); words are expanded at word boundaries ("u?" -> "you?"); no capital after
     /// "..." or "!!". A text over <see cref="MaxLength"/> is cut at a word and ends "..." (<see cref="Fit"/>, DESIGN-014).
+    /// <paramref name="maxWords"/>: a debate piece's split limit; no emote that would push the piece past it
+    /// (AutonomousChatDebateSpeech.TailFits; 0: no limit).
     /// </summary>
-    public static string Style(string text, Voice voice, Random random, out string correction, string kind)
+    public static string Style(string text, Voice voice, Random random, out string correction, string kind, int maxWords = 0)
     {
         correction = null;
         if (string.IsNullOrEmpty(text) || voice == null)
@@ -767,7 +769,8 @@ public sealed class AutonomousBotVoiceCorpus
                 correction = "*" + fixedWord;
             result = typed;
         }
-        if (emote && voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance)
+        if (emote && voice.Emotes.Length > 0 && voice.EmoteChance > 0 && random.NextDouble() < voice.EmoteChance &&
+            AutonomousChatDebateSpeech.TailFits(result, maxWords))
             result += " " + voice.Emotes[random.Next(voice.Emotes.Length)];
         if (voice.Capitalize && result.Length > 0 && !chatToken)
             result = char.ToUpperInvariant(result[0]) + result[1..];

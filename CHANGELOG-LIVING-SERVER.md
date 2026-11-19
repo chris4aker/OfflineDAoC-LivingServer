@@ -220,6 +220,9 @@ below has been seen on the owner's PC yet: **tests only**.
 - `extras.lines`: "you kept me alive at {place}" was a thanks line for a "heal" topic the server never asks for; it is now a
   thanks for the group. "want to group again" needs `player_grouped`.
 - File headers no longer say real swear words are not in the corpus (owner, 2026-11-18: swearing is fine, slurs are not).
+- A debate piece already at its split limit takes no "lol" tail and no style emote any more
+  (`AutonomousChatDebateSpeech.TailFits`, used by `AutonomousChatIdiolect.Apply` and `VC.Style`): a terse writer typed
+  "gripklosa is nothing but mountains, trolls walked down from them, mystery solved lol", one word over what the split allows.
 
 ## Raid fixes from sweep 6e: Aidon's room, an attempt over his reset, epic trash on the way in, musters a wave walks to (1.2, 2026-11-18; tests only)
 
