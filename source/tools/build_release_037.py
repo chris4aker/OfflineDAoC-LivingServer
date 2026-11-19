@@ -311,10 +311,10 @@ def verify_clean(con: sqlite3.Connection, policy: dict, defaults: dict) -> dict:
     assert set(keeps) == set(defaults["Keep"]), "the keep list differs from release-world-defaults.json"
     for keep_id, keep in defaults["Keep"].items():
         assert keeps[keep_id] == (keep["Realm"], keep["Level"], ""), f"keep {keep_id} {keep['Name']}: {keeps[keep_id]}"
-    base_levels = dict(con.execute("SELECT KeepID,BaseLevel FROM Keep"))
-    for keep_id, keep in defaults["Keep"].items():
-        if "BaseLevel" in keep:
-            assert base_levels[int(keep_id)] == keep["BaseLevel"], f"keep {keep_id} {keep['Name']}: base level {base_levels[int(keep_id)]}"
+    with_base = {k: v for k, v in defaults["Keep"].items() if "BaseLevel" in v}
+    base_levels = dict(con.execute("SELECT KeepID,BaseLevel FROM Keep")) if with_base else {}
+    for keep_id, keep in with_base.items():
+        assert base_levels[int(keep_id)] == keep["BaseLevel"], f"keep {keep_id} {keep['Name']}: base level {base_levels[int(keep_id)]}"
     doors = {d: (h, s) for d, h, s in con.execute("SELECT Door_ID,Health,State FROM Door")}
     assert set(doors) == set(defaults["Door"]), "the door list differs from release-world-defaults.json"
     for door_id, door in defaults["Door"].items():
