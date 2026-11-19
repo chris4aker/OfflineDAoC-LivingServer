@@ -435,7 +435,7 @@ namespace DOL.AI.Brain
                 _showEnd = now + 45_000;
                 _nextFlash = 0;
                 foreach (GamePlayer p in Body.GetPlayersInRadius(3000))
-                    p.Out.SendMessage("A spectacular light show begins at the broken tower...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+                    p.Out.SendMessage("A spectacular light show begins at the broken tower...", eChatType.CT_Important, eChatLoc.CL_SystemWindow);   // chat-check: allow towers (a ruined tower in the scenery, not a frontier tower)
             }
         }
     }

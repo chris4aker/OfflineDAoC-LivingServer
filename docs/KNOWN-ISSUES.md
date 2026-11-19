@@ -178,7 +178,8 @@ meetup fix drop two no-shows (in the server log).
     may still answer.
   - A bot that answers "omw" (or "coming", "ill be there") to an alarm, a keep call, free realm points, a call for help, heals
     or a rez now has to go there, with a deadline, and a bot that can't go says something else (1.2, tests only; the
-    `CHAT_PROMISE` lines in the server log show each promise made, kept or broken).
+    `CHAT_PROMISE` lines in the server log show each promise made, kept or broken). A promise is made when the reply is
+    chosen: a reply that is then never sent leaves a short walk behind it (up to 150 seconds) before it ends `unsaid`.
   - Bots don't know what you are doing beyond your words: a "gz" is answered only by a bot that just
     levelled, and other replies guess from the words alone.
   - Chat volume: about 5 to 7 /faction lines a minute on a full realm, by design; see "/faction is busy by design" in

@@ -210,7 +210,7 @@ namespace DOL.GS.Commands
             {
                 "train" or "buyra" => ["companionui", verb, Row(0), rest.Length > 1 && int.TryParse(rest[1], out int k) ? (k - 1).ToString() : "-1"],
                 "option" => OptionArgs(player, Row(0), rest),
-                _ => ["companionui", verb == "gear" ? "vault" : verb, Row(0), .. rest.Skip(1)],
+                _ => ["companionui", verb == "gear" ? "vault" : verb, Row(0), .. rest.Skip(1)],   // chat-check: input (command verbs)
             };
             CompanionWindows165.Handle(player, windowArgs);
             Problem(player);

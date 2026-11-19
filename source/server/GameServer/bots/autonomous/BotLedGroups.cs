@@ -987,7 +987,7 @@ public static partial class BotLedGroups
         Lead.RaidWelcome => "welcome, we wait at {place} until the raid leaves",
         Lead.LastPull => "last pull then town",
         Lead.TownBreak => "ok town to sell, good group all",
-        Lead.Recruited => "got someone coming, hang tight",
+        Lead.Recruited => "got someone coming, hang tight",   // promise: true (a recruit really accepted)
         Lead.RecruitGaveUp => "no luck finding anyone, we carry on as we are",
         Lead.RecruitEnd => "couldnt find anyone, gonna call it here",
         _ => string.Empty,

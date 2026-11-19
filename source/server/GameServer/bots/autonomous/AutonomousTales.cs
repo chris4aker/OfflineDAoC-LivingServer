@@ -114,7 +114,7 @@ public static class AutonomousTales
     /// </summary>
     public static readonly IReadOnlyDictionary<string, string[]> Legends = new Dictionary<string, string[]>(StringComparer.Ordinal)
     {
-        ["atlantis"] = ["atlantis", "the orb", "glass orb", "glass ball", "talking ball", "glass that spoke", "sunken city", "drowned land",
+        ["atlantis"] = ["atlantis", "the orb", "glass orb", "glass ball", "talking ball", "glass that spoke", "sunken city", "drowned land",   // chat-check: allow atlantis (a legend: told only as a rumour)
             "city under the sea"],
         // The battlegrounds (owner, 2026-11-15: "full lore for the battlegrounds"): each legend's id is its battleground's lore
         // file, so a player standing in the field is told its tale first (LocalTale). data/chat/battleground_lore.lines.

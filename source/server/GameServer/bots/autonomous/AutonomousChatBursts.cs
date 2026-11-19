@@ -174,6 +174,10 @@ public static class AutonomousChatBursts
         var lines = new List<AutonomousChatExchange.Line>();
         int next = 0, at = 0;
         using AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Replying(said, "faction:" + realm, now);
+        // Chat 1.2 follow-up (E4's news replies, CORPUS-B2-047): a reaction that says the bot is coming ("heading over if i can
+        // get away") only from a bot the promise gate would send, promised when it is said (a reaction left out promises nothing).
+        (ChatPromiseReason reason, string place) = PromiseOf(trigger, slots);
+        using AutonomousBotVoices.PromiseScope promiseScope = AutonomousBotVoices.PromiseLines();
         for (int i = 0; i < delays.Length; i++)
         {
             string text = null;
@@ -184,7 +188,8 @@ public static class AutonomousChatBursts
                 foreach (string answers in answerSets)
                     if (AutonomousBotVoices.TryLine(candidate, "reply", out VC.Picked picked, answers: answers, slots: slots, relax: true,
                             filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) &&
-                                            AutonomousChatExchange.Shorts.Fresh(lane, line.Text, now) && Evening.Fresh(lane, line.Text, now)))
+                                            AutonomousChatExchange.Shorts.Fresh(lane, line.Text, now) && Evening.Fresh(lane, line.Text, now) &&
+                                            (!ChatPromiseRules.SaysComing(line.Text) || ChatPromises.CanPromiseCome(candidate, place, reason, said, first))))
                     {
                         if (heard.Add(AutonomousChatFiller.Skeleton(picked.Text)) && Evening.Fresh(lane, picked.Text, now) &&
                             AutonomousChatExchange.Shorts.TryUse(lane, picked.Text, now) && Evening.TryUse(lane, picked.Text, now))
@@ -213,7 +218,8 @@ public static class AutonomousChatBursts
                 var verdict = AutonomousChatBudget.LiveReply(AutonomousChatBudget.Channel.Faction, (long)realm, realmBots, kind);
                 if (!isEvent && !AutonomousChatBudget.Says(verdict))
                     return false;
-                if (!AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, line.Text, AutonomousChatBudget.LineKind.Reply))
+                if (!ChatPromises.SayPromised(bot, line.Text, place, reason, said, null, first,
+                        text => AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, realm, text, AutonomousChatBudget.LineKind.Reply)))
                     return false;
                 AutonomousBotChatCoordinator.Note(AutonomousChatThreads.Faction(realm), bot, line.Text, "");
                 AutonomousChatWhy.Record(bot, "faction", "burst " + trigger, "said", "burst " + string.Join(',', answerSets), line.Who,
@@ -223,6 +229,16 @@ public static class AutonomousChatBursts
             }, rules);
         if (towns)
             TownBroadcast(realm, trigger, answerSets, slots, heard, settings, random);
+    }
+
+    /// <summary>
+    /// What a "heading over" reaction to the news would promise: a raid's news a raid time, anything else (a keep attacked,
+    /// an army marching, a relic taken) an alarm at the news's keep (its {keep} slot, else the words of the line). Pure.
+    /// </summary>
+    public static (ChatPromiseReason Reason, string Place) PromiseOf(string trigger, IReadOnlyDictionary<string, string> slots)
+    {
+        string place = slots != null && slots.TryGetValue("keep", out string keep) && !string.IsNullOrWhiteSpace(keep) ? keep : null;
+        return (trigger != null && trigger.Contains("raid", StringComparison.Ordinal) ? ChatPromiseReason.RaidTime : ChatPromiseReason.Alarm, place);
     }
 
     /// <summary>One or two reactions in the realm's capital /broadcast, from bots standing where a player hears them.</summary>
@@ -244,7 +260,9 @@ public static class AutonomousChatBursts
             long now = GameLoop.GameLoopTime;
             foreach (string answers in answerSets)
                 if (AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked picked, answers: answers, slots: slots, relax: true,
-                        filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) && Evening.Fresh(town, line.Text, now)))
+                        // Chat 1.2 follow-up: a town's /broadcast says no "heading over" (no promise is made from it).
+                        filter: line => !heard.Contains(AutonomousChatFiller.Skeleton(line.Text)) && Evening.Fresh(town, line.Text, now) &&
+                                        !ChatPromiseRules.SaysComing(line.Text)))
                 {
                     text = picked.Text;
                     break;

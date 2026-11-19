@@ -267,7 +267,7 @@ public static class AutonomousChatKnowledge
     private static readonly Dictionary<string, string> Terms = new(StringComparer.OrdinalIgnoreCase)
     {
         ["lfg"] = "looking for group", ["lfm"] = "looking for more, a group wants people", ["lf1m"] = "looking for one more",
-        ["gz"] = "congrats", ["grats"] = "congrats", ["inc"] = "incoming, enemies or adds coming", ["oom"] = "out of mana",
+        ["gz"] = "congrats", ["grats"] = "congrats", ["inc"] = "incoming, enemies or adds coming", ["oom"] = "out of mana",   // promise: none (what "inc" means)
         ["oop"] = "out of power", ["brb"] = "be right back", ["afk"] = "away from keyboard", ["bio"] = "bathroom break lol",
         ["ks"] = "kill steal, taking someone elses mob", ["pbae"] = "point blank area effect, the caster blows up everything around him",
         ["pbaoe"] = "point blank area effect, the caster blows up everything around him", ["rp"] = "realm points, you get them in rvr",
@@ -275,7 +275,7 @@ public static class AutonomousChatKnowledge
         ["wts"] = "want to sell", ["wtb"] = "want to buy", ["wtt"] = "want to trade", ["pst"] = "please send tell",
         ["pc"] = "price check", ["con"] = "how tough a mob looks, by its color", ["add"] = "another mob joining the fight",
         ["adds"] = "more mobs joining the fight", ["ding"] = "level up", ["rez"] = "resurrect", ["aggro"] = "a mob that attacks on sight",
-        ["df"] = "darkness falls, the big dungeon", ["ml"] = "master level, from the atlantis rumours. nobody here has one", ["ra"] = "realm ability", ["np"] = "no problem",
+        ["df"] = "darkness falls, the big dungeon", ["ml"] = "master level, from the atlantis rumours. nobody here has one", ["ra"] = "realm ability", ["np"] = "no problem",   // chat-check: allow ml, master-level, atlantis (the glossary's rumour answer, WRITING-GUIDE's one exception)
         ["ty"] = "thank you", ["lol"] = "laughing out loud", ["imo"] = "in my opinion", ["mez"] = "mesmerize, it holds a mob still",
         ["stun"] = "they cant move or act for a bit", ["zerg"] = "a huge mob of players running together", ["gank"] = "killing someone who cant fight back",
     };
@@ -773,7 +773,7 @@ public static class AutonomousChatKnowledge
     private static readonly HashSet<string> RoleNames = new(StringComparer.OrdinalIgnoreCase)
     {
         "healer", "guard", "merchant", "trainer", "master", "stable master", "stablemaster", "smith", "blacksmith", "armorer",
-        "armourer", "weaponsmith", "tailor", "fletcher", "enchanter", "vault keeper", "banker", "guildmaster", "guild registrar",
+        "armourer", "weaponsmith", "tailor", "fletcher", "enchanter", "vault keeper", "banker", "guildmaster", "guild registrar",   // chat-check: input
         "innkeeper", "bartender", "hastener", "townsman", "townswoman", "villager", "peasant", "farmer", "messenger", "herald",
         "captain", "sergeant", "lieutenant", "commander", "soldier", "watchman", "sentry", "archer", "scout", "ranger", "hunter",
         "mage", "wizard", "cleric", "priest", "monk", "friar", "druid", "bard", "warrior", "armsman", "champion", "hero", "warden",

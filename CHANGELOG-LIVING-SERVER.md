@@ -8,6 +8,52 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## Bot chat audit follow-ups: the code (1.2, 2026-11-18; tests only)
+
+What the chat audit's engineers left for each other in code (F1). Nothing below has been seen on the owner's PC yet:
+**tests only** (`UT_ChatFollowUp12`, `UT_ChatFollowUpGate`, `UT_ChatPromises`, `test_played_check_log.py`,
+`tools/bot-voices/tests/test_code_literals.py`).
+- **"omw" goes through the promise gate everywhere it can be said** (owner, 2026-11-18 09:14: "omw" only when the bot goes).
+  - Field talk: an answer to an "inc" or a rally ("omw", "porting to bled"), "on my way" to "anyone in emain?", a healer's
+    "omw" to "rez pls", a guild raid's "count me in", the opener's closing "k omw" and a third bot's "omw too" each go
+    through the gate for the bot that really says it, when it says it. A bot that won't go says "how many?", "not me,
+    maybe later", "cant, sry, too far", "maybe" or "k ty" instead, and a third bot's chime is left out. The "inc" and
+    rally lines carry the full keep name for the gate ("Bledmeer Faste" for "inc bled").
+  - News reactions ("heading over if i can get away") come only from a bot the gate would send, promised when said; a
+    town's /broadcast says none.
+  - Bot-to-bot replies: an alarm reply is chosen when the bot could go and promised when it is said (a stand-in that says
+    it promises for itself); other replies and the asker's closing say "omw" only the same way, or not at all.
+  - Replies to a player: a written (corpus or memory) reply that says the bot is coming is said only when the gate sends
+    the bot; otherwise the old reply, or none.
+  - Everywhere else a written reply or closing never says it (`AutonomousBotVoices.PromiseLines`: only a caller that gates
+    opens it). A source test lists every string literal in the bot chat code that says "omw", "coming" or "on my way" and
+    fails on one that is not marked `// promise: gated|true|none`.
+  - Scenes: no debate, tale or one-off scene beat says "omw", "on my way" or "ill be there" (confirmed, and now a test).
+    Five storyline beats speak of a later meeting in their own arc ("i'll be there first. like always", "count me in");
+    they are the arc's plot, not a walk owed now, and are left to the corpus owners.
+  - A promise is made when its line is chosen; one whose line is never sent ends quietly within 150 seconds,
+    `CHAT_PROMISE broken ... why=unsaid`, which the played check counts as no failure (`unsaid=` in its detail).
+- **A bot under 50 tells its ding** (LOG-035): `AutonomousBotVoices.OnBotLevelUp` now calls `TellDing` below 50 (a ding to
+  50 stays a story).
+- **The memory reply reads the player's line** (DESIGN-007): both `TryKnownReply` call sites pass it, so "lfg 30 cleric"
+  is checked against the bot's band and refusals before "sure, send an invite".
+- **A plain "hi" gets no holiday answer** (CORPUS-B2-025): `TryGreetingReply`'s last pick leaves out `holiday_` lines.
+- **The siege stages are said by topic** (B2-003): a notice no rule reads is said by its news topic (`siege_muster`,
+  `siege_warning`, `siege_attack`, `siege_defend`) instead of as plain text.
+- **The third realm's siege timer** (LOG-004, timer case): when a siege runs out its timer with no holder known, the realm
+  that neither attacked nor defended hears "The fighting for X has ended", not "Our time to take X has run out".
+- **Channel lines are cut at a word**: the /faction, /lfg and /trade sends cut at 240 characters on a whole word, ending
+  "...".
+- **No "lol" in a no-laugh beat** (CORPUS-B2-032 gap): a storyline's two leads and a rage-quit's roles no longer get the
+  typing habit's "lol" either.
+- **No towers**: the keep-claim setting's code comment no longer mentions towers (TEXT-013).
+- **Period words in code**: "o/" is gone from guild greetings; "oof" said by bots is "yikes" (and "train of X, im dead" is
+  "train of X, died"); the reaction lists (`AutonomousChatExchange.Reactions`, `chat_audit.py`) both know "lol ouch",
+  "ouch gl" and "yikes". Word lists that read player text are marked `// chat-check: input`, and two lines that keep a
+  word on purpose (the glossary's "ml" answer, the Atlantis legend) carry `// chat-check: allow <id> (why)`, which
+  `check_runtime_names.py` now reads: it shows no code warnings.
+- **/lstest deed drowned**: the GM test tells a drowning too.
+
 ## Lore follow-up: who a mechanic picks, and stories told once (1.2, 2026-11-18; tests only)
 
 Follow-up to the chat follow-up F3. Lore is never cut: every claim and story was reworded or folded, nothing dropped. None

@@ -469,8 +469,16 @@ public static class AutonomousBotVoices
         if (asked && TryLine(bot, "reply", out result, answers: "ask_howareyou", slots: slots, relax: relax, requireVoices: requireVoices))
             return true;
         return TryLine(bot, "reply", out result, IntentName(eAutonomousChatIntent.Greeting), slots: slots, relax: relax,
-            requireVoices: requireVoices, filter: line => asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal));
+            requireVoices: requireVoices, filter: line => PlainGreetingFits(line, asked));
     }
+
+    /// <summary>
+    /// Whether a greeting reply answers a plain hello: no holiday's own answer (chat 1.2, E4's CORPUS-B2-025: "hi" drew "happy
+    /// halloween to you too"), and no how-are-you answer unless the player asked how the bot is. Pure.
+    /// </summary>
+    public static bool PlainGreetingFits(VC.Line line, bool asked) =>
+        line != null && (asked || !line.Answers.Contains("ask_howareyou", StringComparer.Ordinal)) &&
+        !line.Needs.Any(need => need.StartsWith("holiday_", StringComparison.Ordinal));
 
     /// <summary>A reply for the kind of question a player asked ("anyone on?" -> "here"), before replies by topic.</summary>
     public static bool TryShapedReply(GameBot bot, string incoming, out VC.Picked result, IReadOnlyDictionary<string, string> slots = null,
@@ -536,6 +544,32 @@ public static class AutonomousBotVoices
         return AutonomousChatShortTalk.ReplyFits(incoming, reply);
     }
 
+    [ThreadStatic] private static int _promiseLines;
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<VC.Line, object> ComingLines = new();
+    private static readonly object Coming = new(), NotComing = new();
+
+    /// <summary>
+    /// Lets the replies and closings picked inside it say the bot is coming ("omw", "on my way", "count me in"): only a caller
+    /// that puts such a line through the promise gate opens it (chat 1.2 follow-up, owner 2026-11-18: "omw" only when
+    /// ChatPromises says the bot goes). Everywhere else a written reply never says it. Dispose to close it.
+    /// </summary>
+    public static PromiseScope PromiseLines() => new();
+
+    public readonly struct PromiseScope : IDisposable
+    {
+        public PromiseScope() => _promiseLines++;
+        public void Dispose() => _promiseLines = Math.Max(0, _promiseLines - 1);
+    }
+
+    /// <summary>Whether a written reply may be picked here: it promises nothing, or the caller gates promises. Cached per line.</summary>
+    public static bool PromiseAllowed(VC.Line line) =>
+        line == null || _promiseLines > 0 || !SaysComingLine(line);
+
+    /// <summary>Whether a corpus line says its speaker is coming (ChatPromiseRules.SaysComing on its text), remembered per line.</summary>
+    public static bool SaysComingLine(VC.Line line) =>
+        line != null && ComingLines.GetValue(line, l => ChatPromiseRules.SaysComing(l.Text) ? Coming : NotComing) == Coming;
+
     /// <summary>A corpus line of a kind for this bot, or false (the caller keeps its old line).</summary>
     public static bool TryLine(GameBot bot, string kind, out string text, string intent = null, Random random = null)
     {
@@ -579,8 +613,11 @@ public static class AutonomousBotVoices
                 MergeSlots(all, slots);
             // Beta 1.1.2: a reply or closing is kept free of musings, unasked Exchange plugs and repeated generic filler.
             AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Current;
+            // Chat 1.2 follow-up: a reply or closing that says the bot is coming only where the caller gates it (PromiseLines).
             Func<VC.Line, bool> allowed = kind is "reply" or "closing"
-                ? filter == null ? line => AutonomousChatFiller.ReplyAllowed(line, scope) : line => AutonomousChatFiller.ReplyAllowed(line, scope) && filter(line)
+                ? filter == null
+                    ? line => AutonomousChatFiller.ReplyAllowed(line, scope) && PromiseAllowed(line)
+                    : line => AutonomousChatFiller.ReplyAllowed(line, scope) && PromiseAllowed(line) && filter(line)
                 : filter;
             bool picked = Corpus.TryPick(new VC.Request(kind, speaker, all, Recent, DateTime.UtcNow, random)
             {
@@ -735,7 +772,8 @@ public static class AutonomousBotVoices
                 Intent = intent,
                 Topic = topic,
                 Mood = mood,
-                Filter = filter,
+                // Chat 1.2 follow-up: a reply that says the bot is coming only where the caller gates it (PromiseLines).
+                Filter = kind is "reply" or "closing" ? filter == null ? (Func<VC.Line, bool>)PromiseAllowed : line => PromiseAllowed(line) && filter(line) : filter,
                 RelaxTo = VC.RecentLines.Relaxed,
                 LocalHour = DateTime.Now.Hour,
                 NeedSlots = NeedSlotsFor(bot),
@@ -786,10 +824,22 @@ public static class AutonomousBotVoices
     {
         NoteLevelUp(bot);
         SayMoment(bot, "ding", 0.35, 1_500);
-        // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
-        if (bot?.Level == 50)
-            AutonomousBotChatCoordinator.TellStory("ding50", bot);
+        switch (LevelUpTold(bot?.Level ?? 0))
+        {
+            // Beta 1.1.2, round 7: a ding to 50 is a story the realm hears.
+            case "story":
+                AutonomousBotChatCoordinator.TellStory("ding50", bot);
+                break;
+            // Chat 1.2 (E2's LOG-035, owner's PC: about 30 real level-ups in a night, one "ding" heard): now and then a bot under
+            // 50 tells /faction it levelled ("ding 31").
+            case "ding":
+                AutonomousBotChatCoordinator.TellDing(bot);
+                break;
+        }
     }
+
+    /// <summary>How a level-up is told in /faction: "story" at 50, "ding" below it (TellDing keeps its own odds and pace). Pure.</summary>
+    public static string LevelUpTold(int level) => level >= 50 ? "story" : level > 1 ? "ding" : null;
 
     /// <summary>
     /// A gamebot died (GameBot.ProcessDeath): what killed it and how many were on it are noted first, so the death's /say

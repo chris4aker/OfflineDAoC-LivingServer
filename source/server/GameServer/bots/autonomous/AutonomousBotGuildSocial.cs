@@ -547,6 +547,13 @@ public static class AutonomousBotGuildSocial
     {
         string answer = AutonomousChatFieldTalk.Answer(said, AutonomousChatFieldTalk.Of(bot, Random.Shared),
             AutonomousChatFieldTalk.MemoryOfGuild(guild?.GuildID), Random.Shared);
+        // Chat 1.2 follow-up: an answer that says the bot is coming is promised when chosen (an unsent one ends "unsaid"),
+        // else the thread's no-promise line.
+        if (ChatPromiseRules.SaysComing(answer))
+        {
+            (ChatPromiseReason? reason, string fallback) = AutonomousChatFieldTalk.ThreadPromise(said, 1);
+            answer = reason == null ? fallback : ChatPromises.Gate(bot, answer, said.PromisePlace ?? said.Place, reason.Value, said.Text, fallback);
+        }
         return answer == null ? null : AutonomousChatIdiolect.Apply(answer, bot.DatabaseID, false, Random.Shared, terse: true);
     }
 
@@ -659,10 +666,13 @@ public static class AutonomousBotGuildSocial
                     AutonomousChatExchange.FromSteps(steps.Select(step => step with { AtMs = Math.Max(800, step.AtMs) }), ["asker", "answerer", "third"],
                         step => step.Who == 2),
                     speakers, speaker => speaker.Guild == guild && Eligible(speaker) && HasListener(guild), (speaker, line) =>
-                    {
-                        SendGuildLine(guild, speaker.Name, AutonomousChatIdiolect.Apply(line.Text, speaker.DatabaseID, false, Random.Shared, terse: true));
-                        return true;
-                    }, AutonomousChatExchange.Rules.Say);
+                        // Chat 1.2 follow-up: a guildmate's "omw" to "inc <our keep>" or "count me in" to a raid only from one the
+                        // promise gate sends, at the moment it says it (AutonomousBotChatCoordinator.SayThreadLine).
+                        AutonomousBotChatCoordinator.SayThreadLine(speaker, line.Text, field, line.Who, null, line.Who == 0 ? mate : bot, text =>
+                        {
+                            SendGuildLine(guild, speaker.Name, AutonomousChatIdiolect.Apply(text, speaker.DatabaseID, false, Random.Shared, terse: true));
+                            return true;
+                        }), AutonomousChatExchange.Rules.Say);
             }
             return true;
         }

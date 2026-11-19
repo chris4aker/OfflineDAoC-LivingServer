@@ -68,9 +68,12 @@ namespace DOL.GS
         /// The written notice of a siege's end to one realm. <paramref name="timedOut"/> is a defended siege ("Siege defended: ..."),
         /// whose <paramref name="winner"/> is the realm that held the keep when it is known. Chat 1.2 (LOG-004, owner's PC 00:06:17:
         /// "hib took nged" for a siege Hibernia defended): a hold is told as a hold, "We held" to the defenders and "Hibernia held
-        /// Dun nGed." to the others, never as "has fallen to".
+        /// Dun nGed." to the others, never as "has fallen to". <paramref name="attacker"/>: the audience is the realm that laid
+        /// the siege (chat 1.2 follow-up, E2's LOG-004 timer case: the third realm heard "Our time to take X has run out" when a
+        /// siege ran out its timer with no holder known; it now hears that the fighting there has ended).
         /// </summary>
-        public static string SiegeOutcome(string name, bool defender, bool timedOut, bool failedRally, eRealm winner, eRealm audience)
+        public static string SiegeOutcome(string name, bool defender, bool timedOut, bool failedRally, eRealm winner, eRealm audience,
+            bool attacker = true)
         {
             if (timedOut && !failedRally)
             {
@@ -85,7 +88,8 @@ namespace DOL.GS
             if (failedRally) return defender ? $"The enemy muster at {name} has broken up. The walls remain ours; stay watchful."
                 : $"The muster for {name} failed to gather enough fighters in time. Stand down, warbands; there will be another campaign.";
             if (timedOut) return defender ? $"We held {name}! The enemy's time is spent and our banners still fly."
-                : $"Our time to take {name} has run out. Withdraw in good order; we could not break the defense.";
+                : attacker ? $"Our time to take {name} has run out. Withdraw in good order; we could not break the defense."
+                : $"The fighting for {name} has ended. Its walls still stand.";
             return $"The fighting for {name} has ended. Await confirmed word before claiming victory.";
         }
 

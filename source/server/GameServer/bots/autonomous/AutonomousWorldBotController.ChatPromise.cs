@@ -100,7 +100,7 @@ namespace DOL.GS
             }
             if (distance > 150)
                 IssuePath(bot, goal, retargetWhileMoving: living != null);
-            SetStatus(bot, $"On the way to {target.Name}", "Keeping a promise made in chat",
+            SetStatus(bot, $"On the way to {target.Name}", "Keeping a promise made in chat",   // promise: none (the /lswhy status of a kept promise)
                 $"Said it would come ({promise.Reason}); {(now - promise.Made) / 1000}s of {(promise.Deadline - promise.Made) / 1000}s", target.Name);
             return true;
         }

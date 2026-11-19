@@ -2526,7 +2526,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_GUILD_RECRUIT_PLAYER;
 
 		/// <summary>
-		/// Bot guilds claim keeps and towers their realm takes, under the usual claim rules.
+		/// Bot guilds claim keeps their realm takes, under the usual claim rules.
 		/// </summary>
 		[ServerProperty("guild", "bot_guild_claims_keeps", "When bot guilds are on: after a realm takes a keep, a bot guild with enough members inside claims it (claim_num; guilds_claim_limit), never while a real player of that realm is inside. Its members answer first when that keep is attacked.", true)]
 		public static bool BOT_GUILD_CLAIMS_KEEPS;

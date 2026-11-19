@@ -307,7 +307,7 @@ namespace DOL.GS
 
         private static readonly string[] GuildReplies =
         [
-            "doing ok, ty", "out hunting myself", "could join in a bit", "same, all quiet here", "count me in if a grp forms",
+            "doing ok, ty", "out hunting myself", "could join in a bit", "same, all quiet here", "count me in if a grp forms",   // promise: none (only if a group forms later)
             "busy for now, maybe later", "sounds good", "lmk where u end up",
         ];
 

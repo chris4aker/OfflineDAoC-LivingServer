@@ -746,7 +746,7 @@ public sealed class LoreBible
     public const int MaxAdvisedWords = 1_500;
     public static readonly string[] Realms = ["Albion", "Midgard", "Hibernia", "Neutral"];
     /// <summary>"myth": the real-world myth a name comes from, not game canon (Balor, Hati and Skoll). Needs its source too.</summary>
-    public static readonly string[] Provenances = ["mythic", "game", "legend", "myth", "original"];
+    public static readonly string[] Provenances = ["mythic", "game", "legend", "myth", "original"];   // chat-check: input (a provenance key, never said)
     public static readonly string[] ChronicleSlots = ["realm", "raidLeader", "minutes"];
     /// <summary>
     /// The powers every realm tells its own way, the faction ids the writers agreed to share across history files (2026-11-06).

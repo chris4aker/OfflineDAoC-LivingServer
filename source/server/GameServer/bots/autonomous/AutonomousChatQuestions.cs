@@ -304,7 +304,7 @@ public static class AutonomousChatQuestions
                 return random.Next(3) switch { 0 => "maybe, depends when", 1 => "should be", _ => "if im on, yeah" };
             case "gear":
                 if (bot.Equipped == 0)
-                    return random.Next(2) == 0 ? "what gear lol, still working on it" : "barely have any yet, earning it";
+                    return random.Next(2) == 0 ? "what gear lol, still working on it" : "barely have any yet, earning it";   // promise: none (its gear)
                 if (bot.Crafted * 2 >= bot.Equipped)
                     return random.Next(2) == 0 ? "crafted mostly" : "crafter made most of it";
                 // Drops and merchant buys look alike here, so a bot with nothing crafted doesn't claim either.
@@ -589,7 +589,7 @@ public static class AutonomousChatQuestions
         foreach ((string name, eRealm owner) in keeps)
         {
             string keyWord = Normalize(name).Split(' ')
-                .Where(w => w is not ("caer" or "dun" or "fort" or "faste" or "keep" or "tower" or "of" or "the" or "nged") && w.Length >= 4)
+                .Where(w => w is not ("caer" or "dun" or "fort" or "faste" or "keep" or "tower" or "of" or "the" or "nged") && w.Length >= 4)   // chat-check: input
                 .OrderByDescending(w => w.Length).FirstOrDefault();
             if (keyWord == null || !t.Contains(" " + keyWord + " ", StringComparison.Ordinal))
                 continue;

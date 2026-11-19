@@ -145,7 +145,7 @@ namespace DOL.GS
         public static bool IsCustomClass(Type type)
         {
             for (Type t = type; t != null; t = t.DeclaringType)
-                if (t.Name.Contains("Sluaghbinder", StringComparison.Ordinal))
+                if (t.Name.Contains("Sluaghbinder", StringComparison.Ordinal))   // chat-check: input (a type name)
                     return true;
             return false;
         }

@@ -21,7 +21,7 @@ namespace DOL.GS.Commands;
     "/lstest memory - what bots remember about you",
     "/lstest remember - your target (or the nearest gamebot) remembers a good group with you; walk away and back to be greeted",
     "/lstest greet | gossip - a remembered bot near you greets you; a bot that likes you mentions you in /faction",
-    "/lstest deed <solo|group|streak|ganked|silly|fell> - a bot near you tells the realm it saw that",
+    "/lstest deed <solo|group|streak|ganked|silly|fell|drowned> - a bot near you tells the realm it saw that",
     "/lstest holiday <name|off> - bots treat today as that holiday (newyear valentines stpatricks aprilfools easter midsummer halloween thanksgiving christmas)",
     "/lstest leeroy - the next realm raid has a Leeroy; start one with /lstest raid",
     "/lstest leeroy now - a raid with a Leeroy gathering for its final boss charges at once (within the next 10 minutes, once)",
@@ -211,21 +211,25 @@ public sealed class LivingServerTestCommandHandler : AbstractCommandHandler, ICo
             : $"{bot.Name} can't remember you (bot memory off, or it is not a gamebot of your realm).");
     }
 
+    /// <summary>The deed a /lstest deed word names (chat 1.2 follow-up, E4: "drowned" too), or None. Pure.</summary>
+    public static AutonomousPlayerDeeds.Kind DeedKind(string arg) => arg switch
+    {
+        "solo" => AutonomousPlayerDeeds.Kind.NamedSolo,
+        "group" => AutonomousPlayerDeeds.Kind.NamedGroup,
+        "streak" => AutonomousPlayerDeeds.Kind.RvrStreak,
+        "ganked" => AutonomousPlayerDeeds.Kind.Ganked,
+        "silly" => AutonomousPlayerDeeds.Kind.SillyDeath,
+        "fell" => AutonomousPlayerDeeds.Kind.Fell,
+        "drowned" => AutonomousPlayerDeeds.Kind.Drowned,
+        _ => AutonomousPlayerDeeds.Kind.None,
+    };
+
     private static void Deed(GameClient client, GamePlayer gm, string arg)
     {
-        AutonomousPlayerDeeds.Kind kind = arg switch
-        {
-            "solo" => AutonomousPlayerDeeds.Kind.NamedSolo,
-            "group" => AutonomousPlayerDeeds.Kind.NamedGroup,
-            "streak" => AutonomousPlayerDeeds.Kind.RvrStreak,
-            "ganked" => AutonomousPlayerDeeds.Kind.Ganked,
-            "silly" => AutonomousPlayerDeeds.Kind.SillyDeath,
-            "fell" => AutonomousPlayerDeeds.Kind.Fell,
-            _ => AutonomousPlayerDeeds.Kind.None,
-        };
+        AutonomousPlayerDeeds.Kind kind = DeedKind(arg);
         if (kind == AutonomousPlayerDeeds.Kind.None)
         {
-            Say(client, "/lstest deed <solo|group|streak|ganked|silly|fell>");
+            Say(client, "/lstest deed <solo|group|streak|ganked|silly|fell|drowned>");
             return;
         }
         if (Off(AutonomousPlayerDeeds.On, "bot_living_deeds") is string off)

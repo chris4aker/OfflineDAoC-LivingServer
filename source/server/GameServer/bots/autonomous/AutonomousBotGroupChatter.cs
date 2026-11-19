@@ -71,9 +71,9 @@ public static class AutonomousBotGroupChatter
     {
         string where = string.IsNullOrEmpty(zone) ? "the other side of the realm" : zone;
         if (sameRegion && distance <= 3_000)
-            return random.Next(3) switch { 0 => "right behind you", 1 => "here", _ => "coming" };
+            return random.Next(3) switch { 0 => "right behind you", 1 => "here", _ => "coming" };   // promise: true (a groupmate follows the player in its region)
         if (sameRegion)
-            return random.Next(2) == 0 ? "omw" : $"omw, im over in {where}, give me a few";
+            return random.Next(2) == 0 ? "omw" : $"omw, im over in {where}, give me a few";   // promise: true (a groupmate follows the player in its region)
         return random.Next(2) == 0 ? $"im over in {where}, cant get to you from here. come find me?" : $"stuck over in {where} for now, meet up later?";
     }
 

@@ -134,7 +134,7 @@ public static partial class AutonomousChatIntentModel
     };
 
     /// <summary>Always abuse, whoever it is aimed at.</summary>
-    private static readonly HashSet<string> HardAbuse = new(StringComparer.OrdinalIgnoreCase) { "stfu", "shutup", "l2p" };
+    private static readonly HashSet<string> HardAbuse = new(StringComparer.OrdinalIgnoreCase) { "stfu", "shutup", "l2p" };   // chat-check: input
 
     /// <summary>
     /// Name-calling that is abuse on its own ("idiot", "moron lol", "what an idiot") unless the line says who is meant and it is
@@ -199,7 +199,7 @@ public static partial class AutonomousChatIntentModel
                 // Beta 1.1.2 (blind round 1: read as banter or a question): "ks much?", "stop ksing my camp jerk", "omg ur so bad",
                 // "u r teh suck lol", "gg albs, way to zerg", "can u not stand in the fire", a lone "noob" said to someone.
                 "ks much", "stop ksing", "quit ksing", "stop ks", "ksing my", "ks er", "kser", "ur so bad", "you re so bad", "youre so bad", "u r so bad",
-                "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob",
+                "you are so bad", "teh suck", "u suck", "you suck", "way to zerg", "nice zerg", "zerg much", "stand in the fire", "learn 2 play", "l2p noob",   // chat-check: input
                 // 1.2 chat audit: "what a loser", "you are a waste of space", "everyone here is awful".
                 "what a loser", "what an idiot", "what a moron", "what a noob", "waste of space", "waste of air", "everyone here is", "everybody here is",
                 "all of you are", "you all are", "you guys are", "you people are", "yall are"))

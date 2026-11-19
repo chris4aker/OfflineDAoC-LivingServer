@@ -255,6 +255,12 @@ public static class AutonomousChatFieldTalk
         public string Place { get; init; }
 
         /// <summary>
+        /// The keep or zone a "omw" in this line's thread would go to (chat 1.2 follow-up: the full name, "Bledmeer Faste" for
+        /// "inc bled"), for the promise gate; null when the line names none (the answer's words are read instead).
+        /// </summary>
+        public string PromisePlace { get; init; }
+
+        /// <summary>
         /// Bots as people WP4: the travel destination of a real "ask the way" question (<see cref="WayQuestion"/>), or null.
         /// Only a bot that knows the place answers it (BotWayFinding.MayAnswer), and the asker is then told the way.
         /// </summary>
@@ -318,7 +324,7 @@ public static class AutonomousChatFieldTalk
             "cc" => cls is eCharacterClass.Sorcerer or eCharacterClass.Minstrel or eCharacterClass.Healer or eCharacterClass.Bard or
                 eCharacterClass.Mentalist,
             "puller" => cls is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger || BotPartyRoles.For(cls) == BotPartyRole.Tank,
-            "dps" => BotPartyRoles.For(cls) == BotPartyRole.Damage,
+            "dps" => BotPartyRoles.For(cls) == BotPartyRole.Damage,   // chat-check: input (a role key read from "need dps", never said)
             // Chat 1.2 (TEXT-012): "dps" was not yet everyday chat in 2003; a group asked for a "nuker", a caster that does damage.
             "nuker" => BotPartyRoles.For(cls) == BotPartyRole.Damage && AutonomousChatGear.ArmorWord(cls.ToString(), 50) == "cloth",
             _ => true,
@@ -332,7 +338,7 @@ public static class AutonomousChatFieldTalk
         "tank" => "tank",
         "mezzer" or "cc" => "cc",
         "puller" => "puller",
-        "dps" => "dps",
+        "dps" => "dps",   // chat-check: input (a role key, never said)
         "nuker" => "nuker",
         "cleric" => "class:Cleric",
         "druid" => "class:Druid",
@@ -1020,7 +1026,7 @@ public static class AutonomousChatFieldTalk
                     "healer" => Pick(random, "heal", "healer"),
                     "cc" => Pick(random, "cc", "mezzer"),
                     // TEXT-012: the party's damage seat as 2003 said it.
-                    "dps" => "nuker",
+                    "dps" => "nuker",   // chat-check: input (the key; "nuker" is said)
                     _ => post.Need,
                 };
             string band = post == null ? $"{Math.Max(1, f.Level - 3)}-{Math.Min(50, f.Level + 3)}"
@@ -1208,17 +1214,19 @@ public static class AutonomousChatFieldTalk
 
     private static Said Inc(Facts f, WorldView w, Random random)
     {
-        string keep = ShortKeep(w.AttackedKeeps[random.Next(w.AttackedKeeps.Length)], random);
+        string full = w.AttackedKeeps[random.Next(w.AttackedKeeps.Length)];
+        string keep = ShortKeep(full, random);
         // TEXT-018: one enemy, two shapes: "hibs at beno" (the people), "hib zerg at beno" (a modifier). Drawn once for both.
         eRealm enemyRealm = EnemyRealm(f.Realm, random);
         string enemy = RealmWord(enemyRealm), enemyAs = RealmWord(enemyRealm, modifier: true);
         int count = 3 + random.Next(20);
-        string[] omw = Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}");
+        string[] omw = Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}");   // promise: gated (SayThreadLine)
         return Make(random, "inc", null, null, null,
             new V($"inc {keep}", "inc_call", omw), new V($"{keep} inc", "inc_call", omw), new V($"{enemy} at {keep}", "inc_call", omw),
             new V($"{count} {enemy} at {keep}", "inc_call", omw), new V($"{keep} under attack", "inc_call", omw), new V($"need def {keep}", "inc_call", omw),
             new V($"def {keep} pls", "inc_call", omw), new V($"{keep} is being hit", "inc_call", omw), new V($"{enemyAs} zerg at {keep}", "inc_call", omw),
-            new V($"{enemy} hitting {keep} door", "inc_call", omw), new V($"inc {keep}, {count}+", "inc_call", omw), new V($"rams on {keep}", "inc_call", omw));
+            new V($"{enemy} hitting {keep} door", "inc_call", omw), new V($"inc {keep}, {count}+", "inc_call", omw), new V($"rams on {keep}", "inc_call", omw))
+            with { PromisePlace = full };
     }
 
     private static Said AskKeep(Facts f, WorldView w, Random random)
@@ -1258,9 +1266,9 @@ public static class AutonomousChatFieldTalk
         string[] where = w.AttackedKeeps.Length > 0
             ? Pool($"{ShortKeep(w.AttackedKeeps[0], random)} under attack", $"at {ShortKeep(w.AttackedKeeps[0], random)}", $"hitting {ShortKeep(w.AttackedKeeps[0], random)}")
             : Pool("quiet atm", "dunno, quiet tonight", "havent seen any");
-        Said said = Make(random, "rvr", null, Pool("anyone?", "nm"), Pool("ty", "k omw", "omw"),
+        Said said = Make(random, "rvr", null, Pool("anyone?", "nm"), Pool("ty", "k omw", "omw"),   // promise: gated (SayThreadLine)
             new V("any grps out?", "rvr_grps", where), new V("anyone out tonight?", "rvr_out", Pool("me", "few of us", "me, {cls}")),
-            new V($"anyone in {frontier}?", "rvr_out", Pool("me", "few of us", "on my way")),
+            new V($"anyone in {frontier}?", "rvr_out", Pool("me", "few of us", "on my way")),   // promise: gated (SayThreadLine)
             new V("rvr grp forming pst", "rvr_form", Joins), new V("where's the zerg", "rvr_zerg", where), new V("where is everyone", "rvr_zerg", where),
             // TEXT-016: the realm war map came with New Frontiers; in 1.65 a player checked /realm.
             new V($"any1 at {own}?", "rvr_keep", Pool("dunno, not me", "not me, check /realm", "dunno")), new V($"quiet in {frontier}", "rvr_quiet"),
@@ -1284,7 +1292,7 @@ public static class AutonomousChatFieldTalk
         string[] answers = f.Dungeon == null ? Pool("check lfg, someone always xps at that lvl", "solo outside town is ok", "lfg for a dungeon grp")
             : Pool(dun, $"try {dun}", $"{dun} prob", $"{dun} at {lvl}", $"{dun} if u get a grp", $"{dun} is ok at {lvl}", $"{dun} or solo outside");
         return Make(random, "ask_xp", (f.Level / 5).ToString(), Pool("nm found one", $"anyone? {lvl} here", "nm, trying {s} solo", $"no one? ok {dun ?? "solo"} it is"),
-            Pool("ty", "ty!", "k ty", "kk", "cool ty", "ty, omw"),
+            Pool("ty", "ty!", "k ty", "kk", "cool ty", "ty, will try it"),
             new V($"where do {lvl}s xp?", "ask_xp", answers), new V($"good xp for {lvl} {cls}?", "ask_xp_good", answers),
             new V(dun != null ? $"{dun} ok at {lvl}?" : $"where at {lvl}?", "ask_xp_place",
                 dun != null ? Pool("ya", "ya with a grp", "should be", "ya, bring a healer", "fine at that lvl") : answers),
@@ -1368,16 +1376,49 @@ public static class AutonomousChatFieldTalk
         return said;
     }
 
+    /// <summary>
+    /// The promise a line of a field thread makes when it says the speaker is coming (chat 1.2 follow-up, E9's call sites): why
+    /// it would come (an "inc" or a rally is an alarm, "anyone in emain?" realm points, "rez pls" a rez, a guild raid plan the
+    /// raid's time; other kinds promise nothing a gate can make true) and what is said instead when the bot won't go. By
+    /// speaker: 0 the asker's closing ("k omw" becomes "k ty"), 1 the answerer, 2 a third bot's chime (left out). Pure.
+    /// </summary>
+    public static (ChatPromiseReason? Reason, string Fallback) ThreadPromise(Said said, int who)
+    {
+        ChatPromiseReason? reason = said?.Kind switch
+        {
+            "inc" or "rally" => ChatPromiseReason.Alarm,
+            "rvr" => ChatPromiseReason.RealmPoints,
+            "death" => ChatPromiseReason.Rez,
+            "raid" => ChatPromiseReason.RaidTime,
+            _ => null,
+        };
+        string fallback = who switch
+        {
+            0 => "k ty",
+            1 => said?.Kind switch
+            {
+                "inc" or "rally" => "how many?",
+                "rvr" => "not me, maybe later",
+                "death" => "cant, sry, too far",
+                "raid" => "maybe",
+                _ => null,
+            },
+            _ => null,
+        };
+        return (reason, fallback);
+    }
+
     /// <summary>A rally while a keep is really under attack: "all to beno", "grp up for bled def" (round 6).</summary>
     private static Said Rally(Facts f, WorldView w, Random random)
     {
         string full = w.AttackedKeeps[random.Next(w.AttackedKeeps.Length)];
         string keep = ShortKeep(full, random);
-        string[] omw = Pool("omw", "otw", "porting", "omw!", "on my way", $"omw {keep}", "coming", "2 min");
+        string[] omw = Pool("omw", "otw", "porting", "omw!", "on my way", $"omw {keep}", "coming", "2 min");   // promise: gated (SayThreadLine)
         return Make(random, "rally", full.ToLowerInvariant() + ":" + f.Level / 10, null, null,
             new V($"everyone to {keep}", "rally_all", omw), new V($"all to {keep} pls", "rally_all", omw), new V($"grp up for {keep} def", "rally_grp", Joins),
-            new V($"need bodies at {keep}", "rally_bodies", omw), new V($"any healers to {keep}?", "rally_heal", Pool("{healer}omw", "{healer}porting")),
-            new V($"port to {keep} up?", "rally_port", Pool("ya", "think so", "dunno")), new V($"{keep} needs ppl", "rally_bodies", omw));
+            new V($"need bodies at {keep}", "rally_bodies", omw), new V($"any healers to {keep}?", "rally_heal", Pool("{healer}omw", "{healer}porting")),   // promise: gated (SayThreadLine)
+            new V($"port to {keep} up?", "rally_port", Pool("ya", "think so", "dunno")), new V($"{keep} needs ppl", "rally_bodies", omw))
+            with { PromisePlace = full };
     }
 
     /// <summary>Keep news and realm pride tied to the real keep count (round 6): "we hold 6 keeps", "when did we lose rena?".</summary>
@@ -1410,7 +1451,7 @@ public static class AutonomousChatFieldTalk
         string[] answers = dun == null ? Pool("check lfg, someone always camps there", "solo outside town is ok", "lfg for a dungeon grp")
             : Pool($"{dun}", $"try {dun}", $"{dun} with a grp", $"outside {dun}");
         return Make(random, "camp", "ask:" + zone + ":" + f.Level / 3, Pool($"anyone? {lvl} here", "nm found one", "ok, guess ill wander"),
-            Pool("ty", "k ty", "ty, omw", "cool"),
+            Pool("ty", "k ty", "ty, will try it", "cool"),
             new V($"good camp for {lvl}?", "camp_ask", answers),
             // RC11 on the owner's PC: nobody camps in a town ("where do 41s camp in city of camelot?").
             f.InTown ? new V($"where should a {lvl} camp?", "camp_ask", answers) : new V($"where do {lvl}s camp in {zone}?", "camp_ask_zone", answers),
@@ -1645,7 +1686,7 @@ public static class AutonomousChatFieldTalk
         // "no rez on me sry" from anyone, and asked only while the bot still lies dead.
         if (f.Dead != false && random.NextDouble() < 0.25)
             return new Said(Pick(random, $"rez in {ShortZone(f.Zone, random)}?", "need rez pls", "any rez?", $"rez pls, {ShortZone(f.Zone, random)}"), "death",
-                Pool("{healer}omw", "{healer}where at?", "{healer}sec, coming", "too far sry", "no rez on me sry", "cant, sry, too far"))
+                Pool("{healer}omw", "{healer}where at?", "{healer}sec, coming", "too far sry", "no rez on me sry", "cant, sry, too far"))   // promise: gated (SayThreadLine)
             {
                 Asks = true,
                 Thanks = Pool("k", "k ty", "np"),
@@ -1677,7 +1718,7 @@ public static class AutonomousChatFieldTalk
         if (fitting.Length == 0)
             fitting = ["died ugh"];
         // TEXT-011: the bare "rip" as an all-purpose reaction is later stream chat; 2003 said "ouch".
-        return new(Pick(random, fitting), "death", Pool("ouch", "lol ouch", "oof", "ouch, gl"))
+        return new(Pick(random, fitting), "death", Pool("ouch", "lol ouch", "yikes", "ouch, gl"))
         {
             Thanks = Pool("ty", "heh ty", "ugh ya"),
             Unanswered = Pool("released, running back", "got a rez ty", "back up", "ok running back"),
@@ -1746,7 +1787,7 @@ public static class AutonomousChatFieldTalk
         if (f.Level >= 35)
         {
             string keep = f.GuildKeep != null ? ShortKeep(f.GuildKeep, random) : null;
-            string[] plan = Pool("me", "maybe", "after this lvl", "im in", "later maybe", "count me in", "me if im on");
+            string[] plan = Pool("me", "maybe", "after this lvl", "im in", "later maybe", "count me in", "me if im on");   // promise: gated (SayThreadLine, the guild thread)
             string[] when = Pool("dunno", "ask the gl", "think so", "maybe sat", "no idea");
             options.Add((() => Make(random, "raid", keep, Pool("anyone?", "nobody? ok lol"), Pool("k", "cool", "k, 9ish then"),
                 new V("who's on for df tonight", "g_df", plan), new V("raid tonight?", "g_raid", when), new V("anyone up for a keep take later", "g_keep_take", plan),
@@ -1760,9 +1801,9 @@ public static class AutonomousChatFieldTalk
         if (f.GuildKeep != null && w.AttackedKeeps.Contains(f.GuildKeep))
         {
             string keep = ShortKeep(f.GuildKeep, random);
-            string[] omw = Pool("omw", "porting", "omw!", "on it");
+            string[] omw = Pool("omw", "porting", "omw!", "on it");   // promise: gated (SayThreadLine, the guild thread)
             options.Add((() => Make(random, "inc", null, null, null, new V($"{keep} under attack", "g_inc", omw), new V($"our keep is being hit, {keep}", "g_inc", omw),
-                new V($"def {keep} pls", "g_inc", omw), new V($"inc {keep}", "g_inc", omw)), 4));
+                new V($"def {keep} pls", "g_inc", omw), new V($"inc {keep}", "g_inc", omw)) with { PromisePlace = f.GuildKeep }, 4));
         }
         string craft = Pick(random, "smith", "armorcrafter", "tailor", "fletcher", "spellcrafter", "alchemist");
         int skill = 300 + 50 * random.Next(13);
@@ -1831,13 +1872,13 @@ public static class AutonomousChatFieldTalk
         ["ask_xp"] = (["grp or solo?", "which camp there?", "how far in?", "is it busy?", "solo ok there?", "what mobs?", "how long to {lvl}?"],
             ["grp is better", "solo outside is ok", "front rooms are easy", "back rooms if u have a healer", "was quiet earlier"],
             ["bring pots", "^ that", "watch the adds", "was there earlier, busy"]),
-        ["ask_group"] = (["what lvl r u?", "where u at?", "what class?", "u close?", "how far r u?"], ["{lvl}", "{lvl} {cls}", "in {zone}", "{cls}, {lvl}", "coming from {zone}"],
+        ["ask_group"] = (["what lvl r u?", "where u at?", "what class?", "u close?", "how far r u?"], ["{lvl}", "{lvl} {cls}", "in {zone}", "{cls}, {lvl}", "over in {zone}"],
             ["room for 1 more?", "me too if room", "x2"]),
         ["camp"] = (["how many up?", "is it camped?", "which side?"], ["few", "2 last i saw", "was empty", "dunno, just got here", "north side"],
             ["watch the adds there", "they link", "bring a healer", "{monsters} hit hard at {lvl}", "was there at {lvl}"]),
         ["keeps"] = (["when?", "who took it?"], ["earlier tonight", "while i was afk lol", "dunno, saw it on /realm"], ["we'll get it back", "ugh", "always on my break"]),
-        ["rally"] = (["how many?", "where r they?"], ["big grp", "10+ at the door", "at the gate", "inside already"], ["porting too", "omw also", "bringing my grp"]),
-        ["rvr"] = (["how many?", "which way?"], ["few grps", "small grp", "through the mg"], ["count me in", "omw too"]),
+        ["rally"] = (["how many?", "where r they?"], ["big grp", "10+ at the door", "at the gate", "inside already"], ["porting too", "omw also", "bringing my grp"]),   // promise: gated (SayThreadLine)
+        ["rvr"] = (["how many?", "which way?"], ["few grps", "small grp", "through the mg"], ["count me in", "omw too"]),   // promise: gated (SayThreadLine)
         ["raid"] = (["what time?", "who's leading?"], ["9ish", "in an hour", "gl is"], ["im in too", "same"]),
         ["guild_group"] = (["what lvl?", "where at?"], ["{lvl}", "{zone}", "{lvl} {cls}"], ["me too", "room for 1?"]),
         ["guild_sell"] = (["what stats?", "what lvl is it?"], ["decent", "dunno, check it", "{lvl}ish"], ["dibs after"]),
@@ -2174,8 +2215,8 @@ public static class AutonomousChatFieldTalk
                     new[] { "milegate", "bridge", "keep", "road", "gate", "lake" }.Any(word => opener.Contains(word, StringComparison.Ordinal)));
                 // TEXT-011: "ouch", not the later all-purpose "rip".
                 string ask = toldWhere
-                    ? Riff(random, "ouch", "lol ouch", "oof", "by who?", "how many?", "lol again?", "ugh")
-                    : Riff(random, "ouch", "lol ouch", "where?", "oof", "where at?", "by who?", "how many?", "lol again?");
+                    ? Riff(random, "ouch", "lol ouch", "yikes", "by who?", "how many?", "lol again?", "ugh")
+                    : Riff(random, "ouch", "lol ouch", "where?", "yikes", "where at?", "by who?", "how many?", "lol again?");
                 lines.Add((1, ask));
                 bool askedWhere = ask != null && ask.StartsWith("where", StringComparison.Ordinal);
                 bool who = ask is "by who?" or "how many?";
@@ -2217,13 +2258,13 @@ public static class AutonomousChatFieldTalk
                 string zone = HomeZoneWord(teller, random);
                 string[] FitMonster(params string[] options) => options.Where(text => FitsDeath(text, teller)).ToArray();
                 int count = teller?.Attackers ?? 0;
-                string told = Pick(random, FitMonster($"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, im dead",
+                string told = Pick(random, FitMonster($"died to {monsters} again", $"{monsters} got me lol", "dead. again.", $"train of {monsters}, died",
                     $"{monsters} in {zone} hate me", $"killed by {monsters} at {teller?.Level}"));
                 lines.Add((0, told));
                 // "where?" only when the teller didn't say where, and then the teller says where (owner 2026-11-08: "where?" was
                 // answered "pulled two by accident").
                 bool saidWhere = told != null && zone != null && told.Contains(zone, StringComparison.OrdinalIgnoreCase);
-                string riff = saidWhere ? Riff(random, "ouch", "lol ouch", "oof", "ugh") : Riff(random, "ouch", "lol ouch", "where?", "oof");
+                string riff = saidWhere ? Riff(random, "ouch", "lol ouch", "yikes", "ugh") : Riff(random, "ouch", "lol ouch", "where?", "yikes");
                 lines.Add((1, riff));
                 bool asked = riff != null && riff.StartsWith("where", StringComparison.Ordinal);
                 lines.Add((0, asked
@@ -2351,9 +2392,9 @@ public static class AutonomousChatFieldTalk
     /// <summary>What came after: how it went, in the teller's words. Pure but for the draw.</summary>
     public static string[] RvrDeathAfter(string front, Random random) =>
     [
-        "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run", "was just running to the keep",
+        "never saw them coming", "lost a bubble too", "third time tonight", "had 2 on me before i could run", "was just running to the keep",   // promise: none (the enemy it never saw)
         "they were waiting at the gate", "didnt even get a cast off", "mezzed and stunned, gg", "should've waited for the grp", "rr is not happening tonight",
-        $"{front} is a death trap tonight", "zerg came over the hill", "porting back", "they farm that bridge all night", "almost got away too",
+        $"{front} is a death trap tonight", "zerg came over the hill", "porting back", "they farm that bridge all night", "almost got away too",   // promise: none (the teller's own trip home after a death)
         "was afk for like a second lol", "my grp ran lol", "at least i got one of them", "heading back out", "walk of shame back to the keep",
     ];
 

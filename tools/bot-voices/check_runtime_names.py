@@ -8,7 +8,8 @@ group, combat calls, crafter talk, companions...) go through the same banned lis
 owner's logs came from code and none of it was checked. A "ban" hit fails; an "audit" hit fails in a file whose owner is
 in chat_rules.STRICT_OWNERS and warns elsewhere (in code a "ban" entry counts as "audit": the word lists that read player
 text look like said lines); an "unsure" hit warns. Log messages, literals that start with "^", "(" or "\b" (regexes) and
-lines marked "// chat-check: input" (words read in player text, never said) are skipped.
+lines marked "// chat-check: input" (words read in player text, never said) are skipped, and a line marked
+"// chat-check: allow <id>, <id> (why)" may keep those banned entries (the corpus's @allow, for code).
 
 The corpus builder checks every written line, but slot values chosen in code skip it: the dungeons
 AutonomousBotVoices.DungeonFor names, and the words bot guild names are built from
@@ -58,6 +59,9 @@ CODE_OWNERS = [
            r'RealmRaidPlayerInvite|AutonomousChatRegulars'),
 ]
 LITERAL_RE = re.compile(r'\$?@?\$?"((?:[^"\\]|\\.)*)"')
+# "// chat-check: allow atlantis, ml (why)" lets a bot line keep a banned word the corpus would allow with @allow (the
+# glossary's rumour answer, a legend's name); the reason in brackets is for the reader.
+ALLOW_RE = re.compile(r'chat-check: allow ([a-z0-9_, -]+?)(?: \(|$)')
 
 
 def code_owner(path):
@@ -79,23 +83,25 @@ def chat_literals():
             # "// chat-check: input" marks a line of words the code reads in player text, not words a bot says.
             if stripped.startswith(('//', '*')) or 'Log.' in line or 'Exception(' in line or 'LOG' in line or 'chat-check: input' in line:
                 continue
+            allow = ALLOW_RE.search(line)
+            allowed = {a.strip() for a in allow.group(1).split(',')} if allow else set()
             for m in LITERAL_RE.finditer(line):
                 text = m.group(1)
                 if len(text) < 2 or text.startswith(('^', '(', '\\b', '(?')) or re.match(r'^[A-Z0-9_]{4,}\b', text):
                     continue
                 if not re.search(r'[a-z]', text) or ('/' in text and '.' in text and ' ' not in text):
                     continue
-                yield f'{path.relative_to(ROOT)}:{number}', owner, text
+                yield f'{path.relative_to(ROOT)}:{number}', owner, text, allowed
 
 
 def check_code_lines(problems, show):
     warnings = {}
     count = 0
-    for where, owner, text in chat_literals():
+    for where, owner, text, allowed in chat_literals():
         count += 1
         said = re.sub(r'\{[^{}]*\}', ' ', text)
         for entry in BANNED_ENTRIES:
-            if entry['id'] == 'url' and 'GoldSpammers' in where:
+            if entry['id'] == 'url' and 'GoldSpammers' in where or entry['id'] in allowed:
                 continue
             hit = entry['regex'].search(said)
             if not hit:

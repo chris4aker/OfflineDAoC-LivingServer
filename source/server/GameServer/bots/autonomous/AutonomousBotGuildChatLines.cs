@@ -142,7 +142,7 @@ public static class AutonomousBotGuildChatLines
     }
 
     public static string OfferInvite(string player, string guild, Random random) => Pick(random,
-        $"{player}, sending you an invite to {guild}", $"sure {player}, invite coming from {guild}",
+        $"{player}, sending you an invite to {guild}", $"sure {player}, invite coming from {guild}",   // promise: none (a guild invite is coming)
         $"{player} wed love to have you, check for an invite", $"inviting you now {player}");
 
     /// <summary>To a player asking for a guild below the level bot guilds take members (BOT_GUILD_MIN_LEVEL).</summary>
@@ -215,7 +215,7 @@ public static class AutonomousBotGuildChatLines
             return true;
         // Short answers only count right after a recruiting post.
         return recruitOpen && (text is "me" or "me!" or "me please" or "interested" or "i'm interested" or "im interested" or
-            "inv" or "inv me" or "invite me" or "i'll join" or "ill join" or "count me in" or "sign me up");
+            "inv" or "inv me" or "invite me" or "i'll join" or "ill join" or "count me in" or "sign me up");   // chat-check: input
     }
 
     private static bool SaysNight(string text)

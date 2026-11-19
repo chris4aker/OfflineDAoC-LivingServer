@@ -992,10 +992,11 @@ public static class AutonomousBotDebates
             VC.Voice voice = AutonomousBotVoices.Corpus.VoiceFor(speaker.DatabaseID);
             // 1.2 chat audit (CORPUS-B2-032): a storyline's two protagonists and every role of a rage-quit scene say their beats
             // with no added laugh ("yes. i do lol" at a wedding).
-            if (voice != null && NoLaughBeat(running.Scene, beat.Role))
+            bool noLaugh = voice != null && NoLaughBeat(running.Scene, beat.Role);
+            if (noLaugh)
                 voice = voice with { EmoteChance = 0 };
             string filled = VC.ForTimeOfDay(AutonomousChatDebateSpeech.Variant(filledVariants, voice, Random.Shared), DateTime.Now.Hour);
-            List<string> pieces = AutonomousChatDebateSpeech.Typed(filled, voice, speaker.DatabaseID, Random.Shared);
+            List<string> pieces = AutonomousChatDebateSpeech.Typed(filled, voice, speaker.DatabaseID, Random.Shared, noLaugh);
             if (pieces.Count == 0)
                 continue;
             string line = pieces[0];

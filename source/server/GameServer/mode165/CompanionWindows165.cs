@@ -38,7 +38,7 @@ namespace DOL.GS
         // Every AI Options verb is routed here too, taken from CompanionOptions165 so the two lists cannot drift apart
         // (2026-11-05: the generic "option" verb was missing here, so every new AI Options row answered "Unknown hiring command").
         public static readonly HashSet<string> Verbs =
-            ["gear", "equip", "bag", "unequip", "swap", "move", "stats", "repair", "select", "spec", "respec", "train", "ra", "buyra", "pick", "vault", "delve",
+            ["gear", "equip", "bag", "unequip", "swap", "move", "stats", "repair", "select", "spec", "respec", "train", "ra", "buyra", "pick", "vault", "delve",   // chat-check: input (command verbs)
              .. CompanionOptions165.Verbs];
 
         // ---- the original client's clean list windows (owner 2026-10-30: TRAIN / GEAR / REALM ABILITIES / STATS replace the
@@ -205,7 +205,7 @@ namespace DOL.GS
             string problem = verb switch
             {
                 "gear" => null,
-                "vault" => null,
+                "vault" => null,   // chat-check: input (command verbs)
                 "pick" => Pick(player, bot, hired, Arg(3)),
                 "equip" => Equip(player, bot, Arg(3), Arg(4)),
                 "bag" => PutInBag(player, bot, Arg(3), Arg(4)),
@@ -245,7 +245,7 @@ namespace DOL.GS
                 SendStatsText(player, row, hired, bot);
                 SendRaList(player, bot, hired);
             }
-            else if (verb is "vault")
+            else if (verb is "vault")   // chat-check: input (command verbs)
                 CompanionGearVault165.Open(player, row, bot);   // GIVE ITEMS: the drag window (no longer opened by "gear")
             else if (verb is not "repair")
             {

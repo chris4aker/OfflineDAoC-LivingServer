@@ -1048,7 +1048,7 @@ class ChatPromises(unittest.TestCase):
     def test_kept_promises_are_seen(self):
         row = self.session(kept=4, timeouts=1, died=3)
         self.assertEqual(row["status"], pcl.SEEN)
-        self.assertIn("made=8 kept=4 broken=4 (timeout=1, other=3) refused=1", row["detail"])
+        self.assertIn("made=8 kept=4 broken=4 (timeout=1, unsaid=0, other=3) refused=1", row["detail"])
         self.assertIn("kept 80% of kept+timeout", row["detail"])
         self.assertIn("CHAT_PROMISE kept", row["line"])
 
@@ -1056,6 +1056,19 @@ class ChatPromises(unittest.TestCase):
         row = self.session(kept=2, timeouts=4)
         self.assertEqual(row["status"], pcl.CONTRADICTED)
         self.assertIn("why=timeout", row["line"])
+
+    def test_an_unsaid_promise_is_no_failure(self):
+        # Chat 1.2 follow-up: a promise whose line was never sent ends "unsaid"; it is neither kept nor a timeout.
+        log = Log().start(at(0))
+        for n in range(1, 7):
+            message, t = self.made(n, n)
+            log.add(t, message)
+            message, t = self.ended(n, n + 1, None if n == 1 else "unsaid")
+            log.add(t, message)
+        row = check(only(log.run()[1]), "promises")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("broken=5 (timeout=0, unsaid=5, other=0)", row["detail"])
+        self.assertIn("kept 100% of kept+timeout", row["detail"])
 
     def test_no_kept_promise_is_not_seen(self):
         self.assertEqual(self.session(kept=0, timeouts=2)["status"], pcl.NOT_SEEN, "too few to contradict")

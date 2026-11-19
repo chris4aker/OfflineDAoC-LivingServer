@@ -315,7 +315,7 @@ public static partial class AutonomousLivingServer
     public static string RaceWord(int race)
     {
         if (race is >= 19 and <= 21)
-            return "minotaur";
+            return "minotaur";   // chat-check: allow minotaur (races 19-21 never exist on the 1.65 client)
         eRace value = (eRace)race;
         if (value == eRace.Unknown || !Enum.IsDefined(value))
             return string.Empty;

@@ -241,7 +241,7 @@ public static class AutonomousChatThreads
 
     /// <summary>A laugh reply the joker itself can say ("heh, it happens", ":)"), not one that praises a joke ("good one"). Pure.</summary>
     public static bool FitsOwnJoke(string reply) =>
-        !Regex.IsMatch(reply ?? string.Empty, @"good one|got me|\bnice\b|oh no|rofl|lolol|hahaha|ikr|lol right", RegexOptions.IgnoreCase);
+        !Regex.IsMatch(reply ?? string.Empty, @"good one|got me|\bnice\b|oh no|rofl|lolol|hahaha|ikr|lol right", RegexOptions.IgnoreCase);   // chat-check: input
 
     /// <summary>How long after a bot answered a player their "ty" is still for that bot, and a laugh for a bot's joke.</summary>
     public const long ThanksWindowMs = 90_000;

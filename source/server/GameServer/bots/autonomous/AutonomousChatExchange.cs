@@ -575,17 +575,17 @@ public static class AutonomousChatExchange
     // The reactions source/tools/chat_audit.py counts (keep the two lists together).
     private static readonly HashSet<string> Reactions = new(StringComparer.Ordinal)
     {
-        "oof", "rip", "lol rip", "ouch", "ugh", "bleh", "gz", "gz gz", "grats", "gratz", "grats grats", "grats man", "nice", "nice gz", "woot", "wow nice",
+        "oof", "rip", "lol rip", "ouch", "ugh", "bleh", "gz", "gz gz", "grats", "gratz", "grats grats", "grats man", "nice", "nice gz", "woot", "wow nice",   // chat-check: input
         "sweet", "lucky", "lucky you", "lucky you lol", "jealous", "show off", "well earned", "well played", "well done", "nice going", "nice score",
         "good stuff", "go you", "way to go", "look at you", "must be nice", "not bad at all", "very nice", "brag brag brag", "teach me",
-        "pics or it didnt happen", "classic", "happens", "happens lol", "rip grp", "that stinks", "that sucks", "ugh that sucks", "ugh same",
+        "pics or it didnt happen", "classic", "happens", "happens lol", "rip grp", "that stinks", "that sucks", "ugh that sucks", "ugh same",   // chat-check: input
         "ugh the worst", "rough", "rough night huh", "bad luck", "been there", "bleh been there", "hang in there", "it gets better", "ah man",
-        "sorry that is rough", "oof sorry", "oof sorry heh", "thats annoying", "argh hate that", "ugh i feel you", "the dice hate us all",
+        "sorry that is rough", "oof sorry", "oof sorry heh", "thats annoying", "argh hate that", "ugh i feel you", "the dice hate us all",   // chat-check: input
         "the worst feeling", "thats just mean", "dont let it get to you", "happens to the best of us", "yep happened to me too",
         "next one will go better", "take a break maybe", "been there haha", "grr i know that one", "been like that all night haha",
         "aww sorry that is awful", "ha welcome to my week", "yep it does that", "forgive me unlucky", "gz u earned it", "gz you earned it",
         "ha nice now find something meaner", "now thats a good night", "lol", "heh", "haha", "hehe", "true", "lol true", "true true", "ha", "rip me",
-        "lol how", "lol ouch", "ouch gl",
+        "lol how", "lol ouch", "ouch gl", "yikes",   // chat 1.2 follow-up: yikes is said where bots said oof
     };
 
     /// <summary>A pure reaction ("oof", "rip", "lol", "gz"): it says nothing but how the speaker feels about the line before.</summary>
