@@ -194,25 +194,33 @@ namespace DOL.GS
             return null;
         }
 
-        public bool StartDuringCastLosCheck(GameLiving target)
+        /// <param name="spellHandler">The handler asking (SpellHandler.CheckDuringCast passes itself); null: the component's.
+        /// Owner's PC, 2026-11-19 14:56:33 (build 1.2-43c43aa): the component's SpellHandler was cleared during the tick (an
+        /// interrupt or the cast ending), this line threw a NullReferenceException in CastingService and the service removed
+        /// the gamebot Carik from the world. The handler and its LoS checker are now read once; a missing one means no check.</param>
+        public bool StartDuringCastLosCheck(GameLiving target, SpellHandler spellHandler = null)
         {
+            spellHandler ??= SpellHandler;
             // Target check may appear redundant since CastingComponent is supposed to set LosChecker to null when no LoS check is required.
             // But for player casted spells, the target is determined by SpellHandler.
-            if (SpellHandler.LosChecker == null || target == null || target == Owner)
+            var packets = spellHandler?.LosChecker?.Out;
+            if (packets == null || target == null || target == Owner)
                 return false;
 
-            _duringCastLosCheckListener.SpellHandler = SpellHandler;
-            SpellHandler.LosChecker.Out.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
+            _duringCastLosCheckListener.SpellHandler = spellHandler;
+            packets.SendLosCheckRequest(Owner, target, _duringCastLosCheckListener);
             return true;
         }
 
         public bool StartEndOfCastLosCheck(GameLiving target, SpellHandler spellHandler)
         {
-            if (SpellHandler.LosChecker == null || target == null || target == Owner)
+            // The asking handler's checker (it is the component's handler while its cast ends); read once, see above.
+            var packets = (spellHandler ?? SpellHandler)?.LosChecker?.Out;
+            if (packets == null || target == null || target == Owner)
                 return false;
 
             _endOfCastLosCheckListener.AddPendingLosCheck(target, spellHandler);
-            SpellHandler.LosChecker.Out.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener);
+            packets.SendLosCheckRequest(Owner, target, _endOfCastLosCheckListener);
             return true;
         }
 

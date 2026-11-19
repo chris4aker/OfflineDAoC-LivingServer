@@ -8,10 +8,10 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
-## RvR route traps from the PC log of build 43c43aa: the Cruachan Gorge seam, Odin's Gate muster posts, no exterior route, the rally-delay false alarm (1.2, 2026-11-19; tests only)
+## RvR route traps from the PC log of build 43c43aa: the Cruachan Gorge seam, Odin's Gate muster posts, no exterior route, the rally-delay false alarm, a casting crash (1.2, 2026-11-19; tests only)
 
 Seen on the owner's PC on build `43c43aa` (2026-11-19 13:20-14:22, restart 13:40:58; `DIAG-43c-rally`). Owner: "Fix
-before publishing". Nothing below is seen in game yet: **tests only** (`UT_RvrRouteTraps43c`; navmesh probes with the
+before publishing". Nothing below is seen in game yet: **tests only** (`UT_RvrRouteTraps43c`, `UT_CastingLosCheckNull43c`; navmesh probes with the
 explicit `UT_ZoneStepProbe`, `UT_TripProbe` and the new `UT_RvrRouteTrapProbe` on the 0.37b fresh runtime's meshes). No
 navmesh, seam file or road file changed.
 - **The Cruachan Gorge / Breifine seam (200:384960,385504).** 206 `AUTONOMOUS_ZONE_SEAM_CYCLE` lines from 75 Hibernian
@@ -43,6 +43,12 @@ navmesh, seam file or road file changed.
   parties standing at their posts as ordered: the muster path stops a bot there and never reported travel. A member that
   reported itself at its post within the attendance window (15 s), or stands within its post radius (160), counts as
   making progress. A member with no step and no post for 8 minutes is still reported, as before.
+- **A spell's line-of-sight check no longer throws when the cast is cleared mid-tick.** At 14:56:33 `CastingService`
+  logged a `NullReferenceException` in `CastingComponent.StartDuringCastLosCheck` (from `SpellHandler.CheckDuringCast`)
+  and removed the gamebot Carik from the world: the component's spell handler had been cleared during the tick (an
+  interrupt or the cast ending). Both LoS checks now use the asking handler (the one whose tick asks, so nothing else
+  changes) and its checker, read once; a missing handler or checker means no check (`UT_CastingLosCheckNull43c`). Once in
+  about 1.75 hours on that log.
 - **Caer Caledon's lord at 100% (looked into, no change).** Damage reaches the lord: the status lines show it at 99%,
   98%, 97% and 99% after the storms of 13:30, 14:05 and 14:22, and Gantend was attacking it at its feet (14:05:25). It
   heals back between storms. At most 7 storm bots (levels 30-35) reached the level-46 lord (three times a guard's health)
